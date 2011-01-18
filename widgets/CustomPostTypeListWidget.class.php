@@ -1,0 +1,397 @@
+<?php
+/**
+ * This file is part of TheCartPress.
+ * 
+ * TheCartPress is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TheCartPress is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+class CustomPostTypeListWidget extends WP_Widget {
+
+	function CustomPostTypeListWidget() {
+		$widget_settings = array(
+			'classname'		=> 'customposttypelist',
+			'description'	=> __( 'Allow to create Custom Post Type Lists', 'tcp' ),
+		);
+		$control_settings = array(
+			'width'		=> 300,
+			'id_base'	=> 'customposttypelist-widget'
+		);
+		$this->WP_Widget( 'customposttypelist-widget', 'TCP Custom Post Type List', $widget_settings, $control_settings );
+	}
+
+	function widget( $args, $instance ) {
+		extract( $args );
+		$title = apply_filters( 'widget_title', $instance['title'] );
+		if ( $instance['post_type'] == 'visited' ) {
+			$shoppingCart = TheCartPress::getShoppingCart();
+			$ids = array_keys( $shoppingCart->getVisitedPosts() );
+			if ( count( $ids ) == 0) return;
+			$args = array(
+				'is_single'			=> false,
+				'post__in'			=> $ids,
+				'post_type'			=> 'tcp_product',
+				'posts_per_page'	=> $instance['limit'],
+			);
+		} elseif ( $instance['use_taxonomy'] ) {
+			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
+			$args = array(
+				'is_single'			=> false,
+				'post_type'			=> $instance['post_type'],
+				'posts_per_page'	=> $instance['limit'],
+			);
+			if ( strlen( $taxonomy ) > 0 ) {
+				if ( $instance['term'] == 'CAT_PROD-CAT_PROD' || $instance['term'] == 'CAT_PROD-CAT_POST' ||
+					 $instance['term'] == 'CAT_POST-CAT_PROD' || $instance['term'] == 'CAT_POST-CAT_POST' && ! is_single() ) {
+					global $wp_query;
+					$term_id = isset( $wp_query->queried_object->term_taxonomy_id ) ? $wp_query->queried_object->term_taxonomy_id : 0;
+					if ( $term_id <= 0 ) return;
+					require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+					$res = RelEntities::select( $term_id, $instance['term'] );
+					if ( count($res ) == 0 ) return;
+					$ids = array();
+					foreach ( $res as $row )
+						$ids[] = $row->id_to;
+					if ( count( $ids ) == 0) return;
+					if ( $instance['taxonomy'] == 'category' )
+						$args['cat__in'] = $ids;
+					else {
+						$args['tax_query'] = array(
+							array(
+								'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+								'terms'		=> $ids,
+								'field'		=> 'id',
+							),
+						);
+					}
+				} else {
+					$args[$taxonomy] = $instance['term'];
+				}
+			}
+		} else {
+			$args = array(
+				'is_single'			=> false,
+				'post_type'			=> $instance['post_type'],
+				'posts_per_page'	=> $instance['limit'],
+			);
+			if ( $instance['related_type'] == '' ) {
+				if ( count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {
+					$args['post__in'] = $instance['included'];
+				}
+			} elseif ( is_single() ) {
+				global $post;
+				require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+				$res = RelEntities::select( $post->ID, $instance['related_type'] );
+				if ( count($res ) == 0 ) return;
+				$ids = array();
+				foreach ( $res as $row )
+					$ids[] = $row->id_to;
+				$args['post__in'] = $ids;
+			} else
+				return;
+		}
+		$widget_loop = new WP_Query( $args );
+		if ( ! $widget_loop->have_posts() ) return;
+		echo $before_widget;
+		if ( $title ) echo $before_title, $title, $after_title;
+		if ( strlen( $instance['loop'] ) > 0 ) {
+			include( $instance['loop'] );
+		} else {
+			if ( $widget_loop->have_posts() ) while ( $widget_loop->have_posts() ) : $widget_loop->the_post();?>
+				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+					<?php if ( $instance['see_title'] ) : ?>
+					<div class="entry-title">
+						<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
+					</div>
+					<?php endif;?>
+					<?php if ( $instance['see_excerpt'] ) : ?>
+					<div class="entry-summary">
+						<?php the_excerpt(); ?>
+					</div>
+					<?php endif;?>
+					<?php if ( $instance['see_price'] ) : ?>
+					<div class="entry-product_custom">
+						<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_get_the_price_label( get_the_ID() );?>&nbsp;<?php tcp_the_currency();?>(<?php echo tcp_get_the_tax_label( get_the_ID() );?>)</p>
+					<div>
+					<?php endif;?>
+					<?php if ( $instance['see_content'] ) : ?>
+					<div class="entry-content">
+						<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'tcp' ) ); ?>
+						<?php wp_link_pages( array( 'before' => '<div class="page-link">'.__( 'Pages:', 'tcp' ), 'after' => '</div>')); ?>
+					</div>
+					<?php endif;?>
+					<?php if ( $instance['see_tags'] ) : ?>
+					<div class="entry-utility">
+						<?php if ( count( get_the_category() ) ): ?>
+							<span class="cat-links">
+								<?php printf( __( '<span class="%1$s">Posted in</span> %2$s', 'tcp' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?>
+							</span>
+							<span class="meta-sep">|</span>
+						<?php endif; ?>
+						<?php
+							$tags_list = get_the_tag_list( '', ', ' );
+							if ( $tags_list ): ?>
+							<span class="tag-links">
+								<?php printf( __( '<span class="%1$s">Tagged</span> %2$s', 'tcp' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
+							</span>
+							<span class="meta-sep">|</span>
+						<?php endif; ?>
+						<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'tcp' ), __( '1 Comment', 'tcp' ), __( '% Comments', 'tcp' ) ); ?></span>
+						<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
+					</div>
+					<?php endif;?>
+				</div>
+			<?php endwhile;
+		}
+		wp_reset_postdata();
+		wp_reset_query();
+		echo $after_widget;
+	}
+
+	function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		$instance['title']			= strip_tags( $new_instance['title'] );
+		$instance['post_type']		= $new_instance['post_type'];
+		$instance['use_taxonomy']	= $new_instance['use_taxonomy'];
+		$instance['taxonomy']		= $new_instance['taxonomy'];
+		$instance['term']			= $new_instance['term'];
+		$instance['related_type']	= $new_instance['related_type'];
+		$instance['included']		= $new_instance['included'];
+		$instance['limit']			= (int)$new_instance['limit'];
+		$instance['loop']			= $new_instance['loop'];
+		$instance['title_tag']		= $new_instance['title_tag'];
+		$instance['columns']		= (int)$new_instance['columns'];
+		$instance['see_title']		= $new_instance['see_title'];
+		$instance['see_image']		= $new_instance['see_image'];
+		$instance['image_size']		= $new_instance['image_size'];
+		$instance['see_content']	= $new_instance['see_content'];
+		$instance['see_excerpt']	= $new_instance['see_excerpt'];
+		$instance['see_author']		= $new_instance['see_author'];
+		$instance['see_tags']		= $new_instance['see_tags'];
+		$instance['see_price']		= $new_instance['see_price'];
+		$instance['see_buy_button']	= $new_instance['see_buy_button'];
+		return $instance;
+	}
+
+	function form( $instance ) {
+		$defaults = array(
+			'title'			=> 'Custom Post Type List',
+			'post_type'		=> 'post',
+			'use_taxonomy'	=> true,
+			'taxonomy'		=> '',
+			'term'			=> '',
+			'related_type'	=> '',
+			'included'		=> array(),
+			'limit'			=>  5,
+			'loop'			=> '',
+			'title_tag'		=> 'H2',
+			'columns'		=> 2,
+			'see_title'		=> true,
+			'see_image'		=> true,
+			'image_size'	=> 'thumbnail',
+			'see_content'	=> false,
+			'see_excerpt'	=> false,
+			'see_tags'		=> false,
+			'see_price'		=> true,
+			'see_buy_button'=> false,
+		);
+		$instance = wp_parse_args( ( array ) $instance, $defaults );
+		$see_title		= isset( $instance['see_title'] )		? (bool) $instance['see_title']		: false;
+		$see_image		= isset( $instance['see_image'] )		? (bool) $instance['see_image']		: false;
+		$see_content	= isset( $instance['see_content'] )		? (bool) $instance['see_content']	: false;
+		$see_excerpt	= isset( $instance['see_excerpt'] )		? (bool) $instance['see_excerpt']	: false;
+		$see_author		= isset( $instance['see_author'] )		? (bool) $instance['see_author']	: false;
+		$see_tags		= isset( $instance['see_tags'] )		? (bool) $instance['see_tags']		: false;
+		$see_price		= isset( $instance['see_price'] )		? (bool) $instance['see_price']		: false;
+		$see_buy_button	= isset( $instance['see_buy_button'] )	? (bool) $instance['see_buy_button']: false;
+		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) ? (bool) $instance['use_taxonomy'] : false;
+		if ($use_taxonomy) {
+			$use_taxonomy_style = '';
+			$included_style = 'display: none;';
+		} else {
+			$use_taxonomy_style = 'display: none;';
+			$included_style = '';
+		}
+		$related_type = isset( $instance['related_type'] ) ? $instance['related_type'] : '';
+		if ( $related_type != '')
+			$p_included_style = 'display: none;';
+		else 
+			$p_included_style = '';
+		?>
+		<script>
+		function tcp_show_taxonomy(checked) {
+			if (checked) {
+				jQuery('.tcp_taxonomy_controls').show();
+				jQuery('.tcp_post_included').hide();
+			} else {
+				jQuery('.tcp_taxonomy_controls').hide();
+				jQuery('.tcp_post_included').show();
+			}
+		}
+		</script>
+	<div id="column_1">
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
+		</p><p>
+			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
+			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
+				<option value="visited"<?php selected( $instance['post_type'], 'visited' ); ?>><?php _e( 'last visited', 'tcp' );?></option>
+			<?php foreach( get_post_types() as $post_type ) : ?>
+				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+			<?php endforeach; ?>
+			</select>
+			<span class="description"><? _e( 'Press save to load the next list', 'tcp' );?></span>
+		</p><p style="margin-bottom:0;">
+			<input type="checkbox" class="checkbox" onclick="tcp_show_taxonomy(this.checked);" id="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'use_taxonomy' ); ?>"<?php checked( $use_taxonomy ); ?> />
+			<label for="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>"><?php _e( 'Use Taxonomy', 'tcp' ); ?></label>
+		</p>
+		<div class="tcp_taxonomy_controls" style="<?php echo $use_taxonomy_style;?>">
+			<p style="margin-top:0;">
+				<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
+				<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
+					<option value="" <?php selected( $instance['taxonomy'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
+				<?php foreach(get_object_taxonomies( $instance['post_type'] ) as $taxonomy ): $tax = get_taxonomy( $taxonomy ); ?>
+					<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
+				<?php endforeach; ?>
+				</select>
+				<span class="description"><? _e( 'Press save to load the next list', 'tcp' );?></span>
+			</p><p>
+				<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'tcp' )?>:</label>
+				<select name="<?php echo $this->get_field_name( 'term' ); ?>" id="<?php echo $this->get_field_id( 'term' ); ?>" class="widefat">
+				<?php if ( $instance['taxonomy'] == 'category') : ?>
+					<option value="CAT_POST-CAT_POST" <?php selected( $instance['term'], 'CAT_POST-CAT_POST' ); ?>><?php _e( 'cat. posts &raquo; cat. posts', 'tcp' );?></option>
+					<option value="CAT_PROD-CAT_POST" <?php selected( $instance['term'], 'CAT_PROD-CAT_POST' ); ?>><?php _e( 'cat. prods &raquo; cat. posts', 'tcp' );?></option>
+				<?php elseif ( $instance['taxonomy'] == 'tcp_product_category') : ?>
+					<option value="CAT_POST-CAT_PROD" <?php selected( $instance['term'], 'CAT_POST-CAT_PROD' ); ?>><?php _e( 'cat. posts &raquo; cat. prods', 'tcp' );?></option>
+					<option value="CAT_PROD-CAT_PROD" <?php selected( $instance['term'], 'CAT_PROD-CAT_PROD' ); ?>><?php _e( 'cat. prods &raquo; cat. prods', 'tcp' );?></option>
+				<?php endif;?>
+				<?php if ( $instance['taxonomy']) foreach( get_terms( $instance['taxonomy'], array( 'hide_empty' => false ) ) as $term): ?>
+					<option value="<?php echo $term->slug;?>"<?php selected( $instance['term'], $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
+				<?php endforeach; ?>
+				</select>
+			</p>
+		</div> <!-- tcp_taxonomy_controls -->
+		<div class="tcp_post_included" style="<?php echo $included_style;?>">
+			<p>
+				<label for="<?php echo $this->get_field_id( 'related_type' );?>"><?php _e( 'Related type', 'tcp' )?>:</label>
+				<select name="<?php echo $this->get_field_name( 'related_type' ); ?>" id="<?php echo $this->get_field_id( 'related_type' );?>" class="widefat"
+				onchange="if (jQuery('#<?php echo $this->get_field_id( 'related_type' );?>').val() == '') jQuery('div#p_included').show(); else jQuery('div#p_included').hide();">
+					<option value="" <?php selected( $instance['related_type'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
+				<?php if ( $instance['post_type'] == 'post' ) : ?>
+					<option value="POST-POST" <?php selected( $instance['related_type'], 'POST-POST' ); ?>><?php _e( 'post &raquo; posts', 'tcp' );?></option>
+					<option value="PROD-POST" <?php selected( $instance['related_type'], 'PROD-POST' ); ?>><?php _e( 'prod &raquo; posts', 'tcp' );?></option>
+				<?php else : ?>
+					<option value="PROD-PROD" <?php selected( $instance['related_type'], 'PROD-PROD' ); ?>><?php _e( 'prod &raquo; prods', 'tcp' );?></option>
+					<option value="POST-PROD" <?php selected( $instance['related_type'], 'POST-PROD' ); ?>><?php _e( 'post &raquo; prods', 'tcp' );?></option>
+				<?php endif;?>
+				</select>
+			</p><div id="p_included" style="<?php echo $p_included_style;?>"><p style="margin-top:0;">
+				<label for="<?php echo $this->get_field_id( 'included' );?>"><?php _e( 'Included', 'tcp' )?>:</label>
+				<select name="<?php echo $this->get_field_name( 'included' );?>[]" id="<?php echo $this->get_field_id( 'included' );?>" class="widefat" multiple="true" size="8" style="height: auto">
+					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
+				<?php
+				$args = array(
+					'post_type'	=> $instance['post_type'],
+				);
+				$query = new WP_query($args);
+				if ( $query->have_posts() ) while ( $query->have_posts()): $query->the_post();?>
+					<option value="<?php the_ID();?>"<?php tcp_selected_multiple( $instance['included'], get_the_ID() ); ?>><?php the_title();?></option>
+				<?php endwhile; wp_reset_postdata(); wp_reset_query();?>
+				</select>
+			</p></div><!-- p_included -->
+		</div><!-- tcp_post_included -->
+		<p>
+			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit', 'tcp' ); ?>:</label>
+			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $instance['limit']; ?>" size="3" />
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'loop' ); ?>"><?php _e( 'Loop', 'tcp' ); ?>:</label>
+			<select name="<?php echo $this->get_field_name( 'loop' ); ?>" id="<?php echo $this->get_field_id( 'loop' ); ?>" class="widefat">
+				<option value="" <?php selected( $instance['loop'], "" ); ?>"><?_e( 'default', 'tcp' ); ?></option>
+			<?php
+			$folder = dirname( dirname( __FILE__ ) ).'/loops';
+			if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ):
+				if ( $file != '.' && $file != '..' ):?>
+					<option value="<?php echo $folder.'/'.$file;?>" <?php selected( $instance['loop'], $folder.'/'.$file ); ?>"><?echo $file; ?></option>
+				<?php endif;?>
+			<?php endwhile; closedir( $handle );?>
+			</select>
+		</p>
+	</div>
+	<div id="column_2">
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?>:</label>
+			<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
+				<option value="h1" <?php selected( $instance['title_tag'], 'h1' );?>>H1</option>
+				<option value="h2" <?php selected( $instance['title_tag'], 'h2' );?>>H2</option>
+				<option value="h3" <?php selected( $instance['title_tag'], 'h3' );?>>H3</option>
+				<option value="h4" <?php selected( $instance['title_tag'], 'h4' );?>>H4</option>
+				<option value="h5" <?php selected( $instance['title_tag'], 'h5' );?>>H5</option>
+				<option value="h6" <?php selected( $instance['title_tag'], 'h6' );?>>H6</option>
+				<option value="div" <?php selected( $instance['title_tag'], 'div' );?>>DIV</option>
+				<option value="span" <?php selected( $instance['title_tag'], 'span' );?>>SPAN</option>
+				<option value="p" <?php selected( $instance['title_tag'], 'p' );?>>P</option>
+			</select>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
+			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_title' ); ?>" name="<?php echo $this->get_field_name( 'see_title' ); ?>"<?php checked( $see_title ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_title' ); ?>"><?php _e( 'Show title', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_image' ); ?>" name="<?php echo $this->get_field_name( 'see_image' ); ?>"<?php checked( $see_image ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_image' ); ?>"><?php _e( 'Show image', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image size', 'tcp' ); ?></label>
+			<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
+			<?php $imageSizes = get_intermediate_image_sizes();
+			foreach($imageSizes as $imageSize) : ?>
+				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $instance['image_size'] );?>><?php echo $imageSize;?></option>
+			<?php endforeach;?>
+			?>
+			</select>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_content' ); ?>" name="<?php echo $this->get_field_name( 'see_content' ); ?>"<?php checked( $see_content ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_content' ); ?>"><?php _e( 'Show content', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'see_excerpt' ); ?>"<?php checked( $see_excerpt ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_excerpt' ); ?>"><?php _e( 'Show excerpt', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_author' ); ?>" name="<?php echo $this->get_field_name( 'see_author' ); ?>"<?php checked( $see_author ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_author' ); ?>"><?php _e( 'Show author', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_tags' ); ?>" name="<?php echo $this->get_field_name( 'see_tags' ); ?>"<?php checked( $see_tags ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_tags' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_price' ); ?>" name="<?php echo $this->get_field_name( 'see_price' ); ?>"<?php checked( $see_price ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_price' ); ?>"><?php _e( 'Show price', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_buy_button' ); ?>" name="<?php echo $this->get_field_name( 'see_buy_button' ); ?>"<?php checked( $see_buy_button ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_buy_button' ); ?>"><?php _e( 'Show buy button', 'tcp' ); ?></label>
+		</p>
+	</div>
+		<?php
+	}
+}
+?>
