@@ -11,14 +11,21 @@ Stable tag: 1.0
 == Description ==
 
 *TheCartPress* is an eCommerce plugin for WordPress:
+
 Native integration with WordPress 3.0, taking advantage of new types of post and taxonomies defined in WordPress 3.0, like WordPress Media Manager and all other WordPress funcionalities.
 
 Image galleries, video gallery... and much more in your product descriptions.
+
 Powerful widgets to enhance and customize your themes. TheCartPress is distributed with many widgets that help you to create a professional store. For example, shopping cart, catalog menus, products reviews, etc.
+
 Compatible with WordPress plugins and themes (All in one SEO, WP Multi Language, Image/Video galleries, etc.).
+
 You can extend unlimited the shipping and payment methods by developing easily your own WordPress plugins, or using the community plugins. TheCartPress has an API to extended its features.
+
 Template functions for themes developers
+
 Different products types: Grouped, Simple, Downloadable, etc.
+
 New user roles: Merchant and Customer.
 
 Visit http://thecartpress.com for more information.
@@ -26,7 +33,7 @@ Visit http://thecartpress.com for more information.
 == Installation ==
 
 1. Upload `TheCartPress` to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
 
