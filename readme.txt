@@ -12,9 +12,11 @@ Stable tag: 1.0
 
 *TheCartPress* is an eCommerce plugin for WordPress:
 
-Native integration with WordPress 3.0, taking advantage of new types of post and taxonomies defined in WordPress 3.0, like WordPress Media Manager and all other WordPress funcionalities.
+Native integration with WordPress 3.0, taking advantage of new types of post and taxonomies defined in the 3.0 version.
 
-Image galleries, video gallery... and much more in your product descriptions.
+Image galleries, video galleries... and much more in your product descriptions.
+
+WordPress Media Manager and all other WordPress funcionalities.
 
 Powerful widgets to enhance and customize your themes. TheCartPress is distributed with many widgets that help you to create a professional store. For example, shopping cart, catalog menus, products reviews, etc.
 
