@@ -67,6 +67,7 @@ class TheCartPress {
 			$see_buy_button_in_excerpt = isset( $settings['see_buy_button_in_excerpt'] ) ? $settings['see_buy_button_in_excerpt'] : false;
 			if ( $see_buy_button_in_excerpt ) add_filter( 'the_excerpt', array( $this, 'excerptFilter' ) );
 			add_action( 'wp_head', array($this, 'wpHead' ));
+			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
 			//ShoppingCartTable and CheckOut shortcodes
 			require_once( dirname( __FILE__ ) . '/shortcodes/ShoppingCartPage.class.php' );
 			$shoppingCartPage = new ShoppingCartPage();
@@ -74,7 +75,13 @@ class TheCartPress {
 			require_once( dirname( __FILE__ ) . '/shortcodes/Checkout.class.php' );
 			$checkOut = new CheckOut();
 			add_shortcode( 'tcp_checkout', array( $checkOut, 'show' ) );	
-			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
+			add_shortcode( 'tcp_buy_button', function( $atts ) {
+			extract(shortcode_atts( array(
+					'post_id' => 0,
+					), $atts ) );
+
+				return BuyButton::show( $post_id, false );
+			});
 		}
 		add_action( 'admin_bar_menu', array( $this, 'addMenuAdminBar' ), 70 );
 		add_action( 'widgets_init', array( $this, 'registerWidgets' ) );
@@ -83,6 +90,7 @@ class TheCartPress {
 		require_once( dirname( __FILE__ ) .'/admin/TCP_Settings.class.php' );
 		new TCP_Settings();
 
+		
 		/*//TODO try to load our templates..
 		$tcp_settings = get_option( 'tcp_settings' );
 		$active_template = isset( $tcp_settings['active_template'] ) ? $tcp_settings['active_template'] : true;
@@ -325,7 +333,7 @@ class TheCartPress {
 	function activatePlugin() {
 		global $wp_version;
 		if ( version_compare( $wp_version, '3.0', '<' ) ) {
-			exit( __( 'TheCartPress requires WordPress versión 3.1 or newer.', 'tcp' ) );
+			exit( __( 'TheCartPress requires WordPress version 3.1 or newer.', 'tcp' ) );
 		}
 		require_once( dirname( __FILE__ ) . '/daos/RelEntities.class.php' );
 		RelEntities::createTable();

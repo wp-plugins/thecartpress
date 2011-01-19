@@ -2,8 +2,8 @@
 Contributors: TheCartPress Team
 Donate link: 
 Tags: eCommerce, custom post type, store, taxonomy, shop, shopping cart, cart, plugin, widgets
-Requires at least: 3.1
-Tested up to: 3.1
+Requires at least: 3.0
+Tested up to: 3.0
 Stable tag: 1.0
 
 *TheCartPress* is an eCommerce plugin for WordPress.
@@ -16,7 +16,7 @@ Native integration with WordPress 3.0, taking advantage of new types of post and
 
 Image galleries, video galleries... and much more in your product descriptions.
 
-WordPress Media Manager and all other WordPress funcionalities.
+WordPress Media Manager and all other WordPress functionalities.
 
 Powerful widgets to enhance and customize your themes. TheCartPress is distributed with many widgets that help you to create a professional store. For example, shopping cart, catalog menus, products reviews, etc.
 

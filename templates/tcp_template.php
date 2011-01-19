@@ -25,8 +25,8 @@ function tcp_the_currency( $echo = true ) {
 		return $currency;
 }
 
-function tcp_the_buy_button( $post_id = 0 ) {
-	BuyButton::show( $post_id );
+function tcp_the_buy_button( $post_id = 0, $echo = true ) {
+	BuyButton::show( $post_id, $echo );
 }
 
 function tcp_the_price( $before = '', $after = '', $echo = true ) {
