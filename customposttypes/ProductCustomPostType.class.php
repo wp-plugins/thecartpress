@@ -51,7 +51,7 @@ class ProductCustomPostType {
 			'show_ui'			=> true,
 			'_builtin'			=> false, // It's a custom post type, not built in! (http://kovshenin.com/archives/extending-custom-post-types-in-wordpress-3-0/)
 			'_edit_link'		=> 'post.php?post=%d',
-			'capability_type'	=> ProductCustomPostType::$PRODUCT,
+			'capability_type'	=> 'post',
 			'hierarchical'		=> false, //allways false
 			'query_var'			=> true,
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
