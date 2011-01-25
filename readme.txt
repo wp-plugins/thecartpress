@@ -57,7 +57,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = Multilingual =
 
-    * Compatible with WordPress Multi Lingual Plugin: WPML and other WordPress Plugins
+* Compatible with WordPress Multi Lingual Plugin: WPML and other WordPress Plugins
 
 = Checkout Offering =
 
