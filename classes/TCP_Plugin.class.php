@@ -82,7 +82,7 @@ class TCP_Plugin {
 	}
 
 	// The next functions shouldn't be implemented
-	/*function __construct() {
+	function __construct() {
 		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		if ( ! is_plugin_active( 'TheCartPress/TheCartPress.class.php' ) )  {
 			$reflector = new ReflectionClass( get_class( $this ) );
@@ -96,7 +96,7 @@ class TCP_Plugin {
 			<p><?php echo $this->getTitle();?> <?php _e( 'plugin requires TheCartPress plugin to be activated.', 'tcp' );?>
 			<?php _e( 'The plugin has been <strong>deactivated</strong>', 'tcp' );?></p>
 		</div><?php
-	}*/
+	}
 }
 
 $tcp_shipping_plugins = array();
