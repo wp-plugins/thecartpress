@@ -45,15 +45,6 @@ class TCP_Settings {
 		add_settings_field( 'see_buy_button_in_content', __( 'See buy button in content', 'tcp' ), array( $this, 'show_see_buy_button_in_content' ), __FILE__ , 'theme_compability_section' );
 		add_settings_field( 'see_buy_button_in_excerpt', __( 'See buy button in excerpt', 'tcp' ), array( $this, 'show_see_buy_button_in_excerpt' ), __FILE__ , 'theme_compability_section' );
 
-		/*add_settings_section( 'template_section', __( 'TheCartPress template settings', 'tcp' ) , array( $this, 'show_template_main_section' ), __FILE__ );
-		add_settings_field( 'active_template', __( 'Active template:', 'tcp' ), array( $this, 'show_active_template' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_see_title', __( 'See title:', 'tcp' ), array( $this, 'show_template_product_list_see_title' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_see_image', __( 'See image:', 'tcp' ), array( $this, 'show_template_product_list_see_image' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_image_size', __( 'Image size:', 'tcp' ), array( $this, 'show_template_product_list_image_size' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_see_excerpt', __( 'See excerpt:', 'tcp' ), array( $this, 'show_template_product_list_see_excerpt' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_see_content', __( 'See content:', 'tcp' ), array( $this, 'show_template_product_list_see_content' ), __FILE__ , 'template_section' );
-		add_settings_field( 'product_list_columns', __( 'Columns:', 'tcp' ), array( $this, 'show_template_product_list_columns' ), __FILE__ , 'template_section' );*/
-
 		add_settings_section( 'search_engine_section', __( 'Search engine', 'tcp' ) , array( $this, 'show_search_engine_section' ), __FILE__ );
 		add_settings_field( 'search_engine_activated', __( 'Search engine activated', 'tcp' ), array( $this, 'show_search_engine_activated' ), __FILE__ , 'search_engine_section' );
 	}
@@ -198,72 +189,16 @@ class TCP_Settings {
 
 	function validate( $input ) {
 		$input['legal_notice']				=  wp_filter_nohtml_kses( $input['legal_notice'] );
+		$input['from_email']				=  wp_filter_nohtml_kses( $input['from_email'] );
+		$input['emails']					=  wp_filter_nohtml_kses( $input['emails'] );
 		$input['user_registration']			= isset( $input['user_registration'] ) ? $input['user_registration'] == 'yes' : false;
 		$input['see_buy_button_in_content']	= isset( $input['see_buy_button_in_content'] ) ? $input['see_buy_button_in_content'] == 'yes' : false;
 		$input['see_buy_button_in_excerpt']	= isset( $input['see_buy_button_in_excerpt'] ) ? $input['see_buy_button_in_excerpt'] == 'yes' : false;
 		$input['downloadable_path']			= wp_filter_nohtml_kses( $input['downloadable_path'] );
 		$input['load_default_styles']		= isset( $input['load_default_styles'] ) ? $input['load_default_styles'] == 'yes' : false;
-		/*$input['active_template']			= isset( $input['active_template'] ) ? $input['active_template'] == 'yes' : false;
-		$input['product_list_see_title']	= isset( $input['product_list_see_title'] ) ? $input['product_list_see_title'] == 'yes' : false;
-		$input['product_list_see_image']	= isset( $input['product_list_see_image'] ) ? $input['product_list_see_image'] == 'yes' : false;
-		$input['product_list_image_size']	= wp_filter_nohtml_kses( $input['product_list_image_size'] );
-		$input['product_list_see_excerpt']	= isset( $input['product_list_see_excerpt'] ) ? $input['product_list_see_excerpt'] == 'yes' : false;
-		$input['product_list_see_content']	= isset( $input['product_list_see_content'] ) ? $input['product_list_see_content'] == 'yes' : false;
-		$input['product_list_columns']		= (int)$input['product_list_columns'];*/
 		$input['search_engine_activated']	= isset( $input['search_engine_activated'] ) ? $input['search_engine_activated'] == 'yes' : false;
 		$input = apply_filters( 'tcp_validate_settings', $input );
 		return $input;
 	}
-	
-	/*function show_template_main_section() {
-	}
-
-	function show_active_template() {
-		$settings = get_option( 'tcp_settings' );
-		$active_template = isset( $settings['active_template'] ) ? $settings['active_template'] : true;?>
-		<input type="checkbox" name="tcp_settings[active_template]" id="active_template" value="yes" <?php checked( $active_template, true );?> /><?php
-	}
-
-	function show_template_product_list_see_title() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_see_title = isset( $settings['product_list_see_title'] ) ? $settings['product_list_see_title'] : true;?>
-		<input type="checkbox" name="tcp_settings[product_list_see_title]" id="product_list_see_title" value="yes" <?php checked( $product_list_see_title, true );?> /><?php
-	}
-
-	function show_template_product_list_see_image() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_see_image = isset( $settings['product_list_see_image'] ) ? $settings['product_list_see_image'] : true;?>
-		<input type="checkbox" name="tcp_settings[product_list_see_image]" id="product_list_see_image" value="yes" <?php checked( $product_list_see_image, true );?> /><?php
-	}
-
-	function show_template_product_list_image_size() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_image_size = isset( $settings['product_list_image_size'] ) ? $settings['product_list_image_size'] : 'thumbnail';?>
-		<select id="product_list_image_size" name="tcp_settings[product_list_image_size]"><?php
-		$imageSizes = get_intermediate_image_sizes();
-		foreach( $imageSizes as $imageSize ) : ?>
-			<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $product_list_image_size );?>><?php echo $imageSize;?></option>
-		<?php endforeach;?>
-		</select>
-		<?php
-	}
-
-	function show_template_product_list_see_excerpt() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_see_excerpt = isset( $settings['product_list_see_excerpt'] ) ? $settings['product_list_see_excerpt'] : true;?>
-		<input type="checkbox" name="tcp_settings[product_list_see_excerpt]" id="product_list_see_excerpt" value="yes" <?php checked( $product_list_see_excerpt, true );?> /><?php
-	}
-
-	function show_template_product_list_see_content() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_see_content = isset( $settings['product_list_see_content'] ) ? $settings['product_list_see_content'] : false;?>
-		<input type="checkbox" name="tcp_settings[product_list_see_content]" id="product_list_see_content" value="yes" <?php checked( $product_list_see_content, true );?> /><?php
-	}
-
-	function show_template_product_list_columns() {
-		$settings = get_option( 'tcp_settings' );
-		$product_list_columns = isset( $settings['product_list_columns'] ) ? (int)$settings['product_list_columns'] : 2;?>
-		<input id="product_list_columns" name="tcp_settings[product_list_columns]" value="<?php echo $product_list_columns;?>" size="2" maxlength="2" type="text" /><?php
-	}*/
 }
 ?>

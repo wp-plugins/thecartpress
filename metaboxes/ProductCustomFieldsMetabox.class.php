@@ -138,6 +138,7 @@ class ProductCustomFieldsMetabox {
 				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
 				</td>
 			</tr>
+			<?php do_action( 'tcp_product_metabox_custom_fields', $post_id );?>
 			</tbody></table>
 		</div> <!-- form-wrap -->
 		<?php
@@ -151,10 +152,9 @@ class ProductCustomFieldsMetabox {
 		if ( $tcp_product_parent_id > 0 )
 			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id ) )
 				RelEntities::insert( $tcp_product_parent_id, $post_id );
-
 		$post_id = tcp_get_default_id( $post_id );
-		if ( isset( $_POST['tcp_tax_id'] ) ) {
-			$tax_id = (int)$_POST['tcp_tax_id'];
+		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 1;
+		if ( $tax_id > 1 ) {
 			$tax = Taxes::get( $tax_id );
 			update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
 			update_post_meta( $post_id, 'tcp_tax',  $tax->tax );
@@ -172,6 +172,7 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
 		update_post_meta( $post_id, 'tcp_weight', isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0 );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );
+		do_action( 'tcp_product_metabox_savev_custom_fields', $post_id );
 		$this->refreshMoira();
 	}
 

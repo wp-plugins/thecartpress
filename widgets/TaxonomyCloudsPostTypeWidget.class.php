@@ -78,8 +78,8 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 			'number_tags'	=> 45,
 			'display_format'=> 'flat',
 			'separator'		=> "\n",
-			'post_type'		=> 'post',
-			'taxonomy'		=> 'post_tag',
+			'post_type'		=> 'tcp_product',
+			'taxonomy'		=> 'tcp_product_tag',
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
 		<p>

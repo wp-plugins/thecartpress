@@ -36,6 +36,8 @@ require_once( dirname( __FILE__ ) . '/classes/BuyButton.class.php' );
 require_once( dirname( __FILE__ ) . '/classes/TCP_Plugin.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/ResumenShoppingCartWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/ShoppingCartWidget.class.php' );
+require_once( dirname( __FILE__ ) . '/widgets/LastVisitedWidget.class.php' );
+require_once( dirname( __FILE__ ) . '/widgets/RelatedListWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/CustomPostTypeListWidget.class.php');
 require_once( dirname( __FILE__ ) . '/widgets/TaxonomyCloudsPostTypeWidget.class.php');
 require_once( dirname( __FILE__ ) . '/widgets/TaxonomyTreesPostTypeWidget.class.php');
@@ -43,7 +45,7 @@ require_once( dirname( __FILE__ ) . '/widgets/TaxonomyTreesPostTypeWidget.class.
 class TheCartPress {
 
 	function __construct() {
-		add_action( 'init', array( $this, 'initPlugin' ) );
+		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'user_register', array( $this, 'userRegister' ) );
 		if ( is_admin() ) {
 			register_activation_hook( __FILE__, array( $this, 'activatePlugin' ) );
@@ -60,28 +62,24 @@ class TheCartPress {
 			$postMetabox = new PostMetabox();
 			add_action( 'admin_menu', array( $postMetabox, 'registerMetaBox' ) );
 			add_action( 'delete_post', array( $postMetabox, 'deleteCustomFields' ), 1, 2 );
+			add_filter( 'admin_footer_text', array( $this, 'adminFooterText') );
 		} else {
 			$settings = get_option( 'tcp_settings' );
 			$see_buy_button_in_content = isset( $settings['see_buy_button_in_content'] ) ? $settings['see_buy_button_in_content'] : true;
 			if ( $see_buy_button_in_content ) add_filter( 'the_content', array( $this, 'contentFilter' ) );
 			$see_buy_button_in_excerpt = isset( $settings['see_buy_button_in_excerpt'] ) ? $settings['see_buy_button_in_excerpt'] : false;
 			if ( $see_buy_button_in_excerpt ) add_filter( 'the_excerpt', array( $this, 'excerptFilter' ) );
-			add_action( 'wp_head', array($this, 'wpHead' ));
+			add_action( 'wp_head', array( $this, 'wpHead' ) );
+			add_action( 'wp_meta', array( $this, 'wpMeta' ) );
 			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
-			//ShoppingCartTable and CheckOut shortcodes
+			//ShoppingCartTable and CheckOut shortcodes, and more...
 			require_once( dirname( __FILE__ ) . '/shortcodes/ShoppingCartPage.class.php' );
 			$shoppingCartPage = new ShoppingCartPage();
 			add_shortcode( 'tcp_shopping_cart', array( $shoppingCartPage, 'show' ) );
 			require_once( dirname( __FILE__ ) . '/shortcodes/Checkout.class.php' );
 			$checkOut = new CheckOut();
 			add_shortcode( 'tcp_checkout', array( $checkOut, 'show' ) );	
-			add_shortcode( 'tcp_buy_button', function( $atts ) {
-			extract(shortcode_atts( array(
-					'post_id' => 0,
-					), $atts ) );
-
-				return BuyButton::show( $post_id, false );
-			});
+			add_shortcode( 'tcp_buy_button', array( $this, 'shortCodeBuyButton' ) );
 		}
 		add_action( 'admin_bar_menu', array( $this, 'addMenuAdminBar' ), 70 );
 		add_action( 'widgets_init', array( $this, 'registerWidgets' ) );
@@ -89,39 +87,7 @@ class TheCartPress {
 
 		require_once( dirname( __FILE__ ) .'/admin/TCP_Settings.class.php' );
 		new TCP_Settings();
-
-		
-		/*//TODO try to load our templates..
-		$tcp_settings = get_option( 'tcp_settings' );
-		$active_template = isset( $tcp_settings['active_template'] ) ? $tcp_settings['active_template'] : true;
-		if ( $active_template ) {
-			add_action( "get_template_part_loop", array( $this, 'get_template_part_loop'), 10, 2 );
-			add_filter( 'single_template', array( $this, 'single_template' ) );
-		}*/
 	}
-
-	/*
-	function get_template_part_loop( $slug, $name ) {
-		if ( $slug == 'loop' ) {
-			global $wp_query;
-			if ( isset( $wp_query->query_vars['tcp_product_category'] ) ) {
-				if ( file_exists( dirname( __FILE__ ) . '/templates/tcp-loop-products.php') ) {
-					load_template( dirname( __FILE__ ) . '/templates/tcp-loop-products.php', false );
-				}
-			}
-		}
-	}
-
-	function single_template( $template ) {
-		global $post;
-		if ( $post->post_type == 'tcp_product' ) {
-			if ( substr( $template, strlen( $template ) - strlen( 'single-tcp_product.php' ) ) === 'single-tcp_product.php' )
-				return $template;
-			else
-				return dirname( __FILE__ ) . '/templates/single-tcp_product.php';
-		} else
-			return $template;
-	}*/
 
 	function wpHead() {
 		if ( is_single() && !is_page() ) {//last visited
@@ -219,6 +185,24 @@ class TheCartPress {
 		}
 	}
 
+	function shortCodeBuyButton( $atts ) {
+		extract(shortcode_atts( array(
+			'post_id' => 0,
+			),
+			$atts ) );
+		return BuyButton::show( $post_id, false );
+	}
+
+	function wpMeta() {
+		echo '<li><a href="http://thecartpress.com" title="', __( 'Powered by TheCartPress, eCommerce platform for WordPress', 'tcp' ), '">TheCartPress.com</a></li>';
+	}
+
+	function adminFooterText( $content ) {
+		$pos = strrpos( $content, '</a>.' ) + strlen( '</a>' );
+		$content = substr( $content, 0, $pos ) . ' and <a href="http://thecartpress.com">TheCartPress</a>' . substr( $content, $pos );
+		return $content;
+	}
+
 	function addMenuAdminBar() {
 		global $wp_admin_bar;
 		//if ( is_super_admin() && 
@@ -262,7 +246,7 @@ class TheCartPress {
 		require_once( dirname( __FILE__ ) . '/widgets/OrdersResumeDashboard.class.php' );
 		$ordersResumeDashboard = new OrdersResumeDashboard();
 		wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders resume', 'tcp' ), array( $ordersResumeDashboard, 'show' ) );
-		wp_add_dashboard_widget('thecartpress_rss_widget', __( 'TheCartPress blog', 'tcp' ), array($this, 'theCartPressRSSDashboardWidget'));
+		wp_add_dashboard_widget( 'thecartpress_rss_widget', __( 'TheCartPress blog', 'tcp' ), array($this, 'theCartPressRSSDashboardWidget' ) );
 	}
 
 	function theCartPressRSSDashboardWidget() {
@@ -272,6 +256,8 @@ class TheCartPress {
 	function registerWidgets() {
 		register_widget( 'ResumenShoppingCartWidget' );
 		register_widget( 'ShoppingCartWidget' );
+		register_widget( 'LastVisitedWidget' );
+		register_widget( 'RelatedListWidget' );
 		register_widget( 'CustomPostTypeListWidget' );
 		register_widget( 'TaxonomyCloudsPostTypeWidget' );
 		register_widget( 'TaxonomyTreesPostTypeWidget' );
@@ -352,7 +338,12 @@ class TheCartPress {
 		require_once( dirname( __FILE__ ) . '/daos/Currencies.class.php' );
 		Currencies::createTable();
 		Currencies::initData();
-
+		//TODO Deprecated 1.0.4
+		global $wpdb;
+		$sql = 'update ' . $wpdb->prefix .'term_taxonomy set taxonomy=\'tcp_product_supplier\'
+		where taxonomy=\'tcp_product_supplier_tag\'';
+		$wpdb->query( $sql );
+		//TODO
 		//Pages: shopping cart and checkout
 		$post = array(
 		  'comment_status'	=> 'closed',
@@ -392,7 +383,18 @@ class TheCartPress {
 				),
 			)
 		);
-		
+		$settings = array(
+			'legal_notice'				=> __( 'Legal notice', 'tcp' ),
+			'user_registration'			=> false,
+			'see_buy_button_in_content'	=> true,
+			'see_buy_button_in_excerpt'	=> false,
+			'downloadable_path'			=> '',
+			'load_default_styles'		=> true,
+			'search_engine_activated'	=> true,
+			'currency'					=> 'EUR',
+			'unit_weight'				=> 'gr',
+		);
+		add_option( 'tcp_settings', $settings );
 		//Roles & capabilities
 		add_role( 'customer', __( 'Customer', 'tcp' ));
 	 	$customer = get_role( 'customer' );
@@ -461,7 +463,7 @@ class TheCartPress {
 		remove_role( 'merchant' );
 	}
 
-	function initPlugin() {
+	function init() {
 		new ProductCustomPostType();
 		if ( ! is_admin() ) {
 			wp_enqueue_script( 'jquery' );

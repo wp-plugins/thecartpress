@@ -25,7 +25,7 @@ class ProductCustomPostType {
 	public static $PRODUCT = 'tcp_product';
 	public static $PRODUCT_CATEGORY = 'tcp_product_category';
 	public static $PRODUCT_TAG = 'tcp_product_tag';
-	public static $SUPPLIER_TAG = 'tcp_product_supplier_tag';
+	public static $SUPPLIER_TAG = 'tcp_product_supplier'; //_tag';
 	
 	private $currency = '';
 	
@@ -89,7 +89,7 @@ class ProductCustomPostType {
 			'label'			=> __( 'Tags of products', 'tcp' ),
 		) );
 		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
-			'hierarchical'	=> false,
+			'hierarchical'	=> true,
 			'query_var'		=> true,
 			'rewrite'		=> false, //true,
 			//'label'		=> __('Suppliers', 'tcp'),

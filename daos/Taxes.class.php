@@ -34,8 +34,9 @@ class Taxes {
 		$count = $wpdb->get_var( 'select count(*) from ' . $wpdb->prefix . 'tcp_taxes' );
 		if ( $count == 0 )
 			Taxes::insert( array(
-					'title'	=> __( 'No tax', 'tcp' ),
-					'tax'	=> 0,
+					'tax_id'	=> 0,
+					'title'		=> __( 'No tax', 'tcp' ),
+					'tax'		=> 0,
 				)
 			);
 	}

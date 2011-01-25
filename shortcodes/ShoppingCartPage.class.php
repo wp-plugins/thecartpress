@@ -24,14 +24,18 @@ class ShoppingCartPage {
 		if ( $shoppingCart->isEmpty() ) :?>
 			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
 		<?php else :?>
-			<div class="entry-content">
+			<div class="entry-content" id="shopping_cart">
+				<ul>
+					<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
+					<li><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
+				</ul>
 				<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
 				<tbody>
 				<tr class="tcp_cart_title_row">
-					<th><?php echo __( 'name', 'tcp' );?></th>
-					<th><?php echo __( 'price', 'tcp' );?></th>
-					<th><?php echo __( 'units', 'tcp' );?></th>
-					<th colspan="2"><?php echo __( 'subtotal', 'tcp' );?></th>
+					<th><?php echo __( 'Name', 'tcp' );?></th>
+					<th><?php echo __( 'Price', 'tcp' );?></th>
+					<th><?php echo __( 'Units', 'tcp' );?></th>
+					<th colspan="2"><?php echo __( 'Subtotal', 'tcp' );?></th>
 				</tr>
 			<?php $total = 0;
 			foreach( $shoppingCart->getItems() as $item ) :?>
@@ -51,7 +55,7 @@ class ShoppingCartPage {
 							<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="<?php echo $item->getOption2Id();?>" />
 						<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="2" maxlength="3" type="text" />
-							<input name="tcp_modify_item_shopping_cart" value="<?php echo __( 'modify', 'tcp' );?>" type="submit" />
+							<input name="tcp_modify_item_shopping_cart" value="<?php echo __( 'Modify', 'tcp' );?>" type="submit" />
 						<?php else : ?>
 							1
 						<?php endif;?>
@@ -64,15 +68,18 @@ class ShoppingCartPage {
 				</tr>
 			<?php endforeach;?>
 				<tr class="tcp_cart_subtotal_row">
-					<td colspan="3" class="tcp_cart_subtotal_title"><?php echo __( 'subtotal', 'tcp' );?></td>
+					<td colspan="3" class="tcp_cart_subtotal_title"><?php echo __( 'Subtotal', 'tcp' );?></td>
 					<td class="tcp_cart_subtotal"><?php echo number_format( $total, 2 );?>&nbsp;&euro;</td>
 				</tr>
 				<tr class="tcp_cart_total_row">
-					<td colspan="3" class="tcp_cart_total_title"><?php echo __( 'total', 'tcp' );?></td>
+					<td colspan="3" class="tcp_cart_total_title"><?php echo __( 'Total', 'tcp' );?></td>
 					<td class="tcp_cart_total"><?php echo number_format( $total, 2 );?>&nbsp;&euro;</td>
 				</tr>
 			</tbody>
 			</table>
+			<p>
+			<form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form>
+			</p>
 		</div>
 	<?php endif;
 	}

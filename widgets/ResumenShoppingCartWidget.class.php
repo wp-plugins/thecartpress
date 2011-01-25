@@ -31,26 +31,26 @@ class ResumenShoppingCartWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
 		echo $before_widget;
 		if ( $title )	echo $before_title, $title, $after_title;
 		$currency = tcp_the_currency( false );
 		$shoppingCart = TheCartPress::getShoppingCart();?>
 		<ul class="tcp_shopping_cart_resume">
-			<li><span class="tcp_resumen_subtotal"><?php _e( 'total', 'tcp' );?>:</span>&nbsp;<?php echo number_format( $shoppingCart->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
-			<li><span class="tcp_resumen_count"><?php _e( 'nº products:', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getCount();?></li>
-		<?php if ( $instance['see_weight'] ) :?>
-			<li><span class="tcp_resumen_weight"><?php _e( 'weigth', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getWeight();?>&nbsp;<?php echo $currency;?></li>
+			<li><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' );?>:</span>&nbsp;<?php echo number_format( $shoppingCart->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
+			<li><span class="tcp_resumen_count"><?php _e( 'Nº products:', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getCount();?></li>
+		<?php if ( isset( $instance['see_weight'] ) ? $instance['see_weight'] : false ) :?>
+			<li><span class="tcp_resumen_weight"><?php _e( 'Weigth', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getWeight();?>&nbsp;<?php echo $currency;?></li>
 		<?php endif;?>
-		<?php if ( $instance['see_shopping_cart'] ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
+		<?php if ( isset( $instance['see_shopping_cart'] ) ? $instance['see_shopping_cart'] : true ) :?>
+			<li><a href="<?echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'Shopping cart', 'tcp' );?></a></li>
 		<?php endif;?>
-		<?php if ( $instance['see_checkout'] ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'checkout', 'tcp' );?></a></li>
+		<?php if ( isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true ) :?>
+			<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 		<?php endif;?>
 		</ul>
-		<?php if ($instance['see_delete_all']) :?>
-			<form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete shopping cart', 'tcp' );?>"/></form>
+		<?php if ( isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : false ) :?>
+			<form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form>
 		<?php endif;?>
 		<?php echo $after_widget;
 	}

@@ -24,10 +24,6 @@ class ShoppingCart {
 	private $visited_post_ids = array();
 	private $shopping_cart_items = array();
 
-	private $shipping_cost = 0;
-	private $payment_cost = 0;
-	private $free_shipping = false;
-
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -48,13 +44,14 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Returns the totoal amount in the cart
+	 * Returns the total amount in the cart
 	 * @see getTotalNoDownloadable()
 	 */
 	function getTotal() {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
 			$total += $shopping_cart_item->getTotal();
+		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
 		return $total;
 	}
 
@@ -135,30 +132,6 @@ class ShoppingCart {
 		return isset( $this->shopping_cart_items[$shopping_cart_id] );
 	}
 
-	function setShippingCost( $shipping_cost ) {
-		$this->shipping_cost = $shipping_cost;
-	}
-
-	function getShippingCost() {
-		return $this->shipping_cost;
-	}
-
-	function setPaymentCost( $payment_cost ) {
-		$this->payment_cost = $payment_cost;
-	}
-
-	function getPaymentCost() {
-		return $this->payment_cost;
-	}
-
-	function isFreeShipping() {
-		return $this->free_shipping;
-	}
-
-	function setFreeShipping( $free_shipping ) {
-		return $this->free_shipping = $free_shipping;
-	}
-
 	/**
 	 * Return true if all the products in the cart are downloadable
 	 */
@@ -226,6 +199,7 @@ class ShoppingCartItem {
 		$this->unit_price	= $unit_price;
 		$this->tax			= $tax;
 		$this->unit_weight	= $unit_weight;
+		do_action( 'tcp_shopping_cart_item_created', $this );
 	}
 
 	function add( $count ) {

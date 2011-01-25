@@ -98,7 +98,7 @@ class FeedForSearchEngine {
 	}
 
 	private function getSuppliers( $post_id ) {
-		return $this->getTerms( $post_id, 'tcp_product_supplier_tag');
+		return $this->getTerms( $post_id, 'tcp_product_supplier');
 	}
 
 	private function getCategories( $post_id ) {

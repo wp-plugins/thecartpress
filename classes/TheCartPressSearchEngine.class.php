@@ -20,17 +20,8 @@
  * Allows to comunicate with TheCartPress search engine
  */
 class TheCartPressSearchEngine {
-//	private $HOST = 'http://thecartpress.com/moira/';
-	private $HOST = 'http://localhost/moira/';
-
-	function add() {
-		$url = $this->HOST . 'moira_add.php';
-		$url .= '?insert_new_web=' . get_bloginfo('name');
-		$url .= '&url=' . get_bloginfo('url');
-		$guid = $this->generateNewGuid();
-		$url .= '&guid=' . $guid;
-		return $this->connectAndSend( $url );
-	}
+	private $HOST = 'http://thecartpress.com/moira/';
+	//private $HOST = 'http://localhost/moira/';
 
 	function remove() {
 		$url = $this->HOST . 'moira_add.php';

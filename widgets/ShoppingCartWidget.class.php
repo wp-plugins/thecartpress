@@ -52,21 +52,21 @@ class ShoppingCartWidget extends WP_Widget {
 					<li>
 						<?php if ( $instance['see_modify_item'] ) :?>
 							<input type="text" name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="2" maxlength="4" />
-							<input type="submit" name="tcp_modify_item_shopping_cart" value="<?php _e( 'modify', 'tcp' );?>"/>
+							<input type="submit" name="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' );?>"/>
 						<?php else :?>
-							<span class="tcp_units"><?php _e( 'units', 'tcp' );?>:&nbsp;<?php echo $item->getCount();?></span>
+							<span class="tcp_units"><?php _e( 'Units', 'tcp' );?>:&nbsp;<?php echo $item->getCount();?></span>
 						<?php endif;?>
 					</li>
 					<?php endif;?>
-					<li><span class="tcp_subtotal"><?php _e( 'total', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
+					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<?php if ( $instance['see_weight'] ) :?>
-					<li><span class="tcp_weight"><?php _e( 'weight', 'tcp' );?>:</span>&nbsp;<?php echo $item->getWeight();?>&nbsp;</li>
+					<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo $item->getWeight();?>&nbsp;</li>
 					<?php endif;?>
 				<?php endif;?>
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item );?>
 				<?php if ($instance['see_delete_item']) :?>
-					<li><input type="submit" name="tcp_delete_item_shopping_cart" value="<?php _e( 'delete item', 'tcp' );?>"/></li>
+					<li><input type="submit" name="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' );?>"/></li>
 				<?php endif;?>
 				</ul>
 			</form></li>

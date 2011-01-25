@@ -185,7 +185,6 @@ class Checkout {
 					$instance = $smi[1];
 					$shipping_method = new $class();
 					$shipping_amount = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
-					//$shoppingCart->setShippingCost( $shipping_amount );
 					$order['shipping_amount'] = $shipping_amount;
 					$order['shipping_method'] = $class;
 				} else {
@@ -199,7 +198,6 @@ class Checkout {
 					$instance = $pmi[1];
 					$payment_method = new $class();
 					$payment_amount = $payment_method->getCost( $instance, $shipping_country, $shoppingCart );
-					//$shoppingCart->setPaymentCost( $payment_amount );
 					$order['payment_amount'] = $payment_amount;
 					$order['payment_method'] = $class;
 					$order['payment_name']   = '';
@@ -296,7 +294,7 @@ class Checkout {
 				$message = $_SESSION['order_page'];
 				wp_mail( $to, $subject, $message, $headers );
 				echo '<br />';
-				echo '<a href="' . plugins_url( 'TheCartPress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'print', 'tcp' ) . '</a>';
+				echo '<a href="' . plugins_url( 'TheCartPress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 				echo '</div>' . "\n";
 				$shoppingCart->deleteAll();
 				return;
@@ -350,7 +348,7 @@ class Checkout {
 			<div id="login_guess">
 			<?php if ( get_option( 'users_can_register' ) ) :?>
 				<?php if ( ! $user_registration ) :?>
-					<h4><?php _e( 'Checkout as a guest or register', 'tcp' );?></h4>
+					<h4><?php _e( 'Checkout as registered', 'tcp' );?></h4>
 				<?php endif;?>
 				<p><strong><?php _e( 'Register with us for future convenience:', 'tcp' )?></strong></p>
 				<ul class="disc">
@@ -359,8 +357,9 @@ class Checkout {
 					<?php wp_register( '<li>', '</li>', true );?>
 				</ul>
 			<?php endif;?>
-			</div><!-- login_guess -->
+			<?php do_action( 'tcp_checkout_identify' );?>
 			<?php if ( ! $user_registration ) :?>
+				<h4><?php _e( 'Checkout as a guest', 'tcp' );?></h4>
 				<p><strong><?php _e( 'Or you can make as a guest.', 'tcp' );?></strong></p>
 				<ul>
 					<li><?php _e( 'If you prefer this way then press the next button', 'tcp' );?>
@@ -369,6 +368,7 @@ class Checkout {
 			<?php else :?>
 				 <p><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' );?></strong></p>
 			<?php endif;?>
+			</div><!-- login_guess -->
 		<?php endif;?>
 		</div> <!-- identify_layer_info -->
 	</div> <!-- identify_layer -->
@@ -401,7 +401,7 @@ class Checkout {
 						?> checked="true"<?php
 					endif;
 					?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
-				<label for="selected_billing_address"><?php _e( 'send to the selected address', 'tcp' )?></label>
+				<label for="selected_billing_address"><?php _e( 'Send to the selected address', 'tcp' )?></label>
 				<br />
 			<?php endif;?>
 			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php
@@ -409,7 +409,7 @@ class Checkout {
 					?>checked="true"<?php
 				endif;
 				?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
-			<label for="new_billing_address"><?php _e( 'new billing address', 'tcp' );?></label>
+			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
 			<div id="new_billing_area" <?php
 				if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' ) :
 				?><?php elseif ( count( $addresses ) > 0 ) :
@@ -459,12 +459,13 @@ class Checkout {
 					<?php $this->showErrorMsg( $error_billing, 'billing_email' );?></li>
 				</ul>
 			</div> <!-- new_billing_area -->
+			<?php do_action( 'tcp_checkout_billing' );?>
 			<p>
 			<?php if ( ! is_user_logged_in() ) :?>
-				<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_billing"
+				<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_billing"
 					onclick="jQuery('.billing_layer_info').hide();jQuery('.identify_layer_info').show();"/>
 			<?php endif;?>
-				<input type="button" value="<?php _e( 'continue', 'tcp' );?>" class="tcp_continue tcp_continue_billing"
+				<input type="button" value="<?php _e( 'Continue', 'tcp' );?>" class="tcp_continue tcp_continue_billing"
 					onclick="jQuery('.billing_layer_info').hide();jQuery('.shipping_layer_info').show();"/>
 			</p>
 		</div> <!-- billing_layer_info -->
@@ -494,7 +495,7 @@ class Checkout {
 				?> checked="true"<?php
 			endif;
 			?> onChange="jQuery('#selected_shipping_area').show();jQuery('#new_shipping_area').hide();" />
-			<label for="selected_shipping_address"><?php _e( 'send to the selected address', 'tcp' )?></label>
+			<label for="selected_shipping_address"><?php _e( 'Send to the selected address', 'tcp' )?></label>
 			<br />
 		<?php endif;?>
 			<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php
@@ -509,7 +510,7 @@ class Checkout {
 				?> checked="true"<?php
 			endif;
 			?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').show();" />
-			<label for="new_shipping_address"><?php _e( 'new shipping address', 'tcp' );?></label>
+			<label for="new_shipping_address"><?php _e( 'New shipping address', 'tcp' );?></label>
 			<div id="new_shipping_area" <?php
 				if ( ( ! isset( $_REQUEST['selected_shipping_address'] ) && count( $addresses ) == 0 ) || ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' ) ) :
 					?><?php else : ?> style="display:none"<?php
@@ -558,10 +559,11 @@ class Checkout {
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_email' );?></li>
 				</ul>
 			</div> <!-- new_shipping_area -->
+			<?php do_action( 'tcp_checkout_shipping' );?>
 			<p>
-				<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_shipping"
+				<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_shipping"
 					onclick="jQuery('.shipping_layer_info').hide();jQuery('.billing_layer_info').show();" />
-				<input type="submit" name="tcp_load_plugins" value="<?php _e( 'continue', 'tcp' );?>"
+				<input type="submit" name="tcp_load_plugins" value="<?php _e( 'Continue', 'tcp' );?>"
 					class="tcp_continue tcp_continue_shipping" />
 			</p>
 		</div> <!-- shipping_layer_info -->
@@ -593,10 +595,11 @@ class Checkout {
 				<?php endforeach;?>
 				</ul>
 			<?php endif;?>
+			<?php do_action( 'tcp_checkout_sending' );?>
 			<p>
-				<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_sending"
+				<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_sending"
 					onclick="jQuery('.sending_layer_info').hide();jQuery('.shipping_layer_info').show();"/>
-				<input type="button" value="<?php _e( 'continue', 'tcp' );?>" class="tcp_continue tcp_continue_sending"
+				<input type="button" value="<?php _e( 'Continue', 'tcp' );?>" class="tcp_continue tcp_continue_sending"
 					onclick="jQuery('.sending_layer_info').hide();jQuery('.payment_layer_info').show();"/>
 			</p>
 		</div><!-- sending_layer_info -->
@@ -631,15 +634,16 @@ class Checkout {
 				<?php endforeach;?>
 				</ul>
 			<?php endif;?>
+			<?php do_action( 'tcp_checkout_payments' );?>
 			<p>
-				<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_payment"
+				<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_payment"
 					onclick="<?php
 					if ( $shoppingCart->isDownloadable() ) : 
 						?>jQuery('.shipping_layer_info').show();<?php
 						else: 
 						?>jQuery('.sending_layer_info').show();<?php
 					endif;?>jQuery('.payment_layer_info').hide();"/>
-				<input type="submit" name="tcp_show_cart" value="<?php _e( 'continue', 'tcp' );?>"
+				<input type="submit" name="tcp_show_cart" value="<?php _e( 'Continue', 'tcp' );?>"
 					class="tcp_continue tcp_continue_payment" />
 			</p>
 		</div><!-- sending_layer_info -->
@@ -655,13 +659,14 @@ class Checkout {
 		 if ( isset( $_REQUEST['tcp_create_order'] ) && $legal_notice_accept != 'Y' ) 
 		 	echo 'style="display:none;"';?>>
 			<?php $this->createOrderCart( $shipping_country, $shoppingCart, $currency, true );?>
-			<?php do_action( 'tcp_checkout_showing_cart' );?>
+			<?php do_action( 'tcp_checkout_cart_before' );?>
 			<label for="comment"><?php _e( 'Comments:', 'tcp' );?></label><br />
 			<textarea id="comment" name="comment" cols="40" rows="3" maxlength="255"><?php echo isset( $_REQUEST['comment'] ) ? $_REQUEST['comment'] : '';?></textarea>
+			<?php do_action( 'tcp_checkout_cart_after' );?>
 			<p>
-				<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_cart"
+				<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_cart"
 					onclick="jQuery('.cart_layer_info').hide();jQuery('.payment_layer_info').show();" />
-				<input type="button" value="<?php _e( 'continue', 'tcp' );?>" class="tcp_continue tcp_continue_cart"
+				<input type="button" value="<?php _e( 'Continue', 'tcp' );?>" class="tcp_continue tcp_continue_cart"
 					onclick="jQuery('.cart_layer_info').hide();jQuery('.legal_notice_layer_info').show();" />
 			</p>
 		</div><!-- cart_layer_info -->
@@ -679,7 +684,7 @@ class Checkout {
 			<?php else :
 				?> style="display:none;"<?php
 			endif;?>>
-			<?php $legal_notice = isset( $settings['legal_notice'] ) ? $settings['legal_notice'] : __( 'legal notice', 'tcp' );
+			<?php $legal_notice = isset( $settings['legal_notice'] ) ? $settings['legal_notice'] : __( 'Legal notice', 'tcp' );
 			if ( strlen( $legal_notice ) ) :?>
 				<label for="legal_notice"><?php _e('Legal notice:', 'tcp');?></label><br />
 				<textarea id="legal_notice" cols="60" rows="8" readonly="true"><?php echo $legal_notice;?></textarea>
@@ -696,9 +701,9 @@ class Checkout {
 				 to go to the external web (usually your bank\'s payment gateway)','tcp' );?></p>
 			<?php endif;?>
 			<p>
-			<input type="button" value="<?php _e( 'back', 'tcp' );?>" class="tcp_back tcp_back_legal_notice"
+			<input type="button" value="<?php _e( 'Back', 'tcp' );?>" class="tcp_back tcp_back_legal_notice"
 				onclick="jQuery('.legal_notice_layer_info').hide();jQuery('.cart_layer_info').show();"/>
-			<input type="submit" id="tcp_create_order" name="tcp_create_order" value="<?php _e( 'create order', 'tcp' );?>"
+			<input type="submit" id="tcp_create_order" name="tcp_create_order" value="<?php _e( 'Create order', 'tcp' );?>"
 				class="tcp_continue tcp_continue_legal_notice" />
 			</p>
 		</div> <!-- legal_notice_layer_info-->
@@ -713,11 +718,11 @@ class Checkout {
 		$out = '<table class="widefat fixed" cellspacing="0">' . "\n";
 		$out .= '<thead>' . "\n";
 		$out .= '<tr>' . "\n";
-		$out .= '<th>' . __( 'name', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'price', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'units', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'weight', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'total', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th>' . __( 'Name', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th>' . __( 'Price', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th>' . __( 'Units', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th>' . __( 'Weight', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th>' . __( 'Total', 'tcp' ) . '</th>' . "\n";
 		$out .= '</tr>' . "\n";
 		$out .= '</thead>' . "\n";
 		$out .= '<tbody>' . "\n";
@@ -743,7 +748,7 @@ class Checkout {
 			$out .= '<td>' . $this->numberFormat( $price, $currency ) . '</td>' . "\n";
 			$out .= '</tr>' . "\n";
 		}
-		$out .= '<tr';
+		$out .= '<tr id="shipping_cost"';
 		if ( $i++ & 1 == 1 ) $out .= ' class="par"';
 		$out .= '>' . "\n";
 		$out .= '<td colspan="4" style="text-align:right">' . __( 'Shipping cost', 'tcp' ) .'</td>' . "\n";
@@ -751,7 +756,6 @@ class Checkout {
 		if ( isset( $_REQUEST['shipping_method_id'] ) ) { //sending
 			$smi = $_REQUEST['shipping_method_id'];
 			$smi = explode( '#', $smi );
-			//$class = $_REQUEST['shipping_method_id'];
 			$class = $smi[0];
 			$instance = $smi[1];
 			$shipping_method = new $class();
@@ -769,18 +773,19 @@ class Checkout {
 			$payment_cost = 0;
 		$out .= '<td>' . $this->numberFormat( $shipping_cost, $currency ) . '</td>' . "\n";
 		$out .= '</tr>' . "\n";
-		$out .= '<tr';
+		$out .= '<tr id="payment_cost"';
 		if ( $i++ & 1 == 1 ) $out .= ' class="par"';
 		$out .= '>' . "\n";
 		$out .= '<td colspan="4" style="text-align:right">' . __( 'Payment cost', 'tcp' ) . '</td>' . "\n";
 		$out .= '<td>' . $this->numberFormat( $payment_cost, $currency ) . '</td>' . "\n";
 		$out .= '</tr>' . "\n";
 		$total += $shipping_cost + $payment_cost;
-		$out .= '<tr';
+		$total = apply_filters( 'tcp_shopping_cart_create_order', $total );
+		$out .= '<tr id="total"';
 		if ( $i++ & 1 == 1 ) $out .= ' class="par"';
 		$out .= '>' . "\n";
 		$out .= '<td colspan="4" style="text-align:right;">' . __( 'Total', 'tcp' ) . '</td>' . "\n";
-		$out .= '<td style="color:red;">' . $this->numberFormat( $total, $currency ) . '</td>' . "\n";
+		$out .= '<td style="color:red;"><span id="total">' . $this->numberFormat( $total, $currency ) . '</span></td>' . "\n";
 		$out .= '</tr>';
 		$out .= '</tbody></table>' . "\n";
 		if ( $echo )

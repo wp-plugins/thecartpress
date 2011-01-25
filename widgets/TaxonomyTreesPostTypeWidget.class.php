@@ -104,8 +104,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 	function form( $instance ) {
 		$defaults = array(
 			'title'					=> 'Taxonomy trees post type',
-			'post_type'				=> 'post',
-			'taxonomy'				=> 'category',
+			'post_type'				=> 'tcp_product',
+			'taxonomy'				=> 'tcp_product_category',
 			'see_number_products'	=> true,
 			'hide_empty_taxonomies'	=> true,
 			'order_included'		=> '',
