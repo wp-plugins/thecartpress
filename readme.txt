@@ -163,6 +163,7 @@ This plugin is released under a GPL license.
     * Fixed html format in checkout step one
     * Added shortcuts in shopping cart: Checkout, Empty cart and Continue shopping
     * Added classes in cols for the buy options table
+    * Added useful hooks for plugin development
     * Fixed for some php versions: "Parse error: syntax error, unexpected T_FUNCTION in .plugins/thecartpress/TheCartPress.class.php on line 78"
     * Developed a child WordPress default theme for E-commerce: Twenty Ten E-Commerce Cart 1.0
 
