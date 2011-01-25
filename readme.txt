@@ -1,6 +1,6 @@
-=== TheCartPress Ecommerce Cart for Stores ===
+=== TheCartPress, E-Commerce for WordPress Stores ===
 Contributors: thecartpress
-Tags: cart, ecommerce, e-commerce, store, shop, shopping, shopping cart, tpv, custom post type, taxonomy, taxonomies, ecommerce, products
+Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, tpv, custom post type, taxonomy, taxonomies, ecommerce, products
 Requires at least: 3.1
 Tested up to: 3.1
 Stable tag: 1.0.1
