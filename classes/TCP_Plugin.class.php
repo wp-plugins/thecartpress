@@ -91,12 +91,12 @@ class TCP_Plugin {
 		}*/
 	}
 	
-	function adminNotices() {?>
+	/*function adminNotices() {?>
 		<div class="updated">
 			<p><?php echo $this->getTitle();?> <?php _e( 'plugin requires TheCartPress plugin to be activated.', 'tcp' );?>
 			<?php _e( 'The plugin has been <strong>deactivated</strong>', 'tcp' );?></p>
 		</div><?php
-	}
+	}*/
 }
 
 $tcp_shipping_plugins = array();
