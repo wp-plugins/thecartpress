@@ -14,7 +14,7 @@ E-Commerce plugin to create professional stores with WordPress. TheCartPress in 
 Design and look of your store whith native WordPress ability to manage themes and templates.
 You can create new WordPress plugins to extend the functionality and fit your needs.
 
-Extends the TheCartPress E-commerce funcionalities with the large WordPress plugins repository
+Extends the TheCartPress e-commerce funcionalities with the large WordPress plugins repository
 It is compatible with many existing plugins in the WordPress repository: All In One SEO Pack, WordPress Multi Lingual Plugin, Google Analytics for WordPress, TubePress, Members only, GD star rating, etc.
 
 = Product Browsing Offering =
