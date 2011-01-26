@@ -83,12 +83,12 @@ class TCP_Plugin {
 
 	// The next functions shouldn't be implemented
 	function __construct() {
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		/*require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		if ( ! is_plugin_active( 'TheCartPress/TheCartPress.class.php' ) )  {
 			$reflector = new ReflectionClass( get_class( $this ) );
 			deactivate_plugins( $reflector->getFileName() );
 			add_action( 'admin_notices', array( $this, 'adminNotices' ) );
-		}
+		}*/
 	}
 	
 	function adminNotices() {?>
