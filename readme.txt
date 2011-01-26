@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, tpv, custom post type, taxonomy, taxonomies, ecommerce, products
 Requires at least: 3.1
 Tested up to: 3.1
-Stable Tag: 1.0.1
+Stable tag: 1.0.1
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -57,7 +57,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = Multilingual =
 
-* Compatible with WordPress Multi Lingual Plugin: WPML and other WordPress Plugins
+    * Compatible with WordPress Multi Lingual Plugin: WPML and other WordPress Plugins
 
 = Checkout Offering =
 
