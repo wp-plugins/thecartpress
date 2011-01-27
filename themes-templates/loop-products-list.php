@@ -53,11 +53,9 @@ if ( have_posts() ) while ( have_posts() ) : the_post();?>
 		</div><!-- .entry-content -->
 	<?php endif;?>
 	<?php if ( $instance['see_buy_button']) : ?>
-		<?php if ( tcp_get_the_product_type() == 'SIMPLE' ) : ?>
-			<div class="entry-buy-button">	
-				<?php tcp_the_buy_button();?>
-			</div>
-		<?php endif;?>
+		<div class="entry-buy-button">	
+			<?php tcp_the_buy_button();?>
+		</div>
 	<?php endif;?>
 	
 	<?php if ( $instance['see_author'] ) :?>

@@ -88,6 +88,7 @@ class RelatedListWidget extends CustomListWidget {
 	function form( $instance ) {
 		$defaults = array(
 			'title'			=> __( 'Last Visited', 'tcp' ),
+			'rel_type'		=> 'CAT_PROD-CAT_PROD',
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
 		?>

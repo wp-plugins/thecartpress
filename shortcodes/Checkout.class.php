@@ -222,6 +222,7 @@ class Checkout {
 					$order['shipping_country'] = $country->name;
 				}
 				$order_id = Orders::insert( $order );
+				$no_stock_enough = false;
 				foreach( $shoppingCart->getItems() as $item ) {
 					$post = get_post( $item->getPostId() );
 					$sku = tcp_get_the_sku();
@@ -245,13 +246,18 @@ class Checkout {
 					$ordersDetails['name']				= $post->post_title;
 					$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 					$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-					$ordersDetails['price']				= $item->getUnitPrice(); // + $option_price;
+					$ordersDetails['price']				= $item->getUnitPrice();
 					$ordersDetails['original_price']	= $item->getUnitPrice();//TODO cupons???
 					$ordersDetails['tax']				= $item->getTax();
 					$ordersDetails['qty_ordered']		= $item->getCount();
 					$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
 					$ordersDetails['expires_at']		= $expires_at;
-					OrdersDetails::insert( $ordersDetails );
+					$stock = tcp_get_the_stock( $item->getPostId() );
+					if ( $stock == -1 || $stock - $item->getCount() >= 0 ) {
+						tcp_set_the_stock( $item->getPostId(), $stock - $item->getCount() );
+						OrdersDetails::insert( $ordersDetails );
+					} else
+						$no_stock_enough = true;
 				}
 				if ( $create_shipping_address )
 					$this->createNewShippingAddress( $order );
@@ -265,7 +271,8 @@ class Checkout {
 // Payment Area
 //
 				do_action( 'tcp_checkout_ok', $order_id );
-				echo '<div>' . "\n";
+				echo '<div class="tcp_payment_area">' . "\n";
+				if ( $no_stock_enough ) echo '<p>', __( 'There was an error when creating the order. Please contact the seller.', 'tcp' ), '</p>';
 				$order_page = OrderPage::show( $order_id, true, false );
 				$_SESSION['order_page'] = $order_page;
 				echo $order_page;
@@ -302,7 +309,11 @@ class Checkout {
 		}
 		if ( $shoppingCart->isEmpty() ) :?>
 <span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' );?></span>
-		<?php else :?>
+		<?php elseif ( ! $shoppingCart->isThereStock() ) :
+			require_once( dirname( __FILE__ ) . '/ShoppingCartPage.class.php' );
+			$shoppingCartPage = new ShoppingCartPage();
+			$shoppingCartPage->show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products.', 'tcp' ) );
+		else :?>
 <div id="checkout" class="checkout">
 <!--//
 //1. Identify layer

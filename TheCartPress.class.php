@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.0.1
+Version: 1.0.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -173,7 +173,7 @@ class TheCartPress {
 	}
 
 	function parseQuery( $query ) {
-		if ( isset( $query->query_vars['tcp_product_category'] ) ) {
+		if ( ! is_page() ) {
 			$query->query_vars['meta_query'] = array(
 				array(
 					'key' => 'tcp_is_visible',
@@ -271,8 +271,9 @@ class TheCartPress {
 		add_submenu_page( $base, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', dirname( __FILE__ ) . '/admin/TaxesList.php' );
 		add_submenu_page( $base, __( 'Plugins', 'tcp' ), __( 'Plugins', 'tcp' ), 'tcp_edit_plugins', dirname( __FILE__ ) . '/admin/PluginsList.php' );
 		add_submenu_page( $base, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', dirname( __FILE__ ) . '/admin/RelatedCats.php' );
-		add_submenu_page( $base, __( 'Downloadable products', 'tcp' ), __( 'Downloadable products', 'tcp' ), 'tcp_downloadable_products', dirname( __FILE__ ) . '/admin/DownloadableList.php' );
-		add_submenu_page( $base, __( 'Update prices', 'tcp' ), __( 'Update prices', 'tcp' ), 'tcp_update_price', dirname( __FILE__ ) . '/admin/PriceUpdate.php' );
+		add_submenu_page( $base, __( 'Downloadable Products', 'tcp' ), __( 'Downloadable Products', 'tcp' ), 'tcp_downloadable_products', dirname( __FILE__ ) . '/admin/DownloadableList.php' );
+		add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', dirname( __FILE__ ) . '/admin/PriceUpdate.php' );
+		add_submenu_page( $base, __( 'Update Stock', 'tcp' ), __( 'Update Stock', 'tcp' ), 'tcp_update_stock', dirname( __FILE__ ) . '/admin/StockUpdate.php' );
 		//register pages
 		add_submenu_page( 'tcp', 'tcp', 'tcp', 'tcp_edit_product', dirname( __FILE__ ) . '/admin/AssignedProductsList.php' );
 		add_submenu_page( 'tcp', 'tcp', 'tcp', 'tcp_edit_orders', dirname( __FILE__ ) . '/admin/OrderEdit.php' );
@@ -423,6 +424,7 @@ class TheCartPress {
 		$administrator->add_cap( 'tcp_edit_settings' );
 		$administrator->add_cap( 'tcp_edit_plugins' );
 		$administrator->add_cap( 'tcp_update_price' );
+		$administrator->add_cap( 'tcp_update_stock' );
 		$administrator->add_cap( 'tcp_downloadable_products' );
 		$administrator->add_cap( 'tcp_edit_addresses' );
 		$administrator->add_cap( 'tcp_edit_taxes' );
@@ -441,6 +443,7 @@ class TheCartPress {
 		$merchant->add_cap( 'tcp_edit_settings' );
 		$merchant->add_cap( 'tcp_edit_plugins' );
 		$merchant->add_cap( 'tcp_update_price' );
+		$merchant->add_cap( 'tcp_update_stock' );
 		$merchant->add_cap( 'tcp_downloadable_products' );
 		$merchant->add_cap( 'tcp_edit_addresses' );
 		$merchant->add_cap( 'tcp_edit_taxes' );

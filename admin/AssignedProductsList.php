@@ -22,6 +22,9 @@ $post_id  = isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
 $rel_type = isset( $_REQUEST['rel_type'] ) ? $_REQUEST['rel_type'] : '';
 $post_type_to = isset( $_REQUEST['post_type_to'] ) ? $_REQUEST['post_type_to'] : 'tcp_product';
 
+$category_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : false;
+$products_type = isset( $_REQUEST['products_type'] ) ? $_REQUEST['products_type'] : false;
+
 if ( isset( $_REQUEST['tcp_create_relation'] ) ) {
 	$post_id_to = isset( $_REQUEST['post_id_to'] )	? $_REQUEST['post_id_to'] : 0;
 	$units = isset( $_REQUEST['units'] )		? (int)$_REQUEST['units'] : 0;
@@ -99,8 +102,8 @@ if ( $post_id ) :
 						<input id="post_type_to" name="post_type_to" value="<?php echo $post_type_to;?>" type="hidden" />
 						<input id="post_id_to" name="post_id_to" value="<?php echo $assigned->id_to;?>" type="hidden" />
 						<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
-						<input id="products_type" name="products_type" value="<?php echo $_REQUEST['products_type'];?>" type="hidden" />
-						<input id="category_slug" name="category_slug" value="<?php echo $_REQUEST['category_slug'];?>" type="hidden" />
+						<input id="products_type" name="products_type" value="<?php echo $products_type;?>" type="hidden" />
+						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 						<p><?php _e( 'Do you really want to delete the relation?', 'tcp' );?></p>
 						<a href="javascript:document.frm_delete_relation_<?php echo $assigned->id_to;?>.submit();" class="delete"><?php _e( 'Yes' , 'tcp' );?></a> |
 						<a href="#" onclick="jQuery('#div_delete_relation_<?php echo $assigned->id_to;?>').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
@@ -131,15 +134,15 @@ if ( $post_id ) :
 				else
 					$terms = get_terms( 'category', array( 'hide_empty' => true ) );
 				foreach( $terms as $term ): ?>
-					<option value="<?php echo $term->slug;?>"<?php selected( $_REQUEST['category_slug'], $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
+					<option value="<?php echo $term->slug;?>"<?php selected( $category_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
 				<?php endforeach; ?>
 				</select>
 				<?php if ( $post_type_to == 'tcp_product') : ?>
 				<label for="products_type">Products type:</label>
 				<select id="products_type" name="products_type">
 					<option value="">no one</option>
-					<option value="SIMPLE" <?php selected( $_REQUEST['products_type'], 'SIMPLE' ); ?>><?php _e( 'Simple', 'tcp' );?></option>
-					<option value="GROUPED" <?php selected( $_REQUEST['products_type'], 'GROUPED' ); ?>><?php _e( 'Grouped', 'tcp' );?></option>
+					<option value="SIMPLE" <?php selected( $products_type, 'SIMPLE' ); ?>><?php _e( 'Simple', 'tcp' );?></option>
+					<option value="GROUPED" <?php selected( $products_type, 'GROUPED' ); ?>><?php _e( 'Grouped', 'tcp' );?></option>
 				</select>
 				<?php endif;?>
 				<input id="tcp_filter_products_type" name="tcp_filter_products_type" value="filter" type="submit">
@@ -166,8 +169,6 @@ if ( $post_id ) :
 	</tfoot>
 	<tbody>
 	<?php
-	$category_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : false;
-	$products_type = isset( $_REQUEST['products_type'] ) ? $_REQUEST['products_type'] : false;
 	if ( ( $post_type_to == 'tcp_product' && $category_slug && $products_type ) || ( $post_type_to == 'post' && $category_slug ) ) :
 		$ids = array();
 		$ids[] = $post_id;
@@ -201,8 +202,8 @@ if ( $post_id ) :
 						<input id="post_id_to" name="post_id_to" value="<?php the_ID();?>" type="hidden" />
 						<input id="post_type_to" name="post_type_to" value="<?php echo $post_type_to;?>" type="hidden" />
 						<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
-						<input id="products_type" name="products_type" value="<?php echo $_REQUEST['products_type'];?>" type="hidden" />
-						<input id="category_slug" name="category_slug" value="<?php echo $_REQUEST['category_slug'];?>" type="hidden" />
+						<input id="products_type" name="products_type" value="<?php echo $products_type;?>" type="hidden" />
+						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 						| <label for="units"><?php _e( 'units', 'tcp' );?>:</label>
 						<input id="units" name="units" value="1" size="2" maxlength="3" type="text" /><a href="javascript:document.frm_create_relation_<?php the_ID();?>.submit();"><?php _e( 'assign' , 'tcp' );?></a>
 					</form>

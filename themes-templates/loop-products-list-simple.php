@@ -59,10 +59,13 @@ $see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) 	? $instan
 					<?php endif;?>
 				<?php endif;?>
 				<?php if ( $see_first_custom_area ) :?>
+first
 				<?php endif;?>
 				<?php if ( $see_second_custom_area ) :?>
+Second
 				<?php endif;?>
 				<?php if ( $see_third_custom_area ) :?>
+third
 				<?php endif;?>
 
 			</ul>

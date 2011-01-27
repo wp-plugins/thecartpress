@@ -62,11 +62,9 @@ if ( have_posts() ) :
 		</div><!-- .entry-content -->
 	<?php endif;?>
 	<?php if ( $instance['see_buy_button']) : ?>
-		<?php if ( tcp_get_the_product_type() == 'SIMPLE' ) : ?>
-			<div class="entry-buy-button">	
-				<?php tcp_the_buy_button();?>
-			</div>
-		<?php endif;?>
+		<div class="entry-buy-button">	
+			<?php tcp_the_buy_button();?>
+		</div>
 	<?php endif;?>
 	<?php if ( $instance['see_author'] ) :?>
 		<?php if ( get_the_author_meta( 'description' ) ) : // If a user has filled out their description, show a bio on their entries  ?>

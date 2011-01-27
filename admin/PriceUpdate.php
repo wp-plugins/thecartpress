@@ -59,20 +59,22 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 			}
 		}?>
 		<div id="message" class="updated"><p>
-			<?php _e( 'Prices updated.', 'tcp' );?>
+			<?php _e( 'Updated price.', 'tcp' );?>
 		</p></div><?php
 	}
+	wp_reset_query();
 }
 
 $settings = get_option( 'tcp_settings' );
 $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 ?>
 <div class="wrap">
-<h2><?php _e( 'Update prices', 'tcp' );?></h2>
+<h2><?php _e( 'Prices Update', 'tcp' );?></h2>
 <div class="clear"></div>
 
 <form method="post">
-	<table class="form-table" >
+	<table class="form-table">
+	<tbody>
 	<tr valign="top">
 	<th scope="row"><label for="category_slug"><?php _e( 'Category', 'tcp' );?>:</label></th>
 	<td>
@@ -83,8 +85,10 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 			<option value="<?php echo $term->slug;?>"<?php selected( $cat_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
 		<?php endforeach; ?>
 		</select>
+	</td>
 	</tr>
-	<th scope="row"><label for="category"><?php _e( 'New price', 'tcp' );?>:</label></th>
+	<tr valign="top">
+	<th scope="row"><label for="by_category_per"><?php _e( 'New price', 'tcp' );?>:</label></th>
 	<td>
 		<input type="radio" id="by_category_per" name="update_type"
 			onclick="if (this.checked) {jQuery('#div_per').show();jQuery('#div_fix').hide();}"
@@ -99,10 +103,13 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" /><?php echo $currency;?></span>
 	</td>
 	</tr>
-	<th scope="row"><label for="category"><?php _e( 'Apply to options', 'tcp' );?>:</label></th>
+	<tr valign="top">
+	<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' );?>:</label></th>
 	<td>
 		<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php checked( $apply_to_options, true );?>/>
+	</td>
 	</tr>
+	</tbody>
 	</table>
 	<p class="submit">
 		<input type="submit" id="tcp_search" name="tcp_search" class="button-secondary" value="<?php _e('Search') ?>" />
@@ -165,7 +172,7 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 				<td><input type="text" value="<?php echo $new_price;?>" name="tcp_new_price_<?php echo $first_level_option->id_to;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
 				<td>&nbsp;</td>
 			</tr><?php
-						$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
+							$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
 							if ( is_array( $second_level_options ) && count( $second_level_options ) > 0 ) {
 								foreach( $second_level_options as $second_level_option ) {
 									$price = tcp_get_the_price( $second_level_option->id_to );
@@ -189,7 +196,8 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 			</tbody>
 			</table>
 		</div>
-		<?php endif;?>
+		<?php endif;
+		wp_reset_query();?>
 	<p class="submit">
 		<input type="submit" id="tcp_update_price" name="tcp_update_price" class="button-primary" value="<?php _e('Update') ?>" />
 	</p>

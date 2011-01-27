@@ -40,8 +40,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			//'order'              => 'ASC',
 			'show_last_update'   => 0,
 			'style'              => 'list',
-			'show_count'         => ( $instance['see_number_products'] ) ? 1 : 0,
-			'hide_empty'         => ( $instance['hide_empty_taxonomies'] ) ? 1 : 0,
+			'show_count'         => isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : true,
+			'hide_empty'         => isset( $instance['hide_empty_taxonomies'] ) ? $instance['hide_empty_taxonomies'] : false,
 			'use_desc_for_title' => 1,
 			'child_of'           => 0,
 			//'feed'               => ,
@@ -56,18 +56,18 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'number'             => NULL,
 			'echo'               => 0,
 			'depth'              => 0,
-			'taxonomy'			 => $instance['taxonomy'],
+			'taxonomy'			 => isset( $instance['taxonomy'] ) ? $instance['taxonomy'] : 'tcp_product_category',
 		);
-		$excluded_taxonomies = $instance['excluded_taxonomies'];
+		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : false;
 		if ( is_array( $excluded_taxonomies ) ) $args['exclude'] = implode( ",", $excluded_taxonomies );
-		$included_taxonomies = $instance['included_taxonomies'];
+		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : false;
 		if ( is_array( $included_taxonomies ) ) $args['include'] = implode( ",", $included_taxonomies );
-		$order_included = $instance['order_included'];
-		if ( strlen( $order_included ) > 0 ) {
+		$order_included = isset( $instance['order_included'] ) ? $instance['order_included'] : false;
+		if ( $order_included ) {
 			$this->orderIncluded = explode( '#', $order_included );
 			add_filter( 'get_terms', array( $this, 'orderTaxonomies' ) );
 		}
-		echo '<ul>'.wp_list_categories( $args ).'</ul>';
+		echo '<ul>' . wp_list_categories( $args ) . '</ul>';
 		if ( strlen( $order_included ) > 0 )
 			remove_filter( 'get_terms', array( $this, 'orderTaxonomies' ) );
 		echo $after_widget;
@@ -94,8 +94,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$instance['post_type']				= $new_instance['post_type'];
 		$instance['taxonomy']				= $new_instance['taxonomy'];
 		$instance['see_number_products']	= $new_instance['see_number_products'];
-		$instance['hide_empty_taxonomies']	= $new_instance['hide_empty_taxonomies'];
-		$instance['included_taxonomies']	= $new_instance['included_taxonomies'];
+		$instance['hide_empty_taxonomies']	= isset( $new_instance['hide_empty_taxonomies'] ) ? true : false;
+		$instance['included_taxonomies']	= isset( $new_instance['included_taxonomies'] ) ? true : false;
 		$instance['order_included']			= $new_instance['order_included'];
 		$instance['excluded_taxonomies']	= $new_instance['excluded_taxonomies'];
 		return $instance;
@@ -107,12 +107,14 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'post_type'				=> 'tcp_product',
 			'taxonomy'				=> 'tcp_product_category',
 			'see_number_products'	=> true,
-			'hide_empty_taxonomies'	=> true,
+			'hide_empty_taxonomies'	=> false,
 			'order_included'		=> '',
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
-		$see_number_products = isset( $instance['see_number_products'] ) ? (bool) $instance['see_number_products'] : false;
-		$hide_empty_taxonomies = isset( $instance['hide_empty_taxonomies'] ) ? (bool) $instance['hide_empty_taxonomies'] : false;
+		$see_number_products = isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : true;
+		$hide_empty_taxonomies = isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
+		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? (array)$instance['included_taxonomies'] : array();
+		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? (array)$instance['excluded_taxonomies'] : array();
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
@@ -134,15 +136,15 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			</select>
 			<span class="description"><? _e( 'Press save to load the next lists', 'tcp' );?></span>
 		</p><p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_number_products' ); ?>" name="<?php echo $this->get_field_name( 'see_number_products' ); ?>"<?php checked( $see_number_products ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_number_products' ); ?>" name="<?php echo $this->get_field_name( 'see_number_products' ); ?>" <?php checked( $see_number_products, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_number_products' ); ?>"><?php _e( 'See children number', 'tcp' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty_taxonomies' ); ?>"<?php checked( $hide_empty_taxonomies ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty_taxonomies' ); ?>" <?php checked( $hide_empty_taxonomies, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty taxonomies', 'tcp' ); ?></label>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?= $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
-				<option value="0"<?php $this->selected_multiple( $instance['excluded_taxonomies'], 0 ); ?>><?php _e( 'All', 'tcp' );?></option>
+				<option value="0"<?php $this->selected_multiple( $included_taxonomies, 0 ); ?>><?php _e( 'All', 'tcp' );?></option>
 			<?php $args = array (
 				'taxonomy'		=> $instance['taxonomy'],
 				'hide_empty'	=> false,
@@ -151,7 +153,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			$this->orderIncluded = explode( '#', $instance['order_included'] );
 			usort( $categories, array( $this, 'compare' ) );
 			foreach( $categories as $cat ): ?>
-				<option value="<?php echo esc_attr( $cat->term_id );?>"<?php $this->selected_multiple( $instance['included_taxonomies'], $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
+				<option value="<?php echo esc_attr( $cat->term_id );?>"<?php $this->selected_multiple( $included_taxonomies, $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
 			<?php endforeach; ?>
 			</select>
 			<input type="button" onclick="tcp_select_up('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_up" value="<? _e( 'up', 'tcp' );?>" class="button-secondary"/>
@@ -160,13 +162,13 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>"><?php _e( 'Excluded', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'excluded_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>" class="widefat" multiple="true" size="6" style="height: auto">
-				<option value="0"<?php $this->selected_multiple( $instance['excluded_taxonomies'], 0 ); ?>><?php _e('No one', 'tcp');?></option>
+				<option value="0"<?php $this->selected_multiple( $excluded_taxonomies, 0 ); ?>><?php _e('No one', 'tcp');?></option>
 			<?php $args = array (
 				'taxonomy'		=> $instance['taxonomy'],
 				'hide_empty'	=> false,
 			);
 			foreach( get_categories( $args ) as $cat ): ?>
-				<option value="<?php echo esc_attr( $cat->term_id);?>"<?php $this->selected_multiple($instance['excluded_taxonomies'], $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
+				<option value="<?php echo esc_attr( $cat->term_id);?>"<?php $this->selected_multiple($excluded_taxonomies, $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
 			<?php endforeach; ?>
 			</select>
 		</p>

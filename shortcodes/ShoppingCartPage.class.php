@@ -18,13 +18,17 @@
 
 class ShoppingCartPage {
 
-	function show() {
-		$currency = 'EUR';
+	function show( $notice = '') {
+		$settings = get_option( 'tcp_settings' );
+		$currency = isset( $settings['currency'] ) ? $settings['currency']: 'EUR';
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( $shoppingCart->isEmpty() ) :?>
 			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
 		<?php else :?>
 			<div class="entry-content" id="shopping_cart">
+				<?php if ( strlen( $notice ) > 0 ) {
+					echo '<p class="tcp_shopping_cart_notice">', $notice, '</p>';
+				};?>
 				<ul>
 					<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 					<li><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
@@ -53,11 +57,18 @@ class ShoppingCartPage {
 							<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId();?>" />
 							<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="<?php echo $item->getOption1Id();?>" />
 							<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="<?php echo $item->getOption2Id();?>" />
-						<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="2" maxlength="3" type="text" />
+							<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
+							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="3" maxlength="4" type="text" />
 							<input name="tcp_modify_item_shopping_cart" value="<?php echo __( 'Modify', 'tcp' );?>" type="submit" />
-						<?php else : ?>
-							1
+							<input name="tcp_delete_item_shopping_cart" value="<?php echo __( 'Delete', 'tcp' );?>" type="submit" />
+							<?php else : ?>
+								1
+							<?php endif;?>
+						<?php $stock = tcp_get_the_stock( $item->getPostId() );
+						if ( $stock == 0 ) :?>
+							<span class="tcp_no_stock"><?php _e( 'No stock for this product', 'tcp' );?></span>
+						<?php elseif ( $stock != -1 && $stock < $item->getCount() ) : ?>
+							<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );?></span>
 						<?php endif;?>
 						</form>
 					</td>

@@ -62,8 +62,8 @@ class ProductCustomPostType {
 		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 		add_filter( 'manage_edit-' . ProductCustomPostType::$PRODUCT . '_columns', array( $this, 'customColumnsDefinition' ) );
 		$labels = array(
-			'name'				=> _x( 'Categories of prods.', 'taxonomy general name' ),
-			'singular_name'		=> _x( 'Category of prods.', 'taxonomy singular name' ),
+			'name'				=> _x( 'Categories of Prods.', 'taxonomy general name' ),
+			'singular_name'		=> _x( 'Category of Prods.', 'taxonomy singular name' ),
 			'search_items'		=> __( 'Search Categories', 'tcp'),
 			'all_items'			=> __( 'All Categories', 'tcp'),
 			'parent_item'		=> __( 'Parent Category', 'tcp'),
@@ -86,7 +86,7 @@ class ProductCustomPostType {
 			'hierarchical'	=> false,
 			'query_var'		=> true,
 			'rewrite'		=> false, //true,
-			'label'			=> __( 'Tags of products', 'tcp' ),
+			'label'			=> __( 'Tags of Products', 'tcp' ),
 		) );
 		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
 			'hierarchical'	=> true,
@@ -96,12 +96,12 @@ class ProductCustomPostType {
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name' ),
 				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name' ),
-				'search_items'		=> __( 'Search suppliers', 'tcp'),
-				'all_items'			=> __( 'All suppliers', 'tcp'),
-				'edit_item'			=> __( 'Edit suppliers', 'tcp'), 
-				'update_item'		=> __( 'Update suppliers', 'tcp'),
-				'add_new_item'		=> __( 'Add new suppliers', 'tcp'),
-				'new_item_name'		=> __( 'New suppliers name', 'tcp'),
+				'search_items'		=> __( 'Search Suppliers', 'tcp'),
+				'all_items'			=> __( 'All Suppliers', 'tcp'),
+				'edit_item'			=> __( 'Edit Suppliers', 'tcp'), 
+				'update_item'		=> __( 'Update Suppliers', 'tcp'),
+				'add_new_item'		=> __( 'Add New Suppliers', 'tcp'),
+				'new_item_name'		=> __( 'New Suppliers Name', 'tcp'),
 			),
 		) );
 

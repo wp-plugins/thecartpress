@@ -20,32 +20,32 @@
  * Allows to comunicate with TheCartPress search engine
  */
 class TheCartPressSearchEngine {
-	private $HOST = 'http://thecartpress.com/moira/';
+	static private $HOST = 'http://thecartpress.com/moira/';
 	//private $HOST = 'http://localhost/moira/';
 
-	function remove() {
-		$url = $this->HOST . 'moira_add.php';
+	static function remove() {
+		$url = TheCartPressSearchEngine::$HOST . 'moira_add.php';
 		$url .= '?delete_web=' . get_bloginfo('url');
-		return $this->connectAndSend( $url );
+		return TheCartPressSearchEngine::connectAndSend( $url );
 	}
 
-	function refresh() {
-		$url = $this->HOST . 'moira_add.php';
+	static function refresh() {
+		$url = TheCartPressSearchEngine::$HOST . 'moira_add.php';
 		$url .= '?refresh_web=' . get_bloginfo('url');
-		$guid = $this->generateNewGuid();
+		$guid = TheCartPressSearchEngine::generateNewGuid();
 		$url .= '&guid=' . $guid;
-		return $this->connectAndSend( $url );
+		return TheCartPressSearchEngine::connectAndSend( $url );
 	}
 
-	function generateNewGuid() {
-		$guid = $this->guid();
+	static function generateNewGuid() {
+		$guid = TheCartPressSearchEngine::guid();
 		$settings = get_option( 'tcp_settings' );
 		$settings['search_engine_guid'] = $guid;
 		update_option( 'tcp_settings', $settings );
 		return $guid;
 	}
 
-	private function connectAndSend( $url ) {
+	static private function connectAndSend( $url ) {
 		$handler = curl_init( $url );
 		curl_setopt( $handler, CURLOPT_RETURNTRANSFER, 1 );
 		$response = curl_exec( $handler );
@@ -53,7 +53,7 @@ class TheCartPressSearchEngine {
 		return $response;
 	}
 
-	private function guid() {
+	static private function guid() {
 		if ( function_exists( 'com_create_guid' ) )
 		    return com_create_guid();
 		else {

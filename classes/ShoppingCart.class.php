@@ -178,6 +178,23 @@ class ShoppingCart {
 		unset( $this->visited_post_ids );
 		$this->visited_post_ids = array();
 	}
+	
+	function isThereStock( $post_id = 0) {
+		if ( $post_id == 0 ) {
+			foreach( $this->shopping_cart_items as $item ) {
+				$stock = tcp_get_the_stock( $item->getPostId() );
+				if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
+					return false;
+			}
+			return true;
+		} else {
+			$stock = tcp_get_the_stock( $item->getPostId() );
+			if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
+				return false;
+			else
+				return true;
+		}
+	}
 }
 
 class ShoppingCartItem {
@@ -192,13 +209,13 @@ class ShoppingCartItem {
 	private $is_downloadable = false;
 
 	function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
-		$this->post_id		= $post_id;
-		$this->option_1_id	= $option_1_id;
-		$this->option_2_id	= $option_2_id;
-		$this->count		= $count;
-		$this->unit_price	= $unit_price;
-		$this->tax			= $tax;
-		$this->unit_weight	= $unit_weight;
+		$this->post_id		= (int)$post_id;
+		$this->option_1_id	= (int)$option_1_id;
+		$this->option_2_id	= (int)$option_2_id;
+		$this->count		= (int)$count;
+		$this->unit_price	= (float)$unit_price;
+		$this->tax			= (float)$tax;
+		$this->unit_weight	= (float)$unit_weight;
 		do_action( 'tcp_shopping_cart_item_created', $this );
 	}
 
@@ -235,7 +252,7 @@ class ShoppingCartItem {
 	}
 
 	function getTax() {
-		return $this->tax;
+		return (float)$this->tax;
 	}
 
 	function getUnitWeight() {
