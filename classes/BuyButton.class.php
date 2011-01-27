@@ -82,7 +82,7 @@ class BuyButton {
 						$out .='<span class="tcp_added_product_title">' . $item->getCount() . ' ' . __( 'units', 'tcp' ) . ' <a href="' . get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) . '">' . __( 'in your cart', 'tcp' ) . '</a><span>';
 				}
 			}
-			if ( tcp_get_the_stock( $post_id ) != 0 ) {
+			if ( tcp_is_downloadable( $post_id ) || tcp_get_the_stock( $post_id ) != 0 ) {
 				$html = '<input type="submit" nclck="add_to_the_cart_' . $post_id . '();" name="tcp_add_to_shopping_cart" id="tcp_add_row" value="' . __( 'Add', 'tcp' ) . '"/>' . "\n";
 				$out .= apply_filters( 'tcp_buy_button_add_button', $html, $post_id );
 			}
