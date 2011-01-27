@@ -177,7 +177,9 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
 		update_post_meta( $post_id, 'tcp_weight', isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0 );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );
-		update_post_meta( $post_id, 'tcp_stock', isset( $_POST['tcp_stock'] )  ? (int)$_POST['tcp_stock'] : -1 );
+		$tcp_stock = isset( $_POST['tcp_stock'] )  ? $_POST['tcp_stock'] : -1;
+		if ( $tcp_stock == '' ) $tcp_stock = -1;
+		update_post_meta( $post_id, 'tcp_stock', (int)$tcp_stock );
 		do_action( 'tcp_product_metabox_save_custom_fields', $post_id );
 		$this->refreshMoira();
 	}

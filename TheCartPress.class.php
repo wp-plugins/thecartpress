@@ -211,7 +211,7 @@ class TheCartPress {
 				array(
 					'id'	=> 'the_cart_press',
 					'title'	=>__( 'TheCartPress', 'tcp' ),
-					'href'	=> admin_url( 'admin.php' ) . '?page=TheCartPress/admin/OrdersList.php',
+					'href'	=> admin_url( 'admin.php' ) . '?page=thecartpress/admin/OrdersList.php',
 				)
 			);
 			$wp_admin_bar->add_menu(
@@ -219,7 +219,7 @@ class TheCartPress {
 					'parent'	=> 'the_cart_press',
 					'id'		=> 'orders_list',
 					'title'		=>__( 'Orders', 'tcp' ),
-					'href'		=> admin_url( 'admin.php' ) . '?page=TheCartPress/admin/OrdersList.php',
+					'href'		=> admin_url( 'admin.php' ) . '?page=thecartpress/admin/OrdersList.php',
 				)
 			);
 			if ( current_user_can( 'tcp_downloadable_products' ) )
@@ -228,7 +228,7 @@ class TheCartPress {
 						'parent'	=> 'the_cart_press',
 						'id'		=> 'download_area',
 						'title'		=> __( 'Download area', 'tcp' ),
-						'href'		=> admin_url( 'admin.php' ) . "?page=TheCartPress/admin/DownloadableList.php",
+						'href'		=> admin_url( 'admin.php' ) . "?page=thecartpress/admin/DownloadableList.php",
 					)
 				);
 			}
