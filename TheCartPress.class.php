@@ -473,9 +473,9 @@ class TheCartPress {
 			$settings = get_option( 'tcp_settings' );
 			$load_default_styles = isset( $settings['load_default_styles'] ) ? $settings['load_default_styles'] : true;
 			if ( $load_default_styles )
-				wp_enqueue_style( 'tcp_style', plugins_url( 'TheCartPress/css/tcp_base.css' ) );
+				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) );
 		} else {
-			wp_register_script( 'tcp_scripts', plugins_url( 'TheCartPress/js/tcp_scripts.php' ) );
+			wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_scripts.php' ) );
 			wp_enqueue_script( 'tcp_scripts' );
 		}
 	    //feed
