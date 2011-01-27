@@ -136,6 +136,25 @@ function tcp_get_the_sku( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_sku', $post_id );
 }
 
+function tcp_the_stock( $before = '', $after = '', $echo = true ) {
+	return tcp_the_meta( 'tcp_stock', $before, $after, $echo );
+}
+
+function tcp_get_the_stock( $post_id = 0 ) {
+	$stock = tcp_get_the_meta( 'tcp_stock', $post_id );
+	if ( strlen( $stock ) > 0 )
+		return (int)$stock;
+	else
+		return -1;
+}
+
+function tcp_set_the_stock( $post_id, $stock = -1 ) {
+	if ( (int)$stock > -1 )
+		update_post_meta( $post_id, 'tcp_stock', (int)$stock );
+	else
+		return false;
+}
+
 function tcp_is_downloadable( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_is_downloadable', $post_id );
 }

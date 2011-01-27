@@ -116,6 +116,11 @@ class ProductCustomFieldsMetabox {
 				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
+				<th scope="row"><label for="tcp_stock"><?php _e( 'Stock', 'tcp' );?>:</label></th>
+				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_stock', true ) );?>" class="regular-text" type="text" style="width:10em">
+				<br /><span class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></span></td>
+			</tr>
+			<tr valign="top">
 				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?></label></th>
 				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post->ID, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
 				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
@@ -172,7 +177,8 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
 		update_post_meta( $post_id, 'tcp_weight', isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0 );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );
-		do_action( 'tcp_product_metabox_savev_custom_fields', $post_id );
+		update_post_meta( $post_id, 'tcp_stock', isset( $_POST['tcp_stock'] )  ? (int)$_POST['tcp_stock'] : -1 );
+		do_action( 'tcp_product_metabox_save_custom_fields', $post_id );
 		$this->refreshMoira();
 	}
 
@@ -196,6 +202,8 @@ class ProductCustomFieldsMetabox {
 		delete_post_meta( $new_post_id, 'tcp_days_to_expire' );
 		delete_post_meta( $new_post_id, 'tcp_weight' );
 		delete_post_meta( $new_post_id, 'tcp_sku' );
+		delete_post_meta( $new_post_id, 'tcp_stock' );
+		do_action( 'tcp_product_metabox_delete_custom_fields', $post_id );
 		$this->refreshMoira();
 	}
 
@@ -204,8 +212,7 @@ class ProductCustomFieldsMetabox {
 		$search_engine_activated = isset( $settings['search_engine_activated'] ) ? $settings['search_engine_activated'] : true;
 		if ( $search_engine_activated ) {
 			require_once( dirname( dirname( __FILE__ ) ) . '/classes/TheCartPressSearchEngine.class.php' );
-			$theCartPressSearchEngine = new TheCartPressSearchEngine();
-			$theCartPressSearchEngine->refresh();
+			TheCartPressSearchEngine::refresh();
 		}
 	}
 }
