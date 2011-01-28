@@ -392,7 +392,7 @@ class Checkout {
 		<div class="billing_layer_info checkout_info clearfix" id="billing_layer_info"<?php
 			if ( ( isset( $_REQUEST['tcp_load_plugins'] ) || isset( $_REQUEST['tcp_show_cart'] ) || isset( $_REQUEST['tcp_create_order'] ) ) && ! $has_validation_billing_error)
 				echo ' style="display: none"';
-			elseif ( ! is_user_logged_in() ) 
+			elseif ( ! is_user_logged_in() && ! $has_validation_billing_error) 
 				echo ' style="display: none"';?>>
 			<?php
 			$addresses = Addresses::getCustomerAddresses( $current_user->ID );
