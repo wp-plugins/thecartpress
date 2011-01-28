@@ -80,6 +80,7 @@ class TheCartPress {
 			$checkOut = new CheckOut();
 			add_shortcode( 'tcp_checkout', array( $checkOut, 'show' ) );	
 			add_shortcode( 'tcp_buy_button', array( $this, 'shortCodeBuyButton' ) );
+			add_filter( 'login_form_bottom', array( $this, 'loginFormBottom' ) );
 		}
 		add_action( 'admin_bar_menu', array( $this, 'addMenuAdminBar' ), 70 );
 		add_action( 'widgets_init', array( $this, 'registerWidgets' ) );
@@ -162,7 +163,6 @@ class TheCartPress {
 	}
 
 	static function getShoppingCart() {
-		$shoppingCart = isset( $_SESSION['tcp_session'] ) ? $_SESSION['tcp_session'] : new ShoppingCart();
 		if ( isset( $_SESSION['tcp_session'] ) ) 
 			$shoppingCart = $_SESSION['tcp_session'];
 		else {
@@ -183,6 +183,10 @@ class TheCartPress {
 				),
 			);
 		}
+	}
+
+	function loginFormBottom( $content ) {
+		return '<p class="login-lostpassword"><a href="'. wp_lostpassword_url( get_permalink() ) . '" title="' . __( 'Lost Password', 'tcp' ) . '">' . __( 'Lost Password', 'tcp' ) . '</a></p>';
 	}
 
 	function shortCodeBuyButton( $atts ) {
