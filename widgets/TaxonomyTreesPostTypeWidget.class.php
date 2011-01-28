@@ -142,7 +142,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty_taxonomies' ); ?>" <?php checked( $hide_empty_taxonomies, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty taxonomies', 'tcp' ); ?></label>
 		</p><p>
-			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included', 'tcp' )?>:</label>
+			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included and sorted', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?= $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
 				<option value="0"<?php $this->selected_multiple( $included_taxonomies, 0 ); ?>><?php _e( 'All', 'tcp' );?></option>
 			<?php $args = array (
@@ -158,6 +158,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			</select>
 			<input type="button" onclick="tcp_select_up('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_up" value="<? _e( 'up', 'tcp' );?>" class="button-secondary"/>
 		    <input type="button" onclick="tcp_select_down('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_down" value="<? _e( 'down', 'tcp' );?>" class="button-secondary"/>
+		    <span class="description"><?php _e( 'Use those actions to sort the list.', 'tcp' );?></span>
 		    <input type="hidden" id="<?php echo $this->get_field_id( 'order_included' ); ?>" name="<?php echo $this->get_field_name( 'order_included' ); ?>" value="<?php echo $instance['order_included'];?>"/>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>"><?php _e( 'Excluded', 'tcp' )?>:</label>
