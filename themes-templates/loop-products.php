@@ -79,10 +79,10 @@ $see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;
 $image_size				= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
 $see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : true;
 $see_content			= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
-$see_price				= isset( $instance['see_price'] ) ? $instance['see_price'] : false;
-$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : true;
-$see_meta_data			= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data'] : true;
-$see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : true;
+$see_price				= isset( $instance['see_price'] ) ? $instance['see_price'] : true;
+$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
+$see_meta_data			= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data'] : false;
+$see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
 $number_of_columns		= isset( $instance['columns'] ) ? (int)$instance['columns'] : 2;
 //custom areas
 $see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;

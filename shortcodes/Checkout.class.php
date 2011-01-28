@@ -339,7 +339,7 @@ class Checkout {
 				<?php endif;
 				$args = array(
 					'echo'				=> true,
-					'redirect'			=> get_permalink( get_option( 'tcp_checkout_page_id' ) ),
+					'redirect'			=> get_permalink(), // get_option( 'tcp_checkout_page_id' ) ),
 					'form_id'			=> 'loginform',
 					'label_username'	=> __( 'Username', 'tcp' ),
 					'label_password'	=> __( 'Password', 'tcp' ),
@@ -353,8 +353,7 @@ class Checkout {
 					'value_username'	=> '',
 					'value_remember'	=> false
 				);
-				wp_login_form( $args );
-				?>
+				wp_login_form( $args );?>
 			</div><!--login_form-->
 			<div id="login_guess">
 			<?php if ( get_option( 'users_can_register' ) ) :?>
