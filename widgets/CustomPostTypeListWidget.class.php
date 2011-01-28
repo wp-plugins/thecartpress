@@ -58,32 +58,32 @@ class CustomPostTypeListWidget extends WP_Widget {
 		if ( ! have_posts() ) return;
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
-		if ( strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
+		if ( isset( $instance['loop'] ) && strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
 			include( $instance['loop'] );
 		} else if ( have_posts() ) while ( have_posts() ) : the_post();?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-				<?php if ( $instance['see_title'] ) : ?>
+				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">
 					<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
 				</div>
 				<?php endif;?>
-				<?php if ( $instance['see_excerpt'] ) : ?>
+				<?php if ( isset( $instance['see_excerpt'] ) && $instance['see_excerpt'] ) : ?>
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>
 				</div>
 				<?php endif;?>
-				<?php if ( $instance['see_price'] ) : ?>
+				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
 					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_get_the_price_label( get_the_ID() );?>&nbsp;<?php tcp_the_currency();?>(<?php echo tcp_get_the_tax_label( get_the_ID() );?>)</p>
 				</div>
 				<?php endif;?>
-				<?php if ( $instance['see_content'] ) : ?>
+				<?php if ( isset( $instance['see_content'] ) && $instance['see_content'] ) : ?>
 				<div class="entry-content">
 					<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'tcp' ) ); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">'.__( 'Pages:', 'tcp' ), 'after' => '</div>')); ?>
 				</div>
 				<?php endif;?>
-				<?php if ( $instance['see_meta_data'] ) : ?>
+				<?php if ( isset( $instance['see_meta_data'] ) && $instance['see_meta_data'] ) : ?>
 				<div class="entry-utility">
 				<?php if ( count( get_the_category() ) ): ?>
 					<span class="cat-links">
