@@ -39,6 +39,11 @@ class ResumenShoppingCartWidget extends WP_Widget {
 		<ul class="tcp_shopping_cart_resume">
 			<li><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' );?>:</span>&nbsp;<?php echo number_format( $shoppingCart->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
 			<li><span class="tcp_resumen_count"><?php _e( 'Nº products:', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getCount();?></li>
+		<?php if ( isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false ) :
+			if ( ! $shoppingCart->isThereStock() ) :?>
+			<li><span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) );?></span></li>
+		<?php endif;
+		endif;?>		
 		<?php if ( isset( $instance['see_weight'] ) ? $instance['see_weight'] : false ) :?>
 			<li><span class="tcp_resumen_weight"><?php _e( 'Weigth', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getWeight();?>&nbsp;<?php echo $currency;?></li>
 		<?php endif;?>
@@ -58,6 +63,7 @@ class ResumenShoppingCartWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
+		$instance['see_stock_notice']	= $new_instance['see_stock_notice'];
 		$instance['see_weight']			= $new_instance['see_weight'];
 		$instance['see_delete_all']		= $new_instance['see_delete_all'];
 		$instance['see_shopping_cart']	= $new_instance['see_shopping_cart'];
@@ -71,6 +77,7 @@ class ResumenShoppingCartWidget extends WP_Widget {
 			'see_weight'		=> true,
 			'see_delete_all'	=> true,
 		);
+		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
 		$see_weight			= isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
 		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
@@ -80,6 +87,9 @@ class ResumenShoppingCartWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_stock_notice'); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e('See stock notice', 'tcp'); ?></label>
+		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_weight'); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e('See weigth', 'tcp'); ?></label>
 		<br />

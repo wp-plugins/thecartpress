@@ -37,6 +37,13 @@ class ShoppingCartWidget extends WP_Widget {
 		if ( $title ) echo $before_title, $title, $after_title;?>
 		<ul class="tcp_shopping_cart">
 		<?php $shoppingCart = TheCartPress::getShoppingCart();
+		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
+		$see_modify_item	= isset( $instance['see_modify_item'] ) ? $instance['see_modify_item'] : true;
+		$see_weight			= isset( $instance['see_weight'] ) ? $instance['see_weight'] : true;
+		$see_delete_item	= isset( $instance['see_delete_item'] ) ? $instance['see_delete_item'] : true;
+		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? $instance['see_shopping_cart'] : true;
+		$see_checkout		= isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true;
+		$see_delete_all		= isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : true;
 		foreach( $shoppingCart->getItems() as $item ) :?>
 			<li><form method="post">
 				<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId();?>" />
@@ -50,34 +57,40 @@ class ShoppingCartWidget extends WP_Widget {
 					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getUnitPrice(), 2 );?>&nbsp;<?php echo $currency;?></span><span class="tcp_tax_label">(<?php tcp_the_tax_label();?>)</span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li>
-						<?php if ( $instance['see_modify_item'] ) :?>
+						<?php if ( $see_modify_item ) :?>
 							<input type="text" name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="2" maxlength="4" />
 							<input type="submit" name="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' );?>"/>
 						<?php else :?>
 							<span class="tcp_units"><?php _e( 'Units', 'tcp' );?>:&nbsp;<?php echo $item->getCount();?></span>
 						<?php endif;?>
+						<?php if ( $see_stock_notice ) :
+							$stock = tcp_get_the_stock( $item->getPostId() );
+							if ( $stock != -1 && $stock < $item->getCount() ) :?>
+								<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );?></span>
+							<?php endif;
+						endif?>
 					</li>
 					<?php endif;?>
 					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-					<?php if ( $instance['see_weight'] ) :?>
-					<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo $item->getWeight();?>&nbsp;</li>
+					<?php if ( $see_weight ) :?>
+						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo $item->getWeight();?>&nbsp;</li>
 					<?php endif;?>
 				<?php endif;?>
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item );?>
-				<?php if ($instance['see_delete_item']) :?>
+				<?php if ( $see_delete_item ) :?>
 					<li><input type="submit" name="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' );?>"/></li>
 				<?php endif;?>
 				</ul>
 			</form></li>
 		<?php endforeach;?>
-		<?php if ( $instance['see_shopping_cart'] ) :?>
+		<?php if ( $see_shopping_cart ) :?>
 			<li><a href="<?echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
 		<?php endif;?>
-		<?php if ( $instance['see_checkout'] ) :?>
+		<?php if ( $see_checkout ) :?>
 			<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'checkout', 'tcp' );?></a></li>
 		<?php endif;?>
-		<?php if ($instance['see_delete_all']) :?>
+		<?php if ( $see_delete_all ) :?>
 			<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete shopping cart', 'tcp' );?>"/></form></li>
 		<?php endif;?>
 		</ul>
@@ -87,6 +100,7 @@ class ShoppingCartWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
+		$instance['see_stock_notice']	= $new_instance['see_stock_notice'];
 		$instance['see_weight']			= $new_instance['see_weight'];
 		$instance['see_modify_item']	= $new_instance['see_modify_item'];
 		$instance['see_delete_item']	= $new_instance['see_delete_item'];
@@ -103,8 +117,10 @@ class ShoppingCartWidget extends WP_Widget {
 			'see_modify_item'	=> true,
 			'see_delete_item'	=> true,
 			'see_delete_all'	=> true,
+			'see_stock_notice'	=> false,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
+		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
 		$see_weight			= isset( $instance['see_weight'] )		? (bool) $instance['see_weight']		: false;
 		$see_modify_item	= isset( $instance['see_modify_item'] )	? (bool) $instance['see_modify_item']	: false;
 		$see_delete_item	= isset( $instance['see_delete_item'] )	? (bool) $instance['see_delete_item']	: false;
@@ -116,6 +132,9 @@ class ShoppingCartWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_stock_notice'); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e('See stock notices', 'tcp'); ?></label>
+		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp' ); ?></label>
 		<br />
