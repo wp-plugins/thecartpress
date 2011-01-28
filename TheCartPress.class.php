@@ -90,7 +90,7 @@ class TheCartPress {
 	}
 
 	function wpHead() {
-		if ( is_single() && !is_page() ) {//last visited
+		if ( is_single() && ! is_page() ) {//last visited
 			global $post;
 			if ( $post->post_type == 'tcp_product' ) {
 				do_action( 'tcp_visited_product', $post );
@@ -173,7 +173,7 @@ class TheCartPress {
 	}
 
 	function parseQuery( $query ) {
-		if ( ! is_page() ) {
+		if ( ! is_page() && ! is_single() ) {
 			$query->query_vars['meta_query'] = array(
 				array(
 					'key' => 'tcp_is_visible',
