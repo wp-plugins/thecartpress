@@ -301,7 +301,7 @@ class Checkout {
 				$message = $_SESSION['order_page'];
 				wp_mail( $to, $subject, $message, $headers );
 				echo '<br />';
-				echo '<a href="' . plugins_url( 'TheCartPress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
+				echo '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 				echo '</div>' . "\n";
 				$shoppingCart->deleteAll();
 				return;
