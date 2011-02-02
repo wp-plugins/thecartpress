@@ -184,7 +184,7 @@ class Orders {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, status, post_id, price, tax,
-				qty_ordered, shipping_amount, payment_amount,
+				qty_ordered, shipping_amount, payment_method, payment_amount,
 				order_currency_code, code_tracking, is_downloadable,
 				max_downloads, expires_at
 				from ' . $wpdb->prefix . 'tcp_orders o left join '.

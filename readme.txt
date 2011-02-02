@@ -1,9 +1,9 @@
 === TheCartPress, E-Commerce for WordPress Stores ===
 Contributors: thecartpress
-Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, tpv, custom post type, taxonomy, taxonomies, ecommerce, products
+Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
 Tested up to: 3.1
-Stable Tag: 1.0.2
+Stable Tag: 1.0.3
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -150,11 +150,19 @@ This plugin is released under a GPL license.
 
 == Screenshots ==
 
-
 == Changelog ==
 
-= 1.0.2 =
+= 1.0.3 =
+* Fixed non-visible post/product bug
+* Stock management setting: To enable stock management
+* Disable Shopping cart setting: To use TheCartPress as a catalogue
+* More navigation and usability improvements in widgets
+* Loops in themes and in products lists widgets
+* Improvements in the default css file (for ready to use ecommerce)
+* Example theme: twentytenEcommerce (see themes-templates folder)
+* New payment methods: PayPal, Card off line.
 
+= 1.0.2 =
 * Fixed non-visible products in the loops when suppliers taxonomy and product tags taxonomy
 * Stock management
 * More navigation and usability improvements in widgets
@@ -172,7 +180,6 @@ This plugin is released under a GPL license.
 * Developed a child WordPress default theme for E-commerce: Twenty Ten E-Commerce Cart 1.0
 
 = 1.0 =
-
 First public version.
 
 == Upgrade Notice ==

@@ -21,6 +21,7 @@ class ShoppingCartPage {
 	function show( $notice = '') {
 		$settings = get_option( 'tcp_settings' );
 		$currency = isset( $settings['currency'] ) ? $settings['currency']: 'EUR';
+		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( $shoppingCart->isEmpty() ) :?>
 			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
@@ -29,10 +30,6 @@ class ShoppingCartPage {
 				<?php if ( strlen( $notice ) > 0 ) {
 					echo '<p class="tcp_shopping_cart_notice">', $notice, '</p>';
 				};?>
-				<ul>
-					<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
-					<li><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
-				</ul>
 				<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
 				<tbody>
 				<tr class="tcp_cart_title_row">
@@ -45,33 +42,44 @@ class ShoppingCartPage {
 			foreach( $shoppingCart->getItems() as $item ) :?>
 				<tr class="tcp_cart_product_row">
 					<td class="tcp_cart_name">
+					<?php if ( tcp_is_visible( $item->getPostId() ) ) : ?>
 						<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( $item->getPostId() );?>
-						<?php if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( $item->getOption1Id() );?>
-						<?php if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( $item->getOption2Id() );?></a>
+					<?php else :
+						$post_id = tcp_get_the_parent( $item->getPostId() );
+						if ( $post_id > 0 ) : ?>
+							<a href="<?php echo get_permalink( $post_id );?>"><?php echo get_the_title( $post_id );?>
+						<?php else : ?>
+							<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( $item->getPostId() );?>
+						<?php endif;
+					endif;?>
+					<?php if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( $item->getOption1Id() );?>
+					<?php if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( $item->getOption2Id() );?></a>
 					</td>
 					<td class="tcp_cart_unit_price">
 						<?php echo number_format( $item->getUnitPrice(), 2 ), '&nbsp;', $currency, '&nbsp;(', number_format( $item->getTax(), 0 ), '%)';?>
 					</td>
-					<td class="tcp_cart_units">
-						<form method="post">
+					<form method="post">
+						<td class="tcp_cart_units">
 							<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId();?>" />
 							<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="<?php echo $item->getOption1Id();?>" />
 							<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="<?php echo $item->getOption2Id();?>" />
-							<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
+						<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="3" maxlength="4" type="text" />
 							<input name="tcp_modify_item_shopping_cart" value="<?php echo __( 'Modify', 'tcp' );?>" type="submit" />
 							<input name="tcp_delete_item_shopping_cart" value="<?php echo __( 'Delete', 'tcp' );?>" type="submit" />
-							<?php else : ?>
+						<?php else : ?>
 								1
-							<?php endif;?>
-						<?php $stock = tcp_get_the_stock( $item->getPostId() );
-						if ( $stock == 0 ) :?>
-							<span class="tcp_no_stock"><?php _e( 'No stock for this product', 'tcp' );?></span>
-						<?php elseif ( $stock != -1 && $stock < $item->getCount() ) : ?>
-							<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );?></span>
 						<?php endif;?>
-						</form>
-					</td>
+					<?php if ( $stock_management ) :
+						$stock = tcp_get_the_stock( $item->getPostId() );
+						if ( $stock == 0 ) : ?>
+							<span class="tcp_no_stock"><?php _e( 'Out of stock', 'tcp' );?></span>
+						<?php elseif ( $stock != -1 && $stock < $item->getCount() ) : ?>
+							<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock. Only %s items available.', 'tcp' ), $stock );?></span>
+						<?php endif;
+					endif;?>
+						</td>
+					</form>
 					<td class="tcp_cart_price">
 						<?php $total += $item->getTotal();?>
 						<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;&euro;
@@ -91,6 +99,10 @@ class ShoppingCartPage {
 			<p>
 			<form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form>
 			</p>
+			<ul class="tcp_sc_links">
+				<li class="tcp_sc_checkout"><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
+				<li class="tcp_sc_continue"><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
+			</ul>
 		</div>
 	<?php endif;
 	}

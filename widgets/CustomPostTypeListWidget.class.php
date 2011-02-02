@@ -53,7 +53,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 				$args['post__in'] = $instance['included'];
 			}
 		}
-		//$widget_loop = new WP_Query( $args );
 		query_posts( $args );
 		if ( ! have_posts() ) return;
 		echo $before_widget;
@@ -67,6 +66,8 @@ class CustomPostTypeListWidget extends WP_Widget {
 					<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
 				</div>
 				<?php endif;?>
+				<?php if ( isset( $instance['see_meta_data'] ) && $instance['see_meta_data'] ) : ?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_excerpt'] ) && $instance['see_excerpt'] ) : ?>
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>
@@ -83,15 +84,14 @@ class CustomPostTypeListWidget extends WP_Widget {
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">'.__( 'Pages:', 'tcp' ), 'after' => '</div>')); ?>
 				</div>
 				<?php endif;?>
-				<?php if ( isset( $instance['see_meta_data'] ) && $instance['see_meta_data'] ) : ?>
+				<?php if ( isset( $instance['see_meta_utilities'] ) && $instance['see_meta_utilities'] ) : ?>
 				<div class="entry-utility">
-				<?php if ( count( get_the_category() ) ): ?>
+					<?php if ( count( get_the_category() ) ): ?>
 					<span class="cat-links">
 						<?php printf( __( '<span class="%1$s">Posted in</span> %2$s', 'tcp' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?>
 					</span>
 					<span class="meta-sep">|</span>
-				<?php endif; ?>
-				<?php
+					<?php endif;
 					$tags_list = get_the_tag_list( '', ', ' );
 					if ( $tags_list ): ?>
 					<span class="tag-links">
@@ -121,7 +121,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$instance['included']		= $new_instance['included'];
 		$instance['limit']			= (int)$new_instance['limit'];
 		$instance['loop']			= $new_instance['loop'];
-		$instance['title_tag']		= $new_instance['title_tag'];
 		$instance['columns']		= (int)$new_instance['columns'];
 		$instance['see_title']		= $new_instance['see_title'] == 'yes';
 		$instance['see_image']		= $new_instance['see_image'] == 'yes';
@@ -130,6 +129,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$instance['see_excerpt']	= $new_instance['see_excerpt'] == 'yes';
 		$instance['see_author']		= $new_instance['see_author'] == 'yes';
 		$instance['see_meta_data']	= $new_instance['see_meta_data'] == 'yes';
+		$instance['see_meta_utilities']	= $new_instance['see_meta_utilities'] == 'yes';
 		$instance['see_price']		= $new_instance['see_price'] == 'yes';
 		$instance['see_buy_button']	= $new_instance['see_buy_button'] == 'yes';
 		$instance['see_first_custom_area']	= $new_instance['see_first_custom_area'] == 'yes';
@@ -148,14 +148,14 @@ class CustomPostTypeListWidget extends WP_Widget {
 			'included'		=> array(),
 			'limit'			=>  5,
 			'loop'			=> '',
-			'title_tag'		=> 'H2',
 			'columns'		=> 2,
 			'see_title'		=> true,
 			'see_image'		=> false,
 			'image_size'	=> 'thumbnail',
 			'see_content'	=> false,
 			'see_excerpt'	=> false,
-			'see_meta_data'		=> false,
+			'see_meta_data'	=> false,
+			'see_meta_utilities'	=> false,
 			'see_price'		=> true,
 			'see_buy_button'=> false,
 		);
@@ -166,6 +166,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$see_excerpt	= isset( $instance['see_excerpt'] )		? $instance['see_excerpt']	: false;
 		$see_author		= isset( $instance['see_author'] )		? $instance['see_author']	: false;
 		$see_meta_data	= isset( $instance['see_meta_data'] )	? $instance['see_meta_data']: false;
+		$see_meta_utilities	= isset( $instance['see_meta_utilities'] )	? $instance['see_meta_utilities']: false;
 		$see_price		= isset( $instance['see_price'] )		? $instance['see_price']	: false;
 		$see_buy_button	= isset( $instance['see_buy_button'] )	? $instance['see_buy_button']: false;
 		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) 	? $instance['use_taxonomy'] : false;
@@ -245,6 +246,10 @@ class CustomPostTypeListWidget extends WP_Widget {
 				$args = array(
 					'post_type'	=> $instance['post_type'],
 				);
+				if ( $instance['post_type'] == 'tcp_product' ) {
+					$args['meta_key'] = 'tcp_is_visible';
+					$args['meta_value'] = true;
+				}
 				$query = new WP_query($args);
 				if ( $query->have_posts() ) while ( $query->have_posts()): $query->the_post();?>
 					<option value="<?php the_ID();?>"<?php tcp_selected_multiple( $instance['included'], get_the_ID() ); ?>><?php the_title();?></option>
@@ -284,20 +289,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 	</div>
 	<div id="column_2">
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?>:</label>
-			<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
-				<option value="h1" <?php selected( $instance['title_tag'], 'h1' );?>>H1</option>
-				<option value="h2" <?php selected( $instance['title_tag'], 'h2' );?>>H2</option>
-				<option value="h3" <?php selected( $instance['title_tag'], 'h3' );?>>H3</option>
-				<option value="h4" <?php selected( $instance['title_tag'], 'h4' );?>>H4</option>
-				<option value="h5" <?php selected( $instance['title_tag'], 'h5' );?>>H5</option>
-				<option value="h6" <?php selected( $instance['title_tag'], 'h6' );?>>H6</option>
-				<option value="div" <?php selected( $instance['title_tag'], 'div' );?>>DIV</option>
-				<option value="span" <?php selected( $instance['title_tag'], 'span' );?>>SPAN</option>
-				<option value="p" <?php selected( $instance['title_tag'], 'p' );?>>P</option>
-			</select>
-		</p>
-		<p>
 			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
 		</p>
@@ -334,6 +325,10 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_data' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_data' ); ?>" value="yes" <?php checked( $see_meta_data ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_meta_data' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_utilities' ); ?>" value="yes" <?php checked( $see_meta_utilities ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>"><?php _e( 'Show utilities', 'tcp' ); ?></label>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_price' ); ?>" name="<?php echo $this->get_field_name( 'see_price' ); ?>" value="yes" <?php checked( $see_price ); ?> />

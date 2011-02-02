@@ -34,12 +34,14 @@ class ResumenShoppingCartWidget extends WP_Widget {
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
 		echo $before_widget;
 		if ( $title )	echo $before_title, $title, $after_title;
-		$currency = tcp_the_currency( false );
+		$settings = get_option( 'tcp_settings' );
+		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
+		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
 		$shoppingCart = TheCartPress::getShoppingCart();?>
 		<ul class="tcp_shopping_cart_resume">
 			<li><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' );?>:</span>&nbsp;<?php echo number_format( $shoppingCart->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
 			<li><span class="tcp_resumen_count"><?php _e( 'Nº products:', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getCount();?></li>
-		<?php if ( isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false ) :
+		<?php if ( $stock_management && isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false ) :
 			if ( ! $shoppingCart->isThereStock() ) :?>
 			<li><span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) );?></span></li>
 		<?php endif;

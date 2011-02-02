@@ -108,7 +108,7 @@ class ProductCustomFieldsMetabox {
 				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_weight', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible', 'tcp' );?></label></th>
+				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loop or catalogue)', 'tcp' );?>:</label></th>
 				<td><input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php if ( get_post_meta( $post->ID, 'tcp_is_visible', true ) ):?>checked <?php endif;?> /></td>
 			</tr>
 			<tr valign="top">
@@ -116,12 +116,19 @@ class ProductCustomFieldsMetabox {
 				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_stock"><?php _e( 'Stock', 'tcp' );?>:</label></th>
+			<?php	$settings = get_option( 'tcp_settings' );
+					$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;?>
+				<th scope="row"><label for="tcp_stock"><?php _e( 'Stock', 'tcp' );?>:</label>
+				<?php if ( ! $stock_management ) : 
+					$path = 'admin.php?page=tcp_settings_page';?>
+					<span class="description"><?php printf( __( 'Stock management is disabled. See the <a href="%s">settings</a> page to change this value.', 'tcp' ), $path );?></span>
+				<?php endif;?>
+				</th>
 				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_stock', true ) );?>" class="regular-text" type="text" style="width:10em">
 				<br /><span class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></span></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?></label></th>
+				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
 				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post->ID, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
 				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
 			</tr>

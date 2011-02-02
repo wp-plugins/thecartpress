@@ -20,7 +20,8 @@ require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
 require_once( dirname( dirname( __FILE__ ) ).'/classes/OrderPage.class.php' );
 
 if ( isset( $_REQUEST['tcp_order_edit'] ) ) {
-	Orders::edit( $_REQUEST['order_id'], $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );?>
+	Orders::edit( $_REQUEST['order_id'], $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
+	do_action( 'tcp_admin_order_editor_save', $order_id );?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Order saved', 'tcp' );?>
 		</p></div><?php
@@ -60,14 +61,16 @@ if ( $order ) :?>
 			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $order->status );?>><?php _e( 'cancelled', 'tcp' );?></option>
 			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $order->status );?>><?php _e( 'suspended', 'tcp' );?></option>
 		</select>
-	</td></tr>
+	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="code_tracking"><?php _e( 'code tracking', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<input name="code_tracking" id="code_tracking" type="text" size="10" maxlength="50" value="<?php echo $order->code_tracking;?>" />
-	</td></tr>
+	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="comment"><?php _e( 'Customer\'s comment', 'tcp' );?>:</label>
@@ -75,6 +78,7 @@ if ( $order ) :?>
 	<td>
 		<textarea valign="top" name="comment" id="comment" rows="5" cols="40" maxlength="250"><?php echo $order->comment;?></textarea>
 	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="comment_internal"><?php _e( 'Internal comment', 'tcp' );?>:</label>
@@ -82,7 +86,9 @@ if ( $order ) :?>
 	<td>
 		<textarea valign="top" name="comment_internal" id="comment_internal" rows="5" cols="40" maxlength="250"><?php echo $order->comment_internal;?></textarea>
 	</td>
-	</tr></tbody></table>
+	</tr>
+	<?php do_action( 'tcp_admin_order_editor', $order_id );?>
+	</tbody></table>
 	<p class="submit">
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
 	</p>

@@ -27,7 +27,15 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'id_base'	=> 'taxonomytreesposttype-widget',
 		);
 		$this->WP_Widget('taxonomytreesposttype-widget', 'TCP Taxonomy trees', $widget, $control);
+		
+		//add_filter( 'get_terms', array( $this, 'get_terms' ), 9, 3 );
 	}
+	
+	//function get_terms( $terms, $taxonomies, $args ) {
+	//	if ( in_array( 'tcp_product_category', $taxonomies ) )
+	//		var_dump( $terms );
+	//	return $terms;
+	//}
 
 	function widget( $args, $instance ) {
 		extract( $args );
@@ -140,7 +148,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'see_number_products' ); ?>"><?php _e( 'See children number', 'tcp' ); ?></label>
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty_taxonomies' ); ?>" <?php checked( $hide_empty_taxonomies, true ); ?> />
-			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty taxonomies', 'tcp' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty terms', 'tcp' ); ?></label>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included and sorted', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?= $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">

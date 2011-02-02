@@ -33,6 +33,8 @@ class TCP_Settings {
 		add_settings_field( 'user_registration', __( 'User registration required', 'tcp' ), array( $this, 'show_user_registration' ), __FILE__ , 'main_section' );
 		add_settings_field( 'emails', __( '@mails to send orders', 'tcp' ), array( $this, 'show_emails' ), __FILE__ , 'main_section' );
 		add_settings_field( 'from_email', __( 'From email', 'tcp' ), array( $this, 'show_from_email' ), __FILE__ , 'main_section' );
+		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), __FILE__ , 'main_section' );
+		add_settings_field( 'disable_shopping_cart', __( 'Disable shopping cart', 'tcp' ), array( $this, 'show_disable_shopping_cart' ), __FILE__ , 'main_section' );
 		add_settings_field( 'currency', __( 'Currency', 'tcp' ), array( $this, 'show_currency' ), __FILE__ , 'main_section' );
 		add_settings_field( 'unit_weight', __( 'Unit weight', 'tcp' ), array( $this, 'show_unit_weight' ), __FILE__ , 'main_section' );
 		add_settings_field( 'downloadable_path', __( 'Downloadable path', 'tcp' ), array( $this, 'show_downloadable_path' ), __FILE__ , 'main_section' );
@@ -92,6 +94,19 @@ class TCP_Settings {
 		<input id="from_email" name="tcp_settings[from_email]" value="<?php echo $from_email;?>" size="40" maxlength="255" type="text"><?php
 	}
 
+	function show_stock_management() {
+		$settings = get_option( 'tcp_settings' );
+		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;?>
+		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management );?> /><?php
+	}
+
+	function show_disable_shopping_cart() {
+		$settings = get_option( 'tcp_settings' );
+		$disable_shopping_cart = isset( $settings['disable_shopping_cart'] ) ? $settings['disable_shopping_cart'] : false;?>
+		<input type="checkbox" id="disable_shopping_cart" name="tcp_settings[disable_shopping_cart]" value="yes" <?php checked( true, $disable_shopping_cart );?> />
+		<span class="description"><?php _e( 'To use TheCartPress as a catalog.', 'tcp' );?></span><?php
+	}
+	
 	function show_currency() {
 		$settings = get_option( 'tcp_settings' );
 		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';?>
@@ -139,7 +154,7 @@ class TCP_Settings {
 		$settings = get_option( 'tcp_settings' );
 		$downloadable_path = isset( $settings['downloadable_path'] ) ? $settings['downloadable_path'] : '';?>
 		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255"/><br />
-		<span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be no-public directory ', 'tcp' );?></span><?php	
+		<span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory ', 'tcp' );?></span><?php	
 	}
 
 	function show_checkout_section() {
@@ -154,7 +169,7 @@ class TCP_Settings {
 
 
 	function show_theme_compability_section() {
-		$content = __( 'You can uncheck all this options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template funcions</a>.', 'tcp' );
+		$content = __( 'You can uncheck all this options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template functions</a>.', 'tcp' );
 		$content = apply_filters( 'tcp_theme_compability_section', $content );
 		echo '<span class="description">', $content, '</span>';
 	}
@@ -191,6 +206,8 @@ class TCP_Settings {
 		$input['legal_notice']				=  wp_filter_nohtml_kses( $input['legal_notice'] );
 		$input['from_email']				=  wp_filter_nohtml_kses( $input['from_email'] );
 		$input['emails']					=  wp_filter_nohtml_kses( $input['emails'] );
+		$input['stock_management']			= isset( $input['stock_management'] ) ? $input['stock_management'] == 'yes' : false;
+		$input['disable_shopping_cart']		= isset( $input['disable_shopping_cart'] ) ? $input['disable_shopping_cart'] == 'yes' : false;
 		$input['user_registration']			= isset( $input['user_registration'] ) ? $input['user_registration'] == 'yes' : false;
 		$input['see_buy_button_in_content']	= isset( $input['see_buy_button_in_content'] ) ? $input['see_buy_button_in_content'] == 'yes' : false;
 		$input['see_buy_button_in_excerpt']	= isset( $input['see_buy_button_in_excerpt'] ) ? $input['see_buy_button_in_excerpt'] == 'yes' : false;

@@ -94,7 +94,6 @@ class CustomListWidget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['limit']			= (int)$new_instance['limit'];
 		$instance['loop']			= $new_instance['loop'];
-		$instance['title_tag']		= $new_instance['title_tag'];
 		$instance['columns']		= (int)$new_instance['columns'];
 		$instance['see_title']		= $new_instance['see_title'] == 'yes';
 		$instance['see_image']		= $new_instance['see_image'] == 'yes';
@@ -115,7 +114,6 @@ class CustomListWidget extends WP_Widget {
 		$defaults = array(
 			'limit'				=>  5,
 			'loop'				=> '',
-			'title_tag'			=> 'H2',
 			'columns'			=> 2,
 			'see_title'			=> true,
 			'see_image'			=> false,
@@ -171,20 +169,6 @@ class CustomListWidget extends WP_Widget {
 						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?echo $file; ?></option>
 					<?php endif;?>
 				<?php endwhile; closedir( $handle );?>
-			</select>
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?>:</label>
-			<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
-				<option value="h1" <?php selected( $instance['title_tag'], 'h1' );?>>H1</option>
-				<option value="h2" <?php selected( $instance['title_tag'], 'h2' );?>>H2</option>
-				<option value="h3" <?php selected( $instance['title_tag'], 'h3' );?>>H3</option>
-				<option value="h4" <?php selected( $instance['title_tag'], 'h4' );?>>H4</option>
-				<option value="h5" <?php selected( $instance['title_tag'], 'h5' );?>>H5</option>
-				<option value="h6" <?php selected( $instance['title_tag'], 'h6' );?>>H6</option>
-				<option value="div" <?php selected( $instance['title_tag'], 'div' );?>>DIV</option>
-				<option value="span" <?php selected( $instance['title_tag'], 'span' );?>>SPAN</option>
-				<option value="p" <?php selected( $instance['title_tag'], 'p' );?>>P</option>
 			</select>
 		</p>
 		<p>

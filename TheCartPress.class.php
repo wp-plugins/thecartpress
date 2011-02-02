@@ -50,7 +50,7 @@ class TheCartPress {
 		if ( is_admin() ) {
 			register_activation_hook( __FILE__, array( $this, 'activatePlugin' ) );
 			register_deactivation_hook( __FILE__, array( $this, 'deactivatePlugin' ) );
-			add_action('wp_dashboard_setup', array( $this, 'dashboardSetup' ) );
+			add_action( 'wp_dashboard_setup', array( $this, 'dashboardSetup' ) );
 			add_action( 'admin_menu', array( $this, 'createMenu' ) );
 			//Metaboxes
 			require_once( dirname( __FILE__ ) . '/metaboxes/ProductCustomFieldsMetabox.class.php' );
@@ -71,7 +71,7 @@ class TheCartPress {
 			if ( $see_buy_button_in_excerpt ) add_filter( 'the_excerpt', array( $this, 'excerptFilter' ) );
 			add_action( 'wp_head', array( $this, 'wpHead' ) );
 			add_action( 'wp_meta', array( $this, 'wpMeta' ) );
-			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
+			add_filter( 'the_posts', array( $this, 'thePosts' ) );
 			//ShoppingCartTable and CheckOut shortcodes, and more...
 			require_once( dirname( __FILE__ ) . '/shortcodes/ShoppingCartPage.class.php' );
 			$shoppingCartPage = new ShoppingCartPage();
@@ -172,17 +172,15 @@ class TheCartPress {
 		return $shoppingCart;
 	}
 
-	function parseQuery( $query ) {
-		if ( ! is_page() && ! is_single() ) {
-			$query->query_vars['meta_query'] = array(
-				array(
-					'key' => 'tcp_is_visible',
-					'value' => 1,
-					'compare' => '=',
-					'type' => 'numeric',
-				),
-			);
-		}
+	function thePosts( $posts ) {
+		$new_posts = array();
+		foreach( $posts as $id => $post )
+			if ( $post->post_type == 'tcp_product' ) {
+				if ( tcp_is_visible( $post->ID ) ) {
+					$new_posts[] = $post;
+				}
+			} else $new_posts[] = $post;
+		return $new_posts;
 	}
 
 	function loginFormBottom( $content ) {
@@ -190,10 +188,7 @@ class TheCartPress {
 	}
 
 	function shortCodeBuyButton( $atts ) {
-		extract(shortcode_atts( array(
-			'post_id' => 0,
-			),
-			$atts ) );
+		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
 		return BuyButton::show( $post_id, false );
 	}
 
@@ -313,12 +308,16 @@ class TheCartPress {
 		tcp_register_shipping_plugin( 'ShippingCost' );
 
 		//payment methods
+		require_once( dirname( __FILE__ ) . '/plugins/PayPal/PayPal.php' );
+		tcp_register_payment_plugin( 'PayPal' );
 		require_once( dirname( __FILE__ ) . '/plugins/Remboursement.class.php' );
 		tcp_register_payment_plugin( 'Remboursement' );
 		require_once( dirname( __FILE__ ) . '/plugins/NoCostPayment.class.php' );
 		tcp_register_payment_plugin( 'NoCostPayment' );
 		require_once( dirname( __FILE__ ) . '/plugins/Transference.class.php' );
 		tcp_register_payment_plugin( 'Transference' );
+		require_once( dirname( __FILE__ ) . '/plugins/CardOffLine/CardOffLine.class.php' );
+		tcp_register_payment_plugin( 'CardOffLine' );
 	}
 
 	function activatePlugin() {
@@ -343,31 +342,35 @@ class TheCartPress {
 		require_once( dirname( __FILE__ ) . '/daos/Currencies.class.php' );
 		Currencies::createTable();
 		Currencies::initData();
-		//TODO Deprecated 1.0.4
+		//TODO Deprecated 1.1
 		global $wpdb;
 		$sql = 'update ' . $wpdb->prefix .'term_taxonomy set taxonomy=\'tcp_product_supplier\'
 		where taxonomy=\'tcp_product_supplier_tag\'';
 		$wpdb->query( $sql );
 		//TODO
 		//Pages: shopping cart and checkout
-		$post = array(
-		  'comment_status'	=> 'closed',
-		  'post_content'	=> '[tcp_shopping_cart]',
-		  'post_status'		=> 'publish',
-		  'post_title'		=> __( 'Shopping cart','tcp' ),
-		  'post_type'		=> 'page',
-		);
-		$shopping_cart_page_id = wp_insert_post( $post );
-		update_option( 'tcp_shopping_cart_page_id', $shopping_cart_page_id );
-		$post = array(
-		  'comment_status'	=> 'closed',
-		  'post_content'	=> '[tcp_checkout]',
-		  'post_status'		=> 'publish',
-		  'post_title'		=> __( 'Checkout','tcp' ),
-		  'post_type'		=> 'page',
-		);
-		$checkout_page_id = wp_insert_post( $post );
-		update_option( 'tcp_checkout_page_id', $checkout_page_id );
+		if ( ! get_option( 'tcp_shopping_cart_page_id' ) ) {
+			$post = array(
+			  'comment_status'	=> 'closed',
+			  'post_content'	=> '[tcp_shopping_cart]',
+			  'post_status'		=> 'publish',
+			  'post_title'		=> __( 'Shopping cart','tcp' ),
+			  'post_type'		=> 'page',
+			);
+			$shopping_cart_page_id = wp_insert_post( $post );
+			update_option( 'tcp_shopping_cart_page_id', $shopping_cart_page_id );
+		}
+		if ( ! get_option( 'tcp_checkout_page_id' ) ) {
+			$post = array(
+			  'comment_status'	=> 'closed',
+			  'post_content'	=> '[tcp_checkout]',
+			  'post_status'		=> 'publish',
+			  'post_title'		=> __( 'Checkout','tcp' ),
+			  'post_type'		=> 'page',
+			);
+			$checkout_page_id = wp_insert_post( $post );
+			update_option( 'tcp_checkout_page_id', $checkout_page_id );
+		}
 		//initial shipping and payment method
 		add_option( 'tcp_plugins_data_shi_FreeTrans', array(
 				array(
@@ -390,6 +393,8 @@ class TheCartPress {
 		);
 		$settings = array(
 			'legal_notice'				=> __( 'Legal notice', 'tcp' ),
+			'stock_management'			=> false,
+			'disable_shopping_cart'		=> false,
 			'user_registration'			=> false,
 			'see_buy_button_in_content'	=> true,
 			'see_buy_button_in_excerpt'	=> false,
@@ -407,13 +412,11 @@ class TheCartPress {
 		$customer->add_cap( 'tcp_edit_addresses' );
 		$customer->add_cap( 'tcp_downloadable_products' );
 		$subscriber = get_role( 'subscriber' );
-		if ($subscriber)
-		{
+		if ( $subscriber ) {
 			$caps = (array)$subscriber->capabilities;
 			foreach( $caps as $cap => $grant )
 				if ( $grant ) $customer->add_cap( $cap );
 		}
-		add_role( 'merchant', __( 'Merchant', 'tcp' ));
 		$administrator = get_role( 'administrator' );
 		$administrator->add_cap( 'tcp_edit_product' );
 		$administrator->add_cap( 'tcp_edit_products' );
@@ -432,7 +435,8 @@ class TheCartPress {
 		$administrator->add_cap( 'tcp_downloadable_products' );
 		$administrator->add_cap( 'tcp_edit_addresses' );
 		$administrator->add_cap( 'tcp_edit_taxes' );
-
+		add_role( 'merchant', __( 'Merchant', 'tcp' ));
+		//TODO add_role( 'super-merchant', __( 'Super Merchant', 'tcp' ));
 	 	$merchant = get_role( 'merchant' );
 		$merchant->add_cap( 'tcp_edit_product' );
 		$merchant->add_cap( 'tcp_edit_products' );
@@ -441,15 +445,16 @@ class TheCartPress {
 		$merchant->add_cap( 'tcp_read_product' );
 		$merchant->add_cap( 'tcp_read_private_product' );
 		$merchant->add_cap( 'tcp_delete_product' );
-		$merchant->add_cap( 'tcp_users_roles' );
 		$merchant->add_cap( 'tcp_edit_orders' );
 		$merchant->add_cap( 'tcp_read_orders' );
-		$merchant->add_cap( 'tcp_edit_settings' );
-		$merchant->add_cap( 'tcp_edit_plugins' );
 		$merchant->add_cap( 'tcp_update_price' );
 		$merchant->add_cap( 'tcp_update_stock' );
-		$merchant->add_cap( 'tcp_downloadable_products' );
 		$merchant->add_cap( 'tcp_edit_addresses' );
+		$merchant->add_cap( 'tcp_downloadable_products' );
+		//TODO only super merchant
+		$merchant->add_cap( 'tcp_users_roles' );				
+		$merchant->add_cap( 'tcp_edit_settings' );
+		$merchant->add_cap( 'tcp_edit_plugins' );
 		$merchant->add_cap( 'tcp_edit_taxes' );
 		$editor = get_role( 'editor' );
 		if ( $editor ) {
@@ -467,20 +472,22 @@ class TheCartPress {
 		wp_delete_post( $id, true );
 		//remove roles
 		remove_role( 'customer' );
+//		remove_role( 'super-merchant' );
 		remove_role( 'merchant' );
 	}
 
 	function init() {
 		new ProductCustomPostType();
-		if ( ! is_admin() ) {
+		if ( is_admin() ) {
+			wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
+			wp_enqueue_script( 'tcp_scripts' );
+		} else {
 			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'tcp_scripts' );
 			$settings = get_option( 'tcp_settings' );
 			$load_default_styles = isset( $settings['load_default_styles'] ) ? $settings['load_default_styles'] : true;
 			if ( $load_default_styles )
-				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) );
-		} else {
-			wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_scripts.php' ) );
-			wp_enqueue_script( 'tcp_scripts' );
+				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) );	
 		}
 	    //feed
 		//http://localhost/<tcp>/?feed=tcp-products

@@ -48,6 +48,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			'status'		=> $order->status,
 			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount,
 			'code_tracking'	=> $order->code_tracking,
+			'payment_method'=> $order->payment_method,
 		);
 	}?>
 <div class="wrap">
@@ -79,16 +80,17 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
+	<th scope="col" class="manage-column"><?php _e( 'payment', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Total', 'tcp' );?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
 </thead>
-
 <tfoot>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
+	<th scope="col" class="manage-column"><?php _e( 'payment', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Total', 'tcp' );?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
@@ -107,6 +109,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 				'date'			=> $order['date'],
 				'user'			=> $order['user'],
 				'status'		=> $order['status'],
+				'payment_method'=> $order['payment_method'],
 				'code_tracking' => $order['code_tracking'],
 				'total'			=> $order['total'],
 			);
@@ -114,12 +117,16 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 		} else {
 			$order_lines[$order['order_id']]['total'] += $order['total'];
 		}
-	 endforeach;
-	 foreach( $order_lines as $order ) :?> 
+	endforeach;
+	foreach( $order_lines as $order ) :?> 
 	<tr>
 		<td><?php echo $order['date'];?></td>
 		<td><?php echo $order['user'];?></td>
-		<td><?php echo $order['status'];?></td>
+		<td>
+			<?php echo $order['status'];?>
+			<?php do_action( 'tcp_admin_order_list', $order['order_id'] );?>
+		</td>
+		<td><?php echo $order['payment_method'];?></td>
 		<td><?php echo $order['total'];?></td>
 		<td style="width: 20%;">
 		<?php if ( current_user_can( 'tcp_edit_orders' ) ) : ?>
@@ -129,7 +136,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 		<?php endif;?>
 		</td>
 	</tr>
-	<?php if ( current_user_can( 'tcp_edit_orders' ) ) : ?>
+		<?php if ( current_user_can( 'tcp_edit_orders' ) ) : ?>
 	<tr id="quick_<?php echo $order['order_id'];?>" class="quick_edit" style="display:none;">
 		<td colspan="5">
 			<form method="post">
@@ -164,7 +171,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			</form>
 		</td>
 	</tr>
-	<?php endif;?>
+		<?php endif;?>
 	<?php endforeach;
 endif;?>
 </tbody>

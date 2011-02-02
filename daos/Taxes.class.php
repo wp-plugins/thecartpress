@@ -20,7 +20,7 @@ class Taxes {
 
 	static function createTable() {
 		global $wpdb;
-		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix.'tcp_taxes` (
+		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_taxes` (
 		  `tax_id`		bigint(20)		unsigned NOT NULL auto_increment,
 		  `title`		varchar(200)	NOT NULL,
   		  `tax`			double			NOT NULL default 0,
@@ -80,7 +80,7 @@ class Taxes {
 
 	static function insert( $tax ) {
 		global $wpdb;
-		$wpdb->insert($wpdb->prefix . 'tcp_taxes',
+		$wpdb->insert( $wpdb->prefix . 'tcp_taxes',
 			array(
 				'title'	=> $tax['title'],
 				'tax'	=> $tax['tax'],
@@ -91,7 +91,7 @@ class Taxes {
 
 	static function update( $tax ) {
 		global $wpdb;
-		$wpdb->update($wpdb->prefix . 'tcp_taxes',
+		$wpdb->update( $wpdb->prefix . 'tcp_taxes',
 			array(
 				'title'	=> $tax['title'],
 				'tax'	=> $tax['tax'],
@@ -100,7 +100,8 @@ class Taxes {
 				'tax_id'	=> $tax['tax_id'],
 			),
 			array( '%s', '%f' ),
-			array( '%d' ) );
+			array( '%d' )
+		);
 	}
 
 	static function delete( $tax_id ) {
