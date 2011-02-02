@@ -26,6 +26,7 @@ class Checkout {
 	function show() {
 		$settings = get_option( 'tcp_settings' );
 		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
+		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
 		$error_billing = array();
 		$error_shipping = array();
 		$has_validation_billing_error = false;
@@ -252,27 +253,35 @@ class Checkout {
 					$ordersDetails['qty_ordered']		= $item->getCount();
 					$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
 					$ordersDetails['expires_at']		= $expires_at;
-					$stock = tcp_get_the_stock( $item->getPostId() );
-					if ( $stock == -1 || $stock - $item->getCount() >= 0 ) {
-						tcp_set_the_stock( $item->getPostId(), $stock - $item->getCount() );
-						OrdersDetails::insert( $ordersDetails );
-					} else
-						$no_stock_enough = true;
+					if ( $stock_management ) {
+						$stock = tcp_get_the_stock( $item->getPostId() );
+						if ( $stock == -1 ) {
+							//nothing to do 
+						} elseif ( $stock >= $item->getCount() ) {
+							tcp_set_the_stock( $item->getPostId(), $stock - $item->getCount() );
+						} else {
+							$no_stock_enough = true;
+						}
+					}
+					OrdersDetails::insert( $ordersDetails );
 				}
 				if ( $create_shipping_address )
 					$this->createNewShippingAddress( $order );
 				if ( $create_billing_address )
 					$this->createNewBillingAddress( $order );
-				if ( $order['customer_id'] > 0 ) {//for downloadable products the customer must be registered
+				//if ( $order['customer_id'] > 0 ) {//for downloadable products the customer must be registered
 					//$virtualProductsDAO = new VirtualProductsDAO();
 					//$virtualProductsDAO->createVirtualProducts($productsCart, $order->customer_id, $order_id);
-				}
+				//}
 //
 // Payment Area
 //
 				do_action( 'tcp_checkout_ok', $order_id );
 				echo '<div class="tcp_payment_area">' . "\n";
-				if ( $no_stock_enough ) echo '<p>', __( 'There was an error when creating the order. Please contact the seller.', 'tcp' ), '</p>';
+				if ( $no_stock_enough ) {
+					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
+					echo '<p>', __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ), '</p>';
+				}
 				$order_page = OrderPage::show( $order_id, true, false );
 				$_SESSION['order_page'] = $order_page;
 				echo $order_page;
@@ -283,6 +292,8 @@ class Checkout {
 					$class = $pmi[0];
 					$instance = $pmi[1];
 					$payment_method = new $class();
+					$shoppingCart->addOtherCost( 'shipping', $order['shipping_amount'] );
+					$shoppingCart->addOtherCost( 'payment', $order['payment_amount'] );
 					$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $currency, $order_id );
 				}
 				//if ( isset( $settings['emails'] ) ) {
@@ -309,7 +320,7 @@ class Checkout {
 		}
 		if ( $shoppingCart->isEmpty() ) :?>
 <span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' );?></span>
-		<?php elseif ( ! $shoppingCart->isThereStock() ) :
+		<?php elseif ( $stock_management && ! $shoppingCart->isThereStock() ) :
 			require_once( dirname( __FILE__ ) . '/ShoppingCartPage.class.php' );
 			$shoppingCartPage = new ShoppingCartPage();
 			$shoppingCartPage->show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products.', 'tcp' ) );

@@ -1,0 +1,145 @@
+/*
+Theme Name: Twenty Ten E-Commerce
+Theme URI: http://thecartpress.com/
+Description: Extend the functionality of the Twenty Ten theme with E-Commerce. A basic CHILD theme to use with TheCartPress E-commerce Cart plugin. Able to work with custom post types and taxonomies. New configurable template loops: Grid and List. Templates for e-commerce taxonomies: categories, tags, suppliers. Template for single products. Use the useful widgets of TheCartPress Ecommerce Cart plugin to create your e-commerce: Shopping cart, Product lists, navigation store menus: product categories, product tags, suppliers, related items. Ecommerces, stores and shops.
+Author: TheCartPress Team
+Author URI: http://thecartpress.com/
+Version: 1.0
+License: GNU General Public License
+License URI: license.txt
+Tags: thecartpress, cartpress, e-commerce, cart, store, shopping cart, shop, shopping, commerce, ecommerce, custom post types, taxonomies, taxonomy
+Template: twentyten
+*/
+
+
+
+@import url("../twentyten/style.css");
+
+#content h1.page-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #999;
+	text-transform: capitalize;
+	margin: 0 0 0px;	
+}
+/*////////loop in content//////////////*/
+#content .type-tcp_product .hentry {
+    margin: 0 0 20px;
+}
+#content  table.tcp_products_list tr td{
+	border-left: 1px dotted #E7E7E7;
+	border-top: 1px dotted #E7E7E7;
+}
+.tcp_products_list .entry-content, .tcp_products_list .entry-summary {
+    clear: both;
+    padding: 0px 0 0;
+}
+#content .tcp_products_list .entry-price {
+	font-size: 12px;
+	font-weight: bold;
+	color: #C00;
+	text-transform: capitalize;
+}
+
+/*The loop in sidebar*/
+#primary p {
+	margin: 0 0 6px;
+}
+#primary .hentry {
+	margin: 0 0 3px;
+}
+#primary .hentry div {
+	margin: 0 0 0px;
+}
+#primary .hentry div.entry-title {
+	margin: 0 0 0px;
+}
+#primary .hentry div.entry-title a {
+	color: #06c;
+}
+#primary .hentry div.entry-title a:hover {
+	color: #FF4B33;
+}
+#primary .hentry div.entry-title a:visited {
+	color: #743399;
+}
+#primary .hentry div.entry-price {
+	font-size: 10px;
+	font-weight: normal;
+	color: #c00;
+	line-height: 12px;
+	padding-left: 4px;
+}
+#primary .entry-content, #primary .entry-summary {
+    padding: 0px 0 0;
+}
+
+#secondary p {
+	margin: 0 0 6px;
+}
+#secondary .hentry {
+	margin: 0 0 3px;
+}
+#secondary .hentry div {
+	margin: 0 0 0px;
+}
+#secondary .hentry div.entry-title {
+	margin: 0 0 0px;
+}
+#secondary .hentry div.entry-title a {
+	color: #06c;
+}
+#secondary .hentry div.entry-title a:hover {
+	color: #FF4B33;
+}
+#secondary .hentry div.entry-title a:visited {
+	color: #743399;
+}
+#secondary .hentry div.entry-price {
+	font-size: 10px;
+	font-weight: normal;
+	color: #c00;
+	line-height: 12px;
+	padding-left: 4px;
+}
+#secondary .entry-content, #primary .entry-summary {
+    padding: 0px 0 0;
+}
+
+
+
+
+
+
+/*///////Buy options   in content ////////*/
+#content .entry-content .tcp_buy_button table {
+	font-size: 12px;
+	border: 1px solid #E7E7E7;
+	margin: 0 0px 10px 0;
+	text-align: left;
+	width: inherit;	
+}
+#content .entry-content .tcp_buy_button table tr td{
+    padding: 6px 6px;
+}
+#content .entry-content .tcp_buy_button table input{
+    margin: 0 0 0px;
+}
+
+#content .entry-content .tcp_buy_button table .tcp_added_product_title {
+	font-size: 11px;
+	clear: both;
+	display: block;
+	color: #999;
+}
+
+
+
+
+
+
+
+
+
+
+

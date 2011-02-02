@@ -18,7 +18,7 @@
 
 require_once('paypal.class.php');
 
-class PayPal extends TCP_Plugins {
+class PayPal extends TCP_Plugin {
 
 	function getTitle() {
 		return 'PayPal';
@@ -47,25 +47,26 @@ class PayPal extends TCP_Plugins {
 		return 'PayPal';
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$business = $data['business'];
 		$test_mode = $data['test_mode'];
 		$new_status = $data['new_status'];
 		$return_url = home_url();
-		$notify_url = plugin_basename( dirname( __FILE__ ) ) . 'notify.php?action=ok';
+		//$notify_url = plugin_basename( dirname( __FILE__ ) ) . 'notify.php?action=ok';
+		$notify_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php?action=ok' );
 		$cancel_url = home_url();
 		$paymentAmount = $shoppingCart->getTotal();
 
-		$p = new paypal_class($test_mode);
-		$p->add_field('business', $business);
-		$p->add_field('return', $return_url);
-		$p->add_field('cancel_return', $cancel_url);
-		$p->add_field('notify_url', $notify_url);
-		$p->add_field('custom', $order_id.'-'.$test_mode.'-'.$new_status);
-		$p->add_field('item_name', 'Shopping cart '.bloginfo('name'));
-		$p->add_field('amount', number_format($paymentAmount, 2, '.', ''));
-		$p->add_field('currency_code', $currency);
+		$p = new paypal_class( $test_mode );
+		$p->add_field( 'business', $business );
+		$p->add_field( 'return', $return_url );
+		$p->add_field( 'cancel_return', $cancel_url );
+		$p->add_field( 'notify_url', $notify_url );
+		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status );
+		$p->add_field( 'item_name', 'Shopping cart ' . get_bloginfo( 'name' ) );
+		$p->add_field( 'amount', number_format( $paymentAmount, 2, '.', '' ) );
+		$p->add_field( 'currency_code', $currency );
 		
 		/*$p->add_field('first_name', 'John');
 		$p->add_field('last_name', 'Doe');
@@ -75,12 +76,12 @@ class PayPal extends TCP_Plugins {
 		$p->add_field('zip', '95121');
 		$p->add_field('country', 'US');*/
 
-		return $p->submit_paypal_post();
+		echo $p->submit_paypal_post();
 	}
 
 	function saveEditFields( $data ) {
-		$data['business'] = $zones;
-		$data['test_mode'] = $ranges;
+		$data['business'] = isset( $_REQUEST['business'] ) ? $_REQUEST['business'] : '';
+		$data['test_mode'] = isset( $_REQUEST['test_mode'] ) ? $_REQUEST['test_mode'] == 'yes' : false;
 		return $data;
 	}
 }

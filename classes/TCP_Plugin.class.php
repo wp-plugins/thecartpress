@@ -82,16 +82,16 @@ class TCP_Plugin {
 	}
 
 	// The next functions shouldn't be implemented
-	function __construct() {
-		/*require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		if ( ! is_plugin_active( 'TheCartPress/TheCartPress.class.php' ) )  {
+	/*function __construct() {
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		if ( ! is_plugin_active( 'thecartpress/TheCartPress.class.php' ) )  {
 			$reflector = new ReflectionClass( get_class( $this ) );
 			deactivate_plugins( $reflector->getFileName() );
 			add_action( 'admin_notices', array( $this, 'adminNotices' ) );
-		}*/
+		}
 	}
 	
-	/*function adminNotices() {?>
+	function adminNotices() {?>
 		<div class="updated">
 			<p><?php echo $this->getTitle();?> <?php _e( 'plugin requires TheCartPress plugin to be activated.', 'tcp' );?>
 			<?php _e( 'The plugin has been <strong>deactivated</strong>', 'tcp' );?></p>

@@ -23,7 +23,7 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) return;?>
 
 <div class="wrap">
-<h2><?php echo __( 'Plugins', 'tcp' );?></h2>
+<h2><?php echo __( 'TheCartPress payment/shipping plugins', 'tcp' );?></h2>
 <ul class="subsubsub"></ul>
 <div class="clear"></div>
 

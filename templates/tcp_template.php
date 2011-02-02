@@ -25,6 +25,10 @@ function tcp_the_currency( $echo = true ) {
 		return $currency;
 }
 
+function tcp_get_the_currency() {
+	tcp_the_currency( false );
+}
+
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 	BuyButton::show( $post_id, $echo );
 }
@@ -159,6 +163,10 @@ function tcp_is_downloadable( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_is_downloadable', $post_id );
 }
 
+function tcp_is_visible( $post_id = 0 ) {
+	return tcp_get_the_meta( 'tcp_is_visible', $post_id );
+}
+
 function tcp_get_the_file( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_download_file', $post_id );
 }
@@ -189,6 +197,7 @@ function tcp_get_the_meta( $meta_key, $post_id = 0 ) {
 	return $meta_value;
 }
 
+//multilanguage
 function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
 	global $sitepress;
 	if ( $sitepress ) {
@@ -198,12 +207,17 @@ function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
 		return $post_id;
 }
 
-//to select in a multiple select
+//to select in a multiple select control
 function tcp_selected_multiple( $values, $value, $echo = true ) {
 	if ( in_array( $value, $values ) )
 	if ( $echo )
 		echo ' selected="true"';
 	else
 		return ' selected="true"';
+}
+
+function tcp_get_the_parent( $post_id, $rel_type = 'GROUPED' ) {
+	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+	return RelEntities::getParent( $post_id, $rel_type );
 }
 ?>

@@ -23,7 +23,8 @@ class ShoppingCart {
 
 	private $visited_post_ids = array();
 	private $shopping_cart_items = array();
-
+	private $other_costs = array();
+	
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -51,6 +52,7 @@ class ShoppingCart {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
 			$total += $shopping_cart_item->getTotal();
+		$total += $this->getTotalOtherCosts();
 		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
 		return $total;
 	}
@@ -151,6 +153,7 @@ class ShoppingCart {
 		foreach( $this->shopping_cart_items as $item )
 			if ( ! $item->isDownloadable() )
 				$total += $item->getTotal();
+		$total += $this->getTotalOtherCosts();
 		return $total;
 	}
 
@@ -194,6 +197,24 @@ class ShoppingCart {
 			else
 				return true;
 		}
+	}
+	
+	/**
+	 * Other costs API
+	 */
+	function addOtherCost( $id, $cost = 0, $desc = '' ) {
+		$this->other_costs[$id] = new ShoppingCartOtherCost( $cost, $desc );
+	}
+
+	function removeOtherCost( $id ) {
+		unset( $this->other_costs[$id] );
+	}
+
+	function getTotalOtherCosts() {
+		$total = 0;
+		foreach( $this->other_costs as $other_cost )
+			$total += $other_cost->getCost();
+		return $total;
 	}
 }
 
@@ -282,6 +303,24 @@ class ShoppingCartItem {
 
 	function setDownloadable( $is_downloadable ) {
 		$this->is_downloadable = $is_downloadable;
+	}
+}
+
+class ShoppingCartOtherCost {
+	private $cost;
+	private $desc;
+
+	function __construct( $cost = 0, $desc = '') {
+		$this->cost = (double)$cost;
+		$this->desc = $desc;
+	}
+
+	function getCost() {
+		return $this->cost;
+	}
+
+	function getDesc() {
+		return $this->desc;
 	}
 }
 ?>

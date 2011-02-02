@@ -1,80 +1,70 @@
-.tcp_shopping_cart_table {
-	border:0px !important;
+@charset "utf-8";
+/* CSS Document */
+
+/* SHOPPING CART THE WORDPRESS CART
+-------------------------------------------------------------- */
+table#tcp_shopping_cart_table {
+	border:0px;
 }
 
-.tcp_shopping_cart_table a{
-	text-decoration: none;
-	color: #000;
+table#tcp_shopping_cart_table tr th,
+table#tcp_shopping_cart_table thead th {
+	background-color: #333;
+	padding: 4px 10px;
+	line-height: 22px;
+	color: #CCC;
 }
-.tcp_shopping_cart_table a:hover{
-	color: #c00;
-}
-.tcp_shopping_cart_table tr th,
-.tcp_shopping_cart_table thead th {
-	background-color: #333 !important;
-	color: #ccccff !important;
-}
-.tcp_shopping_cart_table tr td {
-}
-.tcp_shopping_cart_table tr td {
-	background-color: #f0f0ff;
-	background-image: url(images/chekout_box_bg.gif);
-	background-repeat: repeat-x;
-	background-position: 0px -35px;
-	border-top: 1px solid #fff;
+
+table#tcp_shopping_cart_table tr td {
+	background-color: #f7f7f7;
 	font-size: 11px;
+	padding: 4px 10px;
+	border-top: 1px dotted #ccc;
 }
-.tcp_shopping_cart_table tr.odd td {
+table#tcp_shopping_cart_table tr.odd td {
 	background-color: #FfF7FC;
 }
-.tcp_cart_name {
-	background-image: url(none) !important;
-	background-color: #FfF7EE !important;
-	width: 100%;
-	font-size: 12px !important;
-	color: #000 !important;
-	padding-top: 14px !important;
-	padding-bottom: 14px !important;
-}
-.tcp_cart_unit_price, .tcp_cart_price, .tcp_cart_units{
-	text-align:right;
-	}
-.tcp_shopping_cart_table input {
-	margin: 1px 0 1px 0;
-}
-.tcp_shopping_cart_table input.file,
-.tcp_shopping_cart_table input.button {
-	margin: 0 24px 0px 0;
-}
-.tcp_shopping_cart_table label {
-	color: #888;
+table#tcp_shopping_cart_table .tcp_cart_name {
+	background-color: #f0f0f0;
+	width: inherit;
 	font-size: 12px;
 }
-.tcp_shopping_cart_table select {
-	margin: 0 0 0px 0;
+table#tcp_shopping_cart_table .tcp_cart_name {
+	background-color: #f0f0f0;
+	width: inherit;
+	font-size: 12px;
 }
-.tcp_cart_subtotal_row td{
-	border-top: 10px solid #fff !important;
-	padding-top:6px !important;
+table#tcp_shopping_cart_table .tcp_cart_name a{
+	text-decoration: none;
 }
-.tcp_cart_total_row  td{
-	padding-top:4px !important;
+
+#shopping_cart input {
+	font-size: 11px;
+	margin-bottom: 0px;
 }
-.tcp_cart_total_row  td, .tcp_cart_subtotal_row td{
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td{
+	border-top: 10px solid #fff;
+}
+table#tcp_shopping_cart_table .tcp_cart_total_row  td,
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td {
 	font-weight: bold;
 	text-transform: uppercase;
-	padding-bottom:4px !important;
 }
-.tcp_cart_total {
-	background-image: url(none) !important;
-	background-color: #c00 !important;
+table#tcp_shopping_cart_table .tcp_cart_total {
+	background-color: #c00;
 	color: #FFF;
 }
 /* CHEKOUT THE WORDPRESS CART
 -------------------------------------------------------------- */
-#checkout div div {
+#checkout  {
+
+}
+#checkout  p{
+	margin-bottom:6px;
+
 }
 #checkout h3{
+	font-family: Arial, Helvetica, sans-serif;
 	line-height: 24px;
 	color: #f0f0f0;
 	background-image:url(images/arrow-circle.gif);
@@ -90,11 +80,15 @@
 	color: #F90;
 }
 #checkout h4{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #333;
 	text-transform: uppercase;
 	line-height: 20px;
 	padding-left: 0px;
-	border-bottom: 1px dotted #333;
+	border-bottom: 1px dotted #999;
 	margin-bottom:10px;
+	font-weight: bolder;
 }
 #identify_layer, #billing_layer, #shipping_layer, #sending_layer, #payment_layer, #cart_layer {
 }
@@ -103,11 +97,12 @@
 	margin-bottom: 1px;
 	font-size: 11px;
 	padding: 10px;
-	background-color: #FAF7EE;
-	background-image: url(images/chekout_box_bg.gif);
+	background-color: #FFF; /*FAF7EE*/
+	background-image: url(images/chekout_box_bg.jpg);
 	background-repeat: repeat-x;
-	background-position: 0px 0px;
+	background-position: left top;
 	border: 1px #ccc solid;
+	font-family: Arial, Helvetica, sans-serif;
 	}
 .checkout_info strong{
 	color: #666 !important;	
@@ -124,6 +119,13 @@
 .checkout_info label {
 	padding: 0px 0px 0px 4px;
 	margin: 0px;
+}
+.checkout_info span.description {
+	clear: left;
+	color: #C00;
+	display: block;
+	margin-bottom: 10px;
+	text-align: right;
 }
 #login_form {
 	float:right;
@@ -160,19 +162,21 @@
 	margin: 5px 0px 5px 0px;
 	width: 30px !important;
 }
-
+p.login-lostpassword {
+	clear: both;		
+}
 #login_guess {
 	float:left;
 	width:45%;
 	padding: 10px;
 }
-#login_guess a{
+#login_guess a, p.login-lostpassword a{
 	font-weight: bolder;
-	font-size: 12px;
+	font-size: 11px;
 	text-decoration: none;
 	color:#09F;
 }
-#login_guess a:hover{
+#login_guess a:hover, p.login-lostpassword a:hover{
 	color:#F60;
 }
 #login_guess ul{
@@ -194,6 +198,7 @@
 #new_shipping_area li label, #new_billing_area li label {
 	width: 140px;
 	float: left;
+
 }
 #new_shipping_area li input, #new_billing_area li input, #new_shipping_area li select, #new_billing_area li select {
 	width: 260px;
@@ -249,3 +254,21 @@
 }
 .checkout_subtotal tr{
 }
+
+
+
+/* ***Float containers fix*** */ 
+clearfix:after, .identify_layer_info:after {
+ content: "."; 
+ display: block; 
+ height: 0; 
+ clear: both; 
+ visibility: hidden;
+ }
+ 
+.clearfix, .identify_layer_info{display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .clearfix, * html .identify_layer_info{height: 1%;}
+.clearfix, .identify_layer_info{display: block;}
+/* End hide from IE-mac */  

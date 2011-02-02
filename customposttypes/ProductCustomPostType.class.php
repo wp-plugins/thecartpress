@@ -180,7 +180,6 @@ class ProductCustomPostType {
 				'show_count'		=> true,
 				'hide_empty'		=> true,
 			) );?>
-
 			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?><label>
 			<select name="tcp_product_type" id="tcp_product_type">
 				<option value="" <?php selected( "", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'all', 'tcp');?></option>
@@ -195,8 +194,6 @@ class ProductCustomPostType {
 	 * this function is executed before the admin product list query
 	 */
 	function parseQuery( $query ) {
-		//$qv = &$query->query_vars;
-		
 		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0) {
 			$query->query_vars['tax_query'] = array(
 				array(
@@ -216,36 +213,7 @@ class ProductCustomPostType {
 				),
 			);
 		}
+		//TODO super merchant!!
 	}
-
-/* //before WP 3.1
-	function postsJoin( $join ) {
-		global $wpdb;
-		if ( is_admin() ) {
-			$product_type = isset($_REQUEST['tcp_product_type'])?$_REQUEST['tcp_product_type']:'';
-			if ( strlen( $product_type ) > 0 )
-				$join .= ', ' . $wpdb->postmeta . ' tcp_meta';
-			$category = isset( $_REQUEST['tcp_prod_cat'] ) ? $_REQUEST['tcp_prod_cat'] : 0;
-			if ( $category > 0 )
-				$join .= ', ' . $wpdb->term_relationships . ' tcp_rel, ' . $wpdb->term_taxonomy . ' tcp_tax';
-		}
-		return $join;
-	}
-
-	function postsWhere( $where ) {
-		global $wpdb;
-		if ( is_admin() ) {
-			$product_type = isset($_REQUEST['tcp_product_type'])?$_REQUEST['tcp_product_type']:'';
-			if ( strlen( $product_type ) > 0 )
-				$where .= ' and ' . $wpdb->posts .'.ID = tcp_meta.post_id and tcp_meta.meta_key = \'tcp_type\'
-							and tcp_meta.meta_value = \'' . $product_type . '\'';
-			$category = isset( $_REQUEST['tcp_prod_cat'] ) ? $_REQUEST['tcp_prod_cat'] : 0;
-			if ( $category > 0 )
-				$where .= ' and tcp_tax.term_id = ' . $category . '
-							and ' . $wpdb->posts . '.ID = tcp_rel.object_id
-							and tcp_rel.term_taxonomy_id = tcp_tax.term_taxonomy_id';
-		}
-	    return $where;
-	}*/
 }
 ?>

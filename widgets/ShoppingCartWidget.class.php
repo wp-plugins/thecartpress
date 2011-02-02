@@ -31,12 +31,14 @@ class ShoppingCartWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract( $args );
-		$currency = tcp_the_currency( false );
+		$settings = get_option( 'tcp_settings' );
+		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
+		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
-		if ( $title ) echo $before_title, $title, $after_title;?>
-		<ul class="tcp_shopping_cart">
-		<?php $shoppingCart = TheCartPress::getShoppingCart();
+		if ( $title ) echo $before_title, $title, $after_title;
+		echo '<ul class="tcp_shopping_cart">';
+		$shoppingCart = TheCartPress::getShoppingCart();
 		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
 		$see_modify_item	= isset( $instance['see_modify_item'] ) ? $instance['see_modify_item'] : true;
 		$see_weight			= isset( $instance['see_weight'] ) ? $instance['see_weight'] : true;
@@ -63,7 +65,7 @@ class ShoppingCartWidget extends WP_Widget {
 						<?php else :?>
 							<span class="tcp_units"><?php _e( 'Units', 'tcp' );?>:&nbsp;<?php echo $item->getCount();?></span>
 						<?php endif;?>
-						<?php if ( $see_stock_notice ) :
+						<?php if ( $stock_management && $see_stock_notice ) :
 							$stock = tcp_get_the_stock( $item->getPostId() );
 							if ( $stock != -1 && $stock < $item->getCount() ) :?>
 								<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );?></span>
@@ -157,11 +159,13 @@ class ShoppingCartWidget extends WP_Widget {
 	}
 
 	private function getProductTitle( $post_id, $option_1_id, $option_2_id ) {
-		$title = '<a href="' . get_permalink( $post_id ) . '">';
-		$title .= get_the_title( $post_id );
+		$title = get_the_title( $post_id );
 		if ( $option_1_id > 0 ) $title .= '-' . get_the_title( $option_1_id );
 		if ( $option_2_id > 0 ) $title .= '-' . get_the_title( $option_2_id );
-		$title .= '</a>';
+		if ( ! tcp_is_visible( $post_id ) )
+			$post_id = tcp_get_the_parent( $post_id );
+		if ( $post_id > 0 )
+			$title = '<a href="' . get_permalink( $post_id ) . '" title="' . $title . '">' . $title . '</a>';
 		return $title;
 	}
 }

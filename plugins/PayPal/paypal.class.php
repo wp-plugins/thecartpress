@@ -154,7 +154,8 @@ class paypal_class {
          $output .= "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
       $output .= "<input type=\"image\" name=\"submit\" border=\"0\"";
       $output .= " src=\"https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif\"";
-      $output .= " alt=\"".__('PayPal - The safer, easier way to pay online', 'tcp')."\">";
+      $output .= " alt=\"".__('PayPal - The safer, easier way to pay online', 'tcp')."\"";
+      $output .= " title=\"".__('PayPal - The safer, easier way to pay online', 'tcp')."\">";
       $output .= "</form>\n";
       return $output;
    }

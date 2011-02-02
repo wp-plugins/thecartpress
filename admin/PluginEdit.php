@@ -81,6 +81,8 @@ if ( is_array( $plugin_data ) ) :
 	$data = isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : array();
 } else
 	$data = array();
+
+$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING;
 ?>
 <form method="post">
 	<input type="hidden" name="plugin_id" value="<?php echo $plugin_id;?>" />
@@ -94,11 +96,11 @@ if ( is_array( $plugin_data ) ) :
 	</th>
 	<td>
 		<select class="postform" id="new_status" name="new_status">
-			<option value="<?php echo Orders::$ORDER_PENDING;?>"<?php selected( Orders::$ORDER_PENDING, $data['new_status'] );?>><?php _e( 'pending', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_PROCESSING;?>"<?php selected( Orders::$ORDER_PROCESSING, $data['new_status'] );?>><?php _e( 'processing', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_COMPLETED;?>"<?php selected( Orders::$ORDER_COMPLETED, $data['new_status'] );?>><?php _e( 'completed', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $data['new_status'] );?>><?php _e( 'cancelled', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $data['new_status'] );?>><?php _e( 'suspended', 'tcp' );?></option>
+			<option value="<?php echo Orders::$ORDER_PENDING;?>"<?php selected( Orders::$ORDER_PENDING, $new_status );?>><?php _e( 'pending', 'tcp' );?></option>
+			<option value="<?php echo Orders::$ORDER_PROCESSING;?>"<?php selected( Orders::$ORDER_PROCESSING, $new_status );?>><?php _e( 'processing', 'tcp' );?></option>
+			<option value="<?php echo Orders::$ORDER_COMPLETED;?>"<?php selected( Orders::$ORDER_COMPLETED, $new_status );?>><?php _e( 'completed', 'tcp' );?></option>
+			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $new_status );?>><?php _e( 'cancelled', 'tcp' );?></option>
+			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $new_status );?>><?php _e( 'suspended', 'tcp' );?></option>
 		</select> <span class="description"><?php _e( 'It is only used by payment plugins', 'tcp' );?></span>
 	</td></tr>
 	<tr valign="top">

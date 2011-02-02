@@ -14,6 +14,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Ten_Ecommerce
+ * @since Twenty Ten Ecommerce 1.0
  */
 
 set_post_thumbnail_size( 100, 100 );
@@ -26,10 +30,11 @@ $see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : 
 $see_content			= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
 $see_price				= isset( $instance['see_price'] ) ? $instance['see_price'] : true;
 $see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
+$see_author				= isset( $instance['see_author'] ) ? $instance['see_author'] : true;
 $see_meta_data			= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data'] : false;
 $see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
 $number_of_columns		= isset( $instance['columns'] ) ? (int)$instance['columns'] : 2;
-//custom areas
+//custom areas. Usefull to insert other template tag from WordPress or anothers plugins 
 $see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
 $see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
 $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
@@ -40,7 +45,9 @@ $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance
 		<li>
 			<ul>
 				<?php if ( $see_title ) : ?>
-					<li><a href="<?php echo get_permalink( );?>" border="0"><?php the_title();?></a></li>
+					<li class="entry-title">
+                    	<a href="<?php the_permalink();?>" border="0"><?php echo the_title(); ?></a>
+                    </li>
 				<?php endif;?>
 				<?php if ( $see_image ) : ?>
 					<li><a href="<?php the_permalink();?>" border="0"><?php echo the_post_thumbnail();?></a></li>
@@ -68,6 +75,7 @@ Second
 				<?php if ( $see_third_custom_area ) :?>
 third
 				<?php endif;?>
+                
 
 			</ul>
 		</li>
