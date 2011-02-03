@@ -349,7 +349,7 @@ class TheCartPress {
 		$wpdb->query( $sql );
 		//TODO
 		//Pages: shopping cart and checkout
-		if ( ! get_option( 'tcp_shopping_cart_page_id' ) ) {
+		//if ( ! get_option( 'tcp_shopping_cart_page_id' ) ) {
 			$post = array(
 			  'comment_status'	=> 'closed',
 			  'post_content'	=> '[tcp_shopping_cart]',
@@ -359,8 +359,8 @@ class TheCartPress {
 			);
 			$shopping_cart_page_id = wp_insert_post( $post );
 			update_option( 'tcp_shopping_cart_page_id', $shopping_cart_page_id );
-		}
-		if ( ! get_option( 'tcp_checkout_page_id' ) ) {
+		//}
+		//if ( ! get_option( 'tcp_checkout_page_id' ) ) {
 			$post = array(
 			  'comment_status'	=> 'closed',
 			  'post_content'	=> '[tcp_checkout]',
@@ -370,7 +370,7 @@ class TheCartPress {
 			);
 			$checkout_page_id = wp_insert_post( $post );
 			update_option( 'tcp_checkout_page_id', $checkout_page_id );
-		}
+		//}
 		//initial shipping and payment method
 		add_option( 'tcp_plugins_data_shi_FreeTrans', array(
 				array(
