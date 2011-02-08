@@ -52,8 +52,7 @@ class PayPal extends TCP_Plugin {
 		$business = $data['business'];
 		$test_mode = $data['test_mode'];
 		$new_status = $data['new_status'];
-		$return_url = home_url();
-		//$notify_url = plugin_basename( dirname( __FILE__ ) ) . 'notify.php?action=ok';
+		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() ); //home_url();
 		$notify_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php?action=ok' );
 		$cancel_url = home_url();
 		$paymentAmount = $shoppingCart->getTotal();

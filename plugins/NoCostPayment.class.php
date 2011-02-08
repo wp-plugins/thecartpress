@@ -50,9 +50,12 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		echo '<p>', __( 'No payment!!, for test purpose.', 'tcp' ), '</p>';
-		echo '<p>', $data['notice'], '</p>';
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );?>
+		<p><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></p>
+		<p><?php echo $data['notice'];?></p>
+		<p>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING );
 	}

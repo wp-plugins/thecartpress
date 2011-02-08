@@ -119,15 +119,23 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<label for="countries"><?php _e( 'select countries', 'tcp' );?>:</label>
 	</th>
 	<td>
-<?php $countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
+		<?php $countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
 		<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
 			<?php $countries_db = Countries::getAll();
 			foreach( $countries_db as $country ) :?>
 			<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $countries, $country->iso );?>><?php echo $country->name;?></option>
 			<?php endforeach;?>
 		</select>
+
+		<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
+		<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
+		<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
+		<input type="button" value="<?php _e( 'MERCASUR', 'tcp');?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' );?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
+		<input type="button" value="<?php _e( 'CAN', 'tcp');?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' );?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
+		<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
+		
 	</td></tr>
-<?php $plugin->showEditFields( $data );?>
+	<?php $plugin->showEditFields( $data );?>
 	</tbody></table>
 	<p class="submit">
 		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />

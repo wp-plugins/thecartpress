@@ -108,8 +108,19 @@ class ProductCustomFieldsMetabox {
 				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_weight', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loop or catalogue)', 'tcp' );?>:</label></th>
-				<td><input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php if ( get_post_meta( $post->ID, 'tcp_is_visible', true ) ):?>checked <?php endif;?> /></td>
+				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops or catalogue)', 'tcp' );?>:</label></th>
+				<td><?php 
+				$keys = get_post_custom_keys( $post->ID );
+				if ( $keys )
+					$is_visible = tcp_is_visible( $post->ID );
+				else
+					$is_visible = true;?>
+				<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php if ( $is_visible ):?>checked="checked"<?php endif;?> /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in main loop or catalogue)', 'tcp' );?>:</label></th>
+				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_order', true ) );?>" class="regular-text" type="text" style="width:4em">
+				<span class="description"><?php _e( 'Numerical order.', 'tcp' );?></span></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' );?>:</label></th>
@@ -176,13 +187,14 @@ class ProductCustomFieldsMetabox {
 			update_post_meta( $post_id, 'tcp_tax',  0 );
 			update_post_meta( $post_id, 'tcp_tax_label', '' );
 		}
-		update_post_meta( $post_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] )  ? $_POST['tcp_is_visible'] == 'yes': false );
-		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] )  ? $_POST['tcp_is_downloadable'] == 'yes': false );
+		update_post_meta( $post_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] )  ? $_POST['tcp_is_visible'] == 'yes' : false );
+		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] )  ? $_POST['tcp_is_downloadable'] == 'yes' : false );
 		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] )  ? (int)$_POST['tcp_max_downloads'] : 0 );
 		update_post_meta( $post_id, 'tcp_days_to_expire', isset( $_POST['tcp_days_to_expire'] )  ? (int)$_POST['tcp_days_to_expire'] : 0 );
 		update_post_meta( $post_id, 'tcp_type', isset( $_POST['tcp_type'] )  ? $_POST['tcp_type'] : 'SIMPLE' );
 		update_post_meta( $post_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
 		update_post_meta( $post_id, 'tcp_weight', isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0 );
+		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] )  ? (int)$_POST['tcp_order'] : '' );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );
 		$tcp_stock = isset( $_POST['tcp_stock'] )  ? $_POST['tcp_stock'] : -1;
 		if ( $tcp_stock == '' ) $tcp_stock = -1;

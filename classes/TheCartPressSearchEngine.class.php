@@ -46,11 +46,15 @@ class TheCartPressSearchEngine {
 	}
 
 	static private function connectAndSend( $url ) {
-		$handler = curl_init( $url );
-		curl_setopt( $handler, CURLOPT_RETURNTRANSFER, 1 );
-		$response = curl_exec( $handler );
-		curl_close( $handler );
-		return $response;
+		try {
+			$handler = curl_init( $url );
+			curl_setopt( $handler, CURLOPT_RETURNTRANSFER, 1 );
+			$response = curl_exec( $handler );
+			curl_close( $handler );
+			return $response;
+		} catch (Exception $e) {
+			return 'Caught exception: ' . $e->getMessage();
+		}
 	}
 
 	static private function guid() {

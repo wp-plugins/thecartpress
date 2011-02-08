@@ -153,6 +153,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 	}
 	$applicable_plugins = array();
 	$applicable_instance_id = -1;
+	$applicable_for_country = false;
 	foreach( $tcp_plugins as $plugin_id => $plugin ) {
 		$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 		if ( is_array( $plugin_data ) && count( $plugin_data ) > 0 ) {
@@ -164,6 +165,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 					$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
 					if ( in_array( $shipping_country,  $countries ) ) {
 						$applicable_instance_id = $instance_id;
+						$applicable_for_country = true;
 						break;
 					}
 				}
@@ -178,6 +180,13 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 			}
 		}
 	}
+
+	if ( $applicable_for_country )
+		foreach( $applicable_plugins as $id => $plugin_instance ) {
+			$data = tcp_get_shipping_plugin_data( get_class( $plugin_instance['plugin'] ), $plugin_instance['instance'] );
+			$all_countrie =	isset( $data['all_countries'] ) ? $data['all_countries'] == 'yes' : false;
+			if ( $all_countrie ) unset( $applicable_plugins[$id] );
+		}
 	return $applicable_plugins;
 }
 

@@ -22,10 +22,10 @@
 require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
 
 class ProductCustomPostType {
-	public static $PRODUCT = 'tcp_product';
-	public static $PRODUCT_CATEGORY = 'tcp_product_category';
-	public static $PRODUCT_TAG = 'tcp_product_tag';
-	public static $SUPPLIER_TAG = 'tcp_product_supplier'; //_tag';
+	public static $PRODUCT			= 'tcp_product';
+	public static $PRODUCT_CATEGORY	= 'tcp_product_category';
+	public static $PRODUCT_TAG		= 'tcp_product_tag';
+	public static $SUPPLIER_TAG		= 'tcp_product_supplier'; //_tag';
 	
 	private $currency = '';
 	
@@ -111,8 +111,6 @@ class ProductCustomPostType {
 			add_action( 'manage_posts_custom_column', array( $this, 'managePostCustomColumns' ) );
 			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
 			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
-			//add_filter( 'posts_where', array( $this, 'postsWhere' ) );//before 3.1
-			//add_filter( 'posts_join', array( $this, 'postsJoin' ) );//before 3.1
 			//for quick edit 			
 			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
 		}

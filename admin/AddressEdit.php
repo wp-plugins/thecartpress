@@ -144,7 +144,7 @@ function tcp_get_value( $id, $echo = true ) {
 	<tr valign="top">
 	<th scope="row"><label for="postcode"><?php _e( 'Postal code', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
-		<input type="text" id="postcode" name="postcode" value="<?php tcp_get_value( 'postcode' );?>" size="5" maxlength="5" />
+		<input type="text" id="postcode" name="postcode" value="<?php tcp_get_value( 'postcode' );?>" size="7" maxlength="7" />
 		<?php tcp_show_error_msg( $error_address, 'postcode' );?></td>
 	</tr>
 	<tr valign="top">

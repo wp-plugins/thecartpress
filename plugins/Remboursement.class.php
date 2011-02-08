@@ -19,11 +19,11 @@
 class Remboursement extends TCP_Plugin {
 
 	function getTitle() {
-		return 'Remboursement';
+		return 'Cash on delivery';
 	}
 
 	function getDescription() {
-		return 'Remboursement payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
+		return __( 'Cash on delivery payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>', 'tcp' );
 	}
 
 	function showEditFields( $data ) {?>
@@ -58,7 +58,7 @@ class Remboursement extends TCP_Plugin {
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'Remboursement. The cost of the service is ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
+		return __( 'Cash on delivery. The cost of the service is ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
@@ -74,8 +74,12 @@ class Remboursement extends TCP_Plugin {
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		?><p><?php echo $data['notice'];?></p><p><?php _e( 'The cost of the service is' , 'tcp');?> <?php echo number_format( $cost, 2);?> <?php echo $currency;?></p><?php
+		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );?>
+		<p><?php echo $data['notice'];?></p>
+		<p><?php printf( __( 'The cost of the service is %s %s' , 'tcp'), number_format( $cost, 2), $currency );?></p>
+		<p>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] );
 	}
