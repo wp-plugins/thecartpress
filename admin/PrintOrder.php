@@ -26,7 +26,7 @@ table {width: 90%;}
 </style>
 </head>
 <body>
-<?php echo $_SESSION['order_page']; ?>
+<?php echo $_SESSION['order_page'];?>
 <p>
 <a href="javascript:print();"><?php echo _('print');?></a>
 &nbsp;|&nbsp;

@@ -75,16 +75,16 @@ class Transference extends TCP_Plugin {
 	<?php }
 
 	function saveEditFields( $data ) {
-		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
-		$data['owner'] = isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
-		$data['bank'] = isset( $_REQUEST['bank'] ) ? $_REQUEST['bank'] : '';
-		$account1 = isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
-		$account2 = isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
-		$account3 = isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
-		$account4 = isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
-		$data['account'] = $account1 . $account2 . $account3 . $account4;
-		$data['iban'] = isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
-		$data['swift'] = isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
+		$data['notice']		= isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
+		$data['owner']		= isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
+		$data['bank']		= isset( $_REQUEST['bank'] ) ? $_REQUEST['bank'] : '';
+		$account1			= isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
+		$account2			= isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
+		$account3			= isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
+		$account4			= isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
+		$data['account']	= $account1 . $account2 . $account3 . $account4;
+		$data['iban']		= isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
+		$data['swift']		= isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
 		return $data;
 	}
 
@@ -96,12 +96,15 @@ class Transference extends TCP_Plugin {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );?>
 		<p><?php echo $data['notice'];?></p>
 		<table>
-		<tr><th scope="row"><?php __( 'Owner: ', 'tcp' );?>: </th><td><?php echo $data['owner'];?></td></tr>
-		<tr><th scope="row"><?php __( 'Bank', 'tcp' );?>: </th><td><?php echo $data['bank'];?></td></tr>
-		<tr><th scope="row"><?php __( 'Account', 'tcp' );?>: </th><td><?php echo $data['account'];?></td></tr>
-		<tr><th scope="row"><?php __( 'IBAN', 'tcp' );?>: </th><td><?php echo $data['iban'];?></td></tr>
-		<tr><th scope="row"><?php __( 'SWIFT', 'tcp' );?>: </th><td><?php echo $data['swift'];?></td></tr>
-		</table><?php
+		<tr><th scope="row"><?php _e( 'Owner', 'tcp' );?>: </th><td><?php echo $data['owner'];?></td></tr>
+		<tr><th scope="row"><?php _e( 'Bank', 'tcp' );?>: </th><td><?php echo $data['bank'];?></td></tr>
+		<tr><th scope="row"><?php _e( 'Account', 'tcp' );?>: </th><td><?php echo $data['account'];?></td></tr>
+		<tr><th scope="row"><?php _e( 'IBAN', 'tcp' );?>: </th><td><?php echo $data['iban'];?></td></tr>
+		<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' );?>: </th><td><?php echo $data['swift'];?></td></tr>
+		</table>
+		<p>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] );
 	}

@@ -35,10 +35,11 @@ class ShoppingCart {
 				$sci->add( $count );
 			}
 		} else {
-			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, 1, $unit_price, $tax, $unit_weight );
-			if ( $is_downloadable )			
+			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight );
+			if ( $is_downloadable ) {
 				$sci->setDownloadable( true );
-			else
+				$sci->setCount( 1 );
+			} else
 				$sci->setDownloadable( false );
 			$this->shopping_cart_items[$shopping_cart_id] = $sci;
 		}
@@ -77,6 +78,8 @@ class ShoppingCart {
 	function deleteAll() {
 		unset( $this->shopping_cart_items );
 		$this->shopping_cart_items = array();
+		unset( $this->other_costs );
+		$this->other_costs = array();
 	}
 
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {

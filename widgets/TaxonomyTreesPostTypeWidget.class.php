@@ -134,7 +134,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><? _e( 'press save to load the taxonomies list.', 'tcp' );?></span>
+			<span class="description"><?php _e( 'press save to load the taxonomies list.', 'tcp' );?></span>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
@@ -142,7 +142,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 				<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo $tax->labels->name;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><? _e( 'Press save to load the next lists', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the next lists', 'tcp' );?></span>
 		</p><p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_number_products' ); ?>" name="<?php echo $this->get_field_name( 'see_number_products' ); ?>" <?php checked( $see_number_products, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_number_products' ); ?>"><?php _e( 'See children number', 'tcp' ); ?></label>
@@ -164,8 +164,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 				<option value="<?php echo esc_attr( $cat->term_id );?>"<?php $this->selected_multiple( $included_taxonomies, $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
 			<?php endforeach; ?>
 			</select>
-			<input type="button" onclick="tcp_select_up('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_up" value="<? _e( 'up', 'tcp' );?>" class="button-secondary"/>
-		    <input type="button" onclick="tcp_select_down('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_down" value="<? _e( 'down', 'tcp' );?>" class="button-secondary"/>
+			<input type="button" onclick="tcp_select_up('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_up" value="<?php _e( 'up', 'tcp' );?>" class="button-secondary"/>
+		    <input type="button" onclick="tcp_select_down('<?php echo $this->get_field_id( 'included_taxonomies' ); ?>', '<?php echo $this->get_field_id( 'order_included' ); ?>');" id="tcp_down" value="<?php _e( 'down', 'tcp' );?>" class="button-secondary"/>
 		    <span class="description"><?php _e( 'Use those actions to sort the list.', 'tcp' );?></span>
 		    <input type="hidden" id="<?php echo $this->get_field_id( 'order_included' ); ?>" name="<?php echo $this->get_field_name( 'order_included' ); ?>" value="<?php echo $instance['order_included'];?>"/>
 		</p><p>

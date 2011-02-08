@@ -96,12 +96,10 @@ class ShoppingCartPage {
 				</tr>
 			</tbody>
 			</table>
-			<p>
-			<form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form>
-			</p>
 			<ul class="tcp_sc_links">
 				<li class="tcp_sc_checkout"><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 				<li class="tcp_sc_continue"><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
+				<li class="tcp_sc_delete_all"><form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form></li>
 			</ul>
 		</div>
 	<?php endif;

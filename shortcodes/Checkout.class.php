@@ -27,6 +27,20 @@ class Checkout {
 		$settings = get_option( 'tcp_settings' );
 		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
+		$checkout_successfully_message = isset( $settings['checkout_successfully_message'] ) ? $settings['checkout_successfully_message'] : '';
+	
+		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
+			echo '<div class="tcp_order_successfully">';
+			if ( strlen( $checkout_successfully_message ) > 0 )
+				echo '<p>', str_replace ( "\n" , '<p></p>', $checkout_successfully_message ), '</p>';
+			else
+				 _e( 'The order has been completed successfully.', 'tcp' );
+			echo '</div>';
+			echo $_SESSION['order_page'];
+			unset( $_SESSION['order_page'] );
+			return;
+		}
+		
 		$error_billing = array();
 		$error_shipping = array();
 		$has_validation_billing_error = false;
@@ -280,7 +294,7 @@ class Checkout {
 				echo '<div class="tcp_payment_area">' . "\n";
 				if ( $no_stock_enough ) {
 					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
-					echo '<p>', __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ), '</p>';
+					echo '<p>', __( 'There was an error when creatos ing the order. Please contact with the seller.', 'tcp' ), '</p>';
 				}
 				$order_page = OrderPage::show( $order_id, true, false );
 				$_SESSION['order_page'] = $order_page;
@@ -456,7 +470,7 @@ class Checkout {
 					<input type="text" id="billing_region" name="billing_region" value="<?php $this->getValue( 'billing_region' );?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_region' );?></li>
 					<li><label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:</label>
-					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php $this->getValue( 'billing_postcode' );?>" size="5" maxlength="5" />
+					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php $this->getValue( 'billing_postcode' );?>" size="7" maxlength="7" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_postcode' );?></li>
 					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:</label>
 					<select id="billing_country_id" name="billing_country_id">
@@ -556,7 +570,7 @@ class Checkout {
 					<input type="text" id="shipping_region" name="shipping_region" value="<?php $this->getValue( 'shipping_region' );?>"size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_region' );?></li>
 					<li><label for="shipping_postcode"><?php _e( 'Postal code', 'tcp' );?>:</label>
-					<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php $this->getValue( 'shipping_postcode' );?>"size="5" maxlength="5" />
+					<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php $this->getValue( 'shipping_postcode' );?>"size="7" maxlength="7" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_postcode' );?></li>
 					<li><label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:</label>
 					<select id="shipping_country_id" name="shipping_country_id">

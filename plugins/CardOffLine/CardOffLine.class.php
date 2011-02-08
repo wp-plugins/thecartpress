@@ -48,7 +48,7 @@ class CardOffLine extends TCP_Plugin {
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
 		$data		= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$notify_url	= plugins_url( 'thecartpress/plugins/CardOffLine/notify.php' );
-		$return_url	= home_url();
+		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() ); //home_url();
 		$new_status	= $data['new_status'];?>
 		<p><?php _e( 'Off line payment:', 'tcp' );?></p>
 		<p><?php echo $data['notice'];?></p>

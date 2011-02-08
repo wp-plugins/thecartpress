@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
 Tested up to: 3.1
-Stable Tag: 1.0.3
+Stable Tag: 1.0.4
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -151,6 +151,14 @@ This plugin is released under a GPL license.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.4 =
+* 7 digits for postal code
+* Visible products by default
+* Order field for products
+* Order panel (widget and function tag)
+* Improvements in Check-out
+* Selection of international organizations
 
 = 1.0.3 =
 * Fixed non-visible post/product bug

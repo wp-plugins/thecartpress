@@ -84,3 +84,64 @@ String.prototype.luhnCheck = function()
     });
     return (sum%10 === 0) && (sum > 0);
 };
+
+//European union
+function tcp_select_eu(select_id) {
+	var values = ['BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'UK']; //,'HR', 'IS', 'TR'];
+	tcp_select_values(select_id, values);
+}
+
+//NAFTA
+function tcp_select_nafta(select_id) {
+	var values = ['CA', 'MX', 'US'];
+	tcp_select_values(select_id, values);
+}
+//caricom
+function tcp_select_caricom(select_id) {
+	var values = ['AG', 'BB', 'BS', 'BZ', 'DM', 'GD', 'GY', 'HT', 'JM', 'KN', 'LC', 'VC', 'SR', 'TT', 'MS', 'AI', 'BM', 'KY', 'TC', 'VG'];
+	tcp_select_values(select_id, values);
+}
+
+//mercasur
+function tcp_select_mercasur(select_id) {
+	var values = ['AR', 'BR', 'PY', 'UY', 'VE', 'BO', 'PE', 'CL', 'CO', 'EC'];
+	tcp_select_values(select_id, values);
+}
+
+//For now is Mercasur + Caricom
+function tcp_select_oea(select_id) {
+	var values = ['AR', 'BR', 'PY', 'UY', 'VE', 'BO', 'PE', 'CL', 'CO', 'EC', 'AG', 'BB', 'BS', 'BZ', 'DM', 'GD', 'GY', 'HT', 'JM', 'KN', 'LC', 'VC', 'SR', 'TT', 'MS', 'AI', 'BM', 'KY', 'TC', 'VG'];
+	tcp_select_values(select_id, values);
+}
+
+//CAN Comunidad Andina
+function tcp_select_can(select_id) {
+	var values = ['BO', 'CO', 'EC', 'PE'];
+	tcp_select_values(select_id, values);
+}
+
+//African union
+function tcp_select_au(select_id) {
+	var values = ['DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CM', 'CV', 'CF', 'TD', 'KM', 'CD', 'CG', 'CI', 'DJ', 'EG', 'GQ', 'ER', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'MZ', 'NA', 'NG', 'EH', 'ST', 'RW', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SD', 'SZ', 'TZ', 'TG', 'TK', 'TN', 'UG', 'DJ', 'ZM', 'ZW'];
+	tcp_select_values(select_id, values);
+}
+
+function tcp_select_values(select_id, values) {
+	jQuery('#' + select_id + ' option').each(
+		function() {
+			if ( jQuery.inArray(this.value, values) > -1 ) {
+				this.selected = true;
+			} else {
+				this.selected = false;
+			}
+		}
+	);
+}
+
+function tcp_select_none(select_id) {
+	jQuery('#' + select_id + ' option').each(
+		function() {
+			this.selected = false;
+		}
+	);	
+}

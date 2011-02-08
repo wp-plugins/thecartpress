@@ -41,6 +41,7 @@ class TCP_Settings {
 
 		add_settings_section( 'checkout_section', __( 'Checkout settings', 'tcp' ) , array( $this, 'show_checkout_section' ), __FILE__ );
 		add_settings_field( 'legal_notice', __( 'Legal notice', 'tcp' ), array( $this, 'show_legal_notice' ), __FILE__ , 'checkout_section' );
+		add_settings_field( 'checkout_successfully_message', __( 'Checkout successfully message', 'tcp' ), array( $this, 'show_checkout_successfully_message' ), __FILE__ , 'checkout_section' );
 
 		add_settings_section( 'theme_compability_section', __( 'Theme compability settings', 'tcp' ) , array( $this, 'show_theme_compability_section' ), __FILE__ );
 		add_settings_field( 'load_default_styles', __( 'Load default styles', 'tcp' ), array( $this, 'show_load_default_styles' ), __FILE__ , 'theme_compability_section' );
@@ -60,10 +61,10 @@ class TCP_Settings {
 	<div class="wrap">
 		<h2><?php _e( 'TheCartPress Settings', 'tcp' );?></h2>
 		<form method="post" action="options.php">
-			<?php settings_fields('thecartpress_options'); ?>
+			<?php settings_fields( 'thecartpress_options' ); ?>
 			<?php do_settings_sections(__FILE__); ?>
 			<p class="submit">
-				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+				<input type="submit" class="button-primary" value="<?php _e( 'Save Changes' ) ?>" />
 			</p>
 		</form>
 	</div><?php
@@ -73,6 +74,9 @@ class TCP_Settings {
 		$content = '';
 		$content = apply_filters( 'tcp_main_section', $content );
 		echo $content;
+		echo '<div class="tcp_notice_from_thecartpress"><h4>', __( 'Notice from TheCartPress', 'tcp' ), '</h4>';
+		wp_widget_rss_output( 'http://thecartpress.com/feed', array( 'items' => 3, 'show_author' => 0, 'show_date' => 1, 'show_summary' => 0 ) );
+		echo '</div>';
 	}
 
 	function show_user_registration() {
@@ -153,8 +157,9 @@ class TCP_Settings {
 	function show_downloadable_path() {
 		$settings = get_option( 'tcp_settings' );
 		$downloadable_path = isset( $settings['downloadable_path'] ) ? $settings['downloadable_path'] : '';?>
-		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255"/><br />
-		<span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory ', 'tcp' );?></span><?php	
+		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255"/>
+		<br /><span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory.', 'tcp' );?></span>
+		<br /><span class="description"><?php _e( 'Example:' , 'tcp' );?> <?php echo dirname( __FILE__ );?></span><?php
 	}
 
 	function show_checkout_section() {
@@ -164,9 +169,15 @@ class TCP_Settings {
 		$settings = get_option( 'tcp_settings' );
 		$legal_notice = isset( $settings['legal_notice'] ) ? $settings['legal_notice'] : __( 'legal notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea><br />
-		<span class="description"><?php _e( 'If the legal notice is blank the checkout doesn\'t show the Accept conditions check', 'tcp' );?></span><?php
+		<span class="description"><?php _e( 'If the legal notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
 	}
 
+	function show_checkout_successfully_message() {
+		$settings = get_option( 'tcp_settings' );
+		$checkout_successfully_message = isset( $settings['checkout_successfully_message'] ) ? $settings['checkout_successfully_message'] : __( 'The order has been completed successfully', 'tcp' );?>
+		<textarea id="checkout_successfully_message" name="tcp_settings[checkout_successfully_message]" cols="40" rows="5" maxlength="1020"><?php echo $checkout_successfully_message;?></textarea><br />
+		<span class="description"><?php _e( 'This text will show at the end of the checkout process.', 'tcp' );?></span><?php
+	}
 
 	function show_theme_compability_section() {
 		$content = __( 'You can uncheck all this options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template functions</a>.', 'tcp' );
@@ -212,6 +223,7 @@ class TCP_Settings {
 		$input['see_buy_button_in_content']	= isset( $input['see_buy_button_in_content'] ) ? $input['see_buy_button_in_content'] == 'yes' : false;
 		$input['see_buy_button_in_excerpt']	= isset( $input['see_buy_button_in_excerpt'] ) ? $input['see_buy_button_in_excerpt'] == 'yes' : false;
 		$input['downloadable_path']			= wp_filter_nohtml_kses( $input['downloadable_path'] );
+		$input['checkout_successfully_message']	= wp_filter_nohtml_kses( $input['checkout_successfully_message'] );
 		$input['load_default_styles']		= isset( $input['load_default_styles'] ) ? $input['load_default_styles'] == 'yes' : false;
 		$input['search_engine_activated']	= isset( $input['search_engine_activated'] ) ? $input['search_engine_activated'] == 'yes' : false;
 		$input = apply_filters( 'tcp_validate_settings', $input );

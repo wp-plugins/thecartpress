@@ -36,7 +36,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 		if ( $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
 			$args = array(
-				'is_single'			=> false,
 				'post_type'			=> $instance['post_type'],
 				'posts_per_page'	=> $instance['limit'],
 			);
@@ -45,7 +44,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 			}
 		} else {
 			$args = array(
-				'is_single'			=> false,
 				'post_type'			=> $instance['post_type'],
 				'posts_per_page'	=> $instance['limit'],
 			);
@@ -208,7 +206,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><? _e( 'Press save to load the next list', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
 		</p><p style="margin-bottom:0;">
 			<input type="checkbox" class="checkbox" onclick="tcp_show_taxonomy(this.checked);" id="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'use_taxonomy' ); ?>" value="yes" <?php checked( $use_taxonomy, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>"><?php _e( 'Use Taxonomy', 'tcp' ); ?></label>
@@ -222,7 +220,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 					<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
 				<?php endforeach; ?>
 				</select>
-				<span class="description"><? _e( 'Press save to load the next list', 'tcp' );?></span>
+				<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
 			</p><p>
 				<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'term' ); ?>" id="<?php echo $this->get_field_id( 'term' ); ?>" class="widefat">
@@ -286,8 +284,12 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php endwhile; closedir( $handle );?>
 			</select>
 		</p>
+		<p>
+			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
+			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
+		</p>
 	</div>
-	<div id="column_2">
+	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />

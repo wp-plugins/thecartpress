@@ -33,6 +33,10 @@ function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 	BuyButton::show( $post_id, $echo );
 }
 
+function tcp_the_order_panel() {
+	OrderPanel::show();
+}
+
 function tcp_the_price( $before = '', $after = '', $echo = true ) {
 	return tcp_the_meta( 'tcp_price', $before, $after, $echo );
 }
@@ -130,6 +134,10 @@ function tcp_the_weight( $before = '', $after = '', $echo = true ) {
 
 function tcp_get_the_weight( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_weight', $post_id );
+}
+
+function tcp_get_the_order( $post_id = 0 ) {
+	return (int)tcp_get_the_meta( 'tcp_order', $post_id );
 }
 
 function tcp_the_sku( $before = '', $after = '', $echo = true ) {

@@ -25,7 +25,8 @@ function tcp_upload_file( $post_id, $file ) {
 	$i = strpos( $rev_name, '.' );
 	$ext = strrev( substr( $rev_name, 0, $i ) );
 	$settings = get_option( 'tcp_settings' );
-	if ( ! isset( $settings['downloadable_path'] ) ) {
+	$downloadable_path = isset( trim( $settings['downloadable_path'] ) ) ? $settings['downloadable_path'] : '';
+	if ( strlen( $settings['downloadable_path'] ) == 0 ) {
 		wp_die( __( 'The path where the downloadable files must be saved is not set.', 'tcp' ) );
 		return false;
 	} else {

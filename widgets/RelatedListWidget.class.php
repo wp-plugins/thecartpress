@@ -17,6 +17,7 @@
  */
 
 require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
+
 class RelatedListWidget extends CustomListWidget {
 
 	function RelatedListWidget() {

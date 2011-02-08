@@ -33,7 +33,7 @@ class ShippingCost extends TCP_Plugin {
 	
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'The cost of Shipping Cost service will be ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
+		return __( 'The cost of Shipping service will be ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
 	}
 
 	function showEditFields( $data ) {
@@ -167,14 +167,14 @@ class ShippingCost extends TCP_Plugin {
 		<thead>
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
-			<th class="manage-column"><?php printf( __( 'Zone %s', 'tcp' ), $z );?></th>
+			<th class="manage-column" colspan="2"><?php printf( __( 'Zone %s', 'tcp' ), $z );?></th>
 		<?php endforeach;?>
 		</tr>
 		</thead>
 		<tfoot>
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
-			<th class="manage-column"><?php printf( __( 'Zone %s', 'tcp' ), $z );?></th>
+			<th class="manage-column" colspan="2"><?php printf( __( 'Zone %s', 'tcp' ), $z );?></th>
 		<?php endforeach;?>
 		</tr>
 		</tfoot>
@@ -182,12 +182,20 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
 			<td>
-				<select id="zones_isos_<?php echo $z;?>[]" name="zones_isos_<?php echo $z;?>[]" style="height:auto" size="8" multiple="true">
+				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" style="height:auto" size="8" multiple="true">
 				<?php global $countries_db;
 				foreach( $countries_db as $country ) :?>
 					<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $isos, $country->iso );?>><?php echo $country->name;?></option>
 				<?php endforeach;?>
 				</select>
+			</td>
+			<td>
+				<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'MERCASUR', 'tcp');?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' );?>" onclick="tcp_select_mercasur('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'CAN', 'tcp');?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' );?>" onclick="tcp_select_can('zones_isos_<?php echo $z;?>');" class="button-secondary"/>				
+				<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('zones_isos_<?php echo $z;?>');" class="button-secondary"/>				
 			</td>
 		<?php endforeach;?>
 		</tr>
@@ -211,7 +219,10 @@ class ShippingCost extends TCP_Plugin {
 		$new_zones = array();
 		$z = 0;
 		foreach( $zones as $zone )
-			$new_zones[$z++] = $_REQUEST['zones_isos_' . $zone];
+			if ( isset( $_REQUEST['zones_isos_' . $zone] ) )
+				$new_zones[$z++] = $_REQUEST['zones_isos_' . $zone];
+			else
+				$new_zones[$z++] = array();
 		$data['zones'] = $new_zones;
 		$data['ranges'] = $ranges;
 		$data['costs'] = $costs;

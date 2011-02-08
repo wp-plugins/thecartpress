@@ -92,7 +92,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><? _e( 'Press save to load the next list', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">

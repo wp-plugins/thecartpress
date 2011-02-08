@@ -81,15 +81,16 @@ class BuyButton {
 						$out .= '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
 					} else {
 						$out .= '<input type="text" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" size="2" maxlength="3"/>';
-						$item = $shoppingCart->getItem( $post_id );
-						if ( $item )
-							$out .='<span class="tcp_added_product_title">' . $item->getCount() . ' ' . __( 'units', 'tcp' ) . ' <a href="' . get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) . '">' . __( 'in your cart', 'tcp' ) . '</a><span>';
 					}
 				}
 				if ( tcp_is_downloadable( $post_id ) || ! $stock_management || tcp_get_the_stock( $post_id ) != 0 ) {
 					$html = '<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_row" value="' . __( 'Add', 'tcp' ) . '"/>' . "\n";
 					$out .= apply_filters( 'tcp_buy_button_add_button', $html, $post_id );
 				}
+				$item = $shoppingCart->getItem( $post_id );
+				if ( $item )
+					$out .='<span class="tcp_added_product_title">' . sprintf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) ) . '<span>';
+					//$out .='<span class="tcp_added_product_title">' . $item->getCount() . ' ' . __( 'units', 'tcp' ) . ' <a href="' . get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) . '">' . __( 'in your cart', 'tcp' ) . '</a><span>';
 				$out .= '</td>' . "\n";
 			}
 			$out .= '</tr>' . "\n";
@@ -128,7 +129,7 @@ class BuyButton {
 				$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . $price . '" />' . "\n";
 				$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . $tax . '" />' . "\n";
 				$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product->id_to ) . '" />' . "\n";
-				global $tcp_post;
+				//global $tcp_post;
 				$tcp_post = get_post( $product->id_to );
 				$options_select = apply_filters( 'tcp_buy_button_options', '' );
 				if ( strlen( $options_select ) > 0 ) {
