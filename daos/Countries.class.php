@@ -88,7 +88,7 @@ class Countries {
 			 (\'BW\',\'BOTSWANA\',\'BOTSWANA\',\'BOTSUANA\',\'BOTSWANA\',\'BOTSWANA\',\'BWA\',72,0,0,0),
 			 (\'BY\',\'BELARUS\',\'BELARUS\',\'BIELORRUSIA\',\'WEIßRUSSLAND\',\'BÉLARUS\',\'BLR\',112,0,0,0),
 			 (\'BZ\',\'BELIZE\',\'BELIZE\',\'BELICE\',\'BELIZE\',\'BELIZE\',\'BLZ\',84,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'CA\',\'CANADA\',\'CANADA\',\'CANADÁ\',\'KANADA\',\'CANADA\',\'CAN\',124,0,0,0),
 			 (\'CC\',\'COCOS (KEELING) ISLANDS\',\'COCOS (KEELING) ISLANDS\',\'ISLAS COCOS\',\'KOKOSINSELN\',\'COCOS (KEELING); ÎLES\',\'CCK\',166,0,0,0),
 			 (\'CD\',\'CONGO, THE DEMOCRATIC REPUBLIC OF THE\',\'CONGO, THE DEMOCRATIC REPUBLIC OF THE\',\'REPÚBLICA DEMOCRÁTICA DEL CONGO\',\'KONGO (DEM. REP.)\',\'CONGO, LA RÉPUBLIQUE DÉMOCRATIQUE DU\',\'COD\',180,0,0,0),
@@ -98,7 +98,7 @@ class Countries {
 			 (\'CI\',\'COTE D`IVOIRE\',\'COTE D`IVOIRE\',\'COSTA DE MARFIL\',\'ELFENBEINKÜSTE\',\'COTE D`IVOIRE\',\'CIV\',384,0,0,0),
 			 (\'CK\',\'COOK ISLANDS\',\'COOK ISLANDS\',\'ISLAS COOK\',\'COOKINSELN\',\'COOK, ÎLES\',\'COK\',184,0,0,0),
 			 (\'CL\',\'CHILE\',\'CHILE\',\'CHILE\',\'CHILE\',\'CHILI\',\'CHL\',152,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'CM\',\'CAMEROON\',\'CAMEROON\',\'CAMERÚN\',\'KAMERUN\',\'CAMEROUN\',\'CMR\',120,0,0,0),
 			 (\'CN\',\'CHINA\',\'CHINA\',\'CHINA\',\'CHINA\',\'CHINE\',\'CHN\',156,0,0,0),
 			 (\'CO\',\'COLOMBIA\',\'COLOMBIA\',\'COLOMBIA\',\'KOLUMBIEN\',\'COLOMBIE\',\'COL\',170,0,0,0),
@@ -110,7 +110,7 @@ class Countries {
 			 (\'CY\',\'CYPRUS\',\'CYPRUS\',\'CHIPRE\',\'ZYPERN\',\'CHYPRE\',\'CYP\',196,0,0,0),
 			 (\'CZ\',\'CZECH REPUBLIC\',\'CZECH REPUBLIC\',\'REPÚBLICA CHECA\',\'TSCHECHISCHE REPUBLIK\',\'TCHÍšQUE, RÉPUBLIQUE\',\'CZE\',203,0,0,1),
 			 (\'DE\',\'GERMANY\',\'GERMANY\',\'ALEMANIA\',\'DEUTSCHLAND\',\'ALLEMAGNE\',\'DEU\',276,1,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'DJ\',\'DJIBOUTI\',\'DJIBOUTI\',\'YIBUTI\',\'DJIBOUTI\',\'DJIBOUTI\',\'DJI\',262,0,0,0),
 			 (\'DK\',\'DENMARK\',\'DENMARK\',\'DINAMARCA\',\'DÄNEMARK\',\'DANEMARK\',\'DNK\',208,1,0,1),
 			 (\'DM\',\'DOMINICA\',\'DOMINICA\',\'DOMINICA\',\'DOMINICA\',\'DOMINIQUE\',\'DMA\',212,0,0,0),
@@ -123,7 +123,7 @@ class Countries {
 			 (\'ES\',\'SPAIN\',\'SPAIN\',\'ESPAÑA\',\'SPANIEN\',\'ESPAGNE\',\'ESP\',724,1,0,1),
 			 (\'ET\',\'ETHIOPIA\',\'ETHIOPIA\',\'ETIOPÍA\',\'ÄTHIOPIEN\',\'ÉTHIOPIE\',\'ETH\',231,0,0,0),
 			 (\'FI\',\'FINLAND\',\'FINLAND\',\'FINLANDIA\',\'FINNLAND\',\'FINLANDE\',\'FIN\',246,0,1,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'FJ\',\'FIJI\',\'FIJI\',\'FIYI\',\'FIDSCHI\',\'FIDJI\',\'FJI\',242,0,0,0),
 			 (\'FK\',\'FALKLAND ISLANDS (MALVINAS)\',\'FALKLAND ISLANDS (MALVINAS)\',\'ISLAS MALVINAS\',\'FALKLANDINSELN\',\'FALKLAND, ÎLES (MALVINAS)\',\'FLK\',238,0,0,0),
 			 (\'FM\',\'MICRONESIA, FEDERATED STATES OF\',\'MICRONESIA, FEDERATED STATES OF\',\'MICRONESIA\',\'MIKRONESIEN\',\'MICRONÉSIE, ÉTATS FÉDÉRÉS DE\',\'FSM\',583,0,0,0),
@@ -134,7 +134,7 @@ class Countries {
 			 (\'GD\',\'GRENADA\',\'GRENADA\',\'GRANADA\',\'GRENADA\',\'GRENADE\',\'GRD\',308,0,0,0),
 			 (\'GE\',\'GEORGIA\',\'GEORGIA\',\'GEORGIA\',\'GEORGIEN\',\'GÉORGIE\',\'GEO\',268,0,0,0),
 			 (\'GF\',\'FRENCH GUIANA\',\'FRENCH GUIANA\',\'GUAYANA FRANCESA\',\'FRANZÖSISCH GUYANA\',\'GUYANE FRANÍ§AISE\',\'GUF\',254,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'GH\',\'GHANA\',\'GHANA\',\'GHANA\',\'GHANA\',\'GHANA\',\'GHA\',288,0,0,0),
 			 (\'GI\',\'GIBRALTAR\',\'GIBRALTAR\',\'GIBRALTAR\',\'GIBRALTAR\',\'GIBRALTAR\',\'GIB\',292,1,0,1),
 			 (\'GL\',\'GREENLAND\',\'GREENLAND\',\'GROENLANDIA\',\'GRÖNLAND\',\'GROENLAND\',\'GRL\',304,0,0,0),
@@ -145,7 +145,7 @@ class Countries {
 			 (\'GR\',\'GREECE\',\'GREECE\',\'GRECIA\',\'GRIECHENLAND\',\'GRÍšCE\',\'GRC\',300,1,0,1),
 			 (\'GS\',\'SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS\',\'SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS\',\'ISLAS GEORGIAS DEL SUR Y SANDWICH DEL SUR\',\'SÜDGEORGIEN UND DIE SÜDLICHEN SANDWICHINSELN\',\'GÉORGIE DU SUD ET LES ÎLES SANDWICH DU SUD\',\'SGS\',239,0,0,0),
 			 (\'GT\',\'GUATEMALA\',\'GUATEMALA\',\'GUATEMALA\',\'GUATEMALA\',\'GUATEMALA\',\'GTM\',320,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'GU\',\'GUAM\',\'GUAM\',\'GUAM\',\'GUAM\',\'GUAM\',\'GUM\',316,0,0,0),
 			 (\'GW\',\'GUINEA-BISSAU\',\'GUINEA-BISSAU\',\'GUINEA-BISSAU\',\'GUINEA-BISSAU\',\'GUINÉE-BISSAU\',\'GNB\',624,0,0,0),
 			 (\'GY\',\'GUYANA\',\'GUYANA\',\'GUYANA\',\'GUYANA\',\'GUYANA\',\'GUY\',328,0,0,0),
@@ -158,7 +158,7 @@ class Countries {
 			 (\'ID\',\'INDONESIA\',\'INDONESIA\',\'INDONESIA\',\'INDONESIEN\',\'INDONÉSIE\',\'IDN\',360,0,0,0),
 			 (\'IE\',\'IRELAND\',\'IRELAND\',\'IRLANDA\',\'IRLAND\',\'IRLANDE\',\'IRL\',372,1,0,1),
 			 (\'IL\',\'ISRAEL\',\'ISRAEL\',\'ISRAEL\',\'ISRAEL\',\'ISRAËL\',\'ISR\',376,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'IN\',\'INDIA\',\'INDIA\',\'INDIA\',\'INDIEN\',\'INDE\',\'IND\',356,0,0,0),
 			 (\'IO\',\'BRITISH INDIAN OCEAN TERRITORY\',\'BRITISH INDIAN OCEAN TERRITORY\',\'TERRITORIO BRITÁNICO DEL OCÉANO ÍNDICO\',\'BRITISCHE HOHEITSGEBIETE\',\'TERRITOIRE BRITANNIQUE DE L`OCÉAN INDIEN\',\'IOT\',86,0,0,0),
 			 (\'IQ\',\'IRAQ\',\'IRAQ\',\'IRAQ\',\'IRAK\',\'IRAQ\',\'IRQ\',368,0,0,0),
@@ -171,7 +171,7 @@ class Countries {
 			 (\'KE\',\'KENYA\',\'KENYA\',\'KENIA\',\'KENIA\',\'KENYA\',\'KEN\',404,0,0,0),
 			 (\'KG\',\'KYRGYZSTAN\',\'KYRGYZSTAN\',\'KIRGUISTÁN\',\'KIRGISISTAN\',\'KIRGHIZISTAN\',\'KGZ\',417,0,0,0),
 			 (\'KH\',\'CAMBODIA\',\'CAMBODIA\',\'CAMBOYA\',\'KAMBODSCHA\',\'CAMBODGE\',\'KHM\',116,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'KI\',\'KIRIBATI\',\'KIRIBATI\',\'KIRIBATI\',\'KIRIBATI\',\'KIRIBATI\',\'KIR\',296,0,0,0),
 			 (\'KM\',\'COMOROS\',\'COMOROS\',\'COMORAS\',\'KOMOREN\',\'COMORES\',\'COM\',174,0,0,0),
 			 (\'KN\',\'SAINT KITTS AND NEVIS\',\'SAINT KITTS AND NEVIS\',\'SAN CRISTÓBAL Y NEVIS\',\'SAINT KITTS UND NEVIS\',\'SAINT-KITTS-ET-NEVIS\',\'KNA\',659,0,0,0),
@@ -182,7 +182,7 @@ class Countries {
 			 (\'KZ\',\'KAZAKHSTAN\',\'KAZAKHSTAN\',\'KAZAJSTÁN\',\'KASACHSTAN\',\'KAZAKHSTAN\',\'KAZ\',398,0,0,0),
 			 (\'LA\',\'LAO PEOPLE`S DEMOCRATIC REPUBLIC\',\'LAO PEOPLE`S DEMOCRATIC REPUBLIC\',\'LAOS\',\'LAOS\',\'LAO, RÉPUBLIQUE DÉMOCRATIQUE POPULAIRE\',\'LAO\',418,0,0,0),
 			 (\'LB\',\'LEBANON\',\'LEBANON\',\'LÍBANO\',\'LIBANON\',\'LIBAN\',\'LBN\',422,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'LC\',\'SAINT LUCIA\',\'SAINT LUCIA\',\'SANTA LUCÍA\',\'SAINT LUCIA\',\'SAINTE-LUCIE\',\'LCA\',662,0,0,0),
 			 (\'LI\',\'LIECHTENSTEIN\',\'LIECHTENSTEIN\',\'LIECHTENSTEIN\',\'LIECHTENSTEIN\',\'LIECHTENSTEIN\',\'LIE\',438,1,0,1),
 			 (\'LK\',\'SRI LANKA\',\'SRI LANKA\',\'SRI LANKA\',\'SRI LANKA\',\'SRI LANKA\',\'LKA\',144,0,0,0),
@@ -196,7 +196,7 @@ class Countries {
 			 (\'MC\',\'MONACO\',\'MONACO\',\'MÓNACO\',\'MONACO\',\'MONACO\',\'MCO\',492,1,0,1),
 			 (\'MD\',\'MOLDOVA, REPUBLIC OF\',\'MOLDOVA, REPUBLIC OF\',\'MOLDAVIA\',\'MOLDAWIEN\',\'MOLDOVA, RÉPUBLIQUE DE\',\'MDA\',498,0,0,1),
 			 (\'MG\',\'MADAGASCAR\',\'MADAGASCAR\',\'MADAGASCAR\',\'MADAGASKAR\',\'MADAGASCAR\',\'MDG\',450,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'MH\',\'MARSHALL ISLANDS\',\'MARSHALL ISLANDS\',\'ISLAS MARSHALL\',\'MARSHALL-INSELN\',\'MARSHALL, ÎLES\',\'MHL\',584,0,0,0),
 			 (\'MK\',\'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF\',\'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF\',\'MACEDONIA\',\'MAZEDONIEN\',\'MACÉDOINE\',\'MKD\',807,0,0,1),
 			 (\'ML\',\'MALI\',\'MALI\',\'MALÍ\',\'MALI\',\'MALI\',\'MLI\',466,0,0,0),
@@ -208,7 +208,7 @@ class Countries {
 			 (\'MR\',\'MAURITANIA\',\'MAURITANIA\',\'MAURITANIA\',\'MAURETANIEN\',\'MAURITANIE\',\'MRT\',478,0,0,0),
 			 (\'MS\',\'MONTSERRAT\',\'MONTSERRAT\',\'MONTSERRAT\',\'MONTSERRAT\',\'MONTSERRAT\',\'MSR\',500,0,0,0),
 			 (\'MT\',\'MALTA\',\'MALTA\',\'MALTA\',\'MALTA\',\'MALTE\',\'MLT\',470,0,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'MU\',\'MAURITIUS\',\'MAURITIUS\',\'MAURICIO\',\'MAURITIUS\',\'MAURICE\',\'MUS\',480,0,0,0),
 			 (\'MV\',\'MALDIVES\',\'MALDIVES\',\'MALDIVAS\',\'MALEDIVEN\',\'MALDIVES\',\'MDV\',462,0,0,0),
 			 (\'MW\',\'MALAWI\',\'MALAWI\',\'MALAWI\',\'MALAWI\',\'MALAWI\',\'MWI\',454,0,0,0),
@@ -222,7 +222,7 @@ class Countries {
 			 (\'NG\',\'NIGERIA\',\'NIGERIA\',\'NIGERIA\',\'NIGERIA\',\'NIGÉRIA\',\'NGA\',566,0,0,0),
 			 (\'NI\',\'NICARAGUA\',\'NICARAGUA\',\'NICARAGUA\',\'NICARAGUA\',\'NICARAGUA\',\'NIC\',558,0,0,0),
 			 (\'NL\',\'NETHERLANDS\',\'NETHERLANDS\',\'PAÍSES BAJOS\',\'NIEDERLANDE\',\'PAYS-BAS\',\'NLD\',528,1,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'NO\',\'NORWAY\',\'NORWAY\',\'NORUEGA\',\'NORWEGEN\',\'NORVÍšGE\',\'NOR\',578,0,1,0),
 			 (\'NP\',\'NEPAL\',\'NEPAL\',\'NEPAL\',\'NEPAL\',\'NÉPAL\',\'NPL\',524,0,0,0),
 			 (\'NR\',\'NAURU\',\'NAURU\',\'NAURU\',\'NAURU\',\'NAURU\',\'NRU\',520,0,0,0),
@@ -235,7 +235,7 @@ class Countries {
 			 (\'PG\',\'PAPUA NEW GUINEA\',\'PAPUA NEW GUINEA\',\'PAPÚA NUEVA GUINEA\',\'PAPUA-NEUGUINEA\',\'PAPOUASIE-NOUVELLE-GUINÉE\',\'PNG\',598,0,0,0),
 			 (\'PH\',\'PHILIPPINES\',\'PHILIPPINES\',\'FILIPINAS\',\'PHILIPPINEN\',\'PHILIPPINES\',\'PHL\',608,0,0,0),
 			 (\'PK\',\'PAKISTAN\',\'PAKISTAN\',\'PAKISTÁN\',\'PAKISTAN\',\'PAKISTAN\',\'PAK\',586,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'PL\',\'POLAND\',\'POLAND\',\'POLONIA\',\'POLEN\',\'POLOGNE\',\'POL\',616,1,0,1),
 			 (\'PM\',\'SAINT PIERRE AND MIQUELON\',\'SAINT PIERRE AND MIQUELON\',\'SAN PEDRO Y MIQUELÍN\',\'SAINT PIERRE UND MIQUELON\',\'SAINT-PIERRE-ET-MIQUELON\',\'SPM\',666,0,0,0),
 			 (\'PN\',\'PITCAIRN\',\'PITCAIRN\',\'ISLAS PITCAIRN\',\'PITCAIRNINSELN\',\'PITCAIRN\',\'PCN\',612,0,0,0),
@@ -247,7 +247,7 @@ class Countries {
 			 (\'QA\',\'QATAR\',\'QATAR\',\'QATAR\',\'KATAR\',\'QATAR\',\'QAT\',634,0,0,0),
 			 (\'RE\',\'REUNION\',\'REUNION\',\'REUNIÓN\',\'REUNION\',\'RÉUNION\',\'REU\',638,0,0,0),
 			 (\'RO\',\'ROMANIA\',\'ROMANIA\',\'RUMANIA\',\'RUMÄNIEN\',\'ROUMANIE\',\'ROM\',642,1,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'RU\',\'RUSSIAN FEDERATION\',\'RUSSIAN FEDERATION\',\'RUSIA\',\'RUSSLAND\',\'RUSSIE, FÉDÉRATION DE\',\'RUS\',643,0,0,1),
 			 (\'RW\',\'RWANDA\',\'RWANDA\',\'RUANDA\',\'RUANDA\',\'RWANDA\',\'RWA\',646,0,0,0),
 			 (\'SA\',\'SAUDI ARABIA\',\'SAUDI ARABIA\',\'ARABIA SAUDÍ­\',\'SAUDI-ARABIEN\',\'ARABIE SAOUDITE\',\'SAU\',682,0,0,0),
@@ -260,7 +260,7 @@ class Countries {
 			 (\'SI\',\'SLOVENIA\',\'SLOVENIA\',\'ESLOVENIA\',\'SLOWENIEN\',\'SLOVÉNIE\',\'SVN\',705,1,0,1),
 			 (\'SJ\',\'SVALBARD AND JAN MAYEN\',\'SVALBARD AND JAN MAYEN\',\'SVALBARD Y JAN MAYEN\',\'SVALBARD UND JAN MAYEN\',\'SVALBARD ET ÎLE JAN MAYEN\',\'SJM\',744,0,0,0),
 			 (\'SK\',\'SLOVAKIA\',\'SLOVAKIA\',\'ESLOVAQUIA\',\'SLOWAKEI\',\'SLOVAQUIE\',\'SVK\',703,1,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'SL\',\'SIERRA LEONE\',\'SIERRA LEONE\',\'SIERRA LEONA\',\'SIERRA LEONE\',\'SIERRA LEONE\',\'SLE\',694,0,0,0),
 			 (\'SM\',\'SAN MARINO\',\'SAN MARINO\',\'SAN MARINO\',\'SAN MARINO\',\'SAINT-MARIN\',\'SMR\',674,0,0,0),
 			 (\'SN\',\'SENEGAL\',\'SENEGAL\',\'SENEGAL\',\'SENEGAL\',\'SÉNÉGAL\',\'SEN\',686,0,0,0),
@@ -272,7 +272,7 @@ class Countries {
 			 (\'SZ\',\'SWAZILAND\',\'SWAZILAND\',\'SUAZILANDIA\',\'SWASILAND\',\'SWAZILAND\',\'SWZ\',748,0,1,0),
 			 (\'TC\',\'TURKS AND CAICOS ISLANDS\',\'TURKS AND CAICOS ISLANDS\',\'ISLAS TURCAS Y CAICOS\',\'TURKS- UND CAICOSINSELN\',\'TURKS ET CAÍ¯QUES, ÎLES\',\'TCA\',796,0,0,0),
 			 (\'TD\',\'CHAD\',\'CHAD\',\'CHAD\',\'TSCHAD\',\'TCHAD\',\'TCD\',148,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'TF\',\'FRENCH SOUTHERN TERRITORIES\',\'FRENCH SOUTHERN TERRITORIES\',\'TERRITORIOS AUSTRALES FRANCESES\',\'FRANZÖSISCHE SÜDGEBIETE\',\'TERRES AUSTRALES FRANÍ§AISES\',\'ATF\',260,0,0,0),
 			 (\'TG\',\'TOGO\',\'TOGO\',\'TOGO\',\'TOGO\',\'TOGO\',\'TGO\',768,0,0,0),
 			 (\'TH\',\'THAILAND\',\'THAILAND\',\'TAILANDIA\',\'THAILAND\',\'THAÍ¯LANDE\',\'THA\',764,0,0,0),
@@ -284,7 +284,7 @@ class Countries {
 			 (\'TO\',\'TONGA\',\'TONGA\',\'TONGA\',\'TONGA\',\'TONGA\',\'TON\',776 ,0 ,0 ,0 ),
 			 (\'TR\',\'TURKEY\',\'TURKEY\',\'TURQUÍA\',\'TÜRKEI\',\'TURQUIE\',\'TUR\',792 ,0 ,0 ,0),
 			 (\'TT\',\'TRINIDAD AND TOBAGO\',\'TRINIDAD AND TOBAGO\',\'TRINIDAD Y TOBAGO\',\'TRINIDAD UND TOBAGO\',\'TRINITÉ-ET-TOBAGO\',\'TTO\',780,0,0,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'TV\',\'TUVALU\',\'TUVALU\',\'TUVALU\',\'TUVALU\',\'TUVALU\',\'TUV\',798,0,0,0),
 			 (\'TW\',\'TAIWAN, PROVINCE OF CHINA\',\'TAIWAN, PROVINCE OF CHINA\',\'TAIWÁN\',\'TAIWAN\',\'TAÍ¯WAN, PROVINCE DE CHINA\',\'TWN\',158,0,0,0),
 			 (\'TZ\',\'TANZANIA, UNITED REPUBLIC OF\',\'TANZANIA, UNITED REPUBLIC OF\',\'TANZANIA\',\'TANSANIA\',\'TANZANIE, RÉPUBLIQUE-UNIE DE\',\'TZA\',834,0,0,0),
@@ -295,7 +295,7 @@ class Countries {
 			 (\'UY\',\'URUGUAY\',\'URUGUAY\',\'URUGUAY\',\'URUGUAY\',\'URUGUAY\',\'URY\', 858, 0, 0, 0),
 			 (\'UZ\',\'UZBEKISTAN\',\'UZBEKISTAN\',\'UZBEKISTÁN\',\'USBEKISTAN\',\'OUZBÉKISTAN\',\'UZB\', 860, 0, 0, 0),
 			 (\'VA\',\'HOLY SEE (VATICAN CITY STATE)\',\'HOLY SEE (VATICAN CITY STATE)\',\'CIUDAD DEL VATICANO\',\'VATIKAN\',\'SAINT-SIÍšGE (ÉTAT DE LA CITÉ DU VATICAN)\',\'VAT\',336,0,0,1);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'VC\',\'SAINT VINCENT AND THE GRENADINES\',\'SAINT VINCENT AND THE GRENADINES\',\'SAN VICENTE Y LAS GRANADINAS\',\'SAINT VINCENT UND DIE GRENADINEN\',\'SAINT-VINCENT-ET-LES-GRENADINES\',\'VCT\',670,0,0,0),
 			 (\'VE\',\'VENEZUELA\',\'VENEZUELA\',\'VENEZUELA\',\'VENEZUELA\',\'VENEZUELA\',\'VEN\',862,0,0,0),
 			 (\'VG\',\'VIRGIN ISLANDS, BRITISH\',\'VIRGIN ISLANDS, BRITISH\',\'ISLAS VÍ­RGENES BRITÁNICAS\',\'BRITISCHE JUNGFERNINSELN\',\'ÎLES VIERGES BRITANNIQUES\',\'VGB\',92,0,0,0),
@@ -305,11 +305,12 @@ class Countries {
 			 (\'WF\',\'WALLIS AND FUTUNA\',\'WALLIS AND FUTUNA\',\'WALLIS Y FUTUNA\',\'WALLIS UND FUTUNA\',\'WALLIS ET FUTUNA\',\'WLF\',876 ,0 ,0 ,0),
 			 (\'WS\',\'SAMOA\',\'SAMOA\',\'SAMOA\',\'SAMOA\',\'SAMOA\',\'WSM\',882 ,0 ,0 ,0),
 			 (\'YE\',\'YEMEN\',\'YEMEN\',\'YEMEN\',\'JEMEN\',\'YÉMEN\',\'YEM\',887 ,0 ,0 ,0);';
-			$wpdb->query($sql);
+			$wpdb->query( $sql );
 			$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'YT\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MYT\',175 ,0 ,0 ,0),
 			 (\'ZA\',\'SOUTH AFRICA\',\'SOUTH AFRICA\',\'SUDÁFRICA\',\'SÜDAFRIKA, REPUBLIK\',\'AFRIQUE DU SUD\',\'ZAF\',710 ,0 ,0 ,0),
 			 (\'ZM\',\'ZAMBIA\',\'ZAMBIA\',\'ZAMBIA\',\'SAMBIA\',\'ZAMBIE\',\'ZMB\',894 ,0 ,0 ,0),
 			 (\'ZW\',\'ZIMBABWE\',\'ZIMBABWE\',\'ZIMBABUE\',\'SIMBABWE\',\'ZIMBABWE\',\'ZWE\',716 ,0 ,0 ,0);';
+			$wpdb->query( $sql );
 		}
 	}
 }
