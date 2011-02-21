@@ -86,21 +86,25 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 		<tbody>
 		<?php
 		if ( $rel_type == 'CAT_POST-CAT_PROD' || $rel_type == 'CAT_POST-CAT_POST') {
-			$terms = get_terms( 'category', array( 'hide_empty' => false ) );
+			$taxonomy = 'category';
 			if ( $rel_type == 'CAT_POST-CAT_PROD' ) {
-				$second_terms = get_terms( 'tcp_product_category', array( 'hide_empty' => false ) );
+				$second_taxonomy = 'tcp_product_category';
 			} else { //CAT_POST-CAT_POST
-				$second_terms = get_terms( 'category', array( 'hide_empty' => false ) );
+				$second_taxonomy = 'category';
 			}
 		} elseif ( $rel_type == 'CAT_PROD-CAT_PROD' || $rel_type == 'CAT_PROD-CAT_POST' ) {
-			$terms = get_terms( 'tcp_product_category', array( 'hide_empty' => false ) );
+			$taxonomy = 'tcp_product_category';
 			if ( $rel_type == 'CAT_PROD-CAT_PROD' ) {
-				$second_terms = get_terms( 'tcp_product_category', array( 'hide_empty' => false ) );
+				$second_taxonomy = 'tcp_product_category';
 			} else { //CAT_PROD-CAT_POST
-				$second_terms = get_terms( 'category', array( 'hide_empty' => false ) );
+				$second_taxonomy = 'category';
 			}
 		}
-		foreach( $terms as $term ) :?>
+		$terms = get_terms( $taxonomy, array( 'hide_empty' => false ) );
+		$second_terms = get_terms( $second_taxonomy, array( 'hide_empty' => false ) );
+		foreach( $terms as $term ) :
+			$term_id = tcp_get_default_id( $term->term_id, $taxonomy );
+			if ( $term_id != $term->term_id ) continue; ?>
 		<tr>
 			<td><?php echo $term->name;?><input type="hidden" name="tcp_term_1_id[]" value="<?php echo $term->term_id;?>" /></td>
 			<td>
@@ -110,7 +114,9 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 				$res = RelEntities::select( $term->term_id, $rel_type );
 				$ids = array();
 				if ( $res ) foreach( $res as $row ) $ids[] = $row->id_to;
-				foreach( $second_terms as $second_term ) : ?>
+				foreach( $second_terms as $second_term ) : 
+					$term_id = tcp_get_default_id( $second_term->term_id, $second_taxonomy );
+					if ( $term_id != $second_term->term_id ) continue; ?>?>
 					<option value="<?php echo $second_term->term_id;?>" <?php tcp_selected_multiple( $ids, $second_term->term_id );?>><?php echo $second_term->name;?></option>
 				<?php endforeach;?>
 				</select>

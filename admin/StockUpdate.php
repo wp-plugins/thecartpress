@@ -23,15 +23,17 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 		'post_type'				=> 'tcp_product',
 		'tcp_product_category'	=>  $cat_slug ,
 	);
+	$args = apply_filters( 'tcp_update_stock_query_args', $args );
 	$query = new WP_query( $args );
 	if ( $query->have_posts() ) {
 		while ( $query->have_posts() ) {
 			$post = $query->next_post();
 			$new_stock = isset( $_REQUEST['tcp_new_stock_' . $post->ID] ) ? $_REQUEST['tcp_new_stock_' . $post->ID] : '';
-			if ( $new_stock == '' )
+			if ( $new_stock == '' || $new_stock < -1 )
 				update_post_meta( $post->ID, 'tcp_stock', -1 );
 			else
 				update_post_meta( $post->ID, 'tcp_stock', (int)$new_stock );
+			do_action( 'tcp_update_stock', $post );
 		}?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Stock updated.', 'tcp' );?>
@@ -65,6 +67,7 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 		<input type="text" name="added_stock" id="added_stock" value="<?php echo $added_stock;?>" sixe="4" maxlength="8"/>
 	</td>
 	</tr>
+	<?php do_action( 'tcp_update_stock_search_controls' );?>
 	</tbody>
 	</table>
 	<p class="submit">
@@ -79,6 +82,7 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 		if ( $query->have_posts() ) :?>
 		<div>
 			<h3><?php _e( 'Updated products', 'tcp' );?></h3>
+			<span class="description"><?php _e( 'The eCommerce use the last level stock into options structure.', 'tcp' );?></span>
 			<table class="widefat fixed" cellspacing="0"><!-- No assigned -->
 			<thead>
 			<tr>
@@ -102,19 +106,26 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 			while ( $query->have_posts() ) :
 				$post = $query->next_post();
 				$stock = tcp_get_the_stock( $post->ID );
-				if ( $stock > -1 )
-					$new_stock = $stock + $added_stock;
-				else
+				if ( $added_stock == -1 ||  $stock == -1 )
+					$new_stock = -1;
+				elseif ( $added_stock == 0 ) {
 					$new_stock = $stock;
-			?>
+				} else {
+					if ( $stock > -1 ) {
+						$new_stock = $stock + $added_stock;
+					} else {
+						$new_stock = $added_stock;
+					}
+				}?>
 			<tr>
 				<td><?php echo $post->post_title;?></td>
-				<td><?php echo $stock;?></td>
-				<td><input type="text" value="<?php echo $new_stock;?>" id="tcp_new_stock_<?php echo $post->ID;?>" name="tcp_new_stock_<?php echo $post->ID;?>" size="13" maxlength="13" />
+				<td><?php echo $stock;?> <?php _e( 'units', 'tcp' );?></td>
+				<td><input type="text" value="<?php echo $new_stock;?>" id="tcp_new_stock_<?php echo $post->ID;?>" name="tcp_new_stock_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' );?>
 				<input type="button" value="<?php _e( 'no stock', 'tcp' );?>" onclick="jQuery('#tcp_new_stock_<?php echo $post->ID;?>').val(-1);" class="button-secondary" /></td>
 				<td>&nbsp;</td>
 			</tr>
-			<?php endwhile;?>
+			<?php do_action( 'tcp_update_stock_controls', $post );
+			endwhile;?>
 			</tbody>
 			</table>
 		</div>

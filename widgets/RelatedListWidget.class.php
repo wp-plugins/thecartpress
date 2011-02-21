@@ -27,28 +27,40 @@ class RelatedListWidget extends CustomListWidget {
 	function widget( $args, $instance ) {
 		$loop_args = array();
 		if ( is_single() && ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' || $instance['rel_type'] == 'PROD-PROD' || $instance['rel_type'] == 'POST-PROD' ) ) {
+			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
+				$post_type_search = 'tcp_product';
+				$post_type = 'post';
+			} else {
+				$post_type_search = 'post';
+				$post_type = 'tcp_product';
+			}
 			global $post;
+			$post_id = tcp_get_default_id( $post->ID, $post_type_search );
 			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
-			$res = RelEntities::select( $post->ID, $instance['rel_type'] );
+			$res = RelEntities::select( $post_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
 			$ids = array();
 			foreach ( $res as $row )
 				$ids[] = $row->id_to;
-							$loop_args['post__in'] = $ids;
-			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
-				$loop_args['post_type'] = 'post';
-			} else {
-				$loop_args['post_type'] = 'tcp_product';
-			}
+			$loop_args['post__in'] = $ids;
+			$loop_args['post_type'] = $post_type;
 		} else {
+		//TODO falta
 			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) )
 				$instance['taxonomy'] = ProductCustomPostType::$PRODUCT_CATEGORY;
 			else if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_POST' || $instance['rel_type'] == 'CAT_POST-CAT_POST' ) )
 				$instance['taxonomy'] = 'category';
-			else return;
-			global $wp_query;
-			$term_id = isset( $wp_query->queried_object->term_taxonomy_id ) ? $wp_query->queried_object->term_taxonomy_id : 0;
+			else
+				return;
+			if ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_PROD-CAT_POST' )
+				$taxonomy_search = ProductCustomPostType::$PRODUCT_CATEGORY;
+			else //if ( $instance['rel_type'] == 'CAT_POST-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_POST' )
+				$taxonomy_search = 'category';
+			$cat = get_the_category();
+			if ( empty( $cat ) ) return;
+			$term_id = $cat[0]->term_id;
 			if ( $term_id <= 0 ) return;
+			$term_id = tcp_get_default_id( $term_id, $taxonomy_search );
 			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
 			$res = RelEntities::select( $term_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
@@ -57,8 +69,9 @@ class RelatedListWidget extends CustomListWidget {
 				$ids[] = $row->id_to;
 			if ( count( $ids ) == 0) return;
 			if ( $instance['taxonomy'] == 'category' ) {
-				$loop_args['cat__in'] = $ids;
-				//$loop_args['post_type'] = 'post';
+				$loop_args['category__in'] = $ids;
+//				$loop_args['cat__in'] = $ids;
+				$loop_args['post_type'] = 'post';
 			} else {
 				$loop_args['tax_query'] = array(
 					array(
@@ -67,12 +80,12 @@ class RelatedListWidget extends CustomListWidget {
 						'field'		=> 'id',
 					),
 				);
-				$loop_args['meta_query'] = array(
+				/*$loop_args['meta_query'] = array(
 					array(
-						'key' => 'tcp_is_visible',
-						'value' => true,
+						'key'	=> 'tcp_is_visible',
+						'value'	=> true,
 					),
-				);
+				);*/
 				$loop_args['post_type'] = 'tcp_product';
 			}
 		}
@@ -88,7 +101,7 @@ class RelatedListWidget extends CustomListWidget {
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'			=> __( 'Last Visited', 'tcp' ),
+			'title'			=> __( 'Related List', 'tcp' ),
 			'rel_type'		=> 'CAT_PROD-CAT_PROD',
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );

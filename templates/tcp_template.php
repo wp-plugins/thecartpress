@@ -38,17 +38,28 @@ function tcp_the_order_panel() {
 }
 
 function tcp_the_price( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_price', $before, $after, $echo );
+	$price = tcp_the_meta( 'tcp_price', $before, $after, false );
+	$price = apply_filters( 'tcp_the_price', $price );
+	if ( $echo )
+		echo $price;
+	else
+		return $price;
 }
 
 function tcp_get_the_price( $post_id = 0 ) {
-	return (float)tcp_get_the_meta( 'tcp_price', $post_id );
+	$price = (float)tcp_get_the_meta( 'tcp_price', $post_id );
+	$price = apply_filters( 'tcp_get_the_price', $price );
+	return $price;
 }
 
 function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
 	$price = tcp_get_the_price_label();
-	if ( strlen( $price ) == 0 ) return '';
+	if ( strlen( $price ) == 0 ) {
+		//$price = apply_filters( 'tcp_the_price_label', '' );
+		return '';
+	}
 	$price = $before . $price . $after;
+	$price = apply_filters( 'tcp_the_price_label', $price );
 	if ( $echo )
 		echo $price;
 	else
@@ -69,44 +80,75 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 				if ( $price < $min ) $min = $price;
 				if ( $price > $max ) $max = $price;
 			}
-			if ( $min != $max )
-				return $min . __( ' to ', 'tcp' ) . $max;
-			else
-				return $min;
-		} else
+			if ( $min != $max ) {
+				$price = $min . __( ' to ', 'tcp' ) . $max;
+				$price = apply_filters( 'tcp_get_the_price_label', $price );
+				return $price;
+			} else {
+				$price = apply_filters( 'tcp_get_the_price_label', $min );
+				return $price;
+			}
+		} else {
+			$price = apply_filters( 'tcp_get_the_price_label', 0 );
 			return 0;
-	} else
-		return tcp_get_the_price( $post_id );
+		}
+	} else {
+		$price = tcp_get_the_price( $post_id );
+		$price = apply_filters( 'tcp_get_the_price_label', $price );
+		return $price;
+	}
 }
 
 function tcp_the_tax_id( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_tax_id', $before, $after, $echo );
+	$tax = tcp_the_meta( 'tcp_tax_id', $before, $after, false );
+	$tax = apply_filters( 'tcp_the_tax_id', $tax );
+	if ( $echo )
+		echo $tax;
+	else
+		return $tax;
 }
 
 function tcp_get_the_tax_id( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_tax_id', $post_id );
+	$tax = tcp_get_the_meta( 'tcp_tax_id', $post_id );
+	$tax = apply_filters( 'tcp_get_the_tax_id', $tax );
+	return $tax;
 }
 
 function tcp_the_tax( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_tax', $before, $after, $echo );
+	$tax = tcp_the_meta( 'tcp_tax', $before, $after, false );
+	$tax = apply_filters( 'tcp_the_tax', $tax );
+	if ( $echo )
+		echo $tax;
+	else
+		return $tax;
 }
 
 function tcp_get_the_tax( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_tax', $post_id );
+	$tax = tcp_get_the_meta( 'tcp_tax', $post_id );
+	$tax = apply_filters( 'tcp_get_the_tax', $tax );
+	return $tax;
 }
 
 function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_tax_label', $before, $after, $echo );
+	$tax = tcp_the_meta( 'tcp_tax_label', $before, $after, false );
+	$tax = apply_filters( 'tcp_the_tax_label', $tax );
+	if ( $echo )
+		echo $tax;
+	else
+		return $tax;
 }
 
 function tcp_get_the_tax_label( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_tax_label', $post_id );
+	$tax = tcp_get_the_meta( 'tcp_tax_label', $post_id );
+	$tax = apply_filters( 'tcp_get_the_tax_label', $tax );
+	return $tax;
 }
 
 function tcp_the_price_tax( $before = '', $after = '', $echo = true ) {
 	$price = tcp_get_the_price_tax();
 	if ( strlen( $price ) == 0 ) return;
 	$price = $before . $price . $after;
+	$price = apply_filters( 'tcp_the_price_tax', $price );
 	if ( $echo )
 		echo $price;
 	else
@@ -121,6 +163,7 @@ function tcp_get_the_price_tax( $post_id = 0 ) {
 	if ( ! $tax ) return;
 	if ( strlen( $tax ) == 0 ) $tax = 0;
 	if ( $tax > 0 ) $price = $price * 1 + ($tax / 100);
+	$price = apply_filters( 'tcp_get_the_price_tax', $price );
 	return $price;
 }
 
@@ -144,27 +187,72 @@ function tcp_the_sku( $before = '', $after = '', $echo = true ) {
 	return tcp_the_meta( 'tcp_sku', $before, $after, $echo );
 }
 
-function tcp_get_the_sku( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_sku', $post_id );
+function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+	if ( $option_2_id > 0) {
+		$sku = tcp_get_the_meta( 'tcp_sku', $option_2_id );
+		if ( strlen( $sku ) > 0 )
+			return $sku;
+		else
+			return tcp_get_the_sku( $post_id, $option_1_id );
+	} elseif ( $option_1_id > 0) {
+		$sku = tcp_get_the_meta( 'tcp_sku', $option_1_id );
+		if ( strlen( $sku ) > 0 )
+			return $sku;
+		else
+			return tcp_get_the_sku( $post_id );
+	} else
+		return tcp_get_the_meta( 'tcp_sku', $post_id );
 }
 
 function tcp_the_stock( $before = '', $after = '', $echo = true ) {
 	return tcp_the_meta( 'tcp_stock', $before, $after, $echo );
 }
 
-function tcp_get_the_stock( $post_id = 0 ) {
-	$stock = tcp_get_the_meta( 'tcp_stock', $post_id );
-	if ( strlen( $stock ) > 0 )
-		return (int)$stock;
-	else
-		return -1;
+function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+	if ( $option_2_id > 0) {
+		$stock = tcp_get_the_meta( 'tcp_stock', $option_2_id );
+		if ( $stock == -1 )
+			return tcp_get_the_stock( $post_id, $option_1_id );
+		else
+			return $stock;
+	} elseif ( $option_1_id > 0) {
+		$stock = tcp_get_the_meta( 'tcp_stock', $option_1_id );
+		if ( $stock == -1 )
+			return tcp_get_the_stock( $post_id );
+		else
+			return $stock;
+	} else {
+		$stock = tcp_get_the_meta( 'tcp_stock', $post_id );
+		if ( strlen( $stock ) > 0 )
+			return (int)$stock;
+		else
+			return -1;
+	}
 }
 
-function tcp_set_the_stock( $post_id, $stock = -1 ) {
-	if ( (int)$stock > -1 )
-		update_post_meta( $post_id, 'tcp_stock', (int)$stock );
-	else
-		return false;
+function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock = -1 ) {
+	if ( (int)$stock > -1 ) {
+		if ( $option_2_id > 0) {
+			$old_stock = tcp_get_the_meta( 'tcp_stock', $option_2_id );
+			if ( $old_stock == -1 ) {
+				return tcp_set_the_stock( $post_id, $option_1_id, 0, $stock );
+			} else {
+				update_post_meta( $option_2_id, 'tcp_stock', (int)$stock );
+				return true;
+			}
+		} elseif ( $option_1_id > 0) {
+			$old_stock = tcp_get_the_meta( 'tcp_stock', $option_1_id );
+			if ( $old_stock == -1 ) {
+				return tcp_set_the_stock( $post_id, 0, 0, $stock );
+			} else {
+				update_post_meta( $option_1_id, 'tcp_stock', (int)$stock );
+				return true;
+			}
+		} else {
+			update_post_meta( $post_id, 'tcp_stock', (int)$stock );
+			return true;
+		}
+	} else return false;
 }
 
 function tcp_is_downloadable( $post_id = 0 ) {
@@ -205,7 +293,8 @@ function tcp_get_the_meta( $meta_key, $post_id = 0 ) {
 	return $meta_value;
 }
 
-//multilanguage
+//Multilanguage
+//Given a post_id this function returns the post_id in the default language
 function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
 	global $sitepress;
 	if ( $sitepress ) {
@@ -214,6 +303,82 @@ function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
 	} else
 		return $post_id;
 }
+
+//Given a post_id this function returns the equivalent post_id in the current language
+function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
+	global $sitepress;
+	if ( $sitepress ) {
+		$default_language = $sitepress->get_current_language();
+		return icl_object_id( $post_id, $post_type, true, $default_language );
+	} else
+		return $post_id;
+}
+
+/**
+ * Returns the list of translations from a given post_id
+ * Example of returned array
+ * array(2) {	["en"]=> object(stdClass)#45 (6) { ["translation_id"]=> string(2) "11" ["language_code"]=> string(2) "en" ["element_id"]=> string(1)  "9" ["original"]=> string(1) "1" ["post_title"]=> string(21) "Tom Sawyer Adventures"       ["post_status"]=> string(7) "publish" }
+ * 				["es"]=> object(stdClass)#44 (6) { ["translation_id"]=> string(2) "12" ["language_code"]=> string(2) "es" ["element_id"]=> string(2) "10" ["original"]=> string(1) "0" ["post_title"]=> string(27) "Las Aventuras de Tom Sawyer" ["post_status"]=> string(7) "publish" } }
+ */
+function tcp_get_all_translations( $post_id, $post_type = 'tcp_product' ) {
+	global $sitepress;
+	if ( $sitepress ) {
+		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
+		return $sitepress->get_element_translations( $trid, 'post_'. $post_type );
+	} else
+		return false;
+}
+
+function tcp_get_default_language() {
+	global $sitepress;
+	if ( $sitepress )
+		return $sitepress->get_default_language();
+	else
+		return null;
+}
+
+function tcp_get_current_language() {
+	global $sitepress;
+	if ( $sitepress )
+		return $sitepress->get_current_language();
+	else
+		return null;
+}
+
+/**
+ * This function adds a post identified by the $translate_post_id as a translation of the post identified by $post_id
+ */
+function tcp_add_translation( $post_id, $translate_post_id, $language, $post_type = 'tcp_product' ) {
+	global $sitepress;
+	if ( $sitepress ) {
+		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
+		$sitepress->set_element_language_details( $translate_post_id, 'post_' . $post_type, $trid, $language );
+	}
+}
+
+/**
+ * To register strings to translate. For Example to translate the titles of the wigets
+ *
+function tcp_register_string( $context, $name, $value ) {
+	if ( function_exists( 'icl_register_string' ) )
+		icl_register_string( $context, $name, $value );
+}
+
+function tcp_unregiser_string( $context, $name ) {
+	if ( function_exists( 'icl_unregister_string' ) )
+		icl_unregister_string( $context, $name );
+}
+
+/**
+ * Returns the translation of a string identified by $context and $name
+ *
+function tcp_t( $context, $name, $value ) {
+	if ( function_exists( 'icl_t' ) )
+		return icl_t( $context, $name, $value );
+	else
+		return $value;
+}*/
+//end Multilanguage
 
 //to select in a multiple select control
 function tcp_selected_multiple( $values, $value, $echo = true ) {

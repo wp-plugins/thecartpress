@@ -34,7 +34,10 @@ class CustomListWidget extends WP_Widget {
 	function widget( $args, $loop_args, $instance ) {
 		extract( $args );
 		query_posts( $loop_args );
-		if ( ! have_posts() ) return;
+		if ( ! have_posts() ) {
+			wp_reset_query();
+			return;
+		}
 		echo $before_widget;
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( $title ) echo $before_title, $title, $after_title;
@@ -171,6 +174,13 @@ class CustomListWidget extends WP_Widget {
 				<?php endwhile; closedir( $handle );?>
 			</select>
 		</p>
+		
+		<p>
+			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
+			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
+		</p>
+	</div>
+	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />

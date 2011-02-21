@@ -58,7 +58,7 @@ class Orders {
 		  `shipping_telephone_1`	varchar(50)			NOT NULL,
 		  `shipping_telephone_2`	varchar(50)			NOT NULL,
 		  `shipping_fax`			varchar(50)			NOT NULL,
-  		  `shipping_email`			varchar(50)			NOT NULL,
+  		  `shipping_email`			varchar(255)		NOT NULL,
 		  `billing_firstname`		varchar(50)			NOT NULL,
 		  `billing_lastname`		varchar(100)		NOT NULL,
 		  `billing_company`			varchar(50)			NOT NULL,
@@ -73,7 +73,7 @@ class Orders {
 		  `billing_telephone_1`		varchar(50)			NOT NULL,
 		  `billing_telephone_2`		varchar(50)			NOT NULL,
 		  `billing_fax`				varchar(50)			NOT NULL,
-  		  `billing_email`			varchar(50)			NOT NULL,
+  		  `billing_email`			varchar(255)		NOT NULL,
 		  PRIMARY KEY  (`order_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
 		$wpdb->query( $sql );

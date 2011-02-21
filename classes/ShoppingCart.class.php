@@ -49,11 +49,12 @@ class ShoppingCart {
 	 * Returns the total amount in the cart
 	 * @see getTotalNoDownloadable()
 	 */
-	function getTotal() {
+	function getTotal( $otherCosts = false ) {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
 			$total += $shopping_cart_item->getTotal();
-		$total += $this->getTotalOtherCosts();
+		if ( $otherCosts )
+			$total += $this->getTotalOtherCosts();
 		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
 		return $total;
 	}
@@ -151,12 +152,13 @@ class ShoppingCart {
 	 * This function is used, for example, to calculate sending cost
 	 * because the downloadable products has not sending cost.
 	 */
-	function getTotalNoDownloadable() {
+	function getTotalNoDownloadable( $otherCosts = false ) {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $item )
 			if ( ! $item->isDownloadable() )
 				$total += $item->getTotal();
-		$total += $this->getTotalOtherCosts();
+		if ( $otherCosts )
+			$total += $this->getTotalOtherCosts();
 		return $total;
 	}
 
@@ -185,16 +187,16 @@ class ShoppingCart {
 		$this->visited_post_ids = array();
 	}
 	
-	function isThereStock( $post_id = 0) {
+	function isThereStock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 		if ( $post_id == 0 ) {
 			foreach( $this->shopping_cart_items as $item ) {
-				$stock = tcp_get_the_stock( $item->getPostId() );
+				$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 				if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
 					return false;
 			}
 			return true;
 		} else {
-			$stock = tcp_get_the_stock( $item->getPostId() );
+			$stock = tcp_get_the_stock( $post_id, $option_1_id, $option_2_id );
 			if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
 				return false;
 			else

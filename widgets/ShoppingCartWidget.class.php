@@ -43,9 +43,9 @@ class ShoppingCartWidget extends WP_Widget {
 		$see_modify_item	= isset( $instance['see_modify_item'] ) ? $instance['see_modify_item'] : true;
 		$see_weight			= isset( $instance['see_weight'] ) ? $instance['see_weight'] : true;
 		$see_delete_item	= isset( $instance['see_delete_item'] ) ? $instance['see_delete_item'] : true;
+		$see_delete_all		= isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : true;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? $instance['see_shopping_cart'] : true;
 		$see_checkout		= isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true;
-		$see_delete_all		= isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : true;
 		foreach( $shoppingCart->getItems() as $item ) :?>
 			<li><form method="post">
 				<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId();?>" />
@@ -66,7 +66,7 @@ class ShoppingCartWidget extends WP_Widget {
 							<span class="tcp_units"><?php _e( 'Units', 'tcp' );?>:&nbsp;<?php echo $item->getCount();?></span>
 						<?php endif;?>
 						<?php if ( $stock_management && $see_stock_notice ) :
-							$stock = tcp_get_the_stock( $item->getPostId() );
+							$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 							if ( $stock != -1 && $stock < $item->getCount() ) :?>
 								<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );?></span>
 							<?php endif;
@@ -102,31 +102,33 @@ class ShoppingCartWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
-		$instance['see_stock_notice']	= $new_instance['see_stock_notice'];
-		$instance['see_weight']			= $new_instance['see_weight'];
-		$instance['see_modify_item']	= $new_instance['see_modify_item'];
-		$instance['see_delete_item']	= $new_instance['see_delete_item'];
-		$instance['see_delete_all']		= $new_instance['see_delete_all'];
-		$instance['see_shopping_cart']	= $new_instance['see_shopping_cart'];
-		$instance['see_checkout']		= $new_instance['see_checkout'];
+		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] ) ? true : false;
+		$instance['see_weight']			= isset( $new_instance['see_weight'] ) ? true : false;
+		$instance['see_modify_item']	= isset( $new_instance['see_modify_item'] ) ? true : false;
+		$instance['see_delete_item']	= isset( $new_instance['see_delete_item'] ) ? true : false;
+		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] ) ? true : false;
+		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] ) ? true : false;
+		$instance['see_checkout']		= isset( $new_instance['see_checkout'] ) ? true : false;
 		return $instance;
 	}
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'				=> 'Shopping Cart',
+			'title'				=> __( 'Shopping Cart', 'tcp' ),
 			'see_weight'		=> true,
 			'see_modify_item'	=> true,
-			'see_delete_item'	=> true,
-			'see_delete_all'	=> true,
+			'see_delete_item'	=> false,
+			'see_delete_all'	=> false,
 			'see_stock_notice'	=> false,
+			'see_shopping_cart'	=> true,
+			'see_checkout'		=> true,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
 		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
-		$see_weight			= isset( $instance['see_weight'] )		? (bool) $instance['see_weight']		: false;
-		$see_modify_item	= isset( $instance['see_modify_item'] )	? (bool) $instance['see_modify_item']	: false;
-		$see_delete_item	= isset( $instance['see_delete_item'] )	? (bool) $instance['see_delete_item']	: false;
-		$see_delete_all		= isset( $instance['see_delete_all'] )	? (bool) $instance['see_delete_all']	: false;
+		$see_weight			= isset( $instance['see_weight'] )	? (bool)$instance['see_weight'] : false;
+		$see_modify_item	= isset( $instance['see_modify_item'] ) ? (bool)$instance['see_modify_item'] : false;
+		$see_delete_item	= isset( $instance['see_delete_item'] ) ? (bool)$instance['see_delete_item'] : false;
+		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
 		$see_checkout		= isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false;
 		?>
@@ -159,6 +161,9 @@ class ShoppingCartWidget extends WP_Widget {
 	}
 
 	private function getProductTitle( $post_id, $option_1_id, $option_2_id ) {
+		$post_id = tcp_get_current_id( $post_id );
+		$option_1_id = tcp_get_current_id( $option_1_id, 'tcp_product_option' );
+		$option_2_id = tcp_get_current_id( $option_2_id, 'tcp_product_option' );
 		$title = get_the_title( $post_id );
 		if ( $option_1_id > 0 ) $title .= '-' . get_the_title( $option_1_id );
 		if ( $option_2_id > 0 ) $title .= '-' . get_the_title( $option_2_id );

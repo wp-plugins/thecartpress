@@ -28,24 +28,31 @@ class ProductCustomFieldsMetabox {
 	function showCustomFields() {
 		global $post;
 		if ( $post->post_type != ProductCustomPostType::$PRODUCT ) return;
-		if ( !current_user_can( 'edit_post', $post->ID ) ) return;
+		$post_id = tcp_get_default_id( $post->ID );
+		if ( !current_user_can( 'edit_post', $post_id ) ) return;
+		$lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
+		$source_lang = isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : '';
+		$is_translation = $lang != $source_lang;
+		if ( $is_translation && $post_id == $post->ID) {
+			_e( 'After saving the title and content, you will be able to edit the specific fields of the product.', 'tcp');
+			return;
+		}
 		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
 		if ( $tcp_product_parent_id > 0 ) {
 			$create_grouped_relation = true;
 		} else {
 			$create_grouped_relation = false;
-			if ( $post->ID > 0 )
-				$tcp_product_parent_id = RelEntities::getParent( $post->ID );
+			if ( $post_id > 0 )
+				$tcp_product_parent_id = RelEntities::getParent( $post_id );
 		}?>
 		<ul class="subsubsub">
 		<?php 
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		$count = RelEntities::count( $post->ID );
+		$count = RelEntities::count( $post_id );
 		if ( $count > 0 ) $count = ' (' . $count . ')';
 		else $count = '';
-		//$product_type = get_post_meta( $post->ID, 'tcp_type', true );
-		$product_type = tcp_get_the_product_type( $post->ID );
-		$post_id = tcp_get_default_id( $post->ID );
+		//$product_type = get_post_meta( $post_id, 'tcp_type', true );
+		$product_type = tcp_get_the_product_type( $post_id );
 		if ( $product_type != '' && $product_type != 'SIMPLE' ) :?>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'assigned products', 'tcp' );?> <?php echo $count;?></a></li>
 		<?php endif;
@@ -67,7 +74,7 @@ class ProductCustomFieldsMetabox {
 			<li>|</li>
 			<li><a href="post.php?action=edit&post=<?php echo $tcp_product_parent_id;?>"><?php _e( 'edit parent product', 'tcp' );?></a></li>
 		<?php endif;?>
-		<?php if ( tcp_is_downloadable( $post->ID ) ) :?>
+		<?php if ( tcp_is_downloadable( $post_id ) ) :?>
 			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>UploadFiles.php&post_id=<?php echo $post_id;?>"><?php echo __( 'file upload', 'tcp' ), $count;?></a></li>
 		<?php endif;?>
@@ -89,7 +96,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input name="tcp_price" id="tcp_price" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_price', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
+				<td><input name="tcp_price" id="tcp_price" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_price', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_tax_id"><?php _e( 'Tax', 'tcp' );?>:</label></th>
@@ -105,26 +112,26 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_weight', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
+				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_weight', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops or catalogue)', 'tcp' );?>:</label></th>
+				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops/catalogue)', 'tcp' );?>:</label></th>
 				<td><?php 
-				$keys = get_post_custom_keys( $post->ID );
+				$keys = get_post_custom_keys( $post_id );
 				if ( $keys )
-					$is_visible = tcp_is_visible( $post->ID );
+					$is_visible = tcp_is_visible( $post_id );
 				else
 					$is_visible = true;?>
 				<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php if ( $is_visible ):?>checked="checked"<?php endif;?> /></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in main loop or catalogue)', 'tcp' );?>:</label></th>
-				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_order', true ) );?>" class="regular-text" type="text" style="width:4em">
+				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' );?>:</label></th>
+				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text" type="text" style="width:4em">
 				<span class="description"><?php _e( 'Numerical order.', 'tcp' );?></span></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' );?>:</label></th>
-				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
+				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
 			<tr valign="top">
 			<?php	$settings = get_option( 'tcp_settings' );
@@ -135,29 +142,29 @@ class ProductCustomFieldsMetabox {
 					<span class="description"><?php printf( __( 'Stock management is disabled. See the <a href="%s">settings</a> page to change this value.', 'tcp' ), $path );?></span>
 				<?php endif;?>
 				</th>
-				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post->ID, 'tcp_stock', true ) );?>" class="regular-text" type="text" style="width:10em">
+				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_stock', true ) );?>" class="regular-text" type="text" style="width:10em">
 				<br /><span class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></span></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
-				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post->ID, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
+				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
 				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
 			</tr>
 			<?php
-			if ( get_post_meta( $post->ID, 'tcp_is_downloadable', true ) )
+			if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) )
 				$style = '';
 			else
 				$style = 'style="display:none;"';
 			?>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
-				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4">
+				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4">
 				<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
 				</td>
 			</tr>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
-				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post->ID, 'tcp_days_to_expire', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4">
+				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4">
 				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
 				</td>
 			</tr>
@@ -199,6 +206,16 @@ class ProductCustomFieldsMetabox {
 		$tcp_stock = isset( $_POST['tcp_stock'] )  ? $_POST['tcp_stock'] : -1;
 		if ( $tcp_stock == '' ) $tcp_stock = -1;
 		update_post_meta( $post_id, 'tcp_stock', (int)$tcp_stock );
+		
+		$translations = tcp_get_all_translations( $post_id );
+		if ( is_array( $translations ) && count( $translations ) > 0 )
+			foreach( $translations as $translation )
+				if ( $translation->element_id != $post_id ) {
+					update_post_meta( $translation->element_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] )  ? $_POST['tcp_is_visible'] == 'yes' : false );
+					update_post_meta( $translation->element_id, 'tcp_order', isset( $_POST['tcp_order'] )  ? (int)$_POST['tcp_order'] : '' );
+					update_post_meta( $translation->element_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
+				}
+
 		do_action( 'tcp_product_metabox_save_custom_fields', $post_id );
 		$this->refreshMoira();
 	}

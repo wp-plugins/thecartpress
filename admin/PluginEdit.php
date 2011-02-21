@@ -66,8 +66,8 @@ $instance_href = $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plug
 <div class="instances">
 <?php
 if ( is_array( $plugin_data ) ) :
-	foreach($plugin_data as $instance_id => $instance_data) :
-		if ( $instance_id == $instance) :?>
+	foreach( $plugin_data as $instance_id => $instance_data ) :
+		if ( $instance_id == $instance ) : ?>
 			<span><?php _e( 'instance', 'tcp' );?> <?php echo $instance_id;?></span>&nbsp;|&nbsp;
 		<?php else: ?>
 			<a href="<?php echo $instance_href, $instance_id;?>"><?php _e( 'instance', 'tcp' );?> <?php echo $instance_id;?></a>&nbsp;|&nbsp;
@@ -120,20 +120,24 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	</th>
 	<td>
 		<?php $countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
-		<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
-			<?php $countries_db = Countries::getAll();
-			foreach( $countries_db as $country ) :?>
-			<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $countries, $country->iso );?>><?php echo $country->name;?></option>
-			<?php endforeach;?>
-		</select>
-
-		<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
-		<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
-		<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
-		<input type="button" value="<?php _e( 'MERCASUR', 'tcp');?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' );?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
-		<input type="button" value="<?php _e( 'CAN', 'tcp');?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' );?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
-		<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
-		
+		<div style="float:left">
+			<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
+				<?php $countries_db = Countries::getAll();
+				foreach( $countries_db as $country ) :?>
+				<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $countries, $country->iso );?>><?php echo $country->name;?></option>
+				<?php endforeach;?>
+			</select>
+		</div>
+		<div>
+			<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'MERCASUR', 'tcp');?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' );?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'CAN', 'tcp');?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' );?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
+			<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
+			<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
+		</div>
 	</td></tr>
 	<?php $plugin->showEditFields( $data );?>
 	</tbody></table>

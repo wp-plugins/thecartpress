@@ -19,13 +19,14 @@
 require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
 
 $post_id  = isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
+$error_upload = '';
 
 function tcp_upload_file( $post_id, $file ) {
 	$rev_name = strrev( $_FILES['upload_file']['name'] );
 	$i = strpos( $rev_name, '.' );
 	$ext = strrev( substr( $rev_name, 0, $i ) );
 	$settings = get_option( 'tcp_settings' );
-	$downloadable_path = isset( trim( $settings['downloadable_path'] ) ) ? $settings['downloadable_path'] : '';
+	$downloadable_path = isset( $settings['downloadable_path'] ) ? trim( $settings['downloadable_path'] ) : '';
 	if ( strlen( $settings['downloadable_path'] ) == 0 ) {
 		wp_die( __( 'The path where the downloadable files must be saved is not set.', 'tcp' ) );
 		return false;
@@ -34,15 +35,19 @@ function tcp_upload_file( $post_id, $file ) {
 		global $wpdb;
 		$folder_path .= '/' . $wpdb->prefix . 'tcp';
 		if ( ! file_exists( $folder_path ) )
-			if ( ! mkdir( $folder_path ) )
+			if ( ! mkdir( $folder_path ) ) {
+				$error_upload = __( 'Error creating the folder.', 'tcp' );
 				return false;
+			}
 		$file_path = $folder_path . '/upload_' . $post_id . '.' . $ext;
 		tcp_set_the_file( $post_id, $file_path );
 		if ( move_uploaded_file( $_FILES['upload_file']['tmp_name'], $file_path ) ) {
 			do_action( 'tcp_uploaded_file', $file_path );
 			return true;
-		} else
+		} else {
+			$error_upload = __( 'Error uploading the file.', 'tcp' );
 			return false;
+		}
 	}
 }
 
@@ -56,10 +61,10 @@ if ( $post_id ) {
 			$file_path = __( 'recent uploaded', 'tcp' );
 		} else {?>
 			<div id="message" class="updated"><p><?php 
-				_e( 'Error, the upload has not been completed', 'tcp' );
+				printf( __( 'Error, the upload has not been completed: %s', 'tcp' ), $error_upload );
 			?></p></div><?php
 		}
-	} else if ( isset( $_REQUEST['tcp_delete_virtual_file'] ) ) {
+	} elseif ( isset( $_REQUEST['tcp_delete_virtual_file'] ) ) {
 		$file_path = tcp_get_the_file( $post_id );
 		do_action( 'tcp_delete_upload_file', $file_path );
 		if ( unlink( $file_path ) ) {?>

@@ -87,7 +87,7 @@ while ( have_posts() ) : the_post();
 		<?php endif; ?>
 		<?php if ( $see_meta_data ) : ?>
 			<div class="entry-meta">
-				<?php twentyten_posted_on(); ?>
+				<?php twentytencart_posted_on(); ?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 			<?php if ( $see_price ) :?>
@@ -165,11 +165,10 @@ while ( have_posts() ) : the_post();
 						<span class="tag-links">
 							<?php printf( __( '<span class="%1$s">Supplied by</span> %2$s', 'twentyten' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
 						</span>
-						<span class="meta-sep">|</span>
 					<?php endif; ?>
 				<?php endif; ?>
-						<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?></span>
-						<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
+						<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
+						<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
 			</div><!-- .entry-utility -->
 		<?php endif; ?>
 		</div><!-- #post-## -->

@@ -71,7 +71,7 @@ class ShoppingCartPage {
 								1
 						<?php endif;?>
 					<?php if ( $stock_management ) :
-						$stock = tcp_get_the_stock( $item->getPostId() );
+						$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 						if ( $stock == 0 ) : ?>
 							<span class="tcp_no_stock"><?php _e( 'Out of stock', 'tcp' );?></span>
 						<?php elseif ( $stock != -1 && $stock < $item->getCount() ) : ?>

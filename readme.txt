@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
 Tested up to: 3.1
-Stable Tag: 1.0.4
+Stable Tag: 1.0.5
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -151,6 +151,16 @@ This plugin is released under a GPL license.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.5 =
+* Post type Comments Widget
+* ShortCode generator
+* Bug fixed internal version updates
+* Improvements in multilingual support
+* Permalinks in categories/tags/suppliers of products (manageable from settings page)
+* Improvements in widgets ShoppingCart and ResumeShopping
+* Hide invisibles products in the list of products in admin (manageable from settings page) (required WP 3.1)
+* Added more useful hooks for plugin development
 
 = 1.0.4 =
 * 7 digits for postal code

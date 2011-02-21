@@ -33,11 +33,11 @@ class CustomPostTypeListWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		if ( $instance['use_taxonomy'] ) {
+		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
 			$args = array(
 				'post_type'			=> $instance['post_type'],
-				'posts_per_page'	=> $instance['limit'],
+				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 			);
 			if ( strlen( $taxonomy ) > 0 ) {
 				$args[$taxonomy] = $instance['term'];
@@ -45,9 +45,9 @@ class CustomPostTypeListWidget extends WP_Widget {
 		} else {
 			$args = array(
 				'post_type'			=> $instance['post_type'],
-				'posts_per_page'	=> $instance['limit'],
+				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 			);
-			if ( count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {
+			if ( isset( $instance['included'] ) && count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {
 				$args['post__in'] = $instance['included'];
 			}
 		}
@@ -74,6 +74,11 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
 					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_get_the_price_label( get_the_ID() );?>&nbsp;<?php tcp_the_currency();?>(<?php echo tcp_get_the_tax_label( get_the_ID() );?>)</p>
+				</div>
+				<?php endif;?>
+				<?php if ( isset( $instance['see_buy_button'] ) && $instance['see_buy_button'] ) : ?>
+				<div class="entry_tcp_buy_button">
+					<?php tcp_the_buy_button();?>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_content'] ) && $instance['see_content'] ) : ?>
@@ -122,7 +127,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$instance['columns']		= (int)$new_instance['columns'];
 		$instance['see_title']		= $new_instance['see_title'] == 'yes';
 		$instance['see_image']		= $new_instance['see_image'] == 'yes';
-		$instance['image_size']		= $new_instance['image_size'] == 'yes';
+		$instance['image_size']		= $new_instance['image_size'];
 		$instance['see_content']	= $new_instance['see_content'] == 'yes';
 		$instance['see_excerpt']	= $new_instance['see_excerpt'] == 'yes';
 		$instance['see_author']		= $new_instance['see_author'] == 'yes';
@@ -158,19 +163,20 @@ class CustomPostTypeListWidget extends WP_Widget {
 			'see_buy_button'=> false,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		$see_title		= isset( $instance['see_title'] )		? $instance['see_title'] 	: false;
-		$see_image		= isset( $instance['see_image'] )		? $instance['see_image']	: false;
-		$see_content	= isset( $instance['see_content'] )		? $instance['see_content']	: false;
-		$see_excerpt	= isset( $instance['see_excerpt'] )		? $instance['see_excerpt']	: false;
-		$see_author		= isset( $instance['see_author'] )		? $instance['see_author']	: false;
-		$see_meta_data	= isset( $instance['see_meta_data'] )	? $instance['see_meta_data']: false;
-		$see_meta_utilities	= isset( $instance['see_meta_utilities'] )	? $instance['see_meta_utilities']: false;
-		$see_price		= isset( $instance['see_price'] )		? $instance['see_price']	: false;
-		$see_buy_button	= isset( $instance['see_buy_button'] )	? $instance['see_buy_button']: false;
-		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) 	? $instance['use_taxonomy'] : false;
-		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) 	? $instance['see_first_custom_area'] : false;
-		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) 	? $instance['see_second_custom_area'] : false;
-		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) 	? $instance['see_third_custom_area'] : false;
+		$see_title		= isset( $instance['see_title'] ) ? $instance['see_title'] : false;
+		$see_image		= isset( $instance['see_image'] ) ? $instance['see_image'] : false;
+		$image_size		= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
+		$see_content	= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
+		$see_excerpt	= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : false;
+		$see_author		= isset( $instance['see_author'] ) ? $instance['see_author'] : false;
+		$see_meta_data	= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data'] : false;
+		$see_meta_utilities	= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
+		$see_price		= isset( $instance['see_price'] ) ? $instance['see_price'] : false;
+		$see_buy_button	= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
+		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
+		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
+		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
+		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
 		if ( $use_taxonomy ) {
 			$use_taxonomy_style = '';
 			$included_style = 'display: none;';
@@ -216,27 +222,29 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
 					<option value="" <?php selected( $instance['taxonomy'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
-				<?php foreach(get_object_taxonomies( $instance['post_type'] ) as $taxonomy ): $tax = get_taxonomy( $taxonomy ); ?>
+				<?php foreach( get_object_taxonomies( $instance['post_type'] ) as $taxonomy ) : $tax = get_taxonomy( $taxonomy ); ?>
 					<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
-				<?php endforeach; ?>
+				<?php endforeach;?>
 				</select>
 				<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
 			</p><p>
 				<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'term' ); ?>" id="<?php echo $this->get_field_id( 'term' ); ?>" class="widefat">
-				<?php if ( $instance['taxonomy']) : 
+				<?php if ( $instance['taxonomy'] ) : 
 					$term_slug = isset( $instance['term'] ) ? $instance['term'] : '';
 					$terms = get_terms( $instance['taxonomy'], array( 'hide_empty' => false ) );
 					if ( is_array( $terms ) && count( $terms ) )
-						foreach( $terms as $term): ?>
-						<option value="<?php echo $term->slug;?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
-						<?php endforeach;
+						foreach( $terms as $term ) : 
+							if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>?>
+								<option value="<?php echo $term->slug;?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
+							<?php endif;
+						endforeach;
 				endif;?>
 				</select>
 			</p>
 		</div> <!-- tcp_taxonomy_controls -->
 		<div class="tcp_post_included" style="<?php echo $included_style;?>">
-			</p><div id="p_included" style="<?php echo $p_included_style;?>"><p style="margin-top:0;">
+			<div id="p_included" style="<?php echo $p_included_style;?>"><p style="margin-top:0;">
 				<label for="<?php echo $this->get_field_id( 'included' );?>"><?php _e( 'Included', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'included' );?>[]" id="<?php echo $this->get_field_id( 'included' );?>" class="widefat" multiple="true" size="8" style="height: auto">
 					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
@@ -249,11 +257,12 @@ class CustomPostTypeListWidget extends WP_Widget {
 					$args['meta_value'] = true;
 				}
 				$query = new WP_query($args);
-				if ( $query->have_posts() ) while ( $query->have_posts()): $query->the_post();?>
+				if ( $query->have_posts() ) while ( $query->have_posts() ): $query->the_post();?>
 					<option value="<?php the_ID();?>"<?php tcp_selected_multiple( $instance['included'], get_the_ID() ); ?>><?php the_title();?></option>
 				<?php endwhile; wp_reset_postdata(); wp_reset_query();?>
 				</select>
-			</p></div><!-- p_included -->
+				</p>
+			</div><!-- p_included -->
 		</div><!-- tcp_post_included -->
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit', 'tcp' ); ?>:</label>
@@ -263,11 +272,11 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'loop' ); ?>"><?php _e( 'Loop', 'tcp' ); ?>:</label>
 			&nbsp;(<?php _e( 'theme', 'tcp' );?>:&nbsp;<?php echo get_template();?>)
 			<select name="<?php echo $this->get_field_name( 'loop' ); ?>" id="<?php echo $this->get_field_id( 'loop' ); ?>" class="widefat">
-				<option value="" <?php selected( $instance['loop'], "" ); ?>"><?_e( 'default', 'tcp' ); ?></option>
+				<option value="" <?php selected( $instance['loop'], '' ); ?>"><?_e( 'default', 'tcp' ); ?></option>
 			<?php
 			$files = array();
 			$folder = STYLESHEETPATH;
-			if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
+			if ( $handle = opendir( $folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 				if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
 					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?echo $file; ?></option>
 				<?php 
@@ -307,7 +316,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
 			<?php $imageSizes = get_intermediate_image_sizes();
 			foreach($imageSizes as $imageSize) : ?>
-				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $instance['image_size'] );?>><?php echo $imageSize;?></option>
+				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $image_size );?>><?php echo $imageSize;?></option>
 			<?php endforeach;?>
 			?>
 			</select>

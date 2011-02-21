@@ -55,8 +55,7 @@ class PayPal extends TCP_Plugin {
 		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() ); //home_url();
 		$notify_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php?action=ok' );
 		$cancel_url = home_url();
-		$paymentAmount = $shoppingCart->getTotal();
-
+		$paymentAmount = $shoppingCart->getTotal( true );
 		$p = new paypal_class( $test_mode );
 		$p->add_field( 'business', $business );
 		$p->add_field( 'return', $return_url );
@@ -67,13 +66,13 @@ class PayPal extends TCP_Plugin {
 		$p->add_field( 'amount', number_format( $paymentAmount, 2, '.', '' ) );
 		$p->add_field( 'currency_code', $currency );
 		
-		/*$p->add_field('first_name', 'John');
+		$p->add_field('first_name', 'John');
 		$p->add_field('last_name', 'Doe');
 		$p->add_field('address1', '345 Lark Ave');
 		$p->add_field('city', 'San Jose');
 		$p->add_field('state', 'CA');
 		$p->add_field('zip', '95121');
-		$p->add_field('country', 'US');*/
+		$p->add_field('country', 'US');
 
 		echo $p->submit_paypal_post();
 	}

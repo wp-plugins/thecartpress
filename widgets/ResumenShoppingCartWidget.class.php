@@ -20,13 +20,13 @@ class ResumenShoppingCartWidget extends WP_Widget {
 	function ResumenShoppingCartWidget() {
 		$widget = array(
 			'classname'		=> 'resumenshoppingcart',
-			'description'	=> __( 'Use this widget to add a resumen of the shopping cart', 'tcp' ),
+			'description'	=> __( 'Use this widget to add a resume of the shopping cart', 'tcp' ),
 		);
 		$control = array(
 			'width'		=> 300,
 			'id_base'	=> 'resumenshoppingcart-widget',
 		);
-		$this->WP_Widget( 'resumenshoppingcart-widget', 'TCP Resumen shopping cart', $widget, $control );
+		$this->WP_Widget( 'resumenshoppingcart-widget', 'TCP Resume shopping cart', $widget, $control );
 	}
 
 	function widget( $args, $instance ) {
@@ -65,17 +65,17 @@ class ResumenShoppingCartWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
-		$instance['see_stock_notice']	= $new_instance['see_stock_notice'];
-		$instance['see_weight']			= $new_instance['see_weight'];
-		$instance['see_delete_all']		= $new_instance['see_delete_all'];
-		$instance['see_shopping_cart']	= $new_instance['see_shopping_cart'];
-		$instance['see_checkout']		= $new_instance['see_checkout'];
+		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] ) ? true : false;
+		$instance['see_weight']			= isset( $new_instance['see_weight'] ) ? true : false;
+		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] ) ? true : false;
+		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] ) ? true : false;
+		$instance['see_checkout']		= isset( $new_instance['see_checkout'] ) ? true : false;
 		return $instance;
 	}
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'				=> 'Resumen',
+			'title'				=> __( 'Resume', 'tcp' ),
 			'see_weight'		=> true,
 			'see_delete_all'	=> true,
 		);

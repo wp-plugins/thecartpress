@@ -13,7 +13,7 @@ get_header(); ?>
 			<div id="content" role="main">
 
 				<h1 class="page-title"><?php
-					printf( single_tag_title( '', false ));
+					printf( __( 'Category Archives: %s', 'twentyten' ), '<span>' . $wp_query->queried_object->name . '</span>' );
 				?></h1>
 				<p class="archive-meta">
 				<?php

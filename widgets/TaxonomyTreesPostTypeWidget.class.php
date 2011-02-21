@@ -48,7 +48,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			//'order'              => 'ASC',
 			'show_last_update'   => 0,
 			'style'              => 'list',
-			'show_count'         => isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : true,
+			'show_count'         => isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : false,
 			'hide_empty'         => isset( $instance['hide_empty_taxonomies'] ) ? $instance['hide_empty_taxonomies'] : false,
 			'use_desc_for_title' => 1,
 			'child_of'           => 0,
@@ -119,7 +119,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'order_included'		=> '',
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
-		$see_number_products = isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : true;
+		$see_number_products = isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : false;
 		$hide_empty_taxonomies = isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
 		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? (array)$instance['included_taxonomies'] : array();
 		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? (array)$instance['excluded_taxonomies'] : array();

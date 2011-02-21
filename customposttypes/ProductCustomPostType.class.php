@@ -30,6 +30,7 @@ class ProductCustomPostType {
 	private $currency = '';
 	
 	function __construct() {
+		$settings = get_option( 'tcp_settings' );
 		$labels = array(
 			'name'					=> _x( 'Products', 'post type general name' ),
 			'singular_name'			=> _x( 'Product', 'post type singular name' ),
@@ -56,7 +57,7 @@ class ProductCustomPostType {
 			'query_var'			=> true,
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
 			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
-			'rewrite'			=> array( 'slug' => 'products' ),
+			'rewrite'			=> array( 'slug' => $settings['product_rewrite'] ),
 		);
 		register_post_type( ProductCustomPostType::$PRODUCT, $register );
 		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
@@ -64,44 +65,44 @@ class ProductCustomPostType {
 		$labels = array(
 			'name'				=> _x( 'Categories of Prods.', 'taxonomy general name' ),
 			'singular_name'		=> _x( 'Category of Prods.', 'taxonomy singular name' ),
-			'search_items'		=> __( 'Search Categories', 'tcp'),
-			'all_items'			=> __( 'All Categories', 'tcp'),
-			'parent_item'		=> __( 'Parent Category', 'tcp'),
-			'parent_item_colon'	=> __( 'Parent Category:', 'tcp'),
-			'edit_item'			=> __( 'Edit Category', 'tcp'), 
-			'update_item'		=> __( 'Update Category', 'tcp'),
-			'add_new_item'		=> __( 'Add New Category', 'tcp'),
-			'new_item_name'		=> __( 'New Category Name', 'tcp'),
+			'search_items'		=> __( 'Search Categories', 'tcp' ),
+			'all_items'			=> __( 'All Categories', 'tcp' ),
+			'parent_item'		=> __( 'Parent Category', 'tcp' ),
+			'parent_item_colon'	=> __( 'Parent Category:', 'tcp' ),
+			'edit_item'			=> __( 'Edit Category', 'tcp' ), 
+			'update_item'		=> __( 'Update Category', 'tcp' ),
+			'add_new_item'		=> __( 'Add New Category', 'tcp' ),
+			'new_item_name'		=> __( 'New Category Name', 'tcp' ),
 		); 	
 		$register = array (
 			'labels'		=> $labels,
 			'hierarchical'	=> true,
 			'query_var'		=> true, //'cat_prods',
 			'label'			=> __( 'Category', 'tcp' ),
-			'rewrite'		=> false, //array('slug' => __('categories', 'tcp')),
+			'rewrite'		=> array('slug' => $settings['category_rewrite'] ), //false
 		);
 		register_taxonomy( ProductCustomPostType::$PRODUCT_CATEGORY, ProductCustomPostType::$PRODUCT, $register );
 		register_taxonomy( ProductCustomPostType::$PRODUCT_TAG, ProductCustomPostType::$PRODUCT, array(
 			'public'		=> true,
 			'hierarchical'	=> false,
 			'query_var'		=> true,
-			'rewrite'		=> false, //true,
+			'rewrite'		=> array('slug' => $settings['tag_rewrite'] ), //false
 			'label'			=> __( 'Tags of Products', 'tcp' ),
 		) );
 		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
 			'hierarchical'	=> true,
 			'query_var'		=> true,
-			'rewrite'		=> false, //true,
-			//'label'		=> __('Suppliers', 'tcp'),
+			'rewrite'		=> array('slug' => $settings['supplier_rewrite'] ), //false
+			//'label'		=> __('Suppliers', 'tcp' ),
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name' ),
 				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name' ),
-				'search_items'		=> __( 'Search Suppliers', 'tcp'),
-				'all_items'			=> __( 'All Suppliers', 'tcp'),
-				'edit_item'			=> __( 'Edit Suppliers', 'tcp'), 
-				'update_item'		=> __( 'Update Suppliers', 'tcp'),
-				'add_new_item'		=> __( 'Add New Suppliers', 'tcp'),
-				'new_item_name'		=> __( 'New Suppliers Name', 'tcp'),
+				'search_items'		=> __( 'Search Suppliers', 'tcp' ),
+				'all_items'			=> __( 'All Suppliers', 'tcp' ),
+				'edit_item'			=> __( 'Edit Suppliers', 'tcp' ), 
+				'update_item'		=> __( 'Update Suppliers', 'tcp' ),
+				'add_new_item'		=> __( 'Add New Suppliers', 'tcp' ),
+				'new_item_name'		=> __( 'New Suppliers Name', 'tcp' ),
 			),
 		) );
 
@@ -110,8 +111,8 @@ class ProductCustomPostType {
 			$this->currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 			add_action( 'manage_posts_custom_column', array( $this, 'managePostCustomColumns' ) );
 			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
-			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
-			//for quick edit 			
+			add_filter( 'parse_query', array( $this, 'parseQuery' ) ); //TODO 3.1
+			//for quick edit
 			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
 		}
 	}
@@ -143,7 +144,7 @@ class ProductCustomPostType {
 			'title'	=> __( 'Name', 'tcp' ),
 			'price'	=> __( 'Type - price', 'tcp' ),
 			'date'	=> __( 'date', 'tcp' ),
-			//'comments'	=> __('Comments', 'tcp'),
+			//'comments'	=> __('Comments', 'tcp' ),
 		);
 		return $columns;
 	}
@@ -180,7 +181,7 @@ class ProductCustomPostType {
 			) );?>
 			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?><label>
 			<select name="tcp_product_type" id="tcp_product_type">
-				<option value="" <?php selected( "", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'all', 'tcp');?></option>
+				<option value="" <?php selected( "", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'all', 'tcp' );?></option>
 				<option value="SIMPLE" <?php selected( "SIMPLE", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'Simple', 'tcp' );?></option>
 				<option value="GROUPED" <?php selected( "GROUPED", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'Grouped', 'tcp' );?></option>
 			</select>
@@ -189,7 +190,7 @@ class ProductCustomPostType {
 	}
 
 	/**
-	 * this function is executed before the admin product list query
+	 * This function is executed before the admin product list query. WP 3.1
 	 */
 	function parseQuery( $query ) {
 		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0) {
@@ -212,6 +213,16 @@ class ProductCustomPostType {
 			);
 		}
 		//TODO super merchant!!
+		$settings = get_option( 'tcp_settings' );
+		$hide_visible = isset( $settings['hide_visibles'] ) ? (bool)$settings['hide_visibles'] : true;
+		if ( $hide_visible )
+			$query->query_vars['meta_query'][] = array(
+				'key'		=> 'tcp_is_visible',
+				'value'		=> 1,
+				'compare'	=> '=',
+				'type'		=> 'numeric',
+			);
+		return $query;
 	}
 }
 ?>

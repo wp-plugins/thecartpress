@@ -21,7 +21,6 @@ require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
 $per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
 $fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
 $update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
-$apply_to_options = isset( $_REQUEST['apply_to_options'] );
 $cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
 
 if ( isset( $_REQUEST['tcp_update_price'] ) ) {
@@ -29,34 +28,22 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 		'post_type'				=> 'tcp_product',
 		'tcp_product_category'	=>  $cat_slug ,
 	);
+	$args = apply_filters( 'tcp_update_price_query_args', $args );
 	$query = new WP_query( $args );
 	if ( $query->have_posts() ) {
+		$current_user = wp_get_current_user();
 		while ( $query->have_posts() ) {
 			$post = $query->next_post();
+			if ( ! current_user_can( 'tcp_edit_others_products' ) )
+				if ( $post->post_author != $current_user->ID) {
+					die( __( 'This product cannot be modified by the user ', 'tcp' ) );
+				}
 			if ( isset( $_REQUEST['tcp_new_price_' . $post->ID] ) ) {
 				$new_price = (float)$_REQUEST['tcp_new_price_' . $post->ID];
 				update_post_meta( $post->ID, 'tcp_price', $new_price );
 			}
-			if ( $apply_to_options ) {
-				$first_level_options = RelEntities::select( $post->ID, 'OPTIONS');
-				if ( is_array( $first_level_options ) && count( $first_level_options ) > 0 ) {
-					foreach( $first_level_options as $first_level_option ) {
-						if ( isset( $_REQUEST['tcp_new_price_' . $first_level_option->id_to] ) ) {
-							$new_price = (float)$_REQUEST['tcp_new_price_' . $first_level_option->id_to];
-							update_post_meta( $first_level_option->id_to, 'tcp_price', $new_price );
-						}
-						$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
-						if ( is_array( $second_level_options ) && count( $second_level_options ) > 0 ) {
-							foreach( $second_level_options as $second_level_option ) {
-								if ( isset( $_REQUEST['tcp_new_price_' . $second_level_option->id_to] ) ) {
-									$new_price = (float)$_REQUEST['tcp_new_price_' . $second_level_option->id_to];
-									update_post_meta( $second_level_option->id_to, 'tcp_price', $new_price );
-								}
-							}
-						}
-					}
-				}
-			}
+			do_action( 'tcp_update_price', $post );
+
 		}?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Updated price.', 'tcp' );?>
@@ -103,12 +90,7 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" /><?php echo $currency;?></span>
 	</td>
 	</tr>
-	<tr valign="top">
-	<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' );?>:</label></th>
-	<td>
-		<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php checked( $apply_to_options, true );?>/>
-	</td>
-	</tr>
+	<?php do_action( 'tcp_update_price_search_controls' ); ?>
 	</tbody>
 	</table>
 	<p class="submit">
@@ -119,6 +101,7 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 			'post_type'				=> 'tcp_product',
 			'tcp_product_category'	=>  $cat_slug ,
 		);
+		$args = apply_filters( 'tcp_update_price_query_args', $args );
 		$query = new WP_query( $args );
 		if ( $query->have_posts() ) :?>
 		<div>
@@ -156,42 +139,7 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 				<td><input type="text" value="<?php echo $new_price;?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
 				<td>&nbsp;</td>
 			</tr>
-			<?php if ( $apply_to_options ) {
-					$first_level_options = RelEntities::select( $post->ID, 'OPTIONS');
-					if ( is_array( $first_level_options ) && count( $first_level_options ) > 0 ) {
-						foreach( $first_level_options as $first_level_option ) {
-							$price = tcp_get_the_price( $first_level_option->id_to );
-							if ( $update_type == 'per' ) {
-								$new_price = $price * (1 + $per / 100);
-							} else { //fixed
-								$new_price = $price + $fix;
-							}?>
-			<tr>
-				<td><span style="padding-left: 3em;"><?php echo get_the_title( $first_level_option->id_to );?></span></td>
-				<td><?php echo $price, '&nbsp;', $currency;?></td>
-				<td><input type="text" value="<?php echo $new_price;?>" name="tcp_new_price_<?php echo $first_level_option->id_to;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
-				<td>&nbsp;</td>
-			</tr><?php
-							$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
-							if ( is_array( $second_level_options ) && count( $second_level_options ) > 0 ) {
-								foreach( $second_level_options as $second_level_option ) {
-									$price = tcp_get_the_price( $second_level_option->id_to );
-									if ( $update_type == 'per' ) {
-										$new_price = $price * (1 + $per / 100);
-									} else { //fixed
-										$new_price = $price + $fix;
-									}?>
-			<tr>
-				<td><span style="padding-left: 6em;"><?php echo get_the_title( $second_level_option->id_to );?></span></td>
-				<td><?php echo $price, '&nbsp;', $currency;?></td>
-				<td><input type="text" value="<?php echo $new_price;?>" name="tcp_new_price_<?php echo $second_level_option->id_to;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
-				<td>&nbsp;</td>
-			</tr>
-				<?php			}
-							}
-						}
-					}
-				}
+			<?php do_action( 'tcp_update_price_controls', $post );
 			endwhile;?>
 			</tbody>
 			</table>

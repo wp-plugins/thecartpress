@@ -196,6 +196,8 @@ class ShippingCost extends TCP_Plugin {
 				<input type="button" value="<?php _e( 'MERCASUR', 'tcp');?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' );?>" onclick="tcp_select_mercasur('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'CAN', 'tcp');?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' );?>" onclick="tcp_select_can('zones_isos_<?php echo $z;?>');" class="button-secondary"/>				
 				<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('zones_isos_<?php echo $z;?>');" class="button-secondary"/>				
+				<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 			</td>
 		<?php endforeach;?>
 		</tr>

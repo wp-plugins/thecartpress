@@ -126,6 +126,18 @@ function tcp_select_au(select_id) {
 	tcp_select_values(select_id, values);
 }
 
+//APEC Asia-Pacifico Economic cooperation
+function tcp_select_apec(select_id) {
+	var values = ['AU', 'BN', 'CA', 'ID', 'JP', 'KR', 'MY', 'NZ', 'PH', 'SG', 'TH', 'US', 'TW', 'HK', 'CN', 'MX', 'PG', 'CL', 'PE', 'RU', 'VN'];
+	tcp_select_values(select_id, values);
+}
+
+//ASEAN Association of Southeast Asian Nations
+function tcp_select_asean(select_id) {
+	var values = ['BN', 'KH', 'ID', 'LA', 'MY', 'MM', 'PH', 'SG', 'TH', 'VN'];
+	tcp_select_values(select_id, values);
+}
+
 function tcp_select_values(select_id, values) {
 	jQuery('#' + select_id + ' option').each(
 		function() {

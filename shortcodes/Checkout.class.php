@@ -40,7 +40,6 @@ class Checkout {
 			unset( $_SESSION['order_page'] );
 			return;
 		}
-		
 		$error_billing = array();
 		$error_shipping = array();
 		$has_validation_billing_error = false;
@@ -240,7 +239,8 @@ class Checkout {
 				$no_stock_enough = false;
 				foreach( $shoppingCart->getItems() as $item ) {
 					$post = get_post( $item->getPostId() );
-					$sku = tcp_get_the_sku();
+					$sku = tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
+					//$sku = tcp_get_the_sku();
 					$days_to_expire = (int)get_post_meta( $post->ID, 'tcp_days_to_expire', true );
 					if ( $days_to_expire > 0 ) {
 						$today = date( 'Y-m-d' );
@@ -268,11 +268,11 @@ class Checkout {
 					$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
 					$ordersDetails['expires_at']		= $expires_at;
 					if ( $stock_management ) {
-						$stock = tcp_get_the_stock( $item->getPostId() );
+						$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 						if ( $stock == -1 ) {
 							//nothing to do 
 						} elseif ( $stock >= $item->getCount() ) {
-							tcp_set_the_stock( $item->getPostId(), $stock - $item->getCount() );
+							tcp_set_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $stock - $item->getCount() );
 						} else {
 							$no_stock_enough = true;
 						}
@@ -294,7 +294,7 @@ class Checkout {
 				echo '<div class="tcp_payment_area">' . "\n";
 				if ( $no_stock_enough ) {
 					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
-					echo '<p>', __( 'There was an error when creatos ing the order. Please contact with the seller.', 'tcp' ), '</p>';
+					echo '<p>', __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ), '</p>';
 				}
 				$order_page = OrderPage::show( $order_id, true, false );
 				$_SESSION['order_page'] = $order_page;
@@ -420,8 +420,8 @@ class Checkout {
 				echo ' style="display: none"';?>>
 			<?php
 			$addresses = Addresses::getCustomerAddresses( $current_user->ID );
-			if ( count( $addresses ) > 0 ):
-				$default_address_id = Addresses::getCustomerDefaultBillingAddresses( $current_user->ID );?>
+			if ( count( $addresses ) > 0 ) :
+				$default_address_id = isset( $_REQUEST['selected_billing_id'] ) ? $_REQUEST['selected_billing_id'] : Addresses::getCustomerDefaultBillingAddresses( $current_user->ID );?>
 				<div id="selected_billing_area">
 					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' );?></label>
 					<br />
@@ -490,7 +490,7 @@ class Checkout {
 					<input type="text" id="billing_fax" name="billing_fax" value="<?php $this->getValue( 'billing_fax' );?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_fax' );?></li>
 					<li><label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:</label>
-					<input type="text" id="billing_email" name="billing_email" value="<?php $this->getValue( 'billing_email' );?>" size="15" maxlength="20" />
+					<input type="text" id="billing_email" name="billing_email" value="<?php $this->getValue( 'billing_email' );?>" size="15" maxlength="255" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_email' );?></li>
 				</ul>
 			</div> <!-- new_billing_area -->
@@ -513,8 +513,8 @@ class Checkout {
 		<div class="shipping_layer_info checkout_info clearfix" id="shipping_layer_info"<?php
 		if ( isset( $_REQUEST['tcp_load_plugins'] ) &&  $has_validation_shipping_error ){}
 		else echo 'style=" display: none;"';?>>
-		<?php if ( count( $addresses ) > 0 ):
-			$default_address_id = Addresses::getCustomerDefaultShippingAddresses( $current_user->ID );?>
+		<?php if ( count( $addresses ) > 0 ) :
+			$default_address_id = isset( $_REQUEST['selected_shipping_id'] ) ? $_REQUEST['selected_shipping_id'] : Addresses::getCustomerDefaultShippingAddresses( $current_user->ID );?>
 			<div id="selected_shipping_area">
 				<label for="selected_shipping_id"> <?php _e( 'Select shipping address:', 'tcp' );?></label>
 				<br />
@@ -590,7 +590,7 @@ class Checkout {
 					<input type="text" id="shipping_fax" name="shipping_fax" value="<?php $this->getValue( 'shipping_fax' );?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_fax' );?></li>
 					<li><label for="shipping_email"><?php _e( 'eMail', 'tcp' );?>:</label>
-					<input type="text" id="shipping_email" name="shipping_email" value="<?php $this->getValue( 'shipping_email' );?>" size="15" maxlength="20" />
+					<input type="text" id="shipping_email" name="shipping_email" value="<?php $this->getValue( 'shipping_email' );?>" size="15" maxlength="255" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_email' );?></li>
 				</ul>
 			</div> <!-- new_shipping_area -->

@@ -20,7 +20,7 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 
 $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : '';
 
-if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) return;?>
+//if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) return;?>
 
 <div class="wrap">
 <h2><?php echo __( 'TheCartPress payment/shipping plugins', 'tcp' );?></h2>

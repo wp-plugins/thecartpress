@@ -45,13 +45,15 @@ $see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instan
 $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
 
 if ( have_posts() ) while ( have_posts() ) : the_post();?>
+
+
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 		<?php if ( $see_title ) : ?>
 			<div class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></div>
 		<?php endif; ?>
 			<?php if ( $see_meta_data ) : ?>
                 <div class="entry-meta">
-                    <?php twentyten_posted_on(); ?>
+                    <?php twentytencart_posted_on(); ?>
                 </div><!-- .entry-meta -->
             <?php endif; ?>
 			<?php if ( $see_price ) :?>
@@ -129,11 +131,10 @@ if ( have_posts() ) while ( have_posts() ) : the_post();?>
                             <span class="tag-links">
                                 <?php printf( __( '<span class="%1$s">Supplied by</span> %2$s', 'twentyten' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
                             </span>
-                            <span class="meta-sep">|</span>
                         <?php endif; ?>
                     <?php endif; ?>
-                            <span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?></span>
-                            <?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
+						<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
+						<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
                 </div><!-- .entry-utility -->
             <?php endif; ?>
 		</div><!-- #post-## -->

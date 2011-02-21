@@ -55,7 +55,7 @@ if ( $post_id ) :
 		return false;
 	}
 	</script>
-	<h2><?php echo __( 'Assigned products for', 'tcp' );?>&nbsp;<i><?php echo $post->post_title;?></i></h2>
+	<h2><?php echo __( 'Assigned products/post for', 'tcp' );?>&nbsp;<i><?php echo $post->post_title;?></i></h2>
 	<ul class="subsubsub">
 		<li><a href="post.php?action=edit&post=<?php echo $post_id;?>"><?php _e( 'return to the parent', 'tcp' );?></a></li>
 <!--		<li>&nbsp;|&nbsp;</li>
@@ -66,7 +66,7 @@ if ( $post_id ) :
 	<thead>
 	<tr>
 		<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' );?></th>
-		<th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th>
+		<?php if ($products_type == 'tcp_product' ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
 		<th scope="col" class="manage-column"><?php _e( 'Units', 'tcp' );?></th>
 		<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 		<th scope="col" class="manage-column">&nbsp;</th>
@@ -75,7 +75,7 @@ if ( $post_id ) :
 	<tfoot>
 	<tr>
 		<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' );?></th>
-		<th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th>
+		<?php if ($products_type == 'tcp_product' ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
 		<th scope="col" class="manage-column"><?php _e( 'Units', 'tcp' );?></th>
 		<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 		<th scope="col" class="manage-column">&nbsp;</th>
@@ -88,7 +88,7 @@ if ( $post_id ) :
 		foreach( $assigned_list as $assigned ) : $assigned_post = get_post( $assigned->id_to );?>
 			<tr>
 			<td><?php echo $assigned_post->post_title;?></td>
-			<td><?php echo tcp_get_the_price( $assigned->id_to );?></td>
+			<?php if ( $products_type == 'tcp_product' ) :?><td><?php echo tcp_get_the_price( $assigned->id_to );?></td><?php endif;?>
 			<td><?php echo $assigned->units;?></td>
 			<td><?php echo $assigned_post->post_title;?></td>
 			<td>
@@ -114,7 +114,7 @@ if ( $post_id ) :
 		<?php endforeach;?>
 	<?php else: ?>
 		<tr>
-		<td colspan="5"><?php _e( 'No items to show', 'tcp' );?></td>
+		<td colspan="<?php if ( $products_type == 'tcp_product' ) :?>5<?php else:?>4<?php endif;?>"><?php _e( 'No items to show', 'tcp' );?></td>
 		</tr>
 	<?php endif;?>
 	</tbody>

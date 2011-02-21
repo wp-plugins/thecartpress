@@ -1,0 +1,211 @@
+/*
+Theme Name: Arras eCommerce
+Theme URI: http://thecartpress.com/
+Description: Extend the functionality of the Arras theme with E-Commerce. A basic CHILD theme to use with TheCartPress E-commerce Cart plugin. Able to work with custom post types and taxonomies. New configurable template loops: Grid and List. Templates for e-commerce taxonomies: categories, tags, suppliers. Template for single products. Use the useful widgets of TheCartPress Ecommerce Cart plugin to create your e-commerce: Shopping cart, Product lists, navigation store menus: product categories, product tags, suppliers, related items. Ecommerces, stores and shops.
+Author: TheCartPress Team
+Author URI: http://thecartpress.com/
+Version: 1.0
+Template Version: 1.0.4
+License: GNU General Public License
+License URI: license.txt
+Tags: thecartpress, cartpress, e-commerce, cart, store, shopping cart, shop, shopping, commerce, ecommerce, custom post types, taxonomies, taxonomy, arras
+Template: arras
+*/
+
+
+
+@import url("../arras/style.css");
+
+#content h1.page-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #999;
+	text-transform: capitalize;
+	margin: 0 0 0px;	
+}
+.page-title span {
+    color: #000;
+	font-size: 24px;
+	font-weight: bold;
+    font-style: italic;
+}/*////////loop in content//////////////*/
+#content .type-tcp_product .hentry {
+    margin:10px 0 20px;
+}
+#content  table.tcp_products_list tr td{
+	border: 1px dotted #E7E7E7;
+}
+#content  table.tcp_products_list {
+	width: 99%;
+}
+.tcp_products_list .entry-content, .tcp_products_list .entry-summary {
+    clear: both;
+    padding: 0px 0 0;
+}
+#content .entry-price {
+	font-size: 11px;
+	font-weight: bold;
+	color: #C00;
+	text-transform: lowercase;
+}
+#content .entry-utility {
+	padding-top: 6px;
+	border-top: 1px dotted #ccc;
+}
+.comments-link {
+	display: block;
+	width: 100%;
+}
+
+/*The loop in sidebar*/
+#primary p {
+	margin: 0 0 6px;
+}
+#primary .hentry {
+	margin: 0 0 3px;
+}
+#primary .hentry div {
+	margin: 0 0 0px;
+}
+#primary .hentry div.entry-title {
+	margin: 0 0 0px;
+}
+#primary .hentry div.entry-title a {
+	color: #06c;
+}
+#primary .hentry div.entry-title a:hover {
+	color: #FF4B33;
+}
+#primary .hentry div.entry-title a:visited {
+	color: #743399;
+}
+#primary .hentry div.entry-price {
+	font-size: 10px;
+	font-weight: normal;
+	color: #c00;
+	line-height: 12px;
+	padding-left: 4px;
+}
+#primary .entry-content, #primary .entry-summary {
+    padding: 0px 0 0;
+}
+
+#secondary p {
+	margin: 0 0 6px;
+}
+#secondary .hentry {
+	margin: 0 0 3px;
+}
+#secondary .hentry div {
+	margin: 0 0 0px;
+}
+#secondary .hentry div.entry-title {
+	margin: 0 0 0px;
+}
+#secondary .hentry div.entry-title a {
+	color: #06c;
+}
+#secondary .hentry div.entry-title a:hover {
+	color: #FF4B33;
+}
+#secondary .hentry div.entry-title a:visited {
+	color: #743399;
+}
+#secondary .hentry div.entry-price {
+	font-size: 10px;
+	font-weight: normal;
+	color: #c00;
+	line-height: 12px;
+	padding-left: 4px;
+}
+#secondary .entry-content, #primary .entry-summary {
+    padding: 0px 0 0;
+}
+
+
+
+/*///////Buy options   in content ////////*/
+#content .entry-content .tcp_buy_button table {
+	font-size: 12px;
+	border: 1px solid #E7E7E7;
+	margin: 0 0px 10px 0;
+	text-align: left;
+	width: inherit;	
+}
+#content .entry-content .tcp_buy_button table tr td{
+    padding: 6px 6px;
+}
+#content .entry-content .tcp_buy_button table input{
+    margin: 0 0 0px;
+}
+
+#content .entry-content .tcp_buy_button table .tcp_added_product_title {
+	font-size: 11px;
+	clear: both;
+	display: block;
+	color: #999;
+}
+
+
+
+
+/*/////// EXTRAS //////*/
+#header {
+    min-width: 990px;
+    padding-top: 25px;
+}
+#content .tcp_products_list td {
+	padding: 0px 20px 0px 20px;	
+}
+#content .tcp_products_list td img{
+	margin: 8px 0px 8px 0px;	
+}
+#content .tcp_products_list .entry-meta, #content .tcp_products_list .entry-utility,  #content .entry-utility {
+	color: #666;
+}
+#content .tcp_products_list .entry-meta {
+	margin-bottom: 4px;
+}.single-post .entry-utility {
+	margin-bottom: 10px;
+}
+.archive-meta {
+	margin-top: 12px;	
+}
+
+/*///////EXAMPLES ADDING CUSTOM STYLES TO TCP SHORTCODES//////*/
+/*///////              You can delete them              //////*/
+
+#tcp_shortcode_single-home div.entry-post-thumbnail {
+	float: left;
+	background-color: #9F6;
+	margin-right: 10px;
+}
+#tcp_shortcode_single-home div.entry-summary {
+	clear: none;
+	padding: 12px 0 0;
+}
+#tcp_shortcode_featured_products-medium table,
+#tcp_shortcode_featured_products-medium th,
+#tcp_shortcode_featured_products-medium td {
+    border: 0px solid #CCCCCC;
+}
+#tcp_shortcode_featured_products-medium .tcp_products_list td,
+#tcp_shortcode_featured_products-medium .tcp_products_list tbody td{
+	padding: 2px;
+	background-color: transparent;
+}
+#tcp_shortcode_featured_products-medium .tcp_products_list .entry-price {
+	font-size: 10px;
+}
+#tcp_shortcode_featured_products-medium .tcp_products_list h2.entry-title {
+	font-size: 11px;
+}
+#tcp_shortcode_featured_products-medium  .type-tcp_product .hentry {
+    margin: 0 0 10px;
+}
+#tcp_shortcode_featured_products-medium  table.tcp_products_list tr td{
+	border: 0px dotted #E7E7E7;
+}
+
+
+

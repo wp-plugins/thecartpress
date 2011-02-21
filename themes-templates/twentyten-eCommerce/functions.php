@@ -16,6 +16,34 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+add_image_size( 'mini-thumbnail', 45, 45 ); // mini thumbnails 
+add_image_size( 'medium-thumbnail', 95, 75 ); // medium thumbnails 
+
+if ( ! function_exists( 'twentytencart_posted_on' ) ) :
+/**
+ * Prints HTML with meta information for the current post—date/time and author.
+ *
+ * @since Twenty Ten 1.0
+ */
+function twentytencart_posted_on() {
+	printf( __( '<span class="%1$s">Posted on</span> %2$s <span class="meta-sep">by</span> %3$s', 'twentyten' ),
+		'meta-prep meta-prep-author',
+		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><span class="entry-date">%3$s</span></a>',
+			get_permalink(),
+			esc_attr( get_the_time() ),
+			get_the_date()
+		),
+		sprintf( '<span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s">%3$s</a></span>',
+			get_author_posts_url( get_the_author_meta( 'ID' ) ),
+			sprintf( esc_attr__( 'View all posts by %s', 'twentyten' ), get_the_author() ),
+			get_the_author()
+		)
+	);
+}
+endif;
+
+
+
 if ( ! function_exists( 'twentytencart_posted_in' ) ) :
 /**
  * Prints HTML with meta information for the current post (category, tags and permalink).
@@ -56,7 +84,7 @@ add_action( 'twentyten_credits', 'twentytencart_credits' );
 
 function twentytencart_admin_menu() {
 	//add_options_page( __( 'TwentytenCart', 'tcp' ), __( 'TwentytenCart settings', 'tcp' ), 'tcp_edit_settings', 'themes', 'twentytencart_show_settings' );
-	add_submenu_page( 'themes.php', __( 'TwentytenCart', 'tcp' ), __( 'TwentytenCart settings', 'tcp' ), 'tcp_edit_settings', __FILE__, 'twentytencart_show_settings' );
+	add_submenu_page( 'themes.php', __( 'TCP Loop settings', 'tcp' ), __( 'TCP Loop settings', 'tcp' ), 'tcp_edit_settings', __FILE__, 'twentytencart_show_settings' );
 }
 
 function twentytencart_admin_init() {
@@ -84,7 +112,7 @@ function twentytencart_credits() {
 
 function twentytencart_show_settings() {?>
 	<div class="wrap">
-		<h2><?php _e( 'Twentyten Cart Settings', 'tcp' );?></h2>
+		<h2><?php _e( 'TCP Loop Settings', 'tcp' );?></h2>
 		<form method="post" action="options.php">
 			<?php settings_fields('twentytencart_options'); ?>
 			<?php do_settings_sections(__FILE__); ?>
