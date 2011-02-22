@@ -194,11 +194,11 @@ class TheCartPress {
 			if ( isset( $_REQUEST['tcp_order_type'] ) )
 				$_SESSION['tcp_order_type'] = $_REQUEST['tcp_order_type'];
 			elseif ( ! isset( $_SESSION['tcp_order_type'] ) )
-				$_SESSION['tcp_order_type'] = 'title';
+				$_SESSION['tcp_order_type'] = 'date';
 			if ( isset( $_REQUEST['tcp_order_desc'] ) )
 				$_SESSION['tcp_order_desc'] =  $_REQUEST['tcp_order_desc'];
 			elseif ( ! isset( $_SESSION['tcp_order_desc'] ) )
-				$_SESSION['tcp_order_desc'] = 'asc';
+				$_SESSION['tcp_order_desc'] = 'desc';
 			return $requests;
 		}
 	}
@@ -236,7 +236,7 @@ class TheCartPress {
 				$orderby = "{$wpdb->posts}.post_title {$_SESSION['tcp_order_desc']}";
 				break;
 			case 'date':
-				$orderby = "{$wpdb->posts}.post_date {$_SESSION['tcp_order_desc']}, {$wpdb->posts}.post_title";
+				$orderby = "{$wpdb->posts}.post_date {$_SESSION['tcp_order_desc']}"; //, {$wpdb->posts}.post_title";
 				break;
 			case 'author':
 				$orderby = "tcp_users.display_name {$_SESSION['tcp_order_desc']}, {$wpdb->posts}.post_title";
