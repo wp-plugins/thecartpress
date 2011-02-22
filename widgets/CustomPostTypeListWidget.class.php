@@ -36,7 +36,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
 			$args = array(
-				'post_type'			=> $instance['post_type'],
+				'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product',
 				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 			);
 			if ( strlen( $taxonomy ) > 0 ) {
@@ -44,7 +44,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			}
 		} else {
 			$args = array(
-				'post_type'			=> $instance['post_type'],
+				'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product',
 				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 			);
 			if ( isset( $instance['included'] ) && count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {

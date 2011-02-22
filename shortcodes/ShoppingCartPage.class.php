@@ -43,17 +43,17 @@ class ShoppingCartPage {
 				<tr class="tcp_cart_product_row">
 					<td class="tcp_cart_name">
 					<?php if ( tcp_is_visible( $item->getPostId() ) ) : ?>
-						<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( $item->getPostId() );?>
+						<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( tcp_get_current_id( $item->getPostId() ) );?>
 					<?php else :
 						$post_id = tcp_get_the_parent( $item->getPostId() );
 						if ( $post_id > 0 ) : ?>
-							<a href="<?php echo get_permalink( $post_id );?>"><?php echo get_the_title( $post_id );?>
+							<a href="<?php echo get_permalink( $post_id );?>"><?php echo get_the_title( tcp_get_current_id( $post_id ) );?>
 						<?php else : ?>
-							<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( $item->getPostId() );?>
+							<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( tcp_get_current_id( $item->getPostId() ) );?>
 						<?php endif;
 					endif;?>
-					<?php if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( $item->getOption1Id() );?>
-					<?php if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( $item->getOption2Id() );?></a>
+					<?php if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( tcp_get_current_id( $item->getOption1Id() ) );?>
+					<?php if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( tcp_get_current_id( $item->getOption2Id() ) );?></a>
 					</td>
 					<td class="tcp_cart_unit_price">
 						<?php echo number_format( $item->getUnitPrice(), 2 ), '&nbsp;', $currency, '&nbsp;(', number_format( $item->getTax(), 0 ), '%)';?>

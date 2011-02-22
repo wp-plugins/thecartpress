@@ -768,9 +768,9 @@ class Checkout {
 			$out .= '<tr ';
 			if ( $i++ & 1 == 1 ) $out .= 'class="par"';
 			$out .= '>' . "\n";
-			$out .= '<td>' . get_the_title( $item->getPostId() );
-			$out .= $item->getOption1Id() > 0 ? '<br />' . get_the_title( $item->getOption1Id() ) : '';
-			$out .= $item->getOption2Id() > 0 ? '-' . get_the_title( $item->getOption2Id() ) : '';
+			$out .= '<td>' . get_the_title( tcp_get_current_id( $item->getPostId() ) );
+			$out .= $item->getOption1Id() > 0 ? '<br />' . get_the_title( tcp_get_current_id( $item->getOption1Id() ) ) : '';
+			$out .= $item->getOption2Id() > 0 ? '-' . get_the_title( tcp_get_current_id( $item->getOption2Id() ) ) : '';
 			$out .= '</td>' . "\n";
 			if ( $item->getTax() > 0 )
 				$out .= '<td>' . $this->numberFormat( $item->getUnitPrice(), $currency ) . ' (' . $item->getTax() . '%)</td>' . "\n";
