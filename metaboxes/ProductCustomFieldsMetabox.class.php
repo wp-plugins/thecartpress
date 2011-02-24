@@ -198,8 +198,13 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] )  ? $_POST['tcp_is_downloadable'] == 'yes' : false );
 		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] )  ? (int)$_POST['tcp_max_downloads'] : 0 );
 		update_post_meta( $post_id, 'tcp_days_to_expire', isset( $_POST['tcp_days_to_expire'] )  ? (int)$_POST['tcp_days_to_expire'] : 0 );
-		update_post_meta( $post_id, 'tcp_type', isset( $_POST['tcp_type'] )  ? $_POST['tcp_type'] : 'SIMPLE' );
-		update_post_meta( $post_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
+		$type = isset( $_POST['tcp_type'] )  ? $_POST['tcp_type'] : 'SIMPLE';
+		update_post_meta( $post_id, 'tcp_type', $type );
+		if ( $type == 'GROUPED' )
+			$price = 0;
+		else
+			$price = isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0;
+		update_post_meta( $post_id, 'tcp_price', $price );
 		update_post_meta( $post_id, 'tcp_weight', isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0 );
 		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] )  ? (int)$_POST['tcp_order'] : '' );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );

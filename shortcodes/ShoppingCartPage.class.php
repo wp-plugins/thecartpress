@@ -47,7 +47,7 @@ class ShoppingCartPage {
 					<?php else :
 						$post_id = tcp_get_the_parent( $item->getPostId() );
 						if ( $post_id > 0 ) : ?>
-							<a href="<?php echo get_permalink( $post_id );?>"><?php echo get_the_title( tcp_get_current_id( $post_id ) );?>
+							<a href="<?php echo get_permalink( $post_id );?>"><?php echo get_the_title( tcp_get_current_id( $item->getPostId() ) );?>
 						<?php else : ?>
 							<a href="<?php echo get_permalink( $item->getPostId() );?>"><?php echo get_the_title( tcp_get_current_id( $item->getPostId() ) );?>
 						<?php endif;
