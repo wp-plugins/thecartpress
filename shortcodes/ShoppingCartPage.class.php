@@ -82,17 +82,17 @@ class ShoppingCartPage {
 					</form>
 					<td class="tcp_cart_price">
 						<?php $total += $item->getTotal();?>
-						<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;&euro;
+						<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?>
 					</td>
 				</tr>
 			<?php endforeach;?>
 				<tr class="tcp_cart_subtotal_row">
 					<td colspan="3" class="tcp_cart_subtotal_title"><?php echo __( 'Subtotal', 'tcp' );?></td>
-					<td class="tcp_cart_subtotal"><?php echo number_format( $total, 2 );?>&nbsp;&euro;</td>
+					<td class="tcp_cart_subtotal"><?php echo number_format( $total, 2 );?>&nbsp;<?php echo $currency;?></td>
 				</tr>
 				<tr class="tcp_cart_total_row">
 					<td colspan="3" class="tcp_cart_total_title"><?php echo __( 'Total', 'tcp' );?></td>
-					<td class="tcp_cart_total"><?php echo number_format( $total, 2 );?>&nbsp;&euro;</td>
+					<td class="tcp_cart_total"><?php echo number_format( $total, 2 );?>&nbsp;<?php echo $currency;?></td>
 				</tr>
 			</tbody>
 			</table>
