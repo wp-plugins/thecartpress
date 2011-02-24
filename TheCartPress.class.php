@@ -610,9 +610,9 @@ class TheCartPress {
 			'currency'					=> 'EUR',
 			'unit_weight'				=> 'gr',
 			'product_rewrite'			=> 'product',
-			'category_rewrite'			=> 'category',
-			'tag_rewrite'				=> 'tag',
-			'supplier_rewrite'			=> 'supplier',
+			'category_rewrite'			=> 'product_category',
+			'tag_rewrite'				=> 'product_tag',
+			'supplier_rewrite'			=> 'product_supplier',
 		);
 		add_option( 'tcp_settings', $settings );
 		//Roles & capabilities

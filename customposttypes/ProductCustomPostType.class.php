@@ -79,20 +79,20 @@ class ProductCustomPostType {
 			'hierarchical'	=> true,
 			'query_var'		=> true, //'cat_prods',
 			'label'			=> __( 'Category', 'tcp' ),
-			'rewrite'		=> array('slug' => $settings['category_rewrite'] ), //false
+			'rewrite'		=> array('slug' => isset( $settings['category_rewrite'] ) ? $settings['category_rewrite'] : 'product_category' ), //false
 		);
 		register_taxonomy( ProductCustomPostType::$PRODUCT_CATEGORY, ProductCustomPostType::$PRODUCT, $register );
 		register_taxonomy( ProductCustomPostType::$PRODUCT_TAG, ProductCustomPostType::$PRODUCT, array(
 			'public'		=> true,
 			'hierarchical'	=> false,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => $settings['tag_rewrite'] ), //false
+			'rewrite'		=> array('slug' => isset( $settings['tag_rewrite'] ) ? $settings['tag_rewrite'] : 'product_tag' ), //false
 			'label'			=> __( 'Tags of Products', 'tcp' ),
 		) );
 		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
 			'hierarchical'	=> true,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => $settings['supplier_rewrite'] ), //false
+			'rewrite'		=> array('slug' => isset( $settings['supplier_rewrite'] ) ? $settings['supplier_rewrite'] : 'product_supplier' ), //false
 			//'label'		=> __('Suppliers', 'tcp' ),
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name' ),
