@@ -613,6 +613,7 @@ class TheCartPress {
 			'category_rewrite'			=> 'product_category',
 			'tag_rewrite'				=> 'product_tag',
 			'supplier_rewrite'			=> 'product_supplier',
+			'hide_visibles'				=> false,
 		);
 		add_option( 'tcp_settings', $settings );
 		//Roles & capabilities
