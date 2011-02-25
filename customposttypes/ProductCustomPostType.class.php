@@ -212,16 +212,17 @@ class ProductCustomPostType {
 				),
 			);
 		}
-		//TODO super merchant!!
-		$settings = get_option( 'tcp_settings' );
-		$hide_visible = isset( $settings['hide_visibles'] ) ? (bool)$settings['hide_visibles'] : true;
-		if ( $hide_visible )
-			$query->query_vars['meta_query'][] = array(
-				'key'		=> 'tcp_is_visible',
-				'value'		=> 1,
-				'compare'	=> '=',
-				'type'		=> 'numeric',
-			);
+		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == ProductCustomPostType::$PRODUCT ) {
+			$settings = get_option( 'tcp_settings' );
+			$hide_visible = isset( $settings['hide_visibles'] ) ? (bool)$settings['hide_visibles'] : true;
+			if ( $hide_visible )
+				$query->query_vars['meta_query'][] = array(
+					'key'		=> 'tcp_is_visible',
+					'value'		=> 1,
+					'compare'	=> '=',
+					'type'		=> 'numeric',
+				);
+		}
 		return $query;
 	}
 }
