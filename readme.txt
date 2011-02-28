@@ -21,8 +21,9 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 * WordPress native features
 * Multiple Images Per Product
-* Image galleries
+* WordPress image galleries
 * Auto-embed media player for Downloadable products (mp3)
+* Order products by Price, Order, Name, Date, Author
 * Product Review/Comments
 * Related Products
 * Related Posts
@@ -32,19 +33,21 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = Full Catalog Browsing Offering =
 
-* Design and look of your store whith native WordPress ability to manage themes and templates.
 * Filter by: Category, Supplier, Product Tag, Author, Date, Reviews and Searches
 * Main navigation Widgets: Product categories, Product tags, Product reviews, Product suppliers,  Product lists, Last visited, Related items (post and products),  Custom Post Type Lists
 * Product listing in configurable grid or list format
-  Extending easily your theme with our loop-products.php and function.php files. You can use it in your main products loop and also in the Widgets to list products. You can have as many loop templates as you need, the widgets let you choose the template loop
+  Extending easily your theme with our loop-products-grid.php and function.php files. You can use it in your main products loop and also in the Widgets to list products. You can have as many loop templates as you need, the widgets let you choose the template loop
 * Product Reviews
 * Recently viewed products
 * Cross-sells and Related Items in many ways
-* Use WordPress plugins to make private sales: "members only", etc
+* Design and look of your store whith native WordPress ability to manage themes and templates.
+* TheCartPress as a catalogue: without shopping cart
+* Use WordPress plugins to make private sales: “members only”, etc
 
 = Catalog Management Offering =
 
 * New WordPress user role: Merchant
+* Shortcode Generator, insert configurable loops using your template loops when writing in the editor. See some shortcode examples in TheCartPerss Basic Demo.
 * Simple and Grouped Products
 * Simple products with two options levels. Coming soon
 * Downloadable/Digital Products
@@ -81,7 +84,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 = Payment Offering =
 
 * Ability to specify allowed payment countries per method
-* Saved Credit Card method for offline payments. Coming soon
+* Saved Credit Card method for offline payments.
 * Bank Transfer
 * Cash On delivery, reemboursement
 * PayPal
@@ -111,7 +114,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 * Advanced promotional rules: Based on catalog conditions, Based on shopping cart condition (Cooming soon!)
 * Free Shipping Option
-* Search Engine Friendly URL's
+* Search Engine Friendly URL’s
 * URL Rewrites
 * Recently Viewed Products
 * Cross-sells on product category pages, post category pages, single product and single post pages
@@ -119,12 +122,11 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = Analytics and Reporting =
 
-* TheCartPress is compatible with the "Google Analytics for WordPress" and other WordPress plugins
+* TheCartPress is compatible with the “Google Analytics for WordPress” and other WordPress plugins
 
 = Unlimited features =
 
-* TheCartPress is compatible with the WordPress plugins
-* The limit is in your imagination!
+* TheCartPress is compatible with the WordPress plugins and you can create your own plugins, the limit is in your imagination!
 
 = More info and Community =
 [TheCartPress Site](http://thecartpress.com)
