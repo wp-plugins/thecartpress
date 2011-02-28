@@ -76,7 +76,7 @@ class TCP_Settings {
 		<h2><?php _e( 'TheCartPress Settings', 'tcp' );?></h2>
 		<form method="post" action="options.php">
 			<?php settings_fields( 'thecartpress_options' ); ?>
-			<?php do_settings_sections(__FILE__); ?>
+			<?php do_settings_sections( __FILE__ ); ?>
 			<p class="submit">
 				<input type="submit" class="button-primary" value="<?php _e( 'Save Changes' ) ?>" />
 			</p>

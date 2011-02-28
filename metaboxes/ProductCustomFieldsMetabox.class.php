@@ -149,6 +149,10 @@ class ProductCustomFieldsMetabox {
 				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
 				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
 				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
+				<?php if ( tcp_is_downloadable( $post_id ) ) : ?>
+					<span class="description"><?php _e( 'File','tcp' );?>:<?php echo tcp_get_the_file( $post_id );?></span>
+				<?php endif;?>
+				</td>
 			</tr>
 			<?php
 			if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) )
