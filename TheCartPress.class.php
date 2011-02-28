@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.0.5
+Version: 1.0.6
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -44,7 +44,6 @@ require_once( dirname( __FILE__ ) . '/widgets/TaxonomyCloudsPostTypeWidget.class
 require_once( dirname( __FILE__ ) . '/widgets/TaxonomyTreesPostTypeWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/OrderPanelWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/CommentsCustomPostTypeWidget.class.php' );
-//require_once( dirname( __FILE__ ) . '/widgets/ArchivesCustomPostType.class.php' );
 
 class TheCartPress {
 
@@ -66,6 +65,8 @@ class TheCartPress {
 			add_action( 'admin_menu', array( $postMetabox, 'registerMetaBox' ) );
 			add_action( 'delete_post', array( $postMetabox, 'deleteCustomFields' ), 1, 2 );
 			add_filter( 'admin_footer_text', array( $this, 'adminFooterText' ) );
+			if ( function_exists( 'register_theme_directory') )
+				register_theme_directory( WP_PLUGIN_DIR . '/thecartpress/themes-templates' );
 		} else {
 			add_filter( 'the_content', array( $this, 'contentFilter' ) );
 			add_filter( 'the_excerpt', array( $this, 'excerptFilter' ) );
@@ -124,7 +125,8 @@ class TheCartPress {
 						$post_id		= isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
 						$post_id		= tcp_get_default_id( $post_id );
 						$tcp_option_id	= isset( $_REQUEST['tcp_option_id'][$i] ) ? $_REQUEST['tcp_option_id'][$i] : 0;
-						if ( strlen( $tcp_option_id ) > 0 ) {
+//						if ( strlen( $tcp_option_id ) > 0 ) {
+						if ( $tcp_option_id > 0 ) {
 							$option_ids = explode( '-',  $tcp_option_id);
 							if ( count( $option_ids ) == 2 ) {
 								$option_1_id	= $option_ids[0];
@@ -419,7 +421,6 @@ class TheCartPress {
 		register_widget( 'TaxonomyTreesPostTypeWidget' );
 		register_widget( 'OrderPanelWidget' );
 		register_widget( 'CommentsCustomPostTypeWidget' );
-		//register_widget( 'ArchivesCustomPostType' );
 	}
 
 	function createMenu() {
@@ -783,6 +784,7 @@ class TheCartPress {
 				'see_third_custom_area'	=> false,
 			) ) );
 			update_option( 'tcp_version', 105 );
+			update_option( 'tcp_version', 106 );
 			//
 			//TODO Deprecated 1.1
 			//
