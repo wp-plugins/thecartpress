@@ -61,7 +61,7 @@ class ProductCustomFieldsMetabox {
 		else $count = '';?>
 		<?php if ( $product_type != '' && $product_type != 'SIMPLE' ) :?>
 			<li>|</li>
-		<?endif;?>
+		<?php endif;?>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-PROD"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
 		<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
 		if ( $count > 0 ) $count = ' (' . $count . ')';
