@@ -130,7 +130,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = More info and Community =
 [TheCartPress Site](http://thecartpress.com)
-[TheCartPress Community](http://thecartpress.com/activity)
+[TheCartPress Community](http://community.thecartpress.com/activity/)
 
 
 == Installation ==
