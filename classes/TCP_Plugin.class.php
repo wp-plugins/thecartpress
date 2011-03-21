@@ -20,7 +20,6 @@
  * All the checkout plugins must implement this class
  */ 
 class TCP_Plugin {
-
 	/**
 	 * Returns the title of the plugin
 	 * Must be implemented
@@ -62,7 +61,7 @@ class TCP_Plugin {
 	 * Returns the text label to show in the checkout.
 	 * Must be implemented
 	 */
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 	}
 
 	/**
@@ -78,25 +77,11 @@ class TCP_Plugin {
 	 *
 	 * Must be implemented only for payment methods
 	 */
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 	}
 
-	// The next functions shouldn't be implemented
-	/*function __construct() {
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-		if ( ! is_plugin_active( 'thecartpress/TheCartPress.class.php' ) )  {
-			$reflector = new ReflectionClass( get_class( $this ) );
-			deactivate_plugins( $reflector->getFileName() );
-			add_action( 'admin_notices', array( $this, 'adminNotices' ) );
-		}
+	function __construct() {
 	}
-	
-	function adminNotices() {?>
-		<div class="updated">
-			<p><?php echo $this->getTitle();?> <?php _e( 'plugin requires TheCartPress plugin to be activated.', 'tcp' );?>
-			<?php _e( 'The plugin has been <strong>deactivated</strong>', 'tcp' );?></p>
-		</div><?php
-	}*/
 }
 
 $tcp_shipping_plugins = array();
@@ -152,21 +137,23 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 		$tcp_plugins = $tcp_payment_plugins;
 	}
 	$applicable_plugins = array();
-	$applicable_instance_id = -1;
-	$applicable_for_country = false;
 	foreach( $tcp_plugins as $plugin_id => $plugin ) {
 		$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 		if ( is_array( $plugin_data ) && count( $plugin_data ) > 0 ) {
+			$applicable_instance_id = -1;
+			$applicable_for_country = false;
 			foreach( $plugin_data as $instance_id => $instance ) {
-				$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
-				if ( $all_countries )
-					$applicable_instance_id = $instance_id;
-				else {
-					$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
-					if ( in_array( $shipping_country,  $countries ) ) {
+				if ( $instance['active'] ) {
+					$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
+					if ( $all_countries )
 						$applicable_instance_id = $instance_id;
-						$applicable_for_country = true;
-						break;
+					else {
+						$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
+						if ( in_array( $shipping_country,  $countries ) ) {
+							$applicable_instance_id = $instance_id;
+							$applicable_for_country = true;
+							break;
+						}
 					}
 				}
 			}
@@ -198,8 +185,11 @@ function tcp_get_payment_plugin_data( $plugin_name, $instance ) {
 	return tcp_get_plugin_data( 'pay_' . $plugin_name, $instance );
 }
 
-function tcp_get_plugin_data( $plugin_id, $instance ) {
+function tcp_get_plugin_data( $plugin_id, $instance = -1 ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
-	return $plugin_data[$instance];
+	if ( $instance == -1 )
+		return $plugin_data;
+	else
+		return $plugin_data[$instance];
 }
 ?>

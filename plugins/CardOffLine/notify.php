@@ -9,8 +9,11 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 	$card_number_3		= isset( $_REQUEST['card_number_3'] ) ? $_REQUEST['card_number_3'] : '';
 	$card_number_4		= isset( $_REQUEST['card_number_4'] ) ? $_REQUEST['card_number_4'] : '';
 	$card_number		= $card_number_1 . $card_number_2 . $card_number_3 . $card_number_4;
+	$cvc				= isset( $_REQUEST['cvc'] ) ? $_REQUEST['cvc'] : '';
 	$expiration_month	= isset( $_REQUEST['expiration_month'] ) ? $_REQUEST['expiration_month'] : '';
 	$expiration_year	= isset( $_REQUEST['expiration_year'] ) ? $_REQUEST['expiration_year'] : '';
+	$card_type			= isset( $_REQUEST['card_type'] ) ? $_REQUEST['card_type'] : '';
+	$card_holder		= isset( $_REQUEST['card_holder'] ) ? $_REQUEST['card_holder'] : '';
 	$new_status			= isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : '';
 	$created_at			= date( 'Y-m-d' );
 	$url				= isset( $_REQUEST['return_url'] ) ? $_REQUEST['return_url'] : '';
@@ -22,12 +25,15 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 		$wpdb->insert( $wpdb->prefix . 'tcp_offlines',
 			array(
 				'order_id'				=> $order_id,
+				'card_holder'			=> $card_holder,
 				'card_number'			=> $card_number,
+				'cvc'					=> $cvc,
 				'expiration_month'		=> $expiration_month,
 				'expiration_year'		=> $expiration_year,
+				'card_type'				=> $card_type,
 				'created_at'			=> $created_at,
 			),
-			array( '%d', '%s', '%s', '%s', '%s' )
+			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -39,6 +45,7 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 			array( '%s' ), array( '%d' ) );
 		header( 'Location: ' . $url );
 		exit;
+		die( __( 'OK data card', 'tcp' ) );
 	} else {
 		die( __( 'Wrong data card', 'tcp' ) );
 	}

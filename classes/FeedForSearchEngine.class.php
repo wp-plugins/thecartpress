@@ -21,8 +21,8 @@
  */
 class FeedForSearchEngine {
 	function generateXML() {
-		$settings = get_option( 'tcp_settings' );
-		$tcp_guid = isset( $settings['search_engine_guid'] ) ? $settings['search_engine_guid'] : 'A';
+		global $thecartpress;
+		$tcp_guid = isset( $thecartpress->settings['search_engine_guid'] ) ? $thecartpress->settings['search_engine_guid'] : 'A';
 		$guid = isset( $_REQUEST['guid'] ) ? $_REQUEST['guid'] : 'B';
 		if ( $tcp_guid != $guid ) {
 			header('Content-Type: text/xml;', true);
@@ -33,8 +33,8 @@ class FeedForSearchEngine {
 			echo '</error>';
 			return;
 		}
-		$currency = $settings['currency'];
-		$search_engine_activated = isset( $settings['search_engine_activated'] ) ? $settings['search_engine_activated'] : true;
+		$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
+		$search_engine_activated = isset( $thecartpress->settings['search_engine_activated'] ) ? $thecartpress->settings['search_engine_activated'] : true;
 		if ( $search_engineactivated ) {
 			header( 'Content-Type: text/xml;', true );
 			header( 'Cache-Control: no-cache, must-revalidate' ); // HTTP/1.1

@@ -41,20 +41,24 @@ class NoCostPayment extends TCP_Plugin {
 		return $data;
 	}
 
-	function isApplicable( $shippingCountry, $shoppingCart, $currency ) {
+	function isApplicable( $shippingCountry, $shoppingCart ) {
 		return true;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		return __( 'No payment!!, for test purpose.', 'tcp' );
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );?>
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$params = array(
+			'tcp_checkout'	=> 'ok',
+			'order_id'		=> $order_id,
+		);?>
 		<p><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></p>
 		<p><?php echo $data['notice'];?></p>
 		<p>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING );

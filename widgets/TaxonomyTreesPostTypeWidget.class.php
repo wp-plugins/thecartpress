@@ -75,7 +75,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			$this->orderIncluded = explode( '#', $order_included );
 			add_filter( 'get_terms', array( $this, 'orderTaxonomies' ) );
 		}
-		echo '<ul>' . wp_list_categories( $args ) . '</ul>';
+		tcp_get_taxonomy_tree( $args, true );
 		if ( strlen( $order_included ) > 0 )
 			remove_filter( 'get_terms', array( $this, 'orderTaxonomies' ) );
 		echo $after_widget;
@@ -90,9 +90,12 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 	//for order taxonomies list
 	function compare( $a, $b ) {
 		if ( $a == $b ) return 0;
-		foreach( $this->orderIncluded as $id )
-			if ( $id == $a->term_id ) return -1;
-			elseif ( $id == $b->term_id ) return 1;
+		foreach( $this->orderIncluded as $id ) {
+			if ( $id == $a->term_id )
+				return -1;
+			elseif ( $id == $b->term_id )
+				return 1;
+		}
 		return 0;
 	}
 	
@@ -134,7 +137,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><?php _e( 'press save to load the taxonomies list.', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the list of taxonomies.', 'tcp' );?></span>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
@@ -142,7 +145,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 				<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo $tax->labels->name;?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><?php _e( 'Press save to load the next lists', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the next lists.', 'tcp' );?></span>
 		</p><p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_number_products' ); ?>" name="<?php echo $this->get_field_name( 'see_number_products' ); ?>" <?php checked( $see_number_products, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_number_products' ); ?>"><?php _e( 'See children number', 'tcp' ); ?></label>
@@ -151,7 +154,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty terms', 'tcp' ); ?></label>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included and sorted', 'tcp' )?>:</label>
-			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?= $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
+			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
 				<option value="0"<?php $this->selected_multiple( $included_taxonomies, 0 ); ?>><?php _e( 'All', 'tcp' );?></option>
 			<?php $args = array (
 				'taxonomy'		=> $instance['taxonomy'],

@@ -153,7 +153,8 @@ class paypal_class {
       foreach ($this->fields as $name => $value)
          $output .= "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
       $output .= "<input type=\"image\" name=\"submit\" border=\"0\"";
-      $output .= " src=\"https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif\"";
+      //$output .= " src=\"https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif\"";
+      $output .= " src=\"https://www.paypal.com/en_US/i/btn/btn_paynow_LG.gif\"";
       $output .= " alt=\"".__('PayPal - The safer, easier way to pay online', 'tcp')."\"";
       $output .= " title=\"".__('PayPal - The safer, easier way to pay online', 'tcp')."\">";
       $output .= "</form>\n";
@@ -176,7 +177,7 @@ class paypal_class {
       $post_string.="cmd=_notify-validate"; // append ipn command
 
       // open the connection to paypal
-      $fp = fsockopen($url_parsed[host],"80",$err_num,$err_str,30); 
+      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
       if(!$fp) {
           
          // could not open the connection.  If loggin is on, the error message
@@ -188,8 +189,8 @@ class paypal_class {
       } else { 
  
          // Post the data back to paypal
-         fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n"); 
-         fputs($fp, "Host: $url_parsed[host]\r\n"); 
+         fputs($fp, "POST {$url_parsed['path']} HTTP/1.1\r\n"); 
+         fputs($fp, "Host: {$url_parsed['host']}\r\n"); 
          fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n"); 
          fputs($fp, "Content-length: ".strlen($post_string)."\r\n"); 
          fputs($fp, "Connection: close\r\n\r\n"); 

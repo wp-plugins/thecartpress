@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file is part of TheCartPress.
  * 
@@ -46,7 +46,7 @@ class FreeTrans extends TCP_Plugin {
 		return $shoppingCart->getTotal() > $minimun_amount;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		return __( 'Free transport', 'tcp' );
 	}
 }

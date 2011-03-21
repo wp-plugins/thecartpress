@@ -21,9 +21,14 @@
  */
 class ShoppingCart {
 
+	public static $OTHER_COST_SHIPPING_ID	= 'shipping';
+	public static $OTHER_COST_PAYMENT_ID	= 'payment';
+	
 	private $visited_post_ids = array();
 	private $shopping_cart_items = array();
 	private $other_costs = array();
+	private $freeShipping = false;
+	private $discount = 0;
 	
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
@@ -51,12 +56,13 @@ class ShoppingCart {
 	 */
 	function getTotal( $otherCosts = false ) {
 		$total = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
+		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
 			$total += $shopping_cart_item->getTotal();
+		}
 		if ( $otherCosts )
 			$total += $this->getTotalOtherCosts();
 		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
-		return $total;
+		return $total - $this->discount;
 	}
 
 	/**
@@ -81,6 +87,7 @@ class ShoppingCart {
 		$this->shopping_cart_items = array();
 		unset( $this->other_costs );
 		$this->other_costs = array();
+		$this->deleteAllDiscounts();
 	}
 
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
@@ -182,7 +189,7 @@ class ShoppingCart {
 	/**
 	 * Visited functions
 	 */
-	function removeVisitedPost() {
+	function deleteVisitedPost() {
 		unset( $this->visited_post_ids );
 		$this->visited_post_ids = array();
 	}
@@ -207,19 +214,62 @@ class ShoppingCart {
 	/**
 	 * Other costs API
 	 */
-	function addOtherCost( $id, $cost = 0, $desc = '' ) {
-		$this->other_costs[$id] = new ShoppingCartOtherCost( $cost, $desc );
+	function addOtherCost( $id, $cost = 0, $desc = '', $order = 0 ) {
+		if ( $cost == 0 )
+			$this->deleteOtherCost( $id );
+		else
+			$this->other_costs[$id] = new ShoppingCartOtherCost( $cost, $desc, $order );
 	}
 
-	function removeOtherCost( $id ) {
-		unset( $this->other_costs[$id] );
+	function deleteOtherCost( $id ) {
+		if ( isset( $this->other_costs[$id] ) )
+			unset( $this->other_costs[$id] );
+	}
+
+	function getOtherCosts() {
+		return $this->other_costs;
+	}
+
+	function deleteOtherCosts() {
+		unset( $this->other_costs );
+		$this->other_costs = array();
 	}
 
 	function getTotalOtherCosts() {
 		$total = 0;
-		foreach( $this->other_costs as $other_cost )
+		foreach( $this->other_costs as $other_cost ) {
 			$total += $other_cost->getCost();
+		}
 		return $total;
+	}
+	
+	function setFreeShipping( $freeShipping ) {
+		$this->freeShipping = (bool)freeShipping;
+	}
+
+	function isFreeShipping() {
+		return $this->freeShipping;
+	}
+
+	function setDiscount( $discount ) {
+		$this->discount = $discount;
+	}
+
+	function getDiscount() {
+		return $this->discount;
+	}
+
+	function getAllDiscount() {
+		$discount = $this->discount;
+		foreach( $this->shopping_cart_items as $item )
+			$discount += $item->getDiscount();
+		return $discount;
+	}
+
+	function deleteAllDiscounts() {
+		$this->discount = 0;
+		foreach( $this->shopping_cart_items as $item )
+			$item->setDiscount( 0 );
 	}
 }
 
@@ -231,8 +281,9 @@ class ShoppingCartItem {
 	private $unit_price;
 	private $tax;
 	private $unit_weight;
-	//
 	private $is_downloadable = false;
+	
+	private $discount = 0;
 
 	function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		$this->post_id		= (int)$post_id;
@@ -274,34 +325,40 @@ class ShoppingCartItem {
 	}
 
 	function getUnitPrice() {
-		return $this->unit_price;
+		$price = $this->unit_price;
+		return apply_filters( 'tcp_item_get_unit_price', $price );
 	}
 
 	function getTax() {
-		return (float)$this->tax;
+		$tax = (float)$this->tax;
+		return apply_filters( 'tcp_item_get_tax', $tax );
 	}
 
 	function getUnitWeight() {
-		return $this->unit_weight;
+		$weight = $this->unit_weight;
+		return apply_filters( 'tcp_item_get_unit_weight', $weight );
 	}
 
 	function getPrice() {
-		return $this->unit_price * $this->count;
+		return $this->getUnitPrice() * $this->count;
 	}
 
 	function getTotal() {
-		if ( $this->tax == 0 )
-			return $this->unit_price * $this->count;
+		if ( $this->getTax() == 0 )
+			$total = ( $this->getUnitPrice() * $this->count ) - $this->discount;
 		else {
-			$price = $this->unit_price * (1 + $this->tax / 100);
-			return $price * $this->count;
+			$price = $this->unit_price * (1 + $this->getTax() / 100);
+			$price = $price * $this->count;
+			$total = $price - $this->getDiscount();
 		}
+		$total = apply_filters( 'tcp_shopping_cart_get_item_total', $total );
+		return $total;
 	}
 
 	function getWeight() {
-		return $this->unit_weight * $this->count;
+		return $this->getUnitWeight() * $this->count;
 	}
-	
+
 	function isDownloadable() {
 		return $this->is_downloadable;
 	}
@@ -309,15 +366,29 @@ class ShoppingCartItem {
 	function setDownloadable( $is_downloadable ) {
 		$this->is_downloadable = $is_downloadable;
 	}
+
+	function setDiscount( $discount ) {
+		$this->discount = $discount;
+	}
+
+	function getDiscount() {
+		$discount = $this->discount;
+		return apply_filters( 'tcp_item_get_discount', $discount );
+	}
 }
 
 class ShoppingCartOtherCost {
 	private $cost;
 	private $desc;
+	private $order;
 
-	function __construct( $cost = 0, $desc = '') {
+	function __construct( $cost = 0, $desc = '', $order = 0 ) {
 		$this->cost = (double)$cost;
 		$this->desc = $desc;
+	}
+	
+	function __toString() {
+		return $this->order . $this->desc;
 	}
 
 	function getCost() {
@@ -326,6 +397,10 @@ class ShoppingCartOtherCost {
 
 	function getDesc() {
 		return $this->desc;
+	}
+
+	function getOrder() {
+		return $this->order;
 	}
 }
 ?>

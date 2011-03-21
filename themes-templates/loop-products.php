@@ -71,8 +71,7 @@
 	 */ ?>
 <table class="tcp_products_list">
 <?php
-$settings = get_option( 'tcp_settings' );
-$currency = $settings['currency'];
+$currency =  tcp_the_currency( false );
 if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );	
 $see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
 $see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;

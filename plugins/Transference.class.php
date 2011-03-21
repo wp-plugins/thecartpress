@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file is part of TheCartPress.
  * 
@@ -88,12 +88,16 @@ class Transference extends TCP_Plugin {
 		return $data;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		return __( 'Transference.', 'tcp' );
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
-		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );?>
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$params = array(
+			'tcp_checkout'	=> 'ok',
+			'order_id'		=> $order_id,
+		);?>
 		<p><?php echo $data['notice'];?></p>
 		<table>
 		<tr><th scope="row"><?php _e( 'Owner', 'tcp' );?>: </th><td><?php echo $data['owner'];?></td></tr>
@@ -103,7 +107,7 @@ class Transference extends TCP_Plugin {
 		<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' );?>: </th><td><?php echo $data['swift'];?></td></tr>
 		</table>
 		<p>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] );

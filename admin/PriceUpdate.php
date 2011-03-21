@@ -18,6 +18,9 @@
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
 
+global $thecartpress;
+$currency = isset ( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
+
 $per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
 $fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
 $update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
@@ -27,6 +30,7 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	$args = array(
 		'post_type'				=> 'tcp_product',
 		'tcp_product_category'	=>  $cat_slug ,
+		'posts_per_page'		=> -1,
 	);
 	$args = apply_filters( 'tcp_update_price_query_args', $args );
 	$query = new WP_query( $args );
@@ -39,11 +43,12 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 					die( __( 'This product cannot be modified by the user ', 'tcp' ) );
 				}
 			if ( isset( $_REQUEST['tcp_new_price_' . $post->ID] ) ) {
-				$new_price = (float)$_REQUEST['tcp_new_price_' . $post->ID];
+				//$new_price = (float)$_REQUEST['tcp_new_price_' . $post->ID];
+				$new_price = $_REQUEST['tcp_new_price_' . $post->ID];
+				$new_price = tcp_input_number( $new_price );
 				update_post_meta( $post->ID, 'tcp_price', $new_price );
 			}
 			do_action( 'tcp_update_price', $post );
-
 		}?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Updated price.', 'tcp' );?>
@@ -51,9 +56,6 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	}
 	wp_reset_query();
 }
-
-$settings = get_option( 'tcp_settings' );
-$currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 ?>
 <div class="wrap">
 <h2><?php _e( 'Prices Update', 'tcp' );?></h2>
@@ -100,6 +102,7 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 		$args = array(
 			'post_type'				=> 'tcp_product',
 			'tcp_product_category'	=>  $cat_slug ,
+			'posts_per_page'		=> -1,
 		);
 		$args = apply_filters( 'tcp_update_price_query_args', $args );
 		$query = new WP_query( $args );
@@ -131,12 +134,11 @@ $currency = isset ( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 					$new_price = $price * (1 + $per / 100);
 				} else { //fixed
 					$new_price = $price + $fix;
-				}
-			?>
+				}?>
 			<tr>
-				<td><?php echo $post->post_title;?></td>
-				<td><?php echo $price, '&nbsp;', $currency;?></td>
-				<td><input type="text" value="<?php echo $new_price;?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
+				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
+				<td><?php echo tcp_number_format( $price ), '&nbsp;', $currency;?></td>
+				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
 				<td>&nbsp;</td>
 			</tr>
 			<?php do_action( 'tcp_update_price_controls', $post );

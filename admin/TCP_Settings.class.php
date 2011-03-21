@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file is part of TheCartPress.
  * 
@@ -16,26 +16,28 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Currencies.class.php' );
 
 class TCP_Settings {
 
-	private $settings = array();
-
 	function __construct() {
 		if ( is_admin() ) {
-			$this->settings = get_option( 'tcp_settings' );
-			add_action('admin_init', array( $this, 'adminInit' ) );
-			add_action('admin_menu', array( $this, 'adminMenu' ) );
+			add_action('admin_init', array( $this, 'admin_init' ) );
+			add_action('admin_menu', array( $this, 'admin_menu' ) );
 		}
 	}
 
-	function adminInit() {
+	function admin_init() {
 		register_setting( 'thecartpress_options', 'tcp_settings', array( $this, 'validate' ) );
 		add_settings_section( 'tcp_main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_main_section' ), __FILE__ );
 		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'disable_shopping_cart', __( 'Disable shopping cart', 'tcp' ), array( $this, 'show_disable_shopping_cart' ), __FILE__ , 'tcp_main_section' );
+		
+		add_settings_field( 'country', __( 'Country', 'tcp' ), array( $this, 'show_country' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'currency', __( 'Currency', 'tcp' ), array( $this, 'show_currency' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'decimal_point', __( 'Decimal point separator', 'tcp' ), array( $this, 'show_decimal_point_separator' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'thousands_separator', __( 'Thousands separator', 'tcp' ), array( $this, 'show_thousands_separator' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'unit_weight', __( 'Unit weight', 'tcp' ), array( $this, 'show_unit_weight' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'downloadable_path', __( 'Downloadable path', 'tcp' ), array( $this, 'show_downloadable_path' ), __FILE__ , 'tcp_main_section' );
 
@@ -60,18 +62,20 @@ class TCP_Settings {
 		add_settings_field( 'see_price_in_excerpt', __( 'See price in excerpt', 'tcp' ), array( $this, 'show_see_price_in_excerpt' ), __FILE__ , 'tcp_theme_compability_section' );
 
 		add_settings_section( 'tcp_admin_section', __( 'Admin settings', 'tcp' ) , array( $this, 'show_admin_section' ), __FILE__ );
-		add_settings_field( 'hide_visibles', __( 'Hide visible products', 'tcp' ), array( $this, 'show_hide_visibles' ), __FILE__ , 'tcp_admin_section' );
+		add_settings_field( 'hide_visibles', __( 'Hide invisible products', 'tcp' ), array( $this, 'show_hide_visibles' ), __FILE__ , 'tcp_admin_section' );
 
 		add_settings_section( 'tcp_search_engine_section', __( 'Search engine', 'tcp' ) , array( $this, 'show_search_engine_section' ), __FILE__ );
 		add_settings_field( 'search_engine_activated', __( 'Search engine activated', 'tcp' ), array( $this, 'show_search_engine_activated' ), __FILE__ , 'tcp_search_engine_section' );
 	}
 
-	function adminMenu() {
+	function admin_menu() {
 		$base = dirname( dirname( __FILE__ ) ) . '/admin/OrdersList.php';
 		add_submenu_page( $base, __( 'TheCartPress settings', 'tcp' ), __( 'Settings', 'tcp' ), 'tcp_edit_settings', 'tcp_settings_page', array( $this, 'showSettings' ) );
 	}
 	
-	function showSettings() {?>
+	function showSettings() {
+		global $thecartpress;
+		$thecartpress->loadSettings();?>
 	<div class="wrap">
 		<h2><?php _e( 'TheCartPress Settings', 'tcp' );?></h2>
 		<form method="post" action="options.php">
@@ -94,34 +98,51 @@ class TCP_Settings {
 	}
 
 	function show_user_registration() {
-		$user_registration = isset( $this->settings['user_registration'] ) ? $this->settings['user_registration'] : false;?>
+		global $thecartpress;
+		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;?>
 		<input type="checkbox" id="user_registration" name="tcp_settings[user_registration]" value="yes" <?php checked( true, $user_registration );?> /><?php
 	}
 
 	function show_emails() {
-		$emails = isset( $this->settings['emails'] ) ? $this->settings['emails'] : '';?>
+		global $thecartpress;
+		$emails = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';?>
 		<input type="text" id="emails" name="tcp_settings[emails]" value="<?php echo $emails;?>" size="40" maxlength="2550" />
 		<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' );?></span><?php
 	}
 
 	function show_from_email() {
-		$from_email = isset( $this->settings['from_email'] ) ? $this->settings['from_email'] : '';?>
+		global $thecartpress;
+		$from_email = isset( $thecartpress->settings['from_email'] ) ? $thecartpress->settings['from_email'] : '';?>
 		<input type="text" id="from_email" name="tcp_settings[from_email]" value="<?php echo $from_email;?>" size="40" maxlength="255" /><?php
 	}
 
 	function show_stock_management() {
-		$stock_management = isset( $this->settings['stock_management'] ) ? $this->settings['stock_management'] : false;?>
+		global $thecartpress;
+		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;?>
 		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management );?> /><?php
 	}
 
 	function show_disable_shopping_cart() {
-		$disable_shopping_cart = isset( $this->settings['disable_shopping_cart'] ) ? $this->settings['disable_shopping_cart'] : false;?>
+		global $thecartpress;
+		$disable_shopping_cart = isset( $thecartpress->settings['disable_shopping_cart'] ) ? $thecartpress->settings['disable_shopping_cart'] : false;?>
 		<input type="checkbox" id="disable_shopping_cart" name="tcp_settings[disable_shopping_cart]" value="yes" <?php checked( true, $disable_shopping_cart );?> />
 		<span class="description"><?php _e( 'To use TheCartPress as a catalog.', 'tcp' );?></span><?php
 	}
-	
+
+	function show_country() {
+		global $thecartpress;
+		$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';?>
+		<select id="country" name="tcp_settings[country]">
+		<?php $countries = Countries::getAll();
+		foreach($countries as $item) :?>
+			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country );?>><?php echo $item->name;?></option>
+		<?php endforeach;?>
+		</select><?php
+	}
+
 	function show_currency() {
-		$currency = isset( $this->settings['currency'] ) ? $this->settings['currency'] : 'EUR';?>
+		global $thecartpress;
+		$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';?>
 		<select id="currency" name="tcp_settings[currency]">
 		<?php $currencies = Currencies::getAll();
 		foreach( $currencies as $currency_row ) :?>
@@ -130,8 +151,21 @@ class TCP_Settings {
 		</select><?php
 	}
 
+	function show_decimal_point_separator() {
+		global $thecartpress;
+		$decimal_point = isset( $thecartpress->settings['decimal_point'] ) ? $thecartpress->settings['decimal_point'] : '.';?>
+		<input type="text" id="decimal_point" name="tcp_settings[decimal_point]" value="<?php echo $decimal_point;?>" size="1" maxlength="1" /><?php
+	}
+
+	function show_thousands_separator() {
+		global $thecartpress;
+		$thousands_separator = isset( $thecartpress->settings['thousands_separator'] ) ? $thecartpress->settings['thousands_separator'] : ',';?>
+		<input type="text" id="thousands_separator" name="tcp_settings[thousands_separator]" value="<?php echo $thousands_separator;?>" size="1" maxlength="1" /><?php
+	}
+
 	function show_unit_weight() {
-		$unit_weight = isset( $this->settings['unit_weight'] ) ? $this->settings['unit_weight'] : 'gr';?>
+		global $thecartpress;
+		$unit_weight = isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';?>
 		<select id="unit_weight" name="tcp_settings[unit_weight]">
 			<option value="kg" <?php selected( 'kg', $unit_weight );?>><?php _e( 'Kilogram (kg)', 'tcp' );?></option>
 			<option value="gr" <?php selected( 'gr', $unit_weight );?>><?php _e( 'Gram (gr)', 'tcp' );?></option>
@@ -162,7 +196,8 @@ class TCP_Settings {
 	}
 
 	function show_downloadable_path() {
-		$downloadable_path = isset( $this->settings['downloadable_path'] ) ? $this->settings['downloadable_path'] : '';?>
+		global $thecartpress;
+		$downloadable_path = isset( $thecartpress->settings['downloadable_path'] ) ? $thecartpress->settings['downloadable_path'] : '';?>
 		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255" />
 		<br /><span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory.', 'tcp' );?></span>
 		<br /><span class="description"><?php _e( 'Example:' , 'tcp' );?> <?php echo dirname( __FILE__ );?></span><?php
@@ -172,13 +207,15 @@ class TCP_Settings {
 	}
 
 	function show_legal_notice() {
-		$legal_notice = isset( $this->settings['legal_notice'] ) ? $this->settings['legal_notice'] : __( 'legal notice', 'tcp' );?>
+		global $thecartpress;
+		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'legal notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea><br />
 		<span class="description"><?php _e( 'If the legal notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
 	}
 
 	function show_checkout_successfully_message() {
-		$checkout_successfully_message = isset( $this->settings['checkout_successfully_message'] ) ? $this->settings['checkout_successfully_message'] : __( 'The order has been completed successfully', 'tcp' );?>
+		global $thecartpress;
+		$checkout_successfully_message = isset( $thecartpress->settings['checkout_successfully_message'] ) ? $thecartpress->settings['checkout_successfully_message'] : __( 'The order has been completed successfully', 'tcp' );?>
 		<textarea id="checkout_successfully_message" name="tcp_settings[checkout_successfully_message]" cols="40" rows="5" maxlength="1020"><?php echo $checkout_successfully_message;?></textarea><br />
 		<span class="description"><?php _e( 'This text will show at the end of the checkout process.', 'tcp' );?></span><?php
 	}
@@ -190,53 +227,63 @@ class TCP_Settings {
 	}
 
 	function show_product_rewrite() {
-		$product_rewrite = isset( $this->settings['product_rewrite'] ) ? $this->settings['product_rewrite'] : 'product';?>
+		global $thecartpress;
+		$product_rewrite = isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'product';?>
 		<input type="text" id="product_rewrite" name="tcp_settings[product_rewrite]" value="<?php echo $product_rewrite;?>" size="50" maxlength="255" /><?php
 	}
 
 	function show_category_rewrite() {
-		$category_rewrite = isset( $this->settings['category_rewrite'] ) ? $this->settings['category_rewrite'] : 'category';?>
+		global $thecartpress;
+		$category_rewrite = isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'category';?>
 		<input type="text" id="category_rewrite" name="tcp_settings[category_rewrite]" value="<?php echo $category_rewrite;?>" size="50" maxlength="255" /><?php
 	}
 
 	function show_tag_rewrite() {
-		$tag_rewrite = isset( $this->settings['tag_rewrite'] ) ? $this->settings['tag_rewrite'] : 'tag';?>
+		global $thecartpress;
+		$tag_rewrite = isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'tag';?>
 		<input type="text" id="tag_rewrite" name="tcp_settings[tag_rewrite]" value="<?php echo $tag_rewrite;?>" size="50" maxlength="255" /><?php
 	}
 
 	function show_supplier_rewrite() {
-		$supplier_rewrite = isset( $this->settings['supplier_rewrite'] ) ? $this->settings['supplier_rewrite'] : 'supplier';?>
+		global $thecartpress;
+		$supplier_rewrite = isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'supplier';?>
 		<input type="text" id="supplier_rewrite" name="tcp_settings[supplier_rewrite]" value="<?php echo $supplier_rewrite;?>" size="50" maxlength="255" /><?php
 	}
 
 	function show_theme_compability_section() {
+		global $thecartpress;
 		$content = __( 'You can uncheck all this options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template functions</a>.', 'tcp' );
 		$content = apply_filters( 'tcp_theme_compability_section', $content );
 		echo '<span class="description">', $content, '</span>';
 	}
 
 	function show_load_default_styles() {
-		$load_default_styles = isset( $this->settings['load_default_styles'] ) ? $this->settings['load_default_styles'] : true;?>
+		global $thecartpress;
+		$load_default_styles = isset( $thecartpress->settings['load_default_styles'] ) ? $thecartpress->settings['load_default_styles'] : true;?>
 		<input type="checkbox" id="load_default_styles" name="tcp_settings[load_default_styles]" value="yes" <?php checked( true, $load_default_styles );?> /><?php
 	}
 
 	function show_see_buy_button_in_content() {
-		$see_buy_button_in_content = isset( $this->settings['see_buy_button_in_content'] ) ? $this->settings['see_buy_button_in_content'] : true;?>
+		global $thecartpress;
+		$see_buy_button_in_content = isset( $thecartpress->settings['see_buy_button_in_content'] ) ? $thecartpress->settings['see_buy_button_in_content'] : true;?>
 		<input type="checkbox" id="see_buy_button_in_content" name="tcp_settings[see_buy_button_in_content]" value="yes" <?php checked( true, $see_buy_button_in_content );?> /><?php
 	}
 
 	function show_see_buy_button_in_excerpt() {
-		$see_buy_button_in_excerpt = isset( $this->settings['see_buy_button_in_excerpt'] ) ? $this->settings['see_buy_button_in_excerpt'] : false;?>
+		global $thecartpress;
+		$see_buy_button_in_excerpt = isset( $thecartpress->settings['see_buy_button_in_excerpt'] ) ? $thecartpress->settings['see_buy_button_in_excerpt'] : false;?>
 		<input type="checkbox" id="see_buy_button_in_excerpt" name="tcp_settings[see_buy_button_in_excerpt]" value="yes" <?php checked( true, $see_buy_button_in_excerpt );?> /><?php
 	}
 
 	function show_see_price_in_content() {
-		$see_price_in_content = isset( $this->settings['see_price_in_content'] ) ? $this->settings['see_price_in_content'] : false;?>
+		global $thecartpress;
+		$see_price_in_content = isset( $thecartpress->settings['see_price_in_content'] ) ? $thecartpress->settings['see_price_in_content'] : false;?>
 		<input type="checkbox" id="see_price_in_content" name="tcp_settings[see_price_in_content]" value="yes" <?php checked( true, $see_price_in_content );?> /><?php
 	}
 
 	function show_see_price_in_excerpt() {
-		$see_price_in_excerpt = isset( $this->settings['see_price_in_excerpt'] ) ? $this->settings['see_price_in_excerpt'] : false;?>
+		global $thecartpress;
+		$see_price_in_excerpt = isset( $thecartpress->settings['see_price_in_excerpt'] ) ? $thecartpress->settings['see_price_in_excerpt'] : false;?>
 		<input type="checkbox" id="see_price_in_excerpt" name="tcp_settings[see_price_in_excerpt]" value="yes" <?php checked( true, $see_price_in_excerpt );?> /><?php
 	}
 
@@ -244,20 +291,24 @@ class TCP_Settings {
 	}
 
 	function show_hide_visibles() {
-		$hide_visibles = isset( $this->settings['hide_visibles'] ) ? $this->settings['hide_visibles'] : false;?>
+		global $thecartpress;
+		$hide_visibles = isset( $thecartpress->settings['hide_visibles'] ) ? $thecartpress->settings['hide_visibles'] : false;?>
 		<input type="checkbox" id="hide_visibles" name="tcp_settings[hide_visibles]" value="yes" <?php checked( true, $hide_visibles );?> /><?php
 	}
 
 	function show_search_engine_section() {?>
-		<span class="description"><?php _e( '', 'tcp' );?></span><?php
+		<span class="description"><?php _e( '&nbsp;', 'tcp' );?></span><?php
 	}
 
 	function show_search_engine_activated() {
-		$search_engine_activated = isset( $this->settings['search_engine_activated'] ) ? $this->settings['search_engine_activated'] : true;?>
+		global $thecartpress;
+		$search_engine_activated = isset( $thecartpress->settings['search_engine_activated'] ) ? $thecartpress->settings['search_engine_activated'] : true;?>
 		<input type="checkbox" id="search_engine_activated" name="tcp_settings[search_engine_activated]" value="yes" <?php checked( true, $search_engine_activated );?> /><?php
 	}
 
 	function validate( $input ) {
+		$input['decimal_point']				= isset( $input['decimal_point'] ) ? $input['decimal_point'] : '.';
+		$input['thousands_separator']		= isset( $input['thousands_separator'] ) ? $input['thousands_separator'] : ',';
 		$input['legal_notice']				=  wp_filter_nohtml_kses( $input['legal_notice'] );
 		$input['from_email']				=  wp_filter_nohtml_kses( $input['from_email'] );
 		$input['emails']					=  wp_filter_nohtml_kses( $input['emails'] );
@@ -269,10 +320,10 @@ class TCP_Settings {
 		$input['see_price_in_content']		= isset( $input['see_price_in_content'] ) ? $input['see_price_in_content'] == 'yes' : false;
 		$input['see_price_in_excerpt']		= isset( $input['see_price_in_excerpt'] ) ? $input['see_price_in_excerpt'] == 'yes' : false;
 		$input['downloadable_path']			= wp_filter_nohtml_kses( $input['downloadable_path'] );
-		$input['product_rewrite']			=  wp_filter_nohtml_kses( $input['product_rewrite'] );
-		$input['category_rewrite']			=  wp_filter_nohtml_kses( $input['category_rewrite'] );
-		$input['tag_rewrite']				=  wp_filter_nohtml_kses( $input['tag_rewrite'] );
-		$input['supplier_rewrite']			=  wp_filter_nohtml_kses( $input['supplier_rewrite'] );
+		$input['product_rewrite']			= wp_filter_nohtml_kses( $input['product_rewrite'] );
+		$input['category_rewrite']			= wp_filter_nohtml_kses( $input['category_rewrite'] );
+		$input['tag_rewrite']				= wp_filter_nohtml_kses( $input['tag_rewrite'] );
+		$input['supplier_rewrite']			= wp_filter_nohtml_kses( $input['supplier_rewrite'] );
 		$input['checkout_successfully_message']	= wp_filter_nohtml_kses( $input['checkout_successfully_message'] );
 		$input['load_default_styles']		= isset( $input['load_default_styles'] ) ? $input['load_default_styles'] == 'yes' : false;
 		$input['hide_visibles']				= isset( $input['hide_visibles'] ) ? $input['hide_visibles'] == 'yes' : false;

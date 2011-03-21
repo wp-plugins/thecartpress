@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
 Tested up to: 3.1
-Stable Tag: 1.0.6
+Stable Tag: 1.0.7
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -154,8 +154,23 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 1.0.7 =
+* Improvements in Buy Button
+* CVC field, Card type and Cardholder in CC Offline (thanks to the community)
+* Order editor: button to delete card data (thanks to the community)
+* Plugin Auto-Check
+* New Settings: Default Country, Decimal point and thousands separator (thanks to the community)
+* New templates functions: tcp_number_format and tcp_input_number
+* Checkout improvments (hooks, other costs, validation) (thanks to the community)
+* Added more useful hooks for plugin development
+* New field in Payment and Shipping methods: Active/Not active
+* TheCartPress Payment and Shipping methods editor: new column to see active/inactive methods
+* Send separate emails to customer and to merchant and when the pay has been done (thanks to the community)
+* $thecartpress object available for plugin development
+* Checkout page is now child of Shopping cart page
+
 = 1.0.6 =
-* Bug fixed, thanks the community
+* Bug fixed (thanks to the community)
 * Example themes ready for use
 
 = 1.0.5 =

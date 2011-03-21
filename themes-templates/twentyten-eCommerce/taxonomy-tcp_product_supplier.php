@@ -22,7 +22,7 @@ get_header(); ?>
 
 				/* Run the loop for the supplier archive to output the products.
 				 */
-				get_template_part( 'loop', 'products-grid' );
+				get_template_part( 'loop', 'tcp-grid' );
 				?>
 
 			</div><!-- #content -->

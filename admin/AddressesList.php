@@ -65,10 +65,10 @@ if ( is_user_logged_in() ) {
 </tfoot>
 <tbody>
 
-<?php if ( count( $addresses ) == 0 ) :?>
+<?php if ( count( $addresses ) == 0 ) : ?>
 	<tr><td colspan="5"><?php _e( 'The list of addresses is empty', 'tcp' );?></td></tr>
 <?php else :
-	 foreach( $addresses as $address ) :?> 
+	 foreach( $addresses as $address ) : ?>
 	<tr>
 		<td><?php echo $address->name;?></td>
 		<td><?php echo $address->firstname, ' ', $address->lastname;?></td>

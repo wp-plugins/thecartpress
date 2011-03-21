@@ -19,9 +19,9 @@
 class ShoppingCartPage {
 
 	function show( $notice = '') {
-		$settings = get_option( 'tcp_settings' );
-		$currency = isset( $settings['currency'] ) ? $settings['currency']: 'EUR';
-		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
+		global $thecartpress;
+		$currency			= tcp_get_the_currency();
+		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( $shoppingCart->isEmpty() ) :?>
 			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
@@ -56,7 +56,7 @@ class ShoppingCartPage {
 					<?php if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( tcp_get_current_id( $item->getOption2Id() ) );?></a>
 					</td>
 					<td class="tcp_cart_unit_price">
-						<?php echo number_format( $item->getUnitPrice(), 2 ), '&nbsp;', $currency, '&nbsp;(', number_format( $item->getTax(), 0 ), '%)';?>
+						<?php echo tcp_number_format( $item->getUnitPrice() ), '&nbsp;', $currency, '&nbsp;(', number_format( $item->getTax(), 0 ), '%)';?>
 					</td>
 					<form method="post">
 						<td class="tcp_cart_units">
@@ -64,7 +64,7 @@ class ShoppingCartPage {
 							<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="<?php echo $item->getOption1Id();?>" />
 							<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="<?php echo $item->getOption2Id();?>" />
 						<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="3" maxlength="4" type="text" />
+							<input name="tcp_count" id="tcp_count" value="<?php echo $item->getCount();?>" size="2" maxlength="4" type="text" />
 							<input name="tcp_modify_item_shopping_cart" value="<?php echo __( 'Modify', 'tcp' );?>" type="submit" />
 							<input name="tcp_delete_item_shopping_cart" value="<?php echo __( 'Delete', 'tcp' );?>" type="submit" />
 						<?php else : ?>
@@ -82,23 +82,23 @@ class ShoppingCartPage {
 					</form>
 					<td class="tcp_cart_price">
 						<?php $total += $item->getTotal();?>
-						<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?>
+						<?php echo tcp_number_format( $item->getTotal() );?>&nbsp;<?php echo $currency;?>
 					</td>
 				</tr>
 			<?php endforeach;?>
 				<tr class="tcp_cart_subtotal_row">
 					<td colspan="3" class="tcp_cart_subtotal_title"><?php echo __( 'Subtotal', 'tcp' );?></td>
-					<td class="tcp_cart_subtotal"><?php echo number_format( $total, 2 );?>&nbsp;<?php echo $currency;?></td>
+					<td class="tcp_cart_subtotal"><?php echo tcp_number_format( $total );?>&nbsp;<?php echo $currency;?></td>
 				</tr>
 				<tr class="tcp_cart_total_row">
 					<td colspan="3" class="tcp_cart_total_title"><?php echo __( 'Total', 'tcp' );?></td>
-					<td class="tcp_cart_total"><?php echo number_format( $total, 2 );?>&nbsp;<?php echo $currency;?></td>
+					<td class="tcp_cart_total"><?php echo tcp_number_format( $total );?>&nbsp;<?php echo $currency;?></td>
 				</tr>
 			</tbody>
 			</table>
 			<ul class="tcp_sc_links">
-				<li class="tcp_sc_checkout"><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
-				<li class="tcp_sc_continue"><a href="<?echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
+				<li class="tcp_sc_checkout"><a href="<?php echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
+				<li class="tcp_sc_continue"><a href="<?php echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
 				<li class="tcp_sc_delete_all"><form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form></li>
 			</ul>
 		</div>

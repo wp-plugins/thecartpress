@@ -278,7 +278,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				$folder = STYLESHEETPATH;
 				if ( $handle = opendir( $folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>"><?echo $file; ?></option>
+						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>"><?php echo $file; ?></option>
 					<?php 
 						$files[] = $file;
 					endif;?>
@@ -288,7 +288,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				if ( STYLESHEETPATH != $folder )
 					if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-							<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>">[<?php _e( 'parent', 'tcp' );?>] <?echo $file; ?></option>
+							<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
 						<?php endif;?>
 					<?php endwhile; closedir( $handle );?>
 				</select>
@@ -301,7 +301,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 		</p>
 	<div id="advanced" style="display:none;">
 		<p>
-			<label for="columns"><?php _e( 'Nº columns', 'tcp' );?>:</label>
+			<label for="columns"><?php _e( 'N<sup>o</sup> columns', 'tcp' );?>:</label>
 			<input id="columns" name="columns" type="text" value="<?php echo $columns;?>" size="3" />
 		</p>
 		<p>

@@ -22,7 +22,7 @@ get_header(); ?>
 
 				/* Run the loop for the category page to output the posts.
 				 */
-				get_template_part( 'loop', 'products-grid' );
+				get_template_part( 'loop', 'tcp-grid' );
 				?>
 
 			</div><!-- #content -->

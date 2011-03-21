@@ -31,9 +31,9 @@ class Addresses {
 		  `company`				varchar(50)		NOT NULL,
 		  `street`				varchar(100)	NOT NULL,
 		  `city`				varchar(100)	NOT NULL,
-		  `city_id`				int(11) unsigned NOT NULL,
+		  `city_id`				char(4)			NOT NULL,
 		  `region`				varchar(100)	NOT NULL,
-		  `region_id`			int(11) unsigned NOT NULL,
+		  `region_id`			char(2)			NOT NULL,
 		  `postcode`			char(6)			NOT NULL,
 		  `country_id`			char(2)			NOT NULL,
 		  `telephone_1`			varchar(50)		NOT NULL,
@@ -83,15 +83,27 @@ class Addresses {
 			set default_billing = \'Y\' where address_id = %d', $address_id ) );
 	}
 
-	static function getCustomerDefaultShippingAddresses( $customer_id ) {
+	static function getCustomerDefaultShippingAddressId( $customer_id ) {
 		global $wpdb;
 		return $wpdb->get_var( $wpdb->prepare( 'select address_id from ' . $wpdb->prefix . 'tcp_addresses
 			where customer_id = %d and default_shipping = \'Y\'', $customer_id ) );
 	}
 
-	static function getCustomerDefaultBillingAddresses( $customer_id ) {
+	static function getCustomerDefaultShippingAddress( $customer_id ) {
+		global $wpdb;
+		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_addresses
+			where customer_id = %d and default_shipping = \'Y\'', $customer_id ) );
+	}
+
+	static function getCustomerDefaultBillingAddressId( $customer_id ) {
 		global $wpdb;
 		return $wpdb->get_var( $wpdb->prepare( 'select address_id from ' . $wpdb->prefix . 'tcp_addresses
+			where customer_id = %d and default_billing = \'Y\'', $customer_id ) );
+	}
+
+	static function getCustomerDefaultBillingAddress( $customer_id ) {
+		global $wpdb;
+		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_addresses
 			where customer_id = %d and default_billing = \'Y\'', $customer_id ) );
 	}
 
@@ -128,7 +140,7 @@ class Addresses {
 				'fax'				=> $address['fax'],
 				'email'				=> $address['email'],
 			),
-			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s' )
+			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -156,7 +168,7 @@ class Addresses {
 				'email'				=> $address['email'],
 			),
 			array( 'address_id' =>  $address['address_id']),
-			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			array ( '%d' )
 		);
 		return $wpdb->insert_id;

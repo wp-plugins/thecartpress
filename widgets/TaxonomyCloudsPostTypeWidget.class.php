@@ -33,7 +33,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
-		if ( $title )	echo $before_title, $title, $after_title;
+		if ( $title ) echo $before_title, $title, $after_title;
 		$args = array(
 			'smallest'  => $instance['min_size'],
 			'largest'   => $instance['max_size'],
@@ -49,9 +49,11 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 		);
 		if ( !$instance['separator'] ) $args['separator'] = "\n";
 		if ( $instance['display_format'] == 'flat' )
-			echo '<div>', wp_tag_cloud( $args ), '</div>';
+			tcp_get_taxonomies_cloud( $args, true, '<div>', '</div>' );
+//			wp_tag_cloud( $args, true, '<div>', '</div>' );
 		else
-			echo wp_tag_cloud( $args );
+			tcp_get_taxonomies_cloud( $args );
+//			wp_tag_cloud( $args );
 		echo $after_widget;
 	}
 
@@ -115,7 +117,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 				<option value="%"  <?php selected( $instance['size_units'],  '%' ); ?>><?php _e( 'percentage', 'tcp' )?></option>
 			</select>
 		</p><p>
-			<label for="<?php echo $this->get_field_id( 'number_tags' ); ?>"><?php _e( 'Nº of tags', 'tcp' )?>:</label>
+			<label for="<?php echo $this->get_field_id( 'number_tags' ); ?>"><?php _e( 'N<sup>o</sup> of tags', 'tcp' )?>:</label>
 			<input id="<?php echo $this->get_field_id( 'number_tags' ); ?>" name="<?php echo $this->get_field_name( 'number_tags' ); ?>" type="text" value="<?php echo esc_attr( $instance['number_tags'] ); ?>" size="3" />
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'display_format' ); ?>"><?php _e( 'Display format', 'tcp' )?>:</label>

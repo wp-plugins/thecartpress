@@ -15,9 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 
 $address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : '0';
 
@@ -26,31 +24,48 @@ get_currentuserinfo();
 $customer_id = $current_user->ID;
 if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) )
 	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
+require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
+
+$regions = array(); //array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
+$regions = apply_filters( 'tcp_address_editor_load_regions', $regions );
 $error_address = array();
 	
 if ( isset( $_REQUEST['tcp_save_address'] ) ) {
 	if ( ! isset( $_REQUEST['name'] ) || strlen( $_REQUEST['name'] ) == 0 )
-		$error_address['name'][] = __( 'The name field must be completed', 'tcp' );
+		$error_address['name'][] = __( 'The Name field must be completed', 'tcp' );
 	if ( ! isset( $_REQUEST['firstname'] ) || strlen( $_REQUEST['firstname'] ) == 0 )
-		$error_address['firstname'][] = __( 'The firstname field must be completed', 'tcp' );
+		$error_address['firstname'][] = __( 'The Firstname field must be completed', 'tcp' );
 	if ( ! isset( $_REQUEST['lastname'] ) || strlen( $_REQUEST['lastname'] ) == 0 )
-		$error_address['lastname'][] = __( 'The lastname field must be completed', 'tcp' );
+		$error_address['lastname'][] = __( 'The Lastname field must be completed', 'tcp' );
 	if ( ! isset( $_REQUEST['street'] ) || strlen( $_REQUEST['street'] ) == 0 )
-		$error_address['street'][] = __( 'The street field must be completed', 'tcp' );
-	if ( ! isset( $_REQUEST['city'] ) || strlen( $_REQUEST['city'] ) == 0)
-		$error_address['city'][] = __( 'The city field must be completed', 'tcp' );
+		$error_address['street'][] = __( 'The Street field must be completed', 'tcp' );
+	if ( ! isset( $_REQUEST['city'] ) || strlen( $_REQUEST['city'] ) == 0 )
+		if ( ! isset( $_REQUEST['city_id'] ) ) {
+			$error_address['city'][] = __( 'The City field must be completed', 'tcp' );
+			$error_address['city_id'][] = __( 'The City field must be completed', 'tcp' );
+		} else {
+			$_REQUEST['city'] = $regions[$_REQUEST['city_id']]['name'];
+		}
 	if ( ! isset( $_REQUEST['region'] ) || strlen( $_REQUEST['region'] ) == 0 )
-		$error_address['region'][] = __( 'The region field must be completed', 'tcp' );
+		if ( ! isset( $_REQUEST['region_id'] ) ) {
+			$error_address['region'][] = __( 'The Region field must be completed', 'tcp' );
+			$error_address['region_id'][] = __( 'The Region field must be completed', 'tcp' );
+		} else {
+			$_REQUEST['region'] = $regions[$_REQUEST['region_id']]['name'];
+		}
 	if ( ! isset( $_REQUEST['postcode'] ) || strlen( $_REQUEST['postcode'] ) == 0 )
-		$error_address['postcode'][] = __( 'The postcode field must be completed', 'tcp' );
+		$error_address['postcode'][] = __( 'The Postcode field must be completed', 'tcp' );
 	if ( ! isset( $_REQUEST['email'] ) || strlen( $_REQUEST['email'] ) == 0 )
-		$error_address['email'][] = __( 'The email field must be completed', 'tcp' );
+		$error_address['email'][] = __( 'The eMail field must be completed', 'tcp' );
 	$has_validation_error = count( $error_address ) > 0;
 
 	if ( ! $has_validation_error ) {
 		$_REQUEST['customer_id'] = $customer_id;
-		$_REQUEST['city_id'] = 0;
-		$_REQUEST['region_id'] = 0;
+		if ( ! isset( $_REQUEST['city'] ) ) $_REQUEST['city'] = '';
+		if ( ! isset( $_REQUEST['city_id'] ) ) $_REQUEST['city_id'] = '';
+		if ( ! isset( $_REQUEST['region'] ) ) $_REQUEST['region'] = '';
+		if ( ! isset( $_REQUEST['region_id'] ) ) $_REQUEST['region_id'] = '';
 		if ( ! isset( $_REQUEST['default_billing'] ) ) $_REQUEST['default_billing'] = '';
 		if ( ! isset( $_REQUEST['default_shipping'] ) ) $_REQUEST['default_shipping'] = '';
 		Addresses::save( $_REQUEST );?>
@@ -132,14 +147,36 @@ function tcp_get_value( $id, $echo = true ) {
 	<tr valign="top">
 	<th scope="row"><label for="city"><?php _e( 'City', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
+	<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+	$cities = apply_filters( 'tcp_address_editor_load_cities', $cities );
+	if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
+		<select id="city_id" name="city_id">
+		<?php foreach( $cities as $id => $city ) : ?>
+			<option value="<?php echo $id;?>" <?php selected( $id, tcp_get_value( 'city_id', false ) );?>><?php echo $city['name'];?></option>
+		<?php endforeach;?>
+		</select>
+		<?php tcp_show_error_msg( $error_address, 'city_id' );?>
+	<?php else : ?>
 		<input type="text" id="city" name="city" value="<?php tcp_get_value( 'city' );?>" size="20" maxlength="50" />
-		<?php tcp_show_error_msg( $error_address, 'city' );?></td>
+		<?php tcp_show_error_msg( $error_address, 'city' );?>
+	<?php endif;?>
+	</td>
 	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="region"><?php _e( 'Region', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
+	<?php if ( is_array( $regions ) && count( $regions ) > 0 ) : ?>
+		<select id="region_id" name="region_id">
+		<?php foreach( $regions as $id => $region ) : ?>
+			<option value="<?php echo $id;?>" <?php selected( $id, tcp_get_value( 'region_id', false ) );?>><?php echo $region['name'];?></option>
+		<?php endforeach;?>
+		</select>
+		<?php tcp_show_error_msg( $error_address, 'region_id' );?>
+	<?php else : ?>
 		<input type="text" id="region" name="region" value="<?php tcp_get_value( 'region' );?>" size="20" maxlength="50" />
-		<?php tcp_show_error_msg( $error_address, 'region' );?></td>
+		<?php tcp_show_error_msg( $error_address, 'region' );?>
+	<?php endif;?>
+	<td>
 	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="postcode"><?php _e( 'Postal code', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
@@ -152,8 +189,13 @@ function tcp_get_value( $id, $echo = true ) {
 	<td>
 		<select id="country_id" name="country_id">
 		<?php $countries = Countries::getAll();
-		foreach($countries as $country) :?>
-			<option value="<?php echo $country->iso;?>" <?php selected( $country->iso, tcp_get_value( 'country_id', false ) )?>><?php echo $country->name;?></option>
+		$country_id = tcp_get_value( 'country_id', false );
+		if ( $country_id == '' ) {
+			global $thecartpress;
+			$country_id = $thecartpress->settings['country'];
+		}
+		foreach($countries as $item) :?>
+			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_id )?>><?php echo $item->name;?></option>
 		<?php endforeach;?>
 		</select>
 		<?php tcp_show_error_msg( $error_address, 'country_id' );?></td>
@@ -179,7 +221,7 @@ function tcp_get_value( $id, $echo = true ) {
 	<tr valign="top">
 	<th scope="row"><label for="email"><?php _e( 'eMail', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
-		<input type="text" id="email" name="email" value="<?php tcp_get_value( 'email' );?>" size="15" maxlength="20" />
+		<input type="text" id="email" name="email" value="<?php tcp_get_value( 'email' );?>" size="15" maxlength="50" />
 		<?php tcp_show_error_msg( $error_address, 'email' );?></td>
 	</tr>
 	<tr valign="top">

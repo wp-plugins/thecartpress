@@ -255,7 +255,24 @@ p.login-lostpassword {
 .checkout_subtotal tr{
 }
 
-
+/* Checkout resume */
+div#shipping_info {
+	width: 45%;
+	float: left;
+}
+div#billing_info {
+	width: 45%;
+	float: left;
+}
+div#shipping_info h3,
+div#billing_info h3{
+	margin-bottom:6px;
+	padding-right: 10px;	
+}
+#content .tcp_payment_area table.widefat {
+	clear: both;
+	margin-top:20px;
+}
 
 /* ***Float containers fix*** */ 
 clearfix:after, .identify_layer_info:after {
