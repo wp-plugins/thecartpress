@@ -163,8 +163,8 @@ This plugin is released under a GPL license.
 * New templates functions: tcp_number_format and tcp_input_number
 * Checkout improvments (hooks, other costs, validation) (thanks to the community)
 * Added more useful hooks for plugin development
-* New field in Payment and Shipping plugins: Active/Not active
-* TheCartPress Payment and Shipping plugins editor: new column to see active/inactive plugins
+* New field in Payment and Shipping methods: Active/Not active
+* TheCartPress Payment and Shipping methods editor: new column to see active/inactive methods
 * Send separate emails to customer and to merchant and when the pay has been done (thanks to the community)
 * $thecartpress object available for plugin development
 * Checkout page is now child of Shopping cart page
