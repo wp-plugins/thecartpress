@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file is part of TheCartPress.
  * 
@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class FlatRate extends TCP_Plugin {
+class FlatRateShipping extends TCP_Plugin {
 
 	function getTitle() {
 		return 'FlatRate';
@@ -26,9 +26,10 @@ class FlatRate extends TCP_Plugin {
 		return 'Calculate the shipping cost by a flat or percentual formula.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+		global $thecartpress;
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'Flat rate. The cost of the service is ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
+		return __( 'Flat rate. The cost of the service is ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
 	}
 
 	function showEditFields( $data ) {?>

@@ -278,7 +278,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			$folder = STYLESHEETPATH;
 			if ( $handle = opendir( $folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 				if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?echo $file; ?></option>
+					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?php echo $file; ?></option>
 				<?php 
 					$files[] = $file;
 				endif;?>
@@ -288,7 +288,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			if ( STYLESHEETPATH != $folder )
 				if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?echo $file; ?></option>
+						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
 					<?php endif;?>
 				<?php endwhile; closedir( $handle );?>
 			</select>
@@ -300,7 +300,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 	</div>
 	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
-			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
 		</p>
 		<p>

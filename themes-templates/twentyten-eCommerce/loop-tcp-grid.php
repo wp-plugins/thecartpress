@@ -77,7 +77,7 @@ while ( have_posts() ) : the_post();
 		$column = $number_of_columns;
 	}
 ?>
-<td id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<td id="td-post-<?php the_ID(); ?>" <?php post_class(); ?>>
 <?php
 	$column--;
 ?>

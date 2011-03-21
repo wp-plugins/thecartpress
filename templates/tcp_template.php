@@ -17,8 +17,9 @@
  */
 
 function tcp_the_currency( $echo = true ) {
-	$settings = get_option( 'tcp_settings' );
-	$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
+	global $thecartpress;
+	$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
+	$currency = apply_filters( 'tcp_the_currency', $currency );
 	if ( $echo )
 		echo $currency;
 	else
@@ -26,7 +27,26 @@ function tcp_the_currency( $echo = true ) {
 }
 
 function tcp_get_the_currency() {
-	tcp_the_currency( false );
+	return tcp_the_currency( false );
+}
+
+function tcp_get_the_currency_iso() {
+	return tcp_the_currency_iso( false );
+}
+
+function tcp_the_currency_iso( $echo = true ) {
+	global $thecartpress;
+	$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
+	$currency = apply_filters( 'tcp_the_currency_iso', $currency );
+	if ( $echo )
+		echo $currency;
+	else
+		return $currency;
+}
+
+function tcp_get_default_currency(  ) {
+	global $thecartpress;
+	return isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : '';
 }
 
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
@@ -38,7 +58,9 @@ function tcp_the_order_panel() {
 }
 
 function tcp_the_price( $before = '', $after = '', $echo = true ) {
-	$price = tcp_the_meta( 'tcp_price', $before, $after, false );
+	//$price = tcp_the_meta( 'tcp_price', $before, $after, false );
+	$price = tcp_number_format( tcp_get_the_price() );
+	$price = $before . $price . $after;
 	$price = apply_filters( 'tcp_the_price', $price );
 	if ( $echo )
 		echo $price;
@@ -77,26 +99,23 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 			$max = $min;
 			foreach( $products as $product ) {
 				$price = (float)tcp_get_the_price ( $product->id_to );
-				if ( $price < $min ) $min = $price;
-				if ( $price > $max ) $max = $price;
+				if ( $price < $min ) $min = tcp_number_format( $price );
+				if ( $price > $max ) $max = tcp_number_format( $price );
 			}
 			if ( $min != $max ) {
-				$price = $min . __( ' to ', 'tcp' ) . $max;
-				$price = apply_filters( 'tcp_get_the_price_label', $price );
-				return $price;
+				$price = tcp_number_format( $min ) . __( ' to ', 'tcp' ) . tcp_number_format( $max );
+				return apply_filters( 'tcp_get_the_price_label', $price );
 			} else {
-				$price = apply_filters( 'tcp_get_the_price_label', $min );
-				return $price;
+				$price = tcp_number_format( $min );
 			}
 		} else {
-			$price = apply_filters( 'tcp_get_the_price_label', 0 );
-			return 0;
+			$price = 0;
 		}
 	} else {
-		$price = tcp_get_the_price( $post_id );
-		$price = apply_filters( 'tcp_get_the_price_label', $price );
-		return $price;
+		$price = tcp_number_format( tcp_get_the_price( $post_id ) );
 	}
+	$price = apply_filters( 'tcp_get_the_price_label', $price );
+	return $price;
 }
 
 function tcp_the_tax_id( $before = '', $after = '', $echo = true ) {
@@ -115,8 +134,9 @@ function tcp_get_the_tax_id( $post_id = 0 ) {
 }
 
 function tcp_the_tax( $before = '', $after = '', $echo = true ) {
-	$tax = tcp_the_meta( 'tcp_tax', $before, $after, false );
-	$tax = apply_filters( 'tcp_the_tax', $tax );
+	$tax = tcp_number_format( tcp_get_the_tax() );
+	$tax = $before . $tax . $after;
+	$tax = apply_filters( 'tcp_the_weight', $tax );
 	if ( $echo )
 		echo $tax;
 	else
@@ -124,7 +144,7 @@ function tcp_the_tax( $before = '', $after = '', $echo = true ) {
 }
 
 function tcp_get_the_tax( $post_id = 0 ) {
-	$tax = tcp_get_the_meta( 'tcp_tax', $post_id );
+	$tax = (float)tcp_get_the_meta( 'tcp_tax', $post_id );
 	$tax = apply_filters( 'tcp_get_the_tax', $tax );
 	return $tax;
 }
@@ -147,6 +167,7 @@ function tcp_get_the_tax_label( $post_id = 0 ) {
 function tcp_the_price_tax( $before = '', $after = '', $echo = true ) {
 	$price = tcp_get_the_price_tax();
 	if ( strlen( $price ) == 0 ) return;
+	else $price = tcp_number_format( $price );
 	$price = $before . $price . $after;
 	$price = apply_filters( 'tcp_the_price_tax', $price );
 	if ( $echo )
@@ -171,12 +192,20 @@ function tcp_get_the_product_type( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_type', $post_id );
 }
 
-function tcp_the_weight( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_weight', $before, $after, $echo );
+function tcp_get_the_weight( $post_id = 0 ) {
+	$weight = (float)tcp_get_the_meta( 'tcp_weight', $post_id );
+	$weight = apply_filters( 'tcp_get_the_weight', $weight );
+	return $weight;
 }
 
-function tcp_get_the_weight( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_weight', $post_id );
+function tcp_the_weight( $before = '', $after = '', $echo = true ) {
+	$weight = tcp_number_format( tcp_get_the_weight() );
+	$weight = $before . $weight . $after;
+	$weight = apply_filters( 'tcp_the_weight', $price );
+	if ( $echo )
+		echo $weight;
+	else
+		return $weight;
 }
 
 function tcp_get_the_order( $post_id = 0 ) {
@@ -184,50 +213,56 @@ function tcp_get_the_order( $post_id = 0 ) {
 }
 
 function tcp_the_sku( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_sku', $before, $after, $echo );
+	$sku = tcp_the_meta( 'tcp_sku', $before, $after, false );
+	$sku = apply_filters( 'tcp_the_sku', $sku );
+	if ( $echo )
+		echo $sku;
+	else
+		return $sku;
 }
 
 function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	if ( $option_2_id > 0) {
 		$sku = tcp_get_the_meta( 'tcp_sku', $option_2_id );
-		if ( strlen( $sku ) > 0 )
-			return $sku;
-		else
+		if ( strlen( $sku ) == 0 )
 			return tcp_get_the_sku( $post_id, $option_1_id );
 	} elseif ( $option_1_id > 0) {
 		$sku = tcp_get_the_meta( 'tcp_sku', $option_1_id );
-		if ( strlen( $sku ) > 0 )
-			return $sku;
-		else
+		if ( strlen( $sku ) == 0 )
 			return tcp_get_the_sku( $post_id );
 	} else
-		return tcp_get_the_meta( 'tcp_sku', $post_id );
+		$sku = tcp_get_the_meta( 'tcp_sku', $post_id );
+	$sku = apply_filters( 'tcp_get_the_sku', $sku, $post_id, $option_1_id, $option_2_id );
+	return $sku;
 }
 
 function tcp_the_stock( $before = '', $after = '', $echo = true ) {
-	return tcp_the_meta( 'tcp_stock', $before, $after, $echo );
+	$stock = tcp_the_meta( 'tcp_stock', $before, $after, false );
+	$stock = apply_filters( 'tcp_the_stock', $stock );
+	if ( $echo )
+		echo $stock;
+	else
+		return $stock;
 }
 
 function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	if ( $option_2_id > 0) {
 		$stock = tcp_get_the_meta( 'tcp_stock', $option_2_id );
 		if ( $stock == -1 )
-			return tcp_get_the_stock( $post_id, $option_1_id );
-		else
-			return $stock;
+			$stock = tcp_get_the_stock( $post_id, $option_1_id );
 	} elseif ( $option_1_id > 0) {
 		$stock = tcp_get_the_meta( 'tcp_stock', $option_1_id );
 		if ( $stock == -1 )
-			return tcp_get_the_stock( $post_id );
-		else
-			return $stock;
+			$stock = tcp_get_the_stock( $post_id );
 	} else {
 		$stock = tcp_get_the_meta( 'tcp_stock', $post_id );
 		if ( strlen( $stock ) > 0 )
-			return (int)$stock;
+			$stock = (int)$stock;
 		else
-			return -1;
+			$stock = -1;
 	}
+	$stock = apply_filters( 'tcp_get_the_stock', $stock, $post_id );
+	return $stock;
 }
 
 function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock = -1 ) {
@@ -277,6 +312,7 @@ function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
 	$meta_value = tcp_get_the_meta( $meta_key );
 	if ( strlen( $meta_value ) == 0 ) return '';
 	$meta_value = $before . $meta_value . $after;
+	$meta_value = apply_filters( 'tcp_the_meta', $meta_value, $meta_key );
 	if ( $echo )
 		echo $meta_value;
 	else
@@ -290,6 +326,7 @@ function tcp_get_the_meta( $meta_key, $post_id = 0 ) {
 		$default_id = tcp_get_default_id( $post_id );
 		if ( $default_id != $post_id) $meta_value = get_post_meta( $default_id, $meta_key, true );
 	}
+	$meta_value = apply_filters( 'tcp_get_the_meta', $meta_value, $meta_key, $post_id );
 	return $meta_value;
 }
 
@@ -383,14 +420,35 @@ function tcp_t( $context, $name, $value ) {
 //to select in a multiple select control
 function tcp_selected_multiple( $values, $value, $echo = true ) {
 	if ( in_array( $value, $values ) )
-	if ( $echo )
-		echo ' selected="true"';
-	else
-		return ' selected="true"';
+		if ( $echo )
+			echo ' selected="true"';
+		else
+			return ' selected="true"';
 }
 
 function tcp_get_the_parent( $post_id, $rel_type = 'GROUPED' ) {
 	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
 	return RelEntities::getParent( $post_id, $rel_type );
+}
+
+/**
+ * Formats a float number to a string number to show in the screen
+ * @since 1.0.7
+ */
+function tcp_number_format( $number ) {
+	global $thecartpress;
+	return number_format( $number, 2,  $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
+}
+
+/**
+ * Converts and typed number into a float number
+ * @since 1.0.7
+ */
+function tcp_input_number( $input ) {
+	global $thecartpress;
+
+	$aux = str_replace( $thecartpress->settings['thousands_separator'], '', $input );
+	$aux = str_replace( $thecartpress->settings['decimal_point'], '.', $aux );
+	return (float)$aux;
 }
 ?>

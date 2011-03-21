@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file is part of TheCartPress.
  * 
@@ -56,9 +56,10 @@ class Remboursement extends TCP_Plugin {
 		return $data;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+		global $thecartpress;
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'Cash on delivery. The cost of the service is ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
+		return __( 'Cash on delivery. The cost of the service is ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
@@ -72,13 +73,18 @@ class Remboursement extends TCP_Plugin {
 		}
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+		global $thecartpress;
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );?>
+		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
+		$params = array(
+			'tcp_checkout'	=> 'ok',
+			'order_id'		=> $order_id,
+		);?>
 		<p><?php echo $data['notice'];?></p>
-		<p><?php printf( __( 'The cost of the service is %s %s' , 'tcp'), number_format( $cost, 2), $currency );?></p>
+		<p><?php printf( __( 'The cost of the service is %s %s' , 'tcp'), tcp_number_format( $cost ), tcp_get_the_currency() );?></p>
 		<p>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( 'tcp_checkout', 'ok', get_permalink() );?>';"/>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] );

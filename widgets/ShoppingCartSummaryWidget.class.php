@@ -16,70 +16,48 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ResumenShoppingCartWidget extends WP_Widget {
-	function ResumenShoppingCartWidget() {
+class ShoppingCartSummaryWidget extends WP_Widget {
+	function ShoppingCartSummaryWidget() {
 		$widget = array(
-			'classname'		=> 'resumenshoppingcart',
-			'description'	=> __( 'Use this widget to add a resume of the shopping cart', 'tcp' ),
+			'classname'		=> 'shoppingcartsummary',
+			'description'	=> __( 'Use this widget to add a Shopping cart summary', 'tcp' ),
 		);
 		$control = array(
 			'width'		=> 300,
-			'id_base'	=> 'resumenshoppingcart-widget',
+			'id_base'	=> 'shoppingcartsummary-widget',
 		);
-		$this->WP_Widget( 'resumenshoppingcart-widget', 'TCP Resume shopping cart', $widget, $control );
+		$this->WP_Widget( 'shoppingcartsummary-widget', 'TCP Shopping Cart Summary', $widget, $control );
 	}
 
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
 		echo $before_widget;
-		if ( $title )	echo $before_title, $title, $after_title;
-		$settings = get_option( 'tcp_settings' );
-		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
-		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
-		$shoppingCart = TheCartPress::getShoppingCart();?>
-		<ul class="tcp_shopping_cart_resume">
-			<li><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' );?>:</span>&nbsp;<?php echo number_format( $shoppingCart->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
-			<li><span class="tcp_resumen_count"><?php _e( 'Nº products:', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getCount();?></li>
-		<?php if ( $stock_management && isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false ) :
-			if ( ! $shoppingCart->isThereStock() ) :?>
-			<li><span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) );?></span></li>
-		<?php endif;
-		endif;?>		
-		<?php if ( isset( $instance['see_weight'] ) ? $instance['see_weight'] : false ) :?>
-			<li><span class="tcp_resumen_weight"><?php _e( 'Weigth', 'tcp' );?>:</span>&nbsp;<?php echo $shoppingCart->getWeight();?>&nbsp;<?php echo $currency;?></li>
-		<?php endif;?>
-		<?php if ( isset( $instance['see_shopping_cart'] ) ? $instance['see_shopping_cart'] : true ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'Shopping cart', 'tcp' );?></a></li>
-		<?php endif;?>
-		<?php if ( isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
-		<?php endif;?>
-		</ul>
-		<?php if ( isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : false ) :?>
-			<form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form>
-		<?php endif;?>
-		<?php echo $after_widget;
+		if ( $title ) echo $before_title, $title, $after_title;
+		tcp_get_shopping_cart_summary( $instance );
+		echo $after_widget;
 	}
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
-		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] ) ? true : false;
-		$instance['see_weight']			= isset( $new_instance['see_weight'] ) ? true : false;
-		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] ) ? true : false;
-		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] ) ? true : false;
-		$instance['see_checkout']		= isset( $new_instance['see_checkout'] ) ? true : false;
+		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] );
+		$instance['see_product_count']	= isset( $new_instance['see_product_count'] );
+		$instance['see_weight']			= isset( $new_instance['see_weight'] );
+		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] );
+		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] );
+		$instance['see_checkout']		= isset( $new_instance['see_checkout'] );
 		return $instance;
 	}
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'				=> __( 'Resume', 'tcp' ),
+			'title'				=> __( 'Shopping cart', 'tcp' ),
 			'see_weight'		=> true,
 			'see_delete_all'	=> true,
 		);
 		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
+		$see_product_count	= isset( $instance['see_product_count'] ) ? (bool)$instance['see_product_count'] : false;
 		$see_weight			= isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
 		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
@@ -89,6 +67,9 @@ class ResumenShoppingCartWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_product_count'); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e('See product count', 'tcp'); ?></label>
+		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_stock_notice'); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e('See stock notice', 'tcp'); ?></label>
 		<br />

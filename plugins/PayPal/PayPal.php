@@ -31,7 +31,7 @@ class PayPal extends TCP_Plugin {
 	function showEditFields( $data ) {?>
 		<tr valign="top">
 		<th scope="row">
-			<label for="business"><?php _e( 'Bussines id.', 'tcp' );?>:</label>
+			<label for="business"><?php _e( 'Paypal eMail', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="business" name="business" size="40" maxlength="50" value="<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" />
 		</td></tr>
@@ -43,11 +43,11 @@ class PayPal extends TCP_Plugin {
 		</td></tr><?php
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		return 'PayPal';
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $currency, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$business = $data['business'];
 		$test_mode = $data['test_mode'];
@@ -64,16 +64,16 @@ class PayPal extends TCP_Plugin {
 		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status );
 		$p->add_field( 'item_name', 'Shopping cart ' . get_bloginfo( 'name' ) );
 		$p->add_field( 'amount', number_format( $paymentAmount, 2, '.', '' ) );
-		$p->add_field( 'currency_code', $currency );
-		
-		$p->add_field('first_name', 'John');
-		$p->add_field('last_name', 'Doe');
-		$p->add_field('address1', '345 Lark Ave');
-		$p->add_field('city', 'San Jose');
-		$p->add_field('state', 'CA');
-		$p->add_field('zip', '95121');
-		$p->add_field('country', 'US');
-
+		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
+		require_once( dirname( dirname( dirname( __FILE__ ) ) ) .'/daos/Orders.class.php' );
+		$order = Orders::get( $order_id );
+		$p->add_field( 'first_name', $order->shipping_firstname );
+		$p->add_field( 'last_name', $order->shipping_lastname );
+		$p->add_field( 'address1', $order->shipping_street );
+		$p->add_field( 'city', $order->shipping_city );
+		$p->add_field( 'state', $order->shipping_region_id );
+		$p->add_field( 'zip', $order->shipping_postcode );
+		$p->add_field( 'country', $order->shipping_country_id );
 		echo $p->submit_paypal_post();
 	}
 

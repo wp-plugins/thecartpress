@@ -27,7 +27,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
-	
+	$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
 	if ( isset( $_REQUEST['all_countries'] ) ) {
 		$plugin_data[$instance]['all_countries'] = $_REQUEST['all_countries'];
 		$plugin_data[$instance]['countries'] = array();
@@ -38,12 +38,14 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data[$instance]['new_status'] = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : Orders::$ORDER_PENDING;
 	$plugin = tcp_get_plugin( $plugin_id );
 	$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance] );
+	$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $instance );
 	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Instance saved', 'tcp' );?>
 	</p></div><?php
 } elseif ( isset( $_REQUEST['tcp_plugin_delete'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
+	do_action( 'tcp_plugin_edit_delete', $plugin_id );
 	unset( $plugin_data[$instance] );
 	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );?>
 	<div id="message" class="updated"><p>
@@ -68,7 +70,7 @@ $instance_href = $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plug
 if ( is_array( $plugin_data ) ) :
 	foreach( $plugin_data as $instance_id => $instance_data ) :
 		if ( $instance_id == $instance ) : ?>
-			<span><?php _e( 'instance', 'tcp' );?> <?php echo $instance_id;?></span>&nbsp;|&nbsp;
+			<span><?php printf( __( 'Instance %d', 'tcp' ), $instance_id );?></span>&nbsp;|&nbsp;
 		<?php else: ?>
 			<a href="<?php echo $instance_href, $instance_id;?>"><?php _e( 'instance', 'tcp' );?> <?php echo $instance_id;?></a>&nbsp;|&nbsp;
 		<?php endif;?>
@@ -81,7 +83,6 @@ if ( is_array( $plugin_data ) ) :
 	$data = isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : array();
 } else
 	$data = array();
-
 $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING;
 ?>
 <form method="post">
@@ -92,7 +93,15 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	<tbody>
 	<tr valign="top">
 	<th scope="row">
-		<label for="new_status"><?php _e( 'Status', 'tcp' );?></label>
+		<label for="active"><?php _e( 'Active', 'tcp' );?></label>
+	</th>
+	<td>
+		<input type="checkbox" name="active" id="active" <?php checked( isset( $data['active'] ) ? $data['active'] : false, true );?> value="yes" />
+	</td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'New status', 'tcp' );?></label>
 	</th>
 	<td>
 		<select class="postform" id="new_status" name="new_status">
@@ -101,11 +110,12 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<option value="<?php echo Orders::$ORDER_COMPLETED;?>"<?php selected( Orders::$ORDER_COMPLETED, $new_status );?>><?php _e( 'completed', 'tcp' );?></option>
 			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $new_status );?>><?php _e( 'cancelled', 'tcp' );?></option>
 			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $new_status );?>><?php _e( 'suspended', 'tcp' );?></option>
-		</select> <span class="description"><?php _e( 'It is only used by payment plugins', 'tcp' );?></span>
+		</select>
+		<span class="description"><?php _e( 'This value is only used by payment plugins. If the payment is right, the order status will be the selected', 'tcp' );?></span>
 	</td></tr>
 	<tr valign="top">
 	<th scope="row">
-		<label for="all_countries"><?php _e( 'All countries', 'tcp' );?>:</label>
+		<label for="all_countries"><?php _e( 'Apply the plugin to all countries', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<input type="checkbox" name="all_countries" id="all_countries" <?php checked( isset( $data['all_countries'] ) ? $data['all_countries'] : '', 'yes' );?> value="yes"
@@ -116,7 +126,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		if ( $all == 'yes' ) echo 'style="display:none;"';
 		?>>
 	<th scope="row">
-		<label for="countries"><?php _e( 'select countries', 'tcp' );?>:</label>
+		<label for="countries"><?php _e( 'Apply the plugin only to selected ones', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<?php $countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
@@ -138,7 +148,9 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
 		</div>
-	</td></tr>
+	</td>
+	</tr>
+	<?php do_action( 'tcp_plugin_edit_fields', $data );?>
 	<?php $plugin->showEditFields( $data );?>
 	</tbody></table>
 	<p class="submit">

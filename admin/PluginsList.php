@@ -23,7 +23,7 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 //if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) return;?>
 
 <div class="wrap">
-<h2><?php echo __( 'TheCartPress payment/shipping plugins', 'tcp' );?></h2>
+<h2><?php echo __( 'TheCartPress Payment and Shipping methods', 'tcp' );?></h2>
 <ul class="subsubsub"></ul>
 <div class="clear"></div>
 
@@ -47,6 +47,7 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Plugin', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
+	<th scope="col" class="manage-column"><?php _e( 'Instances', 'tcp' );?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
 </thead>
@@ -55,6 +56,7 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Plugin', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
+	<th scope="col" class="manage-column"><?php _e( 'Instances', 'tcp' );?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
 </tfoot>
@@ -70,10 +72,23 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 	global $tcp_payment_plugins;
 	$plugins = $tcp_shipping_plugins + $tcp_payment_plugins;
 }
-foreach( $plugins as $id => $plugin ) :?>
-	<tr>
+foreach( $plugins as $id => $plugin ) :
+	$tr_class = '';
+	$data = tcp_get_plugin_data( $id );
+	if ( is_array( $data ) && count( $data ) > 0 ) {
+		$n_active = 0;
+		foreach( $data as $instances )
+			if ( $instances['active'] ) $n_active++;
+		$out = sprintf( __( 'N<sup>o</sup> of instances: %d, actives: %d ', 'tcp') ,  count( $data ), $n_active );
+		if ( $n_active > 0 )
+			$tr_class = 'class="tcp_active_plugin"';
+	} else {
+		$out = __( 'Not in use', 'tcp' );
+	}?>
+	<tr <?php echo $tr_class;?>>
 		<td><?php echo $plugin->getTitle();?></td>
 		<td><?php echo $plugin->getDescription();?></td>
+		<td><?php echo $out;?></td>
 		<td style="width: 20%;">
 		<a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>"><?php _e( 'edit', 'tcp' );?></a>
 		</td>

@@ -48,6 +48,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			'status'		=> $order->status,
 			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount,
 			'code_tracking'	=> $order->code_tracking,
+			'payment_name'	=> $order->payment_name,
 			'payment_method'=> $order->payment_method,
 		);
 	}?>
@@ -109,6 +110,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 				'date'			=> $order['date'],
 				'user'			=> $order['user'],
 				'status'		=> $order['status'],
+				'payment_name'	=> $order['payment_name'],
 				'payment_method'=> $order['payment_method'],
 				'code_tracking' => $order['code_tracking'],
 				'total'			=> $order['total'],
@@ -126,8 +128,8 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			<?php echo $order['status'];?>
 			<?php do_action( 'tcp_admin_order_list', $order['order_id'] );?>
 		</td>
-		<td><?php echo $order['payment_method'];?></td>
-		<td><?php echo $order['total'];?></td>
+		<td><?php if ( strlen( $order['payment_name'] ) > 0 ) echo $order['payment_name']; else echo $order['payment_method'];?></td>
+		<td><?php echo tcp_number_format( $order['total'] );?></td>
 		<td style="width: 20%;">
 		<?php if ( current_user_can( 'tcp_edit_orders' ) ) : ?>
 			<div><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order['order_id'];?>&status=<?php echo $status;?>"><?php _e( 'edit/view', 'tcp' );?> | <a href="#" onclick="jQuery('.quick_edit').hide();jQuery('#quick_<?php echo $order['order_id'];?>').show();"><?php _e( 'quick edit', 'tcp' );?></a></div>

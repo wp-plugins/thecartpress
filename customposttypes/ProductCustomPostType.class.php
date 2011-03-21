@@ -27,15 +27,13 @@ class ProductCustomPostType {
 	public static $PRODUCT_TAG		= 'tcp_product_tag';
 	public static $SUPPLIER_TAG		= 'tcp_product_supplier'; //_tag';
 	
-	private $currency = '';
-	
 	function __construct() {
-		$settings = get_option( 'tcp_settings' );
+		global $thecartpress;
 		$labels = array(
 			'name'					=> _x( 'Products', 'post type general name' ),
 			'singular_name'			=> _x( 'Product', 'post type singular name' ),
-			'add_new'				=> _x( 'Add New Product', 'product' ),
-			'add_new_item'			=> __( 'Add New Product', 'tcp' ),
+			'add_new'				=> _x( 'Add New', 'product' ),
+			'add_new_item'			=> __( 'Add New', 'tcp' ),
 			'edit_item'				=> __( 'Edit Product', 'tcp' ),
 			'new_item'				=> __( 'New Product', 'tcp' ),
 			'view_item'				=> __( 'View Product', 'tcp' ),
@@ -57,14 +55,14 @@ class ProductCustomPostType {
 			'query_var'			=> true,
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
 			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
-			'rewrite'			=> array( 'slug' => $settings['product_rewrite'] ),
+			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
 		);
 		register_post_type( ProductCustomPostType::$PRODUCT, $register );
 		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 		add_filter( 'manage_edit-' . ProductCustomPostType::$PRODUCT . '_columns', array( $this, 'customColumnsDefinition' ) );
 		$labels = array(
-			'name'				=> _x( 'Categories of Prods.', 'taxonomy general name' ),
-			'singular_name'		=> _x( 'Category of Prods.', 'taxonomy singular name' ),
+			'name'				=> _x( 'Categories', 'taxonomy general name' ),
+			'singular_name'		=> _x( 'Category', 'taxonomy singular name' ),
 			'search_items'		=> __( 'Search Categories', 'tcp' ),
 			'all_items'			=> __( 'All Categories', 'tcp' ),
 			'parent_item'		=> __( 'Parent Category', 'tcp' ),
@@ -79,20 +77,20 @@ class ProductCustomPostType {
 			'hierarchical'	=> true,
 			'query_var'		=> true, //'cat_prods',
 			'label'			=> __( 'Category', 'tcp' ),
-			'rewrite'		=> array('slug' => isset( $settings['category_rewrite'] ) ? $settings['category_rewrite'] : 'product_category' ), //false
+			'rewrite'		=> array('slug' => isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category' ), //false
 		);
 		register_taxonomy( ProductCustomPostType::$PRODUCT_CATEGORY, ProductCustomPostType::$PRODUCT, $register );
 		register_taxonomy( ProductCustomPostType::$PRODUCT_TAG, ProductCustomPostType::$PRODUCT, array(
 			'public'		=> true,
 			'hierarchical'	=> false,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => isset( $settings['tag_rewrite'] ) ? $settings['tag_rewrite'] : 'product_tag' ), //false
-			'label'			=> __( 'Tags of Products', 'tcp' ),
+			'rewrite'		=> array('slug' => isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag' ), //false
+			'label'			=> __( 'Products Tags', 'tcp' ),
 		) );
 		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
 			'hierarchical'	=> true,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => isset( $settings['supplier_rewrite'] ) ? $settings['supplier_rewrite'] : 'product_supplier' ), //false
+			'rewrite'		=> array('slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
 			//'label'		=> __('Suppliers', 'tcp' ),
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name' ),
@@ -107,8 +105,6 @@ class ProductCustomPostType {
 		) );
 
 		if ( is_admin() ) {
-			$settings = get_option( 'tcp_settings' );
-			$this->currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
 			add_action( 'manage_posts_custom_column', array( $this, 'managePostCustomColumns' ) );
 			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
 			add_filter( 'parse_query', array( $this, 'parseQuery' ) ); //TODO 3.1
@@ -155,10 +151,12 @@ class ProductCustomPostType {
 	function managePostCustomColumns( $column_name ) {
 		global $post;
 		if ( $post->post_type == ProductCustomPostType::$PRODUCT ) 
-			if ( 'ID' == $column_name )
+			if ( 'ID' == $column_name ) {
 				echo $post->ID;
-			elseif ('price' == $column_name) 
-				echo tcp_get_the_product_type( $post->ID ) . ' - ' . tcp_get_the_price( $post->ID ) . '&nbsp;' . $this->currency;
+			} elseif ('price' == $column_name) {
+				global $thecartpress;
+				echo tcp_get_the_product_type( $post->ID ) . ' - ' . tcp_get_the_price( $post->ID ) . '&nbsp;' . $thecartpress->settings['currency'];
+			}
 	}
 
 	/**
@@ -213,8 +211,8 @@ class ProductCustomPostType {
 			);
 		}
 		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == ProductCustomPostType::$PRODUCT ) {
-			$settings = get_option( 'tcp_settings' );
-			$hide_visible = isset( $settings['hide_visibles'] ) ? (bool)$settings['hide_visibles'] : true;
+			global $thecartpress;
+			$hide_visible = isset( $thecartpress->settings['hide_visibles'] ) ? (bool)$thecartpress->settings['hide_visibles'] : true;
 			if ( $hide_visible )
 				$query->query_vars['meta_query'][] = array(
 					'key'		=> 'tcp_is_visible',

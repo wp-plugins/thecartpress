@@ -31,12 +31,14 @@ class ShoppingCartWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract( $args );
-		$settings = get_option( 'tcp_settings' );
-		$currency = isset( $settings['currency'] ) ? $settings['currency'] : 'EUR';
-		$stock_management = isset( $settings['stock_management'] ) ? $settings['stock_management'] : false;
+		global $thecartpress;
+		$currency				= tcp_get_the_currency();
+		$unit_weight			= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
+		$stock_management		= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
+		
 		echo '<ul class="tcp_shopping_cart">';
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
@@ -56,7 +58,7 @@ class ShoppingCartWidget extends WP_Widget {
 				<input type="hidden" name="tcp_unit_weight" id="tcp_unit_weight" value="<?php echo $item->getWeight();?>" />
 				<ul>
 					<li><span class="tcp_name"><?php echo $this->getProductTitle( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
-					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getUnitPrice(), 2 );?>&nbsp;<?php echo $currency;?></span><span class="tcp_tax_label">(<?php tcp_the_tax_label();?>)</span></li>
+					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_number_format( $item->getUnitPrice() );?>&nbsp;<?php echo $currency;?></span><span class="tcp_tax_label">(<?php tcp_the_tax_label();?>)</span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li>
 						<?php if ( $see_modify_item ) :?>
@@ -73,10 +75,13 @@ class ShoppingCartWidget extends WP_Widget {
 						endif?>
 					</li>
 					<?php endif;?>
-					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo number_format( $item->getTotal(), 2 );?>&nbsp;<?php echo $currency;?></li>
+					<?php if ( $item->getDiscount() > 0 ) : ?>
+					<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' );?>:&nbsp;<?php echo tcp_number_format( $item->getDiscount() );?>&nbsp;<?php echo $currency;?></span></li>
+					<?php endif;?>
+					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo tcp_number_format( $item->getTotal() );?>&nbsp;<?php echo $currency;?></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-					<?php if ( $see_weight ) :?>
-						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo $item->getWeight();?>&nbsp;</li>
+					<?php if ( $see_weight && $item->getWeight() > 0 ) :?>
+						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() );?>&nbsp;<?php echo $unit_weight;?></li>
 					<?php endif;?>
 				<?php endif;?>
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item );?>
@@ -87,15 +92,16 @@ class ShoppingCartWidget extends WP_Widget {
 			</form></li>
 		<?php endforeach;?>
 		<?php if ( $see_shopping_cart ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
+			<li><a href="<?php echo get_permalink( get_option( 'tcp_shopping_cart_page_id' ) );?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
 		<?php endif;?>
 		<?php if ( $see_checkout ) :?>
-			<li><a href="<?echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'checkout', 'tcp' );?></a></li>
+			<li><a href="<?php echo get_permalink( get_option( 'tcp_checkout_page_id' ) );?>"><?php _e( 'checkout', 'tcp' );?></a></li>
 		<?php endif;?>
 		<?php if ( $see_delete_all ) :?>
 			<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete shopping cart', 'tcp' );?>"/></form></li>
 		<?php endif;?>
 		</ul>
+		
 		<?php echo $after_widget;
 	}
 

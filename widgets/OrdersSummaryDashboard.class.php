@@ -18,7 +18,7 @@
 
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 
-class OrdersResumeDashboard {
+class OrdersSummaryDashboard {
 
 	function show() {
 		if ( current_user_can( 'manage_options' ) ) {

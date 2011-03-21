@@ -38,7 +38,7 @@ class Orders {
 		  `order_currency_code`		char(3)				NOT NULL,
 		  `shipping_amount`			decimal(13, 2)		NOT NULL default 0,
 		  `discount_amount`			decimal(13, 2)		NOT NULL default 0,
-		  `payment_name`			varchar(20)			NOT NULL,
+		  `payment_name`			varchar(255)		NOT NULL,
   		  `payment_method`			varchar(100)		NOT NULL default \'\',
 		  `payment_amount`			decimal(13, 2)		NOT NULL default 0,
 		  `comment`					varchar(250)		NOT NULL,
@@ -49,9 +49,9 @@ class Orders {
 		  `shipping_company`		varchar(50)			NOT NULL,
 		  `shipping_street`			varchar(100)		NOT NULL,
 		  `shipping_city`			varchar(100)		NOT NULL,
-		  `shipping_city_id`		int(11) unsigned	NOT NULL default 0,
+		  `shipping_city_id`		char(4)				NOT NULL DEFAULT \'\',
 		  `shipping_region`			varchar(100)		NOT NULL,
-		  `shipping_region_id`		int(11)	unsigned	NOT NULL default 0,
+		  `shipping_region_id`		char(2)				NOT NULL DEFAULT \'\',
 		  `shipping_postcode`		char(6)				NOT NULL,
  		  `shipping_country`		varchar(50)			NOT NULL,
 		  `shipping_country_id`		char(2)				NOT NULL,
@@ -64,9 +64,9 @@ class Orders {
 		  `billing_company`			varchar(50)			NOT NULL,
 		  `billing_street`			varchar(100)		NOT NULL,
 		  `billing_city`			varchar(100)		NOT NULL default 0,
-		  `billing_city_id`			int(11)	unsigned	NOT NULL,
+		  `billing_city_id`			char(4)				NOT NULL DEFAULT \'\',
 		  `billing_region`			varchar(100)		NOT NULL,
-		  `billing_region_id`		int(11)	unsigned	NOT NULL default 0,
+		  `billing_region_id`		char(2)				NOT NULL DEFAULT \'\',
 		  `billing_postcode`		char(6)				NOT NULL,
  		  `billing_country`			varchar(50)			NOT NULL,
 		  `billing_country_id`		char(2)				NOT NULL,
@@ -143,8 +143,8 @@ class Orders {
 			'billing_fax'			=> $order['billing_fax'],
 			'billing_email'			=> $order['billing_email'],
 		), array('%s', '%d', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s',
+				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
+				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s')
 		);
 		return $wpdb->insert_id;
@@ -184,9 +184,9 @@ class Orders {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, status, post_id, price, tax,
-				qty_ordered, shipping_amount, payment_method, payment_amount,
-				order_currency_code, code_tracking, is_downloadable,
-				max_downloads, expires_at
+				qty_ordered, shipping_amount, payment_name, payment_method,
+				payment_amount, order_currency_code, code_tracking,
+				is_downloadable, max_downloads, expires_at
 				from ' . $wpdb->prefix . 'tcp_orders o left join '.
 				$wpdb->prefix . 'tcp_orders_details od
 				on o.order_id = od.order_id';
@@ -298,7 +298,6 @@ class Orders {
 		$sql = 'update ' . $wpdb->prefix . 'tcp_orders_details set 
 			max_downloads = max_downloads - 1 where order_detail_id = %d';
 		$wpdb->query( $wpdb->prepare( $sql, $order_detail_id ) );
-
 	}
 }
 ?>

@@ -18,10 +18,13 @@
 
 $cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
 $added_stock = isset( $_REQUEST['added_stock'] ) ? (int)$_REQUEST['added_stock'] : 0;
+$pagination = isset( $_REQUEST['pagination'] ) ? (int)$_REQUEST['pagination'] : 1;
+
 if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	$args = array(
 		'post_type'				=> 'tcp_product',
 		'tcp_product_category'	=>  $cat_slug ,
+		'posts_per_page'		=> -1,
 	);
 	$args = apply_filters( 'tcp_update_stock_query_args', $args );
 	$query = new WP_query( $args );
@@ -77,11 +80,13 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 		$args = array(
 			'post_type'				=> 'tcp_product',
 			'tcp_product_category'	=>  $cat_slug ,
+			'posts_per_page'		=> -1,
 		);
 		$query = new WP_query( $args );
 		if ( $query->have_posts() ) :?>
 		<div>
 			<h3><?php _e( 'Updated products', 'tcp' );?></h3>
+
 			<span class="description"><?php _e( 'The eCommerce use the last level stock into options structure.', 'tcp' );?></span>
 			<table class="widefat fixed" cellspacing="0"><!-- No assigned -->
 			<thead>
@@ -118,7 +123,7 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 					}
 				}?>
 			<tr>
-				<td><?php echo $post->post_title;?></td>
+				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
 				<td><?php echo $stock;?> <?php _e( 'units', 'tcp' );?></td>
 				<td><input type="text" value="<?php echo $new_stock;?>" id="tcp_new_stock_<?php echo $post->ID;?>" name="tcp_new_stock_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' );?>
 				<input type="button" value="<?php _e( 'no stock', 'tcp' );?>" onclick="jQuery('#tcp_new_stock_<?php echo $post->ID;?>').val(-1);" class="button-secondary" /></td>

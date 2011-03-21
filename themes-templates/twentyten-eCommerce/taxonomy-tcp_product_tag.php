@@ -23,7 +23,7 @@ get_header(); ?>
 				<?php
                 /* Run the loop for the tag archive to output the products
                  */
-                 get_template_part( 'loop', 'products-grid' );
+                 get_template_part( 'loop', 'tcp-grid' );
                 ?>
 			</div><!-- #content -->
 		</div><!-- #container -->

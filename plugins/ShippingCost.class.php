@@ -31,9 +31,10 @@ class ShippingCost extends TCP_Plugin {
 		return __( 'Calculate the shipping cost using a table of weights ranges and zones.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>', 'tcp' );
 	}
 	
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart, $currency ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+		global $thecartpress;
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'The cost of Shipping service will be ', 'tcp' ) . number_format( $cost, 2 ) . '&nbsp;' . $currency;
+		return __( 'The cost of Shipping service will be ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
 	}
 
 	function showEditFields( $data ) {

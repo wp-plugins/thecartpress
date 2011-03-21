@@ -73,7 +73,7 @@ class CustomListWidget extends WP_Widget {
 							<?php printf( __( '<span class="%1$s">Posted in</span> %2$s', 'tcp' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?>
 						</span>
 						<span class="meta-sep">|</span>
-					<?php endif; ?>
+					<?php endif;?>
 					<?php
 						$tags_list = get_the_tag_list( '', ', ' );
 						if ( $tags_list ): ?>
@@ -95,18 +95,18 @@ class CustomListWidget extends WP_Widget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['limit']			= (int)$new_instance['limit'];
-		$instance['loop']			= $new_instance['loop'];
-		$instance['columns']		= (int)$new_instance['columns'];
-		$instance['see_title']		= $new_instance['see_title'] == 'yes';
-		$instance['see_image']		= $new_instance['see_image'] == 'yes';
-		$instance['image_size']		= $new_instance['image_size'] == 'yes';
-		$instance['see_content']	= $new_instance['see_content'] == 'yes';
-		$instance['see_excerpt']	= $new_instance['see_excerpt'] == 'yes';
-		$instance['see_author']		= $new_instance['see_author'] == 'yes';
-		$instance['see_meta_data']	= $new_instance['see_meta_data'] == 'yes';
-		$instance['see_price']		= $new_instance['see_price'] == 'yes';
-		$instance['see_buy_button']	= $new_instance['see_buy_button'] == 'yes';
+		$instance['limit']					= (int)$new_instance['limit'];
+		$instance['loop']					= $new_instance['loop'];
+		$instance['columns']				= (int)$new_instance['columns'];
+		$instance['see_title']				= $new_instance['see_title'] == 'yes';
+		$instance['see_image']				= $new_instance['see_image'] == 'yes';
+		$instance['image_size']				= $new_instance['image_size'];
+		$instance['see_content']			= $new_instance['see_content'] == 'yes';
+		$instance['see_excerpt']			= $new_instance['see_excerpt'] == 'yes';
+		$instance['see_author']				= $new_instance['see_author'] == 'yes';
+		$instance['see_meta_data']			= $new_instance['see_meta_data'] == 'yes';
+		$instance['see_price']				= $new_instance['see_price'] == 'yes';
+		$instance['see_buy_button']			= $new_instance['see_buy_button'] == 'yes';
 		$instance['see_first_custom_area']	= $new_instance['see_first_custom_area'] == 'yes';
 		$instance['see_second_custom_area']	= $new_instance['see_second_custom_area'] == 'yes';
 		$instance['see_third_custom_area']	= $new_instance['see_third_custom_area'] == 'yes';
@@ -115,31 +115,32 @@ class CustomListWidget extends WP_Widget {
 
 	function form( $instance ) {
 		$defaults = array(
-			'limit'				=>  5,
-			'loop'				=> '',
-			'columns'			=> 2,
-			'see_title'			=> true,
-			'see_image'			=> false,
-			'image_size'		=> 'thumbnail',
-			'see_content'		=> false,
-			'see_excerpt'		=> false,
-			'see_meta_data'		=> false,
-			'see_price'			=> true,
-			'see_buy_button'	=> false,
+			'limit'						=>  5,
+			'loop'						=> '',
+			'columns'					=> 2,
+			'see_title'					=> true,
+			'see_image'					=> false,
+			'image_size'				=> 'thumbnail',
+			'see_content'				=> false,
+			'see_excerpt'				=> false,
+			'see_meta_data'				=> false,
+			'see_price'					=> true,
+			'see_buy_button'			=> false,
 			'see_first_custom_area'		=> false,
 			'see_second_custom_area'	=> false,
 			'see_third_custom_area'		=> false,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		$see_title		= isset( $instance['see_title'] )		? $instance['see_title'] 	: false;
-		$see_image		= isset( $instance['see_image'] )		? $instance['see_image']	: false;
-		$see_content	= isset( $instance['see_content'] )		? $instance['see_content']	: false;
-		$see_excerpt	= isset( $instance['see_excerpt'] )		? $instance['see_excerpt']	: false;
-		$see_author		= isset( $instance['see_author'] )		? $instance['see_author']	: false;
-		$see_meta_data	= isset( $instance['see_meta_data'] )	? $instance['see_meta_data']: false;
-		$see_price		= isset( $instance['see_price'] )		? $instance['see_price']	: false;
-		$see_buy_button	= isset( $instance['see_buy_button'] )	? $instance['see_buy_button']: false;
-		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) 	? $instance['use_taxonomy'] : false;
+		$see_title				= isset( $instance['see_title'] )		? $instance['see_title'] 	: false;
+		$see_image				= isset( $instance['see_image'] )		? $instance['see_image']	: false;
+		$image_size				= isset( $instance['image_size'] )		? $instance['image_size']	: 'thumbnail';
+		$see_content			= isset( $instance['see_content'] )		? $instance['see_content']	: false;
+		$see_excerpt			= isset( $instance['see_excerpt'] )		? $instance['see_excerpt']	: false;
+		$see_author				= isset( $instance['see_author'] )		? $instance['see_author']	: false;
+		$see_meta_data			= isset( $instance['see_meta_data'] )	? $instance['see_meta_data']: false;
+		$see_price				= isset( $instance['see_price'] )		? $instance['see_price']	: false;
+		$see_buy_button			= isset( $instance['see_buy_button'] )	? $instance['see_buy_button']: false;
+		$use_taxonomy 			= isset( $instance['use_taxonomy'] ) 	? $instance['use_taxonomy'] : false;
 		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) 	? $instance['see_first_custom_area'] : false;
 		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) 	? $instance['see_second_custom_area'] : false;
 		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) 	? $instance['see_third_custom_area'] : false;
@@ -159,7 +160,7 @@ class CustomListWidget extends WP_Widget {
 			$folder = STYLESHEETPATH;
 			if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 				if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?echo $file; ?></option>
+					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?php echo $file; ?></option>
 				<?php 
 					$files[] = $file;
 				endif;?>
@@ -169,7 +170,7 @@ class CustomListWidget extends WP_Widget {
 			if ( STYLESHEETPATH != $folder )
 				if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?echo $file; ?></option>
+						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
 					<?php endif;?>
 				<?php endwhile; closedir( $handle );?>
 			</select>
@@ -182,7 +183,7 @@ class CustomListWidget extends WP_Widget {
 	</div>
 	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
-			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Nº columns', 'tcp' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
 		</p>
 		<p>
@@ -197,10 +198,9 @@ class CustomListWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image size', 'tcp' ); ?></label>
 			<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
 			<?php $imageSizes = get_intermediate_image_sizes();
-			foreach($imageSizes as $imageSize) : ?>
-				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $instance['image_size'] );?>><?php echo $imageSize;?></option>
+			foreach( $imageSizes as $size ) : ?>
+				<option value="<?php echo $size;?>" <?php selected( $size, $image_size );?>><?php echo $size;?></option>
 			<?php endforeach;?>
-			?>
 			</select>
 		</p>
 		<p>

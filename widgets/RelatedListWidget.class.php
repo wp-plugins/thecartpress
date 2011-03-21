@@ -45,7 +45,7 @@ class RelatedListWidget extends CustomListWidget {
 			$loop_args['post__in'] = $ids;
 			$loop_args['post_type'] = $post_type;
 		} else {
-		//TODO falta
+		//TODO falta?
 			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) )
 				$instance['taxonomy'] = ProductCustomPostType::$PRODUCT_CATEGORY;
 			else if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_POST' || $instance['rel_type'] == 'CAT_POST-CAT_POST' ) )
