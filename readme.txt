@@ -155,22 +155,23 @@ This plugin is released under a GPL license.
 == Changelog ==
 
 = 1.0.7 =
-* Improvements in Buy Button
-* CVC field, Card type and Cardholder in CC Offline (thanks to the community)
-* Order editor: button to delete card data (thanks to the community)
-* Plugin Auto-Check
-* New Settings: Default Country, Decimal point and thousands separator (thanks to the community)
+* Improvements in Buy Button (less code)
+* CVC field, Card type and Cardholder in CC Offline (Thanks to the community)
+* Order editor: button to delete card data (Thanks to the community)
+* Plugin Auto-Checking
+* New Settings: Default Country, Decimal point and thousands separator (Thanks to the community)
 * New templates functions: tcp_number_format and tcp_input_number
-* Checkout improvments (hooks, other costs, validation) (thanks to the community)
+* Checkout improvements (hooks, other costs, validation) (Thanks to the community)
 * Added more useful hooks for plugin development
 * New field in Payment and Shipping methods: Active/Not active
 * TheCartPress Payment and Shipping methods editor: new column to see active/inactive methods
-* Send separate emails to customer and to merchant and when the pay has been done (thanks to the community)
+* Send separate emails to customer and to merchant and when the pay has been done (Thanks to the community)
 * $thecartpress object available for plugin development
 * Checkout page is now child of Shopping cart page
+* Folder for localisation
 
 = 1.0.6 =
-* Bug fixed (thanks to the community)
+* Bug fixed (Thanks to the community)
 * Example themes ready for use
 
 = 1.0.5 =

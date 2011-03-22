@@ -119,51 +119,54 @@ class BuyButton {
 			$ids = array();
 			foreach( $products as $product ) {
 				$product_id = tcp_get_current_id( $product->id_to );
-				$price = tcp_get_the_price( $product_id );
-				$tax = tcp_get_the_tax_label( $product_id );
-				$is_downloadable = tcp_is_downloadable( $product_id );
-				$out .= '<tr>' . "\n";
-				$out .= '<input type="hidden" name="tcp_post_id[]" id="tcp_post_id" value="' . $product_id . '" />' . "\n";
-				$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . $price . '" />' . "\n";
-				$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . $tax . '" />' . "\n";
-				$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product_id ) . '" />' . "\n";
+				if ( get_post_status( $product_id ) == 'publish' ) {
+					$price = tcp_get_the_price( $product_id );
+					$tax = tcp_get_the_tax_label( $product_id );
+					$stock = tcp_get_the_stock( $product_id );
+					$is_downloadable = tcp_is_downloadable( $product_id );
+					$out .= '<tr>' . "\n";
+					$out .= '<input type="hidden" name="tcp_post_id[]" id="tcp_post_id" value="' . $product_id . '" />' . "\n";
+					$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . $price . '" />' . "\n";
+					$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . $tax . '" />' . "\n";
+					$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product_id ) . '" />' . "\n";
 
-				$html = '<td class="tcp_buy_button_name">';
-				$html .= '<input type="hidden" name="tcp_option_id[]" id="tcp_option_id_' . $product_id. '" value="0" />' . "\n";
-				$html .= '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $product_id. '" value="0" />' . "\n";
-				$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $product_id . '" value="0" />' . "\n";
-				if ( $is_downloadable )
-					$html .= MP3Player::showPlayer( $product->id_to, MP3Player::$SMALL, false );
-				$html .= get_the_title( $product_id );
-				$html .= '</td>' . "\n";
-				$html .= '<td class="tcp_buy_button_price">' . tcp_number_format( $price, 2 ) . '&nbsp;' . $currency . '&nbsp;(' . $tax . ')</td>' . "\n";
-				$out .= apply_filters( 'tcp_buy_button_options', $html, $product_id, $post_id );
+					$html = '<td class="tcp_buy_button_name">';
+					$html .= '<input type="hidden" name="tcp_option_id[]" id="tcp_option_id_' . $product_id. '" value="0" />' . "\n";
+					$html .= '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $product_id. '" value="0" />' . "\n";
+					$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $product_id . '" value="0" />' . "\n";
+					if ( $is_downloadable )
+						$html .= MP3Player::showPlayer( $product->id_to, MP3Player::$SMALL, false );
+					$html .= get_the_title( $product_id );
+					$html .= '</td>' . "\n";
+					$html .= '<td class="tcp_buy_button_price">' . tcp_number_format( $price ) . '&nbsp;' . $currency . '&nbsp;(' . $tax . ')</td>' . "\n";
+					$out .= apply_filters( 'tcp_buy_button_options', $html, $product_id, $post_id );
 
-				if ( ! $disable_shopping_cart ) {
-					$out .= '<td class="tcp_buy_button_count">';
-					if ( $is_downloadable ) {
-						$html = '<input type="hidden" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="1"/>' . "\n";
-						$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
-					} elseif ( ! $stock_management || tcp_get_the_stock( $product_id ) != 0 ) {
-						$html = '<input type="text" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="0" size="2" maxlength="3"/>' . "\n";					
-						$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
-					}
-					if ( ! $is_downloadable || ( $is_downloadable && ! $shoppingCart->exists( $product_id ) ) ) {
-						if ( ! $stock_management || tcp_get_the_stock( $product_id ) != 0 ) {
-							$html = '<input type="button" onclick="add_to_the_cart_' . $product->id_from . '(' . $product_id . ');" name="tcp_add_row" id="tcp_add_row" value="' . __( 'Add', 'tcp' ) . '"/>' . "\n";
-							$out .= apply_filters( 'tcp_buy_button_add_button', $html, $product_id );
-						} else {
-							$out .= '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
+					if ( ! $disable_shopping_cart ) {
+						$out .= '<td class="tcp_buy_button_count">';
+						if ( $is_downloadable ) {
+							$html = '<input type="hidden" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="1"/>' . "\n";
+							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
+						} elseif ( ! $stock_management || $stock != 0 ) {
+							$html = '<input type="text" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="0" size="2" maxlength="3"/>' . "\n";					
+							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
 						}
+						if ( ! $is_downloadable || ( $is_downloadable && ! $shoppingCart->exists( $product_id ) ) ) {
+							if ( ! $stock_management || $stock != 0 ) {
+								$html = '<input type="button" onclick="add_to_the_cart_' . $product->id_from . '(' . $product_id . ');" name="tcp_add_row" id="tcp_add_row" value="' . __( 'Add', 'tcp' ) . '"/>' . "\n";
+								$out .= apply_filters( 'tcp_buy_button_add_button', $html, $product_id );
+							} else {
+								$out .= '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
+							}
+						}
+						$item = $shoppingCart->getItem( tcp_get_default_id( $product_id ) );
+						if ( $item ) {
+							$html ='<span class="tcp_added_product_title">' . sprintf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) ) . '<span>';
+							$out .= apply_filters( 'tcp_buy_button_units_in_cart', $html, $post_id );
+						}
+						$out .= '</td>' . "\n";
 					}
-					$item = $shoppingCart->getItem( tcp_get_default_id( $product_id ) );
-					if ( $item ) {
-						$html ='<span class="tcp_added_product_title">' . sprintf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) ) . '<span>';
-						$out .= apply_filters( 'tcp_buy_button_units_in_cart', $html, $post_id );
-					}
-					$out .= '</td>' . "\n";
+					$out .= '</tr>' . "\n";
 				}
-				$out .= '</tr>' . "\n";
 			}
 			$out .= '</tbody></table>' . "\n";
 			$out .= '<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_' . $post_id . '" value="' .__( 'Add selected to the cart', 'tcp' ) . '" />' . "\n";
