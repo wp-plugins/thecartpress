@@ -30,9 +30,9 @@ class ProductCustomPostType {
 	function __construct() {
 		global $thecartpress;
 		$labels = array(
-			'name'					=> _x( 'Products', 'post type general name' ),
-			'singular_name'			=> _x( 'Product', 'post type singular name' ),
-			'add_new'				=> _x( 'Add New', 'product' ),
+			'name'					=> _x( 'Products', 'post type general name', 'tcp' ),
+			'singular_name'			=> _x( 'Product', 'post type singular name', 'tcp' ),
+			'add_new'				=> _x( 'Add New', 'product', 'tcp' ),
 			'add_new_item'			=> __( 'Add New', 'tcp' ),
 			'edit_item'				=> __( 'Edit Product', 'tcp' ),
 			'new_item'				=> __( 'New Product', 'tcp' ),
@@ -61,8 +61,8 @@ class ProductCustomPostType {
 		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 		add_filter( 'manage_edit-' . ProductCustomPostType::$PRODUCT . '_columns', array( $this, 'customColumnsDefinition' ) );
 		$labels = array(
-			'name'				=> _x( 'Categories', 'taxonomy general name' ),
-			'singular_name'		=> _x( 'Category', 'taxonomy singular name' ),
+			'name'				=> _x( 'Categories', 'taxonomy general name', 'tcp' ),
+			'singular_name'		=> _x( 'Category', 'taxonomy singular name', 'tcp' ),
 			'search_items'		=> __( 'Search Categories', 'tcp' ),
 			'all_items'			=> __( 'All Categories', 'tcp' ),
 			'parent_item'		=> __( 'Parent Category', 'tcp' ),
@@ -93,8 +93,8 @@ class ProductCustomPostType {
 			'rewrite'		=> array('slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
 			//'label'		=> __('Suppliers', 'tcp' ),
 			'labels'		=> array(
-				'name'				=> _x( 'Suppliers', 'taxonomy general name' ),
-				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name' ),
+				'name'				=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
+				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name', 'tcp' ),
 				'search_items'		=> __( 'Search Suppliers', 'tcp' ),
 				'all_items'			=> __( 'All Suppliers', 'tcp' ),
 				'edit_item'			=> __( 'Edit Suppliers', 'tcp' ), 

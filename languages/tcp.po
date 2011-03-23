@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-18 14:09+0100\n"
+"POT-Creation-Date: 2011-03-23 08:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: SPAIN\n"
 "X-Poedit-Basepath: ../\n"
-"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: TheCartPress.class.php:211
@@ -129,41 +129,41 @@ msgstr "Productos descargables"
 msgid "TheCartPress checking"
 msgstr ""
 
-#: TheCartPress.class.php:547
+#: TheCartPress.class.php:545
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr ""
 
-#: TheCartPress.class.php:629
+#: TheCartPress.class.php:627
 #: shortcodes/Checkout.class.php:1009
 msgid "Legal notice"
 msgstr ""
 
-#: TheCartPress.class.php:654
+#: TheCartPress.class.php:652
 msgid "Customer"
 msgstr "Cliente"
 
-#: TheCartPress.class.php:683
+#: TheCartPress.class.php:681
 msgid "Merchant"
 msgstr "Vendedor"
 
-#: TheCartPress.class.php:717
+#: TheCartPress.class.php:715
 msgid "Shopping cart"
 msgstr "Carrito"
 
-#: TheCartPress.class.php:729
+#: TheCartPress.class.php:728
 #: shortcodes/ShoppingCartPage.class.php:100
 msgid "Checkout"
 msgstr ""
 
-#: TheCartPress.class.php:740
+#: TheCartPress.class.php:741
 msgid "Category One"
 msgstr "Categoría Uno"
 
-#: TheCartPress.class.php:741
+#: TheCartPress.class.php:742
 msgid "Category One for Product One"
 msgstr "Categría Uno para Producto Uno"
 
-#: TheCartPress.class.php:747
+#: TheCartPress.class.php:748
 msgid "Product One"
 msgstr "Producto Uno"
 
@@ -245,22 +245,22 @@ msgid "The product is in the cart"
 msgstr "El producto ya está en el carrito"
 
 #: classes/BuyButton.class.php:75
-#: classes/BuyButton.class.php:156
+#: classes/BuyButton.class.php:158
 msgid "No stock for this product"
 msgstr ""
 
 #: classes/BuyButton.class.php:82
-#: classes/BuyButton.class.php:153
+#: classes/BuyButton.class.php:155
 msgid "Add"
 msgstr "Añadir"
 
 #: classes/BuyButton.class.php:87
-#: classes/BuyButton.class.php:161
+#: classes/BuyButton.class.php:163
 #, php-format
 msgid "%s unit(s) <a href=\"%s\">in your cart</a>"
 msgstr ""
 
-#: classes/BuyButton.class.php:169
+#: classes/BuyButton.class.php:172
 msgid "Add selected to the cart"
 msgstr ""
 
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Delete shopping cart"
 msgstr ""
 
-#: shortcodes/Checkout.class.php:33
+#: shortcodes/Checkout.class.php:35
 msgid "The order has been completed successfully."
 msgstr ""
 
@@ -1068,7 +1068,7 @@ msgstr ""
 #: admin/OrdersList.php:83
 #: admin/OrdersList.php:93
 #: admin/OrdersList.php:149
-#: admin/OrderEdit.php:55
+#: admin/OrderEdit.php:59
 msgid "Status"
 msgstr ""
 
@@ -1307,15 +1307,15 @@ msgstr ""
 msgid "Show third custom area"
 msgstr ""
 
-#: admin/OrderEdit.php:69
+#: admin/OrderEdit.php:73
 msgid "Code tracking"
 msgstr ""
 
-#: admin/OrderEdit.php:77
+#: admin/OrderEdit.php:81
 msgid "Customer's comment"
 msgstr ""
 
-#: admin/OrderEdit.php:85
+#: admin/OrderEdit.php:89
 msgid "Internal comment"
 msgstr ""
 
@@ -1323,21 +1323,21 @@ msgstr ""
 msgid "Set up"
 msgstr ""
 
-#: admin/Checking.php:16
+#: admin/Checking.php:15
 msgid "The Shopping Cart page has been created"
 msgstr ""
 
-#: admin/Checking.php:21
+#: admin/Checking.php:20
 #, fuzzy
 msgid "The Checkout page has been created"
 msgstr "La <strong>Página del checkou</strong> ha sido borrada"
 
-#: admin/Checking.php:30
-msgid "All the problems has been fixed"
+#: admin/Checking.php:28
+msgid "All problems have been solved"
 msgstr ""
 
-#: admin/Checking.php:35
-msgid "TheCartPress checking is Ok."
+#: admin/Checking.php:33
+msgid "The checking result is Ok."
 msgstr ""
 
 #: admin/VirtualProductDownloader.php:191
@@ -1395,8 +1395,9 @@ msgid "no one"
 msgstr ""
 
 #: admin/PluginsList.php:26
-msgid "TheCartPress Payment and Shipping plugins"
-msgstr ""
+#, fuzzy
+msgid "TheCartPress Payment and Shipping methods"
+msgstr "Pagos y Envíos"
 
 #: admin/PluginsList.php:34
 msgid "Plugin type"
@@ -1905,10 +1906,21 @@ msgstr ""
 msgid "Weigth"
 msgstr ""
 
-#: templates/tcp_template.php:86
+#: templates/tcp_template.php:106
 msgid " to "
 msgstr ""
 
+#: customposttypes/ProductCustomPostType.class.php:33
+#: customposttypes/ProductCustomPostType.class.php:46
+msgid "Products"
+msgstr ""
+
+#: customposttypes/ProductCustomPostType.class.php:34
+#: customposttypes/ProductCustomPostType.class.php:47
+msgid "Product"
+msgstr ""
+
+#: customposttypes/ProductCustomPostType.class.php:35
 #: customposttypes/ProductCustomPostType.class.php:36
 msgid "Add New"
 msgstr ""
@@ -1935,14 +1947,6 @@ msgstr ""
 
 #: customposttypes/ProductCustomPostType.class.php:42
 msgid "No products found in Trash"
-msgstr ""
-
-#: customposttypes/ProductCustomPostType.class.php:46
-msgid "Products"
-msgstr ""
-
-#: customposttypes/ProductCustomPostType.class.php:47
-msgid "Product"
 msgstr ""
 
 #: customposttypes/ProductCustomPostType.class.php:66
@@ -1979,6 +1983,14 @@ msgstr ""
 
 #: customposttypes/ProductCustomPostType.class.php:88
 msgid "Products Tags"
+msgstr ""
+
+#: customposttypes/ProductCustomPostType.class.php:96
+msgid "Suppliers"
+msgstr ""
+
+#: customposttypes/ProductCustomPostType.class.php:97
+msgid "Supplier"
 msgstr ""
 
 #: customposttypes/ProductCustomPostType.class.php:98
@@ -2038,7 +2050,7 @@ msgstr ""
 
 #: plugins/NoCostPayment.class.php:61
 #: plugins/Transference.class.php:110
-#: plugins/Remboursement.class.php:89
+#: plugins/Remboursement.class.php:87
 msgid "Finish"
 msgstr ""
 
@@ -2046,52 +2058,52 @@ msgstr ""
 msgid "Calculate the shipping cost using a table of weights ranges and zones.<br>Author: <a href=\"http://thecartpress.com\" target=\"_blank\">TheCartPress team</a>"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:38
+#: plugins/ShippingCost.class.php:37
 msgid "The cost of Shipping service will be "
 msgstr ""
 
-#: plugins/ShippingCost.class.php:70
-#: plugins/ShippingCost.class.php:80
-#: plugins/ShippingCost.class.php:94
-#: plugins/ShippingCost.class.php:104
+#: plugins/ShippingCost.class.php:69
+#: plugins/ShippingCost.class.php:79
+#: plugins/ShippingCost.class.php:93
+#: plugins/ShippingCost.class.php:103
 msgid "Remember to <strong>save</strong> before delete other rows or columns"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:111
+#: plugins/ShippingCost.class.php:110
 msgid "copy from first instance"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:117
-#: plugins/ShippingCost.class.php:132
+#: plugins/ShippingCost.class.php:116
+#: plugins/ShippingCost.class.php:131
 msgid "Weight ranges"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:120
-#: plugins/ShippingCost.class.php:134
+#: plugins/ShippingCost.class.php:119
+#: plugins/ShippingCost.class.php:133
 #, php-format
 msgid "Zone %d"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:143
+#: plugins/ShippingCost.class.php:142
 #, php-format
 msgid "Range %d"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:151
+#: plugins/ShippingCost.class.php:150
 msgid "delete range"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:159
+#: plugins/ShippingCost.class.php:158
 msgid "insert new range"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:172
-#: plugins/ShippingCost.class.php:179
+#: plugins/ShippingCost.class.php:171
+#: plugins/ShippingCost.class.php:178
 #, php-format
 msgid "Zone %s"
 msgstr ""
 
-#: plugins/ShippingCost.class.php:209
+#: plugins/ShippingCost.class.php:208
 msgid "Add new zone"
 msgstr ""
 
@@ -2143,11 +2155,11 @@ msgstr ""
 msgid "Fix"
 msgstr ""
 
-#: plugins/Remboursement.class.php:63
+#: plugins/Remboursement.class.php:62
 msgid "Cash on delivery. The cost of the service is "
 msgstr ""
 
-#: plugins/Remboursement.class.php:87
+#: plugins/Remboursement.class.php:85
 #, php-format
 msgid "The cost of the service is %s %s"
 msgstr ""
@@ -2160,23 +2172,23 @@ msgstr ""
 msgid "Free transport"
 msgstr ""
 
-#: plugins/FlatRate.class.php:33
+#: plugins/FlatRate.class.php:32
 msgid "Flat rate. The cost of the service is "
 msgstr ""
 
-#: plugins/FlatRate.class.php:39
+#: plugins/FlatRate.class.php:38
 msgid "Calculate"
 msgstr ""
 
-#: plugins/FlatRate.class.php:49
+#: plugins/FlatRate.class.php:48
 msgid "Fixed cost"
 msgstr ""
 
-#: plugins/FlatRate.class.php:66
+#: plugins/FlatRate.class.php:65
 msgid "By order"
 msgstr ""
 
-#: plugins/FlatRate.class.php:67
+#: plugins/FlatRate.class.php:66
 msgid "By article"
 msgstr ""
 
@@ -2524,7 +2536,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: widgets/CustomListWidget.class.php:149
+#: widgets/CustomListWidget.class.php:150
 #: widgets/CustomPostTypeListWidget.class.php:268
 msgid "Limit"
 msgstr ""
@@ -2638,7 +2650,7 @@ msgid "Bookmark the <a href=\"%4$s\" title=\"Permalink to %5$s\" rel=\"bookmark\
 msgstr ""
 
 #: themes-templates/loop-products.php:41
-#: themes-templates/loop-products.php:256
+#: themes-templates/loop-products.php:255
 #: themes-templates/twentyten-eCommerce/loop-single-product.php:31
 #: themes-templates/twentyten-eCommerce/loop-single-product.php:117
 #: themes-templates/twentyten-eCommerce/loop-tcp-grid.php:30
@@ -2648,7 +2660,7 @@ msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
 msgstr ""
 
 #: themes-templates/loop-products.php:42
-#: themes-templates/loop-products.php:257
+#: themes-templates/loop-products.php:256
 #: themes-templates/twentyten-eCommerce/loop-single-product.php:32
 #: themes-templates/twentyten-eCommerce/loop-single-product.php:118
 #: themes-templates/twentyten-eCommerce/loop-tcp-grid.php:31
@@ -2671,16 +2683,25 @@ msgstr ""
 msgid "Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post."
 msgstr ""
 
-#: themes-templates/loop-products.php:114
+#: themes-templates/loop-products.php:94
+#: themes-templates/loop-products.php:122
+msgid "gallery"
+msgstr ""
+
+#: themes-templates/loop-products.php:113
 #, php-format
 msgid "This gallery contains <a %1$s>%2$s photos</a>."
 msgstr ""
 
-#: themes-templates/loop-products.php:123
+#: themes-templates/loop-products.php:122
 msgid "More Galleries"
 msgstr ""
 
-#: themes-templates/loop-products.php:230
+#: themes-templates/loop-products.php:131
+msgid "asides"
+msgstr ""
+
+#: themes-templates/loop-products.php:229
 #: themes-templates/twentyten-eCommerce/loop-single-product.php:100
 #: themes-templates/twentyten-eCommerce/loop-products.php:132
 #: themes-templates/twentyten-eCommerce/loop-tcp-grid.php:166

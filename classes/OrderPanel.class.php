@@ -37,7 +37,7 @@ class OrderPanel {
 				<option value="title" <?php selected( $tcp_order_type, 'title' );?>><?php _e( 'Title', 'tcp' ); ?></option>
 				<option value="author" <?php selected( $tcp_order_type, 'author' );?>><?php _e( 'Author', 'tcp' ); ?></option>
 				<option value="date" <?php selected( $tcp_order_type, 'date' );?>><?php _e( 'Date', 'tcp' ); ?></option>
-				<option value="rand" <?php selected( $tcp_order_type, 'rand' );?>><?php _e( 'Rand', 'tcp' ); ?></option>
+				<option value="rand" <?php selected( $tcp_order_type, 'rand' );?>><?php _e( 'Random', 'tcp' ); ?></option>
 				<option value="comment_count" <?php selected( $tcp_order_type, 'comment_count' );?>><?php _e( 'Popular', 'tcp' ); ?></option>
 
 			</select>

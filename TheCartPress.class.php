@@ -803,7 +803,7 @@ class TheCartPress {
 			wp_enqueue_script( 'tcp_scripts' );
 			$load_default_styles = isset( $this->settings['load_default_styles'] ) ? $this->settings['load_default_styles'] : true;
 			if ( $load_default_styles )
-				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) );	
+				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) );
 		}
 	    //feed
 		//http://localhost/<tcp>/?feed=tcp-products
