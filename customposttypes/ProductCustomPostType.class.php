@@ -56,6 +56,7 @@ class ProductCustomPostType {
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
 			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
 			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
+			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products',
 		);
 		register_post_type( ProductCustomPostType::$PRODUCT, $register );
 		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
