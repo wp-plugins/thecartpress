@@ -58,7 +58,7 @@ if ( $post_id ) {
 				if ( $size > 1048576 ) {
 					$size = $size / 1048576;
 					printf (__( 'Upload completed, uploaded %d Mbytes', 'tcp' ), number_format( $size, 2 ) );
-				if ( $size > 1024) {
+				} elseif ( $size > 1024) {
 					$size = $size / 1024;
 					printf (__( 'Upload completed, uploaded %d Kbytes', 'tcp' ), number_format( $size, 2 ) );
 				} else {
