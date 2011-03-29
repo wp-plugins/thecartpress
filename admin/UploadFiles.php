@@ -16,26 +16,25 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
-
 $post_id  = isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
 $error_upload = '';
 
 function tcp_upload_file( $post_id, $file ) {
 	global $thecartpress;
+	global $error_upload;
 	$rev_name = strrev( $_FILES['upload_file']['name'] );
 	$i = strpos( $rev_name, '.' );
 	$ext = strrev( substr( $rev_name, 0, $i ) );
 	$downloadable_path = isset( $thecartpress->settings['downloadable_path'] ) ? trim( $thecartpress->settings['downloadable_path'] ) : '';
-	if ( strlen( $settings['downloadable_path'] ) == 0 ) {
+	if ( strlen( $downloadable_path ) == 0 ) {
 		wp_die( __( 'The path where the downloadable files must be saved is not set.', 'tcp' ) );
 		return false;
 	} else {
 		global $wpdb;
-		$folder_path .= $downloadable_path . '/' . $wpdb->prefix . 'tcp';
+		$folder_path = $downloadable_path . '/' . $wpdb->prefix . 'tcp';
 		if ( ! file_exists( $folder_path ) )
 			if ( ! mkdir( $folder_path ) ) {
-				$error_upload = __( 'Error creating the folder.', 'tcp' );
+				$error_upload = sprintf( __( 'Error creating the folder "%s".', 'tcp' ), $folder_path );
 				return false;
 			}
 		$file_path = $folder_path . '/upload_' . $post_id . '.' . $ext;
@@ -44,7 +43,7 @@ function tcp_upload_file( $post_id, $file ) {
 			do_action( 'tcp_uploaded_file', $file_path );
 			return true;
 		} else {
-			$error_upload = __( 'Error uploading the file.', 'tcp' );
+			$error_upload = sprintf( __( 'Error uploading the file to "%s".', 'tcp' ), $file_path );
 			return false;
 		}
 	}
@@ -54,8 +53,17 @@ if ( $post_id ) {
 	$file_path = tcp_get_the_file( $post_id );
 	if ( isset( $_REQUEST['tcp_upload_virtual_file'] ) ) {
 		if ( tcp_upload_file( $post_id, $_FILES['upload_file'] ) ) {?>
-			<div id="message" class="updated"><p><?php 
-				printf (__( 'Upload completed, uploaded %f bytes', 'tcp' ), number_format( $_FILES['upload_file']['size'], 2 ) );
+			<div id="message" class="updated"><p><?php
+				$size = (double)$_FILES['upload_file']['size'];
+				if ( $size > 1048576 ) {
+					$size = $size / 1048576;
+					printf (__( 'Upload completed, uploaded %d Mbytes', 'tcp' ), number_format( $size, 2 ) );
+				if ( $size > 1024) {
+					$size = $size / 1024;
+					printf (__( 'Upload completed, uploaded %d Kbytes', 'tcp' ), number_format( $size, 2 ) );
+				} else {
+					printf (__( 'Upload completed, uploaded %d bytes', 'tcp' ), number_format( $size, 2 ) );
+				}
 			?></p></div><?php
 			$file_path = __( 'recent uploaded', 'tcp' );
 		} else {?>
