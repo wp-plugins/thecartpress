@@ -84,6 +84,11 @@ class Orders {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders where order_id = %d', $order_id ) );
 	}
 
+	static function delete( $order_id ) {
+		global $wpdb;
+		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
+	}
+
 	static function is_owner( $order_id, $customer_id ) {
 		global $wpdb;
 		$count = $wpdb->get_var( $wpdb->prepare( 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where order_id = %d and customer_id = %d', $order_id, $customer_id ) );
@@ -184,19 +189,21 @@ class Orders {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, status, post_id, price, tax,
-				qty_ordered, shipping_amount, payment_name, payment_method,
-				payment_amount, order_currency_code, code_tracking,
-				is_downloadable, max_downloads, expires_at
-				from ' . $wpdb->prefix . 'tcp_orders o left join '.
+				qty_ordered, shipping_amount, discount_amount, payment_name,
+				payment_method, payment_amount, order_currency_code,
+				code_tracking, is_downloadable, max_downloads, expires_at
+				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
 				$wpdb->prefix . 'tcp_orders_details od
 				on o.order_id = od.order_id';
-		if ( strlen( $status ) > 0 )
-			if ( $customer_id > -1 )
+		if ( strlen( $status ) > 0 ) {
+			if ( $customer_id > -1 ) {
 				$sql = $wpdb->prepare( $sql . ' where status = %s and customer_id = %d', $status, $customer_id );
-			else
+			} else {
 				$sql = $wpdb->prepare( $sql . ' where status = %s', $status );
-		elseif ( $customer_id > -1 )
+			}
+		} elseif ( $customer_id > -1 ) {
 			$sql = $wpdb->prepare( $sql . ' where customer_id = %d', $customer_id );
+		}
 		$sql .= ' order by created_at desc';
 		return $wpdb->get_results( $sql );
 	}
@@ -271,8 +278,8 @@ class Orders {
 			' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details d 
 			on o.order_id = d.order_id
 			where customer_id = %d and d.is_downloadable = \'Y\' and status=\'COMPLETED\'
-			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
-				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
+			and ( ( d.expires_at > %s and ( d.max_downloads <0 or d.max_downloads > 0 ) )
+				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads < 0 ) ) )'
 			, $customer_id, $today, $max_date );
 		return $wpdb->get_results( $sql );
 	}

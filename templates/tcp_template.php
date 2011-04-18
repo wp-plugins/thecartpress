@@ -16,6 +16,29 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//Multilingua support: WPML or Qtranslate
+function tcp_get_admin_language_iso() {
+	if ( strlen( WPLANG ) > 0 ) {
+		$lang_country = explode ( '_', WPLANG );
+		if ( is_array( $lang_country ) && count( $lang_country ) > 0 ) {
+			return $lang_country[0];
+		} else {
+			return '';
+		}
+	} else {
+		return '';
+	}
+}
+
+global $sitepress;
+if ( $sitepress ) {
+	include_once( dirname( __FILE__ ) . '/tcp_wpml_template.php' );
+} else {
+	include_once( dirname( __FILE__ ) . '/tcp_qt_template.php' );
+}
+//End Multilingua support
+
+
 function tcp_the_currency( $echo = true ) {
 	global $thecartpress;
 	$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
@@ -44,6 +67,20 @@ function tcp_the_currency_iso( $echo = true ) {
 		return $currency;
 }
 
+function tcp_the_unit_weight( $echo = true ) {
+	global $thecartpress;
+	$unit_weight = isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
+	$unit_weight = apply_filters( 'tcp_the_unit_weight', $unit_weight );
+	if ( $echo )
+		echo $unit_weight;
+	else
+		return $unit_weight;
+}
+
+function tcp_get_the_unit_weight( $echo = true ) {
+	return tcp_the_unit_weight( false );
+}
+
 function tcp_get_default_currency(  ) {
 	global $thecartpress;
 	return isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : '';
@@ -70,7 +107,7 @@ function tcp_the_price( $before = '', $after = '', $echo = true ) {
 
 function tcp_get_the_price( $post_id = 0 ) {
 	$price = (float)tcp_get_the_meta( 'tcp_price', $post_id );
-	$price = apply_filters( 'tcp_get_the_price', $price );
+	$price = apply_filters( 'tcp_get_the_price', $price, $post_id );
 	return $price;
 }
 
@@ -99,8 +136,8 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 			$max = $min;
 			foreach( $products as $product ) {
 				$price = (float)tcp_get_the_price ( $product->id_to );
-				if ( $price < $min ) $min = tcp_number_format( $price );
-				if ( $price > $max ) $max = tcp_number_format( $price );
+				if ( $price < $min ) $min = $price;
+				if ( $price > $max ) $max = $price;
 			}
 			if ( $min != $max ) {
 				$price = tcp_number_format( $min ) . __( ' to ', 'tcp' ) . tcp_number_format( $max );
@@ -114,7 +151,7 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 	} else {
 		$price = tcp_number_format( tcp_get_the_price( $post_id ) );
 	}
-	$price = apply_filters( 'tcp_get_the_price_label', $price );
+	$price = apply_filters( 'tcp_get_the_price_label', $price, $post_id );
 	return $price;
 }
 
@@ -129,8 +166,7 @@ function tcp_the_tax_id( $before = '', $after = '', $echo = true ) {
 
 function tcp_get_the_tax_id( $post_id = 0 ) {
 	$tax = tcp_get_the_meta( 'tcp_tax_id', $post_id );
-	$tax = apply_filters( 'tcp_get_the_tax_id', $tax );
-	return $tax;
+	return apply_filters( 'tcp_get_the_tax_id', $tax, $post_id );
 }
 
 function tcp_the_tax( $before = '', $after = '', $echo = true ) {
@@ -145,8 +181,7 @@ function tcp_the_tax( $before = '', $after = '', $echo = true ) {
 
 function tcp_get_the_tax( $post_id = 0 ) {
 	$tax = (float)tcp_get_the_meta( 'tcp_tax', $post_id );
-	$tax = apply_filters( 'tcp_get_the_tax', $tax );
-	return $tax;
+	return apply_filters( 'tcp_get_the_tax', $tax, $post_id );
 }
 
 function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
@@ -160,7 +195,7 @@ function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
 
 function tcp_get_the_tax_label( $post_id = 0 ) {
 	$tax = tcp_get_the_meta( 'tcp_tax_label', $post_id );
-	$tax = apply_filters( 'tcp_get_the_tax_label', $tax );
+	$tax = apply_filters( 'tcp_get_the_tax_label', $tax, $post_id );
 	return $tax;
 }
 
@@ -184,8 +219,7 @@ function tcp_get_the_price_tax( $post_id = 0 ) {
 	if ( ! $tax ) return;
 	if ( strlen( $tax ) == 0 ) $tax = 0;
 	if ( $tax > 0 ) $price = $price * 1 + ($tax / 100);
-	$price = apply_filters( 'tcp_get_the_price_tax', $price );
-	return $price;
+	return apply_filters( 'tcp_get_the_price_tax', $price, $post_id );
 }
 
 function tcp_get_the_product_type( $post_id = 0 ) {
@@ -194,7 +228,7 @@ function tcp_get_the_product_type( $post_id = 0 ) {
 
 function tcp_get_the_weight( $post_id = 0 ) {
 	$weight = (float)tcp_get_the_meta( 'tcp_weight', $post_id );
-	$weight = apply_filters( 'tcp_get_the_weight', $weight );
+	$weight = apply_filters( 'tcp_get_the_weight', $weight, $post_id );
 	return $weight;
 }
 
@@ -261,7 +295,7 @@ function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 		else
 			$stock = -1;
 	}
-	$stock = apply_filters( 'tcp_get_the_stock', $stock, $post_id );
+	$stock = apply_filters( 'tcp_get_the_stock', $stock, $post_id, $option_1_id, $option_2_id );
 	return $stock;
 }
 
@@ -298,6 +332,10 @@ function tcp_is_visible( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_is_visible', $post_id );
 }
 
+function tcp_hide_buy_button( $post_id = 0 ) {
+	return tcp_get_the_meta( 'tcp_hide_buy_button', $post_id );
+}
+
 function tcp_get_the_file( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_download_file', $post_id );
 }
@@ -330,92 +368,6 @@ function tcp_get_the_meta( $meta_key, $post_id = 0 ) {
 	return $meta_value;
 }
 
-//Multilanguage
-//Given a post_id this function returns the post_id in the default language
-function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
-	global $sitepress;
-	if ( $sitepress ) {
-		$default_language = $sitepress->get_default_language();
-		return icl_object_id( $post_id, $post_type, true, $default_language );
-	} else
-		return $post_id;
-}
-
-//Given a post_id this function returns the equivalent post_id in the current language
-function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
-	global $sitepress;
-	if ( $sitepress ) {
-		$default_language = $sitepress->get_current_language();
-		return icl_object_id( $post_id, $post_type, true, $default_language );
-	} else
-		return $post_id;
-}
-
-/**
- * Returns the list of translations from a given post_id
- * Example of returned array
- * array(2) {	["en"]=> object(stdClass)#45 (6) { ["translation_id"]=> string(2) "11" ["language_code"]=> string(2) "en" ["element_id"]=> string(1)  "9" ["original"]=> string(1) "1" ["post_title"]=> string(21) "Tom Sawyer Adventures"       ["post_status"]=> string(7) "publish" }
- * 				["es"]=> object(stdClass)#44 (6) { ["translation_id"]=> string(2) "12" ["language_code"]=> string(2) "es" ["element_id"]=> string(2) "10" ["original"]=> string(1) "0" ["post_title"]=> string(27) "Las Aventuras de Tom Sawyer" ["post_status"]=> string(7) "publish" } }
- */
-function tcp_get_all_translations( $post_id, $post_type = 'tcp_product' ) {
-	global $sitepress;
-	if ( $sitepress ) {
-		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
-		return $sitepress->get_element_translations( $trid, 'post_'. $post_type );
-	} else
-		return false;
-}
-
-function tcp_get_default_language() {
-	global $sitepress;
-	if ( $sitepress )
-		return $sitepress->get_default_language();
-	else
-		return null;
-}
-
-function tcp_get_current_language() {
-	global $sitepress;
-	if ( $sitepress )
-		return $sitepress->get_current_language();
-	else
-		return null;
-}
-
-/**
- * This function adds a post identified by the $translate_post_id as a translation of the post identified by $post_id
- */
-function tcp_add_translation( $post_id, $translate_post_id, $language, $post_type = 'tcp_product' ) {
-	global $sitepress;
-	if ( $sitepress ) {
-		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
-		$sitepress->set_element_language_details( $translate_post_id, 'post_' . $post_type, $trid, $language );
-	}
-}
-
-/**
- * To register strings to translate. For Example to translate the titles of the wigets
- *
-function tcp_register_string( $context, $name, $value ) {
-	if ( function_exists( 'icl_register_string' ) )
-		icl_register_string( $context, $name, $value );
-}
-
-function tcp_unregiser_string( $context, $name ) {
-	if ( function_exists( 'icl_unregister_string' ) )
-		icl_unregister_string( $context, $name );
-}
-
-/**
- * Returns the translation of a string identified by $context and $name
- *
-function tcp_t( $context, $name, $value ) {
-	if ( function_exists( 'icl_t' ) )
-		return icl_t( $context, $name, $value );
-	else
-		return $value;
-}*/
-//end Multilanguage
 
 //to select in a multiple select control
 function tcp_selected_multiple( $values, $value, $echo = true ) {
@@ -435,9 +387,9 @@ function tcp_get_the_parent( $post_id, $rel_type = 'GROUPED' ) {
  * Formats a float number to a string number to show in the screen
  * @since 1.0.7
  */
-function tcp_number_format( $number ) {
+function tcp_number_format( $number, $decimals = 2 ) {
 	global $thecartpress;
-	return number_format( $number, 2,  $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
+	return number_format( $number, $decimals,  $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
 }
 
 /**

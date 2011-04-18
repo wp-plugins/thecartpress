@@ -174,10 +174,10 @@ p.login-lostpassword {
 	font-weight: bolder;
 	font-size: 11px;
 	text-decoration: none;
-	color:#09F;
+	color:#C00;
 }
 #login_guess a:hover, p.login-lostpassword a:hover{
-	color:#F60;
+	color:#960000;
 }
 #login_guess ul{
 	margin-top: 6px;
@@ -210,7 +210,7 @@ p.login-lostpassword {
 	line-height: 1em;
 	clear:left;
 	font-weight:bolder;
-	color:#F60;
+	color:#C00;
 	display: block;
 	padding:0px 0px 10px 4px;
 }

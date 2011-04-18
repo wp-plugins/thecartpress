@@ -17,9 +17,6 @@
  */
 
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
-//require_once( 'daos/Ranges.class.php' );
-//require_once( 'daos/Zones.class.php' );
-//require_once( 'daos/Costs.class.php' );
 
 class ShippingCost extends TCP_Plugin {
 
@@ -32,9 +29,11 @@ class ShippingCost extends TCP_Plugin {
 	}
 	
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		global $thecartpress;
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'The cost of Shipping service will be ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
+		$cost = tcp_number_format( $cost );
+		return sprintf( __( '%s. Cost: %d %s', 'tcp' ), $title, $cost, tcp_get_the_currency() );
 	}
 
 	function showEditFields( $data ) {
@@ -140,10 +139,10 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 			<th scope="row">
 				<?php printf( __( 'Range %d', 'tcp' ), $r );?>:
-				<input type="text" name="ranges[]" value="<?php echo $range;?>" size="5" maxlength="10"/>
+				<input type="text" name="ranges[]" value="<?php echo $range;?>" size="5" maxlength="10"/>&nbsp;<?php tcp_the_unit_weight();?>
 			</th>
 			<?php foreach( $zones as $z => $zone ) : ?>
-			<td><input type="text" name="cost-<?php echo $range;?>[]" value="<?php echo $costs[$range][$z];?>" size="6" maxlength="13"/></td>
+			<td><input type="text" name="cost-<?php echo $range;?>[]" value="<?php echo $costs[$range][$z];?>" size="6" maxlength="13"/>&nbsp;<?php tcp_the_currency();?></td>
 			<?php endforeach;?>
 			<td>
 			<?php if ( $stored_data ) : ?>
@@ -184,8 +183,14 @@ class ShippingCost extends TCP_Plugin {
 		<?php foreach( $zones as $z => $isos ) : ?>
 			<td>
 				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" style="height:auto" size="8" multiple="true">
-				<?php global $countries_db;
-				foreach( $countries_db as $country ) :?>
+				<?php //global $countries_db;
+				global $thecartpress;
+				$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+				if ( $shipping_isos )
+					$countries = Countries::getSome( $shipping_isos );
+				else
+					$countries = Countries::getAll();
+				foreach( $countries as $country ) :?>
 					<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $isos, $country->iso );?>><?php echo $country->name;?></option>
 				<?php endforeach;?>
 				</select>

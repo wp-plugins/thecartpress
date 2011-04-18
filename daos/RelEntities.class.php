@@ -44,6 +44,23 @@ class RelEntities {
 		);
 	}
 
+	static function update( $id_from, $id_to, $rel_type = 'GROUPED', $list_order = 0, $units = 1 ) {
+		global $wpdb;
+		$wpdb->update( $wpdb->prefix . 'tcp_rel_entities',
+			array(
+				'list_order'	=> $list_order,
+				'units'			=> $units,
+			),
+			array(
+				'id_from'		=> $id_from,
+				'id_to'			=> $id_to,
+				'rel_type'		=> $rel_type,
+			),
+			array( '%d', '%d' ),
+			array( '%d', '%d', '%s', )
+		);
+	}
+
 	static function delete( $id_from, $id_to, $rel_type = 'GROUPED' ) {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_rel_entities
@@ -54,6 +71,12 @@ class RelEntities {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_rel_entities
 				where id_from = %d and rel_type = %s', $id_from, $rel_type ) );
+	}
+
+	static function deleteAllRelations( $id_from ) {
+		global $wpdb;
+		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_rel_entities
+				where id_from = %d', $id_from ) );
 	}
 
 	static function deleteAllTo( $id_to, $rel_type = 'GROUPED' ) {
@@ -77,7 +100,7 @@ class RelEntities {
 	static function select( $id_from, $rel_type = 'GROUPED' ) {
 		global $wpdb;
 		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_rel_entities 
-				where id_from = %d and rel_type = %s order by list_order', $id_from, $rel_type ) );
+				where id_from = %d and rel_type = %s order by list_order asc', $id_from, $rel_type ) );
 	}
 
 	/*static function getOptionsTree( $id_from ) {

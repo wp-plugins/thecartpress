@@ -33,7 +33,7 @@ class PostMetabox {
 		$is_translation = $lang != $source_lang;
 		$post_id = tcp_get_default_id( $post->ID, 'post' );
 		if ( $is_translation && $post_id == $post->ID) {
-			_e( 'After saving the title and content, you will be able to edit those relations.', 'tcp');
+			_e( 'After saving the title and content, you will be able to edit those relations.', 'tcp' );
 			return;
 		}
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( dirname( __FILE__ ) ) ) . '/thecartpress' ) . '/admin/';?>

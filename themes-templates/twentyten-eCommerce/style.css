@@ -38,7 +38,8 @@ Template: twentyten
 #content  table.tcp_products_list {
 	width: 99%;
 }
-.tcp_products_list .entry-content, .tcp_products_list .entry-summary {
+.tcp_products_list .entry-content,
+.tcp_products_list .entry-summary {
     clear: both;
     padding: 0px 0 0;
 }
@@ -86,7 +87,8 @@ Template: twentyten
 	line-height: 12px;
 	padding-left: 4px;
 }
-#primary .entry-content, #primary .entry-summary {
+#primary .entry-content,
+#primary .entry-summary {
     padding: 0px 0 0;
 }
 #primary .tcp_products_list td {

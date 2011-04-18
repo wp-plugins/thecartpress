@@ -17,6 +17,7 @@
  */
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
+require_once( dirname( dirname( __FILE__ ) ).'/daos/OrdersCosts.class.php' );
 
 $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 
@@ -46,7 +47,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			'date'			=> $order->created_at,
 			'user'			=> $order->shipping_firstname . ' ' . $order->shipping_lastname,
 			'status'		=> $order->status,
-			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount,
+			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
 			'code_tracking'	=> $order->code_tracking,
 			'payment_name'	=> $order->payment_name,
 			'payment_method'=> $order->payment_method,
@@ -54,7 +55,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 	}?>
 <div class="wrap">
 
-<h2><?php echo __( 'Orders', 'tcp' );?></h2>
+<h2><?php _e( 'Orders', 'tcp' );?></h2>
 
 <div class="clear"></div>
 

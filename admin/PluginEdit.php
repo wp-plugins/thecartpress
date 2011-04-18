@@ -27,6 +27,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
+	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
 	$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
 	if ( isset( $_REQUEST['all_countries'] ) ) {
 		$plugin_data[$instance]['all_countries'] = $_REQUEST['all_countries'];
@@ -52,10 +53,11 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 		<?php _e( 'Instance deleted', 'tcp' );?>
 	</p></div><?php
 }
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-$plugin = tcp_get_plugin( $plugin_id );
-$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
-$instance_href = $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance=';
+$admin_path		= 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
+$plugin			= tcp_get_plugin( $plugin_id );
+$plugin_type	= tcp_get_plugin_type( $plugin_id );
+$plugin_data	= get_option( 'tcp_plugins_data_' . $plugin_id );
+$instance_href	= $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance=';
 ?>
 
 <div class="wrap">
@@ -66,31 +68,43 @@ $instance_href = $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plug
 <div class="clear"></div>
 
 <div class="instances">
-<?php
-if ( is_array( $plugin_data ) ) :
+<?php if ( is_array( $plugin_data ) && count( $plugin_data ) ) :
+	$data = isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : array();
 	foreach( $plugin_data as $instance_id => $instance_data ) :
+		$data_instanced = isset( $plugin_data[$instance_id] ) ? $plugin_data[$instance_id] : array();
+		if ( isset( $data_instanced['title'] ) ) {
+			$title = $data_instanced['title'];
+		} else {
+			$title = sprintf( __( 'Instance %d', 'tcp' ), $instance_id );
+		}
 		if ( $instance_id == $instance ) : ?>
-			<span><?php printf( __( 'Instance %d', 'tcp' ), $instance_id );?></span>&nbsp;|&nbsp;
+			<span><?php echo $title;?></span>&nbsp;|&nbsp;
 		<?php else: ?>
-			<a href="<?php echo $instance_href, $instance_id;?>"><?php _e( 'instance', 'tcp' );?> <?php echo $instance_id;?></a>&nbsp;|&nbsp;
+			<a href="<?php echo $instance_href, $instance_id;?>"><?php echo $title;?></a>&nbsp;|&nbsp;
 		<?php endif;?>
 	<?php endforeach;?>
 	<a href="<?php echo $instance_href, $instance_id + 1;?>"><?php _e( 'new instance', 'tcp' );?></a>
-<?php endif;?>
-</div>
-
-<?php if ( is_array( $plugin_data ) ) {
-	$data = isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : array();
-} else
+<?php else :
 	$data = array();
+endif;
 $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING;
 ?>
+</div>
+
 <form method="post">
 	<input type="hidden" name="plugin_id" value="<?php echo $plugin_id;?>" />
 	<input type="hidden" name="plugin_type" value="<?php echo $plugin_type;?>" />
 	<input type="hidden" name="instance" value="<?php echo $instance;?>" />
 	<table class="form-table">
 	<tbody>
+	<tr valign="top">
+	<th scope="row">
+		<label for="title"><?php _e( 'Title', 'tcp' );?></label>
+	</th>
+	<td>
+		<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" />
+	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="active"><?php _e( 'Active', 'tcp' );?></label>
@@ -129,12 +143,21 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<label for="countries"><?php _e( 'Apply the plugin only to selected ones', 'tcp' );?>:</label>
 	</th>
 	<td>
-		<?php $countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
+		<?php $selected_countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
 		<div style="float:left">
 			<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
-				<?php $countries_db = Countries::getAll();
-				foreach( $countries_db as $country ) :?>
-				<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $countries, $country->iso );?>><?php echo $country->name;?></option>
+				<?php //$countries = Countries::getAll();
+				global $thecartpress;
+				if ( $plugin_type == 'shipping' )
+					$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+				else //billing
+					$isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+				if ( $isos )
+					$countries = Countries::getSome( $isos );
+				else
+					$countries = Countries::getAll();
+				foreach( $countries as $country ) :?>
+				<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $selected_countries, $country->iso );?>><?php echo $country->name;?></option>
 				<?php endforeach;?>
 			</select>
 		</div>

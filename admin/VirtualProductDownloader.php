@@ -158,7 +158,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 
 	define('WP_INSTALLING', true);
 	$root = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) ;
-//Loading wordpress enviorenment (+ plugins)
+	//Loading wordpress enviorenment (+ plugins)
 	require_once( $root . '/wp-load.php' );
 	require_once( $root . '/wp-config.php' );
 	require_once( $root . '/wp-includes/wp-db.php' );

@@ -27,7 +27,7 @@ if ( isset( $_REQUEST['tcp_edit_tax'] ) ) {
 		$error_tax['tax'][] = __( 'The "title" field must be a number and must be completed', 'tcp' );
 	if ( count( $error_tax ) == 0 ) {
 		if ( $tax_id > 0 ) {
-			$new_tax = (int)$_REQUEST['tax'];
+			$new_tax = (float)$_REQUEST['tax'];
 			$new_tax_label = $_REQUEST['title'];
 			global $wpdb;
 			$res = $wpdb->get_results( $wpdb->prepare( 'select post_id from ' . $wpdb->postmeta . ' where meta_key = \'tcp_tax_id\' and meta_value = %s', $tax_id ) );
@@ -71,7 +71,7 @@ $taxes = Taxes::getAll();
 ?>
 <div class="wrap">
 
-<h2><?php echo __( 'List of taxes', 'tcp' );?></h2>
+<h2><?php _e( 'List of taxes', 'tcp' );?></h2>
 <ul class="subsubsub">
 </ul>
 <div class="clear"></div>

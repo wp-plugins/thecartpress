@@ -46,7 +46,6 @@ $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance
 
 if ( have_posts() ) while ( have_posts() ) : the_post();?>
 
-
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 		<?php if ( $see_title ) : ?>
 			<div class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></div>
@@ -57,7 +56,7 @@ if ( have_posts() ) while ( have_posts() ) : the_post();?>
                 </div><!-- .entry-meta -->
             <?php endif; ?>
 			<?php if ( $see_price ) :?>
-			<div class="entry-price">	
+			<div class="entry-price">
 				<?php tcp_the_price_label('', ' ' . $currency);?> <?php tcp_the_tax_label('(', ')');?>
 			</div>
 			<?php endif;?>

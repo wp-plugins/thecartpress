@@ -499,7 +499,7 @@ msgstr ""
 
 #: thecartpress/shortcodes/Checkout.class.php:70
 msgid "The billing Region field must be completed"
-msgstr ""
+msgstr "The billing State field must be completed"
 
 #: thecartpress/shortcodes/Checkout.class.php:72
 #: thecartpress/shortcodes/Checkout.class.php:455
@@ -536,7 +536,7 @@ msgstr ""
 
 #: thecartpress/shortcodes/Checkout.class.php:89
 msgid "The shipping Region field must be completed"
-msgstr ""
+msgstr "The shipping State field must be completed"
 
 #: thecartpress/shortcodes/Checkout.class.php:91
 msgid "The shipping Postcode field must be completed"
@@ -642,7 +642,7 @@ msgstr ""
 
 #: thecartpress/shortcodes/Checkout.class.php:454
 msgid "The billing Region name field must be completed"
-msgstr ""
+msgstr "The billing State name field must be completed"
 
 #: thecartpress/shortcodes/Checkout.class.php:456
 msgid "The billing Country field must be completed"
@@ -693,7 +693,7 @@ msgstr ""
 #: thecartpress/shortcodes/Checkout.class.php:649
 #: thecartpress/shortcodes/Checkout.class.php:867
 msgid "Region"
-msgstr ""
+msgstr "State"
 
 #: thecartpress/shortcodes/Checkout.class.php:665
 #: thecartpress/shortcodes/Checkout.class.php:883
@@ -1550,7 +1550,7 @@ msgstr ""
 #: thecartpress/admin/AddressEdit.php:52
 #: thecartpress/admin/AddressEdit.php:53
 msgid "The Region field must be completed"
-msgstr ""
+msgstr "The State field must be completed"
 
 #: thecartpress/admin/AddressEdit.php:58
 msgid "The Postcode field must be completed"

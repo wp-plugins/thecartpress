@@ -36,11 +36,15 @@ class OrdersCosts {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_costs where order_cost_id = %d', $order_cost_id ) );
 	}
 
-	static function getCosts( $order_id) {
+	static function getCosts( $order_id ) {
 		global $wpdb;
 		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d order by cost_order', $order_id ) );
 	}
 
+	static function getTotalCost( $order_id ) {
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( 'select sum(cost) from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d', $order_id ) );
+	}
 	static function insert( $ordersCosts ) {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_orders_costs', array (

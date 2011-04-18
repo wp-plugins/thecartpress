@@ -36,17 +36,25 @@ class ShoppingCart {
 		$is_downloadable = tcp_is_downloadable( $post_id );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			if ( ! $is_downloadable ) {
-				$sci = $this->shopping_cart_items[$shopping_cart_id];
-				$sci->add( $count );
+				$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight );
+				$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
+				if ( $sci ) {
+					$sci = $this->shopping_cart_items[$shopping_cart_id];
+					$sci->add( $count );
+				}
 			}
 		} else {
 			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight );
-			if ( $is_downloadable ) {
-				$sci->setDownloadable( true );
-				$sci->setCount( 1 );
-			} else
-				$sci->setDownloadable( false );
-			$this->shopping_cart_items[$shopping_cart_id] = $sci;
+			$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
+			if ( $sci ) {
+				if ( $is_downloadable ) {
+					$sci->setDownloadable( true );
+					$sci->setCount( 1 );
+				} else {
+					$sci->setDownloadable( false );
+				}
+				$this->shopping_cart_items[$shopping_cart_id] = $sci;
+			}
 		}
 	}
 
@@ -244,7 +252,7 @@ class ShoppingCart {
 	}
 	
 	function setFreeShipping( $freeShipping ) {
-		$this->freeShipping = (bool)freeShipping;
+		$this->freeShipping = (bool)$freeShipping;
 	}
 
 	function isFreeShipping() {
@@ -326,21 +334,22 @@ class ShoppingCartItem {
 
 	function getUnitPrice() {
 		$price = $this->unit_price;
-		return apply_filters( 'tcp_item_get_unit_price', $price );
+		return apply_filters( 'tcp_item_get_unit_price', $price, $this->getPostId() );
 	}
 
 	function getTax() {
 		$tax = (float)$this->tax;
-		return apply_filters( 'tcp_item_get_tax', $tax );
+		return apply_filters( 'tcp_item_get_tax', $tax, $this->getPostId() );
 	}
 
 	function getUnitWeight() {
 		$weight = $this->unit_weight;
-		return apply_filters( 'tcp_item_get_unit_weight', $weight );
+		return apply_filters( 'tcp_item_get_unit_weight', $weight, $this->getPostId() );
 	}
 
 	function getPrice() {
 		return $this->getUnitPrice() * $this->count;
+		return apply_filters( 'tcp_item_get_price', $price, $this->getPostId() );
 	}
 
 	function getTotal() {
@@ -351,12 +360,13 @@ class ShoppingCartItem {
 			$price = $price * $this->count;
 			$total = $price - $this->getDiscount();
 		}
-		$total = apply_filters( 'tcp_shopping_cart_get_item_total', $total );
+		$total = apply_filters( 'tcp_shopping_cart_get_item_total', $total, $this->getPostId() );
 		return $total;
 	}
 
 	function getWeight() {
-		return $this->getUnitWeight() * $this->count;
+		$weight = $this->getUnitWeight() * $this->count;
+		return apply_filters( 'tcp_shopping_cart_get_weight', $weight, $this->getPostId() );
 	}
 
 	function isDownloadable() {
@@ -373,7 +383,7 @@ class ShoppingCartItem {
 
 	function getDiscount() {
 		$discount = $this->discount;
-		return apply_filters( 'tcp_item_get_discount', $discount );
+		return apply_filters( 'tcp_item_get_discount', $discount, $this->getPostId() );
 	}
 }
 
@@ -383,7 +393,7 @@ class ShoppingCartOtherCost {
 	private $order;
 
 	function __construct( $cost = 0, $desc = '', $order = 0 ) {
-		$this->cost = (double)$cost;
+		$this->cost = (float)$cost;
 		$this->desc = $desc;
 	}
 	

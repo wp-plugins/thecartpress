@@ -57,7 +57,9 @@ class ProductCustomFieldsMetabox {
 		//$product_type = get_post_meta( $post_id, 'tcp_type', true );
 		$product_type = tcp_get_the_product_type( $post_id );
 		if ( $product_type != '' && $product_type != 'SIMPLE' ) :?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'assigned products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'assigned products', 'tcp' );?><?php echo $count;?></a></li>
+			<li>|</li>
+			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>"><?php _e( 'create new assigned product', 'tcp' );?></a></li>
 		<?php endif;
 		$count = RelEntities::count( $post_id, 'PROD-PROD' );
 		if ( $count > 0 ) $count = ' (' . $count . ')';
@@ -75,7 +77,7 @@ class ProductCustomFieldsMetabox {
 			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $tcp_product_parent_id;?>&rel_type=GROUPED"><?php _e( 'parent assigned products', 'tcp' );?> <?php echo $count;?></a></li>
 			<li>|</li>
-			<li><a href="post.php?action=edit&post=<?php echo $tcp_product_parent_id;?>"><?php _e( 'edit parent product', 'tcp' );?></a></li>
+			<li><a href="post.php?action=edit&post=<?php echo $tcp_product_parent_id;?>"><?php printf( __( 'edit parent product (%s)', 'tcp' ), get_the_title( $tcp_product_parent_id ) );?></a></li>
 		<?php endif;?>
 		<?php if ( tcp_is_downloadable( $post_id ) ) :?>
 			<li>|</li>
@@ -84,7 +86,7 @@ class ProductCustomFieldsMetabox {
 		<?php do_action( 'tcp_product_metabox_toolbar', $post_id );?>
 		</ul>
 		<?php if ( $create_grouped_relation ): ?>
-			<input type="hidden" name="tcp_product_parent_id" id="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id;?>" />
+			<input type="hidden" name="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id;?>" />
 		<?php endif;?>
 		<div class="form-wrap">
 			<?php wp_nonce_field( 'tcp-product-custom-fields', 'tcp-product-custom-fields_wpnonce', false, true );?>
@@ -99,7 +101,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" type="text" style="width:12em" /></td>
+				<td><input name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" type="text" style="width:12em" />&nbsp;<?php echo $currency;?></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_tax_id"><?php _e( 'Tax', 'tcp' );?>:</label></th>
@@ -117,17 +119,29 @@ class ProductCustomFieldsMetabox {
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
 				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" type="text" style="width:12em" /></td>
 			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="tcp_back_end_label"><?php _e( 'Label', 'tcp' );?>:</label></th>
+				<td><input name="tcp_back_end_label" id="tcp_back_end_label" value="<?php echo tcp_get_the_meta( 'tcp_back_end_label', $post_id );?>" class="regular-text" type="text" style="width:25em" /></td>
+			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops/catalogue)', 'tcp' );?>:</label></th>
-				<td><?php 
-				$keys = get_post_custom_keys( $post_id );
-				if ( $keys )
-					$is_visible = tcp_is_visible( $post_id );
-				else
-					$is_visible = true;?>
-				<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php if ( $is_visible ):?>checked="checked"<?php endif;?> /></td>
+				<td><?php
+					if ( $create_grouped_relation ) {
+						$is_visible = false;
+					} elseif ( tcp_get_the_product_type( $post_id ) == '' ) {
+						$is_visible = true; //by default
+					} else {
+						$is_visible = tcp_is_visible( $post_id );
+					}
+				?><input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php checked( $is_visible, true );?> /></td>
 			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="tcp_hide_buy_button"><?php _e( 'Hide buy button', 'tcp' );?>:</label></th>
+				<?php $tcp_hide_buy_button = get_post_meta( $post_id, 'tcp_hide_buy_button', true );?>
+				<td><input type="checkbox" name="tcp_hide_buy_button" id="tcp_hide_buy_button" <?php checked( $tcp_hide_buy_button, true );?> /></td>
+			</tr>
+
 			<tr valign="top">
 				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' );?>:</label></th>
 				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text" type="text" style="width:4em">
@@ -183,14 +197,23 @@ class ProductCustomFieldsMetabox {
 	function saveCustomFields( $post_id, $post ) {
 		global $thecartpress;
 		if ( $post->post_type != ProductCustomPostType::$PRODUCT ) return;
-		if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
+		//if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
 		if ( !current_user_can( 'edit_post', $post_id ) ) return;
-		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
-		if ( $tcp_product_parent_id > 0 )
-			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id ) )
-				RelEntities::insert( $tcp_product_parent_id, $post_id );
 		$post_id = tcp_get_default_id( $post_id );
-		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 1;
+		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
+		$create_grouped_relation = $tcp_product_parent_id > 0;
+		if ( $create_grouped_relation ) {
+			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id ) ) 
+				RelEntities::insert( $tcp_product_parent_id, $post_id );
+			$args = array( 'fields' => 'ids' );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$PRODUCT_CATEGORY, array( 'fields' => 'ids' ) );
+			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$PRODUCT_CATEGORY );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$PRODUCT_TAG, array( 'fields' => 'names' ) );
+			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$PRODUCT_TAG );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$SUPPLIER_TAG, array( 'fields' => 'ids' ) );
+			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$SUPPLIER_TAG );
+		}
+		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
 		if ( $tax_id > 1 ) {
 			$tax = Taxes::get( $tax_id );
 			update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
@@ -201,25 +224,32 @@ class ProductCustomFieldsMetabox {
 			update_post_meta( $post_id, 'tcp_tax',  0 );
 			update_post_meta( $post_id, 'tcp_tax_label', '' );
 		}
-		update_post_meta( $post_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] )  ? $_POST['tcp_is_visible'] == 'yes' : false );
-		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] )  ? $_POST['tcp_is_downloadable'] == 'yes' : false );
-		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] )  ? (int)$_POST['tcp_max_downloads'] : 0 );
-		update_post_meta( $post_id, 'tcp_days_to_expire', isset( $_POST['tcp_days_to_expire'] )  ? (int)$_POST['tcp_days_to_expire'] : 0 );
+		update_post_meta( $post_id, 'tcp_back_end_label', isset( $_POST['tcp_back_end_label'] ) ? $_POST['tcp_back_end_label'] : '' );
+		if ( $create_grouped_relation ) {
+			$is_visible = isset( $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : false;
+		} else {
+			$is_visible = isset( $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : true;
+		}
+		update_post_meta( $post_id, 'tcp_is_visible', $is_visible );
+		update_post_meta( $post_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
+		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] ) ? $_POST['tcp_is_downloadable'] == 'yes' : false );
+		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] ) ? (int)$_POST['tcp_max_downloads'] : 0 );
+		update_post_meta( $post_id, 'tcp_days_to_expire', isset( $_POST['tcp_days_to_expire'] ) ? (int)$_POST['tcp_days_to_expire'] : 0 );
 		$type = isset( $_POST['tcp_type'] )  ? $_POST['tcp_type'] : 'SIMPLE';
 		update_post_meta( $post_id, 'tcp_type', $type );
 		if ( $type == 'GROUPED' )
 			$price = 0;
 		else {
-			$price = isset( $_POST['tcp_price'] )  ? $_POST['tcp_price'] : 0;
+			$price = isset( $_POST['tcp_price'] ) ? $_POST['tcp_price'] : 0;
 			$price = tcp_input_number( $price );
 		}
 		update_post_meta( $post_id, 'tcp_price', $price );
-		$weight = isset( $_POST['tcp_weight'] )  ? (float)$_POST['tcp_weight'] : 0;
+		$weight = isset( $_POST['tcp_weight'] ) ? (float)$_POST['tcp_weight'] : 0;
 		$weight = tcp_input_number( $weight );
 		update_post_meta( $post_id, 'tcp_weight', $weight );
-		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] )  ? (int)$_POST['tcp_order'] : '' );
-		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] )  ? $_POST['tcp_sku'] : '' );
-		$tcp_stock = isset( $_POST['tcp_stock'] )  ? $_POST['tcp_stock'] : -1;
+		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
+		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] ) ? $_POST['tcp_sku'] : '' );
+		$tcp_stock = isset( $_POST['tcp_stock'] ) ? $_POST['tcp_stock'] : -1;
 		if ( $tcp_stock == '' ) $tcp_stock = -1;
 		update_post_meta( $post_id, 'tcp_stock', (int)$tcp_stock );
 		
@@ -227,11 +257,11 @@ class ProductCustomFieldsMetabox {
 		if ( is_array( $translations ) && count( $translations ) > 0 )
 			foreach( $translations as $translation )
 				if ( $translation->element_id != $post_id ) {
-					update_post_meta( $translation->element_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] )  ? $_POST['tcp_is_visible'] == 'yes' : false );
-					update_post_meta( $translation->element_id, 'tcp_order', isset( $_POST['tcp_order'] )  ? (int)$_POST['tcp_order'] : '' );
-					update_post_meta( $translation->element_id, 'tcp_price', isset( $_POST['tcp_price'] )  ? (float)$_POST['tcp_price'] : 0 );
+					update_post_meta( $translation->element_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : false );
+					update_post_meta( $translation->element_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
+					update_post_meta( $translation->element_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
+					update_post_meta( $translation->element_id, 'tcp_price', isset( $_POST['tcp_price'] ) ? (float)$_POST['tcp_price'] : 0 );
 				}
-
 		do_action( 'tcp_product_metabox_save_custom_fields', $post_id );
 		$this->refreshMoira();
 	}
@@ -239,18 +269,19 @@ class ProductCustomFieldsMetabox {
 	function deleteCustomFields( $post_id ) {
 		$post = get_post( $post_id );
 		if ( $post->post_type != ProductCustomPostType::$PRODUCT ) return;
-		if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
+		//if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
 		if ( !current_user_can( 'edit_post', $post_id ) ) return;
 		$post_id = tcp_get_default_id( $post_id );
-		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
-		if ( $tcp_product_parent_id > 0 )
-			RelEntities::delete( $tcp_product_parent_id, $post_id );
+		RelEntities::deleteAll( $post_id );
+		RelEntities::deleteAllTo( $post_id );
 		delete_post_meta( $post_id, 'tcp_price' );
 		delete_post_meta( $post_id, 'tcp_tax_id' );
 		delete_post_meta( $post_id, 'tcp_tax' );
 		delete_post_meta( $post_id, 'tcp_tax_label' );
 		delete_post_meta( $post_id, 'tcp_type' );
+		delete_post_meta( $post_id, 'tcp_back_end_label' );
 		delete_post_meta( $post_id, 'tcp_is_visible' );
+		delete_post_meta( $post_id, 'tcp_hide_buy_button' );
 		delete_post_meta( $post_id, 'tcp_is_downloadable' );
 		delete_post_meta( $post_id, 'tcp_max_downloads' );
 		delete_post_meta( $post_id, 'tcp_days_to_expire' );
@@ -259,10 +290,20 @@ class ProductCustomFieldsMetabox {
 		delete_post_meta( $post_id, 'tcp_stock' );
 		delete_post_meta( $post_id, 'tcp_order' );
 		$translations = tcp_get_all_translations( $post_id );
-		if ( is_array( $translations ) && count( $translations ) > 0 )
-			foreach( $translations as $translation )
-				if ( $translation->element_id != $post_id )
+		if ( is_array( $translations ) && count( $translations ) > 0 ) {
+			foreach( $translations as $translation ) {
+				if ( $translation->element_id != $post_id ) {
 					wp_delete_post( $post_id );
+				}
+			}
+		}
+		$options = RelEntities::select( $post_id, 'OPTIONS' );
+		if ( is_array( $options ) ) {
+			foreach( $options as $option ) {
+				wp_delete_post( $option->id_to, true );
+			}
+		}
+		RelEntities::deleteAll( $post_id, 'OPTIONS' );
 		do_action( 'tcp_product_metabox_delete_custom_fields', $post_id );
 		$this->refreshMoira();
 	}

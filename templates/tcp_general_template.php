@@ -63,7 +63,7 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
  * @param boolean $echo Default to echo and not return the form.
  */
 function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
-	do_action( 'tcp_get_shopping_cart_summary' );
+	do_action( 'tcp_get_shopping_cart_before_summary' );
 	if ( ! $args )
 		$args = array(
 			'see_product_count' => false,
@@ -74,9 +74,9 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 			'see_checkout'		=> true,
 		);
 	global $thecartpress;
-	$currency				= tcp_get_the_currency();
-	$unit_weight			= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
-	$stock_management		= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
+	$currency			= tcp_get_the_currency();
+	$unit_weight		= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
+	$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 	$shoppingCart = TheCartPress::getShoppingCart();
 	$summary = '<ul class="tcp_shopping_cart_resume">';
 	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getTotal() ) . '&nbsp;' . $currency . '</li>';
@@ -103,8 +103,8 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 
 	if ( isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : false ) 
 		$summary .= '<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="' . __( 'Delete shopping cart', 'tcp' ) . '"/></form></li>';
+	$summary = apply_filters( 'tcp_get_shopping_cart_summary', $summary, $args );
 	$summary .= '</ul>';
-	$summary = apply_filters( 'tcp_get_shopping_cart_summary', $summary );
 	if ( $echo )
 		echo $summary;
 	else
