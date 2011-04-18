@@ -157,9 +157,10 @@ This plugin is released under a GPL license.
 = 1.0.8 =
 * Settings: Decimal point and thousands separator validation
 * Settings: Category and Tag base for products validation
-* Settings: Selected Contries to shipping and billing (Thanks to the community)
+* Settings: Selected Countries to shipping and billing (Thanks to the community)
 * Assigned products admin: Set list order (Thanks to the community)
 * Checkout + shipping/payment methods: Apply more than one instance per checkout and named instances (Thanks to the community)
+* Checkout: styles (Thanks to the community)
 * Improvements in multilingual support (Thanks to the community)
 * Checkout: Country list in current language (Thanks to the community)
 * Orders edit: Suspended orders could be deleted (Thanks to the community)
@@ -167,6 +168,8 @@ This plugin is released under a GPL license.
 * New settings: see image in content and/or in excerpt (plus size, alignment and link)
 * Added more useful hooks for plugin development
 * Currency symbol
+* Admin bar configuration (Thanks to the community)
+* Settings: What to do after add to the cart (Thanks to the community)
 
 = 1.0.7 =
 * Improvements in Buy Button (less code)
