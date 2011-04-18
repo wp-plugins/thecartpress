@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.0.8_BETA
+Version: 1.0.8
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
