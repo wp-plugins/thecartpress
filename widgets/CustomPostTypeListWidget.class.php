@@ -66,6 +66,12 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php endif;?>
 				<?php if ( isset( $instance['see_meta_data'] ) && $instance['see_meta_data'] ) : ?>
 				<?php endif; ?>
+				<?php if ( isset( $instance['see_image'] ) && $instance['see_image'] ) : 
+						$image_size = isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';?>
+				<div class="entry-post-<?php echo $image_size;?>">
+					<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail( isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail' ); ?></a>
+				</div><!-- .entry-post-thumbnail -->
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_excerpt'] ) && $instance['see_excerpt'] ) : ?>
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>
@@ -250,7 +256,8 @@ class CustomPostTypeListWidget extends WP_Widget {
 					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
 				<?php
 				$args = array(
-					'post_type'	=> $instance['post_type'],
+					'post_type'			=> $instance['post_type'],
+					'posts_per_page'	=> -1,
 				);
 				if ( $instance['post_type'] == 'tcp_product' ) {
 					$args['meta_key'] = 'tcp_is_visible';
@@ -318,7 +325,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 			foreach($imageSizes as $imageSize) : ?>
 				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $image_size );?>><?php echo $imageSize;?></option>
 			<?php endforeach;?>
-			?>
 			</select>
 		</p>
 		<p>

@@ -50,6 +50,12 @@ class CustomListWidget extends WP_Widget {
 					<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
 				</div>
 				<?php endif;?>
+				<?php if ( isset( $instance['see_image'] ) && $instance['see_image'] ) : 
+					$image_size = isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';?>
+				<div class="entry-post-<?php echo $image_size;?>">
+					<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail( $image_size ); ?></a>
+				</div><!-- .entry-post-thumbnail -->
+				<?php endif; ?>
 				<?php if ( $instance['see_excerpt'] ) : ?>
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>

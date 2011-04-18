@@ -38,7 +38,7 @@ if ( is_user_logged_in() ) {
 ?>
 <div class="wrap">
 
-<h2><?php echo __( 'List of addresses', 'tcp' );?></h2>
+<h2><?php _e( 'List of addresses', 'tcp' );?></h2>
 <ul class="subsubsub">
 	<li><a href="<?php echo $admin_path;?>AddressEdit.php"><?php _e( 'create new address', 'tcp' );?></a></li>
 </ul>

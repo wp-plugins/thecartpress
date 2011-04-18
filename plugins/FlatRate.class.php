@@ -79,13 +79,16 @@ class FlatRateShipping extends TCP_Plugin {
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		if ( $data['calculate_by'] == 'fix' )
-			if ( $data['calculate_type'] == 'by_order' )
+		if ( $data['calculate_by'] == 'fix' ) {
+			if ( $data['calculate_type'] == 'by_order' ) {
 				return $data['fixed_cost'];
-			else //'by_article'
+			} else {//'by_article'
 				return $data['fixed_cost'] * $shoppingCart->getCount();
-		else //'percentage'
-			return $shoppingCart->getTotalNoDownloadable() * $data['percentage'] / 100;
+			}
+		} else {//'percentage'
+			$total = $shoppingCart->getTotalNoDownloadable() - $shoppingCart->getDiscount();
+			return $total * $data['percentage'] / 100;
+		}
 	}
 }
 ?>

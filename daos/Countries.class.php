@@ -37,9 +37,10 @@ class Countries {
 		$wpdb->query( $sql );
 	}
 	
-	static function getAll() {
+	static function getAll( $language = 'en' ) {
 		global $wpdb;
-		return $wpdb->get_results( 'select iso, name from ' . $wpdb->prefix . 'tcp_countries order by name' );
+		$language = Countries::getIso( $language );
+		return $wpdb->get_results( 'select iso, ' . $language . ' as name from ' . $wpdb->prefix . 'tcp_countries order by name' );
 	}
 	
 	static function get( $iso ) {
@@ -47,6 +48,24 @@ class Countries {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_countries where iso = %s', $iso ) );
 	}
 	
+	static function getSome( $isos, $language = 'en' ) {
+		global $wpdb;
+		$selected_isos = '\'';
+		foreach ( $isos as $iso )
+			$selected_isos .= $iso . '\', \'';
+		$selected_isos = substr( $selected_isos, 0, -3 );
+		$language = Countries::getIso( $language );
+		$res = $wpdb->get_results( 'select iso, ' . $language . ' as name from ' . $wpdb->prefix . 'tcp_countries where iso in ( ' . $selected_isos . ')' );
+		return $res;
+	}
+
+	private static function getIso( $language = 'en' ) {
+		if ( $language == 'en' || $language == 'es' || $language == 'de' || $language == 'fr' )
+			return $language;
+		else
+			return 'en';
+	}
+
 	static function initData() {
 		global $wpdb;
 		$count = $wpdb->get_var( 'select count(*) from ' . $wpdb->prefix . 'tcp_countries' );

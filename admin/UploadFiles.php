@@ -31,15 +31,19 @@ function tcp_upload_file( $post_id, $file ) {
 		return false;
 	} else {
 		global $wpdb;
-		$folder_path = $downloadable_path . '/' . $wpdb->prefix . 'tcp';
+		//$folder_path = $downloadable_path . '/' . $wpdb->prefix . 'tcp';
+		$folder_path = $downloadable_path . '/tcp';
 		if ( ! file_exists( $folder_path ) )
-			if ( ! mkdir( $folder_path ) ) {
+			if ( ! wp_mkdir_p( $folder_path ) ) {
 				$error_upload = sprintf( __( 'Error creating the folder "%s".', 'tcp' ), $folder_path );
 				return false;
 			}
 		$file_path = $folder_path . '/upload_' . $post_id . '.' . $ext;
 		tcp_set_the_file( $post_id, $file_path );
 		if ( move_uploaded_file( $_FILES['upload_file']['tmp_name'], $file_path ) ) {
+			$stat = stat( dirname( $file_path ));
+			$perms = $stat['mode'] & 0000666;
+			@ chmod( $file_path, $perms );
 			do_action( 'tcp_uploaded_file', $file_path );
 			return true;
 		} else {
@@ -54,7 +58,7 @@ if ( $post_id ) {
 	if ( isset( $_REQUEST['tcp_upload_virtual_file'] ) ) {
 		if ( tcp_upload_file( $post_id, $_FILES['upload_file'] ) ) {?>
 			<div id="message" class="updated"><p><?php
-				$size = (double)$_FILES['upload_file']['size'];
+				$size = (float)$_FILES['upload_file']['size'];
 				if ( $size > 1048576 ) {
 					$size = $size / 1048576;
 					printf (__( 'Upload completed, uploaded %d Mbytes', 'tcp' ), number_format( $size, 2 ) );

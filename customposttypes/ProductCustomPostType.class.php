@@ -56,11 +56,13 @@ class ProductCustomPostType {
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
 			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
 			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
-			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products',
+			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) && $thecartpress->settings['product_rewrite'] != '' ? $thecartpress->settings['product_rewrite'] : 'products',
 		);
 		register_post_type( ProductCustomPostType::$PRODUCT, $register );
-		add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
-		add_filter( 'manage_edit-' . ProductCustomPostType::$PRODUCT . '_columns', array( $this, 'customColumnsDefinition' ) );
+		if ( is_admin() ) {
+			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
+			add_filter( 'manage_edit-' . ProductCustomPostType::$PRODUCT . '_columns', array( $this, 'customColumnsDefinition' ) );
+		}
 		$labels = array(
 			'name'				=> _x( 'Categories', 'taxonomy general name', 'tcp' ),
 			'singular_name'		=> _x( 'Category', 'taxonomy singular name', 'tcp' ),
@@ -126,8 +128,14 @@ class ProductCustomPostType {
 		global $post;
 		if ( $post->post_type != 'tcp_product' ) return $actions;
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		if ( $post->post_type == 'tcp_product' && tcp_get_the_product_type( $post->ID ) == 'GROUPED' ) 
-			$actions['tcp_assigned'] = '<a href="' . $admin_path . 'AssignedProductsList.php&post_id=' . $post->ID . '&rel_type=GROUPED" title="' . esc_attr( __( 'See assigned products', 'tcp' ) ) . '">' . __( 'assigned products', 'tcp' ) . '</a>';
+		if ( $post->post_type == 'tcp_product' && tcp_get_the_product_type( $post->ID ) == 'GROUPED' ) {
+			$count = RelEntities::count( $post->ID );
+			if ( $count > 0 )
+				$count = ' (' . $count . ')';
+			else
+				$count = '';
+			$actions['tcp_assigned'] = '<a href="' . $admin_path . 'AssignedProductsList.php&post_id=' . $post->ID . '&rel_type=GROUPED" title="' . esc_attr( __( 'See assigned products', 'tcp' ) ) . '">' . __( 'assigned products', 'tcp' ) . $count . '</a>';
+		}
 		$actions = apply_filters( 'tcp_product_row_actions', $actions );
 		return $actions;
 	}
@@ -139,10 +147,13 @@ class ProductCustomPostType {
 		$columns = array(
 			'cb'	=> '<input type="checkbox" />',
 			'title'	=> __( 'Name', 'tcp' ),
+			'label'	=> __( 'label', 'tcp' ),
 			'price'	=> __( 'Type - price', 'tcp' ),
 			'date'	=> __( 'date', 'tcp' ),
 			//'comments'	=> __('Comments', 'tcp' ),
 		);
+		global $thecartpress;
+		if ( ! $thecartpress->settings['show_back_end_label'] ) unset( $columns['label'] );
 		return $columns;
 	}
 
@@ -154,7 +165,11 @@ class ProductCustomPostType {
 		if ( $post->post_type == ProductCustomPostType::$PRODUCT ) 
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
-			} elseif ('price' == $column_name) {
+			} elseif ( 'label' == $column_name ) {
+				//echo get_the_title( $post->ID );
+				$label = tcp_get_the_meta( 'tcp_back_end_label', $post->ID );
+				if ( strlen( $label ) ) echo  $label;
+			} elseif ( 'price' == $column_name ) {
 				global $thecartpress;
 				echo tcp_get_the_product_type( $post->ID ) . ' - ' . tcp_get_the_price( $post->ID ) . '&nbsp;' . $thecartpress->settings['currency'];
 			}
@@ -211,16 +226,21 @@ class ProductCustomPostType {
 				),
 			);
 		}
+		
 		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == ProductCustomPostType::$PRODUCT ) {
-			global $thecartpress;
-			$hide_visible = isset( $thecartpress->settings['hide_visibles'] ) ? (bool)$thecartpress->settings['hide_visibles'] : true;
-			if ( $hide_visible )
-				$query->query_vars['meta_query'][] = array(
-					'key'		=> 'tcp_is_visible',
-					'value'		=> 1,
-					'compare'	=> '=',
-					'type'		=> 'numeric',
-				);
+			global $pagenow;
+			if ( $pagenow == 'edit.php' ) {
+				global $thecartpress;
+				$hide_invisible = isset( $thecartpress->settings['hide_visibles'] ) ? (bool)$thecartpress->settings['hide_visibles'] : true;
+				if ( $hide_invisible ) {
+					$query->query_vars['meta_query'][] = array(
+						'key'		=> 'tcp_is_visible',
+						'value'		=> 1,
+						'compare'	=> '=',
+						'type'		=> 'numeric',
+					);
+				}
+			}
 		}
 		return $query;
 	}

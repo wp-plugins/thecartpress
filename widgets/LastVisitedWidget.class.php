@@ -26,7 +26,8 @@ class LastVisitedWidget extends CustomListWidget {
 
 	function widget( $args, $instance ) {
 		$shoppingCart = TheCartPress::getShoppingCart();
-		$ids = array_keys( $shoppingCart->getVisitedPosts() );
+		$visitedPosts = $shoppingCart->getVisitedPosts();
+		$ids = array_keys( $visitedPosts );
 		if ( count( $ids ) == 0 ) return;
 		$loop_args = array(
 			'post__in'			=> $ids,

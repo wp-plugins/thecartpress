@@ -16,37 +16,80 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
-require_once( dirname( dirname( __FILE__ ) ).'/classes/OrderPage.class.php' );
+require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
+require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
 
-if ( isset( $_REQUEST['tcp_order_edit'] ) ) {
-	Orders::edit( $_REQUEST['order_id'], $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
-	do_action( 'tcp_admin_order_editor_save', $_REQUEST['order_id'] );?>
-		<div id="message" class="updated"><p>
-			<?php _e( 'Order saved', 'tcp' );?>
-		</p></div><?php
-}
 $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 
 $order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : '';
 $status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
+
+if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders' ) ) {
+	Orders::edit( $order_id, $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
+	do_action( 'tcp_admin_order_editor_save', $order_id );?>
+	<div id="message" class="updated"><p>
+		<?php _e( 'Order saved', 'tcp' );?>
+	</p></div><?php
+} elseif ( isset( $_REQUEST['tcp_order_delete'] ) && current_user_can( 'tcp_edit_orders' ) ) {
+	Orders::delete( $order_id );
+	do_action( 'tcp_admin_order_editor_delete', $order_id );?>
+	<div id="message" class="updated"><p>
+		<?php _e( 'Order deleted', 'tcp' );?>
+	</p></div>
+	<p><a href="<?php echo $admin_path;?>OrdersList.php&status=<?php echo $status?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
+	<?php
+	return;
+}
+$order = Orders::get( $order_id );
+
+if ( isset( $_REQUEST['send_email'] ) ) {
+	if ( $_REQUEST['send_email'] == 'billing' )
+		$to = $order->billing_email;
+	else
+		$to = $order->shipping_email;
+	$from = isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+	$headers .= 'To: ' . $to . "\r\n";
+	$headers .= 'From: ' . $from . "\r\n";
+	$subject = 'Order from '.get_bloginfo( 'name' );
+	$message = OrderPage::show( $order_id, true, false );
+	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
+	mail( $to, $subject, $message_to_customer, $headers );?>
+	<div id="message" class="updated"><p>
+		<?php _e( 'Mail sent', 'tcp' );?>
+	</p></div><?php
+}
 ?>
+<style>
+#shipping_info {
+	width: 50%;
+	float: left;
+}
+</style>
 <div class="wrap">
 
-<h2><?php echo __( 'Order', 'tcp' );?></h2>
+<h2><?php _e( 'Order', 'tcp' );?></h2>
 <ul class="subsubsub">
 	<li><a href="<?php echo $admin_path;?>OrdersList.php&status=<?php echo $status?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+<?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
+	<li>&nbsp;|&nbsp;</li>
+	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() );?>"><?php _e( 'send email to billing email', 'tcp' );?></a></li>
+<?php endif;?>
+<?php if ( $order && strlen( $order->shipping_email ) > 0 ) : ?>
+	<li>&nbsp;|&nbsp;</li>
+	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() );?>"><?php _e( 'send email to shipping email', 'tcp' );?></a></li>
+<?php endif;?>
 </ul><!-- subsubsub -->
 
 <div class="clear"></div>
 <?php 
 $orderpage = OrderPage::show( $order_id, true, false );
-$orderpage = str_replace( '<table class="tcp_details"', '<table class="widefat fixed"', $orderpage );
+$_SESSION['order_page'] = $orderpage;
+//$orderpage = str_replace( '<table class="tcp_details"', '<table class="widefat fixed"', $orderpage );
+$orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
 echo $orderpage;
-?>
 
-<?php
-$order = Orders::get( $order_id );
 if ( $order ) :?>
 <form method="post" name="frm">
 	<input type="hidden" name="status" value="<?php echo $status;?>" />
@@ -96,6 +139,9 @@ if ( $order ) :?>
 	</tbody></table>
 	<p class="submit">
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
+		<?php if ( $order->status == Orders::$ORDER_SUSPENDED ) :?>
+		<input name="tcp_order_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-primary" />
+		<?php endif;?>
 	</p>
 </form>
 <?php endif;?>

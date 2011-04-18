@@ -91,13 +91,13 @@ while ( have_posts() ) : the_post();
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 			<?php if ( $see_price ) :?>
-			<div class="entry-price">	
+			<div class="entry-price">
 				<?php tcp_the_price_label('', ' ' . $currency);?> <?php tcp_the_tax_label('(', ')');?>
 			</div>
 			<?php endif;?>
 			<?php if ( $see_image ) : ?>
 			<div class="entry-post-thumbnail">
-				<a class="size-thumbnail" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>
+				<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>
 			</div><!-- .entry-post-thumbnail -->
 			<?php endif; ?>	
 			<?php if ( $see_excerpt ) : ?>

@@ -2,8 +2,8 @@
 Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
-Tested up to: 3.1
-Stable Tag: 1.0.7
+Tested up to: 3.1.1
+Stable Tag: 1.0.8
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -153,6 +153,20 @@ This plugin is released under a GPL license.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.8 =
+* Settings: Decimal point and thousands separator validation
+* Settings: Category and Tag base for products validation
+* Settings: Selected Contries to shipping and billing (Thanks to the community)
+* Assigned products admin: Set list order (Thanks to the community)
+* Checkout + shipping/payment methods: Apply more than one instance per checkout and named instances (Thanks to the community)
+* Improvements in multilingual support (Thanks to the community)
+* Checkout: Country list in current language (Thanks to the community)
+* Orders edit: Suspended orders could be deleted (Thanks to the community)
+* Orders edit: new links to send the order in an email to the customer (billing and shipping email) (Thanks to the community)
+* New settings: see image in content and/or in excerpt (plus size, alignment and link)
+* Added more useful hooks for plugin development
+* Currency symbol
 
 = 1.0.7 =
 * Improvements in Buy Button (less code)

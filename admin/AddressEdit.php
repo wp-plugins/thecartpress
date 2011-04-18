@@ -188,7 +188,11 @@ function tcp_get_value( $id, $echo = true ) {
 	<th scope="row"><label for="country_id"><?php _e( 'Country', 'tcp' );?>:</label></th>
 	<td>
 		<select id="country_id" name="country_id">
-		<?php $countries = Countries::getAll();
+		<?php $billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+		if ( $billing_isos )
+			$countries = Countries::getSome( $billing_isos, tcp_get_admin_language_iso() );
+		else
+			$countries = Countries::getAll( tcp_get_admin_language_iso() );
 		$country_id = tcp_get_value( 'country_id', false );
 		if ( $country_id == '' ) {
 			global $thecartpress;

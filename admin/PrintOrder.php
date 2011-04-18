@@ -15,22 +15,87 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
-session_start();
+//session_start();
+$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/';
+
+//include_once( $wordpress_path . 'wp-config.php' );
+//include_once( $wordpress_path . 'wp-includes/wp-db.php' );
+
+require($wordpress_path . 'wp-blog-header.php');
+
 ?>
 <html>
 <head>
-<title><?php echo _('Order');?></title>
+<meta charset="UTF-8" />
+<title><?php _e( 'Order', 'tcp' );?></title>
 <style>
-table {width: 90%;}
+    body,td,th {
+	   font-family: Arial, Helvetica, sans-serif;
+	   font-size: 12px;
+	   color: #333;
+	}
+	a:link {
+	   color: #C00;
+	   text-decoration: none;
+    }
+    a:hover {
+	    color: #960000;
+		text-decoration: none;
+    }
+	a:visited {
+    	text-decoration: none;
+	    color: #C00;
+    }
+    a:active {
+	    text-decoration: none;
+	    color: #960000;
+    }
+	.tcp_shopping_cart_table .tcp_cart_name {
+		text-align: left;
+		background-color: #f0f0f0;
+	    width: inherit;
+	    font-size: 12px;
+	}
+	.tcp_shopping_cart_table .tcp_cart_name a{
+	    text-align: left;
+		text-decoration: none;
+	}
+	.tcp_shopping_cart_table {
+		width: 90%;
+	    border:0px;
+	}
+   .tcp_shopping_cart_table tr th,
+   .tcp_shopping_cart_table thead th {
+		width: 90%;
+	    background-color: #333;
+	    padding: 4px 10px;
+	    line-height: 22px;
+	    color: #CCC;
+	}
+   .tcp_shopping_cart_table tr td {
+		width: 90%;
+	    background-color: #f7f7f7;
+	    font-size: 11px;
+	    padding: 4px 10px;
+	    border-top: 1px dotted #ccc;
+	}
 
+   .tcp_shopping_cart_table tr.odd td {
+		background-color: #FfF7FC;
+	}
+	
+    #shipping_info {
+		width: 50%;
+		float: left;
+	}
 </style>
-</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 <body>
-<?php echo $_SESSION['order_page'];?>
-<p>
-<a href="javascript:print();"><?php echo _('print');?></a>
-&nbsp;|&nbsp;
-<a href="javascript:close();"><?php echo _('close');?></a>
-</p>
+	<?php echo $_SESSION['order_page'];?>
+	<p>
+		<a href="javascript:print();"><?php _e( 'print', 'tcp' );?></a>
+		&nbsp;|&nbsp;
+		<a href="javascript:close();"><?php _e( 'close', 'tcp' );?></a>
+	</p>
 </body>
 </html>

@@ -77,12 +77,12 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 	<div id="message" class="updated"><p>
 		<?php _e( 'Shortcode saved', 'tcp' );?>
 	</p></div><?php
-
 }
 
 if ( $shortcode_id == -1 ) {
 	if ( is_array( $shortcodes_data ) && count( $shortcodes_data ) > 0 ) {
-		$shortcode_id = array_shift( array_keys( $shortcodes_data ) );
+		$keys = array_keys( $shortcodes_data );
+		$shortcode_id = array_shift( $keys );
 		$shortcode_data = $shortcodes_data[$shortcode_id];
 	 } else {
 		 $shortcode_id = 0;
@@ -115,7 +115,8 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 			<?php endif;?>
 		<?php endforeach;?>
 		<?php if ( isset( $shortcodes_data[$shortcode_id] ) ) :
-				$last_id = array_pop( array_keys( $shortcodes_data ) ) + 1; ?>
+			$keys = array_keys( $shortcodes_data );
+			$last_id = array_pop( $keys ) + 1; ?>
 		<a href="<?php echo $shortcode_href, $last_id;?>"><?php _e( 'new shortcode', 'tcp' );?></a>
 		<?php endif;?>
 	<?php else: ?>

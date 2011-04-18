@@ -117,6 +117,17 @@ function tcp_get_plugin( $plugin_id ) {
 	else return null;
 }
 
+function tcp_get_plugin_type( $plugin_id ) {
+	global $tcp_shipping_plugins;
+	global $tcp_payment_plugins;
+
+	if ( isset( $tcp_shipping_plugins[$plugin_id] ) )
+		return 'shipping';
+	elseif ( isset( $tcp_payment_plugins[$plugin_id] ) )
+		return 'payment';
+	else return '';
+}
+
 function tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart ) {
 	if ( $shoppingCart->isDownloadable() )
 		return array();
@@ -145,19 +156,33 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 			foreach( $plugin_data as $instance_id => $instance ) {
 				if ( $instance['active'] ) {
 					$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
-					if ( $all_countries )
+					if ( $all_countries ) {
 						$applicable_instance_id = $instance_id;
-					else {
+						//TODO
+						$data = $plugin_data[$applicable_instance_id];
+						if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
+							$applicable_plugins[] = array(
+								'plugin'	=> $plugin,
+								'instance'	=> $applicable_instance_id,
+							);
+					} else {
 						$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
 						if ( in_array( $shipping_country,  $countries ) ) {
 							$applicable_instance_id = $instance_id;
 							$applicable_for_country = true;
-							break;
+							//TODO
+							$data = $plugin_data[$applicable_instance_id];
+							if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
+								$applicable_plugins[] = array(
+									'plugin'	=> $plugin,
+									'instance'	=> $applicable_instance_id,
+								);
+							//break;
 						}
 					}
 				}
 			}
-			if ( $applicable_instance_id > -1 ) {
+/*			if ( $applicable_instance_id > -1 ) {
 				$data = $plugin_data[$applicable_instance_id];
 				if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
 					$applicable_plugins[] = array(
@@ -165,6 +190,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 						'instance'	=> $applicable_instance_id,
 					);
 			}
+*/
 		}
 	}
 

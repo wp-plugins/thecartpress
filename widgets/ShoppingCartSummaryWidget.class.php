@@ -31,7 +31,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract( $args );
-		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '');
+		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : ' ' );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
 		tcp_get_shopping_cart_summary( $instance );
@@ -47,6 +47,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] );
 		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] );
 		$instance['see_checkout']		= isset( $new_instance['see_checkout'] );
+		$instance = apply_filters( 'tcp_shopping_cart_summary_widget_update', $instance, $new_instance );
 		return $instance;
 	}
 
@@ -67,25 +68,25 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_product_count'); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e('See product count', 'tcp'); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count ' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e( 'See product count', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_stock_notice'); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e('See stock notice', 'tcp'); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_stock_notice ' ); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e( 'See stock notice', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_weight'); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e('See weigth', 'tcp'); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight ' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_delete_all'); ?>" name="<?php echo $this->get_field_name( 'see_delete_all' ); ?>"<?php checked( $see_delete_all ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_delete_all' ); ?>"><?php _e('See delete button', 'tcp'); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_delete_all ' ); ?>" name="<?php echo $this->get_field_name( 'see_delete_all' ); ?>"<?php checked( $see_delete_all ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_delete_all' ); ?>"><?php _e( 'See delete button', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_shopping_cart'); ?>" name="<?php echo $this->get_field_name( 'see_shopping_cart' ); ?>"<?php checked( $see_shopping_cart ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_shopping_cart' ); ?>"><?php _e('See shopping cart link', 'tcp'); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_shopping_cart ' ); ?>" name="<?php echo $this->get_field_name( 'see_shopping_cart' ); ?>"<?php checked( $see_shopping_cart ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_shopping_cart' ); ?>"><?php _e( 'See shopping cart link', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('see_checkout'); ?>" name="<?php echo $this->get_field_name( 'see_checkout' ); ?>"<?php checked( $see_checkout ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_checkout' ); ?>"><?php _e('See checkout link', 'tcp'); ?></label>
-		</p>
-		<?php
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_checkout ' ); ?>" name="<?php echo $this->get_field_name( 'see_checkout' ); ?>"<?php checked( $see_checkout ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_checkout' ); ?>"><?php _e( 'See checkout link', 'tcp ' ); ?></label>
+		<?php do_action( 'tcp_shopping_cart_summary_widget_form', $this, $instance ); ?>
+		</p><?php
 	}
 }
 ?>
