@@ -47,7 +47,8 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			'date'			=> $order->created_at,
 			'user'			=> $order->shipping_firstname . ' ' . $order->shipping_lastname,
 			'status'		=> $order->status,
-			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
+			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered,
+			'others'		=> $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
 			'code_tracking'	=> $order->code_tracking,
 			'payment_name'	=> $order->payment_name,
 			'payment_method'=> $order->payment_method,
@@ -79,6 +80,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 <table class="widefat fixed" cellspacing="0">
 <thead>
 <tr>
+	<th scope="col" class="manage-column"><?php _e( 'Id', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
@@ -89,6 +91,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 </thead>
 <tfoot>
 <tr>
+	<th scope="col" class="manage-column"><?php _e( 'Id', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
@@ -103,9 +106,11 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 	<tr><td colspan="5"><?php _e( 'The list of orders is empty', 'tcp' );?></td></tr>
 <?php else :
 	$order_lines = array();
-	$order_id ='';
+	$order_id = '';
+	$others = 0;
 	foreach( $orders as $order ) :
 		if ( $order_id != $order['order_id'] ) {
+			if ( $order_id != '' ) $order_lines[$order_id]['total'] += $others;
 			$order_lines[$order['order_id']] = array(
 				'order_id'		=> $order['order_id'],
 				'date'			=> $order['date'],
@@ -117,12 +122,15 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 				'total'			=> $order['total'],
 			);
 			$order_id = $order['order_id'];
+			$others = $order['others'];
 		} else {
 			$order_lines[$order['order_id']]['total'] += $order['total'];
 		}
 	endforeach;
+	if ( $order_id != '' ) $order_lines[$order_id]['total'] += $others;
 	foreach( $order_lines as $order ) :?> 
 	<tr>
+		<td><?php echo $order['order_id'];?></td>
 		<td><?php echo $order['date'];?></td>
 		<td><?php echo $order['user'];?></td>
 		<td>
