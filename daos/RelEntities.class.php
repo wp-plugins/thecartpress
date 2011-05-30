@@ -100,7 +100,7 @@ class RelEntities {
 	static function select( $id_from, $rel_type = 'GROUPED' ) {
 		global $wpdb;
 		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_rel_entities 
-				where id_from = %d and rel_type = %s order by list_order asc', $id_from, $rel_type ) );
+				where id_from = %d and rel_type = %s order by list_order ', $id_from, $rel_type ) );
 	}
 
 	/*static function getOptionsTree( $id_from ) {

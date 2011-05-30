@@ -25,7 +25,7 @@ class ProductCustomPostType {
 	public static $PRODUCT			= 'tcp_product';
 	public static $PRODUCT_CATEGORY	= 'tcp_product_category';
 	public static $PRODUCT_TAG		= 'tcp_product_tag';
-	public static $SUPPLIER_TAG		= 'tcp_product_supplier'; //_tag';
+	public static $SUPPLIER_TAG		= 'tcp_product_supplier';
 	
 	function __construct() {
 		global $thecartpress;
@@ -53,7 +53,7 @@ class ProductCustomPostType {
 			'capability_type'	=> 'post',
 			'hierarchical'		=> false, //allways false
 			'query_var'			=> true,
-			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments', ),
+			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments' ),
 			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
 			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
 			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) && $thecartpress->settings['product_rewrite'] != '' ? $thecartpress->settings['product_rewrite'] : 'products',
@@ -94,7 +94,6 @@ class ProductCustomPostType {
 			'hierarchical'	=> true,
 			'query_var'		=> true,
 			'rewrite'		=> array('slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
-			//'label'		=> __('Suppliers', 'tcp' ),
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
 				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name', 'tcp' ),
@@ -166,12 +165,10 @@ class ProductCustomPostType {
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
 			} elseif ( 'label' == $column_name ) {
-				//echo get_the_title( $post->ID );
 				$label = tcp_get_the_meta( 'tcp_back_end_label', $post->ID );
 				if ( strlen( $label ) ) echo  $label;
 			} elseif ( 'price' == $column_name ) {
-				global $thecartpress;
-				echo tcp_get_the_product_type( $post->ID ) . ' - ' . tcp_get_the_price( $post->ID ) . '&nbsp;' . $thecartpress->settings['currency'];
+				echo tcp_get_the_product_type( $post->ID ) . ' - ' . tcp_format_the_price( tcp_get_the_price( $post->ID ) );
 			}
 	}
 

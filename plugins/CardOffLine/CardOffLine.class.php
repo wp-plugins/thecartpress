@@ -58,19 +58,19 @@ class CardOffLine extends TCP_Plugin {
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
 		<input type="hidden" name="return_url" value="<?php echo $return_url;?>" />
 		<input type="hidden" name="new_status" value="<?php echo $new_status;?>" />
-		<table>
+		<table class="tcp_card_offline">
 		<tbody>
 			<tr valign="top">
-		<th scope="row">
+		<th scope="row" class="tcp_card_holder">
 			<label for="card_holder"><?php _e( 'Credit card holder', 'tcp' );?>:</label>
-		</th><td>
+		</th><td class="tcp_card_holder">
 			<input type="text" id="card_holder" name="card_holder" size="40" maxlength="150" />
 			<br/><span class="error" id="tcp_error_card_holder"></span>
 		</td></tr>
 		<tr valign="top">
-		<th scope="row">
+		<th scope="row" class="tcp_card_number">
 			<label for="card_number_1"><?php _e( 'Card number', 'tcp' );?>:</label>
-		</th><td>
+		</th><td class="tcp_card_number">
 			<input type="text" id="card_number_1" name="card_number_1" size="4" maxlength="4" />
 			<input type="text" id="card_number_2" name="card_number_2" size="4" maxlength="4" />
 			<input type="text" id="card_number_3" name="card_number_3" size="4" maxlength="4" />
@@ -79,9 +79,9 @@ class CardOffLine extends TCP_Plugin {
 			<br/><span class="error" id="tcp_error_offline"></span>
 		</td></tr>
 		<tr valign="top">
-		<th scope="row">
+		<th scope="row" class="tcp_expiration_date">
 			<label for="expiration_month"><?php _e( 'Expiration date', 'tcp' );?>:</label>
-		</th><td>
+		</th><td class="tcp_expiration_date">
 			<label for="expiration_month"><?php _e( 'Month', 'tcp' );?>:</label>
 			<select id="expiration_month" name="expiration_month" >
 				<?php for($i = 1; $i < 13; $i++)
@@ -95,9 +95,9 @@ class CardOffLine extends TCP_Plugin {
 		</td>
 		</tr>
 		<tr valign="top">
-		<th scope="row">
+		<th scope="row" class="tcp_card_type">
 			<label for="card_type"><?php _e( 'Card type', 'tcp' );?>:</label>
-		</th><td>
+		</th><td class="tcp_card_type">
 			<select id="card_type" name="card_type" >
 				<?php $types = array (
 					array(
@@ -119,7 +119,6 @@ class CardOffLine extends TCP_Plugin {
 				<?php endforeach;?>
 			</select>
 		</td></tr>
-		
 		</tbody>
 		</table>
 		<script>
@@ -151,7 +150,7 @@ class CardOffLine extends TCP_Plugin {
 			}
 		}
 		</script>
-		<p><input type="button" onclick="tcp_checkCard();" name="tcp_send_off_line_info" value="<?php echo __( 'Send', 'tcp' );?>" class="button-primary"/></p>
+		<p class="tcp_card_offline_execute"><input type="button" onclick="tcp_checkCard();" name="tcp_send_off_line_info" value="<?php echo __( 'Send', 'tcp' );?>" class="button-primary"/></p>
 		</form>
 		<?php
 	}

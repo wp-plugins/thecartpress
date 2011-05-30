@@ -1,0 +1,59 @@
+<?php
+/**
+ * This file is part of TheCartPress.
+ * 
+ * TheCartPress is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TheCartPress is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * This class defines the post type 'tcp_template'.
+ */
+class TemplateCustomPostType {
+	public static $TEMPLATE = 'tcp_template';
+	
+	function __construct() {
+		global $thecartpress;
+		$labels = array(
+			'name'					=> _x( 'Templates', 'post type general name', 'tcp' ),
+			'singular_name'			=> _x( 'Template', 'post type singular name', 'tcp' ),
+			'add_new'				=> _x( 'Add New', 'product', 'tcp' ),
+			'add_new_item'			=> __( 'Add New', 'tcp' ),
+			'edit_item'				=> __( 'Edit Template', 'tcp' ),
+			'new_item'				=> __( 'New Template', 'tcp' ),
+			'view_item'				=> __( 'View Template', 'tcp' ),
+			'search_items'			=> __( 'Search Templates', 'tcp' ),
+			'not_found'				=> __( 'No templates found', 'tcp' ),
+			'not_found_in_trash'	=> __( 'No templates found in Trash', 'tcp' ),
+			'parent_item_colon'		=> '',
+		);
+		$register = array (
+			'label'				=> __( 'Templates', 'tcp' ),
+			'singular_label'	=> __( 'Template', 'tcp' ),
+			'labels'			=> $labels,
+			'public'			=> true,
+			'show_ui'			=> true,
+			'_builtin'			=> false, // It's a custom post type, not built in! (http://kovshenin.com/archives/extending-custom-post-types-in-wordpress-3-0/)
+			'_edit_link'		=> 'post.php?post=%d',
+			'capability_type'	=> 'post',
+			'hierarchical'		=> false, //allways false
+			'query_var'			=> true,
+			'supports'			=> array( 'title', 'excerpt', 'editor' ), //, 'thumbnail', 'comments' ),
+			//'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
+			//'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['template_rewrite'] ) ? $thecartpress->settings['template_rewrite'] : 'templates' ),
+			//'has_archive'		=> isset( $thecartpress->settings['template_rewrite'] ) && $thecartpress->settings['template_rewrite'] != '' ? $thecartpress->settings['template_rewrite'] : 'templates',
+		);
+		register_post_type( TemplateCustomPostType::$TEMPLATE, $register );
+	}
+}
+?>

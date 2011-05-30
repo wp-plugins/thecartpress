@@ -80,13 +80,16 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	<li>&nbsp;|&nbsp;</li>
 	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() );?>"><?php _e( 'send email to shipping email', 'tcp' );?></a></li>
 <?php endif;?>
+<?php if ( $order_id > 0 ) : ?>
+	<li>&nbsp;|&nbsp;</li>
+	<li><a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' );?>" target="_blank"><?php _e( 'print', 'tcp' );?></a></li>
+<?php endif;?>
 </ul><!-- subsubsub -->
 
 <div class="clear"></div>
 <?php 
 $orderpage = OrderPage::show( $order_id, true, false );
 $_SESSION['order_page'] = $orderpage;
-//$orderpage = str_replace( '<table class="tcp_details"', '<table class="widefat fixed"', $orderpage );
 $orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
 echo $orderpage;
 
@@ -97,6 +100,40 @@ if ( $order ) :?>
 	<table class="form-table">
 	<tbody>
 	<?php do_action( 'tcp_admin_order_before_editor', $order_id );?>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'Order Id.', 'tcp' );?>:</label>
+	</th>
+	<td><?php echo $order_id;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'User email', 'tcp' );?>:</label>
+	</th>
+	<td><?php $user_data = get_userdata( $order->customer_id );
+	if ( $user_data )
+		echo $user_data->user_nicename, '&lt;', $user_data->user_email, '&gt;';
+	else
+		echo $order->billing_email;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'Date', 'tcp' );?>:</label>
+	</th>
+	<td><?php echo $order->created_at;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'Payment method', 'tcp' );?>:</label>
+	</th>
+	<td><?php echo $order->payment_name;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status">IP:</label>
+	</th>
+	<td><?php echo $order->ip;?></td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="new_status"><?php _e( 'Status', 'tcp' );?>:</label>
@@ -139,8 +176,16 @@ if ( $order ) :?>
 	</tbody></table>
 	<p class="submit">
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
-		<?php if ( $order->status == Orders::$ORDER_SUSPENDED ) :?>
-		<input name="tcp_order_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-primary" />
+	<?php if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) :?>
+		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'delete', 'tcp' );?></a></div>
+		<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
+			<form method="post">
+			<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
+			<p><?php _e( 'Do you really want to delete this address?', 'tcp' );?></p>
+			<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' );?>" type="submit" class="button-secondary" />
+			<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
+			</form>
+		</div>
 		<?php endif;?>
 	</p>
 </form>

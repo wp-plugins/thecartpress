@@ -67,6 +67,15 @@ class Addresses {
 			where address_id = %d', $address_id ) );
 	}
 
+	/**
+	 * Returns the country_id data by id
+	 */
+	static function getCountryId( $address_id ) {
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( 'select country_id from ' . $wpdb->prefix . 'tcp_addresses
+			where address_id = %d', $address_id ) );
+	}
+
 	static function setDefaultShipping( $customer_id, $address_id ) {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'update ' .  $wpdb->prefix . 'tcp_addresses

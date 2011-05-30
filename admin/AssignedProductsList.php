@@ -23,7 +23,8 @@ $rel_type		= isset( $_REQUEST['rel_type'] ) ? $_REQUEST['rel_type'] : '';
 $post_type_to	= isset( $_REQUEST['post_type_to'] ) ? $_REQUEST['post_type_to'] : 'tcp_product';
 $category_slug	= isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : false;
 $products_type	= isset( $_REQUEST['products_type'] ) ? $_REQUEST['products_type'] : false;
-
+global $thecartpress;
+$show_back_end_label = isset( $thecartpress->settings['show_back_end_label'] ) ? $thecartpress->settings['show_back_end_label'] : false;
 if ( isset( $_REQUEST['tcp_create_relation'] ) ) {
 	$post_id_to = isset( $_REQUEST['post_id_to'] ) ? $_REQUEST['post_id_to'] : 0;
 	$units = isset( $_REQUEST['units'] ) ? (int)$_REQUEST['units'] : 0;
@@ -119,7 +120,8 @@ if ( $post_id ) :
 			<tr>
 			<td><?php echo $assigned_post->post_title;?></td>
 			<?php if ( $products_type == 'tcp_product' ) :?><td><?php echo tcp_get_the_price( $assigned->id_to );?></td><?php endif;?>
-			<td><?php echo $assigned_post->post_title;?></td>
+			<td><?php if ( $show_back_end_label ) echo get_post_meta( $assigned->id_to, 'tcp_back_end_label', true );
+				else echo $assigned_post->post_excerpt;?></td>
 			<td>
 				<form method="post" name="frm_delete_relation_<?php echo $assigned->id_to;?>" id="frm_create_relation_<?php echo $assigned_post->id_to;?>">
 					<a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>"><?php _e( 'edit product', 'tcp' );?></a>
@@ -225,7 +227,8 @@ if ( $post_id ) :
 				<tr>
 				<td><?php the_title();?></td>
 				<td><?php tcp_the_price();?></td>
-				<td><?php the_excerpt();?></td>
+				<td><?php if ( $show_back_end_label ) echo get_post_meta( get_the_ID(), 'tcp_back_end_label', true );
+				else the_excerpt();?></td>
 				<td>
 				<div class="wrap">
 					<form method="post" name="frm_create_relation_<?php the_ID();?>" id="frm_create_relation_<?php the_ID();?>">
@@ -249,8 +252,10 @@ if ( $post_id ) :
 			<tr>
 			<td colspan="4"><?php _e( 'No items to show', 'tcp' );?></td>
 			</tr>
-		<?php endif;?>
-	<?php else: ?>
+		<?php endif;
+		wp_reset_postdata();
+		wp_reset_query();
+	else: ?>
 		<tr>
 		<td colspan="4"><?php _e( 'No items to show', 'tcp' );?></td>
 		</tr>

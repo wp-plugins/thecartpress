@@ -22,12 +22,13 @@ require_once( 'MP3Player.class.php' );
 class BuyButton {
 	static function show( $post_id = 0, $echo = true ) {
 		global $thecartpress;
-		$currency				= tcp_get_the_currency();
 		$stock_management		= isset( $thecartpress->settings['stock_management'] ) ? (bool)$thecartpress->settings['stock_management'] : false;
 		$disable_shopping_cart	= isset( $thecartpress->settings['disable_shopping_cart'] ) ? (bool)$thecartpress->settings['disable_shopping_cart'] : false;
-		$after_add_to_cart = isset( $thecartpress->settings['after_add_to_cart'] ) ? $thecartpress->settings['after_add_to_cart'] : '';
+		$after_add_to_cart		= isset( $thecartpress->settings['after_add_to_cart'] ) ? $thecartpress->settings['after_add_to_cart'] : '';
+		$enabled_wish_list		= isset( $thecartpress->settings['enabled_wish_list'] ) ? $thecartpress->settings['enabled_wish_list'] : '';
+
 		if ( $after_add_to_cart == 'ssc' ) {
-			$action = get_permalink( get_option( 'tcp_shopping_cart_page_id', 0 ) );
+			$action = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) );
 		} else {
 			$action = '';
 		}
@@ -36,11 +37,11 @@ class BuyButton {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( tcp_is_downloadable( $post_id ) &&  $shoppingCart->exists( $post_id ) ) {
 			$out .= '<div class="tcp_already_in_cart">' . "\n";
-			$out .= __( 'The product is in the cart', 'tcp' ) . "\n";
+			$out .= sprintf( __( 'The product is in your <a href="%s">cart</a>' ,'tcp' ) , get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) ) . "\n";
 			$out .= MP3Player::showPlayer( $post_id, MP3Player::$SMALL, false );
 			$out .= '</div>' . "\n";
 		} elseif ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {				
-			$price = tcp_get_the_price( $post_id );
+			$price = tcp_get_the_price_with_tax( $post_id );
 			$tax = tcp_get_the_tax( $post_id );
 			$out .= '<script type="text/javascript">
 			function add_to_the_cart_' . $post_id . '() {
@@ -58,7 +59,7 @@ class BuyButton {
 			$out .= '<table class="tcp_buy_button"><tbody>' . "\n";
 			$out .= '<tr>';
 			$out .= '<th>' . __( 'Price', 'tcp' ) . '</th>' . "\n";
-			if ( ! $disable_shopping_cart )
+			if ( ! $disable_shopping_cart ) {
 				$out .= '<th>';
 				if ( ! tcp_is_downloadable( $post_id ) ) {
 					$out .= __( 'Units', 'tcp' );
@@ -66,16 +67,24 @@ class BuyButton {
 					$out .= '&nbsp;';
 				}
 				$out .= '</th>' . "\n";
+			} elseif ( $enabled_wish_list && ! $shoppingCart->isInWishList( $post_id ) ) {
+				$out .= '<th>&nbsp;</th>' . "\n";
+			}
 			$out .= '</tr><tr>' . "\n";
 			$out .= '<td class="tcp_buy_button_price">' . "\n";
 
 			$html = '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $post_id . '" value="0" />' . "\n";
 			$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $post_id . '" value="0" />' . "\n";
-			if ( $price > 0 ) $html .= '<span class="tcp_price">' . tcp_number_format( $price ) . '&nbsp;' . $currency . '</span>';
-			$tax_label = tcp_get_the_tax_label( $post_id );
-			if ( strlen( $tax_label ) > 0 ) $html .= '&nbsp;(' . $tax_label . ')';
+			$html .= '<span class="tcp_price">' . tcp_get_the_price_label( $post_id ) . '</span>';
 			$out .= apply_filters( 'tcp_buy_button_options', $html, $post_id );
 			$out .= '</td>' . "\n";
+			if ( $enabled_wish_list && ! $shoppingCart->isInWishList( $post_id ) ) {
+				$html = '<input type="submit" name="tcp_add_to_wish_list" id="tcp_add_wish_list" value="' . __( 'Add to Wish list', 'tcp' ) . '"';
+				$html .= ' onclick="jQuery(\'#tcp_new_wish_list_item\').val(' . $post_id . ');jQuery(\'#tcp_frm_' . $post_id . '\').attr(\'action\', \'\');" />' . "\n";
+				$wishlist = apply_filters( 'tcp_buy_button_add_to_wish_list', $html, $post_id );
+			} else {
+				$wishlist = '';
+			}
 			if ( ! $disable_shopping_cart ) {
 				$out .= '<td class="tcp_buy_button_units">';
 				if ( tcp_is_downloadable( $post_id ) ) {
@@ -98,16 +107,21 @@ class BuyButton {
 					}
 					$out .= apply_filters( 'tcp_buy_button_add_button', $html, $post_id );
 				}
+				$out .= $wishlist;
 				$item = $shoppingCart->getItem( tcp_get_default_id( $post_id ) );
 				if ( $item ) {
 					$html ='<span class="tcp_added_product_title">' . sprintf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) ) . '<span>';
 					$out .= apply_filters( 'tcp_buy_button_units_in_cart', $html, $post_id );
 				}
 				$out .= '</td>' . "\n";
+			} elseif ( strlen( $wishlist ) > 0 ) {
+				$out .= '<td class="tcp_buy_button_units">';
+				$out .= $wishlist;
+				$out .= '</td>' . "\n";
 			}
 			$out .= '</tr>' . "\n";
 			$out .= '</tbody></table>' . "\n";
-			//$out .= '<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart" value="' . __( 'Add selected to the cart', 'tcp' ) . '" />' . "\n";
+			$out .= '<input type="hidden" value="" name="tcp_new_wish_list_item" id="tcp_new_wish_list_item" />';
 			$out .= '</form>' . "\n";
 		} else { // if ( tcp_get_the_product_type() == 'GROUPED' ) {
 			$post_id = tcp_get_default_id( $post_id );
@@ -119,7 +133,8 @@ class BuyButton {
 						jQuery(this).val(0);
 					});
 					jQuery("#tcp_count_' . $post_id .'_" + id_to).val(count);
-					jQuery("#tcp_add_to_shopping_cart_' . $post_id . '").click();
+					//jQuery("#tcp_add_to_shopping_cart_' . $post_id . '").click();
+					jQuery("#tcp_buy_button_form_' . $post_id . '").submit();			
 				}
 				</script>' . "\n";
 			$out .=	'<form method="post" id="tcp_buy_button_form_' . $post_id . '" action="' . $action . '">' . "\n";
@@ -129,15 +144,16 @@ class BuyButton {
 			$out .= '<th>' . __('Price', 'tcp') . '</th>' . "\n";
 			if ( ! $disable_shopping_cart ) {
 				$out .= '<th>' . __('Units', 'tcp') . '</th>' . "\n";
-			}
+			} else
 			$out .= '</tr>' . "\n";
 			$products = RelEntities::select( $post_id );
 			foreach( $products as $product ) {
 				$product_id = tcp_get_current_id( $product->id_to );
 				if ( get_post_status( $product_id ) == 'publish' ) {
-					$price = tcp_get_the_price( $product_id );
-					$tax = tcp_get_the_tax_label( $product_id );
-					$stock = tcp_get_the_stock( $product_id );
+					$tcp_exclude_range = get_post_meta( $product_id, 'tcp_exclude_range', true );
+					$price	= tcp_get_the_price_with_tax( $product_id );
+					$tax	= tcp_get_the_tax( $product_id );
+					$stock	= tcp_get_the_stock( $product_id );
 					$is_downloadable = tcp_is_downloadable( $product_id );
 					$out .= '<tr>' . "\n";
 					$out .= '<input type="hidden" name="tcp_post_id[]" id="tcp_post_id" value="' . $product_id . '" />' . "\n";
@@ -150,7 +166,7 @@ class BuyButton {
 					$out .= get_the_title( $product_id );
 					$out .= '</td>' . "\n";
 					$out .= '<td class="tcp_buy_button_price">';
-					$html = tcp_number_format( $price ) . '&nbsp;' . $currency . '&nbsp;(' . $tax . ')';
+					$html = '<span class="tcp_price">' . tcp_get_the_price_label( $product_id ) . '</span>';
 					$html .= '<input type="hidden" name="tcp_option_id[]" id="tcp_option_id_' . $product_id. '" value="0" />' . "\n";
 					$html .= '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $product_id. '" value="0" />' . "\n";
 					$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $product_id . '" value="0" />' . "\n";
@@ -160,10 +176,10 @@ class BuyButton {
 						$out .= '<td class="tcp_buy_button_count">';
 						if ( $is_downloadable ) {
 							$html = '<input type="hidden" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="1"/>' . "\n";
-							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
+							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $product_id, $post_id );
 						} elseif ( ! $stock_management || $stock != 0 ) {
 							$html = '<input type="text" name="tcp_count[]" class="tcp_count" id="tcp_count_' . $post_id . '_' . $product_id . '" value="0" size="2" maxlength="3"/>' . "\n";					
-							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $post_id );
+							$out .= apply_filters( 'tcp_buy_button_unit_text', $html, $product_id, $post_id );
 						}
 						if ( ! $is_downloadable || ( $is_downloadable && ! $shoppingCart->exists( $product_id ) ) ) {
 							if ( ! $stock_management || $stock != 0 ) {
@@ -177,6 +193,11 @@ class BuyButton {
 								$out .= '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
 							}
 						}
+						if ( $enabled_wish_list && tcp_is_visible( $product_id ) && ! $shoppingCart->isInWishList( $product_id ) ) {
+							$html = '<input type="submit" name="tcp_add_to_wish_list" id="tcp_add_wish_list" value="' . __( 'Add to Wish list', 'tcp' ) . '"';
+							$html .= ' onclick="jQuery(\'#tcp_new_wish_list_item\').val(' . $product_id . ');" />' . "\n";
+							$out .= apply_filters( 'tcp_buy_button_add_to_wish_list', $html, $product_id );
+						}
 						$item = $shoppingCart->getItem( tcp_get_default_id( $product_id ) );
 						if ( $item ) {
 							$html ='<span class="tcp_added_product_title">' . sprintf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) ) . '<span>';
@@ -189,8 +210,16 @@ class BuyButton {
 			}
 			$out .= '</tbody></table>' . "\n";
 			if ( ! tcp_hide_buy_button( $post_id ) ) {
-				$out .= '<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_' . $post_id . '" value="' .__( 'Add selected to the cart', 'tcp' ) . '" />' . "\n";
+				$html = '<input type="submit" name="tcp_add_to_shopping_cart_button" class="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_' . $post_id . '" value="' .__( 'Add selected to the cart', 'tcp' ) . '" />' . "\n";
+				$out .= apply_filters( 'tcp_buy_button_add_to_shopping_cart', $html, $post_id );
 			}
+			$out .= '<input type="hidden" name="tcp_add_to_shopping_cart" value="y" />' . "\n";
+			if ( $enabled_wish_list && ! $shoppingCart->isInWishList( $post_id ) ) {
+				$html = '<input type="submit" name="tcp_add_to_wish_list" id="tcp_add_wish_list" value="' . __( 'Add to Wish list', 'tcp' ) . '"';
+				$html .= ' onclick="jQuery(\'#tcp_new_wish_list_item\').val(' . $post_id . ');" />' . "\n";
+				$out .= apply_filters( 'tcp_buy_button_add_to_wish_list', $html, $post_id );
+			}
+			$out .= '<input type="hidden" value="" name="tcp_new_wish_list_item" id="tcp_new_wish_list_item" />';
 			$out .= '</form>' . "\n";
 		}
 		$out .= '</div>' . "\n";

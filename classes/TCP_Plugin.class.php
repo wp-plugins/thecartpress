@@ -167,7 +167,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 							);
 					} else {
 						$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
-						if ( in_array( $shipping_country,  $countries ) ) {
+						if ( in_array( $shipping_country, $countries ) ) {
 							$applicable_instance_id = $instance_id;
 							$applicable_for_country = true;
 							//TODO

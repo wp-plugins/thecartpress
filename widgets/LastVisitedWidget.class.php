@@ -47,15 +47,13 @@ class LastVisitedWidget extends CustomListWidget {
 		$defaults = array(
 			'title'			=> __( 'Last Visited', 'tcp' ),
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
 		<div id="particular">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
-		</div>
-	<?php
+		</div><?php
 		parent::form( $instance );
 	}
 }

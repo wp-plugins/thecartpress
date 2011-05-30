@@ -193,8 +193,10 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 			</th>
 			<td>
 				<select name="post_type" id="post_type">
-				<?php foreach( get_post_types() as $post_type_item ) : ?>
+				<?php foreach( get_post_types() as $post_type_item ) : 
+					if ( $post_type_item != 'tcp_product_option' ) : ?>
 					<option value="<?php echo $post_type_item;?>"<?php selected( $post_type, $post_type_item );?>><?php echo $post_type_item;?></option>
+					<?php endif; ?>
 				<?php endforeach; ?>
 				</select>
 				<span class="description"><?php _e( 'Save to load the list of taxonomies', 'tcp' );?></span>
@@ -253,6 +255,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				<?php
 				$args = array(
 					'post_type'	=> $post_type,
+					'posts_per_page' => -1,
 				);
 				if ( $post_type == 'tcp_product' ) {
 					$args['meta_key'] = 'tcp_is_visible';

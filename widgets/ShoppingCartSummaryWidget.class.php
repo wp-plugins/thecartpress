@@ -30,6 +30,10 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 	}
 
 	function widget( $args, $instance ) {
+		$shoppingCart = TheCartPress::getShoppingCart();
+		$hide_if_empty = isset( $instance['hide_if_empty'] ) ? $instance['hide_if_empty'] : false;
+		if ( $hide_if_empty && $shoppingCart->isEmpty() ) return;
+
 		extract( $args );
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : ' ' );
 		echo $before_widget;
@@ -41,6 +45,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
+		$instance['hide_if_empty']		= isset( $new_instance['hide_if_empty'] );
 		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] );
 		$instance['see_product_count']	= isset( $new_instance['see_product_count'] );
 		$instance['see_weight']			= isset( $new_instance['see_weight'] );
@@ -57,6 +62,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 			'see_weight'		=> true,
 			'see_delete_all'	=> true,
 		);
+		$hide_if_empty		= isset( $instance['hide_if_empty'] ) ? (bool)$instance['hide_if_empty'] : false;
 		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
 		$see_product_count	= isset( $instance['see_product_count'] ) ? (bool)$instance['see_product_count'] : false;
 		$see_weight			= isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
@@ -68,6 +74,9 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_if_empty' ); ?>"<?php checked( $hide_if_empty ); ?> />
+			<label for="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>"><?php _e( 'Hide if empty', 'tcp' ); ?></label>
+		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count ' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e( 'See product count', 'tcp ' ); ?></label>
 		<br />

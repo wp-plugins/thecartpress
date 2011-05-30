@@ -32,8 +32,8 @@ include_once( $wordpress_path . 'wp-config.php' );
 include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
 $thecartpress_path = dirname( dirname( dirname( __FILE__ ) ) ) . '/';
-//require_once( $thecartpress_path . 'daos/Orders.class.php');
-require_once( $thecartpress_path . 'shortcodes/Checkout.class.php');
+require_once( $thecartpress_path . 'daos/Orders.class.php');
+require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
 
 if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'ok' ) {
 	if ( $p->validate_ipn() ) {
@@ -42,11 +42,13 @@ if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'ok' ) {
 		} else {
 			Orders::editStatus( $order_id, $new_status );
 		}
-		Checkout::sendMails( $order_id );
+		ActiveCheckout::sendMails( $order_id );
 	} else {
 		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, 'Error IPN (PayPal).' );
+		ActiveCheckout::sendMails( $order_id, true, 'Error Paypal' );
 	}
 } else {
 	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, 'Cancel PayPal.' );
+	ActiveCheckout::sendMails( $order_id, true, 'Error Paypal' );
 }
 ?>

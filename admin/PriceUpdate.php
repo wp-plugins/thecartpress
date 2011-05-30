@@ -18,9 +18,6 @@
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
 
-global $thecartpress;
-$currency = isset ( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
-
 $per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
 $fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
 $update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
@@ -89,7 +86,7 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 			onclick="if (this.checked) {jQuery('#div_per').hide();jQuery('#div_fix').show();}"
 			value="fix" <?php checked( $update_type, 'fix' );?> />
 		<label for="by_category_fix"><?php _e( 'fix value', 'tcp' );?></label>
-		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" /><?php echo $currency;?></span>
+		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" /><?php tcp_the_currency();?></span>
 	</td>
 	</tr>
 	<?php do_action( 'tcp_update_price_search_controls' ); ?>
@@ -137,8 +134,8 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 				}?>
 			<tr>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
-				<td><?php echo tcp_number_format( $price ), '&nbsp;', $currency;?></td>
-				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
+				<td><?php echo tcp_format_the_price( $price );?></td>
+				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php tcp_the_currency();?></td>
 				<td>&nbsp;</td>
 			</tr>
 			<?php do_action( 'tcp_update_price_controls', $post );

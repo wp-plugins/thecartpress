@@ -52,22 +52,23 @@ class PayPal extends TCP_Plugin {
 		$business = $data['business'];
 		$test_mode = $data['test_mode'];
 		$new_status = $data['new_status'];
-		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() ); //home_url();
+		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() );
 		$notify_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php?action=ok' );
-		$cancel_url = home_url();
+		$cancel_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php' );//home_url();
 		$paymentAmount = $shoppingCart->getTotal( true );
 		$p = new paypal_class( $test_mode );
+		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
 		$p->add_field( 'return', $return_url );
 		$p->add_field( 'cancel_return', $cancel_url );
 		$p->add_field( 'notify_url', $notify_url );
 		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status );
-		$p->add_field( 'item_name', 'Shopping cart ' . get_bloginfo( 'name' ) );
+		$p->add_field( 'item_name', __( 'Shopping cart ', 'tcp' ) . get_bloginfo( 'name' ) );
 		$p->add_field( 'amount', number_format( $paymentAmount, 2, '.', '' ) );
 		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
 		require_once( dirname( dirname( dirname( __FILE__ ) ) ) .'/daos/Orders.class.php' );
 		$order = Orders::get( $order_id );
-		$p->add_field( 'first_name', $order->shipping_firstname );
+		$p->add_field( 'first_name', $order->shipping_firstname );//utf8_decode
 		$p->add_field( 'last_name', $order->shipping_lastname );
 		$p->add_field( 'address1', $order->shipping_street );
 		$p->add_field( 'city', $order->shipping_city );

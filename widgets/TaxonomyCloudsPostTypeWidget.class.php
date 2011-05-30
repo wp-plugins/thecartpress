@@ -90,8 +90,10 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ): ?>
+			<?php foreach( get_post_types() as $post_type ) : 
+				if ( $post_type != 'tcp_product_option' ) : ?>
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+				<?php endif;?>
 			<?php endforeach; ?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>

@@ -27,9 +27,10 @@ class FlatRateShipping extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		global $thecartpress;
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'Flat rate. The cost of the service is ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
+		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
 	function showEditFields( $data ) {?>
@@ -47,14 +48,14 @@ class FlatRateShipping extends TCP_Plugin {
 		<th scope="row">
 			<label for="fixed_cost"><?php _e( 'Fixed cost', 'tcp' );?>:</label>
 		</th><td>
-			<input type="text" id="fixed_cost" name="fixed_cost" value="<?php echo isset( $data['fixed_cost'] ) ? $data['fixed_cost'] : 0;?>" size="8" maxlength="13"/>
+			<input type="text" id="fixed_cost" name="fixed_cost" value="<?php echo isset( $data['fixed_cost'] ) ? $data['fixed_cost'] : 0;?>" size="8" maxlength="13"/><?php tcp_the_currency();?>
 		</td></tr>
 
 		<tr valign="top">
 		<th scope="row">
 			<label for="percentage"><?php _e( 'Percentage', 'tcp' );?>:</label>
 		</th><td>
-			<input type="text" id="percentage" name="percentage" value="<?php echo isset( $data['percentage'] ) ? $data['percentage'] : 0;?>" size="3" maxlength="5"/>
+			<input type="text" id="percentage" name="percentage" value="<?php echo isset( $data['percentage'] ) ? $data['percentage'] : 0;?>" size="3" maxlength="5"/>%
 		</td></tr>
 
 		<tr valign="top">
@@ -86,7 +87,7 @@ class FlatRateShipping extends TCP_Plugin {
 				return $data['fixed_cost'] * $shoppingCart->getCount();
 			}
 		} else {//'percentage'
-			$total = $shoppingCart->getTotalNoDownloadable() - $shoppingCart->getDiscount();
+			$total = $shoppingCart->getTotalForShipping() - $shoppingCart->getDiscount();
 			return $total * $data['percentage'] / 100;
 		}
 	}

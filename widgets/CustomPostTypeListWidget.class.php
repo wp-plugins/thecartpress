@@ -61,7 +61,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">
-					<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
+					<a href="<?php the_permalink( );?>" border="0"><?php the_title(); ?></a>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_meta_data'] ) && $instance['see_meta_data'] ) : ?>
@@ -79,7 +79,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php endif;?>
 				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
-					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_get_the_price_label( get_the_ID() );?>&nbsp;<?php tcp_the_currency();?>(<?php echo tcp_get_the_tax_label( get_the_ID() );?>)</p>
+					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php tcp_the_price_label();?></p>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_buy_button'] ) && $instance['see_buy_button'] ) : ?>
@@ -214,8 +214,10 @@ class CustomPostTypeListWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ) : ?>
+			<?php foreach( get_post_types() as $post_type ) : 
+				if ( $post_type != 'tcp_product_option' ) : ?>
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+				<?php endif;?>
 			<?php endforeach; ?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>

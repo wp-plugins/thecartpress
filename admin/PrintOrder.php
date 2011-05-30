@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
-//session_start();
 $wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/';
 
 //include_once( $wordpress_path . 'wp-config.php' );
@@ -29,6 +28,9 @@ require($wordpress_path . 'wp-blog-header.php');
 <meta charset="UTF-8" />
 <title><?php _e( 'Order', 'tcp' );?></title>
 <style>
+	.tcp_order_page_name {
+		text-align: left;
+	}
     body,td,th {
 	   font-family: Arial, Helvetica, sans-serif;
 	   font-size: 12px;

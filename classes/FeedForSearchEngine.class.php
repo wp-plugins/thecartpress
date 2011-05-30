@@ -33,7 +33,6 @@ class FeedForSearchEngine {
 			echo '</error>';
 			return;
 		}
-		$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
 		$search_engine_activated = isset( $thecartpress->settings['search_engine_activated'] ) ? $thecartpress->settings['search_engine_activated'] : true;
 		if ( $search_engineactivated ) {
 			header( 'Content-Type: text/xml;', true );
@@ -45,7 +44,7 @@ class FeedForSearchEngine {
 			echo '<name>', bloginfo('name'), '</name>';
 			echo '<url>', bloginfo('url'), '</url>';
 			echo '<desc>', bloginfo("description"), '</desc>';
-			echo '<currency>', $currency, '</currency>';
+			echo '<currency>', tcp_get_the_currency(), '</currency>';
 			$args = array(
 				'post_type'		=> 'tcp_product',
 				'numberposts'	=> -1,
