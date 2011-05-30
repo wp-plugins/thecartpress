@@ -25,6 +25,7 @@ class ShoppingCart {
 	public static $OTHER_COST_PAYMENT_ID	= 'payment';
 	
 	private $visited_post_ids = array();
+	private $wish_list_post_ids = array();
 	private $shopping_cart_items = array();
 	private $other_costs = array();
 	private $freeShipping = false;
@@ -60,7 +61,7 @@ class ShoppingCart {
 
 	/**
 	 * Returns the total amount in the cart
-	 * @see getTotalNoDownloadable()
+	 * @see getTotalForShipping()
 	 */
 	function getTotal( $otherCosts = false ) {
 		$total = 0;
@@ -132,10 +133,18 @@ class ShoppingCart {
 	 */
 	function getItem( $post_id, $option_1_id = 0 , $option_2_id = 0) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
-		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
+		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			return $this->shopping_cart_items[$shopping_cart_id];
-		else
+		} elseif ( $option_1_id == 0 && $option_2_id == 0) {
+			foreach( $this->shopping_cart_items as $item ) {
+				if ( $item->getPostId() == $post_id ) {
+					return $item;
+				}
+			}
 			return false;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -163,17 +172,13 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Returns the total amount of the no downloadable products in the cart.
-	 * This function is used, for example, to calculate sending cost
-	 * because the downloadable products has not sending cost.
+	 * Returns the total amount to calculate shipping cost
 	 */
-	function getTotalNoDownloadable( $otherCosts = false ) {
+	function getTotalForShipping() {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $item )
-			if ( ! $item->isDownloadable() )
+			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
 				$total += $item->getTotal();
-		if ( $otherCosts )
-			$total += $this->getTotalOtherCosts();
 		return $total;
 	}
 
@@ -187,21 +192,94 @@ class ShoppingCart {
 			$this->visited_post_ids[$post_id] = 0;
 	}
 
-	/**
-	 * Visited functions
-	 */
 	function getVisitedPosts() {
 		return $this->visited_post_ids;
 	}
 
-	/**
-	 * Visited functions
-	 */
 	function deleteVisitedPost() {
 		unset( $this->visited_post_ids );
 		$this->visited_post_ids = array();
 	}
-	
+	/**
+	 * End Visited functions
+	 */
+
+	/**
+	 * WishList functions
+	 */
+	function addWishList( $post_id ) {
+		$user_id = get_current_user_id();
+		if ( $user_id > 0 ) {	
+			$wishList = (array)get_user_meta( $user_id, 'tcp_wish_list', true );
+			$wishList[$post_id] = 1;
+			update_user_meta( $user_id, 'tcp_wish_list', $wishList );
+		} else {
+			$this->wish_list_post_ids[$post_id] = 1;
+		}
+	}
+
+	function isInWishList( $post_id ) {
+		$user_id = get_current_user_id();
+		if ( $user_id > 0 ) {	
+			$wishList =  (array)get_user_meta( $user_id, 'tcp_wish_list', true );
+			return isset( $wishList[$post_id] );
+		} else {
+			return isset( $this->wish_list_post_ids[$post_id] );
+		}
+	}
+
+	function getWishList() {
+		$user_id = get_current_user_id();
+		if ( $user_id > 0 ) {	
+			$wishList = (array)get_user_meta( $user_id, 'tcp_wish_list', true );
+			if ( count( $this->wish_list_post_ids ) > 0 ) {
+				foreach( $this->wish_list_post_ids as $id => $item )
+					$wishList[$id] = 1;
+				update_user_meta( $user_id, 'tcp_wish_list', $wishList );
+				unset( $this->wish_list_post_ids );
+				$this->wish_list_post_ids = array();
+			}
+			return $wishList;
+		} else {
+			return $this->wish_list_post_ids;
+		}
+	}
+
+	function deleteWishListItem( $post_id) {
+		$user_id = get_current_user_id();
+		if ( $user_id > 0 ) {	
+			$wishList = (array)get_user_meta( $user_id, 'tcp_wish_list', true );
+			unset( $wishList[$post_id] );
+			update_user_meta( $user_id, 'tcp_wish_list', $wishList );
+		} else {
+			unset( $this->wish_list_post_ids[$post_id] );
+		}
+		
+	}
+
+	function deleteWishList() {
+		$user_id = get_current_user_id();
+		if ( $user_id > 0 ) {	
+			update_user_meta( $user_id, 'tcp_wish_list', array() );
+		} else {
+			unset( $this->wish_list_post_ids );
+			$this->wish_list_post_ids = array();
+		}
+	}
+
+/*	function volcarWishList() {
+		$current_user = wp_get_current_user();
+		if ( $current_user->ID > 0 ) {
+			update_user_meta( $current_user->ID, 'tcp_wish_list', $this->wish_list_post_ids );
+			return true;
+		} else {
+			return false;
+		}
+	}*/
+	/**
+	 * End WishList functions
+	 */
+
 	function isThereStock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 		if ( $post_id == 0 ) {
 			foreach( $this->shopping_cart_items as $item ) {
@@ -267,15 +345,15 @@ class ShoppingCart {
 		return $this->discount;
 	}
 
-	function getAllDiscount() {
-		$discount = $this->discount;
+	function getAllDiscounts() {
+		$discount = $this->getDiscount();
 		foreach( $this->shopping_cart_items as $item )
 			$discount += $item->getDiscount();
 		return $discount;
 	}
 
 	function deleteAllDiscounts() {
-		$this->discount = 0;
+		$this->setDiscount( 0 );
 		foreach( $this->shopping_cart_items as $item )
 			$item->setDiscount( 0 );
 	}
@@ -290,8 +368,8 @@ class ShoppingCartItem {
 	private $tax;
 	private $unit_weight;
 	private $is_downloadable = false;
-	
 	private $discount = 0;
+	private $free_shipping = false;
 
 	function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		$this->post_id		= (int)$post_id;
@@ -328,6 +406,10 @@ class ShoppingCartItem {
 		return $this->count;
 	}
 
+	function getUnits() {
+		return $this->getCount();
+	}
+
 	function setCount($count) {
 		$this->count = $count;
 	}
@@ -353,13 +435,13 @@ class ShoppingCartItem {
 	}
 
 	function getTotal() {
-		if ( $this->getTax() == 0 )
+		//if ( $this->getTax() == 0 )
 			$total = ( $this->getUnitPrice() * $this->count ) - $this->discount;
-		else {
-			$price = $this->unit_price * (1 + $this->getTax() / 100);
-			$price = $price * $this->count;
-			$total = $price - $this->getDiscount();
-		}
+		//else {
+		//	$price = $this->unit_price * ( 1 + $this->getTax() / 100 );
+		//	$price = $price * $this->count;
+		//	$total = $price - $this->getDiscount();
+		//}
 		$total = apply_filters( 'tcp_shopping_cart_get_item_total', $total, $this->getPostId() );
 		return $total;
 	}
@@ -373,7 +455,7 @@ class ShoppingCartItem {
 		return $this->is_downloadable;
 	}
 
-	function setDownloadable( $is_downloadable ) {
+	function setDownloadable( $is_downloadable = true ) {
 		$this->is_downloadable = $is_downloadable;
 	}
 
@@ -381,9 +463,21 @@ class ShoppingCartItem {
 		$this->discount = $discount;
 	}
 
+	function addDiscount( $discount ) {
+		$this->discount += $discount;
+	}
+
 	function getDiscount() {
 		$discount = $this->discount;
 		return apply_filters( 'tcp_item_get_discount', $discount, $this->getPostId() );
+	}
+
+	function setFreeShipping( $free_shipping = true ) {
+		$this->free_shipping = $free_shipping;
+	}
+
+	function isFreeShipping() {
+		return $this->free_shipping;
 	}
 }
 
@@ -395,6 +489,7 @@ class ShoppingCartOtherCost {
 	function __construct( $cost = 0, $desc = '', $order = 0 ) {
 		$this->cost = (float)$cost;
 		$this->desc = $desc;
+		$this->order = $order;
 	}
 	
 	function __toString() {

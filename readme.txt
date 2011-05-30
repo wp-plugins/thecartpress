@@ -2,8 +2,8 @@
 Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress
 Requires at least: 3.1
-Tested up to: 3.1.1
-Stable Tag: 1.0.8
+Tested up to: 3.1.3
+Stable Tag: 1.0.9
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -154,29 +154,48 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 1.0.9 =
+* Simple Wish list (Suggested in the community)
+* Settings: Hide downloadable menu (Suggested in the community)
+* Settings: Products per page (Suggested in the community)
+* Settings: Currency layout (Suggested in the community)
+* Print order from order edit page (Suggested in the community)
+* FlateRate/ShippingCost instance names (Suggested in the community)
+* Tax!: International tax management (Suggested in the community)
+* BuyButton: You could make your own buy buttons (Suggested in the community)
+* New Chekout: Developed again. Now, it's configurable.
+* Templates
+* Regions/states (Suggested in the community)
+* Authorize.net paymet method (Suggested in the community)
+* Number of decimals for the prices (Suggested in the community)
+* Hide if empty property in Shopping Cart (Summary) Widgets
+* Exclude for range prices: Allows to exclude a product from its parent range price
+* New ShortCode: tcp_price, to show the price of the current product
+* New CSS styles
+
 = 1.0.8 =
 * Settings: Decimal point and thousands separator validation
 * Settings: Category and Tag base for products validation
-* Settings: Selected Countries to shipping and billing (Thanks to the community)
-* Assigned products admin: Set list order (Thanks to the community)
-* Checkout + shipping/payment methods: Apply more than one instance per checkout and named instances (Thanks to the community)
+* Settings: Selected Countries to shipping and billing (Suggested in the community)
+* Assigned products admin: Set list order (Suggested in the community)
+* Checkout + shipping/payment methods: Apply more than one instance per checkout and named instances (Suggested in the community)
 * Checkout: styles (Thanks to the community)
-* Improvements in multilingual support (Thanks to the community)
-* Checkout: Country list in current language (Thanks to the community)
-* Orders edit: Suspended orders could be deleted (Thanks to the community)
-* Orders edit: new links to send the order in an email to the customer (billing and shipping email) (Thanks to the community)
+* Improvements in multilingual support. Now qTranslate is supported (Thanks to the community)
+* Checkout: Country list in current language (Suggested in the community)
+* Orders edit: Suspended orders could be deleted (Suggested in the community)
+* Orders edit: new links to send the order in an email to the customer (billing and shipping email) (Suggested in the community)
 * New settings: see image in content and/or in excerpt (plus size, alignment and link)
 * Added more useful hooks for plugin development
 * Currency symbol
-* Admin bar configuration (Thanks to the community)
-* Settings: What to do after add to the cart (Thanks to the community)
+* Admin bar configuration (Suggested in the community)
+* Settings: What to do after add to the cart (Suggested in the community)
 
 = 1.0.7 =
 * Improvements in Buy Button (less code)
-* CVC field, Card type and Cardholder in CC Offline (Thanks to the community)
-* Order editor: button to delete card data (Thanks to the community)
+* CVC field, Card type and Cardholder in CC Offline (Suggested in the community)
+* Order editor: button to delete card data (Suggested in the community)
 * Plugin Auto-Checking
-* New Settings: Default Country, Decimal point and thousands separator (Thanks to the community)
+* New Settings: Default Country, Decimal point and thousands separator (Suggested in the community)
 * New templates functions: tcp_number_format and tcp_input_number
 * Checkout improvements (hooks, other costs, validation) (Thanks to the community)
 * Added more useful hooks for plugin development
@@ -212,7 +231,7 @@ This plugin is released under a GPL license.
 = 1.0.3 =
 * Fixed non-visible post/product bug
 * Stock management setting: To enable stock management
-* Disable Shopping cart setting: To use TheCartPress as a catalogue
+* Disable Shopping cart setting: To use TheCartPress as a catalogue (Suggested in the community)
 * More navigation and usability improvements in widgets
 * Loops in themes and in products lists widgets
 * Improvements in the default css file (for ready to use ecommerce)

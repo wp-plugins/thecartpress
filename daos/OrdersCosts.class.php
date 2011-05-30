@@ -25,6 +25,7 @@ class OrdersCosts {
 		  `order_id`			bigint(20) unsigned NOT NULL,
 		  `description`			varchar(255)		NOT NULL,
 		  `cost`				decimal(13,2)		NOT NULL default 0,
+		  `tax`					float UNSIGNED		NOT NULL default 0,
 		  `cost_order`			varchar(4) 			NOT NULL default \'\',
 		  PRIMARY KEY  (`order_cost_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
@@ -51,9 +52,10 @@ class OrdersCosts {
 				'order_id'			=> $ordersCosts['order_id'],
 				'description'		=> $ordersCosts['description'],
 				'cost'				=> $ordersCosts['cost'],
+				'tax'				=> $ordersCosts['tax'],
 				'cost_order'		=> $ordersCosts['cost_order'],
 			),
-			array( '%d', '%s', '%f', '%s' )
+			array( '%d', '%s', '%f', '%f', '%s' )
 		);
 		return $wpdb->insert_id;
 	}

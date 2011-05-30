@@ -45,6 +45,7 @@ class RelatedListWidget extends CustomListWidget {
 			$loop_args['post__in'] = $ids;
 			$loop_args['post_type'] = $post_type;
 		} else {
+
 		//TODO falta?
 			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) )
 				$instance['taxonomy'] = ProductCustomPostType::$PRODUCT_CATEGORY;
@@ -52,12 +53,15 @@ class RelatedListWidget extends CustomListWidget {
 				$instance['taxonomy'] = 'category';
 			else
 				return;
-			if ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_PROD-CAT_POST' )
+			if ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_PROD-CAT_POST' ) {
 				$taxonomy_search = ProductCustomPostType::$PRODUCT_CATEGORY;
-			else //if ( $instance['rel_type'] == 'CAT_POST-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_POST' )
+				$cat = get_the_terms( get_the_ID(), ProductCustomPostType::$PRODUCT_CATEGORY );
+			} else {//if ( $instance['rel_type'] == 'CAT_POST-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_POST' )
 				$taxonomy_search = 'category';
-			$cat = get_the_category();
+				$cat = get_the_category();
+			}
 			if ( empty( $cat ) ) return;
+			$cat = array_slice( $cat, 0, 1 );
 			$term_id = $cat[0]->term_id;
 			if ( $term_id <= 0 ) return;
 			$term_id = tcp_get_default_id( $term_id, $taxonomy_search );

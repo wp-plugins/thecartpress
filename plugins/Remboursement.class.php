@@ -57,9 +57,11 @@ class Remboursement extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		global $thecartpress;
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		return __( 'Cash on delivery. The cost of the service is ', 'tcp' ) . tcp_number_format( $cost ) . '&nbsp;' . tcp_get_the_currency();
+		$cost = tcp_number_format( $cost );
+		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
@@ -76,13 +78,14 @@ class Remboursement extends TCP_Plugin {
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		global $thecartpress;
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
 		$params = array(
 			'tcp_checkout'	=> 'ok',
 			'order_id'		=> $order_id,
 		);?>
 		<p><?php echo $data['notice'];?></p>
-		<p><?php printf( __( 'The cost of the service is %s %s' , 'tcp'), tcp_number_format( $cost ), tcp_get_the_currency() );?></p>
+		<p><?php printf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );?></p>
 		<p>
 		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php

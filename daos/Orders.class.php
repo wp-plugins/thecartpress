@@ -17,6 +17,7 @@
  */
 
 require_once( 'OrdersDetails.class.php' );
+require_once( 'OrdersCosts.class.php' );
 
 class Orders {
 
@@ -32,6 +33,7 @@ class Orders {
 		  `order_id`				bigint(20) unsigned NOT NULL auto_increment,
 		  `created_at`				datetime			NOT NULL,
 		  `customer_id`				bigint(20) unsigned NOT NULL,
+  		  `ip`						varchar(20)			NOT NULL,
 		  `weight`					int(11)				NOT NULL default 0,
 		  `shipping_method`			varchar(100)		NOT NULL,
 		  `status`					varchar(50)			NOT NULL,
@@ -105,6 +107,7 @@ class Orders {
 		$wpdb->insert($wpdb->prefix . 'tcp_orders', array(
 			'created_at'			=> $order['created_at'],
 			'customer_id'			=> $order['customer_id'],
+			'ip'					=> $order['ip'],
 			'weight'				=> $order['weight'],
 			'shipping_method'		=> $order['shipping_method'],
 			'status'				=> $order['status'],
@@ -147,10 +150,10 @@ class Orders {
 			'billing_telephone_2'	=> $order['billing_telephone_2'],
 			'billing_fax'			=> $order['billing_fax'],
 			'billing_email'			=> $order['billing_email'],
-		), array('%s', '%d', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s', '%s',
+		), array('%s', '%d', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s')
+				 '%s', '%s', '%s')
 		);
 		return $wpdb->insert_id;
 	}
@@ -188,10 +191,10 @@ class Orders {
 	static function getOrders( $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
-				shipping_lastname, created_at, status, post_id, price, tax,
+				shipping_lastname, created_at, customer_id, status, post_id, price, tax,
 				qty_ordered, shipping_amount, discount_amount, payment_name,
 				payment_method, payment_amount, order_currency_code,
-				code_tracking, is_downloadable, max_downloads, expires_at
+				code_tracking, is_downloadable, max_downloads, expires_at, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
 				$wpdb->prefix . 'tcp_orders_details od
 				on o.order_id = od.order_id';

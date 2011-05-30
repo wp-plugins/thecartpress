@@ -27,8 +27,8 @@ if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $
 
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 
-$regions = array(); //array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
-$regions = apply_filters( 'tcp_address_editor_load_regions', $regions );
+//array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
+$regions = apply_filters( 'tcp_address_editor_load_regions', false );
 $error_address = array();
 	
 if ( isset( $_REQUEST['tcp_save_address'] ) ) {
@@ -138,11 +138,44 @@ function tcp_get_value( $id, $echo = true ) {
 		<input type="text" id="company" name="company" value="<?php tcp_get_value( 'company' );?>" size="20" maxlength="50" />
 		<?php tcp_show_error_msg( $error_address, 'company' );?></td>
 	</tr>
+
 	<tr valign="top">
-	<th scope="row"><label for="street"><?php _e( 'Address', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
+	<th scope="row"><label for="country_id"><?php _e( 'Country', 'tcp' );?>:</label></th>
 	<td>
-		<input type="text" id="street" name="street" value="<?php tcp_get_value( 'street' );?>" size="20" maxlength="50" />
-		<?php tcp_show_error_msg( $error_address, 'street' );?></td>
+		<select id="country_id" name="country_id">
+		<?php $billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : array();
+		$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : array();
+		$billing_isos = array_merge( $billing_isos, $shipping_isos );
+		if ( count( $billing_isos ) > 0 )
+			$countries = Countries::getSome( $billing_isos, tcp_get_admin_language_iso() );
+		else
+			$countries = Countries::getAll( tcp_get_admin_language_iso() );
+		$country_id = tcp_get_value( 'country_id', false );
+		if ( $country_id == '' ) {
+			global $thecartpress;
+			$country_id = $thecartpress->settings['country'];
+		}
+		foreach($countries as $item) :?>
+			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_id )?>><?php echo $item->name;?></option>
+		<?php endforeach;?>
+		</select>
+		<?php tcp_show_error_msg( $error_address, 'country_id' );?></td>
+	</tr>
+	<tr valign="top">
+	<tr valign="top">
+	<th scope="row"><label for="region"><?php _e( 'Region', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
+	<td>
+	<select id="region_id" name="region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+		<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
+	<?php foreach( $regions as $id => $region ) : ?>
+		<option value="<?php echo $id;?>" <?php selected( $id, tcp_get_value( 'region_id', false ) );?>><?php echo $region['name'];?></option>
+	<?php endforeach;?>
+	</select>
+	<input type="hidden" id="region_selected_id" value="<?php tcp_get_value( 'region_id' );?>"/>
+	<?php tcp_show_error_msg( $error_address, 'region_id' );?>
+	<input type="text" id="region" name="region" value="<?php tcp_get_value( 'region' );?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+	<?php tcp_show_error_msg( $error_address, 'region' );?>
+	<td>
 	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="city"><?php _e( 'City', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
@@ -163,48 +196,18 @@ function tcp_get_value( $id, $echo = true ) {
 	</td>
 	</tr>
 	<tr valign="top">
-	<th scope="row"><label for="region"><?php _e( 'Region', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
-	<td>
-	<?php if ( is_array( $regions ) && count( $regions ) > 0 ) : ?>
-		<select id="region_id" name="region_id">
-		<?php foreach( $regions as $id => $region ) : ?>
-			<option value="<?php echo $id;?>" <?php selected( $id, tcp_get_value( 'region_id', false ) );?>><?php echo $region['name'];?></option>
-		<?php endforeach;?>
-		</select>
-		<?php tcp_show_error_msg( $error_address, 'region_id' );?>
-	<?php else : ?>
-		<input type="text" id="region" name="region" value="<?php tcp_get_value( 'region' );?>" size="20" maxlength="50" />
-		<?php tcp_show_error_msg( $error_address, 'region' );?>
-	<?php endif;?>
-	<td>
-	</tr>
-	<tr valign="top">
 	<th scope="row"><label for="postcode"><?php _e( 'Postal code', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
 		<input type="text" id="postcode" name="postcode" value="<?php tcp_get_value( 'postcode' );?>" size="7" maxlength="7" />
 		<?php tcp_show_error_msg( $error_address, 'postcode' );?></td>
 	</tr>
 	<tr valign="top">
-	<th scope="row"><label for="country_id"><?php _e( 'Country', 'tcp' );?>:</label></th>
+	<th scope="row"><label for="street"><?php _e( 'Address', 'tcp' );?>:<span class="compulsory">(*)</span></label></th>
 	<td>
-		<select id="country_id" name="country_id">
-		<?php $billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
-		if ( $billing_isos )
-			$countries = Countries::getSome( $billing_isos, tcp_get_admin_language_iso() );
-		else
-			$countries = Countries::getAll( tcp_get_admin_language_iso() );
-		$country_id = tcp_get_value( 'country_id', false );
-		if ( $country_id == '' ) {
-			global $thecartpress;
-			$country_id = $thecartpress->settings['country'];
-		}
-		foreach($countries as $item) :?>
-			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_id )?>><?php echo $item->name;?></option>
-		<?php endforeach;?>
-		</select>
-		<?php tcp_show_error_msg( $error_address, 'country_id' );?></td>
+		<input type="text" id="street" name="street" value="<?php tcp_get_value( 'street' );?>" size="20" maxlength="50" />
+		<?php tcp_show_error_msg( $error_address, 'street' );?></td>
 	</tr>
-	<tr valign="top">
+
 	<th scope="row"><label for="telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label></th>
 	<td>
 		<input type="text" id="telephone_1" name="telephone_1" value="<?php tcp_get_value( 'telephone_1' );?>" size="15" maxlength="20" />

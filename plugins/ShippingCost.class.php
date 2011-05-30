@@ -32,8 +32,7 @@ class ShippingCost extends TCP_Plugin {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		$cost = tcp_number_format( $cost );
-		return sprintf( __( '%s. Cost: %d %s', 'tcp' ), $title, $cost, tcp_get_the_currency() );
+		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
 	function showEditFields( $data ) {
@@ -97,16 +96,27 @@ class ShippingCost extends TCP_Plugin {
 					$names = explode( '-', $index );
 					$zone = $names[1];
 					unset( $zones[$zone] );
-					?>
-					<div id="message" class="updated"><p>
+					?><div id="message" class="updated"><p>
 						<?php _e( 'Remember to <strong>save</strong> before delete other rows or columns', 'tcp' );?>
 					</p></div><?php
 					$stored_data = false;
 					break;
+				} elseif ( $this->startsWith( $index, 'tcp_delete_def_zone-' ) ) {
+					$names = explode( '-', $index );
+					$zone_id = $names[1];
+					unset( $zones[$zone_id] );
+					?><div id="message" class="updated"><p>
+						<?php _e( 'Remember to <strong>save</strong> before delete other zones', 'tcp' );?>
+					</p></div><?php
+					$stored_data = false;
 				}?>
 		</tbody></table>
 	<?php if ( $stored_data ) : ?>
-		<p><input type="submit" name="tcp_copy_from_instance" value="<?php _e( 'copy from first instance', 'tcp' );?>" class="button-secondary"/>
+		<p>
+		<input type="submit" name="tcp_copy_from_instance" value="<?php _e( 'copy from first instance', 'tcp' );?>" class="button-secondary"/>
+		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
+		<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
+		</p>
 	<?php endif;?>
 
 		<table class="widefat fixed" cellspacing="0">
@@ -135,14 +145,15 @@ class ShippingCost extends TCP_Plugin {
 		</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach( $ranges as $r => $range ) : ?>
+		<?php sort( $ranges );
+		foreach( $ranges as $r => $range ) : ?>
 		<tr>
 			<th scope="row">
 				<?php printf( __( 'Range %d', 'tcp' ), $r );?>:
 				<input type="text" name="ranges[]" value="<?php echo $range;?>" size="5" maxlength="10"/>&nbsp;<?php tcp_the_unit_weight();?>
 			</th>
 			<?php foreach( $zones as $z => $zone ) : ?>
-			<td><input type="text" name="cost-<?php echo $range;?>[]" value="<?php echo $costs[$range][$z];?>" size="6" maxlength="13"/>&nbsp;<?php tcp_the_currency();?></td>
+			<td><input type="text" name="cost-<?php echo $r;?>[]" value="<?php echo isset( $costs[$r][$z] ) ? $costs[$r][$z] : '';?>" size="6" maxlength="13"/>&nbsp;<?php tcp_the_currency();?></td>
 			<?php endforeach;?>
 			<td>
 			<?php if ( $stored_data ) : ?>
@@ -156,12 +167,16 @@ class ShippingCost extends TCP_Plugin {
 			<?php if ( $stored_data ) : ?>
 				<input type="submit" name="tcp_insert_range" value="<?php _e( 'insert new range', 'tcp' );?>" class="button-secondary" />
 				<input type="text" name="tcp_insert_range_value" size="5" maxlength="10" />
+				<span><?php _e( 'Remember to save all values before insert a new range', 'tcp' );?></span>
 			<?php endif;?>&nbsp;
 			</td>
 		</tr>
 		</tbody></table>
 
-		<p>&nbsp;</p>
+		<p class="submit">
+		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
+		<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
+		</p>
 
 		<table  class="widefat fixed" cellspacing="0">
 		<thead>
@@ -204,6 +219,10 @@ class ShippingCost extends TCP_Plugin {
 				<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('zones_isos_<?php echo $z;?>');" class="button-secondary"/>				
 				<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
+				<br/>
+				<?php if ( count( $zones ) > 1) :?>
+				<input type="submit" name="tcp_delete_def_zone-<?php echo $z;?>" id="tcp_delete_def_zone" value="<?php _e( 'delete zone', 'tcp');?>" title="<?php _e( 'To delete a defined zone', 'tcp' );?>" class="button-primary"/>
+				<?php endif;?>
 			</td>
 		<?php endforeach;?>
 		</tr>
@@ -211,6 +230,7 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 		<td colspan="<?php echo count( $zones );?>">
 			<input type="submit" id="tcp_add_zone" name="tcp_add_zone" value="<?php _e( 'Add new zone', 'tcp' );?>" class="button-secondary" />
+			<span><?php _e( 'Remember to save all values before insert a new range', 'tcp' );?></span>
 		</td>
 		</tr>
 		<?php endif;?>
@@ -222,8 +242,8 @@ class ShippingCost extends TCP_Plugin {
 		$ranges = isset( $_REQUEST['ranges'] ) ? $_REQUEST['ranges'] : array();
 		$costs = array();
 		foreach( $zones as $z => $zone )
-			foreach( $ranges as $range )
-				$costs[$range][] = isset( $_REQUEST['cost-' . $range][$z] ) ? (float)$_REQUEST['cost-' . $range][$z] : 0;
+			foreach( $ranges as $r => $range )
+				$costs[$r][] = isset( $_REQUEST['cost-' . $r][$z] ) ? (float)$_REQUEST['cost-' . $r][$z] : 0;
 		$new_zones = array();
 		$z = 0;
 		foreach( $zones as $zone )
@@ -243,9 +263,9 @@ class ShippingCost extends TCP_Plugin {
 		$zones = $data['zones'];
 		$ranges = $data['ranges'];
 		$costs = $data['costs'];
-		foreach( $ranges as $range )
+		foreach( $ranges as $r => $range )
 			if ( $range > $totalWeight ) {
-				$selected_range = $range;
+				$selected_range = $r;//ange;
 				break;
 			}
 		$selected_zone = 0;

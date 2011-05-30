@@ -37,7 +37,12 @@ class Checkout {
 			$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 			if ( $order_id > 0 ) Checkout::sendMails( $order_id );
 			echo $_SESSION['order_page'];
-			unset( $_SESSION['order_page'] );
+			//unset( $_SESSION['order_page'] );
+			echo '<br />';
+			echo '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
+			echo '</div>' . "\n";
+			tcp_do_template( 'tcp_checkout_end' );
+			do_action( 'tcp_checkout_end', $order_id );
 			return;
 		}
 		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
@@ -47,16 +52,17 @@ class Checkout {
 		$has_validation_billing_error = false;
 		$has_validation_shipping_error = false;
 		$has_validation_error = false;
-		$shipping_country = $this->getShippingCountry();//shipping country's iso.
-		$billing_country = $this->getBillingCountry();
+		$billing_country = tcp_get_billing_country();
+		$shipping_country = tcp_get_shipping_country();
 		global $current_user;
 		get_currentuserinfo();
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$shoppingCart->deleteOtherCosts();
+		$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
+		$selected_shipping_address = isset( $_REQUEST['selected_shipping_address'] ) ? $_REQUEST['selected_shipping_address'] : 'N';
 		if ( isset( $_REQUEST['tcp_load_plugins'] ) || isset( $_REQUEST['tcp_show_cart'] ) || isset( $_REQUEST['tcp_create_order'] ) ) {
-			$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
-			$selected_shipping_address = isset( $_REQUEST['selected_shipping_address'] ) ? $_REQUEST['selected_shipping_address'] : 'N';
 			$use_billing_address = isset( $_REQUEST['use_billing_address'] ) ? $_REQUEST['use_billing_address'] : 'N';
+			$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
 			if ( $selected_billing_address == 'new' ) {
 				if ( ! isset( $_REQUEST['billing_firstname'] ) || strlen( $_REQUEST['billing_firstname'] ) == 0 )
 					$error_billing['billing_firstname'][] = __( 'The billing First name field must be completed', 'tcp' );
@@ -66,8 +72,13 @@ class Checkout {
 					$error_billing['billing_street'][] = __( 'The billing Street field must be completed', 'tcp' );
 				if ( isset( $_REQUEST['billing_city'] ) && strlen( $_REQUEST['billing_city'] ) == 0 )
 					$error_billing['billing_city'][] = __( 'The billing City field must be completed', 'tcp' );
-				if ( isset( $_REQUEST['billing_region'] ) && strlen( $_REQUEST['billing_region'] ) == 0 )
+				if ( isset( $_REQUEST['billing_region'] ) && strlen( $_REQUEST['billing_region'] ) == 0 && $_REQUEST['billing_region_id'] == '' )
 					$error_billing['billing_region'][] = __( 'The billing Region field must be completed', 'tcp' );
+				if ( $billing_isos ) {
+					if ( ! in_array( $_REQUEST['billing_country_id'], $billing_isos ) ) {
+						$error_billing['billing_country_id'][] = __( 'The billing Country is not allowed', 'tcp' );
+					}
+				}
 				if ( ! isset( $_REQUEST['billing_postcode'] ) || strlen( $_REQUEST['billing_postcode'] ) == 0 )
 					$error_billing['billing_postcode'][] = __( 'The billing Postcode field must be completed', 'tcp' );
 				if ( ! isset( $_REQUEST['billing_email'] ) || strlen( $_REQUEST['billing_email'] ) == 0 )
@@ -75,8 +86,18 @@ class Checkout {
 				elseif ( ! $this->check_email_address( $_REQUEST['billing_email'] ) ) 
 					$error_billing['billing_email'][] = __( 'The billing eMail field must be a valid email', 'tcp' );
 				$has_validation_billing_error = count( $error_billing ) > 0;
+			} elseif ( $selected_billing_address == 'Y' ) {
+				if ( $billing_isos ) {
+					$billing_country_id = Addresses::getCountryId( $_REQUEST['selected_billing_id'] );
+					if ( ! in_array( $billing_country_id, $billing_isos ) ) {
+						$error_billing['billing_country_id'][] = __( 'The billing Country is not allowed', 'tcp' );
+					}
+				}
+				$has_validation_billing_error = count( $error_billing ) > 0;
 			}
-			if ($selected_shipping_address == 'new') {
+
+			$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+			if ( $selected_shipping_address == 'new' ) {
 				if ( ! isset( $_REQUEST['shipping_firstname'] ) || strlen( $_REQUEST['shipping_firstname'] ) == 0 )
 					$error_shipping['shipping_firstname'][] = __( 'The shipping First name field must be completed', 'tcp' );
 				if ( ! isset( $_REQUEST['shipping_lastname'] ) || strlen( $_REQUEST['shipping_lastname'] ) == 0 )
@@ -85,14 +106,34 @@ class Checkout {
 					$error_shipping['shipping_street'][] = __( 'The shipping Street field must be completed', 'tcp' );
 				if ( isset( $_REQUEST['shipping_city'] ) && strlen( $_REQUEST['shipping_city'] ) == 0 )
 					$error_shipping['shipping_city'][] = __( 'The shipping City field must be completed', 'tcp' );
-				if ( isset( $_REQUEST['shipping_region'] ) && strlen( $_REQUEST['shipping_region'] ) == 0 )
+				if ( isset( $_REQUEST['shipping_region'] ) && strlen( $_REQUEST['shipping_region'] ) == 0 && $_REQUEST['shipping_region_id'] == '' )
 					$error_shipping['shipping_region'][] = __( 'The shipping Region field must be completed', 'tcp' );
+				if ( $shipping_isos && isset( $_REQUEST['shipping_region'] ) ) {
+					if ( ! in_array( $_REQUEST['shipping_country_id'], $shipping_isos ) ) {
+						$error_shipping['shipping_country_id'][] = __( 'The shipping Country is not allowed', 'tcp' );
+					}
+				}
 				if ( ! isset( $_REQUEST['shipping_postcode'] ) || strlen( $_REQUEST['shipping_postcode'] ) == 0 )
 					$error_shipping['shipping_postcode'][] = __( 'The shipping Postcode field must be completed', 'tcp' );
 				if ( ! isset( $_REQUEST['shipping_email'] ) || strlen( $_REQUEST['shipping_email'] ) == 0 )
-					$error_shipping['shipping_email'][] = __( 'The billing eMail field must be completed', 'tcp' );
+					$error_shipping['shipping_email'][] = __( 'The shipping eMail field must be completed', 'tcp' );
 				elseif ( ! $this->check_email_address( $_REQUEST['shipping_email'] ) ) 
-					$error_shipping['shipping_email'][] = __( 'The billing eMail field must be a valid email', 'tcp' );
+					$error_shipping['shipping_email'][] = __( 'The shipping eMail field must be a valid email', 'tcp' );
+				$has_validation_shipping_error = count( $error_shipping ) > 0;
+			} elseif ( $selected_shipping_address == 'BIL' ) {
+				if ( $shipping_isos ) {
+					if ( ! in_array( $_REQUEST['billing_country_id'], $shipping_isos ) ) {
+						$error_shipping['shipping_country_id'][] = __( 'The billing Country is not allowed as shipping Country', 'tcp' );
+					}
+				}
+				$has_validation_shipping_error = count( $error_shipping ) > 0;
+			} elseif ( $selected_shipping_address == 'Y' ) {
+				if ( $shipping_isos ) {
+					$shipping_country_id = Addresses::getCountryId( $_REQUEST['selected_shipping_id'] );
+					if ( ! in_array( $shipping_country_id, $shipping_isos ) ) {
+						$error_shipping['shipping_country_id'][] = __( 'The shipping Country is not allowed', 'tcp' );
+					}
+				}
 				$has_validation_shipping_error = count( $error_shipping ) > 0;
 			}
 			$has_validation_error = $has_validation_billing_error || $has_validation_shipping_error;
@@ -102,8 +143,8 @@ class Checkout {
 				$selected_shipping_address = isset( $_REQUEST['selected_shipping_address'] ) ? $_REQUEST['selected_shipping_address'] : 'N';
 				do_action( 'tcp_checkout_create_order_start' );
 				$order = array();
-				//$order = array_merge( $_REQUEST, $order );
 				$order['created_at'] = date( 'Y-m-d H:i:s' );
+				$order['ip'] = tcp_get_remote_ip();
 				$order['status'] = Orders::$ORDER_PENDING;
 				$order['comment'] = isset( $_REQUEST['comment'] ) ? $_REQUEST['comment'] : '';
 				$order['order_currency_code'] = tcp_get_the_currency_iso();
@@ -208,10 +249,12 @@ class Checkout {
 					$shipping_method = new $class();
 					$shipping_amount = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
 					$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
-					$order['shipping_amount'] = $shipping_amount;
+					$order['shipping_amount'] = 0; //tcp_get_the_shipping_cost_without_tax( $shipping_amount );
+					//$order['shipping_tax'] = tcp_calculate_tax_for_shipping( $shipping_amount );//TODO
 					$order['shipping_method'] = $class;
 				} else {
 					$order['shipping_amount'] = 0;
+					//$order['shipping_tax'] = 0;//TODO
 					$order['shipping_method'] = '';
 				}
 				if ( isset( $_REQUEST['payment_method_id'] ) ) {
@@ -221,12 +264,14 @@ class Checkout {
 					$instance = $pmi[1];
 					$payment_method = new $class();
 					$payment_amount = $payment_method->getCost( $instance, $shipping_country, $shoppingCart );
-					$order['payment_amount'] = $payment_amount;
+					$order['payment_amount'] = 0; //tcp_get_the_shipping_cost_without_tax( $payment_amount );
+					//$order['payment_tax'] = tcp_calculate_tax_for_shipping( $payment_amount );//TODO
 					$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $payment_amount, __( 'Payment cost', 'tcp' ) );
 					$order['payment_method'] = $class;
 					$order['payment_name']   = $payment_method->getTitle();
 				} else {
 					$order['payment_amount'] = 0;
+					//$order['payment_tax'] = 0;//TODO
 					$order['payment_method'] = '';
 					$order['payment_name']   = '';
 				}
@@ -273,9 +318,10 @@ class Checkout {
 					$ordersDetails['name']				= $post->post_title;
 					$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 					$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-					$ordersDetails['price']				= $item->getUnitPrice();
-					$ordersDetails['original_price']	= $item->getUnitPrice();//TODO cupons???
-					$ordersDetails['tax']				= $item->getTax();
+					//$ordersDetails['price']				= $item->getUnitPrice();
+					$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
+					$ordersDetails['original_price']	= $item->getUnitPrice();
+					$ordersDetails['tax']				= $item->getTax();//since 1.0.9 must be 0
 					$ordersDetails['qty_ordered']		= $item->getCount();
 					$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
 					$ordersDetails['expires_at']		= $expires_at;
@@ -294,15 +340,16 @@ class Checkout {
 					do_action( 'tcp_checkout_create_order_insert_detail', $orders_details_id );
 				}
 				foreach( $shoppingCart->getOtherCosts() as $id => $cost ) {
-					if ( $id != ShoppingCart::$OTHER_COST_SHIPPING_ID && $id != ShoppingCart::$OTHER_COST_PAYMENT_ID ) {
+					//if ( $id != ShoppingCart::$OTHER_COST_SHIPPING_ID && $id != ShoppingCart::$OTHER_COST_PAYMENT_ID ) {
 						$ordersCosts = array();
 						$ordersCosts['order_id']	= $order_id;
 						$ordersCosts['description']	= $cost->getDesc();
-						$ordersCosts['cost']		= $cost->getCost();
-						$ordersCosts['cost_order']		= $cost->getOrder();
+						$ordersCosts['cost']		= tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
+						$ordersCosts['tax']			= tcp_get_the_shipping_tax();//tcp_calculate_tax_for_shipping( $cost->getCost() );
+						$ordersCosts['cost_order']	= $cost->getOrder();
 						$orders_cost_id = OrdersCosts::insert( $ordersCosts );
 						do_action( 'tcp_checkout_create_order_insert_cost', $orders_cost_id );
-					}
+					//}
 				}
 				if ( $create_shipping_address )
 					$this->createNewShippingAddress( $order );
@@ -328,8 +375,8 @@ class Checkout {
 					$class = $pmi[0];
 					$instance = $pmi[1];
 					$payment_method = new $class();
-					$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $order['shipping_amount'] );
-					$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $order['payment_amount'] );
+					//$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $order['shipping_amount'] );
+					//$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $order['payment_amount'] );
 					do_action( 'tcp_checkout_calculate_other_costs' );
 					echo '<p class="tcp_pay_form">';
 					$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id );
@@ -378,17 +425,15 @@ class Checkout {
 		if ( is_user_logged_in() || isset( $_REQUEST['tcp_load_plugins'] ) || isset( $_REQUEST['tcp_show_cart'] ) || isset( $_REQUEST['tcp_create_order'] ) ) :
 			?> style="display: none"<?php
 		endif;?>>
-		<?php if ( ! is_user_logged_in() ) :?>
+		<?php if ( ! is_user_logged_in() ) : ?>
 			<div id="login_form">
-				<h4><?php _e( 'Login', 'tcp' );?></h4>
-				<?php 
+				<h4><?php _e( 'Login', 'tcp' );?></h4><?php 
 				$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
-				if ( ! $user_registration ) :?>
+				if ( ! $user_registration ) : ?>
 				<p>
 					<strong><?php _e( 'Already registered?', 'tcp' );?></strong>
 					<br><?php _e( 'Please log in below:', 'tcp' );?>
-				</p>
-				<?php endif;
+				</p><?php endif;
 				$args = array(
 					'echo'				=> true,
 					'redirect'			=> get_permalink(), // get_option( 'tcp_checkout_page_id' ) ),
@@ -525,13 +570,14 @@ class Checkout {
 						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo $address->name;?></option>
 					<?php endforeach;?>
 					</select>
+<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( $error_billing, 'billing_country_id' );?>
 				</div> <!-- selected_billing_area -->
 				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php
 					if ( ( ! isset( $_REQUEST['selected_billing_address'] ) && count( $addresses ) > 0 ) || ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'Y' ) ) :
 						?> checked="true"<?php
 					endif;
 					?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
-				<label for="selected_billing_address"><?php _e( 'Send to the selected address', 'tcp' )?></label>
+				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' )?></label>
 				<br />
 			<?php endif;?>
 			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php
@@ -550,8 +596,8 @@ if ( isset( $_REQUEST['billing_firstname'] ) ) {
 	$firstname = $_REQUEST['billing_firstname'];
 } elseif ( $default_address ) {
 	$firstname = $default_address->firstname;
-} elseif ( $current_user instanceof WP_User ) {
-	$firstname = $current_user->user_firstname;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$firstname = $current_user->first_name;
 } else {
 	$firstname = '';
 }
@@ -559,8 +605,8 @@ if ( isset( $_REQUEST['billing_lastname'] ) ) {
 	$lastname = $_REQUEST['billing_lastname'];
 } elseif ( $default_address ) {
 	$lastname = $default_address->lastname;
-} elseif ( $current_user instanceof WP_User ) {
-	$lastname = $current_user->user_lastname;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$lastname = $current_user->last_name;
 } else {
 	$lastname = '';
 }
@@ -612,8 +658,8 @@ if ( isset( $_REQUEST['billing_email'] ) ) {
 	$email = $_REQUEST['billing_email'];
 } elseif ( $default_address ) {
 	$email = $default_address->email;
-} elseif ( $current_user instanceof WP_User ) {
-	$email = $current_user->user_email;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$email = $current_user->email;
 } else {
 	$email = '';
 }?>
@@ -621,15 +667,45 @@ if ( isset( $_REQUEST['billing_email'] ) ) {
 					<li><label for="billing_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_firstname' );?></li>
+
 					<li><label for="billing_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_lastname' );?></li>
+
 					<li><label for="billing_company"><?php _e( 'Company', 'tcp' );?>:</label>
 					<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_company' );?></li>
-					<li><label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( $error_billing, 'billing_street' );?></li>
+					
+					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
+					<?php $billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+					if ( $billing_isos ) {
+						$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
+					} else {
+						$countries = Countries::getAll( tcp_get_current_language_iso() );
+					}
+					$country_bill = $country_id;
+					if ( $country_bill == '' ) $country_bill = $country;
+					?><select id="billing_country_id" name="billing_country_id"><?php //p_use_billing_address
+					foreach( $countries as $item ) :?>
+						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
+					<?php endforeach;?>
+					</select>
+					<?php if ( $selected_billing_address == 'new' ) $this->showErrorMsg( $error_billing, 'billing_country_id' );?>
+					</li>
+
+					<li><label for="billing_region_id"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
+					<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
+					<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
+					<?php foreach( $regions as $id => $region ) : ?>
+						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
+					<?php endforeach;?>
+					</select>
+					<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id;?>"/>
+					<?php $this->showErrorMsg( $error_billing, 'billing_region_id' );?>
+					<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+					<?php $this->showErrorMsg( $error_billing, 'billing_region' );?>
+					</li>
 
 					<li id="li_billing_city_id"><label for="billing_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
 					<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
@@ -646,50 +722,27 @@ if ( isset( $_REQUEST['billing_email'] ) ) {
 						<?php $this->showErrorMsg( $error_billing, 'billing_city' );?>
 					<?php endif;?>
 					</li>
-					<li><label for="billing_region"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
-					<?php $regions = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-					$regions = apply_filters( 'tcp_load_regions_for_billing', $regions );
-					if ( is_array( $regions ) && count( $regions ) > 0 ) : ?>
-						<select id="billing_region_id" name="billing_region_id">
-						<?php foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
-						<?php endforeach;?>
-						</select>
-						<?php $this->showErrorMsg( $error_billing, 'billing_region_id' );?>
-					<?php else : ?>
-						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( $error_billing, 'billing_region' );?>
-					<?php endif;?>
-					</li>
+
+					<li><label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
+					<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+					<?php $this->showErrorMsg( $error_billing, 'billing_street' );?></li>
 
 					<li><label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="7" maxlength="7" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_postcode' );?></li>
-					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
 
-					<?php
-					$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
-					if ( $billing_isos )
-						$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
-					else
-						$countries = Countries::getAll( tcp_get_current_language_iso() );
-					$country_bill = $country_id;
-					if ( $country_bill == '' ) $country_bill = $country;
-					?><select id="billing_country_id" name="billing_country_id"><?php
-					foreach( $countries as $item ) :?>
-						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-					<?php endforeach;?>
-					</select>
-					<?php $this->showErrorMsg( $error_billing, 'billing_country_id' );?></li>
 					<li><label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label>
 					<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_telephone_1' );?></li>
+
 					<li><label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:</label>
 					<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_telephone_2' );?></li>
+
 					<li><label for="billing_fax"><?php _e( 'Fax', 'tcp' );?>:</label>
 					<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_fax' );?></li>
+
 					<li><label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 					<?php $this->showErrorMsg( $error_billing, 'billing_email' );?></li>
@@ -712,7 +765,7 @@ if ( isset( $_REQUEST['billing_email'] ) ) {
 	<div id="shipping_layer" class="shipping_layer">
 		<h3><?php _e( '3. Shipping options', 'tcp' );?></h3>
 		<div class="shipping_layer_info checkout_info clearfix" id="shipping_layer_info"<?php
-		if ( isset( $_REQUEST['tcp_load_plugins'] ) &&  $has_validation_shipping_error ){}
+		if ( isset( $_REQUEST['tcp_load_plugins'] ) &&  $has_validation_shipping_error && ! $has_validation_billing_error){}
 		else echo 'style=" display: none;"';?>>
 		<?php $default_address = false;
 		if ( count( $addresses ) > 0 ) :
@@ -736,28 +789,37 @@ if ( isset( $_REQUEST['billing_email'] ) ) {
 					<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo $address->name;?></option>
 				<?php endforeach;?>
 				</select>
+<?php if ( $selected_shipping_address == 'Y' ) $this->showErrorMsg( $error_shipping, 'shipping_country_id' );?>
 			</div> <!-- selected_billing_area -->
+		<span id="p_selected_shipping_address">
 			<input type="radio" id="selected_shipping_address" name="selected_shipping_address" value="Y"<?php
 			if ( ( ! isset( $_REQUEST['selected_shipping_address'] ) && count( $addresses ) > 0 ) || $_REQUEST['selected_shipping_address'] == 'Y' ) : 
 				?> checked="true"<?php
 			endif;
 			?> onChange="jQuery('#selected_shipping_area').show();jQuery('#new_shipping_area').hide();" />
 			<label for="selected_shipping_address"><?php _e( 'Send to the selected address', 'tcp' )?></label>
-			<br />
+			<br/>
+		</span>
 		<?php endif;?>
+		<span id="p_use_billing_address">
 			<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php
 			if ( ( ! isset( $_REQUEST['selected_shipping_address'] ) && count( $addresses ) == 0 ) || ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'BIL' ) ) :
 				?> checked="true"<?php
 			endif;
 			?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').hide();" />
 			<label for="use_billing_address"><?php _e( 'Use billing address', 'tcp' );?></label>
-			<br />
+<?php if ( $selected_shipping_address == 'BIL' ) $this->showErrorMsg( $error_shipping, 'shipping_country_id' );?>
+			<br/>
+		</span>
+		<span id="p_new_shipping_address">
 			<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new"<?php
 			if ( ( ! isset( $_REQUEST['selected_shipping_address'] ) && count( $addresses ) == 0 ) || ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' ) ) :
 				?> checked="true"<?php
 			endif;
 			?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').show();" />
 			<label for="new_shipping_address"><?php _e( 'New shipping address', 'tcp' );?></label>
+			<br/>
+		</span>
 			<div id="new_shipping_area" <?php
 				if ( ( ! isset( $_REQUEST['selected_shipping_address'] ) && count( $addresses ) == 0 ) || ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' ) ) :
 					?><?php else : ?> style="display:none"<?php
@@ -767,8 +829,8 @@ if ( isset( $_REQUEST['shipping_firstname'] ) ) {
 	$firstname = $_REQUEST['shipping_firstname'];
 } elseif ( $default_address ) {
 	$firstname = $default_address->firstname;
-} elseif ( $current_user instanceof WP_User ) {
-	$firstname = $current_user->user_firstname;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$firstname = $current_user->first_name;
 } else {
 	$firstname = '';
 }
@@ -776,8 +838,8 @@ if ( isset( $_REQUEST['shipping_lastname'] ) ) {
 	$lastname = $_REQUEST['shipping_lastname'];
 } elseif ( $default_address ) {
 	$lastname = $default_address->lastname;
-} elseif ( $current_user instanceof WP_User ) {
-	$lastname = $current_user->user_lastname;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$lastname = $current_user->last_name;
 } else {
 	$lastname = '';
 }
@@ -829,8 +891,8 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 	$email = $_REQUEST['shipping_email'];
 } elseif ( $default_address ) {
 	$email = $default_address->email;
-} elseif ( $current_user instanceof WP_User ) {
-	$email = $current_user->user_email;
+} elseif ( $current_user && $current_user instanceof WP_User ) {
+	$email = $current_user->email;
 } else {
 	$email = '';
 }?>
@@ -838,15 +900,46 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 					<li><label for="shipping_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_firstname' );?></li>
+
 					<li><label for="shipping_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>"size="40" maxlength="100" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_lastname' );?></li>
+
 					<li><label for="shipping_company"><?php _e( 'Company', 'tcp' );?>:</label>
 					<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_company' );?></li>
-					<li><label for="shipping_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( $error_shipping, 'shipping_street' );?></li>
+
+					<li><label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
+					<select id="shipping_country_id" name="shipping_country_id">
+					<?php //$countries = Countries::getAll();
+					$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+					if ( $shipping_isos )
+						$countries = Countries::getSome( $shipping_isos, tcp_get_current_language_iso() );
+					else
+						$countries = Countries::getAll( tcp_get_current_language_iso() );
+					$country_ship = $country_id;
+					if ( $country_ship == '' ) $country_ship = $country;
+					foreach($countries as $item ) :?>
+						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_ship );?>><?php echo $item->name;?></option>
+					<?php endforeach;?>
+					</select>
+					<?php if ( $selected_shipping_address == 'new' ) $this->showErrorMsg( $error_shipping, 'shipping_country_id' );?>
+					</li>
+
+					<li><label for="shipping_region"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
+					<?php $regions = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+					$regions = apply_filters( 'tcp_load_regions_for_shipping', $regions );?>
+					<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
+					<?php foreach( $regions as $id => $region ) : ?>
+						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
+					<?php endforeach;?>
+					</select>
+					<input type="hidden" id="shipping_region_selected_id" value="<?php echo $region_id;?>"/>
+					<?php $this->showErrorMsg( $error_shipping, 'shipping_region_id' );?>
+					<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+					<?php $this->showErrorMsg( $error_shipping, 'shipping_region' );?>
+					</li>
 
 					<li id="li_shipping_city_id"><label for="shipping_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
 					<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
@@ -864,40 +957,15 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 					<?php endif;?>
 					</li>
 
-					<li><label for="shipping_region"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
-					<?php $regions = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-					$regions = apply_filters( 'tcp_load_regions_for_shipping', $regions );
-					if ( is_array( $regions ) && count( $regions ) > 0 ) : ?>
-						<select id="shipping_region_id" name="shipping_region_id">
-						<?php foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
-						<?php endforeach;?>
-						</select>
-						<?php $this->showErrorMsg( $error_shipping, 'shipping_region_id' );?>
-					<?php else : ?>
-						<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( $error_shipping, 'shipping_region' );?>
-					<?php endif;?>
-					</li>
+					<li><label for="shipping_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
+					<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+					<?php $this->showErrorMsg( $error_shipping, 'shipping_street' );?></li>
 
 					<li><label for="shipping_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
 					<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php echo $postcode;?>"size="7" maxlength="7" />
-					<?php $this->showErrorMsg( $error_shipping, 'shipping_postcode' );?></li>
-					<li><label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
-					<select id="shipping_country_id" name="shipping_country_id">
-					<?php //$countries = Countries::getAll();
-					$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
-					if ( $shipping_isos )
-						$countries = Countries::getSome( $shipping_isos, tcp_get_current_language_iso() );
-					else
-						$countries = Countries::getAll( tcp_get_current_language_iso() );
-					$country_ship = $country_id;
-					if ( $country_ship == '' ) $country_ship = $country;
-					foreach($countries as $item ) :?>
-						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_ship );?>><?php echo $item->name;?></option>
-					<?php endforeach;?>
-					</select>
-					<?php $this->showErrorMsg( $error_shipping, 'shipping_country_id' );?></li>
+					<?php $this->showErrorMsg( $error_shipping, 'shipping_postcode' );?>
+					</li>
+
 					<li><label for="shipping_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label>
 					<input type="text" id="shipping_telephone_1" name="shipping_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
 					<?php $this->showErrorMsg( $error_shipping, 'shipping_telephone_1' );?></li>
@@ -1002,9 +1070,9 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 				<input type="submit" name="tcp_show_cart" value="<?php _e( 'Continue', 'tcp' );?>"
 					class="tcp_continue tcp_continue_payment" />
 			</p>
-		</div><!-- sending_layer_info -->
+		</div><!-- payment_layer_info -->
 		<?php endif;?>
-	</div><!-- sending_layer -->
+	</div><!-- payment_layer -->
 <!--//
 //6. Services
 //-->
@@ -1059,7 +1127,8 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 //8. Legal notice
 //-->
 	<div id="legal_notice_layer" class="legal_notice_layer">
-		<h3><?php _e('8. Legal notice', 'tcp');?></h3>
+		<!--<h3><?php _e( '8. Legal notice', 'tcp' );?></h3>-->
+		<h3><?php _e( '8. Checkout notice', 'tcp' );?></h3>
 		<?php $legal_notice_accept = isset( $_REQUEST['legal_notice_accept'] ) ? $_REQUEST['legal_notice_accept'] : '';?>
 		<?php if ( isset( $_REQUEST['tcp_show_cart'] ) || ( isset( $_REQUEST['tcp_create_order'] ) && $legal_notice_accept != 'Y' ) ) :?>
 			<div id="legal_notice_layer_info" class="legal_notice_layer_info checkout_info clearfix"<?php
@@ -1067,9 +1136,10 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			<?php else :
 				?> style="display:none;"<?php
 			endif;?>>
-			<?php $legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Legal notice', 'tcp' );
-			if ( strlen( $legal_notice ) ) :?>
-				<label for="legal_notice"><?php _e('Legal notice:', 'tcp');?></label><br />
+			<?php $legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : '';//__( 'Legal notice', 'tcp' );
+			if ( strlen( $legal_notice ) > 0 ) : ?>
+				<!--<label for="legal_notice"><?php _e( 'Legal notice:', 'tcp' );?></label><br />-->
+				<label for="legal_notice"><?php _e( 'Notice:', 'tcp' );?></label><br />
 				<textarea id="legal_notice" cols="60" rows="8" readonly="true"><?php echo $legal_notice;?></textarea>
 				<br />
 				<label for="legal_notice_accept"><?php _e( 'Accept conditions:', 'tcp' );?></label>
@@ -1098,52 +1168,56 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 
 	private function createOrderCart( $shipping_country, $shoppingCart, $echo = true ) {
 		do_action( 'tcp_checkout_create_order_cart' );
-		global $thecartpress;
-		$currency = tcp_get_the_currency();
-		//$out = '<table class="tcp_details" cellspacing="0">' . "\n";
 		$out = '<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">' . "\n";
 		$out .= '<thead>' . "\n";
-		$out .= '<tr>' . "\n";
-		$out .= '<th>' . __( 'Name', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'Price', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'Units', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'Weight', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th>' . __( 'Total', 'tcp' ) . '</th>' . "\n";
+		$out .= '<tr class="tcp_cart_title_row">' . "\n";
+		$out .= '<th class="tcp_cart_name">' . __( 'Name', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th class="tcp_cart_unit_price">' . __( 'Price', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th class="tcp_cart_units">' . __( 'Units', 'tcp' ) . '</th>' . "\n";
+		//TODO Quitar peso
+		$out .= '<th class="tcp_cart_weight">' . __( 'Weight', 'tcp' ) . '</th>' . "\n";
+		$out .= '<th class="tcp_cart_price">' . __( 'Total', 'tcp' ) . '</th>' . "\n";
 		$out .= '</tr>' . "\n";
 		$out .= '</thead>' . "\n";
 		$out .= '<tbody>' . "\n";
-
-		$total = 0;
+		$tax_amount = 0;
+		$subtotal = 0;
 		$i = 0;
 		foreach( $shoppingCart->getItems() as $item ) {
-			$out .= '<tr ';
-			if ( $i++ & 1 == 1 ) $out .= 'class="tcp_par"';
-			$out .= '>' . "\n";
-			$out .= '<td>' . get_the_title( tcp_get_current_id( $item->getPostId() ) );
-			$out .= $item->getOption1Id() > 0 ? '<br />' . get_the_title( tcp_get_current_id( $item->getOption1Id() ) ) : '';
-			$out .= $item->getOption2Id() > 0 ? '-' . get_the_title( tcp_get_current_id( $item->getOption2Id() ) ) : '';
+			$post_id = tcp_get_current_id( $item->getPostId() );
+			$option_1_id = tcp_get_current_id( $item->getOption1Id() );
+			$option_2_id = tcp_get_current_id( $item->getOption2Id() );
+			$out .= '<tr class="tcp_cart_product_row ';
+			if ( $i++ & 1 == 1 ) $out .= 'tcp_par';
+			$out .= '">' . "\n";
+			$out .= '<td class="tcp_cart_name">' . tcp_get_the_title( $post_id, $item->getOption1Id(), $item->getOption2Id() );
 			$out .= '</td>' . "\n";
-			if ( $item->getTax() > 0 )
-				$out .= '<td>' . tcp_number_format( $item->getUnitPrice() ) . '&nbsp;' . $currency . ' (' . $item->getTax() . '%)</td>' . "\n";
-			else
-				$out .= '<td>' . tcp_number_format( $item->getUnitPrice() ) . '&nbsp;' . $currency . '</td>' . "\n";
-			$out .= '<td>' . tcp_number_format( $item->getCount(), 0 ) . '</td>' . "\n";
-			$out .= '<td>' . tcp_number_format( $item->getWeight(), 0 ) . '&nbsp;' . tcp_get_the_unit_weight() . '</td>' . "\n";
-			$price = $item->getTotal();
-			$total += $price;
-			$out .= '<td>' . tcp_number_format( $price ) . '&nbsp;' .  $currency . '</td>' . "\n";
+			$price = tcp_get_the_price( $post_id );
+			$price += tcp_get_the_price( $option_1_id );
+			$price += tcp_get_the_price( $option_2_id );
+			$price_without_tax = tcp_get_the_price_without_tax( $post_id, $price );
+			$tax = $price - $price_without_tax;
+			$out .= '<td class="tcp_cart_unit_price">' . tcp_format_the_price( $price_without_tax ) . '</td>' . "\n";
+			$out .= '<td class="tcp_cart_units">' . tcp_number_format( $item->getCount(), 0 ) . '</td>' . "\n";
+			//TODO Quitar peso
+			$out .= '<td class="tcp_cart_weight">' . tcp_number_format( $item->getWeight(), 0 ) . '&nbsp;' . tcp_get_the_unit_weight() . '</td>' . "\n";
+			$tax = $tax * $item->getUnits();
+			$tax_amount += $tax;
+			$price = $price_without_tax * $item->getUnits();
+			$subtotal += $price;
+			$out .= '<td class="tcp_cart_price">' . tcp_format_the_price( $price ) . '</td>' . "\n";
 			$out .= '</tr>' . "\n";
 		}
 		$discount = $shoppingCart->getDiscount();
 		if ( $discount > 0 ) {
-			$dis = '<tr id="discount"';
-			if ( $i++ & 1 == 1 ) $dis .= ' class="tcp_par"';
-			$dis .= '>' . "\n";
+			$dis = '<tr id="discount" class="tcp_cart_discount_row';
+			if ( $i++ & 1 == 1 ) $dis .= ' tcp_par';
+			$dis .= '">' . "\n";
 			$dis .= '<td colspan="4" style="text-align:right">' . __( 'Discount', 'tcp' ) . '</td>' . "\n";
-			$dis .= '<td>' . tcp_number_format( $discount ) . '&nbsp;' . $currency . '</td>' . "\n";
+			$dis .= '<td>' . tcp_format_the_price( $discount ) . '</td>' . "\n";
 			$dis .= '</tr>' . "\n";
 			$out .= $dis;
-			$total = $total - $discount;
+			$subtotal -= $discount;
 		}
 		if ( isset( $_REQUEST['shipping_method_id'] ) ) { //sending
 			$smi = $_REQUEST['shipping_method_id'];
@@ -1168,24 +1242,44 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			$shoppingCart->deleteOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID );
 		}
 		do_action( 'tcp_checkout_calculate_other_costs' );
+		
 		$costs = $shoppingCart->getOtherCosts();
 		asort( $costs, SORT_STRING );
-		foreach( $costs as $cost ) {
+		foreach( $costs as $cost_id => $cost ) {
 			$out .= '<tr id="other_costs"';
 			if ( $i++ & 1 == 1 ) $out .= ' class="tcp_par"';
 			$out .= '>' . "\n";
-			$out .= '<td colspan="4" style="text-align:right">' . $cost->getDesc() . '</td>' . "\n";
-			$out .= '<td>' . tcp_number_format( $cost->getCost() ) . '&nbsp;' . $currency . '</td>' . "\n";
+			$out .= '<td colspan="4" class="tcp_cost_' . $cost_id . '" style="text-align:right">' . $cost->getDesc() . '</td>' . "\n";
+			$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
+			$out .= '<td>' . tcp_format_the_price( $cost_without_tax ) . '</td>' . "\n";
 			$out .= '</tr>' . "\n";
-			$total += $cost->getCost();
+			$tax_amount += tcp_calculate_tax_for_shipping( $cost->getCost() );
+			$subtotal += $cost_without_tax;
 		}
+		$show_tax_summary = false;
+		if ( $tax_amount == 0 ) {
+			$show_tax_summary = tcp_get_display_zero_tax_subtotal();
+		} elseif ( tcp_is_display_full_tax_summary() ) {
+			$show_tax_summary = true;
+		}
+		if ( $show_tax_summary ) {
+			$out .= '<tr id="subtotal" class="tcp_cart_subtotal_row ';
+			if ( $i++ & 1 == 1 ) $out .= ' tcp_par';
+			$out .= '">' . "\n";
+			$out .= '<td colspan="4" class="tcp_cart_subtotal_title">' . __( 'Taxes', 'tcp' ) . '</td>' . "\n";
+			$out .= '<td class="tcp_cart_subtotal"><span id="subtotal">' . tcp_format_the_price( $tax_amount ) . '</span></td>' . "\n";
+			$out .= '</tr>';
+		}
+		$subtotal += $tax_amount;
+		$total = apply_filters( 'tcp_checkout_set_total', $subtotal );
+
 		do_action( 'tcp_checkout_before_total' );
-		$total = apply_filters( 'tcp_checkout_set_total', $total );
-		$out .= '<tr id="total"';
-		if ( $i++ & 1 == 1 ) $out .= ' class="tcp_par"';
-		$out .= '>' . "\n";
-		$out .= '<td colspan="4" style="text-align:right;">' . __( 'Total', 'tcp' ) . '</td>' . "\n";
-		$out .= '<td style="color:red;"><span id="total">' . tcp_number_format( $total ) . '&nbsp;' . $currency . '</span></td>' . "\n";
+		
+		$out .= '<tr id="total" class="tcp_cart_total_row ';
+		if ( $i++ & 1 == 1 ) $out .= ' tcp_par';
+		$out .= '">' . "\n";
+		$out .= '<td colspan="4" class="tcp_cart_total_title">' . __( 'Total', 'tcp' ) . '</td>' . "\n";
+		$out .= '<td class="tcp_cart_total"><span id="total">' . tcp_format_the_price( $total ) . '</span></td>' . "\n";
 		$out .= '</tr>';
 		$out .= '</tbody></table>' . "\n";
 		if ( $echo )
@@ -1211,6 +1305,7 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
 			$subject = 'Order from '.get_bloginfo( 'name' );
 			$message = isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
+			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
 			mail( $to_customer, $subject, $message_to_customer, $headers );
 			$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';				
@@ -1245,15 +1340,15 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			$address['customer_id'] = $order['customer_id'];
 			$address['default_shipping'] = 'N';
 			$address['default_billing'] = 'Y';
-			$address['name'] = __( 'billing address', 'tcp' );
+			$address['name'] = __( 'billing address', 'tcp' );//title
 			$address['firstname'] = $order['billing_firstname'];
 			$address['lastname'] = $order['billing_lastname'];
 			$address['company'] = $order['billing_company'];
 			$address['street'] = $order['billing_street'];
 			$address['city'] = $order['billing_city'];
 			$address['city_id'] = $order['billing_city_id'];
-			$address['region'] = $order['billing_region'];
 			$address['region_id'] = $order['billing_region_id'];
+			$address['region'] = $order['billing_region'];
 			$address['postcode'] = $order['billing_postcode'];
 			$address['country'] = $order['billing_country'];
 			$address['country_id'] = $order['billing_country_id'];
@@ -1280,8 +1375,8 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			$address['street'] = $order['shipping_street'];
 			$address['city'] = $order['shipping_city'];
 			$address['city_id'] = $order['shipping_city_id'];
-			$address['region'] = $order['shipping_region'];
 			$address['region_id'] = $order['shipping_region_id'];
+			$address['region'] = $order['shipping_region'];
 			$address['postcode'] = $order['shipping_postcode'];
 			$address['country'] = $order['shipping_country'];
 			$address['country_id'] = $order['shipping_country_id'];
@@ -1291,41 +1386,6 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 			$address['email'] = $order['shipping_email'];
 			Addresses::save($address);
 		}
-	}
-
-	private function getShippingCountry() {
-		$shipping_country = '';
-		if ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' )
-			$shipping_country = $_REQUEST['shipping_country_id'];
-		elseif ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'BIL' )
-			if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' )
-				$shipping_country = $_REQUEST['billing_country_id'];
-			else {
-				$address_id = $_REQUEST['selected_billing_id'];
-				$address = Addresses::get( $address_id );
-				$shipping_country = $address->country_id;
-			}
-		else //selected_shipping_address == Y
-			if ( isset( $_REQUEST['selected_shipping_id'] ) ) {
-				$address_id = $_REQUEST['selected_shipping_id'];
-				$address = Addresses::get( $address_id );
-				$shipping_country = $address->country_id;
-			}
-		return $shipping_country;
-	}
-
-	private function getBillingCountry() {
-		$billing_country = '';
-		if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' ) {
-			$billing_country = $_REQUEST['billing_country_id'];
-		} else {//selected_shipping_address == Y
-			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
-				$address_id = $_REQUEST['selected_billing_id'];
-				$address = Addresses::get( $address_id );
-				$billing_country = $address->country_id;
-			}
-		}
-		return $billing_country;
 	}
 
 	//http://www.linuxjournal.com/article/9585
@@ -1366,6 +1426,75 @@ if ( isset( $_REQUEST['shipping_email'] ) ) {
 		}
 		return true;
 	}
+}
 
+function tcp_get_billing_country() {
+	$billing_country = '';
+	if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' ) {
+		$billing_country = $_REQUEST['billing_country_id'];
+	} else {//selected_shipping_address == Y
+		if ( isset( $_REQUEST['selected_billing_id'] ) ) {
+			$address_id = $_REQUEST['selected_billing_id'];
+			$address = Addresses::get( $address_id );
+			$billing_country = $address->country_id;
+		}
+	}
+	return $billing_country;
+}
+
+function tcp_get_billing_region() {
+	$billing_region = '';
+	if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' ) {
+		$billing_region = $_REQUEST['billing_region_id'];
+	} else {//selected_shipping_address == Y
+		if ( isset( $_REQUEST['selected_billing_id'] ) ) {
+			$address_id = $_REQUEST['selected_billing_id'];
+			$address = Addresses::get( $address_id );
+			$billing_region = $address->region_id;
+		}
+	}
+	return $billing_region;
+}
+
+function tcp_get_shipping_country() {
+	$shipping_country = '';
+	if ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' )
+		$shipping_country = $_REQUEST['shipping_country_id'];
+	elseif ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'BIL' )
+		if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' )
+			$shipping_country = $_REQUEST['billing_country_id'];
+		else {
+			$address_id = $_REQUEST['selected_billing_id'];
+			$address = Addresses::get( $address_id );
+			$shipping_country = $address->country_id;
+		}
+	else //selected_shipping_address == Y
+		if ( isset( $_REQUEST['selected_shipping_id'] ) ) {
+			$address_id = $_REQUEST['selected_shipping_id'];
+			$address = Addresses::get( $address_id );
+			$shipping_country = $address->country_id;
+		}
+	return $shipping_country;
+}
+
+function tcp_get_shipping_region() {
+	$shipping_region = '';
+	if ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'new' )
+		$shipping_region = $_REQUEST['shipping_region_id'];
+	elseif ( isset( $_REQUEST['selected_shipping_address'] ) && $_REQUEST['selected_shipping_address'] == 'BIL' )
+		if ( isset( $_REQUEST['selected_billing_address'] ) && $_REQUEST['selected_billing_address'] == 'new' )
+			$shipping_region = $_REQUEST['billing_region_id'];
+		else {
+			$address_id = $_REQUEST['selected_billing_id'];
+			$address = Addresses::get( $address_id );
+			$shipping_region = $address->region_id;
+		}
+	else //selected_shipping_address == Y
+		if ( isset( $_REQUEST['selected_shipping_id'] ) ) {
+			$address_id = $_REQUEST['selected_shipping_id'];
+			$address = Addresses::get( $address_id );
+			$shipping_region = $address->region_id;
+		}
+	return $shipping_region;
 }
 ?>

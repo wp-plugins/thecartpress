@@ -22,23 +22,11 @@ class Taxes {
 		global $wpdb;
 		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_taxes` (
 		  `tax_id`		bigint(20)		unsigned NOT NULL auto_increment,
-		  `title`		varchar(200)	NOT NULL,
-  		  `tax`			double			NOT NULL default 0,
+		  `title`		varchar(100)	NOT NULL,
+  		  `desc`		varchar(255)	NOT NULL,
 		  PRIMARY KEY (`tax_id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;';
 		$wpdb->query( $sql );
-	}
-
-	static function initData() {
-		global $wpdb;
-		$count = $wpdb->get_var( 'select count(*) from ' . $wpdb->prefix . 'tcp_taxes' );
-		if ( $count == 0 )
-			Taxes::insert( array(
-					'tax_id'	=> 0,
-					'title'		=> __( 'No tax', 'tcp' ),
-					'tax'		=> 0,
-				)
-			);
 	}
 
 	/**
@@ -61,10 +49,10 @@ class Taxes {
 	/**
 	 * Returns the tax data by id
 	 */
-	static function getTax( $tax_id ) {
+/*	static function getTax( $tax_id ) {
 		global $wpdb;
 		return $wpdb->get_var( $wpbb->prepare( 'select tax from '. $wpdb->prefix . 'tcp_taxes where tax_id = %d', $tax_id ) );
-	}
+	}*/
 
 	static function save( $tax ) {
 		global $wpdb;
@@ -83,9 +71,9 @@ class Taxes {
 		$wpdb->insert( $wpdb->prefix . 'tcp_taxes',
 			array(
 				'title'	=> $tax['title'],
-				'tax'	=> $tax['tax'],
+				'desc'	=> $tax['desc'],
 			),
-			array( '%s', '%f' ) );
+			array( '%s', '%s' ) );
 		return $wpdb->insert_id;
 	}
 
@@ -94,12 +82,12 @@ class Taxes {
 		$wpdb->update( $wpdb->prefix . 'tcp_taxes',
 			array(
 				'title'	=> $tax['title'],
-				'tax'	=> $tax['tax'],
+				'desc'	=> $tax['desc'],
 			),
 			array(
 				'tax_id'	=> $tax['tax_id'],
 			),
-			array( '%s', '%f' ),
+			array( '%s', '%s' ),
 			array( '%d' )
 		);
 	}

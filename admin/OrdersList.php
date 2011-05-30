@@ -18,6 +18,7 @@
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/Orders.class.php' );
 require_once( dirname( dirname( __FILE__ ) ).'/daos/OrdersCosts.class.php' );
+require_once( dirname( dirname( __FILE__ ) ).'/classes/OrderPage.class.php' );
 
 $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 
@@ -46,11 +47,15 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			'order_id'		=> $order->order_id,
 			'date'			=> $order->created_at,
 			'user'			=> $order->shipping_firstname . ' ' . $order->shipping_lastname,
+			'user_id'		=> $order->customer_id,
 			'status'		=> $order->status,
-			'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
+			//'total'			=> ($order->price * (1 + $order->tax / 100)) * $order->qty_ordered + $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
+			'total'			=> $order->price * $order->qty_ordered,// + $order->shipping_amount, // + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
+			'others'		=> $order->shipping_amount + $order->payment_amount + OrdersCosts::getTotalCost( $order->order_id ) - $order->discount_amount,
 			'code_tracking'	=> $order->code_tracking,
 			'payment_name'	=> $order->payment_name,
 			'payment_method'=> $order->payment_method,
+			'billing_email'	=> $order->billing_email,
 		);
 	}?>
 <div class="wrap">
@@ -79,6 +84,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 <table class="widefat fixed" cellspacing="0">
 <thead>
 <tr>
+	<th scope="col" class="manage-column"><?php _e( 'ID', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
@@ -89,6 +95,7 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 </thead>
 <tfoot>
 <tr>
+	<th scope="col" class="manage-column"><?php _e( 'ID', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Date', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'User', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Status', 'tcp' );?></th>
@@ -103,28 +110,36 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 	<tr><td colspan="5"><?php _e( 'The list of orders is empty', 'tcp' );?></td></tr>
 <?php else :
 	$order_lines = array();
-	$order_id ='';
+	$order_id = '';
+	$others = 0;
 	foreach( $orders as $order ) :
 		if ( $order_id != $order['order_id'] ) {
+			if ( $order_id != '' ) $order_lines[$order_id]['total'] += $others;
 			$order_lines[$order['order_id']] = array(
 				'order_id'		=> $order['order_id'],
 				'date'			=> $order['date'],
 				'user'			=> $order['user'],
+				'user_id'		=> $order['user_id'],
 				'status'		=> $order['status'],
 				'payment_name'	=> $order['payment_name'],
 				'payment_method'=> $order['payment_method'],
 				'code_tracking' => $order['code_tracking'],
 				'total'			=> $order['total'],
+				'billing_email'	=> $order['billing_email'],
 			);
 			$order_id = $order['order_id'];
+			$others = $order['others'];
 		} else {
 			$order_lines[$order['order_id']]['total'] += $order['total'];
 		}
 	endforeach;
-	foreach( $order_lines as $order ) :?> 
+	if ( $order_id != '' ) $order_lines[$order_id]['total'] += $others;
+	foreach( $order_lines as $order ) :
+		$user_data = get_userdata( $order['user_id'] );?> 
 	<tr>
+		<td><?php echo $order['order_id'];?></td>
 		<td><?php echo $order['date'];?></td>
-		<td><?php echo $order['user'];?></td>
+		<td><?php echo $order['user'];?> <?php if ( $user_data ) echo '[', $user_data->user_nicename, ' &lt;', $user_data->user_email, '&gt;]'; else echo ' &lt;', $order['billing_email'], '&gt;';?></td>
 		<td>
 			<?php echo $order['status'];?>
 			<?php do_action( 'tcp_admin_order_list', $order['order_id'] );?>
@@ -145,16 +160,16 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			<form method="post">
 			<fieldset class="inline-edit-col-left"><div class="inline-edit-col">
 			<h4><?php _e( 'Quick Edit', 'tcp' );?></h4>
-
+			<?php OrderPage::show( $order['order_id'], false, true, false );?>
 			<label>
 				<span class="title"><?php _e( 'Status', 'tcp' );?></span>
 				<span class="input-text-wrap">
 				<select class="postform" id="new_status" name="new_status">
-					<option value="<?php echo Orders::$ORDER_PENDING;?>"	<?php selected( Orders::$ORDER_PENDING,		$order['status'] );?>	><?php _e( 'pending', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_PROCESSING;?>"	<?php selected( Orders::$ORDER_PROCESSING,	$order['status'] );?>	><?php _e( 'processing', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_COMPLETED;?>"	<?php selected( Orders::$ORDER_COMPLETED,	$order['status'] );?>	><?php _e( 'completed', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_CANCELLED;?>"	<?php selected( Orders::$ORDER_CANCELLED,	$order['status'] );?>	><?php _e( 'cancelled', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"	<?php selected( Orders::$ORDER_SUSPENDED,	$order['status'] );?>	><?php _e( 'suspended', 'tcp' );?></option>
+					<option value="<?php echo Orders::$ORDER_PENDING;?>" <?php selected( Orders::$ORDER_PENDING, $order['status'] );?>><?php _e( 'pending', 'tcp' );?></option>
+					<option value="<?php echo Orders::$ORDER_PROCESSING;?>" <?php selected( Orders::$ORDER_PROCESSING, $order['status'] );?>><?php _e( 'processing', 'tcp' );?></option>
+					<option value="<?php echo Orders::$ORDER_COMPLETED;?>" <?php selected( Orders::$ORDER_COMPLETED, $order['status'] );?>><?php _e( 'completed', 'tcp' );?></option>
+					<option value="<?php echo Orders::$ORDER_CANCELLED;?>" <?php selected( Orders::$ORDER_CANCELLED, $order['status'] );?>><?php _e( 'cancelled', 'tcp' );?></option>
+					<option value="<?php echo Orders::$ORDER_SUSPENDED;?>" <?php selected( Orders::$ORDER_SUSPENDED, $order['status'] );?>><?php _e( 'suspended', 'tcp' );?></option>
 				</select>
 				</span>
 			</label>

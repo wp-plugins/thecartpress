@@ -43,11 +43,15 @@ class CustomListWidget extends WP_Widget {
 		if ( $title ) echo $before_title, $title, $after_title;
 		if ( strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
 			include( $instance['loop'] );
-		} else if ( have_posts() ) while ( have_posts() ) : the_post();?>
+		} else if ( have_posts() ) :
+			do_action( 'before_custom_list_widget' );
+			while ( have_posts() ) : 
+				the_post();
+				do_action( 'before_custom_list_widget_item', get_the_ID() );?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( $instance['see_title'] ) : ?>
 				<div class="entry-title">
-					<a href="<?php the_permalink( );?>" border="0"><?php echo the_title(); ?></a>
+					<a href="<?php the_permalink();?>" border="0"><?php the_title(); ?></a>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_image'] ) && $instance['see_image'] ) : 
@@ -63,7 +67,7 @@ class CustomListWidget extends WP_Widget {
 				<?php endif;?>
 				<?php if ( $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
-					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_get_the_price_label( get_the_ID() );?>&nbsp;<?php tcp_the_currency();?>(<?php echo tcp_get_the_tax_label( get_the_ID() );?>)</p>
+					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php tcp_the_price_label();?></p>
 				</div>
 				<?php endif;?>
 				<?php if ( $instance['see_content'] ) : ?>
@@ -91,9 +95,12 @@ class CustomListWidget extends WP_Widget {
 					<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'tcp' ), __( '1 Comment', 'tcp' ), __( '% Comments', 'tcp' ) ); ?></span>
 					<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
 				</div>
-				<?php endif;?>
+				<?php endif;
+				do_action( 'after_custom_list_widget_item', get_the_ID() );?>
 			</div>
-		<?php endwhile;
+			<?php endwhile;
+			do_action( 'after_custom_list_widget' );
+		endif;
 		wp_reset_postdata();
 		wp_reset_query();
 		echo $after_widget;

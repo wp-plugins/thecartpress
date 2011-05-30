@@ -74,32 +74,32 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 			'see_checkout'		=> true,
 		);
 	global $thecartpress;
-	$currency			= tcp_get_the_currency();
 	$unit_weight		= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
 	$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
-	$shoppingCart = TheCartPress::getShoppingCart();
+	$shoppingCart		= TheCartPress::getShoppingCart();
 	$summary = '<ul class="tcp_shopping_cart_resume">';
-	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getTotal() ) . '&nbsp;' . $currency . '</li>';
+	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotal() ) . '</li>';
 	
-	$discount = $shoppingCart->getAllDiscount();
+	$discount = $shoppingCart->getAllDiscounts();
 	if ( $discount > 0 )
-		$summary .= '<li><span class="tcp_resumen_discount">' . __( 'Discount', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $discount ) . '&nbsp;' . $currency  . '</li>';
+		$summary .= '<li><span class="tcp_resumen_discount">' . __( 'Discount', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $discount ) . '</li>';
 
 	if ( isset( $args['see_product_count'] ) ? $args['see_product_count'] : false )
 		$summary .=	'<li><span class="tcp_resumen_count">' . __( 'N<sup>o</sup> products', 'tcp' ) . ':</span>&nbsp;' . $shoppingCart->getCount() . '</li>';
 
 	if ( $stock_management && isset( $args['see_stock_notice'] ) ? $args['see_stock_notice'] : false )
 		if ( ! $shoppingCart->isThereStock() )
-			$summary .= '<li><span class="tcp_no_stock__nough">' . printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) ) . '</span></li>';
+			$summary .= '<li><span class="tcp_no_stock__nough">' . printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) ) . '</span></li>';
 
-	if ( isset( $args['see_weight'] ) ? $args['see_weight'] : false && $shoppingCart->getWeight() > 0 ) 
+	$see_weight = isset( $args['see_weight'] ) ? $args['see_weight'] : false;
+	if ( $see_weight && $shoppingCart->getWeight() > 0 ) 
 		$summary .= '<li><span class="tcp_resumen_weight">' . __( 'Weigth', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getWeight() ) . '&nbsp;' . $unit_weight . '</li>';
 
 	if ( isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true )
-		$summary .= '<li><a href="' . get_permalink( get_option( 'tcp_shopping_cart_page_id' ) ) . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
+		$summary .= '<li><a href="' . get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
 
 	if ( isset( $args['see_checkout'] ) ? $args['see_checkout'] : true )
-		$summary .= '<li><a href="' . get_permalink( get_option( 'tcp_checkout_page_id' ) ) . '">' . __( 'Checkout', 'tcp' ) . '</a></li>';
+		$summary .= '<li><a href="' . get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) . '">' . __( 'Checkout', 'tcp' ) . '</a></li>';
 
 	if ( isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : false ) 
 		$summary .= '<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="' . __( 'Delete shopping cart', 'tcp' ) . '"/></form></li>';
@@ -150,4 +150,20 @@ function tcp_get_suppliers_cloud( $args = false, $echo = true, $before = '', $af
 	else
 		return $cloud;
 }
+
+function tcp_get_number_of_attachments( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$args = array(
+		'post_type'		=> 'attachment',
+		'numberposts'	=> -1,
+		'post_status'	=> null,
+		'post_parent'	=> $post_id,
+		);
+	$attachments = get_posts( $args );
+	if ( is_array( $attachments ) )
+		return count( $attachments );
+	else
+		return 0;
+}
+
 ?>

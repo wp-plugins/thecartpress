@@ -54,9 +54,10 @@ class PostMetabox {
 	function deleteCustomFields( $post_id ) {
 		$post = get_post( $post_id );
 		if ( $post->post_type != 'post' ) return;
-		if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
+		//if ( !isset( $_POST[ 'tcp-product-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'tcp-product-custom-fields_wpnonce' ], 'tcp-product-custom-fields' ) ) return;
 		if ( !current_user_can( 'edit_post', $post_id ) ) return;
 		RelEntities::deleteAll( $post_id, 'POST_PROD' );
+		do_action( 'tcp_template_metabox_delete_custom_fields', $post_id );
 	}
 }
 ?>
