@@ -1116,7 +1116,7 @@ echo '<br>SELECT: ', $input;
 				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN ip VARCHAR(20) NOT NULL AFTER customer_id;';
 				$wpdb->query( $sql );
 			}
-			//update_option( 'tcp_version', 109 );
+			update_option( 'tcp_version', 109 );
 			//
 			//TODO Deprecated 1.1
 			//
