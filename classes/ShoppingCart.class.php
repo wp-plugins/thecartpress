@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /**
  * Session shopping cart
  */
@@ -329,7 +329,7 @@ class ShoppingCart {
 		return $total;
 	}
 	
-	function setFreeShipping( $freeShipping ) {
+	function setFreeShipping( $freeShipping = true ) {
 		$this->freeShipping = (bool)$freeShipping;
 	}
 

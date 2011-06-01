@@ -34,7 +34,7 @@ class TCPNoticeBox extends TCPCheckoutBox {
 				<?php if ( isset( $this->errors['legal_notice_accept'] ) ) : ?><br/><span class="error"><?php echo $this->errors['legal_notice_accept'];?></span><?php endif;?>
 			<?php else : ?>
 				<input type="hidden" name="legal_notice_accept" value="Y" />
-				<p><?php _e( 'When you click in the \'create order\' button the order will be created and if you have chosen an external payment method the system will show a button to go to the external web (usually your bank\'s payment gateway)','tcp' );?></p>
+				<p><?php _e( 'When you click in the \'continue\' button the order will be created and if you have chosen an external payment method the system will show a button to go to the external web (usually your bank\'s payment gateway)','tcp' );?></p>
 			<?php endif;?>
 		</div> <!-- legal_notice_layer_info--><?php
 		return true;

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-30 11:11+0100\n"
+"POT-Creation-Date: 2011-06-01 08:33+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -16,174 +16,174 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x:2c,1\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
-#: thecartpress/TheCartPress.class.php:257
+#: thecartpress/TheCartPress.class.php:255
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "La <strong>Pagina del carrello</strong> è stata cancellata"
 
-#: thecartpress/TheCartPress.class.php:260
+#: thecartpress/TheCartPress.class.php:258
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "La <strong>Pagina di checkout</strong> è stata cancellata"
 
-#: thecartpress/TheCartPress.class.php:264
+#: thecartpress/TheCartPress.class.php:262
 #: thecartpress/shortcodes/_Checkout.class.php:1142
 msgid "Notice:"
 msgstr "Avviso:"
 
-#: thecartpress/TheCartPress.class.php:266
+#: thecartpress/TheCartPress.class.php:264
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Visita la <a href=\"%s\">pagina di Controllo</a> per correggere gli avvisi."
 
-#: thecartpress/TheCartPress.class.php:439
+#: thecartpress/TheCartPress.class.php:437
 msgid "Lost Password"
 msgstr "Password smarrita"
 
-#: thecartpress/TheCartPress.class.php:453
+#: thecartpress/TheCartPress.class.php:451
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Powered by TheCartPress, eCommerce platform for WordPress"
 
-#: thecartpress/TheCartPress.class.php:469
+#: thecartpress/TheCartPress.class.php:467
 #, fuzzy
 msgid "Shopping"
 msgstr "Spedizione"
 
-#: thecartpress/TheCartPress.class.php:477
-#: thecartpress/TheCartPress.class.php:554
+#: thecartpress/TheCartPress.class.php:475
+#: thecartpress/TheCartPress.class.php:552
 msgid "Orders"
 msgstr "Ordini"
 
-#: thecartpress/TheCartPress.class.php:486
+#: thecartpress/TheCartPress.class.php:484
 msgid "Download area"
 msgstr "Zona download"
 
-#: thecartpress/TheCartPress.class.php:528
+#: thecartpress/TheCartPress.class.php:526
 msgid "Orders Summary"
 msgstr "Riepilogo degli ordini"
 
-#: thecartpress/TheCartPress.class.php:529
+#: thecartpress/TheCartPress.class.php:527
 msgid "TheCartPress blog"
 msgstr "Il blog di TheCartPress"
 
-#: thecartpress/TheCartPress.class.php:555
+#: thecartpress/TheCartPress.class.php:553
 msgid "Addresses"
 msgstr "Indirizzi"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:554
 #: thecartpress/classes/OrderPage.class.php:169
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:107
 #: thecartpress/shortcodes/_Checkout.class.php:1269
 msgid "Taxes"
 msgstr "Imposte"
 
-#: thecartpress/TheCartPress.class.php:557
+#: thecartpress/TheCartPress.class.php:555
 #, fuzzy
 msgid "Taxes Rates"
 msgstr "Imposte"
 
-#: thecartpress/TheCartPress.class.php:558
+#: thecartpress/TheCartPress.class.php:556
 msgid "Payment and Shipping Methods"
 msgstr "Metodi di Pagamento e Spedizione"
 
-#: thecartpress/TheCartPress.class.php:558
+#: thecartpress/TheCartPress.class.php:556
 msgid "Payment and Shipping methods"
 msgstr "Metodi di Pagamento e Spedizione"
 
-#: thecartpress/TheCartPress.class.php:559
+#: thecartpress/TheCartPress.class.php:557
 msgid "Related Categories"
 msgstr "Categorie relative"
 
-#: thecartpress/TheCartPress.class.php:562
+#: thecartpress/TheCartPress.class.php:560
 msgid "Downloadable Products"
 msgstr "Prodotti scaricabili"
 
-#: thecartpress/TheCartPress.class.php:564
+#: thecartpress/TheCartPress.class.php:562
 msgid "Update Prices"
 msgstr "Aggiornare prezzi"
 
-#: thecartpress/TheCartPress.class.php:565
+#: thecartpress/TheCartPress.class.php:563
 msgid "Update Stock"
 msgstr "Aggiornare Stock"
 
-#: thecartpress/TheCartPress.class.php:566
+#: thecartpress/TheCartPress.class.php:564
 msgid "Shortcodes Generator"
 msgstr "Generatore di Shortcodes"
 
-#: thecartpress/TheCartPress.class.php:566
+#: thecartpress/TheCartPress.class.php:564
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
-#: thecartpress/TheCartPress.class.php:567
+#: thecartpress/TheCartPress.class.php:565
 msgid "Admin Bar Config"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:569
+#: thecartpress/TheCartPress.class.php:567
 msgid "list of Assigned products"
 msgstr "Lista dei Prodotti Assegnati"
 
-#: thecartpress/TheCartPress.class.php:570
+#: thecartpress/TheCartPress.class.php:568
 #: thecartpress/classes/OrderPanel.class.php:35
 #: thecartpress/classes/OrderPanel.class.php:48
 msgid "Order"
 msgstr "Ordine"
 
-#: thecartpress/TheCartPress.class.php:571
+#: thecartpress/TheCartPress.class.php:569
 msgid "Plugin editor"
 msgstr "Editor del plugin"
 
-#: thecartpress/TheCartPress.class.php:572
+#: thecartpress/TheCartPress.class.php:570
 msgid "Address editor"
 msgstr "Editor degli indirizzi"
 
-#: thecartpress/TheCartPress.class.php:573
+#: thecartpress/TheCartPress.class.php:571
 msgid "Upload files"
 msgstr "Aggiornare files"
 
-#: thecartpress/TheCartPress.class.php:574
+#: thecartpress/TheCartPress.class.php:572
 msgid "Downloadable products"
 msgstr "Prodotti scaricabili"
 
-#: thecartpress/TheCartPress.class.php:575
+#: thecartpress/TheCartPress.class.php:573
 msgid "TheCartPress checking"
 msgstr "Verifica di TheCartPress"
 
-#: thecartpress/TheCartPress.class.php:703
+#: thecartpress/TheCartPress.class.php:701
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress richiede la versione di WordPress 3.0 o posteriore."
 
-#: thecartpress/TheCartPress.class.php:787
+#: thecartpress/TheCartPress.class.php:785
 msgid "Legal notice"
 msgstr "Avviso legale"
 
-#: thecartpress/TheCartPress.class.php:812
+#: thecartpress/TheCartPress.class.php:810
 msgid "Customer"
 msgstr "Cliente"
 
-#: thecartpress/TheCartPress.class.php:841
+#: thecartpress/TheCartPress.class.php:839
 msgid "Merchant"
 msgstr "Venditore"
 
-#: thecartpress/TheCartPress.class.php:875
+#: thecartpress/TheCartPress.class.php:873
 msgid "Shopping cart"
 msgstr "Carrello"
 
-#: thecartpress/TheCartPress.class.php:888
+#: thecartpress/TheCartPress.class.php:886
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:118
 msgid "Checkout"
 msgstr "Pagare"
 
-#: thecartpress/TheCartPress.class.php:901
+#: thecartpress/TheCartPress.class.php:899
 msgid "Category One"
 msgstr "Categoria Uno"
 
-#: thecartpress/TheCartPress.class.php:902
+#: thecartpress/TheCartPress.class.php:900
 msgid "Category One for Product One"
 msgstr "Categria Uno per Prodotto Uno"
 
-#: thecartpress/TheCartPress.class.php:908
+#: thecartpress/TheCartPress.class.php:906
 msgid "Product One"
 msgstr "Prodotto Uno"
 
-#: thecartpress/TheCartPress.class.php:1164
+#: thecartpress/TheCartPress.class.php:1163
 msgid "show/hide"
 msgstr ""
 
@@ -2205,8 +2205,8 @@ msgid "All countries"
 msgstr "Tutte le categorie"
 
 #: thecartpress/admin/TCP_Settings.class.php:446
-msgid "legal notice"
-msgstr "avviso legale"
+msgid "Notice"
+msgstr "Avviso"
 
 #: thecartpress/admin/TCP_Settings.class.php:448
 msgid "If the legal notice is blank the checkout doesn't show the Accept conditions check."
@@ -2654,13 +2654,6 @@ msgstr "Vedere tutte le categorie"
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:193
 msgid "type:"
 msgstr "tipo:"
-
-#: thecartpress/plugins/NoCostPayment.class.php:32
-#: thecartpress/plugins/Transference.class.php:32
-#: thecartpress/plugins/Remboursement.class.php:32
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:33
-msgid "Notice"
-msgstr "Avviso"
 
 #: thecartpress/plugins/NoCostPayment.class.php:49
 #: thecartpress/plugins/NoCostPayment.class.php:58
@@ -3436,7 +3429,7 @@ msgstr "1. Metodo di acquisto"
 
 #: thecartpress/checkout/TCPNoticeBox.class.php:37
 #, fuzzy
-msgid "When you click in the 'create order' button the order will be created and if you have chosen an external payment method the system will show a button to go to the external web (usually your bank's payment gateway)"
+msgid "When you click in the 'continue' button the order will be created and if you have chosen an external payment method the system will show a button to go to the external web (usually your bank's payment gateway)"
 msgstr ""
 "Quando cliccate 'creare ordine pedido', l'ordine \n"
 "\t\t\t\t sarà creato e se avete scelto un pagamento esterno, il sistema mostrerà un bottone \n"
@@ -3465,6 +3458,9 @@ msgstr "4. Metodi di invio"
 #, fuzzy
 msgid "You must select a shipping method"
 msgstr "Metodi di Pagamento e Spedizione"
+
+#~ msgid "legal notice"
+#~ msgstr "avviso legale"
 
 #, fuzzy
 #~ msgid "Billing country"

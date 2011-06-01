@@ -443,7 +443,7 @@ class TCP_Settings {
 
 	function show_legal_notice() {
 		global $thecartpress;
-		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'legal notice', 'tcp' );?>
+		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea>
 		<br /><span class="description"><?php _e( 'If the legal notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
 	}
