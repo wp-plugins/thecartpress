@@ -77,7 +77,7 @@ class TCP_Settings {
 		add_settings_field( 'user_registration', __( 'User registration required', 'tcp' ), array( $this, 'show_user_registration' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'emails', __( '@mails to send orders', 'tcp' ), array( $this, 'show_emails' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'from_email', __( 'From email', 'tcp' ), array( $this, 'show_from_email' ), __FILE__ , 'tcp_checkout_section' );
-		add_settings_field( 'legal_notice', __( 'Legal notice', 'tcp' ), array( $this, 'show_legal_notice' ), __FILE__ , 'tcp_checkout_section' );
+		add_settings_field( 'legal_notice', __( 'Checkout notice', 'tcp' ), array( $this, 'show_legal_notice' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'checkout_successfully_message', __( 'Checkout successfully message', 'tcp' ), array( $this, 'show_checkout_successfully_message' ), __FILE__ , 'tcp_checkout_section' );
 
 		add_settings_section( 'tcp_permalinks_section', __( 'Permalinks settings', 'tcp' ) , array( $this, 'show_permalink_section' ), __FILE__ );
@@ -443,9 +443,9 @@ class TCP_Settings {
 
 	function show_legal_notice() {
 		global $thecartpress;
-		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Notice', 'tcp' );?>
+		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Checkout notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea>
-		<br /><span class="description"><?php _e( 'If the legal notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
+		<br /><span class="description"><?php _e( 'If the checkout notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
 	}
 
 	function show_checkout_successfully_message() {

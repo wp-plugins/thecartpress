@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-02 09:33+0100\n"
+"POT-Creation-Date: 2011-06-02 11:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -149,8 +149,9 @@ msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress richiede la versione di WordPress 3.0 o posteriore."
 
 #: thecartpress/TheCartPress.class.php:782
-msgid "Legal notice"
-msgstr "Avviso legale"
+#, fuzzy
+msgid "Checkout notice"
+msgstr "1. Metodo di acquisto"
 
 #: thecartpress/TheCartPress.class.php:807
 msgid "Customer"
@@ -1905,12 +1906,9 @@ msgstr ""
 msgid "All countries"
 msgstr "Tutte le categorie"
 
-#: thecartpress/admin/TCP_Settings.class.php:446
-msgid "Notice"
-msgstr "Avviso"
-
 #: thecartpress/admin/TCP_Settings.class.php:448
-msgid "If the legal notice is blank the checkout doesn't show the Accept conditions check."
+#, fuzzy
+msgid "If the checkout notice is blank the checkout doesn't show the Accept conditions check."
 msgstr "Se l'avviso legale è bianco il Checkout non mostrerà la casella Accettare condizioni."
 
 #: thecartpress/admin/TCP_Settings.class.php:453
@@ -2355,6 +2353,13 @@ msgstr "Vedere tutte le categorie"
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:193
 msgid "type:"
 msgstr "tipo:"
+
+#: thecartpress/plugins/NoCostPayment.class.php:32
+#: thecartpress/plugins/Transference.class.php:32
+#: thecartpress/plugins/Remboursement.class.php:32
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:33
+msgid "Notice"
+msgstr "Avviso"
 
 #: thecartpress/plugins/NoCostPayment.class.php:49
 #: thecartpress/plugins/NoCostPayment.class.php:58
@@ -3238,11 +3243,6 @@ msgstr "Utilizzare indirizzo di fatturazione"
 msgid "New shipping address"
 msgstr "Nuovo indirizzo di spedizione"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:10
-#, fuzzy
-msgid "Checkout notice"
-msgstr "1. Metodo di acquisto"
-
 #: thecartpress/checkout/TCPNoticeBox.class.php:19
 msgid "You must accept the conditions!!"
 msgstr "Dovete accettare le condizioni!"
@@ -3376,6 +3376,8 @@ msgstr "4. Metodi di invio"
 msgid "You must select a shipping method"
 msgstr "Metodi di Pagamento e Spedizione"
 
+#~ msgid "Legal notice"
+#~ msgstr "Avviso legale"
 #~ msgid ""
 #~ "You are trying to check out your order but, at this moment, there are not "
 #~ "enough stock of some products. Please review the list of products."
