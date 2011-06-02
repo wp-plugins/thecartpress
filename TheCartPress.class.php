@@ -784,7 +784,7 @@ echo '<br>SELECT: ', $input;
 			) ) );
 		if ( ! get_option( 'tcp_settings' ) ) {
 			$this->settings = array(
-				'legal_notice'				=> __( 'Legal notice', 'tcp' ),
+				'legal_notice'				=> __( 'Checkout notice', 'tcp' ),
 				'stock_management'			=> false,
 				'disable_shopping_cart'		=> false,
 				'user_registration'			=> false,

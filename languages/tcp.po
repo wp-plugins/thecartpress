@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-02 09:32+0100\n"
+"POT-Creation-Date: 2011-06-02 11:13+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -145,7 +145,7 @@ msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr ""
 
 #: thecartpress/TheCartPress.class.php:782
-msgid "Legal notice"
+msgid "Checkout notice"
 msgstr ""
 
 #: thecartpress/TheCartPress.class.php:807
@@ -1867,12 +1867,8 @@ msgstr ""
 msgid "All countries"
 msgstr ""
 
-#: thecartpress/admin/TCP_Settings.class.php:446
-msgid "Notice"
-msgstr ""
-
 #: thecartpress/admin/TCP_Settings.class.php:448
-msgid "If the legal notice is blank the checkout doesn't show the Accept conditions check."
+msgid "If the checkout notice is blank the checkout doesn't show the Accept conditions check."
 msgstr ""
 
 #: thecartpress/admin/TCP_Settings.class.php:453
@@ -2304,6 +2300,13 @@ msgstr ""
 
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:193
 msgid "type:"
+msgstr ""
+
+#: thecartpress/plugins/NoCostPayment.class.php:32
+#: thecartpress/plugins/Transference.class.php:32
+#: thecartpress/plugins/Remboursement.class.php:32
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:33
+msgid "Notice"
 msgstr ""
 
 #: thecartpress/plugins/NoCostPayment.class.php:49
@@ -3168,10 +3171,6 @@ msgstr ""
 
 #: thecartpress/checkout/TCPShippingBox.class.php:148
 msgid "New shipping address"
-msgstr ""
-
-#: thecartpress/checkout/TCPNoticeBox.class.php:10
-msgid "Checkout notice"
 msgstr ""
 
 #: thecartpress/checkout/TCPNoticeBox.class.php:19

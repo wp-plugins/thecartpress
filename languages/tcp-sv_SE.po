@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-02 09:33+0100\n"
+"POT-Creation-Date: 2011-06-02 11:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -147,8 +147,9 @@ msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress kräver Wordpress version 3.0 eller nyare."
 
 #: thecartpress/TheCartPress.class.php:782
-msgid "Legal notice"
-msgstr "Juridiskt meddelande"
+#, fuzzy
+msgid "Checkout notice"
+msgstr "Kassan"
 
 #: thecartpress/TheCartPress.class.php:807
 msgid "Customer"
@@ -1888,12 +1889,9 @@ msgstr "Detta är vägen till denna sidan på din server: %s"
 msgid "All countries"
 msgstr "Alla länder"
 
-#: thecartpress/admin/TCP_Settings.class.php:446
-msgid "Notice"
-msgstr "Meddelande"
-
 #: thecartpress/admin/TCP_Settings.class.php:448
-msgid "If the legal notice is blank the checkout doesn't show the Accept conditions check."
+#, fuzzy
+msgid "If the checkout notice is blank the checkout doesn't show the Accept conditions check."
 msgstr "Om det juridiska meddelandet är blankt kommer inte Acceptera villkor att visas då kunden går till kassan."
 
 #: thecartpress/admin/TCP_Settings.class.php:453
@@ -2330,6 +2328,13 @@ msgstr "Se alla kategorier"
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:193
 msgid "type:"
 msgstr "typ:"
+
+#: thecartpress/plugins/NoCostPayment.class.php:32
+#: thecartpress/plugins/Transference.class.php:32
+#: thecartpress/plugins/Remboursement.class.php:32
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:33
+msgid "Notice"
+msgstr "Meddelande"
 
 #: thecartpress/plugins/NoCostPayment.class.php:49
 #: thecartpress/plugins/NoCostPayment.class.php:58
@@ -3214,11 +3219,6 @@ msgstr "Använd fakturaadress"
 msgid "New shipping address"
 msgstr "Ny leveransadress"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:10
-#, fuzzy
-msgid "Checkout notice"
-msgstr "Kassan"
-
 #: thecartpress/checkout/TCPNoticeBox.class.php:19
 msgid "You must accept the conditions!!"
 msgstr "Du måste acceptera villkoren!"
@@ -3352,6 +3352,8 @@ msgstr "4. Fraktmetoder"
 msgid "You must select a shipping method"
 msgstr "Betalnings och frakt metoder"
 
+#~ msgid "Legal notice"
+#~ msgstr "Juridiskt meddelande"
 #~ msgid ""
 #~ "You are trying to check out your order but, at this moment, there are not "
 #~ "enough stock of some products. Please review the list of products."

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-02 09:32+0100\n"
+"POT-Creation-Date: 2011-06-02 11:13+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -147,8 +147,8 @@ msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress requiere la versión de WordPress 3.0 o posterior."
 
 #: thecartpress/TheCartPress.class.php:782
-msgid "Legal notice"
-msgstr "Aviso legal"
+msgid "Checkout notice"
+msgstr "Aviso de compra"
 
 #: thecartpress/TheCartPress.class.php:807
 msgid "Customer"
@@ -1869,13 +1869,9 @@ msgstr "Este es el camino de esta página en el servidor: %s"
 msgid "All countries"
 msgstr "Todas los paises"
 
-#: thecartpress/admin/TCP_Settings.class.php:446
-msgid "Notice"
-msgstr "Aviso"
-
 #: thecartpress/admin/TCP_Settings.class.php:448
-msgid "If the legal notice is blank the checkout doesn't show the Accept conditions check."
-msgstr "Si el aviso legal está en blanco no se muestra la casilla Aceptar condiciones."
+msgid "If the checkout notice is blank the checkout doesn't show the Accept conditions check."
+msgstr "Si el aviso de la compra está en blanco no se muestra la casilla Aceptar condiciones."
 
 #: thecartpress/admin/TCP_Settings.class.php:453
 msgid "The order has been completed successfully"
@@ -2307,6 +2303,13 @@ msgstr "Ver todas las categorías"
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:193
 msgid "type:"
 msgstr "tipo:"
+
+#: thecartpress/plugins/NoCostPayment.class.php:32
+#: thecartpress/plugins/Transference.class.php:32
+#: thecartpress/plugins/Remboursement.class.php:32
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:33
+msgid "Notice"
+msgstr "Aviso"
 
 #: thecartpress/plugins/NoCostPayment.class.php:49
 #: thecartpress/plugins/NoCostPayment.class.php:58
@@ -3172,10 +3175,6 @@ msgstr "Utilizar dirección de facturación"
 msgid "New shipping address"
 msgstr "Nueva dirección de envío"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:10
-msgid "Checkout notice"
-msgstr "Aviso de compra"
-
 #: thecartpress/checkout/TCPNoticeBox.class.php:19
 msgid "You must accept the conditions!!"
 msgstr "Has de aceptar las condiciones!"
@@ -3301,6 +3300,8 @@ msgstr "Métodos de envío"
 msgid "You must select a shipping method"
 msgstr "Debe seleccionar un método de envío"
 
+#~ msgid "Legal notice"
+#~ msgstr "Aviso legal"
 #~ msgid "The billing Country is not allowed as shipping Country"
 #~ msgstr "El país de facturación no es permitido como país de envío"
 #~ msgid ""
