@@ -224,7 +224,7 @@ class ProductCustomFieldsMetabox {
 			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$SUPPLIER_TAG );
 		}
 		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
-		if ( $tax_id > 1 ) {
+		if ( $tax_id > 0 ) {
 			$tax = Taxes::get( $tax_id );
 			update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
 		} else {
