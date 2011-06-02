@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 08:33+0100\n"
+"POT-Creation-Date: 2011-06-02 09:33+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -14,174 +14,172 @@ msgstr ""
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
-#: thecartpress/TheCartPress.class.php:255
+#: thecartpress/TheCartPress.class.php:252
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "Sidan för <strong>Kundvagnen</strong> har tagits bort"
 
-#: thecartpress/TheCartPress.class.php:258
+#: thecartpress/TheCartPress.class.php:255
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "Sidan för <strong>Kassan</strong> har tagits bort."
 
-#: thecartpress/TheCartPress.class.php:262
-#: thecartpress/shortcodes/_Checkout.class.php:1142
+#: thecartpress/TheCartPress.class.php:259
 msgid "Notice:"
 msgstr "Meddelande:"
 
-#: thecartpress/TheCartPress.class.php:264
+#: thecartpress/TheCartPress.class.php:261
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Besök <a href=\"%s\">Kontroll sidan</a> för att åtgärda varningarna."
 
-#: thecartpress/TheCartPress.class.php:437
+#: thecartpress/TheCartPress.class.php:434
 msgid "Lost Password"
 msgstr "Glömt lösenordet"
 
-#: thecartpress/TheCartPress.class.php:451
+#: thecartpress/TheCartPress.class.php:448
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Drivs med TheCartPress, eHandels plattform för Wordpress"
 
-#: thecartpress/TheCartPress.class.php:467
+#: thecartpress/TheCartPress.class.php:464
 #, fuzzy
 msgid "Shopping"
 msgstr "Frakt"
 
-#: thecartpress/TheCartPress.class.php:475
-#: thecartpress/TheCartPress.class.php:552
+#: thecartpress/TheCartPress.class.php:472
+#: thecartpress/TheCartPress.class.php:549
 msgid "Orders"
 msgstr "Beställning"
 
-#: thecartpress/TheCartPress.class.php:484
+#: thecartpress/TheCartPress.class.php:481
 msgid "Download area"
 msgstr "Nedladdning"
 
-#: thecartpress/TheCartPress.class.php:526
+#: thecartpress/TheCartPress.class.php:523
 msgid "Orders Summary"
 msgstr "Ordersammanfattning"
 
-#: thecartpress/TheCartPress.class.php:527
+#: thecartpress/TheCartPress.class.php:524
 msgid "TheCartPress blog"
 msgstr "TheCartPress bloggen"
 
-#: thecartpress/TheCartPress.class.php:553
+#: thecartpress/TheCartPress.class.php:550
 msgid "Addresses"
 msgstr "Adresser"
 
-#: thecartpress/TheCartPress.class.php:554
+#: thecartpress/TheCartPress.class.php:551
 #: thecartpress/classes/OrderPage.class.php:169
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:107
-#: thecartpress/shortcodes/_Checkout.class.php:1269
 msgid "Taxes"
 msgstr "Skatter"
 
-#: thecartpress/TheCartPress.class.php:555
+#: thecartpress/TheCartPress.class.php:552
 #, fuzzy
 msgid "Taxes Rates"
 msgstr "Skatter"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:553
 msgid "Payment and Shipping Methods"
 msgstr "Betalning och Frakt metoder"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:553
 msgid "Payment and Shipping methods"
 msgstr "Betalnings och frakt metoder"
 
-#: thecartpress/TheCartPress.class.php:557
+#: thecartpress/TheCartPress.class.php:554
 msgid "Related Categories"
 msgstr "Relaterade kategorier"
 
-#: thecartpress/TheCartPress.class.php:560
+#: thecartpress/TheCartPress.class.php:557
 msgid "Downloadable Products"
 msgstr "Nedladdingsbara produkter"
 
-#: thecartpress/TheCartPress.class.php:562
+#: thecartpress/TheCartPress.class.php:559
 msgid "Update Prices"
 msgstr "Uppdatera priser"
 
-#: thecartpress/TheCartPress.class.php:563
+#: thecartpress/TheCartPress.class.php:560
 msgid "Update Stock"
 msgstr "Uppdatera lager"
 
-#: thecartpress/TheCartPress.class.php:564
+#: thecartpress/TheCartPress.class.php:561
 msgid "Shortcodes Generator"
 msgstr "Kortkodsgenerator"
 
-#: thecartpress/TheCartPress.class.php:564
+#: thecartpress/TheCartPress.class.php:561
 msgid "Shortcodes"
 msgstr "Kortkoder"
 
-#: thecartpress/TheCartPress.class.php:565
+#: thecartpress/TheCartPress.class.php:562
 msgid "Admin Bar Config"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:567
+#: thecartpress/TheCartPress.class.php:564
 msgid "list of Assigned products"
 msgstr "lista med tilldelade produkter"
 
-#: thecartpress/TheCartPress.class.php:568
+#: thecartpress/TheCartPress.class.php:565
 #: thecartpress/classes/OrderPanel.class.php:35
 #: thecartpress/classes/OrderPanel.class.php:48
 msgid "Order"
 msgstr "Beställa"
 
-#: thecartpress/TheCartPress.class.php:569
+#: thecartpress/TheCartPress.class.php:566
 msgid "Plugin editor"
 msgstr "Plugin editor"
 
-#: thecartpress/TheCartPress.class.php:570
+#: thecartpress/TheCartPress.class.php:567
 msgid "Address editor"
 msgstr "Adress editor"
 
-#: thecartpress/TheCartPress.class.php:571
+#: thecartpress/TheCartPress.class.php:568
 msgid "Upload files"
 msgstr "Ladda upp filer"
 
-#: thecartpress/TheCartPress.class.php:572
+#: thecartpress/TheCartPress.class.php:569
 msgid "Downloadable products"
 msgstr "Nedladdningsbara produkter"
 
-#: thecartpress/TheCartPress.class.php:573
+#: thecartpress/TheCartPress.class.php:570
 msgid "TheCartPress checking"
 msgstr "TheCartPress kontroll"
 
-#: thecartpress/TheCartPress.class.php:701
+#: thecartpress/TheCartPress.class.php:698
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress kräver Wordpress version 3.0 eller nyare."
 
-#: thecartpress/TheCartPress.class.php:785
+#: thecartpress/TheCartPress.class.php:782
 msgid "Legal notice"
 msgstr "Juridiskt meddelande"
 
-#: thecartpress/TheCartPress.class.php:810
+#: thecartpress/TheCartPress.class.php:807
 msgid "Customer"
 msgstr "Kund"
 
-#: thecartpress/TheCartPress.class.php:839
+#: thecartpress/TheCartPress.class.php:836
 msgid "Merchant"
 msgstr "Handlare"
 
-#: thecartpress/TheCartPress.class.php:873
+#: thecartpress/TheCartPress.class.php:870
 msgid "Shopping cart"
 msgstr "Kundvagn"
 
-#: thecartpress/TheCartPress.class.php:886
+#: thecartpress/TheCartPress.class.php:883
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:118
 msgid "Checkout"
 msgstr "Kassan"
 
-#: thecartpress/TheCartPress.class.php:899
+#: thecartpress/TheCartPress.class.php:896
 msgid "Category One"
 msgstr "Kategori Ett"
 
-#: thecartpress/TheCartPress.class.php:900
+#: thecartpress/TheCartPress.class.php:897
 msgid "Category One for Product One"
 msgstr "Kategori Ett för Produkt Ett"
 
-#: thecartpress/TheCartPress.class.php:906
+#: thecartpress/TheCartPress.class.php:903
 msgid "Product One"
 msgstr "Produkt Ett"
 
-#: thecartpress/TheCartPress.class.php:1163
+#: thecartpress/TheCartPress.class.php:1160
 msgid "show/hide"
 msgstr ""
 
@@ -196,8 +194,6 @@ msgstr "Telefonnummer"
 
 #: thecartpress/classes/OrderPage.class.php:48
 #: thecartpress/classes/OrderPage.class.php:62
-#: thecartpress/shortcodes/_Checkout.class.php:742
-#: thecartpress/shortcodes/_Checkout.class.php:975
 msgid "Fax"
 msgstr "Faxnummer"
 
@@ -208,7 +204,8 @@ msgstr "Fakturaadress"
 #: thecartpress/classes/OrderPage.class.php:70
 #: thecartpress/classes/BuyButton.class.php:143
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:36
-#: thecartpress/shortcodes/_Checkout.class.php:1174
+#: thecartpress/admin/PriceUpdate.php:112
+#: thecartpress/admin/PriceUpdate.php:120
 msgid "Name"
 msgstr "Namn"
 
@@ -218,7 +215,6 @@ msgstr "Namn"
 #: thecartpress/classes/OrderPanel.class.php:36
 #: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:101
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:37
-#: thecartpress/shortcodes/_Checkout.class.php:1175
 msgid "Price"
 msgstr "Pris"
 
@@ -226,39 +222,30 @@ msgstr "Pris"
 #: thecartpress/classes/BuyButton.class.php:65
 #: thecartpress/classes/BuyButton.class.php:146
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:38
-#: thecartpress/shortcodes/_Checkout.class.php:1176
 msgid "Units"
 msgstr "Enheter"
 
 #: thecartpress/classes/OrderPage.class.php:73
 #: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:118
-#: thecartpress/shortcodes/_Checkout.class.php:1178
 msgid "Weight"
 msgstr "Vikt"
 
 #: thecartpress/classes/OrderPage.class.php:74
 #: thecartpress/classes/OrderPage.class.php:180
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:112
-#: thecartpress/shortcodes/_Checkout.class.php:1179
-#: thecartpress/shortcodes/_Checkout.class.php:1281
 msgid "Total"
 msgstr "Totalt"
 
 #: thecartpress/classes/OrderPage.class.php:118
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:101
-#: thecartpress/shortcodes/_Checkout.class.php:1216
 msgid "Discount"
 msgstr "Rabatt"
 
 #: thecartpress/classes/OrderPage.class.php:130
-#: thecartpress/shortcodes/_Checkout.class.php:251
-#: thecartpress/shortcodes/_Checkout.class.php:1229
 msgid "Shipping cost"
 msgstr "Fraktkostnad"
 
 #: thecartpress/classes/OrderPage.class.php:140
-#: thecartpress/shortcodes/_Checkout.class.php:269
-#: thecartpress/shortcodes/_Checkout.class.php:1240
 msgid "Payment cost"
 msgstr "Betalningskostnad"
 
@@ -485,7 +472,6 @@ msgid "Mal formed shortcode: %s"
 msgstr "Felaktiga kortkoder: %s"
 
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:26
-#: thecartpress/shortcodes/_Checkout.class.php:397
 msgid "The cart is empty"
 msgstr "Varukorgen är tom"
 
@@ -525,378 +511,6 @@ msgstr "Fortsätta handla"
 msgid "Delete shopping cart"
 msgstr "Ta bort varukorgen"
 
-#: thecartpress/shortcodes/_Checkout.class.php:35
-msgid "The order has been completed successfully."
-msgstr "Beställningen har slutförts."
-
-#: thecartpress/shortcodes/_Checkout.class.php:42
-#: thecartpress/shortcodes/_Checkout.class.php:390
-msgid "Print"
-msgstr "Skriv ut"
-
-#: thecartpress/shortcodes/_Checkout.class.php:68
-#: thecartpress/shortcodes/_Checkout.class.php:495
-msgid "The billing First name field must be completed"
-msgstr "Fakturamottagarens namn måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:70
-#: thecartpress/shortcodes/_Checkout.class.php:496
-msgid "The billing Last name field must be completed"
-msgstr "Fakturamottagarens efternamn måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:72
-#: thecartpress/shortcodes/_Checkout.class.php:497
-msgid "The billing Street field must be completed"
-msgstr "Fakturamottagarens adress måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:74
-#: thecartpress/shortcodes/_Checkout.class.php:498
-msgid "The billing City field must be completed"
-msgstr "Fakturamottagarens stad måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:76
-msgid "The billing Region field must be completed"
-msgstr "Fakturamottagarens region måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:79
-#: thecartpress/shortcodes/_Checkout.class.php:93
-#, fuzzy
-msgid "The billing Country is not allowed"
-msgstr "Faktureringslandet måste fyllas i"
-
-#: thecartpress/shortcodes/_Checkout.class.php:83
-#: thecartpress/shortcodes/_Checkout.class.php:500
-msgid "The billing Postcode field must be completed"
-msgstr "Fakturamottagarens postnummer måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:85
-#: thecartpress/shortcodes/_Checkout.class.php:502
-msgid "The billing eMail field must be completed"
-msgstr "Fakturamottagarens e-post adress måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:87
-#: thecartpress/shortcodes/_Checkout.class.php:503
-msgid "The billing eMail field must be a valid email"
-msgstr "Fakturamottagarens e-post adress måste vara en korrekt e-post adress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:102
-msgid "The shipping First name field must be completed"
-msgstr "Leveransmottagarens namn måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:104
-msgid "The shipping Last name field must be completed"
-msgstr "Leveransmottagarens efternamn måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:106
-msgid "The shipping Street field must be completed"
-msgstr "Leveransmottagarens adress måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:108
-msgid "The shipping City field must be completed"
-msgstr "Leveransmottagarens stad måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:110
-msgid "The shipping Region field must be completed"
-msgstr "Leveransmottagarens region måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:113
-#: thecartpress/shortcodes/_Checkout.class.php:134
-#, fuzzy
-msgid "The shipping Country is not allowed"
-msgstr "Leveransmottagarens stad måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:117
-msgid "The shipping Postcode field must be completed"
-msgstr "Leveransmottagarens postnummer måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:119
-#, fuzzy
-msgid "The shipping eMail field must be completed"
-msgstr "Leveransmottagarens region måste skrivas in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:121
-#, fuzzy
-msgid "The shipping eMail field must be a valid email"
-msgstr "Fakturamottagarens e-post adress måste vara en korrekt e-post adress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:126
-msgid "The billing Country is not allowed as shipping Country"
-msgstr ""
-
-#: thecartpress/shortcodes/_Checkout.class.php:368
-msgid "Not enough stock in order at check-out"
-msgstr "Inte tillräckligt i lager vid utcheckning"
-
-#: thecartpress/shortcodes/_Checkout.class.php:369
-msgid "There was an error when creating the order. Please contact with the seller."
-msgstr "Ett fel uppstod när din beställning skulle skapas. Var god kontakta försäljaren."
-
-#: thecartpress/shortcodes/_Checkout.class.php:371
-msgid "The next step helps you to pay using the payment method chosen by you."
-msgstr "Nästa steg hjälper dig att betala med den betalningsmetod som du valt."
-
-#: thecartpress/shortcodes/_Checkout.class.php:402
-msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
-msgstr "Du försöker avsluta din beställning, men för tillfället finns det inte tillräckligt i lager för vissa produkter. Var god se över listan med produkter."
-
-#: thecartpress/shortcodes/_Checkout.class.php:421
-msgid "1. Checkout method"
-msgstr "1. Kassan"
-
-#: thecartpress/shortcodes/_Checkout.class.php:430
-msgid "Login"
-msgstr "Logga in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:434
-msgid "Already registered?"
-msgstr "Redan registrerad?"
-
-#: thecartpress/shortcodes/_Checkout.class.php:435
-msgid "Please log in below:"
-msgstr "Var god logga in nedan:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:441
-msgid "Username"
-msgstr "Användarnamn"
-
-#: thecartpress/shortcodes/_Checkout.class.php:442
-msgid "Password"
-msgstr "Lösenord"
-
-#: thecartpress/shortcodes/_Checkout.class.php:443
-msgid "Remember Me"
-msgstr "Kom ihåg mig"
-
-#: thecartpress/shortcodes/_Checkout.class.php:444
-msgid "Log In"
-msgstr "Logga in"
-
-#: thecartpress/shortcodes/_Checkout.class.php:458
-msgid "Checkout as registered"
-msgstr "Avsluta beställningen som registrerad"
-
-#: thecartpress/shortcodes/_Checkout.class.php:460
-msgid "Register with us for future convenience:"
-msgstr "Registrera dig hos oss för framtida köp:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:462
-msgid "Fast and easy checkout"
-msgstr "Snabb och enkel avslutning på beställningen"
-
-#: thecartpress/shortcodes/_Checkout.class.php:463
-msgid "Easy access to yours orders history and status"
-msgstr "Enkel tillgång till din beställnings historik och status"
-
-#: thecartpress/shortcodes/_Checkout.class.php:469
-msgid "Checkout as a guest"
-msgstr "Avsluta beställning som gäst"
-
-#: thecartpress/shortcodes/_Checkout.class.php:472
-msgid "Or you can make as a guest."
-msgstr "Eller du kan göra det som gäst."
-
-#: thecartpress/shortcodes/_Checkout.class.php:474
-msgid "You can make as a guest."
-msgstr "Du kan göra det som gäst."
-
-#: thecartpress/shortcodes/_Checkout.class.php:478
-msgid "If you prefer this way then press the next button"
-msgstr "Om du föredrar detta sätt klicka då på nästa"
-
-#: thecartpress/shortcodes/_Checkout.class.php:480
-#: thecartpress/shortcodes/_Checkout.class.php:757
-#: thecartpress/shortcodes/_Checkout.class.php:987
-#: thecartpress/shortcodes/_Checkout.class.php:1022
-#: thecartpress/shortcodes/_Checkout.class.php:1070
-#: thecartpress/shortcodes/_Checkout.class.php:1090
-#: thecartpress/shortcodes/_Checkout.class.php:1120
-msgid "Continue"
-msgstr "Fortsätt"
-
-#: thecartpress/shortcodes/_Checkout.class.php:482
-msgid "User registration is required. Please, log in or register. "
-msgstr "Registrering krävs. Var god logga in eller registrera dig."
-
-#: thecartpress/shortcodes/_Checkout.class.php:499
-msgid "The billing Region name field must be completed"
-msgstr "Faktureringsregionen måste fyllas i"
-
-#: thecartpress/shortcodes/_Checkout.class.php:501
-msgid "The billing Country field must be completed"
-msgstr "Faktureringslandet måste fyllas i"
-
-#: thecartpress/shortcodes/_Checkout.class.php:548
-msgid "2. Billing options"
-msgstr "2. Fakturaalternativ"
-
-#: thecartpress/shortcodes/_Checkout.class.php:566
-msgid "Select billing address:"
-msgstr "Välj fakturaadress:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:580
-#, fuzzy
-msgid "Billing to the address selected"
-msgstr "Fakturaadress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:588
-msgid "New billing address"
-msgstr "Ny fakturaadress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:667
-#: thecartpress/shortcodes/_Checkout.class.php:900
-msgid "Firstname"
-msgstr "Förnamn"
-
-#: thecartpress/shortcodes/_Checkout.class.php:671
-#: thecartpress/shortcodes/_Checkout.class.php:904
-msgid "Lastname"
-msgstr "Efternamn"
-
-#: thecartpress/shortcodes/_Checkout.class.php:675
-#: thecartpress/shortcodes/_Checkout.class.php:908
-msgid "Company"
-msgstr "Företag"
-
-#: thecartpress/shortcodes/_Checkout.class.php:679
-#: thecartpress/shortcodes/_Checkout.class.php:912
-msgid "Country"
-msgstr "Land"
-
-#: thecartpress/shortcodes/_Checkout.class.php:696
-#: thecartpress/shortcodes/_Checkout.class.php:929
-msgid "Region"
-msgstr "Region"
-
-#: thecartpress/shortcodes/_Checkout.class.php:699
-#: thecartpress/shortcodes/_Checkout.class.php:933
-#, fuzzy
-msgid "No state selected"
-msgstr "ingen är vald"
-
-#: thecartpress/shortcodes/_Checkout.class.php:710
-#: thecartpress/shortcodes/_Checkout.class.php:944
-msgid "City"
-msgstr "Ort"
-
-#: thecartpress/shortcodes/_Checkout.class.php:726
-#: thecartpress/shortcodes/_Checkout.class.php:960
-msgid "Address"
-msgstr "Adress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:730
-#: thecartpress/shortcodes/_Checkout.class.php:964
-msgid "Postal code"
-msgstr "Postnummer"
-
-#: thecartpress/shortcodes/_Checkout.class.php:734
-#: thecartpress/shortcodes/_Checkout.class.php:969
-msgid "Telephone 1"
-msgstr "Telefon 1"
-
-#: thecartpress/shortcodes/_Checkout.class.php:738
-#: thecartpress/shortcodes/_Checkout.class.php:972
-msgid "Telephone 2"
-msgstr "Telefon 2"
-
-#: thecartpress/shortcodes/_Checkout.class.php:746
-#: thecartpress/shortcodes/_Checkout.class.php:978
-msgid "eMail"
-msgstr "E-post"
-
-#: thecartpress/shortcodes/_Checkout.class.php:754
-#: thecartpress/shortcodes/_Checkout.class.php:985
-#: thecartpress/shortcodes/_Checkout.class.php:1020
-#: thecartpress/shortcodes/_Checkout.class.php:1062
-#: thecartpress/shortcodes/_Checkout.class.php:1088
-#: thecartpress/shortcodes/_Checkout.class.php:1114
-#: thecartpress/shortcodes/_Checkout.class.php:1117
-#: thecartpress/shortcodes/_Checkout.class.php:1157
-msgid "Back"
-msgstr "Tillbaka"
-
-#: thecartpress/shortcodes/_Checkout.class.php:766
-msgid "3. Shipping options"
-msgstr "3. Frakt alternativ"
-
-#: thecartpress/shortcodes/_Checkout.class.php:784
-msgid "Select shipping address:"
-msgstr "Välj leveransadress:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:800
-msgid "Send to the selected address"
-msgstr "Skicka till den valda adressen"
-
-#: thecartpress/shortcodes/_Checkout.class.php:810
-msgid "Use billing address"
-msgstr "Använd fakturaadress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:820
-msgid "New shipping address"
-msgstr "Ny leveransadress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:996
-msgid "4. Sending methods"
-msgstr "4. Fraktmetoder"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1032
-msgid "5. Payment methods"
-msgstr "5. Betalningsmetoder"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1080
-msgid "6. Additional services"
-msgstr "6. Ytterligare tjänster"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1102
-msgid "7. Cart"
-msgstr "7. Varukorg"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1110
-msgid "Comments:"
-msgstr "Kommentarer:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1130
-msgid "8. Legal notice"
-msgstr "8. Juridiskt meddelande"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1131
-#, fuzzy
-msgid "8. Checkout notice"
-msgstr "1. Kassan"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1141
-msgid "Legal notice:"
-msgstr "Juridiskt meddelande:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1145
-msgid "Accept conditions:"
-msgstr "Acceptera villkoren:"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1148
-msgid "You must accept the conditions!!"
-msgstr "Du måste acceptera villkoren!"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1152
-msgid ""
-"When you click in the 'create order' button the order\n"
-"\t\t\t\t will be created and if you have chosen an external payment method the system will show a button \n"
-"\t\t\t\t to go to the external web (usually your bank's payment gateway)"
-msgstr ""
-"När du klickar på 'skapa order' knappen så\n"
-"\t\t\t\t skapas beställningen och om du har valt en extern betalningsmetod så kommer systemet visa en knapp \n"
-"\t\t\t\t för att ta dig till den externa websidan (vanligtvis din banks betalsida)"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1159
-msgid "Create order"
-msgstr "Skapa order"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1343
-msgid "billing address"
-msgstr "fakturaadress"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1371
-msgid "shipping address"
-msgstr "leveransadress"
-
 #: thecartpress/admin/PriceUpdate.php:40
 msgid "This product cannot be modified by the user "
 msgstr "Denna produkt kan inte ändras av användaren"
@@ -910,12 +524,10 @@ msgid "Prices Update"
 msgstr "Uppdatera priserna"
 
 #: thecartpress/admin/PriceUpdate.php:65
-#: thecartpress/admin/StockUpdate.php:56
 msgid "Category"
 msgstr "Kategori"
 
 #: thecartpress/admin/PriceUpdate.php:68
-#: thecartpress/admin/StockUpdate.php:59
 msgid "no one selected"
 msgstr "ingen är vald"
 
@@ -934,12 +546,10 @@ msgid "fix value"
 msgstr "fast värde"
 
 #: thecartpress/admin/PriceUpdate.php:96
-#: thecartpress/admin/StockUpdate.php:77
 msgid "Search"
 msgstr "Sök"
 
 #: thecartpress/admin/PriceUpdate.php:108
-#: thecartpress/admin/StockUpdate.php:88
 msgid "Updated products"
 msgstr "Uppdatera produkter"
 
@@ -949,7 +559,6 @@ msgid "Actual price"
 msgstr "Verkligt pris"
 
 #: thecartpress/admin/PriceUpdate.php:149
-#: thecartpress/admin/StockUpdate.php:140
 msgid "Update"
 msgstr "Uppdatera"
 
@@ -1039,66 +648,98 @@ msgid "Apply the plugin only to selected ones"
 msgstr "Applicera pluginen för enbart valda länder"
 
 #: thecartpress/admin/PluginEdit.php:165
+#: thecartpress/admin/TCP_Settings.class.php:305
+#: thecartpress/admin/TCP_Settings.class.php:331
 msgid "EU"
 msgstr "EU"
 
 #: thecartpress/admin/PluginEdit.php:165
+#: thecartpress/admin/TCP_Settings.class.php:305
+#: thecartpress/admin/TCP_Settings.class.php:331
 msgid "To select countries from the European Union"
 msgstr "För att välja länder inom den Europeiska Unionen"
 
 #: thecartpress/admin/PluginEdit.php:166
+#: thecartpress/admin/TCP_Settings.class.php:306
+#: thecartpress/admin/TCP_Settings.class.php:332
 msgid "NAFTA"
 msgstr "NAFTA"
 
 #: thecartpress/admin/PluginEdit.php:166
+#: thecartpress/admin/TCP_Settings.class.php:306
+#: thecartpress/admin/TCP_Settings.class.php:332
 msgid "To select countries from the NAFTA"
 msgstr "För att välja länder inom Nordamerikanska Frihandelsavtalet"
 
 #: thecartpress/admin/PluginEdit.php:167
+#: thecartpress/admin/TCP_Settings.class.php:307
+#: thecartpress/admin/TCP_Settings.class.php:333
 msgid "CARICOM"
 msgstr "CARICOM"
 
 #: thecartpress/admin/PluginEdit.php:167
+#: thecartpress/admin/TCP_Settings.class.php:307
+#: thecartpress/admin/TCP_Settings.class.php:333
 msgid "To select countries from CARICOM"
 msgstr "För att välja länder inom den Karibiska gemenskapen"
 
 #: thecartpress/admin/PluginEdit.php:168
+#: thecartpress/admin/TCP_Settings.class.php:308
+#: thecartpress/admin/TCP_Settings.class.php:334
 msgid "MERCASUR"
 msgstr "MERCOSUR"
 
 #: thecartpress/admin/PluginEdit.php:168
+#: thecartpress/admin/TCP_Settings.class.php:308
+#: thecartpress/admin/TCP_Settings.class.php:334
 msgid "To select countries from MERCASUR"
 msgstr "För att välja länder inom den Sydliga gemensamma marknaden"
 
 #: thecartpress/admin/PluginEdit.php:169
+#: thecartpress/admin/TCP_Settings.class.php:309
+#: thecartpress/admin/TCP_Settings.class.php:335
 msgid "CAN"
 msgstr "CAN"
 
 #: thecartpress/admin/PluginEdit.php:169
+#: thecartpress/admin/TCP_Settings.class.php:309
+#: thecartpress/admin/TCP_Settings.class.php:335
 msgid "To select countries from Andean Comunity"
 msgstr "För att välja länder inom den Andiska gemenskapen"
 
 #: thecartpress/admin/PluginEdit.php:170
+#: thecartpress/admin/TCP_Settings.class.php:310
+#: thecartpress/admin/TCP_Settings.class.php:336
 msgid "AU"
 msgstr "AU"
 
 #: thecartpress/admin/PluginEdit.php:170
+#: thecartpress/admin/TCP_Settings.class.php:310
+#: thecartpress/admin/TCP_Settings.class.php:336
 msgid "To select countries from African Union"
 msgstr "För att välja länder inom Afrikanska unionen"
 
 #: thecartpress/admin/PluginEdit.php:171
+#: thecartpress/admin/TCP_Settings.class.php:311
+#: thecartpress/admin/TCP_Settings.class.php:337
 msgid "APEC"
 msgstr "APEC"
 
 #: thecartpress/admin/PluginEdit.php:171
+#: thecartpress/admin/TCP_Settings.class.php:311
+#: thecartpress/admin/TCP_Settings.class.php:337
 msgid "To select countries from Asia-Pacific Economic Cooperation"
 msgstr "För att välja länder inom Asien-Stillahavsregionen ekonomiska samarbete"
 
 #: thecartpress/admin/PluginEdit.php:172
+#: thecartpress/admin/TCP_Settings.class.php:312
+#: thecartpress/admin/TCP_Settings.class.php:338
 msgid "ASEAN"
 msgstr "ASEAN"
 
 #: thecartpress/admin/PluginEdit.php:172
+#: thecartpress/admin/TCP_Settings.class.php:312
+#: thecartpress/admin/TCP_Settings.class.php:338
 msgid "To select countries from Association of Southeast Asian Nations"
 msgstr "För att välja länder inom den Sydost asiatiska föreningen"
 
@@ -1204,6 +845,7 @@ msgid "No, I don't"
 msgstr "Nej, det gör jag inte"
 
 #: thecartpress/admin/TCP_LoopsSettings.class.php:41
+#: thecartpress/admin/TCP_Settings.class.php:41
 msgid "Main settings"
 msgstr "Huvudinställningar"
 
@@ -1276,6 +918,7 @@ msgid "TCP Loop Settings"
 msgstr "TCP Loops inställningar"
 
 #: thecartpress/admin/TCP_LoopsSettings.class.php:70
+#: thecartpress/admin/TCP_Settings.class.php:128
 msgid "Save Changes"
 msgstr "Spara ändringarna"
 
@@ -1288,6 +931,19 @@ msgstr "Skatt borttagen"
 #, fuzzy
 msgid "Tax rate deleted"
 msgstr "Skatt borttagen"
+
+#: thecartpress/admin/TaxesRates.php:54
+#: thecartpress/admin/TaxesRates.php:65
+#: thecartpress/admin/AddressEdit.php:143
+#: thecartpress/admin/TCP_Settings.class.php:56
+msgid "Country"
+msgstr "Land"
+
+#: thecartpress/admin/TaxesRates.php:55
+#: thecartpress/admin/TaxesRates.php:66
+#: thecartpress/admin/AddressEdit.php:166
+msgid "Region"
+msgstr "Region"
 
 #: thecartpress/admin/TaxesRates.php:56
 #: thecartpress/admin/TaxesRates.php:67
@@ -1761,9 +1417,53 @@ msgstr "Adressen är sparad"
 msgid "Validation errors. The Address has not been saved"
 msgstr "Valideringsfel. Adressen har inte sparats"
 
+#: thecartpress/admin/AddressEdit.php:108
+#: thecartpress/admin/AddressEdit.php:205
+#: thecartpress/admin/AddressesList.php:50
+#: thecartpress/admin/AddressesList.php:60
+msgid "Address"
+msgstr "Adress"
+
 #: thecartpress/admin/AddressEdit.php:118
 msgid "Address name"
 msgstr "Adress"
+
+#: thecartpress/admin/AddressEdit.php:124
+msgid "Firstname"
+msgstr "Förnamn"
+
+#: thecartpress/admin/AddressEdit.php:130
+msgid "Lastname"
+msgstr "Efternamn"
+
+#: thecartpress/admin/AddressEdit.php:136
+msgid "Company"
+msgstr "Företag"
+
+#: thecartpress/admin/AddressEdit.php:169
+#, fuzzy
+msgid "No state selected"
+msgstr "ingen är vald"
+
+#: thecartpress/admin/AddressEdit.php:181
+msgid "City"
+msgstr "Ort"
+
+#: thecartpress/admin/AddressEdit.php:199
+msgid "Postal code"
+msgstr "Postnummer"
+
+#: thecartpress/admin/AddressEdit.php:211
+msgid "Telephone 1"
+msgstr "Telefon 1"
+
+#: thecartpress/admin/AddressEdit.php:217
+msgid "Telephone 2"
+msgstr "Telefon 2"
+
+#: thecartpress/admin/AddressEdit.php:229
+msgid "eMail"
+msgstr "E-post"
 
 #: thecartpress/admin/AddressEdit.php:235
 msgid "Default billing"
@@ -3364,6 +3064,57 @@ msgstr "Tagga arkiv: %s"
 msgid "Billing options"
 msgstr "2. Fakturaalternativ"
 
+#: thecartpress/checkout/TCPBillingBox.class.php:21
+msgid "The billing First name field must be completed"
+msgstr "Fakturamottagarens namn måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:23
+msgid "The billing Last name field must be completed"
+msgstr "Fakturamottagarens efternamn måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:25
+msgid "The billing Street field must be completed"
+msgstr "Fakturamottagarens adress måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:27
+msgid "The billing City field must be completed"
+msgstr "Fakturamottagarens stad måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:29
+msgid "The billing Region field must be completed"
+msgstr "Fakturamottagarens region måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:34
+#: thecartpress/checkout/TCPBillingBox.class.php:49
+#, fuzzy
+msgid "The billing Country is not allowed"
+msgstr "Faktureringslandet måste fyllas i"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:38
+msgid "The billing Postcode field must be completed"
+msgstr "Fakturamottagarens postnummer måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:40
+msgid "The billing eMail field must be completed"
+msgstr "Fakturamottagarens e-post adress måste skrivas in"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:42
+msgid "The billing eMail field must be a valid email"
+msgstr "Fakturamottagarens e-post adress måste vara en korrekt e-post adress"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:109
+msgid "Select billing address:"
+msgstr "Välj fakturaadress:"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:119
+#, fuzzy
+msgid "Billing to the address selected"
+msgstr "Fakturaadress"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:123
+msgid "New billing address"
+msgstr "Ny fakturaadress"
+
 #: thecartpress/checkout/TCPBillingBox.class.php:252
 #, fuzzy
 msgid "Tax ID number"
@@ -3374,10 +3125,23 @@ msgstr "Kort nummer"
 msgid "Cart"
 msgstr "7. Varukorg"
 
+#: thecartpress/checkout/TCPCartBox.class.php:47
+msgid "Comments:"
+msgstr "Kommentarer:"
+
 #: thecartpress/checkout/TCPCartBox.class.php:99
 #, fuzzy
 msgid "Discounts"
 msgstr "Rabatt"
+
+#: thecartpress/checkout/ActiveCheckout.class.php:17
+msgid "The order has been completed successfully."
+msgstr "Beställningen har slutförts."
+
+#: thecartpress/checkout/ActiveCheckout.class.php:24
+#: thecartpress/checkout/TCPCheckoutManager.class.php:449
+msgid "Print"
+msgstr "Skriv ut"
 
 #: thecartpress/checkout/ActiveCheckout.class.php:60
 #, fuzzy, php-format
@@ -3393,15 +3157,75 @@ msgstr ""
 msgid "Shipping options"
 msgstr "3. Frakt alternativ"
 
+#: thecartpress/checkout/TCPShippingBox.class.php:31
+msgid "The shipping First name field must be completed"
+msgstr "Leveransmottagarens namn måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:33
+msgid "The shipping Last name field must be completed"
+msgstr "Leveransmottagarens efternamn måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:35
+msgid "The shipping Street field must be completed"
+msgstr "Leveransmottagarens adress måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:37
+msgid "The shipping City field must be completed"
+msgstr "Leveransmottagarens stad måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:39
+msgid "The shipping Region field must be completed"
+msgstr "Leveransmottagarens region måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:44
+#: thecartpress/checkout/TCPShippingBox.class.php:59
+#, fuzzy
+msgid "The shipping Country is not allowed"
+msgstr "Leveransmottagarens stad måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:48
+msgid "The shipping Postcode field must be completed"
+msgstr "Leveransmottagarens postnummer måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:50
+#, fuzzy
+msgid "The shipping eMail field must be completed"
+msgstr "Leveransmottagarens region måste skrivas in"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:52
+#, fuzzy
+msgid "The shipping eMail field must be a valid email"
+msgstr "Fakturamottagarens e-post adress måste vara en korrekt e-post adress"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:126
+msgid "Select shipping address:"
+msgstr "Välj leveransadress:"
+
 #: thecartpress/checkout/TCPShippingBox.class.php:137
 #, fuzzy
 msgid "shipping to the address selected"
 msgstr "leveransadress"
 
+#: thecartpress/checkout/TCPShippingBox.class.php:142
+msgid "Use billing address"
+msgstr "Använd fakturaadress"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:148
+msgid "New shipping address"
+msgstr "Ny leveransadress"
+
 #: thecartpress/checkout/TCPNoticeBox.class.php:10
 #, fuzzy
 msgid "Checkout notice"
 msgstr "Kassan"
+
+#: thecartpress/checkout/TCPNoticeBox.class.php:19
+msgid "You must accept the conditions!!"
+msgstr "Du måste acceptera villkoren!"
+
+#: thecartpress/checkout/TCPNoticeBox.class.php:32
+msgid "Accept conditions:"
+msgstr "Acceptera villkoren:"
 
 #: thecartpress/checkout/TCPNoticeBox.class.php:37
 #, fuzzy
@@ -3416,6 +3240,75 @@ msgstr ""
 msgid "Checkout method"
 msgstr "1. Kassan"
 
+#: thecartpress/checkout/TCPSigninBox.class.php:33
+msgid "Login"
+msgstr "Logga in"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:38
+msgid "Already registered?"
+msgstr "Redan registrerad?"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:38
+msgid "Please log in below:"
+msgstr "Var god logga in nedan:"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:44
+msgid "Username"
+msgstr "Användarnamn"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:45
+msgid "Password"
+msgstr "Lösenord"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:46
+msgid "Remember Me"
+msgstr "Kom ihåg mig"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:47
+msgid "Log In"
+msgstr "Logga in"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:61
+msgid "Checkout as registered"
+msgstr "Avsluta beställningen som registrerad"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:63
+msgid "Register with us for future convenience:"
+msgstr "Registrera dig hos oss för framtida köp:"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:65
+msgid "Fast and easy checkout"
+msgstr "Snabb och enkel avslutning på beställningen"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:66
+msgid "Easy access to yours orders history and status"
+msgstr "Enkel tillgång till din beställnings historik och status"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:72
+msgid "Checkout as a guest"
+msgstr "Avsluta beställning som gäst"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:75
+msgid "Or you can make as a guest."
+msgstr "Eller du kan göra det som gäst."
+
+#: thecartpress/checkout/TCPSigninBox.class.php:77
+msgid "You can make as a guest."
+msgstr "Du kan göra det som gäst."
+
+#: thecartpress/checkout/TCPSigninBox.class.php:81
+msgid "If you prefer this way then press the next button"
+msgstr "Om du föredrar detta sätt klicka då på nästa"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:83
+#: thecartpress/checkout/TCPCheckoutManager.class.php:113
+msgid "Continue"
+msgstr "Fortsätt"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:85
+msgid "User registration is required. Please, log in or register. "
+msgstr "Registrering krävs. Var god logga in eller registrera dig."
+
 #: thecartpress/checkout/TCPPaymentMethodsBox.class.php:9
 #, fuzzy
 msgid "Payment methods"
@@ -3424,6 +3317,30 @@ msgstr "5. Betalningsmetoder"
 #: thecartpress/checkout/TCPPaymentMethodsBox.class.php:18
 msgid "You must select a payment method"
 msgstr ""
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:111
+msgid "Back"
+msgstr "Tillbaka"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:429
+msgid "Not enough stock in order at check-out"
+msgstr "Inte tillräckligt i lager vid utcheckning"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:430
+msgid "There was an error when creating the order. Please contact with the seller."
+msgstr "Ett fel uppstod när din beställning skulle skapas. Var god kontakta försäljaren."
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:432
+msgid "The next step helps you to pay using the payment method chosen by you."
+msgstr "Nästa steg hjälper dig att betala med den betalningsmetod som du valt."
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:483
+msgid "billing address"
+msgstr "fakturaadress"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:509
+msgid "shipping address"
+msgstr "leveransadress"
 
 #: thecartpress/checkout/TCPShippingMethodsBox.class.php:7
 #, fuzzy
@@ -3435,6 +3352,54 @@ msgstr "4. Fraktmetoder"
 msgid "You must select a shipping method"
 msgstr "Betalnings och frakt metoder"
 
+#~ msgid ""
+#~ "You are trying to check out your order but, at this moment, there are not "
+#~ "enough stock of some products. Please review the list of products."
+#~ msgstr ""
+#~ "Du försöker avsluta din beställning, men för tillfället finns det inte "
+#~ "tillräckligt i lager för vissa produkter. Var god se över listan med "
+#~ "produkter."
+#~ msgid "1. Checkout method"
+#~ msgstr "1. Kassan"
+#~ msgid "The billing Region name field must be completed"
+#~ msgstr "Faktureringsregionen måste fyllas i"
+#~ msgid "The billing Country field must be completed"
+#~ msgstr "Faktureringslandet måste fyllas i"
+#~ msgid "2. Billing options"
+#~ msgstr "2. Fakturaalternativ"
+#~ msgid "3. Shipping options"
+#~ msgstr "3. Frakt alternativ"
+#~ msgid "Send to the selected address"
+#~ msgstr "Skicka till den valda adressen"
+#~ msgid "4. Sending methods"
+#~ msgstr "4. Fraktmetoder"
+#~ msgid "5. Payment methods"
+#~ msgstr "5. Betalningsmetoder"
+#~ msgid "6. Additional services"
+#~ msgstr "6. Ytterligare tjänster"
+#~ msgid "7. Cart"
+#~ msgstr "7. Varukorg"
+#~ msgid "8. Legal notice"
+#~ msgstr "8. Juridiskt meddelande"
+
+#, fuzzy
+#~ msgid "8. Checkout notice"
+#~ msgstr "1. Kassan"
+#~ msgid "Legal notice:"
+#~ msgstr "Juridiskt meddelande:"
+#~ msgid ""
+#~ "When you click in the 'create order' button the order\n"
+#~ "\t\t\t\t will be created and if you have chosen an external payment "
+#~ "method the system will show a button \n"
+#~ "\t\t\t\t to go to the external web (usually your bank's payment gateway)"
+#~ msgstr ""
+#~ "När du klickar på 'skapa order' knappen så\n"
+#~ "\t\t\t\t skapas beställningen och om du har valt en extern "
+#~ "betalningsmetod så kommer systemet visa en knapp \n"
+#~ "\t\t\t\t för att ta dig till den externa websidan (vanligtvis din banks "
+#~ "betalsida)"
+#~ msgid "Create order"
+#~ msgstr "Skapa order"
 #~ msgid "legal notice"
 #~ msgstr "juridiskt meddelande"
 

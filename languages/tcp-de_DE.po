@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TheCartPress v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 11:50+0100\n"
-"PO-Revision-Date: 2011-06-01 11:50+0100\n"
+"POT-Creation-Date: 2011-06-02 09:32+0100\n"
+"PO-Revision-Date: 2011-06-02 09:32+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -20,211 +20,209 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 # @ tcp
-#: TheCartPress.class.php:255
+#: TheCartPress.class.php:252
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "Die <strong>Warenkorb-Seite</strong> wurde gelöscht."
 
 # @ tcp
-#: TheCartPress.class.php:258
+#: TheCartPress.class.php:255
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "Die Seite <strong>Kasse</strong> wurde gelöscht."
 
 # @ tcp
-#: TheCartPress.class.php:262
-#: shortcodes/_Checkout.class.php:1142
+#: TheCartPress.class.php:259
 msgid "Notice:"
 msgstr "Hinweis:"
 
 # @ tcp
-#: TheCartPress.class.php:264
+#: TheCartPress.class.php:261
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Besuchen Sie die <a href=\"%s\">Prüfungs-Seite</a> , um diese Warnungen zu beheben."
 
 # @ tcp
-#: TheCartPress.class.php:437
+#: TheCartPress.class.php:434
 msgid "Lost Password"
 msgstr "Passwort vergessen"
 
 # @ tcp
-#: TheCartPress.class.php:451
+#: TheCartPress.class.php:448
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Powered by TheCartPress, eCommerce platform for WordPress"
 
 # @ tcp
-#: TheCartPress.class.php:467
+#: TheCartPress.class.php:464
 msgid "Shopping"
 msgstr "Shopping"
 
 # @ tcp
-#: TheCartPress.class.php:475
-#: TheCartPress.class.php:552
+#: TheCartPress.class.php:472
+#: TheCartPress.class.php:549
 msgid "Orders"
 msgstr "Bestellungen"
 
 # @ tcp
-#: TheCartPress.class.php:484
+#: TheCartPress.class.php:481
 msgid "Download area"
 msgstr "Download-Bereich"
 
 # @ tcp
-#: TheCartPress.class.php:526
+#: TheCartPress.class.php:523
 msgid "Orders Summary"
 msgstr "Bestellungen Zusammenfassung"
 
 # @ tcp
-#: TheCartPress.class.php:527
+#: TheCartPress.class.php:524
 msgid "TheCartPress blog"
 msgstr "TheCartPress blog"
 
 # @ tcp
-#: TheCartPress.class.php:553
+#: TheCartPress.class.php:550
 msgid "Addresses"
 msgstr "Adressen"
 
 # @ tcp
-#: TheCartPress.class.php:554
+#: TheCartPress.class.php:551
 #: classes/OrderPage.class.php:169
 #: shortcodes/ShoppingCartPage.class.php:107
-#: shortcodes/_Checkout.class.php:1269
 msgid "Taxes"
 msgstr "Steuern"
 
 # @ tcp
-#: TheCartPress.class.php:555
+#: TheCartPress.class.php:552
 #, fuzzy
 msgid "Taxes Rates"
 msgstr "Samplefrequenzen"
 
 # @ tcp
-#: TheCartPress.class.php:556
+#: TheCartPress.class.php:553
 msgid "Payment and Shipping Methods"
 msgstr "Zahlungs-und Versandarten"
 
 # @ tcp
-#: TheCartPress.class.php:556
+#: TheCartPress.class.php:553
 msgid "Payment and Shipping methods"
 msgstr "Zahlungs-und Versandarten"
 
 # @ tcp
-#: TheCartPress.class.php:557
+#: TheCartPress.class.php:554
 msgid "Related Categories"
 msgstr "Verwandte Kategorien"
 
 # @ tcp
-#: TheCartPress.class.php:560
+#: TheCartPress.class.php:557
 msgid "Downloadable Products"
 msgstr "Download-Produkte"
 
 # @ tcp
-#: TheCartPress.class.php:562
+#: TheCartPress.class.php:559
 msgid "Update Prices"
 msgstr "Preise aktualisieren"
 
 # @ tcp
-#: TheCartPress.class.php:563
+#: TheCartPress.class.php:560
 msgid "Update Stock"
 msgstr "Bestand aktualisieren"
 
 # @ tcp
-#: TheCartPress.class.php:564
+#: TheCartPress.class.php:561
 msgid "Shortcodes Generator"
 msgstr "Shortcode-Generator"
 
 # @ tcp
-#: TheCartPress.class.php:564
+#: TheCartPress.class.php:561
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
 # @ tcp
-#: TheCartPress.class.php:565
+#: TheCartPress.class.php:562
 msgid "Admin Bar Config"
 msgstr "Admin Bar Konfiguration"
 
 # @ tcp
-#: TheCartPress.class.php:567
+#: TheCartPress.class.php:564
 msgid "list of Assigned products"
 msgstr "Liste der zugeordneten Produkte"
 
 # @ tcp
-#: TheCartPress.class.php:568
+#: TheCartPress.class.php:565
 #: classes/OrderPanel.class.php:35
 #: classes/OrderPanel.class.php:48
 msgid "Order"
 msgstr "sortieren"
 
 # @ tcp
-#: TheCartPress.class.php:569
+#: TheCartPress.class.php:566
 msgid "Plugin editor"
 msgstr "Plugin-Editor"
 
 # @ tcp
-#: TheCartPress.class.php:570
+#: TheCartPress.class.php:567
 msgid "Address editor"
 msgstr "Adressen-Editor"
 
 # @ tcp
-#: TheCartPress.class.php:571
+#: TheCartPress.class.php:568
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
 # @ tcp
-#: TheCartPress.class.php:572
+#: TheCartPress.class.php:569
 msgid "Downloadable products"
 msgstr "Download-Produkte"
 
 # @ tcp
-#: TheCartPress.class.php:573
+#: TheCartPress.class.php:570
 msgid "TheCartPress checking"
 msgstr "TheCartPress Kontrolle"
 
 # @ tcp
-#: TheCartPress.class.php:701
+#: TheCartPress.class.php:698
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress erfordert WordPress Version 3.0 oder höher."
 
 # @ tcp
-#: TheCartPress.class.php:785
+#: TheCartPress.class.php:782
 msgid "Legal notice"
 msgstr "Rechtliche Hinweise"
 
 # @ tcp
-#: TheCartPress.class.php:810
+#: TheCartPress.class.php:807
 msgid "Customer"
 msgstr "Kunde"
 
 # @ tcp
-#: TheCartPress.class.php:839
+#: TheCartPress.class.php:836
 msgid "Merchant"
 msgstr "Händler"
 
 # @ tcp
-#: TheCartPress.class.php:873
+#: TheCartPress.class.php:870
 msgid "Shopping cart"
 msgstr "Warenkorb"
 
 # @ tcp
-#: TheCartPress.class.php:886
+#: TheCartPress.class.php:883
 #: shortcodes/ShoppingCartPage.class.php:118
 msgid "Checkout"
 msgstr "Kasse"
 
 # @ tcp
-#: TheCartPress.class.php:899
+#: TheCartPress.class.php:896
 msgid "Category One"
 msgstr "Kategorie Eins"
 
 # @ tcp
-#: TheCartPress.class.php:900
+#: TheCartPress.class.php:897
 msgid "Category One for Product One"
 msgstr "Kategorie Eins für Produkt Eins"
 
 # @ tcp
-#: TheCartPress.class.php:906
+#: TheCartPress.class.php:903
 msgid "Product One"
 msgstr "Produkt Eins"
 
-#: TheCartPress.class.php:1163
+#: TheCartPress.class.php:1160
 #, fuzzy
 msgid "show/hide"
 msgstr "zeigen/verstecken"
@@ -243,8 +241,6 @@ msgstr "Telefone"
 # @ tcp
 #: classes/OrderPage.class.php:48
 #: classes/OrderPage.class.php:62
-#: shortcodes/_Checkout.class.php:742
-#: shortcodes/_Checkout.class.php:975
 msgid "Fax"
 msgstr "Fax"
 
@@ -257,7 +253,8 @@ msgstr "Rechnungsanschrift"
 #: classes/OrderPage.class.php:70
 #: classes/BuyButton.class.php:143
 #: shortcodes/ShoppingCartPage.class.php:36
-#: shortcodes/_Checkout.class.php:1174
+#: admin/PriceUpdate.php:112
+#: admin/PriceUpdate.php:120
 msgid "Name"
 msgstr "Name"
 
@@ -268,7 +265,6 @@ msgstr "Name"
 #: classes/OrderPanel.class.php:36
 #: metaboxes/ProductCustomFieldsMetabox.class.php:101
 #: shortcodes/ShoppingCartPage.class.php:37
-#: shortcodes/_Checkout.class.php:1175
 msgid "Price"
 msgstr "Preis"
 
@@ -277,14 +273,12 @@ msgstr "Preis"
 #: classes/BuyButton.class.php:65
 #: classes/BuyButton.class.php:146
 #: shortcodes/ShoppingCartPage.class.php:38
-#: shortcodes/_Checkout.class.php:1176
 msgid "Units"
 msgstr "Anzahl"
 
 # @ tcp
 #: classes/OrderPage.class.php:73
 #: metaboxes/ProductCustomFieldsMetabox.class.php:118
-#: shortcodes/_Checkout.class.php:1178
 msgid "Weight"
 msgstr "Gewicht"
 
@@ -292,29 +286,22 @@ msgstr "Gewicht"
 #: classes/OrderPage.class.php:74
 #: classes/OrderPage.class.php:180
 #: shortcodes/ShoppingCartPage.class.php:112
-#: shortcodes/_Checkout.class.php:1179
-#: shortcodes/_Checkout.class.php:1281
 msgid "Total"
 msgstr "Summe"
 
 # @ tcp
 #: classes/OrderPage.class.php:118
 #: shortcodes/ShoppingCartPage.class.php:101
-#: shortcodes/_Checkout.class.php:1216
 msgid "Discount"
 msgstr "Discount"
 
 # @ tcp
 #: classes/OrderPage.class.php:130
-#: shortcodes/_Checkout.class.php:251
-#: shortcodes/_Checkout.class.php:1229
 msgid "Shipping cost"
 msgstr "Versandkosten"
 
 # @ tcp
 #: classes/OrderPage.class.php:140
-#: shortcodes/_Checkout.class.php:269
-#: shortcodes/_Checkout.class.php:1240
 msgid "Payment cost"
 msgstr "Gebühren"
 
@@ -593,7 +580,6 @@ msgstr "Ungültiger Shortcode: %s"
 
 # @ tcp
 #: shortcodes/ShoppingCartPage.class.php:26
-#: shortcodes/_Checkout.class.php:397
 msgid "The cart is empty"
 msgstr "Der Warenkorb ist leer"
 
@@ -642,455 +628,6 @@ msgid "Delete shopping cart"
 msgstr "Warenkorb leeren"
 
 # @ tcp
-#: shortcodes/_Checkout.class.php:35
-msgid "The order has been completed successfully."
-msgstr "Die Bestellung wurde erfolgreich abgeschlossen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:42
-#: shortcodes/_Checkout.class.php:390
-msgid "Print"
-msgstr "Drucken"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:68
-#: shortcodes/_Checkout.class.php:495
-msgid "The billing First name field must be completed"
-msgstr "Das Feld \"Vorname\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:70
-#: shortcodes/_Checkout.class.php:496
-msgid "The billing Last name field must be completed"
-msgstr "Das Feld \"Nachname\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:72
-#: shortcodes/_Checkout.class.php:497
-msgid "The billing Street field must be completed"
-msgstr "Das Feld \"Stra&szlig;e\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:74
-#: shortcodes/_Checkout.class.php:498
-msgid "The billing City field must be completed"
-msgstr "Das Feld \"Ort\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:76
-msgid "The billing Region field must be completed"
-msgstr "Das Feld \"Bundesland\"  der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:79
-#: shortcodes/_Checkout.class.php:93
-#, fuzzy
-msgid "The billing Country is not allowed"
-msgstr "Das Land für die Rechnungsstellung ist nicht als Land, in das wir liefern, zugelassen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:83
-#: shortcodes/_Checkout.class.php:500
-msgid "The billing Postcode field must be completed"
-msgstr "Das Feld \"PLZ\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:85
-#: shortcodes/_Checkout.class.php:502
-msgid "The billing eMail field must be completed"
-msgstr "Das Feld \"E-Mail\" der Rechnungsanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:87
-#: shortcodes/_Checkout.class.php:503
-msgid "The billing eMail field must be a valid email"
-msgstr "Die Emailadresse der Rechnungsanschrift scheint nicht gültig zu sein."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:102
-msgid "The shipping First name field must be completed"
-msgstr "Das Feld \"Vorname\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:104
-msgid "The shipping Last name field must be completed"
-msgstr "Das Feld \"Nachname\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:106
-msgid "The shipping Street field must be completed"
-msgstr "Das Feld \"Stra&szlig;e\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:108
-msgid "The shipping City field must be completed"
-msgstr "Das Feld \"Ort\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:110
-msgid "The shipping Region field must be completed"
-msgstr "Das Feld \"Bundesland\"  der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:113
-#: shortcodes/_Checkout.class.php:134
-#, fuzzy
-msgid "The shipping Country is not allowed"
-msgstr "Das Land für die Rechnungsstellung ist nicht als Land, in das wir liefern, zugelassen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:117
-msgid "The shipping Postcode field must be completed"
-msgstr "Das Feld \"PLZ\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:119
-msgid "The shipping eMail field must be completed"
-msgstr "Das Feld \"E-Mail\" der Lieferanschrift muss ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:121
-#, fuzzy
-msgid "The shipping eMail field must be a valid email"
-msgstr "Die Emailadresse der Rechnungsanschrift scheint nicht gültig zu sein."
-
-#: shortcodes/_Checkout.class.php:126
-#, fuzzy
-msgid "The billing Country is not allowed as shipping Country"
-msgstr "Das Land für die Rechnungsstellung ist nicht als Land, in das wir liefern, zugelassen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:368
-msgid "Not enough stock in order at check-out"
-msgstr "Nicht genügend Artikel auf Lager"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:369
-msgid "There was an error when creating the order. Please contact with the seller."
-msgstr "Es gab einen Fehler beim Erstellen der Bestellung. Bitte nehmen Sie mit uns Kontakt auf."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:371
-msgid "The next step helps you to pay using the payment method chosen by you."
-msgstr "Der nächste Schritt hilft Ihnen, mit der ausgwählten Zahlungsmethode zu bezahlen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:402
-msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
-msgstr "Zur Zeit sind leider nicht genug Artikel auf Lager. Bitte überprüfen Sie die Liste der Produkte."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:421
-msgid "1. Checkout method"
-msgstr "1. Anmeldung"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:430
-msgid "Login"
-msgstr "Login"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:434
-msgid "Already registered?"
-msgstr "Bereits registriert?"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:435
-msgid "Please log in below:"
-msgstr "Bitte loggen Sie sich ein:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:441
-msgid "Username"
-msgstr "Benutzername"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:442
-msgid "Password"
-msgstr "Passwort"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:443
-msgid "Remember Me"
-msgstr "Daten speichern"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:444
-msgid "Log In"
-msgstr "Anmelden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:458
-msgid "Checkout as registered"
-msgstr "Angemeldet zur Kasse gehen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:460
-msgid "Register with us for future convenience:"
-msgstr "Registrieren Sie sich bei uns für mehr Komfort:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:462
-msgid "Fast and easy checkout"
-msgstr "Schnelle und einfache Kaufabwicklung"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:463
-msgid "Easy access to yours orders history and status"
-msgstr "Einfacher Zugriff auf Ihre Bestellungen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:469
-msgid "Checkout as a guest"
-msgstr "Als Gast zur Kasse gehen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:472
-msgid "Or you can make as a guest."
-msgstr "Sie können Ihre Bestellung auch aufgeben ohne ein Konto bei uns anzulegen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:474
-msgid "You can make as a guest."
-msgstr "Sie können Ihre Bestellung auch aufgeben ohne ein Konto bei uns anzulegen."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:478
-msgid "If you prefer this way then press the next button"
-msgstr "Wenn Sie dies bevorzugen, dann klicken Sie einfach auf \\\"weiter\\\""
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:480
-#: shortcodes/_Checkout.class.php:757
-#: shortcodes/_Checkout.class.php:987
-#: shortcodes/_Checkout.class.php:1022
-#: shortcodes/_Checkout.class.php:1070
-#: shortcodes/_Checkout.class.php:1090
-#: shortcodes/_Checkout.class.php:1120
-msgid "Continue"
-msgstr "Weiter"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:482
-msgid "User registration is required. Please, log in or register. "
-msgstr "Benutzer-Registrierung ist erforderlich. Bitte anmelden oder registrieren. "
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:499
-msgid "The billing Region name field must be completed"
-msgstr "Das Feld \"Bundesland\" der Rechnungsanschrift ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:501
-msgid "The billing Country field must be completed"
-msgstr "Das Feld \"Land\" der Rechnungsanschrift ausgefüllt werden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:548
-msgid "2. Billing options"
-msgstr "2. Zahlungsoptionen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:566
-msgid "Select billing address:"
-msgstr "Rechnungsanschrift auswählen:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:580
-#, fuzzy
-msgid "Billing to the address selected"
-msgstr "Rechnungsanschrift ausw&auml;hlen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:588
-msgid "New billing address"
-msgstr "Neue Rechnungsanschrift"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:667
-#: shortcodes/_Checkout.class.php:900
-msgid "Firstname"
-msgstr "Vorname"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:671
-#: shortcodes/_Checkout.class.php:904
-msgid "Lastname"
-msgstr "Nachname"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:675
-#: shortcodes/_Checkout.class.php:908
-msgid "Company"
-msgstr "Firma"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:679
-#: shortcodes/_Checkout.class.php:912
-msgid "Country"
-msgstr "Land"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:696
-#: shortcodes/_Checkout.class.php:929
-msgid "Region"
-msgstr "Bundesland"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:699
-#: shortcodes/_Checkout.class.php:933
-#, fuzzy
-msgid "No state selected"
-msgstr "Keine Stapelverarbeitung ausgewählt"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:710
-#: shortcodes/_Checkout.class.php:944
-msgid "City"
-msgstr "Ort"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:726
-#: shortcodes/_Checkout.class.php:960
-msgid "Address"
-msgstr "Adresse"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:730
-#: shortcodes/_Checkout.class.php:964
-msgid "Postal code"
-msgstr "PLZ"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:734
-#: shortcodes/_Checkout.class.php:969
-msgid "Telephone 1"
-msgstr "Telefon 1"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:738
-#: shortcodes/_Checkout.class.php:972
-msgid "Telephone 2"
-msgstr "Telefon 2"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:746
-#: shortcodes/_Checkout.class.php:978
-msgid "eMail"
-msgstr "E-Mail"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:754
-#: shortcodes/_Checkout.class.php:985
-#: shortcodes/_Checkout.class.php:1020
-#: shortcodes/_Checkout.class.php:1062
-#: shortcodes/_Checkout.class.php:1088
-#: shortcodes/_Checkout.class.php:1114
-#: shortcodes/_Checkout.class.php:1117
-#: shortcodes/_Checkout.class.php:1157
-msgid "Back"
-msgstr "Zurück"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:766
-msgid "3. Shipping options"
-msgstr "3. Lieferoptionen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:784
-msgid "Select shipping address:"
-msgstr "Lieferanschrift auswählen:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:800
-msgid "Send to the selected address"
-msgstr "An die ausgewählte Adresse senden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:810
-msgid "Use billing address"
-msgstr "Rechnungsanschrift verwenden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:820
-msgid "New shipping address"
-msgstr "Neue Lieferanschrift"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:996
-msgid "4. Sending methods"
-msgstr "4. Versandoptionen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1032
-msgid "5. Payment methods"
-msgstr "5. Zahlungsmethoden"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1080
-msgid "6. Additional services"
-msgstr "6. Zusätzliche Leistungen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1102
-msgid "7. Cart"
-msgstr "7. Warenkorb"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1110
-msgid "Comments:"
-msgstr "Kommentare:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1130
-msgid "8. Legal notice"
-msgstr "8. Rechtliche Hinweise"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1131
-#, fuzzy
-msgid "8. Checkout notice"
-msgstr "Rechtliche Hinweise"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1141
-msgid "Legal notice:"
-msgstr "Rechtliche Hinweise:"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1145
-msgid "Accept conditions:"
-msgstr "Ich akzeptiere die Allgemeinen Geschäftsbedingungen "
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1148
-msgid "You must accept the conditions!!"
-msgstr "Sie müssen unsere AGBs akzeptieren!"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1152
-msgid ""
-"When you click in the 'create order' button the order\n"
-"\t\t\t\t will be created and if you have chosen an external payment method the system will show a button \n"
-"\t\t\t\t to go to the external web (usually your bank's payment gateway)"
-msgstr "Wenn Sie in der auf \"jetzt bestellen\" klicken, wird Ihre Bestellung in unserem System erstellt und falls Sie einen externen Zahlungsdienstleister ausgewählt haben wird ein Button angezeigt mit dem Sie direkt zu Ihrem Dienstleister weitergeleitet werden."
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1159
-msgid "Create order"
-msgstr "jetzt bestellen"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1343
-msgid "billing address"
-msgstr "Rechnungsanschrift"
-
-# @ tcp
-#: shortcodes/_Checkout.class.php:1371
-msgid "shipping address"
-msgstr "Lieferanschrift"
-
-# @ tcp
 #: admin/PriceUpdate.php:40
 msgid "This product cannot be modified by the user "
 msgstr "Dieses Produkt kann vom Anwender nicht geändert werden "
@@ -1107,13 +644,11 @@ msgstr "Preise aktualisieren"
 
 # @ tcp
 #: admin/PriceUpdate.php:65
-#: admin/StockUpdate.php:56
 msgid "Category"
 msgstr "Kategorie"
 
 # @ tcp
 #: admin/PriceUpdate.php:68
-#: admin/StockUpdate.php:59
 msgid "no one selected"
 msgstr "nichts ausgewählt"
 
@@ -1136,14 +671,12 @@ msgstr "fester Wert"
 
 # @ default
 #: admin/PriceUpdate.php:96
-#: admin/StockUpdate.php:77
 #, fuzzy
 msgid "Search"
 msgstr "Suchen"
 
 # @ tcp
 #: admin/PriceUpdate.php:108
-#: admin/StockUpdate.php:88
 msgid "Updated products"
 msgstr "Aktualisierte Produkte"
 
@@ -1155,7 +688,6 @@ msgstr "Aktueller Preis"
 
 # @ default
 #: admin/PriceUpdate.php:149
-#: admin/StockUpdate.php:140
 #, fuzzy
 msgid "Update"
 msgstr "Aktualisieren"
@@ -1263,81 +795,113 @@ msgstr "Wenden Sie das Plugin nur für ausgewählte an"
 
 # @ tcp
 #: admin/PluginEdit.php:165
+#: admin/TCP_Settings.class.php:305
+#: admin/TCP_Settings.class.php:331
 msgid "EU"
 msgstr "EU"
 
 # @ tcp
 #: admin/PluginEdit.php:165
+#: admin/TCP_Settings.class.php:305
+#: admin/TCP_Settings.class.php:331
 msgid "To select countries from the European Union"
 msgstr "Wählen Sie Länder aus der Europäischen Union"
 
 # @ tcp
 #: admin/PluginEdit.php:166
+#: admin/TCP_Settings.class.php:306
+#: admin/TCP_Settings.class.php:332
 msgid "NAFTA"
 msgstr "NAFTA"
 
 # @ tcp
 #: admin/PluginEdit.php:166
+#: admin/TCP_Settings.class.php:306
+#: admin/TCP_Settings.class.php:332
 msgid "To select countries from the NAFTA"
 msgstr "Wählen Sie aus den NAFTA-Ländern"
 
 # @ tcp
 #: admin/PluginEdit.php:167
+#: admin/TCP_Settings.class.php:307
+#: admin/TCP_Settings.class.php:333
 msgid "CARICOM"
 msgstr "CARICOM"
 
 # @ tcp
 #: admin/PluginEdit.php:167
+#: admin/TCP_Settings.class.php:307
+#: admin/TCP_Settings.class.php:333
 msgid "To select countries from CARICOM"
 msgstr "Wählen Sie aus Ländern CARICOM"
 
 # @ tcp
 #: admin/PluginEdit.php:168
+#: admin/TCP_Settings.class.php:308
+#: admin/TCP_Settings.class.php:334
 msgid "MERCASUR"
 msgstr "MERCASUR"
 
 # @ tcp
 #: admin/PluginEdit.php:168
+#: admin/TCP_Settings.class.php:308
+#: admin/TCP_Settings.class.php:334
 msgid "To select countries from MERCASUR"
 msgstr "So wählen Sie aus MERCASUR-Ländern "
 
 # @ tcp
 #: admin/PluginEdit.php:169
+#: admin/TCP_Settings.class.php:309
+#: admin/TCP_Settings.class.php:335
 msgid "CAN"
 msgstr "CAN"
 
 # @ tcp
 #: admin/PluginEdit.php:169
+#: admin/TCP_Settings.class.php:309
+#: admin/TCP_Settings.class.php:335
 msgid "To select countries from Andean Comunity"
 msgstr "So wählen Sie aus Ländern der Anden"
 
 # @ tcp
 #: admin/PluginEdit.php:170
+#: admin/TCP_Settings.class.php:310
+#: admin/TCP_Settings.class.php:336
 msgid "AU"
 msgstr "AU"
 
 # @ tcp
 #: admin/PluginEdit.php:170
+#: admin/TCP_Settings.class.php:310
+#: admin/TCP_Settings.class.php:336
 msgid "To select countries from African Union"
 msgstr "Wählen Sie aus Ländern der Afrikanischen Union"
 
 # @ tcp
 #: admin/PluginEdit.php:171
+#: admin/TCP_Settings.class.php:311
+#: admin/TCP_Settings.class.php:337
 msgid "APEC"
 msgstr "APEC"
 
 # @ tcp
 #: admin/PluginEdit.php:171
+#: admin/TCP_Settings.class.php:311
+#: admin/TCP_Settings.class.php:337
 msgid "To select countries from Asia-Pacific Economic Cooperation"
 msgstr "Wählen Sie Länder der APEC (Asia-Pacific Economic Cooperation)"
 
 # @ tcp
 #: admin/PluginEdit.php:172
+#: admin/TCP_Settings.class.php:312
+#: admin/TCP_Settings.class.php:338
 msgid "ASEAN"
 msgstr "ASEAN"
 
 # @ tcp
 #: admin/PluginEdit.php:172
+#: admin/TCP_Settings.class.php:312
+#: admin/TCP_Settings.class.php:338
 msgid "To select countries from Association of Southeast Asian Nations"
 msgstr "Wählen Sie aus ASEAN-Ländern (Association of Southeast Asian Nations)"
 
@@ -1462,6 +1026,7 @@ msgstr "Nein, will ich nicht"
 
 # @ tcp
 #: admin/TCP_LoopsSettings.class.php:41
+#: admin/TCP_Settings.class.php:41
 msgid "Main settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -1553,6 +1118,7 @@ msgstr "TCP Loop-Einstellungen"
 # @ tcp
 # @ default
 #: admin/TCP_LoopsSettings.class.php:70
+#: admin/TCP_Settings.class.php:128
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
@@ -1567,6 +1133,21 @@ msgstr "Bit-Rate-Modus:"
 #, fuzzy
 msgid "Tax rate deleted"
 msgstr "Auswahl löschen?"
+
+# @ tcp
+#: admin/TaxesRates.php:54
+#: admin/TaxesRates.php:65
+#: admin/AddressEdit.php:143
+#: admin/TCP_Settings.class.php:56
+msgid "Country"
+msgstr "Land"
+
+# @ tcp
+#: admin/TaxesRates.php:55
+#: admin/TaxesRates.php:66
+#: admin/AddressEdit.php:166
+msgid "Region"
+msgstr "Bundesland"
 
 # @ tcp
 #: admin/TaxesRates.php:56
@@ -2148,9 +1729,63 @@ msgid "Validation errors. The Address has not been saved"
 msgstr "Validierungsfehler. Die Adresse wurde nicht gespeichert"
 
 # @ tcp
+#: admin/AddressEdit.php:108
+#: admin/AddressEdit.php:205
+#: admin/AddressesList.php:50
+#: admin/AddressesList.php:60
+msgid "Address"
+msgstr "Adresse"
+
+# @ tcp
 #: admin/AddressEdit.php:118
 msgid "Address name"
 msgstr "Adresse Name"
+
+# @ tcp
+#: admin/AddressEdit.php:124
+msgid "Firstname"
+msgstr "Vorname"
+
+# @ tcp
+#: admin/AddressEdit.php:130
+msgid "Lastname"
+msgstr "Nachname"
+
+# @ tcp
+#: admin/AddressEdit.php:136
+msgid "Company"
+msgstr "Firma"
+
+# @ tcp
+#: admin/AddressEdit.php:169
+#, fuzzy
+msgid "No state selected"
+msgstr "Keine Stapelverarbeitung ausgewählt"
+
+# @ tcp
+#: admin/AddressEdit.php:181
+msgid "City"
+msgstr "Ort"
+
+# @ tcp
+#: admin/AddressEdit.php:199
+msgid "Postal code"
+msgstr "PLZ"
+
+# @ tcp
+#: admin/AddressEdit.php:211
+msgid "Telephone 1"
+msgstr "Telefon 1"
+
+# @ tcp
+#: admin/AddressEdit.php:217
+msgid "Telephone 2"
+msgstr "Telefon 2"
+
+# @ tcp
+#: admin/AddressEdit.php:229
+msgid "eMail"
+msgstr "E-Mail"
 
 # @ tcp
 #: admin/AddressEdit.php:235
@@ -4119,6 +3754,69 @@ msgid "Billing options"
 msgstr "2. Zahlungsoptionen"
 
 # @ tcp
+#: checkout/TCPBillingBox.class.php:21
+msgid "The billing First name field must be completed"
+msgstr "Das Feld \"Vorname\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:23
+msgid "The billing Last name field must be completed"
+msgstr "Das Feld \"Nachname\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:25
+msgid "The billing Street field must be completed"
+msgstr "Das Feld \"Stra&szlig;e\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:27
+msgid "The billing City field must be completed"
+msgstr "Das Feld \"Ort\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:29
+msgid "The billing Region field must be completed"
+msgstr "Das Feld \"Bundesland\"  der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:34
+#: checkout/TCPBillingBox.class.php:49
+#, fuzzy
+msgid "The billing Country is not allowed"
+msgstr "Das Land für die Rechnungsstellung ist nicht als Land, in das wir liefern, zugelassen."
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:38
+msgid "The billing Postcode field must be completed"
+msgstr "Das Feld \"PLZ\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:40
+msgid "The billing eMail field must be completed"
+msgstr "Das Feld \"E-Mail\" der Rechnungsanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:42
+msgid "The billing eMail field must be a valid email"
+msgstr "Die Emailadresse der Rechnungsanschrift scheint nicht gültig zu sein."
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:109
+msgid "Select billing address:"
+msgstr "Rechnungsanschrift auswählen:"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:119
+#, fuzzy
+msgid "Billing to the address selected"
+msgstr "Rechnungsanschrift ausw&auml;hlen"
+
+# @ tcp
+#: checkout/TCPBillingBox.class.php:123
+msgid "New billing address"
+msgstr "Neue Rechnungsanschrift"
+
+# @ tcp
 #: checkout/TCPBillingBox.class.php:252
 #, fuzzy
 msgid "Tax ID number"
@@ -4131,10 +3829,26 @@ msgid "Cart"
 msgstr "7. Warenkorb"
 
 # @ tcp
+#: checkout/TCPCartBox.class.php:47
+msgid "Comments:"
+msgstr "Kommentare:"
+
+# @ tcp
 #: checkout/TCPCartBox.class.php:99
 #, fuzzy
 msgid "Discounts"
 msgstr "Discount"
+
+# @ tcp
+#: checkout/ActiveCheckout.class.php:17
+msgid "The order has been completed successfully."
+msgstr "Die Bestellung wurde erfolgreich abgeschlossen."
+
+# @ tcp
+#: checkout/ActiveCheckout.class.php:24
+#: checkout/TCPCheckoutManager.class.php:449
+msgid "Print"
+msgstr "Drucken"
 
 # @ tcp
 #: checkout/ActiveCheckout.class.php:60
@@ -4154,16 +3868,89 @@ msgid "Shipping options"
 msgstr "3. Lieferoptionen"
 
 # @ tcp
+#: checkout/TCPShippingBox.class.php:31
+msgid "The shipping First name field must be completed"
+msgstr "Das Feld \"Vorname\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:33
+msgid "The shipping Last name field must be completed"
+msgstr "Das Feld \"Nachname\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:35
+msgid "The shipping Street field must be completed"
+msgstr "Das Feld \"Stra&szlig;e\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:37
+msgid "The shipping City field must be completed"
+msgstr "Das Feld \"Ort\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:39
+msgid "The shipping Region field must be completed"
+msgstr "Das Feld \"Bundesland\"  der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:44
+#: checkout/TCPShippingBox.class.php:59
+#, fuzzy
+msgid "The shipping Country is not allowed"
+msgstr "Das Land für die Rechnungsstellung ist nicht als Land, in das wir liefern, zugelassen."
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:48
+msgid "The shipping Postcode field must be completed"
+msgstr "Das Feld \"PLZ\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:50
+msgid "The shipping eMail field must be completed"
+msgstr "Das Feld \"E-Mail\" der Lieferanschrift muss ausgefüllt werden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:52
+#, fuzzy
+msgid "The shipping eMail field must be a valid email"
+msgstr "Die Emailadresse der Rechnungsanschrift scheint nicht gültig zu sein."
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:126
+msgid "Select shipping address:"
+msgstr "Lieferanschrift auswählen:"
+
+# @ tcp
 #: checkout/TCPShippingBox.class.php:137
 #, fuzzy
 msgid "shipping to the address selected"
 msgstr "An die ausgewählte Adresse senden"
 
 # @ tcp
+#: checkout/TCPShippingBox.class.php:142
+msgid "Use billing address"
+msgstr "Rechnungsanschrift verwenden"
+
+# @ tcp
+#: checkout/TCPShippingBox.class.php:148
+msgid "New shipping address"
+msgstr "Neue Lieferanschrift"
+
+# @ tcp
 #: checkout/TCPNoticeBox.class.php:10
 #, fuzzy
 msgid "Checkout notice"
 msgstr "Rechtliche Hinweise"
+
+# @ tcp
+#: checkout/TCPNoticeBox.class.php:19
+msgid "You must accept the conditions!!"
+msgstr "Sie müssen unsere AGBs akzeptieren!"
+
+# @ tcp
+#: checkout/TCPNoticeBox.class.php:32
+msgid "Accept conditions:"
+msgstr "Ich akzeptiere die Allgemeinen Geschäftsbedingungen "
 
 # @ tcp
 #: checkout/TCPNoticeBox.class.php:37
@@ -4178,6 +3965,92 @@ msgid "Checkout method"
 msgstr "1. Anmeldung"
 
 # @ tcp
+#: checkout/TCPSigninBox.class.php:33
+msgid "Login"
+msgstr "Login"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:38
+msgid "Already registered?"
+msgstr "Bereits registriert?"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:38
+msgid "Please log in below:"
+msgstr "Bitte loggen Sie sich ein:"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:44
+msgid "Username"
+msgstr "Benutzername"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:45
+msgid "Password"
+msgstr "Passwort"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:46
+msgid "Remember Me"
+msgstr "Daten speichern"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:47
+msgid "Log In"
+msgstr "Anmelden"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:61
+msgid "Checkout as registered"
+msgstr "Angemeldet zur Kasse gehen"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:63
+msgid "Register with us for future convenience:"
+msgstr "Registrieren Sie sich bei uns für mehr Komfort:"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:65
+msgid "Fast and easy checkout"
+msgstr "Schnelle und einfache Kaufabwicklung"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:66
+msgid "Easy access to yours orders history and status"
+msgstr "Einfacher Zugriff auf Ihre Bestellungen"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:72
+msgid "Checkout as a guest"
+msgstr "Als Gast zur Kasse gehen"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:75
+msgid "Or you can make as a guest."
+msgstr "Sie können Ihre Bestellung auch aufgeben ohne ein Konto bei uns anzulegen."
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:77
+msgid "You can make as a guest."
+msgstr "Sie können Ihre Bestellung auch aufgeben ohne ein Konto bei uns anzulegen."
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:81
+msgid "If you prefer this way then press the next button"
+msgstr "Wenn Sie dies bevorzugen, dann klicken Sie einfach auf \\\"weiter\\\""
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:83
+#: checkout/TCPCheckoutManager.class.php:113
+msgid "Continue"
+msgstr "Weiter"
+
+# @ tcp
+#: checkout/TCPSigninBox.class.php:85
+msgid "User registration is required. Please, log in or register. "
+msgstr "Benutzer-Registrierung ist erforderlich. Bitte anmelden oder registrieren. "
+
+# @ tcp
 #: checkout/TCPPaymentMethodsBox.class.php:9
 #, fuzzy
 msgid "Payment methods"
@@ -4187,6 +4060,36 @@ msgstr "5. Zahlungsmethoden"
 #, fuzzy
 msgid "You must select a payment method"
 msgstr "Sie m&uuml;ssen eine Zahlungsmethode ausw&auml;hlen"
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:111
+msgid "Back"
+msgstr "Zurück"
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:429
+msgid "Not enough stock in order at check-out"
+msgstr "Nicht genügend Artikel auf Lager"
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:430
+msgid "There was an error when creating the order. Please contact with the seller."
+msgstr "Es gab einen Fehler beim Erstellen der Bestellung. Bitte nehmen Sie mit uns Kontakt auf."
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:432
+msgid "The next step helps you to pay using the payment method chosen by you."
+msgstr "Der nächste Schritt hilft Ihnen, mit der ausgwählten Zahlungsmethode zu bezahlen."
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:483
+msgid "billing address"
+msgstr "Rechnungsanschrift"
+
+# @ tcp
+#: checkout/TCPCheckoutManager.class.php:509
+msgid "shipping address"
+msgstr "Lieferanschrift"
 
 # @ tcp
 #: checkout/TCPShippingMethodsBox.class.php:7
@@ -4200,6 +4103,74 @@ msgstr "4. Versandoptionen"
 msgid "You must select a shipping method"
 msgstr "Sie m&uuml;ssen eine Zahlungsmethode ausw&auml;hlen"
 
+#, fuzzy
+#~ msgid "The billing Country is not allowed as shipping Country"
+#~ msgstr ""
+#~ "Das Land für die Rechnungsstellung ist nicht als Land, in das wir "
+#~ "liefern, zugelassen."
+
+# @ tcp
+#~ msgid ""
+#~ "You are trying to check out your order but, at this moment, there are not "
+#~ "enough stock of some products. Please review the list of products."
+#~ msgstr ""
+#~ "Zur Zeit sind leider nicht genug Artikel auf Lager. Bitte überprüfen Sie "
+#~ "die Liste der Produkte."
+# @ tcp
+#~ msgid "1. Checkout method"
+#~ msgstr "1. Anmeldung"
+# @ tcp
+#~ msgid "The billing Region name field must be completed"
+#~ msgstr "Das Feld \"Bundesland\" der Rechnungsanschrift ausgefüllt werden"
+# @ tcp
+#~ msgid "The billing Country field must be completed"
+#~ msgstr "Das Feld \"Land\" der Rechnungsanschrift ausgefüllt werden"
+# @ tcp
+#~ msgid "2. Billing options"
+#~ msgstr "2. Zahlungsoptionen"
+# @ tcp
+#~ msgid "3. Shipping options"
+#~ msgstr "3. Lieferoptionen"
+# @ tcp
+#~ msgid "Send to the selected address"
+#~ msgstr "An die ausgewählte Adresse senden"
+# @ tcp
+#~ msgid "4. Sending methods"
+#~ msgstr "4. Versandoptionen"
+# @ tcp
+#~ msgid "5. Payment methods"
+#~ msgstr "5. Zahlungsmethoden"
+# @ tcp
+#~ msgid "6. Additional services"
+#~ msgstr "6. Zusätzliche Leistungen"
+# @ tcp
+#~ msgid "7. Cart"
+#~ msgstr "7. Warenkorb"
+# @ tcp
+#~ msgid "8. Legal notice"
+#~ msgstr "8. Rechtliche Hinweise"
+# @ tcp
+#, fuzzy
+#~ msgid "8. Checkout notice"
+#~ msgstr "Rechtliche Hinweise"
+
+# @ tcp
+#~ msgid "Legal notice:"
+#~ msgstr "Rechtliche Hinweise:"
+# @ tcp
+#~ msgid ""
+#~ "When you click in the 'create order' button the order\n"
+#~ "\t\t\t\t will be created and if you have chosen an external payment "
+#~ "method the system will show a button \n"
+#~ "\t\t\t\t to go to the external web (usually your bank's payment gateway)"
+#~ msgstr ""
+#~ "Wenn Sie in der auf \"jetzt bestellen\" klicken, wird Ihre Bestellung in "
+#~ "unserem System erstellt und falls Sie einen externen "
+#~ "Zahlungsdienstleister ausgewählt haben wird ein Button angezeigt mit dem "
+#~ "Sie direkt zu Ihrem Dienstleister weitergeleitet werden."
+# @ tcp
+#~ msgid "Create order"
+#~ msgstr "jetzt bestellen"
 # @ tcp
 #~ msgid "legal notice"
 #~ msgstr "rechtliche Hinweise"
