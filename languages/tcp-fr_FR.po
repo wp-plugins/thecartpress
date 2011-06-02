@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 08:32+0100\n"
+"POT-Creation-Date: 2011-06-02 09:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -16,172 +16,170 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x:2c,1\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
-#: thecartpress/TheCartPress.class.php:255
+#: thecartpress/TheCartPress.class.php:252
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "La page du <strong>panier</strong> a été supprimée."
 
-#: thecartpress/TheCartPress.class.php:258
+#: thecartpress/TheCartPress.class.php:255
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "La page de <strong>commande</strong> a été supprimée."
 
-#: thecartpress/TheCartPress.class.php:262
-#: thecartpress/shortcodes/_Checkout.class.php:1142
+#: thecartpress/TheCartPress.class.php:259
 msgid "Notice:"
 msgstr "Remarque :"
 
-#: thecartpress/TheCartPress.class.php:264
+#: thecartpress/TheCartPress.class.php:261
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Visitez la <a href=\"%s\">page de contrôle</a> pour régler ces problèmes."
 
-#: thecartpress/TheCartPress.class.php:437
+#: thecartpress/TheCartPress.class.php:434
 msgid "Lost Password"
 msgstr "Mot de passe perdu"
 
-#: thecartpress/TheCartPress.class.php:451
+#: thecartpress/TheCartPress.class.php:448
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Réalisé par TheCartPress, plateforme e-commerce pour WordPress"
 
-#: thecartpress/TheCartPress.class.php:467
+#: thecartpress/TheCartPress.class.php:464
 msgid "Shopping"
 msgstr "Achats"
 
-#: thecartpress/TheCartPress.class.php:475
-#: thecartpress/TheCartPress.class.php:552
+#: thecartpress/TheCartPress.class.php:472
+#: thecartpress/TheCartPress.class.php:549
 msgid "Orders"
 msgstr "Commandes"
 
-#: thecartpress/TheCartPress.class.php:484
+#: thecartpress/TheCartPress.class.php:481
 msgid "Download area"
 msgstr "Zone de téléchargement"
 
-#: thecartpress/TheCartPress.class.php:526
+#: thecartpress/TheCartPress.class.php:523
 msgid "Orders Summary"
 msgstr "Résumé des commandes"
 
-#: thecartpress/TheCartPress.class.php:527
+#: thecartpress/TheCartPress.class.php:524
 msgid "TheCartPress blog"
 msgstr "Le blog de TheCartPress"
 
-#: thecartpress/TheCartPress.class.php:553
+#: thecartpress/TheCartPress.class.php:550
 msgid "Addresses"
 msgstr "Adresses"
 
-#: thecartpress/TheCartPress.class.php:554
+#: thecartpress/TheCartPress.class.php:551
 #: thecartpress/classes/OrderPage.class.php:169
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:107
-#: thecartpress/shortcodes/_Checkout.class.php:1269
 msgid "Taxes"
 msgstr "Taxes"
 
-#: thecartpress/TheCartPress.class.php:555
+#: thecartpress/TheCartPress.class.php:552
 msgid "Taxes Rates"
 msgstr "Taux de taxe"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:553
 msgid "Payment and Shipping Methods"
 msgstr "Méthodes de paiement et de livraison"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:553
 msgid "Payment and Shipping methods"
 msgstr "Méthodes de paiement et de livraison"
 
-#: thecartpress/TheCartPress.class.php:557
+#: thecartpress/TheCartPress.class.php:554
 msgid "Related Categories"
 msgstr "Catégories liées"
 
-#: thecartpress/TheCartPress.class.php:560
+#: thecartpress/TheCartPress.class.php:557
 msgid "Downloadable Products"
 msgstr "Produits téléchargeables"
 
-#: thecartpress/TheCartPress.class.php:562
+#: thecartpress/TheCartPress.class.php:559
 msgid "Update Prices"
 msgstr "Mettre à jour les prix"
 
-#: thecartpress/TheCartPress.class.php:563
+#: thecartpress/TheCartPress.class.php:560
 msgid "Update Stock"
 msgstr "Mettre à jour le stock"
 
-#: thecartpress/TheCartPress.class.php:564
+#: thecartpress/TheCartPress.class.php:561
 msgid "Shortcodes Generator"
 msgstr "Générateur de shortcodes"
 
-#: thecartpress/TheCartPress.class.php:564
+#: thecartpress/TheCartPress.class.php:561
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
-#: thecartpress/TheCartPress.class.php:565
+#: thecartpress/TheCartPress.class.php:562
 msgid "Admin Bar Config"
 msgstr "Configuration de la barre admin"
 
-#: thecartpress/TheCartPress.class.php:567
+#: thecartpress/TheCartPress.class.php:564
 msgid "list of Assigned products"
 msgstr "liste de produits assignés"
 
-#: thecartpress/TheCartPress.class.php:568
+#: thecartpress/TheCartPress.class.php:565
 #: thecartpress/classes/OrderPanel.class.php:35
 #: thecartpress/classes/OrderPanel.class.php:48
 msgid "Order"
 msgstr "Commande"
 
-#: thecartpress/TheCartPress.class.php:569
+#: thecartpress/TheCartPress.class.php:566
 msgid "Plugin editor"
 msgstr "Editeur du plugin"
 
-#: thecartpress/TheCartPress.class.php:570
+#: thecartpress/TheCartPress.class.php:567
 msgid "Address editor"
 msgstr "Editeur d’adresse"
 
-#: thecartpress/TheCartPress.class.php:571
+#: thecartpress/TheCartPress.class.php:568
 msgid "Upload files"
 msgstr "Télécharger les fichiers"
 
-#: thecartpress/TheCartPress.class.php:572
+#: thecartpress/TheCartPress.class.php:569
 msgid "Downloadable products"
 msgstr "Produits téléchargeables"
 
-#: thecartpress/TheCartPress.class.php:573
+#: thecartpress/TheCartPress.class.php:570
 msgid "TheCartPress checking"
 msgstr "Contrôle de TheCartPress"
 
-#: thecartpress/TheCartPress.class.php:701
+#: thecartpress/TheCartPress.class.php:698
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress requiert la version 3.0 WordPress ou plus récente."
 
-#: thecartpress/TheCartPress.class.php:785
+#: thecartpress/TheCartPress.class.php:782
 msgid "Legal notice"
 msgstr "Avertissement"
 
-#: thecartpress/TheCartPress.class.php:810
+#: thecartpress/TheCartPress.class.php:807
 msgid "Customer"
 msgstr "Client"
 
-#: thecartpress/TheCartPress.class.php:839
+#: thecartpress/TheCartPress.class.php:836
 msgid "Merchant"
 msgstr "Vendeur"
 
-#: thecartpress/TheCartPress.class.php:873
+#: thecartpress/TheCartPress.class.php:870
 msgid "Shopping cart"
 msgstr "Panier"
 
-#: thecartpress/TheCartPress.class.php:886
+#: thecartpress/TheCartPress.class.php:883
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:118
 msgid "Checkout"
 msgstr "Commande"
 
-#: thecartpress/TheCartPress.class.php:899
+#: thecartpress/TheCartPress.class.php:896
 msgid "Category One"
 msgstr "Catégorie une"
 
-#: thecartpress/TheCartPress.class.php:900
+#: thecartpress/TheCartPress.class.php:897
 msgid "Category One for Product One"
 msgstr "Catégorie une pour produit un"
 
-#: thecartpress/TheCartPress.class.php:906
+#: thecartpress/TheCartPress.class.php:903
 msgid "Product One"
 msgstr "Produit un"
 
-#: thecartpress/TheCartPress.class.php:1163
+#: thecartpress/TheCartPress.class.php:1160
 msgid "show/hide"
 msgstr "afficher/masquer"
 
@@ -196,8 +194,6 @@ msgstr "Téléphones"
 
 #: thecartpress/classes/OrderPage.class.php:48
 #: thecartpress/classes/OrderPage.class.php:62
-#: thecartpress/shortcodes/_Checkout.class.php:742
-#: thecartpress/shortcodes/_Checkout.class.php:975
 msgid "Fax"
 msgstr "Fax"
 
@@ -208,7 +204,8 @@ msgstr "Adresse de facturation"
 #: thecartpress/classes/OrderPage.class.php:70
 #: thecartpress/classes/BuyButton.class.php:143
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:36
-#: thecartpress/shortcodes/_Checkout.class.php:1174
+#: thecartpress/admin/PriceUpdate.php:112
+#: thecartpress/admin/PriceUpdate.php:120
 msgid "Name"
 msgstr "Nom"
 
@@ -218,7 +215,6 @@ msgstr "Nom"
 #: thecartpress/classes/OrderPanel.class.php:36
 #: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:101
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:37
-#: thecartpress/shortcodes/_Checkout.class.php:1175
 msgid "Price"
 msgstr "Prix"
 
@@ -226,39 +222,30 @@ msgstr "Prix"
 #: thecartpress/classes/BuyButton.class.php:65
 #: thecartpress/classes/BuyButton.class.php:146
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:38
-#: thecartpress/shortcodes/_Checkout.class.php:1176
 msgid "Units"
 msgstr "Unités"
 
 #: thecartpress/classes/OrderPage.class.php:73
 #: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:118
-#: thecartpress/shortcodes/_Checkout.class.php:1178
 msgid "Weight"
 msgstr "Poids"
 
 #: thecartpress/classes/OrderPage.class.php:74
 #: thecartpress/classes/OrderPage.class.php:180
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:112
-#: thecartpress/shortcodes/_Checkout.class.php:1179
-#: thecartpress/shortcodes/_Checkout.class.php:1281
 msgid "Total"
 msgstr "Total"
 
 #: thecartpress/classes/OrderPage.class.php:118
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:101
-#: thecartpress/shortcodes/_Checkout.class.php:1216
 msgid "Discount"
 msgstr "Rabais"
 
 #: thecartpress/classes/OrderPage.class.php:130
-#: thecartpress/shortcodes/_Checkout.class.php:251
-#: thecartpress/shortcodes/_Checkout.class.php:1229
 msgid "Shipping cost"
 msgstr "Prix de livraison"
 
 #: thecartpress/classes/OrderPage.class.php:140
-#: thecartpress/shortcodes/_Checkout.class.php:269
-#: thecartpress/shortcodes/_Checkout.class.php:1240
 msgid "Payment cost"
 msgstr "Prix à payer"
 
@@ -484,7 +471,6 @@ msgid "Mal formed shortcode: %s"
 msgstr "Shortcode mal saisi : %s"
 
 #: thecartpress/shortcodes/ShoppingCartPage.class.php:26
-#: thecartpress/shortcodes/_Checkout.class.php:397
 msgid "The cart is empty"
 msgstr "Le panier est vide"
 
@@ -524,368 +510,6 @@ msgstr "Page d’accueil"
 msgid "Delete shopping cart"
 msgstr "Vider le panier"
 
-#: thecartpress/shortcodes/_Checkout.class.php:35
-msgid "The order has been completed successfully."
-msgstr "La commande nous est bien parvenue."
-
-#: thecartpress/shortcodes/_Checkout.class.php:42
-#: thecartpress/shortcodes/_Checkout.class.php:390
-msgid "Print"
-msgstr "Imprimer"
-
-#: thecartpress/shortcodes/_Checkout.class.php:68
-#: thecartpress/shortcodes/_Checkout.class.php:495
-msgid "The billing First name field must be completed"
-msgstr "Le prénom de facturation doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:70
-#: thecartpress/shortcodes/_Checkout.class.php:496
-msgid "The billing Last name field must be completed"
-msgstr "Le nom de facturation doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:72
-#: thecartpress/shortcodes/_Checkout.class.php:497
-msgid "The billing Street field must be completed"
-msgstr "La rue de facturation doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:74
-#: thecartpress/shortcodes/_Checkout.class.php:498
-msgid "The billing City field must be completed"
-msgstr "La ville de facturation doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:76
-msgid "The billing Region field must be completed"
-msgstr "La région de facturation doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:79
-#: thecartpress/shortcodes/_Checkout.class.php:93
-msgid "The billing Country is not allowed"
-msgstr "Ce pays de facturation n'est pas autorisé"
-
-#: thecartpress/shortcodes/_Checkout.class.php:83
-#: thecartpress/shortcodes/_Checkout.class.php:500
-msgid "The billing Postcode field must be completed"
-msgstr "Le code postal de facturation doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:85
-#: thecartpress/shortcodes/_Checkout.class.php:502
-msgid "The billing eMail field must be completed"
-msgstr "L’email de facturation doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:87
-#: thecartpress/shortcodes/_Checkout.class.php:503
-msgid "The billing eMail field must be a valid email"
-msgstr "L’email de facturation doit être un email valide"
-
-#: thecartpress/shortcodes/_Checkout.class.php:102
-msgid "The shipping First name field must be completed"
-msgstr "Le prénom de livraison doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:104
-msgid "The shipping Last name field must be completed"
-msgstr "Le nom de livraison doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:106
-msgid "The shipping Street field must be completed"
-msgstr "La rue de livraison doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:108
-msgid "The shipping City field must be completed"
-msgstr "La ville de livraison doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:110
-msgid "The shipping Region field must be completed"
-msgstr "La région de livraison doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:113
-#: thecartpress/shortcodes/_Checkout.class.php:134
-msgid "The shipping Country is not allowed"
-msgstr "Ce pays de livraison n'est pas autorisé"
-
-#: thecartpress/shortcodes/_Checkout.class.php:117
-msgid "The shipping Postcode field must be completed"
-msgstr "Le code postal de livraison doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:119
-msgid "The shipping eMail field must be completed"
-msgstr "L’email de livraison doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:121
-msgid "The shipping eMail field must be a valid email"
-msgstr "L’email de livraison doit être un email valide"
-
-#: thecartpress/shortcodes/_Checkout.class.php:126
-msgid "The billing Country is not allowed as shipping Country"
-msgstr "Ce pays de facturation n’est pas autorisé en tant que pays de livraison"
-
-#: thecartpress/shortcodes/_Checkout.class.php:368
-msgid "Not enough stock in order at check-out"
-msgstr "Pas assez de stock lors de la commande"
-
-#: thecartpress/shortcodes/_Checkout.class.php:369
-msgid "There was an error when creating the order. Please contact with the seller."
-msgstr "Il y a eu une erreur lors de la commande. Veuillez contacter le vendeur."
-
-#: thecartpress/shortcodes/_Checkout.class.php:371
-msgid "The next step helps you to pay using the payment method chosen by you."
-msgstr "La prochaine étape vous permettra d’effectuer le paiement selon la méthode choisie."
-
-#: thecartpress/shortcodes/_Checkout.class.php:402
-msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
-msgstr "Vous essayez de passer commande, mais en ce moment, certains produits ne sont plus en stock. Veuillez revoir la liste des produits."
-
-#: thecartpress/shortcodes/_Checkout.class.php:421
-msgid "1. Checkout method"
-msgstr "1. Méthode de commande"
-
-#: thecartpress/shortcodes/_Checkout.class.php:430
-msgid "Login"
-msgstr "Login"
-
-#: thecartpress/shortcodes/_Checkout.class.php:434
-msgid "Already registered?"
-msgstr "Déjà enregistré ?"
-
-#: thecartpress/shortcodes/_Checkout.class.php:435
-msgid "Please log in below:"
-msgstr "Veuillez vous loguer ci-dessous :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:441
-msgid "Username"
-msgstr "Nom d’utilisateur"
-
-#: thecartpress/shortcodes/_Checkout.class.php:442
-msgid "Password"
-msgstr "Mot de passe"
-
-#: thecartpress/shortcodes/_Checkout.class.php:443
-msgid "Remember Me"
-msgstr "Rester connecté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:444
-msgid "Log In"
-msgstr "Login"
-
-#: thecartpress/shortcodes/_Checkout.class.php:458
-msgid "Checkout as registered"
-msgstr "Passer commande en tant que client enregistré"
-
-#: thecartpress/shortcodes/_Checkout.class.php:460
-msgid "Register with us for future convenience:"
-msgstr "Enregistrez-vous pour un accès facilité à l’avenir :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:462
-msgid "Fast and easy checkout"
-msgstr "Commande rapide et facile"
-
-#: thecartpress/shortcodes/_Checkout.class.php:463
-msgid "Easy access to yours orders history and status"
-msgstr "Accès facile à l’historique ainsi qu’au statut de vos commandes"
-
-#: thecartpress/shortcodes/_Checkout.class.php:469
-msgid "Checkout as a guest"
-msgstr "Passer commande en tant qu’invité"
-
-#: thecartpress/shortcodes/_Checkout.class.php:472
-msgid "Or you can make as a guest."
-msgstr "Ou faites-le en tant qu’invité"
-
-#: thecartpress/shortcodes/_Checkout.class.php:474
-msgid "You can make as a guest."
-msgstr "Vous pouvez le faire en tant qu’invité"
-
-#: thecartpress/shortcodes/_Checkout.class.php:478
-msgid "If you prefer this way then press the next button"
-msgstr "Si vous préférez cette option, cliquez sur le bouton suivant"
-
-#: thecartpress/shortcodes/_Checkout.class.php:480
-#: thecartpress/shortcodes/_Checkout.class.php:757
-#: thecartpress/shortcodes/_Checkout.class.php:987
-#: thecartpress/shortcodes/_Checkout.class.php:1022
-#: thecartpress/shortcodes/_Checkout.class.php:1070
-#: thecartpress/shortcodes/_Checkout.class.php:1090
-#: thecartpress/shortcodes/_Checkout.class.php:1120
-msgid "Continue"
-msgstr "Continuer"
-
-#: thecartpress/shortcodes/_Checkout.class.php:482
-msgid "User registration is required. Please, log in or register. "
-msgstr "L’utilisateur doit être enregistré. Loguez ou enregistrez-vous svp."
-
-#: thecartpress/shortcodes/_Checkout.class.php:499
-msgid "The billing Region name field must be completed"
-msgstr "La région de facturation doit être ajoutée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:501
-msgid "The billing Country field must be completed"
-msgstr "Le pays de facturation doit être ajouté"
-
-#: thecartpress/shortcodes/_Checkout.class.php:548
-msgid "2. Billing options"
-msgstr "2. Options de facturation"
-
-#: thecartpress/shortcodes/_Checkout.class.php:566
-msgid "Select billing address:"
-msgstr "Sélectionnez l’adresse de facturation :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:580
-msgid "Billing to the address selected"
-msgstr "Facturation à l’adresse sélectionnée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:588
-msgid "New billing address"
-msgstr "Nouvelle adresse de facturation"
-
-#: thecartpress/shortcodes/_Checkout.class.php:667
-#: thecartpress/shortcodes/_Checkout.class.php:900
-msgid "Firstname"
-msgstr "Prénom"
-
-#: thecartpress/shortcodes/_Checkout.class.php:671
-#: thecartpress/shortcodes/_Checkout.class.php:904
-msgid "Lastname"
-msgstr "Nom"
-
-#: thecartpress/shortcodes/_Checkout.class.php:675
-#: thecartpress/shortcodes/_Checkout.class.php:908
-msgid "Company"
-msgstr "Société"
-
-#: thecartpress/shortcodes/_Checkout.class.php:679
-#: thecartpress/shortcodes/_Checkout.class.php:912
-msgid "Country"
-msgstr "Pays"
-
-#: thecartpress/shortcodes/_Checkout.class.php:696
-#: thecartpress/shortcodes/_Checkout.class.php:929
-msgid "Region"
-msgstr "Région"
-
-#: thecartpress/shortcodes/_Checkout.class.php:699
-#: thecartpress/shortcodes/_Checkout.class.php:933
-msgid "No state selected"
-msgstr "Aucun état sélectionné"
-
-#: thecartpress/shortcodes/_Checkout.class.php:710
-#: thecartpress/shortcodes/_Checkout.class.php:944
-msgid "City"
-msgstr "Ville"
-
-#: thecartpress/shortcodes/_Checkout.class.php:726
-#: thecartpress/shortcodes/_Checkout.class.php:960
-msgid "Address"
-msgstr "Adresse"
-
-#: thecartpress/shortcodes/_Checkout.class.php:730
-#: thecartpress/shortcodes/_Checkout.class.php:964
-msgid "Postal code"
-msgstr "Code postal"
-
-#: thecartpress/shortcodes/_Checkout.class.php:734
-#: thecartpress/shortcodes/_Checkout.class.php:969
-msgid "Telephone 1"
-msgstr "Téléphone 1"
-
-#: thecartpress/shortcodes/_Checkout.class.php:738
-#: thecartpress/shortcodes/_Checkout.class.php:972
-msgid "Telephone 2"
-msgstr "Téléphone 2"
-
-#: thecartpress/shortcodes/_Checkout.class.php:746
-#: thecartpress/shortcodes/_Checkout.class.php:978
-msgid "eMail"
-msgstr "Email"
-
-#: thecartpress/shortcodes/_Checkout.class.php:754
-#: thecartpress/shortcodes/_Checkout.class.php:985
-#: thecartpress/shortcodes/_Checkout.class.php:1020
-#: thecartpress/shortcodes/_Checkout.class.php:1062
-#: thecartpress/shortcodes/_Checkout.class.php:1088
-#: thecartpress/shortcodes/_Checkout.class.php:1114
-#: thecartpress/shortcodes/_Checkout.class.php:1117
-#: thecartpress/shortcodes/_Checkout.class.php:1157
-msgid "Back"
-msgstr "Retour"
-
-#: thecartpress/shortcodes/_Checkout.class.php:766
-msgid "3. Shipping options"
-msgstr "3. Options de livraison"
-
-#: thecartpress/shortcodes/_Checkout.class.php:784
-msgid "Select shipping address:"
-msgstr "Sélectionnez l’adresse de livraison :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:800
-msgid "Send to the selected address"
-msgstr "Envoyer à l’adresse sélectionnée"
-
-#: thecartpress/shortcodes/_Checkout.class.php:810
-msgid "Use billing address"
-msgstr "Utiliser l’adresse de facturation"
-
-#: thecartpress/shortcodes/_Checkout.class.php:820
-msgid "New shipping address"
-msgstr "Nouvelle adresse de livraison"
-
-#: thecartpress/shortcodes/_Checkout.class.php:996
-msgid "4. Sending methods"
-msgstr "4. Méthodes d’envoi"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1032
-msgid "5. Payment methods"
-msgstr "5. Méthodes de paiement"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1080
-msgid "6. Additional services"
-msgstr "6. Autres services"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1102
-msgid "7. Cart"
-msgstr "7. Panier"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1110
-msgid "Comments:"
-msgstr "Commentaires :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1130
-msgid "8. Legal notice"
-msgstr "8. Avertissement"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1131
-msgid "8. Checkout notice"
-msgstr "8. Remarques"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1141
-msgid "Legal notice:"
-msgstr "Avertissement :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1145
-msgid "Accept conditions:"
-msgstr "Accepter les conditions :"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1148
-msgid "You must accept the conditions!!"
-msgstr "Vous devez accepter les conditions !"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1152
-msgid ""
-"When you click in the 'create order' button the order\n"
-"\t\t\t\t will be created and if you have chosen an external payment method the system will show a button \n"
-"\t\t\t\t to go to the external web (usually your bank's payment gateway)"
-msgstr "Quand vous cliquerez sur « Créer la commande », le système affichera un bouton qui vous permettra d’accéder à la méthode de paiement externe choisie."
-
-#: thecartpress/shortcodes/_Checkout.class.php:1159
-msgid "Create order"
-msgstr "Continuer"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1343
-msgid "billing address"
-msgstr "Adresse de facturation"
-
-#: thecartpress/shortcodes/_Checkout.class.php:1371
-msgid "shipping address"
-msgstr "Adresse de livraison"
-
 #: thecartpress/admin/PriceUpdate.php:40
 msgid "This product cannot be modified by the user "
 msgstr "Ce produit ne peut être modifié par l’utilisateur"
@@ -899,12 +523,10 @@ msgid "Prices Update"
 msgstr "Mise à jour des prix"
 
 #: thecartpress/admin/PriceUpdate.php:65
-#: thecartpress/admin/StockUpdate.php:56
 msgid "Category"
 msgstr "Catégorie"
 
 #: thecartpress/admin/PriceUpdate.php:68
-#: thecartpress/admin/StockUpdate.php:59
 msgid "no one selected"
 msgstr "Aucune sélection"
 
@@ -923,12 +545,10 @@ msgid "fix value"
 msgstr "valeur fixe"
 
 #: thecartpress/admin/PriceUpdate.php:96
-#: thecartpress/admin/StockUpdate.php:77
 msgid "Search"
 msgstr "Recherche"
 
 #: thecartpress/admin/PriceUpdate.php:108
-#: thecartpress/admin/StockUpdate.php:88
 msgid "Updated products"
 msgstr "Produits mis à jour"
 
@@ -938,7 +558,6 @@ msgid "Actual price"
 msgstr "Prix actuel"
 
 #: thecartpress/admin/PriceUpdate.php:149
-#: thecartpress/admin/StockUpdate.php:140
 msgid "Update"
 msgstr "Mettre à jour"
 
@@ -1028,66 +647,98 @@ msgid "Apply the plugin only to selected ones"
 msgstr "Appliquer le plugin seulement aux pays sélectionnés"
 
 #: thecartpress/admin/PluginEdit.php:165
+#: thecartpress/admin/TCP_Settings.class.php:305
+#: thecartpress/admin/TCP_Settings.class.php:331
 msgid "EU"
 msgstr "UE"
 
 #: thecartpress/admin/PluginEdit.php:165
+#: thecartpress/admin/TCP_Settings.class.php:305
+#: thecartpress/admin/TCP_Settings.class.php:331
 msgid "To select countries from the European Union"
 msgstr "Pour sélectionner les pays de l’UE (Union Européenne)"
 
 #: thecartpress/admin/PluginEdit.php:166
+#: thecartpress/admin/TCP_Settings.class.php:306
+#: thecartpress/admin/TCP_Settings.class.php:332
 msgid "NAFTA"
 msgstr "ALENA"
 
 #: thecartpress/admin/PluginEdit.php:166
+#: thecartpress/admin/TCP_Settings.class.php:306
+#: thecartpress/admin/TCP_Settings.class.php:332
 msgid "To select countries from the NAFTA"
 msgstr "Pour sélectionner les pays de l’ALENA (Accord de libre-échange nord-américain)"
 
 #: thecartpress/admin/PluginEdit.php:167
+#: thecartpress/admin/TCP_Settings.class.php:307
+#: thecartpress/admin/TCP_Settings.class.php:333
 msgid "CARICOM"
 msgstr "CARICOM"
 
 #: thecartpress/admin/PluginEdit.php:167
+#: thecartpress/admin/TCP_Settings.class.php:307
+#: thecartpress/admin/TCP_Settings.class.php:333
 msgid "To select countries from CARICOM"
 msgstr "Pour sélectionner les pays de la CARICOM (Marché commun des Caraïbes)"
 
 #: thecartpress/admin/PluginEdit.php:168
+#: thecartpress/admin/TCP_Settings.class.php:308
+#: thecartpress/admin/TCP_Settings.class.php:334
 msgid "MERCASUR"
 msgstr "MARCOSUD"
 
 #: thecartpress/admin/PluginEdit.php:168
+#: thecartpress/admin/TCP_Settings.class.php:308
+#: thecartpress/admin/TCP_Settings.class.php:334
 msgid "To select countries from MERCASUR"
 msgstr "Pour sélectionner les pays du MARCOSUD (Marché commun du Sud)"
 
 #: thecartpress/admin/PluginEdit.php:169
+#: thecartpress/admin/TCP_Settings.class.php:309
+#: thecartpress/admin/TCP_Settings.class.php:335
 msgid "CAN"
 msgstr "CAN"
 
 #: thecartpress/admin/PluginEdit.php:169
+#: thecartpress/admin/TCP_Settings.class.php:309
+#: thecartpress/admin/TCP_Settings.class.php:335
 msgid "To select countries from Andean Comunity"
 msgstr "Pour sélectionner les pays de la CAN (Communauté Andine des Nations)"
 
 #: thecartpress/admin/PluginEdit.php:170
+#: thecartpress/admin/TCP_Settings.class.php:310
+#: thecartpress/admin/TCP_Settings.class.php:336
 msgid "AU"
 msgstr "UA"
 
 #: thecartpress/admin/PluginEdit.php:170
+#: thecartpress/admin/TCP_Settings.class.php:310
+#: thecartpress/admin/TCP_Settings.class.php:336
 msgid "To select countries from African Union"
 msgstr "Pour sélectionner les pays de l’UA (Union Africaine)"
 
 #: thecartpress/admin/PluginEdit.php:171
+#: thecartpress/admin/TCP_Settings.class.php:311
+#: thecartpress/admin/TCP_Settings.class.php:337
 msgid "APEC"
 msgstr "CEAP"
 
 #: thecartpress/admin/PluginEdit.php:171
+#: thecartpress/admin/TCP_Settings.class.php:311
+#: thecartpress/admin/TCP_Settings.class.php:337
 msgid "To select countries from Asia-Pacific Economic Cooperation"
 msgstr "Pour sélectionner les pays de la CEAP (Coopération économique des pays d'Asie-Pacifique)"
 
 #: thecartpress/admin/PluginEdit.php:172
+#: thecartpress/admin/TCP_Settings.class.php:312
+#: thecartpress/admin/TCP_Settings.class.php:338
 msgid "ASEAN"
 msgstr "ANSEA"
 
 #: thecartpress/admin/PluginEdit.php:172
+#: thecartpress/admin/TCP_Settings.class.php:312
+#: thecartpress/admin/TCP_Settings.class.php:338
 msgid "To select countries from Association of Southeast Asian Nations"
 msgstr "Pour sélectionner les pays de l’ANSEA (Association des nations du Sud-Est asiatique)"
 
@@ -1192,6 +843,7 @@ msgid "No, I don't"
 msgstr "Non"
 
 #: thecartpress/admin/TCP_LoopsSettings.class.php:41
+#: thecartpress/admin/TCP_Settings.class.php:41
 msgid "Main settings"
 msgstr "Configuration générale"
 
@@ -1264,6 +916,7 @@ msgid "TCP Loop Settings"
 msgstr "Configuration boucle TCP"
 
 #: thecartpress/admin/TCP_LoopsSettings.class.php:70
+#: thecartpress/admin/TCP_Settings.class.php:128
 msgid "Save Changes"
 msgstr "Enregistrer les modifications"
 
@@ -1274,6 +927,19 @@ msgstr "Taux de taxe ajouté"
 #: thecartpress/admin/TaxesRates.php:41
 msgid "Tax rate deleted"
 msgstr "Taux de taxe supprimé"
+
+#: thecartpress/admin/TaxesRates.php:54
+#: thecartpress/admin/TaxesRates.php:65
+#: thecartpress/admin/AddressEdit.php:143
+#: thecartpress/admin/TCP_Settings.class.php:56
+msgid "Country"
+msgstr "Pays"
+
+#: thecartpress/admin/TaxesRates.php:55
+#: thecartpress/admin/TaxesRates.php:66
+#: thecartpress/admin/AddressEdit.php:166
+msgid "Region"
+msgstr "Région"
 
 #: thecartpress/admin/TaxesRates.php:56
 #: thecartpress/admin/TaxesRates.php:67
@@ -1741,9 +1407,52 @@ msgstr "Adresse enregistrée"
 msgid "Validation errors. The Address has not been saved"
 msgstr "Erreur de validation. L’adresse n’a pas été enregistrée."
 
+#: thecartpress/admin/AddressEdit.php:108
+#: thecartpress/admin/AddressEdit.php:205
+#: thecartpress/admin/AddressesList.php:50
+#: thecartpress/admin/AddressesList.php:60
+msgid "Address"
+msgstr "Adresse"
+
 #: thecartpress/admin/AddressEdit.php:118
 msgid "Address name"
 msgstr "Adresse"
+
+#: thecartpress/admin/AddressEdit.php:124
+msgid "Firstname"
+msgstr "Prénom"
+
+#: thecartpress/admin/AddressEdit.php:130
+msgid "Lastname"
+msgstr "Nom"
+
+#: thecartpress/admin/AddressEdit.php:136
+msgid "Company"
+msgstr "Société"
+
+#: thecartpress/admin/AddressEdit.php:169
+msgid "No state selected"
+msgstr "Aucun état sélectionné"
+
+#: thecartpress/admin/AddressEdit.php:181
+msgid "City"
+msgstr "Ville"
+
+#: thecartpress/admin/AddressEdit.php:199
+msgid "Postal code"
+msgstr "Code postal"
+
+#: thecartpress/admin/AddressEdit.php:211
+msgid "Telephone 1"
+msgstr "Téléphone 1"
+
+#: thecartpress/admin/AddressEdit.php:217
+msgid "Telephone 2"
+msgstr "Téléphone 2"
+
+#: thecartpress/admin/AddressEdit.php:229
+msgid "eMail"
+msgstr "Email"
 
 #: thecartpress/admin/AddressEdit.php:235
 msgid "Default billing"
@@ -3323,6 +3032,55 @@ msgstr "Tag archives : %s"
 msgid "Billing options"
 msgstr "Options de facturation"
 
+#: thecartpress/checkout/TCPBillingBox.class.php:21
+msgid "The billing First name field must be completed"
+msgstr "Le prénom de facturation doit être ajouté"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:23
+msgid "The billing Last name field must be completed"
+msgstr "Le nom de facturation doit être ajouté"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:25
+msgid "The billing Street field must be completed"
+msgstr "La rue de facturation doit être ajoutée"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:27
+msgid "The billing City field must be completed"
+msgstr "La ville de facturation doit être ajoutée"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:29
+msgid "The billing Region field must be completed"
+msgstr "La région de facturation doit être ajoutée"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:34
+#: thecartpress/checkout/TCPBillingBox.class.php:49
+msgid "The billing Country is not allowed"
+msgstr "Ce pays de facturation n'est pas autorisé"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:38
+msgid "The billing Postcode field must be completed"
+msgstr "Le code postal de facturation doit être ajouté"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:40
+msgid "The billing eMail field must be completed"
+msgstr "L’email de facturation doit être ajouté"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:42
+msgid "The billing eMail field must be a valid email"
+msgstr "L’email de facturation doit être un email valide"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:109
+msgid "Select billing address:"
+msgstr "Sélectionnez l’adresse de facturation :"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:119
+msgid "Billing to the address selected"
+msgstr "Facturation à l’adresse sélectionnée"
+
+#: thecartpress/checkout/TCPBillingBox.class.php:123
+msgid "New billing address"
+msgstr "Nouvelle adresse de facturation"
+
 #: thecartpress/checkout/TCPBillingBox.class.php:252
 msgid "Tax ID number"
 msgstr "Numéro ID taxe"
@@ -3331,9 +3089,22 @@ msgstr "Numéro ID taxe"
 msgid "Cart"
 msgstr "Panier"
 
+#: thecartpress/checkout/TCPCartBox.class.php:47
+msgid "Comments:"
+msgstr "Commentaires :"
+
 #: thecartpress/checkout/TCPCartBox.class.php:99
 msgid "Discounts"
 msgstr "Rabais"
+
+#: thecartpress/checkout/ActiveCheckout.class.php:17
+msgid "The order has been completed successfully."
+msgstr "La commande nous est bien parvenue."
+
+#: thecartpress/checkout/ActiveCheckout.class.php:24
+#: thecartpress/checkout/TCPCheckoutManager.class.php:449
+msgid "Print"
+msgstr "Imprimer"
 
 #: thecartpress/checkout/ActiveCheckout.class.php:60
 #, php-format
@@ -3348,13 +3119,70 @@ msgstr "Erreur lors de la transaction."
 msgid "Shipping options"
 msgstr "Options de livraison"
 
+#: thecartpress/checkout/TCPShippingBox.class.php:31
+msgid "The shipping First name field must be completed"
+msgstr "Le prénom de livraison doit être ajouté"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:33
+msgid "The shipping Last name field must be completed"
+msgstr "Le nom de livraison doit être ajouté"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:35
+msgid "The shipping Street field must be completed"
+msgstr "La rue de livraison doit être ajoutée"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:37
+msgid "The shipping City field must be completed"
+msgstr "La ville de livraison doit être ajoutée"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:39
+msgid "The shipping Region field must be completed"
+msgstr "La région de livraison doit être ajoutée"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:44
+#: thecartpress/checkout/TCPShippingBox.class.php:59
+msgid "The shipping Country is not allowed"
+msgstr "Ce pays de livraison n'est pas autorisé"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:48
+msgid "The shipping Postcode field must be completed"
+msgstr "Le code postal de livraison doit être ajouté"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:50
+msgid "The shipping eMail field must be completed"
+msgstr "L’email de livraison doit être ajouté"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:52
+msgid "The shipping eMail field must be a valid email"
+msgstr "L’email de livraison doit être un email valide"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:126
+msgid "Select shipping address:"
+msgstr "Sélectionnez l’adresse de livraison :"
+
 #: thecartpress/checkout/TCPShippingBox.class.php:137
 msgid "shipping to the address selected"
 msgstr "livraison à l'adresse sélectionnée"
 
+#: thecartpress/checkout/TCPShippingBox.class.php:142
+msgid "Use billing address"
+msgstr "Utiliser l’adresse de facturation"
+
+#: thecartpress/checkout/TCPShippingBox.class.php:148
+msgid "New shipping address"
+msgstr "Nouvelle adresse de livraison"
+
 #: thecartpress/checkout/TCPNoticeBox.class.php:10
 msgid "Checkout notice"
 msgstr "Remarques"
+
+#: thecartpress/checkout/TCPNoticeBox.class.php:19
+msgid "You must accept the conditions!!"
+msgstr "Vous devez accepter les conditions !"
+
+#: thecartpress/checkout/TCPNoticeBox.class.php:32
+msgid "Accept conditions:"
+msgstr "Accepter les conditions :"
 
 #: thecartpress/checkout/TCPNoticeBox.class.php:37
 #, fuzzy
@@ -3365,6 +3193,75 @@ msgstr "Quand vous cliquerez sur « Créer la commande », le système affichera
 msgid "Checkout method"
 msgstr "Méthode de commande"
 
+#: thecartpress/checkout/TCPSigninBox.class.php:33
+msgid "Login"
+msgstr "Login"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:38
+msgid "Already registered?"
+msgstr "Déjà enregistré ?"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:38
+msgid "Please log in below:"
+msgstr "Veuillez vous loguer ci-dessous :"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:44
+msgid "Username"
+msgstr "Nom d’utilisateur"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:45
+msgid "Password"
+msgstr "Mot de passe"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:46
+msgid "Remember Me"
+msgstr "Rester connecté"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:47
+msgid "Log In"
+msgstr "Login"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:61
+msgid "Checkout as registered"
+msgstr "Passer commande en tant que client enregistré"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:63
+msgid "Register with us for future convenience:"
+msgstr "Enregistrez-vous pour un accès facilité à l’avenir :"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:65
+msgid "Fast and easy checkout"
+msgstr "Commande rapide et facile"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:66
+msgid "Easy access to yours orders history and status"
+msgstr "Accès facile à l’historique ainsi qu’au statut de vos commandes"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:72
+msgid "Checkout as a guest"
+msgstr "Passer commande en tant qu’invité"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:75
+msgid "Or you can make as a guest."
+msgstr "Ou faites-le en tant qu’invité"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:77
+msgid "You can make as a guest."
+msgstr "Vous pouvez le faire en tant qu’invité"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:81
+msgid "If you prefer this way then press the next button"
+msgstr "Si vous préférez cette option, cliquez sur le bouton suivant"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:83
+#: thecartpress/checkout/TCPCheckoutManager.class.php:113
+msgid "Continue"
+msgstr "Continuer"
+
+#: thecartpress/checkout/TCPSigninBox.class.php:85
+msgid "User registration is required. Please, log in or register. "
+msgstr "L’utilisateur doit être enregistré. Loguez ou enregistrez-vous svp."
+
 #: thecartpress/checkout/TCPPaymentMethodsBox.class.php:9
 msgid "Payment methods"
 msgstr "Méthodes de paiement"
@@ -3372,6 +3269,30 @@ msgstr "Méthodes de paiement"
 #: thecartpress/checkout/TCPPaymentMethodsBox.class.php:18
 msgid "You must select a payment method"
 msgstr "Vous devez sélectionner une méthode de paiement"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:111
+msgid "Back"
+msgstr "Retour"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:429
+msgid "Not enough stock in order at check-out"
+msgstr "Pas assez de stock lors de la commande"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:430
+msgid "There was an error when creating the order. Please contact with the seller."
+msgstr "Il y a eu une erreur lors de la commande. Veuillez contacter le vendeur."
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:432
+msgid "The next step helps you to pay using the payment method chosen by you."
+msgstr "La prochaine étape vous permettra d’effectuer le paiement selon la méthode choisie."
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:483
+msgid "billing address"
+msgstr "Adresse de facturation"
+
+#: thecartpress/checkout/TCPCheckoutManager.class.php:509
+msgid "shipping address"
+msgstr "Adresse de livraison"
 
 #: thecartpress/checkout/TCPShippingMethodsBox.class.php:7
 msgid "Sending methods"
@@ -3381,6 +3302,52 @@ msgstr "Méthodes d’envoi"
 msgid "You must select a shipping method"
 msgstr "Vous devez sélectionner une méthode de livraison"
 
+#~ msgid "The billing Country is not allowed as shipping Country"
+#~ msgstr ""
+#~ "Ce pays de facturation n’est pas autorisé en tant que pays de livraison"
+#~ msgid ""
+#~ "You are trying to check out your order but, at this moment, there are not "
+#~ "enough stock of some products. Please review the list of products."
+#~ msgstr ""
+#~ "Vous essayez de passer commande, mais en ce moment, certains produits ne "
+#~ "sont plus en stock. Veuillez revoir la liste des produits."
+#~ msgid "1. Checkout method"
+#~ msgstr "1. Méthode de commande"
+#~ msgid "The billing Region name field must be completed"
+#~ msgstr "La région de facturation doit être ajoutée"
+#~ msgid "The billing Country field must be completed"
+#~ msgstr "Le pays de facturation doit être ajouté"
+#~ msgid "2. Billing options"
+#~ msgstr "2. Options de facturation"
+#~ msgid "3. Shipping options"
+#~ msgstr "3. Options de livraison"
+#~ msgid "Send to the selected address"
+#~ msgstr "Envoyer à l’adresse sélectionnée"
+#~ msgid "4. Sending methods"
+#~ msgstr "4. Méthodes d’envoi"
+#~ msgid "5. Payment methods"
+#~ msgstr "5. Méthodes de paiement"
+#~ msgid "6. Additional services"
+#~ msgstr "6. Autres services"
+#~ msgid "7. Cart"
+#~ msgstr "7. Panier"
+#~ msgid "8. Legal notice"
+#~ msgstr "8. Avertissement"
+#~ msgid "8. Checkout notice"
+#~ msgstr "8. Remarques"
+#~ msgid "Legal notice:"
+#~ msgstr "Avertissement :"
+#~ msgid ""
+#~ "When you click in the 'create order' button the order\n"
+#~ "\t\t\t\t will be created and if you have chosen an external payment "
+#~ "method the system will show a button \n"
+#~ "\t\t\t\t to go to the external web (usually your bank's payment gateway)"
+#~ msgstr ""
+#~ "Quand vous cliquerez sur « Créer la commande », le système affichera un "
+#~ "bouton qui vous permettra d’accéder à la méthode de paiement externe "
+#~ "choisie."
+#~ msgid "Create order"
+#~ msgstr "Continuer"
 #~ msgid "legal notice"
 #~ msgstr "avertissement"
 
