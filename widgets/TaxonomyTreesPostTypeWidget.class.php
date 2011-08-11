@@ -87,7 +87,6 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		return $terms;
 	}
 
-	//for order taxonomies list
 	function compare( $a, $b ) {
 		if ( $a == $b ) return 0;
 		foreach( $this->orderIncluded as $id ) {
@@ -106,7 +105,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$instance['taxonomy']				= $new_instance['taxonomy'];
 		$instance['see_number_products']	= $new_instance['see_number_products'];
 		$instance['hide_empty_taxonomies']	= isset( $new_instance['hide_empty_taxonomies'] ) ? true : false;
-		$instance['included_taxonomies']	= isset( $new_instance['included_taxonomies'] ) ? true : false;
+		$instance['included_taxonomies']	= isset( $new_instance['included_taxonomies'] ) ? $new_instance['included_taxonomies'] : false;
 		$instance['order_included']			= $new_instance['order_included'];
 		$instance['excluded_taxonomies']	= $new_instance['excluded_taxonomies'];
 		return $instance;
@@ -124,8 +123,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $defaults );
 		$see_number_products = isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : false;
 		$hide_empty_taxonomies = isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
-		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? (array)$instance['included_taxonomies'] : array();
-		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? (array)$instance['excluded_taxonomies'] : array();
+		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : array();
+		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array();
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
@@ -136,8 +135,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			<?php foreach( get_post_types() as $post_type ) : 
 				if ( $post_type != 'tcp_product_option' ) :?>
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
-				<?php endif;?>
-			<?php endforeach;?>
+				<?php endif;
+			endforeach;?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the list of taxonomies.', 'tcp' );?></span>
 		</p><p>

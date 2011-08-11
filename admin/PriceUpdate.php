@@ -18,16 +18,18 @@
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
 
-$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
-$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
-$update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
-$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+$post_type		= isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : 'tcp_product';
+$taxonomy		= isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : 'tcp_product_category';
+$per			= isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
+$fix			= isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
+$update_type	= isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
+$cat_slug		= isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
 
 if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	$args = array(
-		'post_type'				=> 'tcp_product',
-		'tcp_product_category'	=>  $cat_slug ,
-		'posts_per_page'		=> -1,
+		'post_type'				=> $post_type,
+		$taxonomy				=> $cat_slug ,
+		'posts_per_page'		=> 900,//TODO Pagination?
 	);
 	$args = apply_filters( 'tcp_update_price_query_args', $args );
 	$query = new WP_query( $args );
@@ -61,12 +63,35 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 <form method="post">
 	<table class="form-table">
 	<tbody>
+
+	<tr valign="top">
+	<th scope="row"><label for="post_type"><?php _e( 'Post type', 'tcp' )?>:</label></th>
+	<td>
+		<select name="post_type" id="post_type">
+		<?php foreach( tcp_get_saleable_post_types() as $pt ) :?>
+			<option value="<?php echo $pt;?>"<?php selected( $post_type, $pt ); ?>><?php echo $pt;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" name="tcp_load_taxonomies" value="<?php _e( 'Load taxonomies', 'tcp' );?>" class="button-secondary"/>
+	</td>
+	</tr>	
+	<tr valign="top">
+	<th scope="row"><label for="taxonomy"><?php _e( 'Taxonomy', 'tcp' )?>:</label></th>
+	<td>
+		<select name="taxonomy" id="taxonomy">
+		<?php foreach( get_object_taxonomies( $post_type ) as $taxmy ) : $tax = get_taxonomy( $taxmy ); ?>
+			<option value="<?php echo esc_attr( $taxmy );?>"<?php selected( $taxmy, $taxonomy ); ?>><?php echo $tax->labels->name;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" name="tcp_load_terms" value="<?php _e( 'Load categories', 'tcp' );?>" class="button-secondary"/>
+	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="category_slug"><?php _e( 'Category', 'tcp' );?>:</label></th>
 	<td>
 		<select id="category_slug" name="category_slug">
 			<option value="0"><?php _e( 'no one selected', 'tcp' );?></option>
-		<?php $terms = get_terms( 'tcp_product_category', array( 'hide_empty' => true ) );
+		<?php $terms = get_terms( $taxonomy, array( 'hide_empty' => true ) );
 		foreach( $terms as $term ): ?>
 			<option value="<?php echo $term->slug;?>"<?php selected( $cat_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
 		<?php endforeach; ?>
@@ -97,15 +122,15 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	</p>
 	<?php if ( isset( $_REQUEST['tcp_search'] ) && strlen( $cat_slug ) > 0 ) :
 		$args = array(
-			'post_type'				=> 'tcp_product',
-			'tcp_product_category'	=>  $cat_slug ,
-			'posts_per_page'		=> -1,
+			'post_type'			=> $post_type,
+			$taxonomy			=> $cat_slug ,
+			'posts_per_page'	=> 900,//TODO
 		);
 		$args = apply_filters( 'tcp_update_price_query_args', $args );
 		$query = new WP_query( $args );
 		if ( $query->have_posts() ) :?>
 		<div>
-			<h3><?php _e( 'Updated products', 'tcp' );?></h3>
+			<h3><?php _e( 'Updated', 'tcp' );?></h3>
 			<table class="widefat fixed" cellspacing="0"><!-- No assigned -->
 			<thead>
 			<tr>
@@ -143,6 +168,8 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 			</tbody>
 			</table>
 		</div>
+		<?php else:?>
+		<p><?php _e( 'No products to update', 'tcp' );?></p>
 		<?php endif;
 		wp_reset_query();?>
 	<p class="submit">

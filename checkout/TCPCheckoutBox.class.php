@@ -20,10 +20,8 @@
  * Parent class for all boxes for the checkout
  */
 class TCPCheckoutBox {
-	private $config_settings = array();
 
-	function __construct( $config_settings ) {
-		$this->config_settings = $config_settings;
+	function __construct() {
 	}
 
 	function get_title() {
@@ -34,6 +32,7 @@ class TCPCheckoutBox {
 	}
 
 	function show_config_settings() {
+		return false;
 	}
 
 	function save_config_settings() {
@@ -61,7 +60,7 @@ class TCPCheckoutBox {
 	}
 
 	function show() {
-		return true;
+		return '';
 	}
 }
 ?>

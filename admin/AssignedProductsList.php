@@ -22,7 +22,9 @@ $post_id		= isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
 $rel_type		= isset( $_REQUEST['rel_type'] ) ? $_REQUEST['rel_type'] : '';
 $post_type_to	= isset( $_REQUEST['post_type_to'] ) ? $_REQUEST['post_type_to'] : 'tcp_product';
 $category_slug	= isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : false;
-$products_type	= isset( $_REQUEST['products_type'] ) ? $_REQUEST['products_type'] : false;
+$product_type	= isset( $_REQUEST['product_type'] ) ? $_REQUEST['product_type'] : false;
+
+if ( ! $product_type ) $product_type = get_post_type( $post_id );
 global $thecartpress;
 $show_back_end_label = isset( $thecartpress->settings['show_back_end_label'] ) ? $thecartpress->settings['show_back_end_label'] : false;
 if ( isset( $_REQUEST['tcp_create_relation'] ) ) {
@@ -81,7 +83,7 @@ if ( $post_id ) :
 					<input id="post_id" name="post_id" value="<?php echo $post_id;?>" type="hidden" />
 					<input id="post_type_to" name="post_type_to" value="<?php echo $post_type_to;?>" type="hidden" />
 					<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
-					<input id="products_type" name="products_type" value="<?php echo $products_type;?>" type="hidden" />
+					<input id="product_type" name="product_type" value="<?php echo $product_type;?>" type="hidden" />
 					<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 					<input id="tcp_delete_all_relation" name="tcp_delete_all_relation" value="y" type="hidden" />
 					<p><?php _e( 'Do you really want to delete all relations?', 'tcp' );?></p>
@@ -99,7 +101,7 @@ if ( $post_id ) :
 	<thead>
 	<tr>
 		<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' );?></th>
-		<?php if ($products_type == 'tcp_product' ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
+		<?php if ( tcp_is_saleable_post_type( $product_type ) ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
 		<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 		<th scope="col" class="manage-column">&nbsp;</th>
 	</tr>
@@ -107,7 +109,7 @@ if ( $post_id ) :
 	<tfoot>
 	<tr>
 		<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' );?></th>
-		<?php if ($products_type == 'tcp_product' ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
+		<?php if ( tcp_is_saleable_post_type( $product_type ) ) :?><th scope="col" class="manage-column"><?php _e( 'Price', 'tcp' );?></th><?php endif;?>
 		<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 		<th scope="col" class="manage-column">&nbsp;</th>
 	</tr>
@@ -119,7 +121,7 @@ if ( $post_id ) :
 		foreach( $assigned_list as $assigned ) : $assigned_post = get_post( $assigned->id_to );?>
 			<tr>
 			<td><?php echo $assigned_post->post_title;?></td>
-			<?php if ( $products_type == 'tcp_product' ) :?><td><?php echo tcp_get_the_price( $assigned->id_to );?></td><?php endif;?>
+			<?php if ( tcp_is_saleable_post_type( $product_type ) ) :?><td><?php echo tcp_get_the_price( $assigned->id_to );?></td><?php endif;?>
 			<td><?php if ( $show_back_end_label ) echo get_post_meta( $assigned->id_to, 'tcp_back_end_label', true );
 				else echo $assigned_post->post_excerpt;?></td>
 			<td>
@@ -136,7 +138,7 @@ if ( $post_id ) :
 						<input id="post_type_to" name="post_type_to" value="<?php echo $post_type_to;?>" type="hidden" />
 						<input id="post_id_to" name="post_id_to" value="<?php echo $assigned->id_to;?>" type="hidden" />
 						<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
-						<input id="products_type" name="products_type" value="<?php echo $products_type;?>" type="hidden" />
+						<input id="product_type" name="product_type" value="<?php echo $product_type;?>" type="hidden" />
 						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 						<p><?php _e( 'Do you really want to delete the relation?', 'tcp' );?></p>
 						<input id="tcp_delete_relation" name="tcp_delete_relation" type="submit" class="button-secondary" value="<?php _e( 'Yes' , 'tcp' );?>" /> |
@@ -149,7 +151,7 @@ if ( $post_id ) :
 		<?php endforeach;?>
 	<?php else: ?>
 		<tr>
-		<td colspan="<?php if ( $products_type == 'tcp_product' ) :?>5<?php else:?>4<?php endif;?>"><?php _e( 'No items to show', 'tcp' );?></td>
+		<td colspan="<?php if ( tcp_is_saleable_post_type( $product_type ) ) :?>4<?php else:?>3<?php endif;?>"><?php _e( 'No items to show', 'tcp' );?></td>
 		</tr>
 	<?php endif;?>
 	</tbody>
@@ -164,7 +166,7 @@ if ( $post_id ) :
 				<label for="category_slug"><?php _e( 'Category', 'tcp' );?>:</label>
 				<select id="category_slug" name="category_slug">
 					<option value="0"><?php _e( 'no one selected', 'tcp' );?></option>
-				<?php if ( $post_type_to == 'tcp_product')
+				<?php if ( tcp_is_saleable_post_type( $post_type_to ) )
 					$terms = get_terms( 'tcp_product_category', array( 'hide_empty' => true ) );
 				else
 					$terms = get_terms( 'category', array( 'hide_empty' => true ) );
@@ -172,15 +174,15 @@ if ( $post_id ) :
 					<option value="<?php echo $term->slug;?>"<?php selected( $category_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
 				<?php endforeach; ?>
 				</select>
-				<?php if ( $post_type_to == 'tcp_product') : ?>
-				<label for="products_type">Products type:</label>
-				<select id="products_type" name="products_type">
+				<?php if ( tcp_is_saleable_post_type( $post_type_to ) ) : ?>
+				<label for="product_type">Products type:</label>
+				<select id="product_type" name="product_type">
 					<option value="">no one</option>
-					<option value="SIMPLE" <?php selected( $products_type, 'SIMPLE' ); ?>><?php _e( 'Simple', 'tcp' );?></option>
-					<option value="GROUPED" <?php selected( $products_type, 'GROUPED' ); ?>><?php _e( 'Grouped', 'tcp' );?></option>
+					<option value="SIMPLE" <?php selected( $product_type, 'SIMPLE' ); ?>><?php _e( 'Simple', 'tcp' );?></option>
+					<option value="GROUPED" <?php selected( $product_type, 'GROUPED' ); ?>><?php _e( 'Grouped', 'tcp' );?></option>
 				</select>
 				<?php endif;?>
-				<input id="tcp_filter_products_type" name="tcp_filter_products_type" value="filter" type="submit">
+				<input id="tcp_filter_product_type" name="tcp_filter_product_type" value="filter" type="submit">
 			</p><!-- search-box -->
 		</form>
 	</div><!-- wrap -->
@@ -204,7 +206,7 @@ if ( $post_id ) :
 	</tfoot>
 	<tbody>
 	<?php
-	if ( ( $post_type_to == 'tcp_product' && $category_slug && $products_type ) || ( $post_type_to == 'post' && $category_slug ) ) :
+	if ( ( tcp_is_saleable_post_type( $post_type_to ) && $category_slug && $product_type ) || ( $post_type_to == 'post' && $category_slug ) ) :
 		$ids = array();
 		$ids[] = $post_id;
 		foreach( $assigned_list as $assigned )
@@ -214,9 +216,9 @@ if ( $post_id ) :
 			'post__not_in'			=> $ids,
 			'posts_per_page'		=> -1,
 		);
-		if ( $post_type_to == 'tcp_product' ) {
+		if ( tcp_is_saleable_post_type( $post_type_to ) ) {
 			$args['meta_key'] = 'tcp_type';
-			$args['meta_value'] = $products_type;
+			$args['meta_value'] = $product_type;
 			$args['tcp_product_category'] = $category_slug;
 		} else {
 			$args['cat_in'] = array( $category_slug );
@@ -238,7 +240,7 @@ if ( $post_id ) :
 						<input id="post_id_to" name="post_id_to" value="<?php the_ID();?>" type="hidden" />
 						<input id="post_type_to" name="post_type_to" value="<?php echo $post_type_to;?>" type="hidden" />
 						<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
-						<input id="products_type" name="products_type" value="<?php echo $products_type;?>" type="hidden" />
+						<input id="product_type" name="product_type" value="<?php echo $product_type;?>" type="hidden" />
 						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 						| <label for="units"><?php _e( 'units', 'tcp' );?>:&nbsp;</label><input id="units" name="units" value="1" size="2" maxlength="3" type="text" />
 						<label for="list_order"><?php _e( 'Order', 'tcp' );?>:&nbsp;</label><input type="text" name="list_order" id="list_order" size="2" maxlength="4" value="0"/>

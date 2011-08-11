@@ -166,10 +166,17 @@ class TCPBillingBox extends TCPCheckoutBox {
 			}
 			if ( isset( $_REQUEST['billing_company'] ) ) {
 				$company = $_REQUEST['billing_company'];
-			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_lastname'] ) ) {
+			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_company'] ) ) {
 				$company = $_SESSION['tcp_checkout']['billing']['billing_company'];
 			} else {
 				$company = $default_address ? $default_address->company : '';
+			}
+			if ( isset( $_REQUEST['billing_tax_id_number'] ) ) {
+				$tax_id_number = $_REQUEST['billing_tax_id_number'];
+			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'] ) ) {
+				$tax_id_number = $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'];
+			} else {
+				$tax_id_number = $default_address ? $default_address->tax_id_number : '';
 			}
 			if ( isset( $_REQUEST['billing_street'] ) ) {
 				$street = $_REQUEST['billing_street'];
@@ -265,9 +272,9 @@ class TCPBillingBox extends TCPCheckoutBox {
 					<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
 					<?php $this->showErrorMsg( 'billing_company' );?></li>
 
-<!--					<li><label for="billing_company_tax_id"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
-					<input type="text" id="billing_company_tax_id" name="billing_company_tax_id" value="<?php //echo $company_tax_id;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_company_tax_id' );?></li>-->
+					<li><label for="billing_tax_id_number"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
+					<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
+					<?php $this->showErrorMsg( 'billing_tax_id_number' );?></li>
 
 					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
 					<?php global $thecartpress;

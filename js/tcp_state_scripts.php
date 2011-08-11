@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress-states.  If not, see <http://www.gnu.org/licenses/>.
  */
-$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/';
-include_once( $wordpress_path . 'wp-config.php' );
+//$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/';
+//include_once( $wordpress_path . 'wp-config.php' );
 ?>
 
 var countries = {
@@ -60,7 +60,7 @@ jQuery(document).ready(function() {
 			if (states) {
 				if (region_select) {
 					jQuery.each(states, function(key, title) {
-						 region_select.append(jQuery('<option></option>').attr('value', key).text(title));
+						region_select.append(jQuery('<option></option>').attr('value', key).text(title));
 					});
 					region_select.show();
 				}
@@ -92,7 +92,7 @@ jQuery(document).ready(function() {
 			if (states) {
 				if (region_select) {
 					jQuery.each(states, function(key, title) {
-						 region_select.append(jQuery('<option></option>').attr('value', key).text(title));
+						region_select.append(jQuery('<option></option>').attr('value', key).text(title));
 					});
 					region_select.show();
 				}
@@ -124,7 +124,7 @@ jQuery(document).ready(function() {
 			if (states) {
 				if (region_select) {
 					jQuery.each(states, function(key, title) {
-						 region_select.append(jQuery('<option></option>').attr('value', key).text(title));
+						region_select.append(jQuery('<option></option>').attr('value', key).text(title));
 					});
 					region_select.show();
 				}

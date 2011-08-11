@@ -1,0 +1,23 @@
+div#tcp_orders_resume
+{
+	border-color: rgb(8,71,113);
+}
+
+div#tcp_orders_resume,
+div#tcp_orders_resume h3,
+div#tcp_orders_resume a
+{
+	background: rgb(8,71,113);
+	color: rgb(255, 255, 255);
+	border-bottom-width: 0;
+}
+
+div#tcp_orders_resume h3
+{
+	text-shadow: none;
+}
+
+div#tcp_orders_resume div.inside
+{
+	padding: .5em;
+}

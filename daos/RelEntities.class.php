@@ -141,6 +141,14 @@ class RelEntities {
 	}
 
 	/**
+	 * Returns the parents
+	 */
+	static function getParents( $id_to, $rel_type = 'GROUPED' ) {
+		global $wpdb;
+		return $wpdb->get_results( $wpdb->prepare( 'select id_from from ' . $wpdb->prefix . 'tcp_rel_entities 
+				where id_to = %d and rel_type = %s', $id_to, $rel_type ) );
+	}
+	/**
 	 * Returns a row
 	 */
 	static function get( $id_from, $id_to, $rel_type = 'GROUPED' ) {

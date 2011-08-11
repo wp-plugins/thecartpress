@@ -157,3 +157,13 @@ function tcp_select_none(select_id) {
 		}
 	);	
 }
+
+function add_url_param(url, key, value) {
+    key = escape(key);
+    value = escape(value);
+	if ( url.indexOf("?") > 0) {
+		return url + "&" + key + "=" + value;
+    } else {
+   		return url + "?" + key + "=" + value;
+    }
+}

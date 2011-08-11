@@ -75,9 +75,8 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				$plugin_value = $plugin_name . '#' . $instance;
 				if ( ! $payment_method_id ) $payment_method_id = $plugin_value;?>
 				<li>
-					<input type="radio" id="<?php echo $plugin_name;?>"	name="payment_method_id" value="<?php echo $plugin_value;?>" 
-					<?php checked( $plugin_value, $payment_method_id );?> />
-					<label for="<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
+					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>"	name="payment_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $payment_method_id );?> />
+					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>" class="tcp_payment_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
 				</li>
 			<?php endforeach;?>
 			</ul>

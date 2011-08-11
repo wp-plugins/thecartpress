@@ -38,25 +38,34 @@ class TCP_LoopsSettings {
 
 	function admin_init() {
 		register_setting( 'twentytencart_options', 'ttc_settings', array( $this, 'validate' ) );
-		add_settings_section( 'main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_main_section' ), __FILE__ );
-		add_settings_field( 'see_title', __( 'See title:', 'tcp' ), array( $this, 'see_title' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_image', __( 'See image:', 'tcp' ), array( $this, 'see_image' ), __FILE__ , 'main_section' );
-		add_settings_field( 'image_size', __( 'Image size:', 'tcp' ), array( $this, 'image_size' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_excerpt', __( 'See excerpt:', 'tcp' ), array( $this, 'see_excerpt' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_content', __( 'See content:', 'tcp' ), array( $this, 'see_content' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_author', __( 'See author:', 'tcp' ), array( $this, 'see_author' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_price', __( 'See price:', 'tcp' ), array( $this, 'see_price' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_buy_button', __( 'See buy button:', 'tcp' ), array( $this, 'see_buy_button' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_meta_data', __( 'See meta data:', 'tcp' ), array( $this, 'see_meta_data' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_meta_utilities', __( 'See meta utilities:', 'tcp' ), array( $this, 'see_meta_utilities' ), __FILE__ , 'main_section' );
-		add_settings_field( 'columns', __( 'Columns:', 'tcp' ), array( $this, 'columns' ), __FILE__ , 'main_section' );	
-		add_settings_field( 'see_first_custom_area', __( 'See first custom area', 'tcp' ), array( $this, 'see_first_custom_area' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_second_custom_area', __( 'See second custom area', 'tcp' ), array( $this, 'see_second_custom_area' ), __FILE__ , 'main_section' );
-		add_settings_field( 'see_third_custom_area', __( 'See third custom area', 'tcp' ), array( $this, 'see_third_custom_area' ), __FILE__ , 'main_section' );
+		add_settings_section( 'ttc_main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_ttc_main_section' ), __FILE__ );
+		
+		add_settings_field( 'disabled_order_types', __( 'Disabled order types:', 'tcp' ), array( $this, 'disabled_order_types' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'order_type', __( 'Order type:', 'tcp' ), array( $this, 'order_type' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'order_desc', __( 'Order desc:', 'tcp' ), array( $this, 'order_desc' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_sorting_panel', __( 'See sorting panel', 'tcp' ), array( $this, 'show_see_sorting_panel' ), __FILE__ , 'ttc_main_section' );
+		
+		add_settings_field( 'columns', __( 'Columns:', 'tcp' ), array( $this, 'columns' ), __FILE__ , 'ttc_main_section' );	
+		add_settings_field( 'see_title', __( 'See title:', 'tcp' ), array( $this, 'see_title' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'title_tag', __( 'Title tag:', 'tcp' ), array( $this, 'title_tag' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_image', __( 'See image:', 'tcp' ), array( $this, 'see_image' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'image_size', __( 'Image size:', 'tcp' ), array( $this, 'image_size' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_excerpt', __( 'See excerpt:', 'tcp' ), array( $this, 'see_excerpt' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_content', __( 'See content:', 'tcp' ), array( $this, 'see_content' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_author', __( 'See about author:', 'tcp' ), array( $this, 'see_author' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_price', __( 'See price:', 'tcp' ), array( $this, 'see_price' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_buy_button', __( 'See buy button:', 'tcp' ), array( $this, 'see_buy_button' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_posted_on', __( 'See posted on:', 'tcp' ), array( $this, 'see_posted_on' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_taxonomies', __( 'See taxonomies:', 'tcp' ), array( $this, 'see_taxonomies' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_meta_utilities', __( 'See meta utilities:', 'tcp' ), array( $this, 'see_meta_utilities' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_first_custom_area', __( 'See first custom area', 'tcp' ), array( $this, 'see_first_custom_area' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_second_custom_area', __( 'See second custom area', 'tcp' ), array( $this, 'see_second_custom_area' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_third_custom_area', __( 'See third custom area', 'tcp' ), array( $this, 'see_third_custom_area' ), __FILE__ , 'ttc_main_section' );
 	}
 
 	function admin_menu() {
-		$base = dirname( dirname( __FILE__ ) ) . '/admin/OrdersList.php';
+		global $thecartpress;
+		$base = $thecartpress->get_base();
 		add_submenu_page( $base, __( 'TCP Loops settings', 'tcp' ), __( 'Loops Settings', 'tcp' ), 'tcp_edit_settings', 'ttc_settings_page', array( $this, 'show_settings' ) );
 	}
 
@@ -64,22 +73,38 @@ class TCP_LoopsSettings {
 		<div class="wrap">
 			<h2><?php _e( 'TCP Loop Settings', 'tcp' );?></h2>
 			<form method="post" action="options.php">
-				<?php settings_fields('twentytencart_options'); ?>
-				<?php do_settings_sections(__FILE__); ?>
+				<?php settings_fields( 'twentytencart_options' ); ?>
+				<?php do_settings_sections( __FILE__ ); ?>
 				<p class="submit">
-					<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'tcp') ?>" />
+					<input type="submit" class="button-primary" value="<?php _e( 'Save Changes', 'tcp' ) ?>" />
 				</p>
 			</form>
 		</div><?php
 	}
 
-	function show_main_section() {
+	function show_ttc_main_section() {
 	}
 
 	function see_title() {
 		$settings = get_option( 'ttc_settings' );
 		$see_title = isset( $settings['see_title'] ) ? $settings['see_title'] : true;?>
 		<input type="checkbox" name="ttc_settings[see_title]" id="see_title" value="yes" <?php checked( $see_title, true );?> /><?php
+	}
+
+	function title_tag() {
+		$settings = get_option( 'ttc_settings' );
+		$title_tag = isset( $settings['title_tag'] ) ? $settings['title_tag'] : true;?>
+		<select id="title_tag" name="ttc_settings[title_tag]">
+			<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' );?></option>
+			<option value="h2" <?php selected( $title_tag, 'h2' ); ?>>h2</option>
+			<option value="h3" <?php selected( $title_tag, 'h3' ); ?>>h3</option>
+			<option value="h4" <?php selected( $title_tag, 'h4' ); ?>>h4</option>
+			<option value="h5" <?php selected( $title_tag, 'h5' ); ?>>h5</option>
+			<option value="h6" <?php selected( $title_tag, 'h6' ); ?>>h6</option>
+			<option value="p" <?php selected( $title_tag, 'p' ); ?>>p</option>
+			<option value="div" <?php selected( $title_tag, 'div' ); ?>>div</option>
+			<option value="span" <?php selected( $title_tag, 'span' ); ?>>span</option>
+		</select><?php
 	}
 
 	function see_image() {
@@ -130,16 +155,57 @@ class TCP_LoopsSettings {
 		<input type="checkbox" name="ttc_settings[see_buy_button]" id="see_buy_button" value="yes" <?php checked( $see_buy_button, true );?> /><?php
 	}
 
-	function see_meta_data() {
+	function see_posted_on() {
 		$settings = get_option( 'ttc_settings' );
-		$see_meta_data = isset( $settings['see_meta_data'] ) ? $settings['see_meta_data'] : false;?>
-		<input type="checkbox" name="ttc_settings[see_meta_data]" id="see_meta_data" value="yes" <?php checked( $see_meta_data, true );?> /><?php
+		$see_posted_on = isset( $settings['see_posted_on'] ) ? $settings['see_posted_on'] : false;?>
+		<input type="checkbox" name="ttc_settings[see_posted_on]" id="see_posted_on" value="yes" <?php checked( $see_posted_on, true );?> /><?php
+	}
+
+	function see_taxonomies() {
+		$settings = get_option( 'ttc_settings' );
+		$see_taxonomies = isset( $settings['see_taxonomies'] ) ? $settings['see_taxonomies'] : false;?>
+		<input type="checkbox" name="ttc_settings[see_taxonomies]" id="see_taxonomies" value="yes" <?php checked( $see_taxonomies, true );?> /><?php
 	}
 
 	function see_meta_utilities() {
 		$settings = get_option( 'ttc_settings' );
 		$see_meta_utilities = isset( $settings['see_meta_utilities'] ) ? $settings['see_meta_utilities'] : false;?>
 		<input type="checkbox" name="ttc_settings[see_meta_utilities]" id="see_meta_utilities" value="yes" <?php checked( $see_meta_utilities, true );?> /><?php
+	}
+
+	function disabled_order_types() {
+		$settings = get_option( 'ttc_settings' );
+		$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
+		$sorting_fields = tcp_get_sorting_fields();
+		foreach( $sorting_fields as $sorting_field ) : ?>
+		<input type="checkbox" id="order_type_<?php echo $sorting_field['value']; ?>" name="ttc_settings[disabled_order_types][]" value="<?php echo $sorting_field['value']; ?>" <?php tcp_checked_multiple( $disabled_order_types, $sorting_field['value'] ); ?>/> <?php echo $sorting_field['title']; ?><br/>
+		<?php endforeach;
+	}
+
+	function order_type() {
+		$settings = get_option( 'ttc_settings' );
+		$order_type = isset( $settings['order_type'] ) ? $settings['order_type'] : 'date';
+		$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
+		$sorting_fields = tcp_get_sorting_fields(); ?>
+		<select id="order_type" name="ttc_settings[order_type]">
+		<?php foreach( $sorting_fields as $sorting_field ) :
+			if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
+			<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
+			<?php endif;
+		endforeach; ?>
+		</select><?php
+	}
+
+	function order_desc() {
+		$settings = get_option( 'ttc_settings' );
+		$order_desc = isset( $settings['order_desc'] ) ? $settings['order_desc'] : 'desc';?>
+		<input type="checkbox" name="ttc_settings[order_desc]" id="order_desc" value="yes" <?php checked( $order_desc, 'desc' );?> /><?php
+	}
+
+	function show_see_sorting_panel() {
+		$settings = get_option( 'ttc_settings' );
+		$see_sorting_panel = isset( $settings['see_sorting_panel'] ) ? $settings['see_sorting_panel'] : false;?>
+		<input type="checkbox" id="see_sorting_panel" name="ttc_settings[see_sorting_panel]" value="yes" <?php checked( true, $see_sorting_panel );?> /><?php
 	}
 
 	function columns() {
@@ -174,8 +240,11 @@ class TCP_LoopsSettings {
 		$input['see_author']			= isset( $input['see_author'] ) ? $input['see_author'] == 'yes' : false;
 		$input['see_price']				= isset( $input['see_price'] ) ? $input['see_price'] == 'yes' : false;
 		$input['see_buy_button']		= isset( $input['see_buy_button'] ) ? $input['see_buy_button']  == 'yes' : false;
-		$input['see_meta_data']			= isset( $input['see_meta_data'] ) ? $input['see_meta_data']  == 'yes' : false;
+		$input['see_posted_on']			= isset( $input['see_posted_on'] ) ? $input['see_posted_on']  == 'yes' : false;
+		$input['see_taxonomies']		= isset( $input['see_taxonomies'] ) ? $input['see_taxonomies']  == 'yes' : false;
 		$input['see_meta_utilities']	= isset( $input['see_meta_utilities'] ) ? $input['see_meta_utilities']  == 'yes' : false;
+		$input['order_desc']			= isset( $input['order_desc'] ) ? 'desc' : 'asc';
+		$input['see_sorting_panel']		= isset( $input['see_sorting_panel'] ) ? $input['see_sorting_panel'] == 'yes' : false;
 		$input['columns']				= (int)$input['columns'];
 		$input['see_first_custom_area']	= isset( $input['see_first_custom_area'] ) ? $input['see_first_custom_area']  == 'yes' : false;
 		$input['see_second_custom_area']= isset( $input['see_second_custom_area'] ) ? $input['see_second_custom_area']  == 'yes' : false;

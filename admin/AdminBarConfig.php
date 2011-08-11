@@ -30,14 +30,16 @@ if ( isset( $_REQUEST['tcp_save_admin_bar_config'] ) ) {
 	update_option( 'tcp_admin_bar_hidden_items', isset( $_REQUEST['tcp_admin_bar_hidden_items'] ) ? $_REQUEST['tcp_admin_bar_hidden_items'] : array() );
 }
 $tcp_admin_bar_hidden_items = get_option( 'tcp_admin_bar_hidden_items', array() );
-require( ABSPATH . WPINC . '/class-wp-admin-bar.php' );
+
+require_once( ABSPATH . WPINC . '/class-wp-admin-bar.php' );
 $admin_bar_class = apply_filters( 'wp_admin_bar_class', 'WP_Admin_Bar' );
 if ( class_exists( $admin_bar_class ) ) {
 	$wp_admin_bar = new $admin_bar_class;
 	$wp_admin_bar->initialize();
 	$wp_admin_bar->add_menus();
-	do_action( 'admin_bar_menu' );
+	do_action( 'admin_bar_menu', $wp_admin_bar );
 	$menu_bar = $wp_admin_bar->menu;
+
 	foreach( $menu_bar as $id => $menu ) : ?>
 	<tr valign="top">
 	<th scope="row"><label for="<?php echo $id;?>"><?php echo $menu['title'];?>:</label></th>

@@ -46,7 +46,7 @@ class FeedForSearchEngine {
 			echo '<desc>', bloginfo("description"), '</desc>';
 			echo '<currency>', tcp_get_the_currency(), '</currency>';
 			$args = array(
-				'post_type'		=> 'tcp_product',
+				'post_type'		=> 'tcp_product', //tcp_get_saleable_post_types() TODO
 				'numberposts'	=> -1,
 				'post_status'	=> 'publish',
 			); 

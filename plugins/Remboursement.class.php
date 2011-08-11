@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Remboursement extends TCP_Plugin {
+class TCPRemboursement extends TCP_Plugin {
 
 	function getTitle() {
 		return 'Cash on delivery';
@@ -90,7 +90,7 @@ class Remboursement extends TCP_Plugin {
 		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
-		Orders::editStatus( $order_id, $data['new_status'] );
+		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
 	}
 }
 ?>

@@ -59,10 +59,10 @@ class TCPCartBox extends TCPCheckoutBox {
 				$comment = $_SESSION['tcp_checkout']['cart']['comment'];
 			} else {
 				$comment = '';
-			}
-		 	?>
-			<label for="comment"><?php _e( 'Comments:', 'tcp' );?></label><br />
-			<textarea id="comment" name="comment" cols="40" rows="3" maxlength="255"><?php echo $comment;?></textarea>
+			}?>
+		 	<div class="tcp_go_to_shopping_cart"><a href="<?php tcp_the_shopping_cart_url();?>"><?php _e( 'Shopping Cart', 'tcp' );?></a></div><!-- .tcp_go_to_shopping_cart -->
+			<div class="tcp_comment"><label for="comment"><?php _e( 'Comments:', 'tcp' );?></label><br />
+			<textarea id="comment" name="comment" cols="40" rows="3" maxlength="255"><?php echo $comment;?></textarea></div><!-- .tcp_comment -->
 		</div><!-- cart_layer_info --><?php
 		return true;
 	}
@@ -86,9 +86,9 @@ class TCPCartBox extends TCPCheckoutBox {
 		$subtotal = 0;
 		$i = 0;
 		foreach( $shoppingCart->getItems() as $item ) {
-			$post_id = tcp_get_current_id( $item->getPostId() );
-			$option_1_id = tcp_get_current_id( $item->getOption1Id() );
-			$option_2_id = tcp_get_current_id( $item->getOption2Id() );?>
+			$post_id = tcp_get_current_id( $item->getPostId(), get_post_type( $item->getPostId() ) );
+			$option_1_id = tcp_get_current_id( $item->getOption1Id(), get_post_type( $item->getOption1Id() ) );
+			$option_2_id = tcp_get_current_id( $item->getOption2Id(), get_post_type( $item->getOption2Id() ) );?>
 			<tr class="tcp_cart_product_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
 			<td class="tcp_cart_name"><?php echo tcp_get_the_title( $post_id, $item->getOption1Id(), $item->getOption2Id() );?>
 			</td><?php

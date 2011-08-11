@@ -23,6 +23,7 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 
 $order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : '';
 $status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
+$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : '';
 
 if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders' ) ) {
 	Orders::edit( $order_id, $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
@@ -36,7 +37,7 @@ if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders'
 	<div id="message" class="updated"><p>
 		<?php _e( 'Order deleted', 'tcp' );?>
 	</p></div>
-	<p><a href="<?php echo $admin_path;?>OrdersList.php&status=<?php echo $status?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
+	<p><a href="<?php echo $admin_path;?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
 	<?php
 	return;
 }
@@ -71,7 +72,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 
 <h2><?php _e( 'Order', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>OrdersList.php&status=<?php echo $status?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo $admin_path;?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
 <?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
 	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() );?>"><?php _e( 'send email to billing email', 'tcp' );?></a></li>
@@ -124,9 +125,21 @@ if ( $order ) :?>
 	</tr>
 	<tr valign="top">
 	<th scope="row">
+		<label for="new_status"><?php _e( 'Shipping method', 'tcp' );?>:</label>
+	</th>
+	<td><?php echo $order->shipping_method;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
 		<label for="new_status"><?php _e( 'Payment method', 'tcp' );?>:</label>
 	</th>
 	<td><?php echo $order->payment_name;?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">
+		<label for="new_status"><?php _e( 'Transaction id', 'tcp' );?>:</label>
+	</th>
+	<td><?php echo $order->transaction_id;?></td>
 	</tr>
 	<tr valign="top">
 	<th scope="row">

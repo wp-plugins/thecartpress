@@ -17,7 +17,7 @@
  */
 
 /**
- * This class defines the post type 'tcp_template'.
+ * This class defines the post type 'tcp_notice'.
  */
 class TemplateCustomPostType {
 	public static $TEMPLATE = 'tcp_template';
@@ -25,24 +25,26 @@ class TemplateCustomPostType {
 	function __construct() {
 		global $thecartpress;
 		$labels = array(
-			'name'					=> _x( 'Templates', 'post type general name', 'tcp' ),
-			'singular_name'			=> _x( 'Template', 'post type singular name', 'tcp' ),
+			'name'					=> _x( 'Notices', 'post type general name', 'tcp' ),
+			'singular_name'			=> _x( 'Notice', 'post type singular name', 'tcp' ),
 			'add_new'				=> _x( 'Add New', 'product', 'tcp' ),
 			'add_new_item'			=> __( 'Add New', 'tcp' ),
-			'edit_item'				=> __( 'Edit Template', 'tcp' ),
-			'new_item'				=> __( 'New Template', 'tcp' ),
-			'view_item'				=> __( 'View Template', 'tcp' ),
-			'search_items'			=> __( 'Search Templates', 'tcp' ),
-			'not_found'				=> __( 'No templates found', 'tcp' ),
-			'not_found_in_trash'	=> __( 'No templates found in Trash', 'tcp' ),
+			'edit_item'				=> __( 'Edit Notice', 'tcp' ),
+			'new_item'				=> __( 'New Notice', 'tcp' ),
+			'view_item'				=> __( 'View Notice', 'tcp' ),
+			'search_items'			=> __( 'Search Notices', 'tcp' ),
+			'not_found'				=> __( 'No notices found', 'tcp' ),
+			'not_found_in_trash'	=> __( 'No notices found in Trash', 'tcp' ),
 			'parent_item_colon'		=> '',
 		);
 		$register = array (
-			'label'				=> __( 'Templates', 'tcp' ),
-			'singular_label'	=> __( 'Template', 'tcp' ),
+			'label'				=> __( 'Notices', 'tcp' ),
+			'singular_label'	=> __( 'Notice', 'tcp' ),
 			'labels'			=> $labels,
 			'public'			=> true,
 			'show_ui'			=> true,
+			'show_in_menu'		=> false,
+			'can_export'		=> true,
 			'_builtin'			=> false, // It's a custom post type, not built in! (http://kovshenin.com/archives/extending-custom-post-types-in-wordpress-3-0/)
 			'_edit_link'		=> 'post.php?post=%d',
 			'capability_type'	=> 'post',
@@ -50,8 +52,8 @@ class TemplateCustomPostType {
 			'query_var'			=> true,
 			'supports'			=> array( 'title', 'excerpt', 'editor' ), //, 'thumbnail', 'comments' ),
 			//'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
-			//'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['template_rewrite'] ) ? $thecartpress->settings['template_rewrite'] : 'templates' ),
-			//'has_archive'		=> isset( $thecartpress->settings['template_rewrite'] ) && $thecartpress->settings['template_rewrite'] != '' ? $thecartpress->settings['template_rewrite'] : 'templates',
+			//'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['notice_rewrite'] ) ? $thecartpress->settings['notice_rewrite'] : 'notices' ),
+			//'has_archive'		=> isset( $thecartpress->settings['notice_rewrite'] ) && $thecartpress->settings['notice_rewrite'] != '' ? $thecartpress->settings['notice_rewrite'] : 'notices',
 		);
 		register_post_type( TemplateCustomPostType::$TEMPLATE, $register );
 	}

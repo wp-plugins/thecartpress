@@ -21,26 +21,29 @@ class Addresses {
 	static function createTable() {
 		global $wpdb;
 		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_addresses` (
-		  `address_id`			bigint(20) unsigned NOT NULL auto_increment,
-		  `customer_id`			bigint(20) unsigned NOT NULL,
-		  `default_shipping`	char(1)			NOT NULL COMMENT \'Y->yes\',
-		  `default_billing`		char(1)			NOT NULL COMMENT \'Y->yes\',
-		  `name`				varchar(250)	NOT NULL,
-		  `firstname`			varchar(50)		NOT NULL,
-		  `lastname`			varchar(100)	NOT NULL,
-		  `company`				varchar(50)		NOT NULL,
-		  `street`				varchar(100)	NOT NULL,
-		  `city`				varchar(100)	NOT NULL,
-		  `city_id`				char(4)			NOT NULL,
-		  `region`				varchar(100)	NOT NULL,
-		  `region_id`			char(2)			NOT NULL,
-		  `postcode`			char(6)			NOT NULL,
-		  `country_id`			char(2)			NOT NULL,
-		  `telephone_1`			varchar(50)		NOT NULL,
-		  `telephone_2`			varchar(50)		NOT NULL,
-		  `fax`					varchar(50)		NOT NULL,
-   		  `email`				varchar(50)		NOT NULL,
-		  PRIMARY KEY  (`address_id`)
+			`address_id`			bigint(20) unsigned NOT NULL auto_increment,
+			`customer_id`			bigint(20) unsigned NOT NULL,
+		`custom_id`			bigint(20) unsigned NOT NULL,
+			`default_shipping`	char(1)			NOT NULL COMMENT \'Y->yes\',
+			`default_billing`		char(1)			NOT NULL COMMENT \'Y->yes\',
+			`name`				varchar(250)	NOT NULL,
+			`firstname`			varchar(50)		NOT NULL,
+			`lastname`			varchar(100)	NOT NULL,
+			`company`				varchar(50)		NOT NULL,
+		`tax_id_number`					varchar(30)		NOT NULL,
+		`company_id`			varchar(30)		NOT NULL,
+			`street`				varchar(100)	NOT NULL,
+			`city`				varchar(100)	NOT NULL,
+			`city_id`				char(4)			NOT NULL,
+			`region`				varchar(100)	NOT NULL,
+			`region_id`			char(2)			NOT NULL,
+			`postcode`			char(6)			NOT NULL,
+			`country_id`			char(2)			NOT NULL,
+			`telephone_1`			varchar(50)		NOT NULL,
+			`telephone_2`			varchar(50)		NOT NULL,
+			`fax`					varchar(50)		NOT NULL,
+			`email`				varchar(50)		NOT NULL,
+			PRIMARY KEY  (`address_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT=\'Addresses\';';
 		$wpdb->query( $sql );
 	}
@@ -131,12 +134,15 @@ class Addresses {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_addresses', array(
 				'customer_id'		=> $address['customer_id'],
+				'custom_id'			=> isset( $address['custom_id'] ) ? $address['custom_id'] : 0,
 				'default_shipping'	=> $address['default_shipping'],
 				'default_billing'	=> $address['default_billing'],
 				'name'				=> $address['name'],
 				'firstname'			=> $address['firstname'],
 				'lastname'			=> $address['lastname'],
 				'company'			=> $address['company'],
+				'tax_id_number'		=> $address['tax_id_number'],
+				'company_id'		=> isset( $address['company_id'] ) ? $address['company_id'] : 0,
 				'street'			=> $address['street'],
 				'city'				=> $address['city'],
 				'city_id'			=> $address['city_id'],
@@ -149,7 +155,7 @@ class Addresses {
 				'fax'				=> $address['fax'],
 				'email'				=> $address['email'],
 			),
-			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -158,12 +164,15 @@ class Addresses {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_addresses', array(
 				'customer_id'		=> $address['customer_id'],
+				'custom_id'			=> isset( $address['custom_id'] ) ? $address['custom_id'] : 0,
 				'default_shipping'	=> $address['default_shipping'],
 				'default_billing'	=> $address['default_billing'],
 				'name'				=> $address['name'],
 				'firstname'			=> $address['firstname'],
 				'lastname'			=> $address['lastname'],
 				'company'			=> $address['company'],
+				'tax_id_number'		=> $address['tax_id_number'],
+				'company_id'		=> isset( $address['company_id'] ) ? $address['company_id'] : 0,
 				'street'			=> $address['street'],
 				'city'				=> $address['city'],
 				'city_id'			=> $address['city_id'],
@@ -177,7 +186,7 @@ class Addresses {
 				'email'				=> $address['email'],
 			),
 			array( 'address_id' =>  $address['address_id']),
-			array ( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			array ( '%d' )
 		);
 		return $wpdb->insert_id;

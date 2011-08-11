@@ -238,7 +238,6 @@ class paypal_class {
       foreach ($this->ipn_data as $key=>$value) {
          $text .= "$key=$value, ";
       }
- 
       // Log the response from the paypal server
       $text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
       
@@ -270,6 +269,4 @@ class paypal_class {
       echo "</table><br>"; 
    }
 }         
-
-
- 
+?>

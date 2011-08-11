@@ -18,27 +18,40 @@
 
 require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
 
+/**
+ * Shows products of the same category of the displayed current product
+ */
 class BrothersListWidget extends CustomListWidget {
 
 	function BrothersListWidget() {
-		parent::CustomListWidget( 'tcpbrotherslist', __( 'Allow to create brothers list', 'tcp' ), 'TCP Brothers List' );
+		parent::CustomListWidget( 'tcpbrotherslist', __( 'Allow to create brothers lists', 'tcp' ), 'TCP Brothers List' );
 	}
 
 	function widget( $args, $instance ) {
 		if ( ! is_single() ) return;
 		global $post;
 		if ( $post ) {
-			$terms = get_the_terms( 0, 'tcp_product_category' );
+			$post_type = get_post_type_object( $post->post_type );
+			if ( count( $post_type->taxonomies ) == 0 ) return;
+			$terms = get_the_terms( $post->ID, $post_type->taxonomies[0] );
+			$title = '';
 			$ids = array();
-			foreach( $terms as $term )
-				$ids[] = $term->term_id;
+			if ( is_array( $terms ) && count( $terms ) ) {
+				foreach( $terms as $term ) {
+
+					$ids[] = tcp_get_default_id( $term->term_id, $term->taxonomy );
+					if ( $title == '' ) $title = $term->name;
+					else $title .= ' - ' . $term->name;
+				}
+			}
+			$instance['title'] .= ': ' . $title;
 			$loop_args = array(
-				'post_type'			=> ProductCustomPostType::$PRODUCT,
+				'post_type'			=> $post->post_type, //ProductCustomPostType::$PRODUCT,
 				'posts_per_page'	=> $instance['limit'],
-				'exclude'			=> $post->ID, //TODO
+				'exclude'			=> array( $post->ID, ),//TODO
 				'tax_query'			=> array(
 					array(
-						'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+						'taxonomy'	=> $post_type->taxonomies[0],
 						'terms'		=> $ids,
 						'field'		=> 'id',
 					),

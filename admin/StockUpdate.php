@@ -16,15 +16,17 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
-$added_stock = isset( $_REQUEST['added_stock'] ) ? (int)$_REQUEST['added_stock'] : 0;
-$pagination = isset( $_REQUEST['pagination'] ) ? (int)$_REQUEST['pagination'] : 1;
+$post_type		= isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : 'tcp_product';
+$taxonomy		= isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : 'tcp_product_category';
+$cat_slug		= isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+$added_stock	= isset( $_REQUEST['added_stock'] ) ? (int)$_REQUEST['added_stock'] : 0;
+$pagination		= isset( $_REQUEST['pagination'] ) ? (int)$_REQUEST['pagination'] : 1;
 
 if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	$args = array(
-		'post_type'				=> 'tcp_product',
-		'tcp_product_category'	=>  $cat_slug ,
-		'posts_per_page'		=> -1,
+		'post_type'			=> $post_type,
+		$taxonomy			=> $cat_slug ,
+		'posts_per_page'	=> 900,//TODO Pagination?
 	);
 	$args = apply_filters( 'tcp_update_stock_query_args', $args );
 	$query = new WP_query( $args );
@@ -53,11 +55,33 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	<table class="form-table" >
 	<tbody>
 	<tr valign="top">
+	<th scope="row"><label for="post_type"><?php _e( 'Post type', 'tcp' )?>:</label></th>
+	<td>
+		<select name="post_type" id="post_type">
+		<?php foreach( tcp_get_saleable_post_types() as $pt ) :?>
+			<option value="<?php echo $pt;?>"<?php selected( $post_type, $pt ); ?>><?php echo $pt;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" name="tcp_load_taxonomies" value="<?php _e( 'Load taxonomies', 'tcp' );?>" class="button-secondary"/>
+	</td>
+	</tr>	
+	<tr valign="top">
+	<th scope="row"><label for="taxonomy"><?php _e( 'Taxonomy', 'tcp' )?>:</label></th>
+	<td>
+		<select name="taxonomy" id="taxonomy">
+		<?php foreach( get_object_taxonomies( $post_type ) as $taxmy ) : $tax = get_taxonomy( $taxmy ); ?>
+			<option value="<?php echo esc_attr( $taxmy );?>"<?php selected( $taxmy, $taxonomy ); ?>><?php echo $tax->labels->name;?></option>
+		<?php endforeach;?>
+		</select>
+		<input type="submit" name="tcp_load_terms" value="<?php _e( 'Load categories', 'tcp' );?>" class="button-secondary"/>
+	</td>
+	</tr>
+	<tr valign="top">
 	<th scope="row"><label for="category_slug"><?php _e( 'Category', 'tcp' );?>:</label></th>
 	<td>
 		<select id="category_slug" name="category_slug">
 			<option value="0"><?php _e( 'no one selected', 'tcp' );?></option>
-		<?php $terms = get_terms( 'tcp_product_category', array( 'hide_empty' => true ) );
+		<?php $terms = get_terms( $taxonomy, array( 'hide_empty' => true ) );
 		foreach( $terms as $term ): ?>
 			<option value="<?php echo $term->slug;?>"<?php selected( $cat_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
 		<?php endforeach; ?>
@@ -78,9 +102,9 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	</p>
 	<?php if ( isset( $_REQUEST['tcp_search'] ) && strlen( $cat_slug ) > 0 ) :
 		$args = array(
-			'post_type'				=> 'tcp_product',
-			'tcp_product_category'	=>  $cat_slug ,
-			'posts_per_page'		=> -1,
+			'post_type'			=> $post_type,
+			$taxonomy			=>  $cat_slug ,
+			'posts_per_page'	=> -1,
 		);
 		$query = new WP_query( $args );
 		if ( $query->have_posts() ) :?>
