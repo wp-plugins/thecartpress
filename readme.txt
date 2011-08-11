@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress, html5
 Requires at least: 3.1
 Tested up to: 3.2
-Stable Tag: 1.0.9
+Stable Tag: 1.1.0
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
