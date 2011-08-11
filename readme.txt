@@ -190,6 +190,7 @@ This plugin is released under a GPL license.
 * Address table: Company tax id in address table (plus custom id and company id) (Suggested in the community)
 * New loop_tcp_grid: more easyier yo use, no-dependent theme
 * Credit card: store part of the credit card number (Suggested in the community)
+* New CSS styles
 
 = 1.0.9 =
 * Simple Wish list (Suggested in the community)
