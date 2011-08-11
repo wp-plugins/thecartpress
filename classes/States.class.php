@@ -20,18 +20,21 @@ require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
 class TCPStates {
 
 	function __construct() {
-		add_action( 'init', array( $this, 'init' ), 99 );
 		if ( is_admin() ) {
+			add_action( 'admin_head', array( $this, 'wp_head' ) );
+			add_filter( 'tcp_tax_rates_load_regions', array( $this, 'load_states' ) );
 			add_filter( 'tcp_address_editor_load_regions', array( $this, 'load_states' ) );
 		} else {
-			add_filter( 'tcp_load_regions_for_billing', array( $this, 'load_states' ) );
+			add_action( 'wp_head', array( $this, 'wp_head' ) );
 			add_filter( 'tcp_load_regions_for_shipping', array( $this, 'load_states' ) );
-		}
+			add_filter( 'tcp_load_regions_for_shipping', array( $this, 'load_states' ) );
+		}	
 	}
 
-	function init() {
-		wp_register_script( 'tcp_state_scripts', plugins_url( 'thecartpress/js/tcp_state_scripts.php' ) );
-		wp_enqueue_script( 'tcp_state_scripts' );
+	function wp_head() {
+		?><script>
+		<?php include_once( dirname( dirname( __FILE__ ) ) . '/js/tcp_state_scripts.php' );?>
+		</script><?php
 	}
 
 	function load_states( $regions ) {

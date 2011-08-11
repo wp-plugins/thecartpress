@@ -30,6 +30,7 @@ class ShoppingCart {
 	private $other_costs = array();
 	private $freeShipping = false;
 	private $discount = 0;
+	private $order_id = 0;
 	
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
@@ -57,38 +58,30 @@ class ShoppingCart {
 				$this->shopping_cart_items[$shopping_cart_id] = $sci;
 			}
 		}
+		$this->removeOrderId();
 	}
 
-	/**
-	 * Returns the total amount in the cart
-	 * @see getTotalForShipping()
-	 */
-	function getTotal( $otherCosts = false ) {
-		$total = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
-			$total += $shopping_cart_item->getTotal();
+	function modify( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 0 ) {
+		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
+			if ($count > 0) {
+				if ( ! tcp_is_downloadable( $post_id ) ) {
+					$this->shopping_cart_items[$shopping_cart_id]->setCount( $count );
+				} else {
+					$this->shopping_cart_items[$shopping_cart_id]->setCount( 1 );
+				}
+			} else {
+				$this->delete( $post_id, $option_1_id , $option_2_id );
+			}
+			$this->removeOrderId();
 		}
-		if ( $otherCosts )
-			$total += $this->getTotalOtherCosts();
-		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
-		return $total - $this->discount;
 	}
 
-	/**
-	 * Return the number of articles in the cart
-	 */
-	function getCount() {
-		$count = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
-			$count += $shopping_cart_item->getCount();
-		return $count;
-	}
-
-	function getWeight() {
-		$weight = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
-			$weight += $shopping_cart_item->getWeight();
-		return $weight;
+	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
+		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
+			unset( $this->shopping_cart_items[$shopping_cart_id] );
+		$this->removeOrderId();
 	}
 
 	function deleteAll() {
@@ -97,24 +90,7 @@ class ShoppingCart {
 		unset( $this->other_costs );
 		$this->other_costs = array();
 		$this->deleteAllDiscounts();
-	}
-
-	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
-		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
-		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
-			unset( $this->shopping_cart_items[$shopping_cart_id] );
-	}
-
-	function modify( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 0 ) {
-		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
-		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
-			if ($count > 0) {
-				if ( ! tcp_is_downloadable( $post_id ) )
-					$this->shopping_cart_items[$shopping_cart_id]->setCount( $count );
-				else
-					$this->shopping_cart_items[$shopping_cart_id]->setCount( 1 );
-			} else
-				$this->delete( $post_id, $option_1_id , $option_2_id );
+		$this->removeOrderId();
 	}
 
 	function getItemsId() {
@@ -148,6 +124,39 @@ class ShoppingCart {
 	}
 
 	/**
+	 * Returns the total amount in the cart
+	 * @see getTotalForShipping()
+	 */
+	function getTotal( $otherCosts = false ) {
+		$total = 0;
+		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
+			//$total += $shopping_cart_item->getTotal();
+			$total += $shopping_cart_item->getTotalWithTax();
+		}
+		if ( $otherCosts )
+			$total += $this->getTotalOtherCosts();
+		$total = apply_filters( 'tcp_shopping_cart_get_total', $total );
+		return $total - $this->discount;
+	}
+
+	/**
+	 * Return the number of articles in the cart
+	 */
+	function getCount() {
+		$count = 0;
+		foreach( $this->shopping_cart_items as $shopping_cart_item )
+			$count += $shopping_cart_item->getCount();
+		return $count;
+	}
+
+	function getWeight() {
+		$weight = 0;
+		foreach( $this->shopping_cart_items as $shopping_cart_item )
+			$weight += $shopping_cart_item->getWeight();
+		return $weight;
+	}
+
+	/**
 	 * Returns true if the cart is empty
 	 */
 	function isEmpty() {
@@ -169,6 +178,27 @@ class ShoppingCart {
 		foreach( $this->shopping_cart_items as $item )
 			if ( ! $item->isDownloadable() ) return false;
 		return true;
+	}
+
+	/**
+	 * Order_id if the cart has been saved in the database
+	 * @since 1.1.0
+	 */
+	function setOrderId( $order_id ) {
+		$this->order_id = $order_id;
+		return $this;
+	}
+
+	function getOrderId() {
+		return $this->order_id;
+	}
+
+	function hasOrderId() {
+		return $this->order_id > 0;
+	}
+
+	function removeOrderId() {
+		return $this->setOrderId(0);
 	}
 
 	/**
@@ -316,6 +346,11 @@ class ShoppingCart {
 		return $this->other_costs;
 	}
 
+	function getOtherCostById( $id ) {
+		$otherCost = $this->getOtherCosts();
+		return isset( $otherCost[$id] ) ? $otherCost[$id] : false;
+	}
+
 	function deleteOtherCosts() {
 		unset( $this->other_costs );
 		$this->other_costs = array();
@@ -402,6 +437,10 @@ class ShoppingCartItem {
 		return $this->option_2_id;
 	}
 
+	function getTitle() {
+		return tcp_get_the_title( $this->post_id, $this->option_1_id, $this->option_2_id );
+	}
+
 	function getCount() {
 		return $this->count;
 	}
@@ -430,19 +469,38 @@ class ShoppingCartItem {
 	}
 
 	function getPrice() {
-		return $this->getUnitPrice() * $this->count;
+		$price = $this->getUnitPrice() * $this->count;
 		return apply_filters( 'tcp_item_get_price', $price, $this->getPostId() );
+	}
+
+	//since 1.1.0
+	function getPriceWithTax() {
+		$price = $this->getUnitPrice() * ( 1 + $this->getTax() / 100 );
+		return apply_filters( 'tcp_item_get_price_with_tax', $price, $this->getPostId() );
 	}
 
 	function getTotal() {
 		//if ( $this->getTax() == 0 )
-			$total = ( $this->getUnitPrice() * $this->count ) - $this->discount;
+			$total = ( $this->getUnitPrice() * $this->getCount() ) - $this->getDiscount();
 		//else {
 		//	$price = $this->unit_price * ( 1 + $this->getTax() / 100 );
 		//	$price = $price * $this->count;
 		//	$total = $price - $this->getDiscount();
 		//}
 		$total = apply_filters( 'tcp_shopping_cart_get_item_total', $total, $this->getPostId() );
+		return $total;
+	}
+
+	//since 1.1.0
+	function getTotalWithTax() {
+		if ( $this->getTax() == 0 )
+			$total = ( $this->getUnitPrice() * $this->getCount() ) - $this->getDiscount();
+		else {
+			$price = $this->getUnitPrice() * ( 1 + $this->getTax() / 100 );
+			$price = $price * $this->getCount();
+			$total = $price - $this->getDiscount();
+		}
+		$total = apply_filters( 'tcp_shopping_cart_get_item_total_with_tax', $total, $this->getPostId() );
 		return $total;
 	}
 

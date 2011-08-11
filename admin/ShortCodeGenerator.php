@@ -29,6 +29,11 @@ function tcp_exists_shortcode_id( $id ) {
 	return false;
 }
 
+function tcp_shortcode_sorting_fields( $sorting_fields ) {
+	$sorting_fields[] = array( 'value' => 'rand', 'title' => __( 'Random', 'tcp' ) );
+	return $sorting_fields;
+}
+
 if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 	if ( ! isset( $_REQUEST['id'] ) || strlen( trim( $_REQUEST['id'] ) ) == 0 ) {?>
 		<div id="message" class="error"><p>
@@ -49,9 +54,13 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'taxonomy'				=> isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : '',
 			'included'				=> isset( $_REQUEST['included'] ) ? $_REQUEST['included'] : array(),
 			'term'					=> isset( $_REQUEST['term'] ) ? $_REQUEST['term'] : '',
+			'limit'					=> isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : '10',
 			'loop'					=> isset( $_REQUEST['loop'] ) ? $_REQUEST['loop'] : 'default',
+			'order_type'			=> isset( $_REQUEST['order_type'] ) ? $_REQUEST['order_type'] : 'date',
+			'order_desc'			=> isset( $_REQUEST['order_desc'] ) ? 'desc' : 'asc',
 			'columns'				=> isset( $_REQUEST['columns'] ) ? (int)$_REQUEST['columns'] : 2,
 			'see_title'				=> isset( $_REQUEST['see_title'] ) ? $_REQUEST['see_title'] == 'yes' : false,
+			'title_tag'				=> isset( $_REQUEST['title_tag'] ) ? $_REQUEST['title_tag'] : '',
 			'see_image'				=> isset( $_REQUEST['see_image'] ) ? $_REQUEST['see_image'] == 'yes' : false,
 			'image_size'			=> isset( $_REQUEST['image_size'] ) ? $_REQUEST['image_size'] : 'thumbnail',
 			'see_content'			=> isset( $_REQUEST['see_content'] ) ? $_REQUEST['see_content'] == 'yes' : false,
@@ -130,9 +139,13 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 	$use_taxonomy			= isset( $shortcode_data['use_taxonomy'] ) ? $shortcode_data['use_taxonomy'] == 'yes' : false;
 	$included				= isset( $shortcode_data['included'] ) ? $shortcode_data['included'] : array();
 	$term					= isset( $shortcode_data['term'] ) ? $shortcode_data['term'] : '';
+	$limit					= isset( $shortcode_data['limit'] ) ? $shortcode_data['limit'] : 10;
 	$loop					= isset( $shortcode_data['loop'] ) ? $shortcode_data['loop'] : '';
 	$columns				= isset( $shortcode_data['columns'] ) ? $shortcode_data['columns'] : 2;
+	$order_type				= isset( $shortcode_data['order_type'] ) ? $shortcode_data['order_type'] : 'date';
+	$order_desc				= isset( $shortcode_data['order_desc'] ) ? $shortcode_data['order_desc'] : 'desc';
 	$see_title				= isset( $shortcode_data['see_title'] ) ? $shortcode_data['see_title'] == 'yes' : true;
+	$title_tag				= isset( $shortcode_data['title_tag'] ) ? $shortcode_data['title_tag'] : '';
 	$see_image				= isset( $shortcode_data['see_image'] ) ? $shortcode_data['see_image'] == 'yes' : false;
 	$image_size				= isset( $shortcode_data['image_size'] ) ? $shortcode_data['image_size'] : 'thumbnail';
 	$see_content			= isset( $shortcode_data['see_content'] ) ? $shortcode_data['see_content'] == 'yes' : false;
@@ -257,7 +270,8 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 					'post_type'	=> $post_type,
 					'posts_per_page' => -1,
 				);
-				if ( $post_type == 'tcp_product' ) {
+				//if ( $post_type == 'tcp_product' ) {
+				if ( tcp_is_saleable_post_type( $post_type ) ) {
 					$args['meta_key'] = 'tcp_is_visible';
 					$args['meta_value'] = true;
 				}
@@ -267,6 +281,15 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				<?php endwhile;
 				wp_reset_postdata(); wp_reset_query();?>
 				</select>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="id"><?php _e( 'Limit', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" name="limit" id="limit" value="<?php echo $limit;?>" size="3" maxlength="4" />
+				<br/><span class="description"><?php _e( 'Set -1 to show all possible items.', 'tcp' );?></span>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -298,6 +321,29 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				</select>
 			</td>
 		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="order_type"><?php _e( 'Order by', 'tcp' ); ?></label>:
+			</th>
+			<td>
+				<?php add_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' );
+				$sorting_fields = tcp_get_sorting_fields();
+				remove_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' ); ?>
+				<select id="order_type" name="order_type">
+				<?php foreach( $sorting_fields as $sorting_field ) : ?>
+				<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
+				<?php endforeach; ?>
+				</select>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="order_desc"><?php _e( 'Order desc.', 'tcp' ); ?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" name="order_desc" id="order_desc" value="yes" <?php checked( $order_desc, 'desc' );?>/>
+			</td>
+		</tr>
 		</tbody>
 		</table>
 		<p>
@@ -313,11 +359,25 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 			<label for="see_title"><?php _e( 'Show title', 'tcp' );?></label>
 		</p>
 		<p>
+			<label for="title_tag"><?php _e( 'Title tag', 'tcp' ); ?>:</label>
+			<select id="title_tag" name="title_tag">
+				<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' );?></option>
+				<option value="h2" <?php selected( $title_tag, 'h2' ); ?>>h2</option>
+				<option value="h3" <?php selected( $title_tag, 'h3' ); ?>>h3</option>
+				<option value="h4" <?php selected( $title_tag, 'h4' ); ?>>h4</option>
+				<option value="h5" <?php selected( $title_tag, 'h5' ); ?>>h5</option>
+				<option value="h6" <?php selected( $title_tag, 'h6' ); ?>>h6</option>
+				<option value="p" <?php selected( $title_tag, 'p' ); ?>>p</option>
+				<option value="div" <?php selected( $title_tag, 'div' ); ?>>div</option>
+				<option value="span" <?php selected( $title_tag, 'span' ); ?>>span</option>
+			</select>
+		</p>
+		<p>
 			<input type="checkbox" class="checkbox" id="see_image" name="see_image" value="yes" <?php checked( $see_image );?> />
 			<label for="see_image"><?php _e( 'Show image', 'tcp' );?></label>
 		</p>
 		<p>
-			<label for="image_size"><?php _e( 'Image size', 'tcp' );?></label>
+			<label for="image_size"><?php _e( 'Image size', 'tcp' );?>:</label>
 			<select id="image_size" name="image_size">
 			<?php $imageSizes = get_intermediate_image_sizes();
 			foreach($imageSizes as $imageSize) : ?>

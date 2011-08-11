@@ -56,8 +56,8 @@ class ShoppingCartWidget extends WP_Widget {
 				<input type="hidden" name="tcp_unit_price" id="tcp_unit_price" value="<?php echo $item->getUnitPrice();;?>" />
 				<input type="hidden" name="tcp_tax" id="tcp_tax" value="<?php echo $item->getTax();?>" />
 				<input type="hidden" name="tcp_unit_weight" id="tcp_unit_weight" value="<?php echo $item->getWeight();?>" />
-				<ul>
-					<li><span class="tcp_name"><?php echo $this->getProductTitle( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
+				<ul class="tcp_shopping_cart_widget">
+					<li class="tcp_cart_widget_item"><span class="tcp_name"><?php echo $this->getProductTitle( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
 					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getUnitPrice() );?></span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li>
@@ -93,13 +93,13 @@ class ShoppingCartWidget extends WP_Widget {
 			</form></li>
 		<?php endforeach;?>
 		<?php if ( $see_shopping_cart ) :?>
-			<li><a href="<?php echo get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) );?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
+			<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php tcp_the_shopping_cart_url();?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
 		<?php endif;?>
 		<?php if ( $see_checkout ) :?>
-			<li><a href="<?php echo get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );?>"><?php _e( 'checkout', 'tcp' );?></a></li>
+			<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php tcp_the_checkout_url();?>"><?php _e( 'checkout', 'tcp' );?></a></li>
 		<?php endif;?>
 		<?php if ( $see_delete_all ) :?>
-			<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete shopping cart', 'tcp' );?>"/></form></li>
+			<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete shopping cart', 'tcp' );?>"/></form></li>
 		<?php endif;?>
 		<?php do_action( 'tcp_get_shopping_cart_widget', $instance );?>
 		</ul>
@@ -175,7 +175,7 @@ class ShoppingCartWidget extends WP_Widget {
 	}
 
 	private function getProductTitle( $post_id, $option_1_id, $option_2_id ) {
-		$post_id = tcp_get_current_id( $post_id );
+		$post_id = tcp_get_current_id( $post_id, get_post_type( $post_id ) );
 		$title = tcp_get_the_title( $post_id, $option_1_id, $option_2_id );
 		if ( ! tcp_is_visible( $post_id ) ) $post_id = tcp_get_the_parent( $post_id );
 		$title = '<a href="' . get_permalink( $post_id ) . '">' . $title . '</a>';

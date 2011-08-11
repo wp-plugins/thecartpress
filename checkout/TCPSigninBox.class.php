@@ -42,7 +42,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 		return false;
 	}
 
-	function show() { ?>
+	function show() {?>
 		<div class="identify_layer_info checkout_info clearfix" id="identify_layer_info">
 		<?php if ( ! is_user_logged_in() ) : ?>
 			<div id="login_form">
@@ -69,8 +69,9 @@ class TCPSigninBox extends TCPCheckoutBox {
 					'value_username'	=> '',
 					'value_remember'	=> false
 				);
-				wp_login_form( $args );?>
-			</div><!--login_form-->
+				wp_login_form( $args ); ?>
+			</div><!--login_form -->
+
 			<div id="login_guess">
 			<?php if ( get_option( 'users_can_register' ) ) :?>
 				<?php if ( ! $user_registration ) :?>
@@ -80,7 +81,35 @@ class TCPSigninBox extends TCPCheckoutBox {
 				<ul class="disc">
 					<li><?php _e( 'Fast and easy checkout', 'tcp' );?></li>
 					<li><?php _e( 'Easy access to yours orders history and status', 'tcp' );?></li>
-					<?php wp_register( '<li>', '</li>', true );?>
+					<?php //wp_register( '<li>', '</li>', true );?>
+					<li><a href="javascript: void(0)" onclick="jQuery('li.tcp_login_and_register').toggle();"><?php _e( 'Register', 'tcp' ); ?></a></li>
+					<li class="tcp_login_and_register" style="display:none;"><div id="tcp_login_and_register">
+					<?php $url = plugins_url( 'thecartpress/checkout/register_and_login.php' ); ?>
+					<form class="tcp_login_and_register" action="<?php echo $url; ?>" method="post">
+						<p class="tcp_login_and_register_user_name">
+							<label for="tcp_new_user_name"><?php _e( 'Username', 'tcp' ); ?></label>
+							<input type="text" name="tcp_new_user_name" size="12" maxlength="12" />
+						</p>
+						<p>
+							<label for="tcp_new_user_pass"><?php _e( 'Password', 'tcp' ); ?></label>
+							<input type="password" name="tcp_new_user_pass" size="12" maxlength="12" />
+						</p>
+						<p>
+							<label for="tcp_repeat_user_pass"><?php _e( 'Password', 'tcp' ); ?></label>
+							<input type="password" name="tcp_repeat_user_pass" size="12" maxlength="12" />
+						</p>
+						<p>
+							<label for="tcp_user_email"><?php _e( 'E-mail', 'tcp' );?></label>
+							<input type="text" name="tcp_new_user_email" size="12" maxlength="100"/>
+						</p>
+						<input type="hidden" name="tcp_redirect_to" value="<?php echo get_permalink(); ?>" />
+						<p><input type="submit" value="<?php _e( 'Register', 'tcp' ); ?>" name="tcp_register_action"/></p>
+					</form>
+				</div><!-- tcp_login_register -->
+				</li>
+				<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
+					<li class="error tcp_error"><?php echo $_REQUEST['tcp_register_error'];?></li>
+				<?php endif; ?>
 				</ul>
 			<?php endif;?>
 			<?php do_action( 'tcp_checkout_identify' );?>
@@ -94,7 +123,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 				<?php endif?>
 				</strong></p>
 				<ul>
-					<li><?php _e( 'If you prefer this way then press the next button', 'tcp' );?></li>
+					<li><?php _e( 'If you prefer this way then press the continue button', 'tcp' );?></li>
 				</ul>
 				<!--<p><input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' );?>" /></p>-->
 			<?php else : ?>

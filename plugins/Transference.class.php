@@ -110,7 +110,7 @@ class Transference extends TCP_Plugin {
 		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
-		Orders::editStatus( $order_id, $data['new_status'] );
+		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
 	}
 }
 ?>

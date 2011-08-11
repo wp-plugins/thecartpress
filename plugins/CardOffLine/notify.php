@@ -67,7 +67,7 @@ class CCValidator {
 		} elseif ( $type == 'amex' ) {
 			if ( strlen( $ccnum ) != 15 || !ereg( '3[47]', $ccnum ) )
 				return 0;
-		} elseif ($type == 'discover'){ 
+		} elseif ( $type == 'discover' ){ 
 			if (strlen($ccnum) != 16 || substr($ccnum, 0, 4) != '6011') 
 			return 0; 
 		} else { 

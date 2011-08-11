@@ -20,9 +20,8 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Currencies.class.php' );
 
 class TCP_Settings {
-
-	function __construct() {
-		if ( is_admin() ) {
+	function __construct( $register = true ) {
+		if ( $register && is_admin() ) {
 			add_action('admin_init', array( $this, 'admin_init' ) );
 			add_action('admin_menu', array( $this, 'admin_menu' ) );
 			//add_filter('contextual_help', array( $this, 'contextual_help') , 10, 3);
@@ -41,16 +40,18 @@ class TCP_Settings {
 		add_settings_section( 'tcp_main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_main_section' ), __FILE__ );
 		add_settings_field( 'after_add_to_cart', __( 'After adding to cart', 'tcp' ), array( $this, 'show_after_add_to_cart' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'disable_ecommerce', __( 'Disable eCommerce', 'tcp' ), array( $this, 'show_disable_ecommerce' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'disable_shopping_cart', __( 'Disable shopping cart', 'tcp' ), array( $this, 'show_disable_shopping_cart' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'enabled_wish_list', __( 'Enabled Wish list', 'tcp' ), array( $this, 'show_enabled_wish_list' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'currency_layout', __( 'Currency layout', 'tcp' ), array( $this, 'show_currency_layout' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'currency', __( 'Currency', 'tcp' ), array( $this, 'show_currency' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'decimal_currency', __( 'Currency decimals', 'tcp' ), array( $this, 'show_decimal_currency' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'decimal_point', __( 'Decimal point separator', 'tcp' ), array( $this, 'show_decimal_point_separator' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'decimal_point', __( 'Decimal point separator', 'tcp' ), array( $this, 'show_decimal_point' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'thousands_separator', __( 'Thousands separator', 'tcp' ), array( $this, 'show_thousands_separator' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'unit_weight', __( 'Unit weight', 'tcp' ), array( $this, 'show_unit_weight' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'hide_downloadable_menu', __( 'Hide downloadable menu', 'tcp' ), array( $this, 'show_hide_downloadable_menu' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'downloadable_path', __( 'Downloadable path', 'tcp' ), array( $this, 'show_downloadable_path' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'continue_url', __( 'Continue Shopping in', 'tcp' ), array( $this, 'show_continue_url' ), __FILE__ , 'tcp_main_section' );
 
 		add_settings_section( 'tcp_countries_section', __( 'Countries settings', 'tcp' ) , array( $this, 'show_countries_section' ), __FILE__ );
 		add_settings_field( 'country', __( 'Country', 'tcp' ), array( $this, 'show_country' ), __FILE__ , 'tcp_countries_section' );
@@ -88,10 +89,15 @@ class TCP_Settings {
 
 		add_settings_section( 'tcp_theme_compatibility_section', __( 'Theme compatibility settings', 'tcp' ) , array( $this, 'show_theme_compatibility_section' ), __FILE__ );
 		add_settings_field( 'use_tcp_loops', __( 'Use TCP Loops Configurables', 'tcp' ), array( $this, 'show_use_tcp_loops' ), __FILE__ , 'tcp_theme_compatibility_section' );
-		add_settings_field( 'load_default_styles', __( 'Load default styles', 'tcp' ), array( $this, 'show_load_default_styles' ), __FILE__ , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'load_default_buy_button_style', __( 'Load default buy button style', 'tcp' ), array( $this, 'show_load_default_buy_button_style' ), __FILE__ , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'load_default_shopping_cart_checkout_style', __( 'Load default shopping cart & checkout style', 'tcp' ), array( $this, 'show_load_default_shopping_cart_checkout_style' ), __FILE__ , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'load_default_loop_style', __( 'Load default loop style', 'tcp' ), array( $this, 'show_load_default_loop_style' ), __FILE__ , 'tcp_theme_compatibility_section' );
+
 		add_settings_field( 'products_per_page', __( 'Product pages show at most', 'tcp' ), array( $this, 'show_products_per_page' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_buy_button_in_content', __( 'See buy button in content', 'tcp' ), array( $this, 'show_see_buy_button_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'align_buy_button_in_content', __( 'Align of buy button in content', 'tcp' ), array( $this, 'show_align_buy_button_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_buy_button_in_excerpt', __( 'See buy button in excerpt', 'tcp' ), array( $this, 'show_see_buy_button_in_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'align_buy_button_in_excerpt', __( 'Align of buy button in excerpt', 'tcp' ), array( $this, 'show_align_buy_button_in_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_price_in_content', __( 'See price in content', 'tcp' ), array( $this, 'show_see_price_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_price_in_excerpt', __( 'See price in excerpt', 'tcp' ), array( $this, 'show_see_price_in_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_image_in_content', __( 'See image in content', 'tcp' ), array( $this, 'show_see_image_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
@@ -102,17 +108,20 @@ class TCP_Settings {
 		add_settings_field( 'image_size_excerpt', __( 'Image size in excerpt', 'tcp' ), array( $this, 'image_size_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'image_align_excerpt', __( 'Image align in excerpt', 'tcp' ), array( $this, 'image_align_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'image_link_excerpt', __( 'Image link in excerpt', 'tcp' ), array( $this, 'image_link_excerpt' ), __FILE__ , 'tcp_theme_compatibility_section' );
-
 		add_settings_section( 'tcp_admin_section', __( 'Admin settings', 'tcp' ) , array( $this, 'show_admin_section' ), __FILE__ );
 		add_settings_field( 'hide_visibles', __( 'Hide invisible products', 'tcp' ), array( $this, 'show_hide_visibles' ), __FILE__ , 'tcp_admin_section' );
-		add_settings_field( 'show_back_end_label', __( 'Show back end label', 'tcp' ), array( $this, 'show_back_end_label' ), __FILE__ , 'tcp_admin_section' );
-		
+//		add_settings_field( 'show_back_end_label', __( 'Show back end label', 'tcp' ), array( $this, 'show_back_end_label' ), __FILE__ , 'tcp_admin_section' );
 		add_settings_section( 'tcp_search_engine_section', __( 'Search engine', 'tcp' ) , array( $this, 'show_search_engine_section' ), __FILE__ );
 		add_settings_field( 'search_engine_activated', __( 'Search engine activated', 'tcp' ), array( $this, 'show_search_engine_activated' ), __FILE__ , 'tcp_search_engine_section' );
 	}
 
 	function admin_menu() {
-		$base = dirname( dirname( __FILE__ ) ) . '/admin/OrdersList.php';
+		global $thecartpress;
+		$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;
+		if ( ! $disable_ecommerce )
+			$base = $thecartpress->get_base();
+		else
+			$base = $thecartpress->get_base_tools();
 		add_submenu_page( $base, __( 'TheCartPress settings', 'tcp' ), __( 'Settings', 'tcp' ), 'tcp_edit_settings', 'tcp_settings_page', array( $this, 'showSettings' ) );
 	}
 
@@ -141,22 +150,28 @@ class TCP_Settings {
 		echo '</div></div>';
 	}
 
-	function show_user_registration() {
-		global $thecartpress;
-		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;?>
+	function show_user_registration( $user_registration = false ) {
+		if ( ! $user_registration ) {
+			global $thecartpress;
+			$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
+		}?>
 		<input type="checkbox" id="user_registration" name="tcp_settings[user_registration]" value="yes" <?php checked( true, $user_registration );?> /><?php
 	}
 
-	function show_emails() {
-		global $thecartpress;
-		$emails = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';?>
+	function show_emails( $emails = false ) {
+		if ( ! $emails ) {
+			global $thecartpress;
+			$emails = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';
+		}?>
 		<input type="text" id="emails" name="tcp_settings[emails]" value="<?php echo $emails;?>" size="40" maxlength="2550" />
 		<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' );?></span><?php
 	}
 
-	function show_from_email() {
-		global $thecartpress;
-		$from_email = isset( $thecartpress->settings['from_email'] ) ? $thecartpress->settings['from_email'] : '';?>
+	function show_from_email( $from_email = false ) {
+		if ( ! $from_email ) {
+			global $thecartpress;
+			$from_email = isset( $thecartpress->settings['from_email'] ) ? $thecartpress->settings['from_email'] : '';
+		}?>
 		<input type="text" id="from_email" name="tcp_settings[from_email]" value="<?php echo $from_email;?>" size="40" maxlength="255" /><?php
 	}
 
@@ -182,25 +197,43 @@ class TCP_Settings {
 		<span class="description"><?php _e( 'To use TheCartPress as a catalog.', 'tcp' );?></span><?php
 	}
 
+	function show_disable_ecommerce() {
+		global $thecartpress;
+		$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;?>
+		<input type="checkbox" id="disable_ecommerce" name="tcp_settings[disable_ecommerce]" value="yes" <?php checked( true, $disable_ecommerce );?> />
+		<span class="description"><?php _e( 'To use TheCartPress as a Framework (disabling all eCommerce functionalities).', 'tcp' );?></span><?php
+	}
+
 	function show_enabled_wish_list() {
 		global $thecartpress;
 		$enabled_wish_list = isset( $thecartpress->settings['enabled_wish_list'] ) ? $thecartpress->settings['enabled_wish_list'] : false;?>
 		<input type="checkbox" id="enabled_wish_list" name="tcp_settings[enabled_wish_list]" value="yes" <?php checked( true, $enabled_wish_list );?> /><?php
 	}
 
-	function show_currency_layout() {
-		global $thecartpress;
-		$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';?>
+	function show_currency_layout( $currency_layout = false) {
+		if ( ! $currency_layout ) {
+			global $thecartpress;
+			$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';
+		}?>
+		<label for="tcp_custom_layouts"><?php _e( 'Custom layouts', 'tcp' ); ?>:</label>
+		<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
+			<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' );?></option>
+			<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' );?></option>
+			<option value="%2$s% 1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' );?></option>
+		</select>
+		<br/>
 		<input type="text" id="currency_layout" name="tcp_settings[currency_layout]" value="<?php echo $currency_layout;?>" size="20" maxlength="25" />
 		<br/><span class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' );?>
-		<br/><span class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro.', 'tcp' );?>
+		<br/><span class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' );?>
 		<br/><span class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files).', 'tcp' );?>
 		</span><?php
 	}
 
-	function show_currency() {
-		global $thecartpress;
-		$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';?>
+	function show_currency( $currency = false ) {
+		if ( ! $currency ) {
+			global $thecartpress;
+			$currency = isset( $thecartpress->settings['currency'] ) ? $thecartpress->settings['currency'] : 'EUR';
+		}?>
 		<select id="currency" name="tcp_settings[currency]">
 		<?php $currencies = Currencies::getAll();
 		foreach( $currencies as $currency_row ) :?>
@@ -209,27 +242,35 @@ class TCP_Settings {
 		</select><?php
 	}
 	
-	function show_decimal_currency() {
-		global $thecartpress;
-		$decimal_currency = isset( $thecartpress->settings['decimal_currency'] ) ? $thecartpress->settings['decimal_currency'] : '2';?>
+	function show_decimal_currency( $decimal_currency = false) {
+		if ( ! $decimal_currency ) {
+			global $thecartpress;
+			$decimal_currency = isset( $thecartpress->settings['decimal_currency'] ) ? $thecartpress->settings['decimal_currency'] : '2';
+		}?>
 		<input type="text" id="decimal_currency" name="tcp_settings[decimal_currency]" value="<?php echo $decimal_currency;?>" size="1" maxlength="1" /><?php
 	}
 
-	function show_decimal_point_separator() {
-		global $thecartpress;
-		$decimal_point = isset( $thecartpress->settings['decimal_point'] ) ? $thecartpress->settings['decimal_point'] : '.';?>
+	function show_decimal_point( $decimal_point = false ) {
+		if ( ! $decimal_point ) {
+			global $thecartpress;
+			$decimal_point = isset( $thecartpress->settings['decimal_point'] ) ? $thecartpress->settings['decimal_point'] : '.';
+		} ?>
 		<input type="text" id="decimal_point" name="tcp_settings[decimal_point]" value="<?php echo $decimal_point;?>" size="1" maxlength="1" /><?php
 	}
 
-	function show_thousands_separator() {
-		global $thecartpress;
-		$thousands_separator = isset( $thecartpress->settings['thousands_separator'] ) ? $thecartpress->settings['thousands_separator'] : ',';?>
+	function show_thousands_separator( $thousands_separator = false) {
+		if ( ! $thousands_separator ) {
+			global $thecartpress;
+			$thousands_separator = isset( $thecartpress->settings['thousands_separator'] ) ? $thecartpress->settings['thousands_separator'] : ',';
+		} ?>
 		<input type="text" id="thousands_separator" name="tcp_settings[thousands_separator]" value="<?php echo $thousands_separator;?>" size="1" maxlength="1" /><?php
 	}
 
-	function show_unit_weight() {
-		global $thecartpress;
-		$unit_weight = isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';?>
+	function show_unit_weight( $unit_weight = false ) {
+		if ( ! $unit_weight ) {
+			global $thecartpress;
+			$unit_weight = isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
+		}?>
 		<select id="unit_weight" name="tcp_settings[unit_weight]">
 			<option value="kg." <?php selected( 'kg.', $unit_weight );?>><?php _e( 'Kilogram (kg)', 'tcp' );?></option>
 			<option value="gr." <?php selected( 'gr.', $unit_weight );?>><?php _e( 'Gram (gr)', 'tcp' );?></option>
@@ -262,7 +303,9 @@ class TCP_Settings {
 	function show_hide_downloadable_menu() {
 		global $thecartpress;
 		$hide_downloadable_menu = isset( $thecartpress->settings['hide_downloadable_menu'] ) ? $thecartpress->settings['hide_downloadable_menu'] : false;?>
-		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> /><?php
+		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> />
+		<br /><span class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' );?></span>
+		<br /><span class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' );?></span><?php
 	}
 
 	function show_downloadable_path() {
@@ -272,13 +315,21 @@ class TCP_Settings {
 		<br /><span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory.', 'tcp' );?></span>
 		<br /><span class="description"><?php printf( __( 'This is the path for this page in your server: %s' , 'tcp' ), dirname( __FILE__ ) );?></span><?php
 	}
+	
+	function show_continue_url() {
+		global $thecartpress;
+		$continue_url = isset( $thecartpress->settings['continue_url'] ) ? $thecartpress->settings['continue_url'] : '';?>
+		<input type="text" id="continue_url" name="tcp_settings[continue_url]" value="<?php echo $continue_url;?>" size="50" maxlength="255" /><?php
+	}
 
 	function show_countries_section() {
 	}
 
-	function show_country() {//default country
-		global $thecartpress;
-		$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';?>
+	function show_country( $country = false ) {//default country
+		if ( ! $country ) {
+			global $thecartpress;
+			$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
+		}?>
 		<select id="country" name="tcp_settings[country]">
 		<?php $countries = Countries::getAll();
 		foreach( $countries as $item ) : ?>
@@ -392,7 +443,9 @@ class TCP_Settings {
 		$tax_for_shipping = isset( $thecartpress->settings['tax_for_shipping'] ) ? $thecartpress->settings['tax_for_shipping'] : '';?>
 		<select id="tax_for_shipping" name="tcp_settings[tax_for_shipping]">
 			<option value="0"><?php _e( 'No tax', 'tcp' );?></option>
-		<?php $taxes = Taxes::getAll();
+		<?php 
+		require_once( dirname( dirname( __FILE__ ) ) . '/daos/Taxes.class.php' );
+		$taxes = Taxes::getAll();
 		foreach ( $taxes as $tax ) : ?>
 			<option value="<?php echo $tax->tax_id;?>" <?php selected( $tax->tax_id, $tax_for_shipping );?>><?php echo $tax->title;?></option>
 		<?php endforeach;?>
@@ -445,7 +498,9 @@ class TCP_Settings {
 		global $thecartpress;
 		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Checkout notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea>
-		<br /><span class="description"><?php _e( 'If the checkout notice is blank the checkout doesn\'t show the Accept conditions check.', 'tcp' );?></span><?php
+		<br /><span class="description"><?php _e( 'If the checkout notice is blank, the Checkout page will try to use the template class called "tcp_checkout_notice"', 'tcp' );?></span>
+		<br /><span class="description"><?php _e( 'The template class allows to create a multilingual notice', 'tcp' );?></span>
+		<br /><span class="description"><?php _e( 'If the checkout notice is blank and no template is assigned, then the Checkout page will not show the "Accept conditions" check.', 'tcp' );?></span><?php
 	}
 
 	function show_checkout_successfully_message() {
@@ -469,21 +524,21 @@ class TCP_Settings {
 
 	function show_category_rewrite() {
 		global $thecartpress;
-		$category_rewrite = isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'category';?>
+		$category_rewrite = isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category';?>
 		<input type="text" id="category_rewrite" name="tcp_settings[category_rewrite]" value="<?php echo $category_rewrite;?>" size="50" maxlength="255" />
 		<br /><span class="description"><?php printf( __( 'Category base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'category_base' ) );?></span><?php
 	}
 
 	function show_tag_rewrite() {
 		global $thecartpress;
-		$tag_rewrite = isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'tag';?>
+		$tag_rewrite = isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag';?>
 		<input type="text" id="tag_rewrite" name="tcp_settings[tag_rewrite]" value="<?php echo $tag_rewrite;?>" size="50" maxlength="255" />
 		<br /><span class="description"><?php printf( __( 'Tag base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'tag_base' ) );?></span><?php
 	}
 
 	function show_supplier_rewrite() {
 		global $thecartpress;
-		$supplier_rewrite = isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'supplier';?>
+		$supplier_rewrite = isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier';?>
 		<input type="text" id="supplier_rewrite" name="tcp_settings[supplier_rewrite]" value="<?php echo $supplier_rewrite;?>" size="50" maxlength="255" /><?php
 	}
 
@@ -498,19 +553,32 @@ class TCP_Settings {
 		global $thecartpress;
 		$use_tcp_loops = isset( $thecartpress->settings['use_tcp_loops'] ) ? $thecartpress->settings['use_tcp_loops'] : true;?>
 		<input type="checkbox" id="use_tcp_loops" name="tcp_settings[use_tcp_loops]" value="yes" <?php checked( true, $use_tcp_loops );?> />
-		<br /><span><?php _e( 'To show the TCP Loops settings of TheCartPress', 'tcp' );?></span><?php
+		<br /><span><?php _e( 'To show the Loops Settings of TheCartPress', 'tcp' );?></span><?php
 	}
 
-	function show_load_default_styles() {
+	function show_load_default_buy_button_style() {
 		global $thecartpress;
-		$load_default_styles = isset( $thecartpress->settings['load_default_styles'] ) ? $thecartpress->settings['load_default_styles'] : true;?>
-		<input type="checkbox" id="load_default_styles" name="tcp_settings[load_default_styles]" value="yes" <?php checked( true, $load_default_styles );?> /><?php
+		$load_default_buy_button_style = isset( $thecartpress->settings['load_default_buy_button_style'] ) ? $thecartpress->settings['load_default_buy_button_style'] : true;?>
+		<input type="checkbox" id="load_default_buy_button_style" name="tcp_settings[load_default_buy_button_style]" value="yes" <?php checked( true, $load_default_buy_button_style );?> /><?php
+	}
+
+	function show_load_default_shopping_cart_checkout_style() {
+		global $thecartpress;
+		$load_default_shopping_cart_checkout_style = isset( $thecartpress->settings['load_default_shopping_cart_checkout_style'] ) ? $thecartpress->settings['load_default_shopping_cart_checkout_style'] : true;?>
+		<input type="checkbox" id="load_default_shopping_cart_checkout_style" name="tcp_settings[load_default_shopping_cart_checkout_style]" value="yes" <?php checked( true, $load_default_shopping_cart_checkout_style );?> /><?php
+	}
+
+	function show_load_default_loop_style() {
+		global $thecartpress;
+		$load_default_loop_style = isset( $thecartpress->settings['load_default_loop_style'] ) ? $thecartpress->settings['load_default_loop_style'] : true;?>
+		<input type="checkbox" id="load_default_loop_style" name="tcp_settings[load_default_loop_style]" value="yes" <?php checked( true, $load_default_loop_style );?> /><?php
 	}
 
 	function show_products_per_page() {
 		global $thecartpress;
 		$products_per_page = isset( $thecartpress->settings['products_per_page'] ) ? $thecartpress->settings['products_per_page'] : '10';?>
 		<input type="text" id="products_per_page" name="tcp_settings[products_per_page]" value="<?php echo $products_per_page;?>" class="small-text" maxlength="4" /><?php
+		_e( 'products', 'tcp');
 	}
 
 	function show_see_buy_button_in_content() {
@@ -519,10 +587,26 @@ class TCP_Settings {
 		<input type="checkbox" id="see_buy_button_in_content" name="tcp_settings[see_buy_button_in_content]" value="yes" <?php checked( true, $see_buy_button_in_content );?> /><?php
 	}
 
+	function show_align_buy_button_in_content() {
+		global $thecartpress;
+		$align_buy_button_in_content = isset( $thecartpress->settings['align_buy_button_in_content'] ) ? $thecartpress->settings['align_buy_button_in_content'] : 'north';?>
+		<select id="see_buy_button_in_content" name="tcp_settings[align_buy_button_in_content]">
+			<option value="north" <?php selected( 'north', $align_buy_button_in_content );?>><?php _e( 'North', 'tcp' );?></option>
+			<option value="south" <?php selected( 'south', $align_buy_button_in_content );?>><?php _e( 'South', 'tcp' );?></option><?php
+	}
+
 	function show_see_buy_button_in_excerpt() {
 		global $thecartpress;
 		$see_buy_button_in_excerpt = isset( $thecartpress->settings['see_buy_button_in_excerpt'] ) ? $thecartpress->settings['see_buy_button_in_excerpt'] : false;?>
 		<input type="checkbox" id="see_buy_button_in_excerpt" name="tcp_settings[see_buy_button_in_excerpt]" value="yes" <?php checked( true, $see_buy_button_in_excerpt );?> /><?php
+	}
+
+	function show_align_buy_button_in_excerpt() {
+		global $thecartpress;
+		$align_buy_button_in_excerpt = isset( $thecartpress->settings['align_buy_button_in_excerpt'] ) ? $thecartpress->settings['align_buy_button_in_excerpt'] : 'north';?>
+		<select id="see_buy_button_in_excerpt" name="tcp_settings[align_buy_button_in_excerpt]">
+			<option value="north" <?php selected( 'north', $align_buy_button_in_excerpt );?>><?php _e( 'North', 'tcp' );?></option>
+			<option value="south" <?php selected( 'south', $align_buy_button_in_excerpt );?>><?php _e( 'South', 'tcp' );?></option><?php
 	}
 
 	function show_see_price_in_content() {
@@ -642,12 +726,16 @@ class TCP_Settings {
 		$input['currency_layout']			= isset( $input['currency_layout'] ) ? $input['currency_layout'] : ''; //'%1$s%2$s (%3$s)';
 		$input['decimal_point']				= isset( $input['decimal_point'] ) ? $input['decimal_point'] : '.';
 		$input['thousands_separator']		= isset( $input['thousands_separator'] ) ? $input['thousands_separator'] : ',';
-		$input['legal_notice']				=  wp_filter_nohtml_kses( $input['legal_notice'] );
-		$input['from_email']				=  wp_filter_nohtml_kses( $input['from_email'] );
-		$input['emails']					=  wp_filter_nohtml_kses( $input['emails'] );
+		$input['legal_notice']				=  wp_filter_nohtml_kses( isset( $input['legal_notice'] ) ? $input['legal_notice'] : '' );
+		$input['from_email']				=  wp_filter_nohtml_kses( isset( $input['from_email'] ) ? $input['from_email'] : '' );
+		$input['emails']					=  wp_filter_nohtml_kses( isset( $input['emails'] ) ? $input['emails'] : '' );
 		$input['stock_management']			= isset( $input['stock_management'] ) ? $input['stock_management'] == 'yes' : false;
 		$input['hide_downloadable_menu']	= isset( $input['hide_downloadable_menu'] ) ? $input['hide_downloadable_menu'] == 'yes' : false;
-		$input['disable_shopping_cart']		= isset( $input['disable_shopping_cart'] ) ? $input['disable_shopping_cart'] == 'yes' : false;
+		$input['disable_ecommerce']			= isset( $input['disable_ecommerce'] ) ? $input['disable_ecommerce'] == 'yes' : false;
+		if ( $input['disable_ecommerce'] )
+			$input['disable_shopping_cart'] = true;
+		else
+			$input['disable_shopping_cart']	= isset( $input['disable_shopping_cart'] ) ? $input['disable_shopping_cart'] == 'yes' : false;
 		$input['enabled_wish_list']			= isset( $input['enabled_wish_list'] ) ? $input['enabled_wish_list'] == 'yes' : false;
 		$input['user_registration']			= isset( $input['user_registration'] ) ? $input['user_registration'] == 'yes' : false;
 
@@ -672,14 +760,17 @@ class TCP_Settings {
 		$input['see_price_in_excerpt']		= isset( $input['see_price_in_excerpt'] ) ? $input['see_price_in_excerpt'] == 'yes' : false;
 		$input['see_image_in_content']		= isset( $input['see_image_in_content'] ) ? $input['see_image_in_content'] == 'yes' : false;
 		$input['see_image_in_excerpt']		= isset( $input['see_image_in_excerpt'] ) ? $input['see_image_in_excerpt'] == 'yes' : false;
-		$input['downloadable_path']			= wp_filter_nohtml_kses( $input['downloadable_path'] );
-		$input['product_rewrite']			= wp_filter_nohtml_kses( $input['product_rewrite'] );
-		$input['category_rewrite']			= wp_filter_nohtml_kses( $input['category_rewrite'] );
-		$input['tag_rewrite']				= wp_filter_nohtml_kses( $input['tag_rewrite'] );
-		$input['supplier_rewrite']			= wp_filter_nohtml_kses( $input['supplier_rewrite'] );
-		$input['checkout_successfully_message']	= wp_filter_nohtml_kses( $input['checkout_successfully_message'] );
+		$input['downloadable_path']			= wp_filter_nohtml_kses( isset( $input['downloadable_path'] ) ? $input['downloadable_path'] : '' );
+		$input['continue_url']				= wp_filter_nohtml_kses( isset( $input['continue_url'] ) ? $input['continue_url'] : '' );
+		$input['product_rewrite']			= wp_filter_nohtml_kses( isset( $input['product_rewrite'] ) ? $input['product_rewrite'] : '' );
+		$input['category_rewrite']			= wp_filter_nohtml_kses( isset( $input['category_rewrite'] ) ? $input['category_rewrite'] : '' );
+		$input['tag_rewrite']				= wp_filter_nohtml_kses( isset( $input['tag_rewrite'] ) ? $input['tag_rewrite'] : '' );
+		$input['supplier_rewrite']			= wp_filter_nohtml_kses( isset( $input['supplier_rewrite'] ) ? $input['supplier_rewrite'] : '' );
 		$input['use_tcp_loops']				= isset( $input['use_tcp_loops'] ) ? $input['use_tcp_loops'] == 'yes' : false;
-		$input['load_default_styles']		= isset( $input['load_default_styles'] ) ? $input['load_default_styles'] == 'yes' : false;
+		$input['checkout_successfully_message']				= wp_filter_nohtml_kses( isset( $input['checkout_successfully_message'] ) ? $input['checkout_successfully_message'] : '' );
+		$input['load_default_buy_button_style']				= isset( $input['load_default_buy_button_style'] ) ? $input['load_default_buy_button_style'] == 'yes' : false;
+		$input['load_default_shopping_cart_checkout_style']	= isset( $input['load_default_shopping_cart_checkout_style'] ) ? $input['load_default_shopping_cart_checkout_style'] == 'yes' : false;
+		$input['load_default_loop_style']					= isset( $input['load_default_loop_style'] ) ? $input['load_default_loop_style'] == 'yes' : false;
 		$input['hide_visibles']				= isset( $input['hide_visibles'] ) ? $input['hide_visibles'] == 'yes' : false;
 		$input['show_back_end_label']		= isset( $input['show_back_end_label'] ) ? $input['show_back_end_label'] == 'yes' : false;
 		$input['search_engine_activated']	= isset( $input['search_engine_activated'] ) ? $input['search_engine_activated'] == 'yes' : false;

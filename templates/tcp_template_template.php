@@ -18,9 +18,9 @@
 
 $tcp_template_classes = array(); //to store the template classes
 
-function tcp_add_template_class( $template_class ) {
+function tcp_add_template_class( $template_class, $description = '' ) {
 	global $tcp_template_classes;
-	$tcp_template_classes[$template_class] = 0;
+	$tcp_template_classes[$template_class] = $description;
 }
 
 function tcp_remove_template_class( $template_class ) {
@@ -35,21 +35,25 @@ function tcp_get_templates_classes() {
 
 function tcp_do_template( $template_class, $echo = true ) {
 	$args = array(
-		'post_type'		=> TemplateCustomPostType::$TEMPLATE,
-		'posts_per_page'=> -1,
-		'meta_query'	=> array(
+		'post_type'			=> TemplateCustomPostType::$TEMPLATE,
+		'posts_per_page'	=> -1,
+		'suppress_filters'	=> true,
+		'meta_query'		=> array(
 			array(
-				'key'		=> 'tcp_template_class',
-				'value'		=> $template_class,
-				'compare'	=> '='
+				'key'			=> 'tcp_template_class',
+				'value'			=> $template_class,
+				'compare	'	=> '='
 			)
 		)
-	 );
+	);
 	$query = new WP_Query( $args );
 	$html = '';
 	while ( $query->have_posts() ) {
 		$query->the_post();
-		$html .= apply_filters( 'the_content', get_the_content() );
+		$post_id = tcp_get_current_id( get_the_ID(), TemplateCustomPostType::$TEMPLATE );
+		$post = get_post( $post_id );
+		//$html .= apply_filters( 'the_content', get_the_content() );
+		$html .= apply_filters( 'the_content', $post->post_content );
 	}
 	wp_reset_postdata();
 	wp_reset_query();

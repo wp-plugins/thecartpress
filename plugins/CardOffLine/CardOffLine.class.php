@@ -17,7 +17,7 @@
  */
 
 
-class CardOffLine extends TCP_Plugin {
+class TCPCardOffLine extends TCP_Plugin {
 
 	function getTitle() {
 		return 'Card off-line payment';
@@ -33,32 +33,42 @@ class CardOffLine extends TCP_Plugin {
 			<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
 		</th><td>
 			<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : '';?></textarea>
+		</td></tr>
+		<tr valign="top">
+		<th scope="row">
+			<label for="store_part_number"><?php _e( 'Store part of the number', 'tcp' );?>:</label>
+		</th><td>
+			<input type="checkbox" id="store_part_number" name="store_part_number" <?php checked( $data['store_part_number'] ); ?> value="yes" />
+			<span class="description"><?php _e( 'The credit card will be stored as 9999 xxxx xxxx 9999', 'tcp' ); ?></span>
 		</td></tr><?php
 	}
 
 	function saveEditFields( $data ) {
 		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
+		$data['store_part_number'] = isset( $_REQUEST['store_part_number'] ) ? $_REQUEST['store_part_number'] == 'yes': false;
 		return $data;
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		return __( 'Pay By Credit Card.', 'tcp' );
+		$data = tcp_get_payment_plugin_data( 'TCPCardOffLine', $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
+		return $title;
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data		= tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$notify_url	= plugins_url( 'thecartpress/plugins/CardOffLine/notify.php' );
-		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() ); //home_url();
-		$return_url = add_query_arg( 'order_id', $order_id, $return_url );
-		
-		$new_status	= $data['new_status'];?>
+		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$notify_url			= plugins_url( 'thecartpress/plugins/CardOffLine/notify.php' );
+		$return_url			= add_query_arg( 'tcp_checkout', 'ok', get_permalink() );
+		$return_url			= add_query_arg( 'order_id', $order_id, $return_url );
+		$store_part_number	= isset( $data['store_part_number'] ) ? $data['store_part_number'] : false;
+		$new_status			= $data['new_status'];?>
 		<p><?php _e( 'Off line payment:', 'tcp' );?></p>
-		<p><?php echo $data['notice'];?></p>
+		<?php if ( isset( $data['notice'] ) ) echo '<p>', $data['notice'], '</p>'; ?>
 		<form name="tcp_offline_payment" id="tcp_offline_payment" action="<?php echo $notify_url;?>" method="post">
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
 		<input type="hidden" name="return_url" value="<?php echo $return_url;?>" />
 		<input type="hidden" name="new_status" value="<?php echo $new_status;?>" />
-		<table class="tcp_card_offline">
+		<table class="tcp_card_offline_payment">
 		<tbody>
 			<tr valign="top">
 		<th scope="row" class="tcp_card_holder">
@@ -72,11 +82,16 @@ class CardOffLine extends TCP_Plugin {
 			<label for="card_number_1"><?php _e( 'Card number', 'tcp' );?>:</label>
 		</th><td class="tcp_card_number">
 			<input type="text" id="card_number_1" name="card_number_1" size="4" maxlength="4" />
+			<?php if ( ! $store_part_number ) : ?>
 			<input type="text" id="card_number_2" name="card_number_2" size="4" maxlength="4" />
 			<input type="text" id="card_number_3" name="card_number_3" size="4" maxlength="4" />
+			<?php else : ?>
+			<input type="text" id="card_number_2" name="card_number_2" size="4" value="xxxx" readonly="true" />
+			<input type="text" id="card_number_3" name="card_number_3" size="4" value="xxxx" readonly="true" />
+			<?php endif; ?>
 			<input type="text" id="card_number_4" name="card_number_4" size="4" maxlength="4" />
 			<label><?php _e( 'cvc', 'tcp' );?>: <input type="text" id="cvc" name="cvc" size="4" maxlength="4" /></label>
-			<br/><span class="error" id="tcp_error_offline"></span>
+			<p class="error tcp_error" id="tcp_error_offline"></p>
 		</td></tr>
 		<tr valign="top">
 		<th scope="row" class="tcp_expiration_date">

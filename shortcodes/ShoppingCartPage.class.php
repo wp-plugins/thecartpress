@@ -22,7 +22,9 @@ class ShoppingCartPage {
 		global $thecartpress;
 		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$shoppingCart		= TheCartPress::getShoppingCart();
-		if ( $shoppingCart->isEmpty() ) : ?>
+		ob_start(); ?>
+		<div class="tcp_shipping_cart_page">
+		<?php if ( $shoppingCart->isEmpty() ) : ?>
 			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
 		<?php else : ?>
 			<div class="entry-content" id="shopping_cart">
@@ -44,18 +46,18 @@ class ShoppingCartPage {
 				<tr class="tcp_cart_product_row">
 					<td class="tcp_cart_name">
 					<?php if ( tcp_is_visible( $item->getPostId() ) ) : ?>
-<!--						<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId() ) );?>"><?php echo get_the_title( tcp_get_current_id( $item->getPostId() ) );?>-->
-						<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId() ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
+<!--					<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId(), get_post_type( $item->getPostId() ) ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>-->
+						<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId(), get_post_type( $item->getPostId() ) ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
 					<?php else :
 						$post_id = tcp_get_the_parent( $item->getPostId() );
 						if ( $post_id > 0 ) : ?>
-							<a href="<?php echo get_permalink( tcp_get_current_id( $post_id ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
+							<a href="<?php echo get_permalink( tcp_get_current_id( $post_id, get_post_type( $post_id ) ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
 						<?php else : ?>
-							<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId() ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
+							<a href="<?php echo get_permalink( tcp_get_current_id( $item->getPostId(), get_post_type( $item->getPostId() ) ) );?>"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?>
 						<?php endif;
 					endif;?>
-					<?php //if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( tcp_get_current_id( $item->getOption1Id() ) );?>
-					<?php //if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( tcp_get_current_id( $item->getOption2Id() ) );?></a>
+					<?php //if ( $item->getOption1Id() > 0 ) echo '<br />', get_the_title( tcp_get_current_id( $item->getOption1Id(), get_post_type( $item->getOption1Id() ) ) );?>
+					<?php //if ( $item->getOption2Id() > 0 ) echo '-', get_the_title( tcp_get_current_id( $item->getOption2Id(), get_post_type( $item->getOption1Id() ) ) );?></a>
 					</td>
 					<td class="tcp_cart_unit_price">
 						<?php echo tcp_format_the_price( $item->getUnitPrice() );?>
@@ -115,15 +117,15 @@ class ShoppingCartPage {
 			</tbody>
 			</table>
 			<ul class="tcp_sc_links">
-				<li class="tcp_sc_checkout"><a href="<?php echo get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
-				<li class="tcp_sc_continue"><a href="<?php echo get_home_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
-<!--				<li class="tcp_sc_continue"><a href="javascript:history.go(-1)"><?php _e( 'Continue shopping', 'tcp' );?></a></li>-->
-<!--				<li class="tcp_sc_delete_all"><form method="post"><input type="submit" id="tcp_delete_shopping_cart" name="tcp_delete_shopping_cart" value="<?php _e( 'Delete shopping cart', 'tcp' );?>"/></form></li>-->
+				<li class="tcp_sc_checkout"><a href="<?php tcp_the_checkout_url();?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
+				<li class="tcp_sc_continue"><a href="<?php tcp_the_continue_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
 				<?php do_action( 'tcp_shopping_cart_after_links' );?>
 			</ul>
-		</div>
-	<?php endif;
-	do_action( 'tcp_shopping_cart_after_cart' );
+		</div><!-- .entry-content -->
+		<?php endif;
+		do_action( 'tcp_shopping_cart_after_cart' ); ?>
+		</div><!-- .tcp_shipping_cart_page -->
+		<?php return ob_get_clean();
 	}
 }
 ?>

@@ -39,16 +39,25 @@ if ( $sitepress ) {
 //End Multilingua support
 
 //Returns the title of a product (with/without options)
-function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $html = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$title = '<span class="tcp_nested_title">' . get_the_title( $post_id ) . '</span>';
+	$title = '';
+	if ( $html ) $title .= '<span class="tcp_nested_title">';
+	$title .= get_the_title( $post_id );
+	if ( $html ) $title .= '</span>';
 	if ( $option_1_id > 0 ) {
 		$option_1_id = tcp_get_current_id( $option_1_id, 'tcp_product_option' );
-		$title .= ' <span class="tcp_nested_option_1">' . get_the_title( $option_1_id ) . '</span>';
+		if ( $html ) $title .= ' <span class="tcp_nested_option_1">';
+		else $title .= ' - ';
+		$title .= get_the_title( $option_1_id );
+		if ( $html ) $title .= '</span>';
 	}
 	if ( $option_2_id > 0 ) {
 		$option_2_id = tcp_get_current_id( $option_2_id, 'tcp_product_option' );
-		$title .= ' <span class="tcp_nested_option_1">' . get_the_title( $option_2_id ) . '</span>';
+		if ( $html ) $title .= ' <span class="tcp_nested_option_1">';
+		else $title .= ' - ';
+		$title .= get_the_title( $option_2_id );
+		if ( $html ) $title .= '</span>';
 	}
 	if ( ! tcp_is_visible( $post_id ) ) {
 		$post_id = tcp_get_the_parent( $post_id );
@@ -57,7 +66,7 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	return $title;
 }
 
-function tcp_the_title( $echo = true ) {
+function tcp_the_title( $echo = true, $html = true ) {
 	$title = tcp_get_the_title();
 	if ( $echo )
 		echo $title;
@@ -124,7 +133,7 @@ function tcp_the_unit_weight( $echo = true ) {
 		return $unit_weight;
 }
 
-function tcp_get_the_unit_weight( $echo = true ) {
+function tcp_get_the_unit_weight() {
 	return tcp_the_unit_weight( false );
 }
 
@@ -146,10 +155,6 @@ function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 
 function tcp_get_the_buy_button( $post_id = 0 ) {
 	return tcp_the_buy_button( $post_id, false );
-}
-
-function tcp_the_order_panel() {
-	OrderPanel::show();
 }
 
 /**
@@ -213,20 +218,10 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 		$price = tcp_get_the_price_with_tax( $post_id );
 		$label = tcp_format_the_price( $price );
 	} else { //GROUPED
-		require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
-		$products = RelEntities::select( $post_id, $type );
-		if ( is_array( $products ) && count( $products ) > 0 ) {
-			$min = 99999999999;//(float)tcp_get_the_price( $products[0]->id_to );
-			$max = 0;
-			foreach( $products as $product ) {
-				if ( ! tcp_is_exclude_range( $product->id_to ) ) {
-					$price = (float)tcp_get_the_price( $product->id_to );
-					if ( $price > 0 ) {
-						if ( $price < $min ) $min = $price;
-						if ( $price > $max ) $max = $price;
-					}
-				}
-			}
+		$min_max = tcp_get_min_max_price( $post_id );
+		if ( is_array( $min_max ) ) {
+			$min = $min_max[0];
+			$max = $min_max[1];
 			if ( $min != $max ) {
 				$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
 			} else {
@@ -241,11 +236,65 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 }
 
 /**
- * Calculates the tax and return the price with or without tax
+ * Returns the (min, max) price for grouped products
+ * since 1.1.0
+ */
+function tcp_get_min_max_price( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+	$products = RelEntities::select( $post_id, 'GROUPED' );
+	if ( is_array( $products ) && count( $products ) > 0 ) {
+		$min = 99999999999;
+		$max = 0;
+		foreach( $products as $product ) {
+			if ( ! tcp_is_exclude_range( $product->id_to ) ) {
+				$price = (float)tcp_get_the_price( $product->id_to );
+				if ( $price > 0 ) {
+					if ( $price < $min ) $min = $price;
+					if ( $price > $max ) $max = $price;
+				}
+			}
+		}
+		return array( $min, $max );
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Returns the min price of a grouped product
+ * since 1.1.0
+ */
+function tcp_get_min_price( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$min_max = tcp_get_min_max_price( $post_id );
+	if ( is_array( $min_max ) && count( $min_max ) == 2 ) {
+		return $min_max[0];
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * Returns the min price of a grouped product
+ * since 1.1.0
+ */
+function tcp_get_max_price( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$min_max = tcp_get_min_max_price( $post_id );
+	if ( is_array( $min_max ) && count( $min_max ) == 2 ) {
+		return $min_max[1];
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * Calculates the tax and returns the price with tax
  * since 1.0.9
  */
 function tcp_get_the_price_with_tax( $post_id, $price = false ) {
-	if ( ! $price ) $price = tcp_get_the_price( $post_id );
+	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_display_prices_with_taxes() ) {
 		if ( tcp_is_prices_include_tax() ) {
 			return $price;
@@ -267,7 +316,7 @@ function tcp_get_the_price_with_tax( $post_id, $price = false ) {
  * since 1.0.9
  */
 function tcp_get_the_price_without_tax( $post_id, $price = false ) {
-	if ( ! $price ) $price = tcp_get_the_price( $post_id );
+	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_prices_include_tax() ) {
 		$tax = tcp_get_the_tax( $post_id );
 		$price_without_tax = $price / (1 + $tax / 100 );
@@ -278,7 +327,7 @@ function tcp_get_the_price_without_tax( $post_id, $price = false ) {
 }
 
 function tcp_get_the_tax_amount( $post_id, $price = false ) {
-	if ( ! $price ) $price = tcp_get_the_price( $post_id );
+	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	$tax = tcp_get_the_tax( $post_id );
 	if ( tcp_is_prices_include_tax() ) {
 		return $price * $tax / ( 100 + $tax );
@@ -318,6 +367,41 @@ function tcp_get_the_tax_id( $post_id = 0 ) {
 		return 0;//-1;
 	else
 		return $tax_id;
+}
+
+/**
+ * Returns the tax title
+ */
+function tcp_get_the_tax_type( $post_id = 0 ) {
+	$tax_id = tcp_get_the_meta( 'tcp_tax_id', $post_id );
+	if ( ! $tax_id ) {
+		return '';
+	} else {
+		require_once( dirname( dirname ( __FILE__ ) ) . '/daos/Taxes.class.php' );
+		$tax_type = Taxes::get( $tax_id );
+		if ( $tax_type )
+			return $tax_type->title;
+		else
+			return '';
+	}
+}
+
+function tcp_posted_on() {
+
+	printf( __( '<span class="tcp_posted_on"><span class="sep">Posted on </span><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s" pubdate>%4$s</time></a></span>', 'tcp' ),
+		esc_url( get_permalink() ),
+		esc_attr( get_the_time() ),
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() )
+	);
+}
+
+function tcp_posted_by() {
+	printf( __( '<span class="tcp_by_author"><span class="sep">by </span> <span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s" rel="author">%3$s</a></span>', 'tcp' ),
+		esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
+		sprintf( esc_attr__( 'View all posts by %s', 'tcp' ), get_the_author() ),
+		esc_html( get_the_author() )
+	);
 }
 
 /**
@@ -373,8 +457,9 @@ function tcp_get_tax_region() {
  */
 function tcp_calculate_tax_for_shipping( $cost ) {
 	$tax = tcp_get_the_shipping_tax();
+	if ( $tax == 0) return 0;
 	if ( tcp_is_shipping_cost_include_tax() )
-		return $cost;
+		return $cost * $tax / ($tax + 100);
 	else
 		return $cost * $tax / 100;
 }
@@ -386,6 +471,7 @@ function tcp_calculate_tax_for_shipping( $cost ) {
 function tcp_get_the_shipping_cost_without_tax( $cost ) {
 	if ( tcp_is_shipping_cost_include_tax() ) {
 		$tax = tcp_get_the_shipping_tax();
+		if ( $tax == 0 ) return $cost;
 		$cost_without_tax = $cost / ( 1 + $tax / 100 );
 		return $cost_without_tax;
 	} else {
@@ -398,16 +484,22 @@ function tcp_get_the_shipping_cost_without_tax( $cost ) {
  * since 1.0.9
  */
 function tcp_get_the_shipping_tax() {
-	global $thecartpress;
-	$tax_id = isset( $thecartpress->settings['tax_for_shipping'] ) ? $thecartpress->settings['tax_for_shipping'] : 0;
+	$tax_id = tcp_get_the_shipping_tax_id();
 	if ( $tax_id == 0 ) return 0;
 	require_once( dirname( dirname ( __FILE__ ) ) . '/daos/TaxRates.class.php' );
 	$country_iso = tcp_get_tax_country();
 	$region_iso = tcp_get_tax_region();
 	$tax = TaxRates::find( $country_iso, $region_iso, 'all', $tax_id );
-	$tax = apply_filters( 'tcp_get_the_tax_for_shipping', $tax );
+	$tax = apply_filters( 'tcp_get_the_shipping_tax', $tax );
 	if ( $tax ) return $tax->rate; //$tax->label
 	else return 0;
+}
+
+function tcp_get_the_shipping_tax_id() {
+	global $thecartpress;
+	$tax_id = isset( $thecartpress->settings['tax_for_shipping'] ) ? $thecartpress->settings['tax_for_shipping'] : 0;
+	$tax_id = apply_filters( 'tcp_get_the_shipping_tax_id', $tax_id );
+	return $tax_id; 
 }
 
 function tcp_is_shipping_cost_include_tax() {
@@ -453,6 +545,7 @@ function tcp_get_display_zero_tax_subtotal() {
 	global $thecartpress;
 	return isset( $thecartpress->settings['display_zero_tax_subtotal'] ) ? $thecartpress->settings['display_zero_tax_subtotal'] : false;
 }
+
 /**
  * Returns true if the  tax summary must be displayed in the cart/order tables
  */
@@ -461,59 +554,11 @@ function display_zero_tax_subtotal() {
 	return isset( $thecartpress->settings['display_zero_tax_subtotal'] ) ? $thecartpress->settings['display_zero_tax_subtotal'] : false;
 }
 
-/*function tcp_the_tax( $before = '', $after = '', $echo = true ) {
-	$tax = tcp_number_format( tcp_get_the_tax() );
-	$tax = $before . $tax . $after;
-	if ( $echo )
-		echo $tax;
-	else
-		return $tax;
-}
-
-function tcp_get_the_tax( $post_id = 0 ) {
-	$tax = (float)tcp_get_the_meta( 'tcp_tax', $post_id );
-	return apply_filters( 'tcp_get_the_tax', $tax, $post_id );
-}
-
-function tcp_get_the_tax_label( $post_id = 0 ) {
-	$tax = tcp_get_the_meta( 'tcp_tax_label', $post_id );
-	$tax = apply_filters( 'tcp_get_the_tax_label', $tax, $post_id );
-	return $tax;
-}
-*/
 //TODO Deprecated 1.1
 function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
 	return '';
-	//$tax = tcp_get_the_tax_label();
-	//$tax = $before . $tax . $after;
-	//if ( $echo )
-	//	echo $tax;
-	//else
-	//	return $tax;
 }
-//TODO Deprecated 1.1
-/*
-function tcp_the_price_tax( $before = '', $after = '', $echo = true ) {
-	$price = tcp_get_the_price_tax();
-	if ( strlen( $price ) == 0 ) return;
-	else $price = tcp_number_format( $price );
-	$price = $before . $price . $after;
-	if ( $echo )
-		echo $price;
-	else
-		return $price;
-}
-
-function tcp_get_the_price_tax( $post_id = 0 ) {
-	$price = tcp_get_the_meta( 'tcp_price', $post_id );
-	if ( ! $price ) return;
-	if ( strlen( $price ) == 0 ) $price = 0;
-	$tax = tcp_get_the_meta( 'tcp_tax', $post_id );
-	if ( ! $tax ) return;
-	if ( strlen( $tax ) == 0 ) $tax = 0;
-	if ( $tax > 0 ) $price = $price * 1 + ($tax / 100);
-	return apply_filters( 'tcp_get_the_price_tax', $price, $post_id );
-}*/
+//TODO
 
 function tcp_get_the_product_type( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_type', $post_id );
@@ -619,7 +664,7 @@ function tcp_is_downloadable( $post_id = 0 ) {
 }
 
 function tcp_is_exclude_range( $post_id = 0 ) {
-	$default_id = tcp_get_default_id( $post_id );
+	$default_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 	return tcp_get_the_meta( 'tcp_exclude_range', $default_id );
 }
 
@@ -636,9 +681,19 @@ function tcp_get_the_file( $post_id = 0 ) {
 }
 
 function tcp_set_the_file( $post_id, $upload_file ) {
-	$default_id = tcp_get_default_id( $post_id );
+	$default_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 	if ( $default_id != $post_id ) $post_id = $default_id;
 	update_post_meta( $post_id, 'tcp_download_file', $upload_file );
+}
+
+function tcp_get_the_parent( $post_id, $rel_type = 'GROUPED' ) {
+	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+	return RelEntities::getParent( $post_id, $rel_type );
+}
+
+function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
+	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+	return RelEntities::getParents( $post_id, $rel_type );
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
@@ -655,14 +710,40 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$meta_value = get_post_meta( $post_id, $meta_key, true );
 	if ( ! $meta_value ) {
-		$default_id = tcp_get_default_id( $post_id );
+		$default_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 		if ( $default_id != $post_id ) $meta_value = get_post_meta( $default_id, $meta_key, true );
 	}
 	$meta_value = apply_filters( 'tcp_get_the_meta', $meta_value, $meta_key, $post_id );
 	return $meta_value;
 }
 
-//to select in a multiple select control
+//Saleable_post_type
+function tcp_get_saleable_post_types() {
+	$saleable_post_types = array( 'tcp_product' );
+	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
+	return $saleable_post_types;
+}
+
+function tcp_is_saleable_post_type( $post_type ) {
+	$saleable_post_types = tcp_get_saleable_post_types();
+	return in_array( $post_type, $saleable_post_types );
+}
+
+function tcp_is_saleable_taxonomy( $taxonomy ) {
+	$tax = get_taxonomy( $taxonomy );
+	if ( isset( $tax->object_type[0] ) ) 
+		return tcp_is_saleable_post_type( $tax->object_type[0] );
+	else
+		return false;
+}
+
+//
+// Utils and Tools
+//
+
+/**
+ * Selected in a multiple select control
+ */
 function tcp_selected_multiple( $values, $value, $echo = true ) {
 	if ( in_array( $value, $values ) )
 		if ( $echo )
@@ -671,11 +752,16 @@ function tcp_selected_multiple( $values, $value, $echo = true ) {
 			return ' selected="true"';
 }
 
-function tcp_get_the_parent( $post_id, $rel_type = 'GROUPED' ) {
-	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
-	return RelEntities::getParent( $post_id, $rel_type );
+/**
+ * Checked in a multiple select control
+ */
+function tcp_checked_multiple( $values, $value, $echo = true ) {
+	if ( in_array( $value, $values ) )
+		if ( $echo )
+			echo ' checked="true"';
+		else
+			return ' checked="true"';
 }
-
 /**
  * Formats a float number to a string number to show in the screen
  * @since 1.0.7
@@ -711,5 +797,36 @@ function tcp_get_remote_ip() {
 		//$host = @gethostbyaddr( $_SERVER['REMOTE_ADDR'] );
 	}
 	return $ip;
+}
+
+/**
+ * Returns a subfix from a request action
+ * For example: if $_REQUEST['action_1'] exists,
+ *  tcp_is_request('action'] -> '_1'
+ *  tcp_is_request('other_action'] -> false
+ */
+function tcp_is_request( $name ) {
+	foreach( $_REQUEST as $req => $value ) {
+		$pos = strpos( $req, $name );
+		if ( $pos !== false && $pos == 0 ) {
+		//if ( strpos( $req, $action ) !== false ) {
+			$index = substr( $req, strlen( $name ) );
+			return strlen( $index ) > 0 ?  $index : false;
+		}
+	}
+	return false;
+}
+/**
+ * Returns values from request with the same prefix
+ */
+function tcp_get_request_array( $name ) {
+	$values = array();
+	foreach( $_REQUEST as $req => $value ) {
+		$pos = strpos( $req, $name );
+		if ( $pos !== false && $pos == 0 ) {
+			$values[] = $value;
+		}
+	}
+	return $values;
 }
 ?>

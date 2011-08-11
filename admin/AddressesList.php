@@ -61,18 +61,19 @@ if ( is_user_logged_in() ) {
 	<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Street', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Default', 'tcp' );?></th>
-	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th></tr>
+	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
+</tr>
 </tfoot>
 <tbody>
 
 <?php if ( count( $addresses ) == 0 ) : ?>
 	<tr><td colspan="5"><?php _e( 'The list of addresses is empty', 'tcp' );?></td></tr>
 <?php else :
-	 foreach( $addresses as $address ) : ?>
+	foreach( $addresses as $address ) : ?>
 	<tr>
-		<td><?php echo $address->name;?></td>
-		<td><?php echo $address->firstname, ' ', $address->lastname;?></td>
-		<td><?php echo $address->street, ' ', $address->city, ' (', $address->region, ')';?></td>
+		<td><?php echo stripslashes( $address->name );?></td>
+		<td><?php echo stripslashes( $address->firstname ), ' ', stripslashes( $address->lastname );?></td>
+		<td><?php echo stripslashes( $address->street ), ' ', stripslashes( $address->city ), ' (', stripslashes( $address->region ), ')';?></td>
 		<?php if ( $address->default_shipping == 'Y' ) $default = __( 'Shipping', 'tcp' );
 		else $default = '';
 		if ( $address->default_billing == 'Y' ) $default .= ' ' . __( 'Billing', 'tcp' );?>

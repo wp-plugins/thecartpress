@@ -65,10 +65,17 @@ class Countries {
 	}
 
 	private static function getIso( $language = 'en' ) {
-		if ( $language == 'en' || $language == 'es' || $language == 'de' || $language == 'fr' )
+		if ( $language == 'en' || $language == 'es' || $language == 'de' || $language == 'fr' ) {
 			return $language;
-		else
-			return 'en';
+		} else {
+			global $wpdb;
+			$row = $wpdb->get_row( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_countries WHERE field = %s' ), $language );
+			if ( $row ) {
+				return $language;
+			} else {
+				return 'en';
+			}
+		}
 	}
 
 	static function initData() {

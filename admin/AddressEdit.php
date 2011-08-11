@@ -90,13 +90,13 @@ function tcp_show_error_msg( $error_array, $id ) {
 
 function tcp_get_value( $id, $echo = true ) {
 	$res = '';
-	if ( isset( $_REQUEST[$id] ) )
+	if ( isset( $_REQUEST[$id] ) ) {
 		$res = $_REQUEST[$id];
-	else {
+	} else {
 		global $address;
-		if ( isset( $address->$id ) )
-			$res = $address->$id;
+		if ( isset( $address->$id ) ) $res = $address->$id;
 	}
+	if ( ! is_numeric( $res ) ) $res = stripslashes( $res );
 	if ( $echo )
 		echo $res;
 	else
@@ -132,13 +132,31 @@ function tcp_get_value( $id, $echo = true ) {
 		<input type="text" id="lastname" name="lastname" value="<?php tcp_get_value( 'lastname' );?>" size="40" maxlength="100" />
 		<?php tcp_show_error_msg( $error_address, 'lastname' );?></td>
 	</tr>
+	
+	<tr valign="top">
+	<th scope="row"><label for="custom_id"><?php _e( 'Custom id', 'tcp' );?>:</label></th>
+	<td>
+		<input type="text" id="custom_id" name="custom_id" value="<?php tcp_get_value( 'custom_id' );?>" size="20" maxlength="20" />
+		<span class="description"><?php _e( 'This id is useful to connect the customers with third software', 'tcp' );?></span></td>
+	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="company"><?php _e( 'Company', 'tcp' );?>:</label></th>
 	<td>
 		<input type="text" id="company" name="company" value="<?php tcp_get_value( 'company' );?>" size="20" maxlength="50" />
 		<?php tcp_show_error_msg( $error_address, 'company' );?></td>
 	</tr>
-
+	<tr valign="top">
+	<th scope="row"><label for="tax_id_number"><?php _e( 'Tax id number', 'tcp' );?>:</label></th>
+	<td>
+		<input type="text" id="tax_id_number" name="tax_id_number" value="<?php tcp_get_value( 'tax_id_number' );?>" size="20" maxlength="30" />
+		<?php tcp_show_error_msg( $error_address, 'tax_id_number' );?></td>
+	</tr>
+	<tr valign="top">
+	<th scope="row"><label for="company_id"><?php _e( 'Company id', 'tcp' );?>:</label></th>
+	<td>
+		<input type="text" id="company_id" name="company_id" value="<?php tcp_get_value( 'company_id' );?>" size="20" maxlength="30" />
+		<span class="description"><?php _e( 'This id is useful to connect the companies with third software', 'tcp' );?></span></td>
+	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="country_id"><?php _e( 'Country', 'tcp' );?>:</label></th>
 	<td>

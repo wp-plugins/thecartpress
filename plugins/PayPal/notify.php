@@ -23,6 +23,7 @@ $custom = split( '-', $custom );
 $order_id = $custom[0];
 $test_mode = $custom[1] == '1';
 $new_status = $custom[2];
+$transaction_id = isset( $_REQUEST['txn_id'] ) ? $_REQUEST['txn_id'] : '';
 
 require_once('paypal.class.php' );
 $p = new paypal_class( $test_mode );
@@ -38,17 +39,17 @@ require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
 if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'ok' ) {
 	if ( $p->validate_ipn() ) {
 		if ( Orders::isDownloadable( $order_id ) ) {
-			Orders::editStatus( $order_id, Orders::$ORDER_COMPLETED );
+			Orders::editStatus( $order_id, Orders::$ORDER_COMPLETED, $transaction_id );
 		} else {
-			Orders::editStatus( $order_id, $new_status );
+			Orders::editStatus( $order_id, $new_status, $transaction_id );
 		}
 		ActiveCheckout::sendMails( $order_id );
 	} else {
-		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, 'Error IPN (PayPal).' );
+		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $transaction_id, 'Error IPN (PayPal).' );
 		ActiveCheckout::sendMails( $order_id, true, 'Error Paypal' );
 	}
 } else {
-	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, 'Cancel PayPal.' );
+	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $transaction_id, 'Cancel PayPal.' );
 	ActiveCheckout::sendMails( $order_id, true, 'Error Paypal' );
 }
 ?>

@@ -29,25 +29,28 @@ class OrdersSummaryDashboard {
 			$customer_id = $current_user->ID;
 		}	
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';?>
+		<div class="alignright browser-icon">
+		<a href="http://thecartpress.com/" target="_blank"><img alt="" src="../wp-content/plugins/thecartpress/images/tcp_logo.png"></a>
+		</div>
 <div class="table table_content">
 	<table width="100%"><tbody>
 	<tr class="first">
-		<td class="first b"><a href="<?php echo $admin_path . 'OrdersList.php&status=PENDING';?>"><?php echo Orders::getCountPendingOrders( $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path . 'OrdersList.php&status=PENDING';?>"><?php _e( 'Pending orders', 'tcp' );?></a></td>
+		<td class="first b"><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=PENDING';?>"><?php echo Orders::getCountPendingOrders( $customer_id );?></a></td>
+		<td class="t "><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=PENDING';?>"><?php _e( 'Pending orders', 'tcp' );?></a></td>
 	</tr><tr>
-		<td class="first b"><a href="<?php echo $admin_path . 'OrdersList.php&status=PROCESSING';?>"><?php echo Orders::getCountProcessingOrders( $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path . 'OrdersList.php&status=PROCESSING';?>"><?php _e( 'Processing orders', 'tcp' );?></a></td>
+		<td class="first b"><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=PROCESSING';?>"><?php echo Orders::getCountProcessingOrders( $customer_id );?></a></td>
+		<td class="t "><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=PROCESSING';?>"><?php _e( 'Processing orders', 'tcp' );?></a></td>
 	</tr><tr>
-		<td class="first b"><a href="<?php echo $admin_path . 'OrdersList.php&status=COMPLETED';?>"><?php echo Orders::getCountCompletedOrders( $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path . 'OrdersList.php&status=COMPLETED';?>"><?php _e( 'Completed orders', 'tcp' );?></a></td>
+		<td class="first b"><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=COMPLETED';?>"><?php echo Orders::getCountCompletedOrders( $customer_id );?></a></td>
+		<td class="t "><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=COMPLETED';?>"><?php _e( 'Completed orders', 'tcp' );?></a></td>
 	</tr>
 	</tr><tr>
-		<td class="first b"><a href="<?php echo $admin_path . 'OrdersList.php&status=SUSPENDED';?>"><?php echo Orders::getCountSuspendedOrders( $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path . 'OrdersList.php&status=SUSPENDED';?>"><?php _e( 'Suspended orders', 'tcp' );?></a></td>
+		<td class="first b"><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=SUSPENDED';?>"><?php echo Orders::getCountSuspendedOrders( $customer_id );?></a></td>
+		<td class="t "><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=SUSPENDED';?>"><?php _e( 'Suspended orders', 'tcp' );?></a></td>
 	</tr>
 	</tr><tr>
-		<td class="first b"><a href="<?php echo $admin_path . 'OrdersList.php&status=CANCELLED';?>"><?php echo Orders::getCountCancelledOrders( $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path . 'OrdersList.php&status=CANCELLED';?>"><?php _e( 'Cancelled orders', 'tcp' );?></a></td>
+		<td class="first b"><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=CANCELLED';?>"><?php echo Orders::getCountCancelledOrders( $customer_id );?></a></td>
+		<td class="t "><a href="<?php echo $admin_path . 'OrdersListTable.class.php&status=CANCELLED';?>"><?php _e( 'Cancelled orders', 'tcp' );?></a></td>
 	</tr>
 	</tbody></table>
 </div><?php

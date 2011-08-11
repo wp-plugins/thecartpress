@@ -20,39 +20,60 @@ class ActiveCheckout {//shortcode
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
+			TheCartPress::removeShoppingCart();
 			$html = tcp_do_template( 'tcp_checkout_end', false );
+			if ( strlen( $html ) == 0 ) {
+				$html .= '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_successfully">';
+				$checkout_successfully_message = isset( $thecartpress->settings['checkout_successfully_message'] ) ? $thecartpress->settings['checkout_successfully_message'] : '';
+				if ( strlen( $checkout_successfully_message ) > 0 ) {
+					$html .= '<p>' . str_replace ( "\n" , '<p></p>', $checkout_successfully_message ) . '</p>';
+				} else {
+					$html .= '<span class="tcp_checkout_ok">' . __( 'The order has been completed successfully.', 'tcp' ) . '</span>';
+				}
+				$html .= '</div>' . "\n" . '</div>';
+			}
 			$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
+			if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
+			$html .= '<br>';
+			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
+			unset( $_SESSION['order_page'] );//TODO
+			$html .= '<br />';
+			$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
+			do_action( 'tcp_checkout_end', $order_id );
+			return $html;
+		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
+			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
 			if ( strlen( $html ) > 0 ) {
 				echo $html;
 			} else {
-				echo '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_successfully">';
-				$checkout_successfully_message = isset( $thecartpress->settings['checkout_successfully_message'] ) ? $thecartpress->settings['checkout_successfully_message'] : '';
-				if ( strlen( $checkout_successfully_message ) > 0 )
-					echo '<p>', str_replace ( "\n" , '<p></p>', $checkout_successfully_message ), '</p>';
-				else
-					 echo '<span class="tcp_checkout_ok">' . __( 'The order has been completed successfully.', 'tcp' ) . '</span>';
-				echo '</div>' . "\n" . '</div>';
+				$html = '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_unsuccessfully">';
+				$checkout_unsuccessfully_message = __( 'Transaction Error. The order has been cancelled', 'tcp');
+				if ( strlen( $checkout_unsuccessfully_message ) > 0 ) {
+					$html .= '<p>' . str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message ). '</p>';
+				} else {
+					$html .= '<span class="tcp_checkout_ko">' . __( 'Transaction Error. The order has been cancelled', 'tcp') . '</span>';
+				}
+				$html .= '<br/>' . sprintf( __( 'Retry again the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
+				$html .= '</div>' . "\n" . '</div>';
 			}
-			if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
-			echo $_SESSION['order_page'];
-			//unset( $_SESSION['order_page'] );//TODO
-			echo '<br />';
-			echo '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
-			do_action( 'tcp_checkout_end', $order_id );
-			return;
+			return $html;
 		} elseif ( $shoppingCart->isEmpty() ) { 
-			echo '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
+			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
 		} else {
+			$param = array(
+				'validate'	=> true,
+				'msg'		=> '',
+			);
+			$param = apply_filters( 'tcp_checkout_validate_before_enter', $param );
+			if ( ! $param['validate'] ) {
+				require_once( dirname( dirname( __FILE__ ) ) . '/shortcodes/ShoppingCartPage.class.php' );
+				$shoppingCartPage = new ShoppingCartPage();
+				echo $shoppingCartPage->show( $param['msg'] );
+				return;
+			}
 			require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
-			//Default checkout boxes
-			require_once( dirname( __FILE__ ) . '/TCPSigninBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPBillingBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPShippingBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPShippingMethodsBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPPaymentMethodsBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPCartBox.class.php' );
-			require_once( dirname( __FILE__ ) . '/TCPNoticeBox.class.php' );
-			new TCPCheckoutManager();
+			$checkoutManager = new TCPCheckoutManager();
+			return $checkoutManager->show();
 		}
 	}
 

@@ -24,7 +24,7 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : ''
 $instance = isset( $_REQUEST['instance'] ) ? (int)$_REQUEST['instance'] : 0;
 
 if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
-	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
+	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id, array() );
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
@@ -38,8 +38,8 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	}
 	$plugin_data[$instance]['new_status'] = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : Orders::$ORDER_PENDING;
 	$plugin = tcp_get_plugin( $plugin_id );
-	$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance] );
-	$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $instance );
+	$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance], $instance );
+	$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $plugin_id, $instance );
 	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Instance saved', 'tcp' );?>
@@ -61,7 +61,7 @@ $instance_href	= $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plug
 ?>
 
 <div class="wrap">
-<h2><?php echo __( 'Plugin', 'tcp' );?>: <?php echo $plugin->getTitle();?></h2>
+<h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle();?></h2>
 <ul class="subsubsub">
 	<li><a href="<?php echo $admin_path;?>PluginsList.php&plugin_type=<?php echo $plugin_type?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
 </ul><!-- subsubsub -->

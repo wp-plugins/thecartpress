@@ -72,7 +72,7 @@ class TaxRates {
 //echo '2-';var_dump( $row ); echo '<br>';
 		if ( $row ) return $row;
 		$row = $wpdb->get_row( $wpdb->prepare( $sql, $country_iso, $region_id, 'all', $tax_id ) );
-//echo '3';var_dump( $row ); echo '<br>';
+//echo '3-';var_dump( $row ); echo '<br>';
 		if ( $row ) return $row;
 		$row = $wpdb->get_row( $wpdb->prepare( $sql, $country_iso, $region_id, 'all', -1 ) );
 //echo '4-';var_dump( $row ); echo '<br>';

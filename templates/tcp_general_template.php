@@ -16,6 +16,42 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function tcp_the_shopping_cart_url( $echo = true ) {
+	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) );
+	if ( $echo )
+		echo $url;
+	else
+		return $url;
+}
+
+function tcp_get_the_shopping_cart_url() {
+	return tcp_the_shopping_cart_url( false );
+}
+
+function tcp_the_checkout_url( $echo = true ) {
+	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );
+	if ( $echo )
+		echo $url;
+	else
+		return $url;
+}
+
+function tcp_get_the_checkout_url() {
+	return tcp_the_checkout_url( false );
+}
+
+function tcp_the_continue_url( $echo = true) {
+	global $thecartpress;
+	$url = isset( $thecartpress->settings['continue_url'] ) && strlen( $thecartpress->settings['continue_url'] ) > 0 ? $thecartpress->settings['continue_url'] : get_home_url();
+	if ( $echo ) echo $url;
+	else return $url;
+}
+
+function tcp_get_the_continue_url() {
+	return tcp_the_continue_url( false );
+}
+
+
 /**
  * Display Taxonomy Tree.
  *
@@ -78,7 +114,7 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 	$shoppingCart		= TheCartPress::getShoppingCart();
 	$summary = '<ul class="tcp_shopping_cart_resume">';
-	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotal() ) . '</li>';
+	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotal( true ) ) . '</li>';
 	
 	$discount = $shoppingCart->getAllDiscounts();
 	if ( $discount > 0 )
@@ -89,20 +125,20 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 
 	if ( $stock_management && isset( $args['see_stock_notice'] ) ? $args['see_stock_notice'] : false )
 		if ( ! $shoppingCart->isThereStock() )
-			$summary .= '<li><span class="tcp_no_stock__nough">' . printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) ) . '</span></li>';
+			$summary .= '<li><span class="tcp_no_stock_nough">' . printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), tcp_get_the_shopping_cart_url() ) . '</span></li>';
 
 	$see_weight = isset( $args['see_weight'] ) ? $args['see_weight'] : false;
 	if ( $see_weight && $shoppingCart->getWeight() > 0 ) 
 		$summary .= '<li><span class="tcp_resumen_weight">' . __( 'Weigth', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getWeight() ) . '&nbsp;' . $unit_weight . '</li>';
 
 	if ( isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true )
-		$summary .= '<li><a href="' . get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) ) . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
+		$summary .= '<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="' . tcp_get_the_shopping_cart_url() . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
 
 	if ( isset( $args['see_checkout'] ) ? $args['see_checkout'] : true )
-		$summary .= '<li><a href="' . get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) . '">' . __( 'Checkout', 'tcp' ) . '</a></li>';
+		$summary .= '<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="' . tcp_get_the_checkout_url() . '">' . __( 'Checkout', 'tcp' ) . '</a></li>';
 
 	if ( isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : false ) 
-		$summary .= '<li><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="' . __( 'Delete shopping cart', 'tcp' ) . '"/></form></li>';
+		$summary .= '<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="' . __( 'Delete shopping cart', 'tcp' ) . '"/></form></li>';
 	$summary = apply_filters( 'tcp_get_shopping_cart_summary', $summary, $args );
 	$summary .= '</ul>';
 	if ( $echo )
@@ -166,4 +202,72 @@ function tcp_get_number_of_attachments( $post_id = 0 ) {
 		return 0;
 }
 
+function tcp_get_sorting_fields() {
+	$sorting_fields = array(
+		array(
+			'value'	=> 'order',
+			'title'	=> __( 'Default', 'tcp' ),
+		),
+		array(
+			'value'	=> 'price',
+			'title' => __( 'Price', 'tcp' ),
+		),
+		array(
+			'value'	=> 'title',
+			'title'	=> __( 'Title', 'tcp' ),
+		),
+		array(
+			'value'	=> 'author',
+			'title'	=> __( 'Author', 'tcp' ),
+		),
+		array(
+			'value'	=> 'date',
+			'title'	=> __( 'Date', 'tcp' ),
+		),
+		array(
+			'value'	=> 'comment_count',
+			'title'	=> __( 'Popular', 'tcp' ),
+		)
+	);
+	return apply_filters( 'tcp_sorting_fields', $sorting_fields );
+}
+
+function tcp_the_sort_panel() {
+	$order_type = isset( $_REQUEST['tcp_order_type'] ) ? $_REQUEST['tcp_order_type'] : false;
+	$order_desc = isset( $_REQUEST['tcp_order_desc'] ) ? $_REQUEST['tcp_order_desc'] : false;
+	$settings = get_option( 'ttc_settings' );
+	if ( ! $order_type || ! $order_desc ) {
+		$order_type = isset( $settings['order_type'] ) ? $settings['order_type'] : 'date';
+		$order_desc = isset( $settings['order_desc'] ) ? $settings['order_desc'] : 'desc';
+	}
+	$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
+	$sorting_fields = tcp_get_sorting_fields(); ?>
+<div class="tcp_order_panel">
+	<form method="post">
+	<span class="tcp_order_type">
+	<label for="tcp_order_type">
+		<?php _e( 'Order by', 'tcp' ); ?>:&nbsp;
+		<select id="tcp_order_type" name="tcp_order_type">
+		<?php foreach( $sorting_fields as $sorting_field ) : 
+			if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
+			<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
+			<?php endif;
+		endforeach; ?>
+		</select>
+	</label>
+	</span>
+	<span class="tcp_order_desc">
+	<label>
+		<input type="radio" name="tcp_order_desc" id="tcp_order_asc" value="asc" <?php checked( $order_desc, 'asc' );?>/>
+		<?php _e( 'Asc.', 'tcp' ); ?>
+	</label>
+	<label>
+		<input type="radio" name="tcp_order_desc" id="tcp_order_desc" value="desc" <?php checked( $order_desc, 'desc' );?>/>
+		<?php _e( 'Desc.', 'tcp' ); ?>
+	</label>
+	<span class="tcp_order_submit"><input type="submit" name="tcp_order_by" value="<?php _e( 'Order', 'tcp' );?>" /></span>
+	</span>
+	</form>
+</div><?php
+}
 ?>

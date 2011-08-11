@@ -32,10 +32,9 @@ $api_login_id	= $data['api_login_id'];
 $md5_hash		= $data['md5_hash'];
 //$x_login		= $_REQUEST['x_login'];
 $x_md5_hash		= strtolower( $_REQUEST['x_MD5_Hash'] );
-$x_trans_id	 	= $_REQUEST['x_trans_id'];
 $x_amount		= $_REQUEST['x_amount'];
 $x_md5_hash		= $_REQUEST['x_MD5_Hash'];
-$x_trans_id		= $_REQUEST['x_trans_id'];
+$x_trans_id		= isset( $_REQUEST['x_trans_id'] ) ? $_REQUEST['x_trans_id'] : 'no id';
 $order_id		= $_REQUEST['order_id'];
 $fingerprint	= strtolower( md5( $md5_hash . $api_login_id . $x_trans_id . $x_amount ) );
 
@@ -44,19 +43,19 @@ if ( $fingerprint != $x_md5_hash ) {
 	$response_code = isset( $_REQUEST['x_response_code'] ) ? $_REQUEST['x_response_code'] : 0;//1 ->OK, 2->declined, else->error
 	if ( $response_code == 1) {
 		if ( Orders::isDownloadable( $order_id ) ) {
-			Orders::editStatus( $order_id, Orders::$ORDER_COMPLETED );
+			Orders::editStatus( $order_id, Orders::$ORDER_COMPLETED, $x_trans_id );
 		} else {
-			Orders::editStatus( $order_id, $new_status );
+			Orders::editStatus( $order_id, $new_status, $x_trans_id );
 		}
 		ActiveCheckout::sendMails( $order_id );
 	} else {
 		$response_reason_text = isset( $_REQUEST['x_response_reason_text'] ) ? $_REQUEST['x_response_reason_text'] : 'no reason';
 		$response_reason_code = isset( $_REQUEST['x_response_reason_code'] ) ? $_REQUEST['x_response_reason_code'] : 0;
-		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $response_reason_text . '(' . $response_reason_code . ')' );
+		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $x_trans_id, $response_reason_text . '(' . $response_reason_code . ')' );
 		ActiveCheckout::sendMails( $order_id, true, 'Autorized.net Error: (' . $response_reason_code . ') ' . $response_reason_text );
 	}
 } else {
-	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, __( 'Error notifiying Authotized.net payment', 'tcp' ) );
+	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $x_trans_id, __( 'Error notifiying Authotized.net payment', 'tcp' ) );
 }
 $redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>

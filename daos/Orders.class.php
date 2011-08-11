@@ -43,6 +43,7 @@ class Orders {
 		  `payment_name`			varchar(255)		NOT NULL,
   		  `payment_method`			varchar(100)		NOT NULL default \'\',
 		  `payment_amount`			decimal(13, 2)		NOT NULL default 0,
+		  `transaction_id`			varchar(250)		NOT NULL default \'\',
 		  `comment`					varchar(250)		NOT NULL,
 		  `comment_internal`		varchar(250)		NOT NULL default \'\',
 		  `code_tracking`			varchar(50)			NOT NULL,
@@ -117,6 +118,7 @@ class Orders {
 			'payment_name'			=> $order['payment_name'],
 			'payment_method'		=> $order['payment_method'],
 			'payment_amount'		=> $order['payment_amount'],
+			'transaction_id'		=> $order['transaction_id'],
 			'comment'				=> $order['comment'],
 			'comment_internal'		=> $order['comment_internal'],
 			'code_tracking'			=> $order['code_tracking'],
@@ -153,34 +155,35 @@ class Orders {
 		), array('%s', '%d', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s')
+				 '%s', '%s', '%s', '%s')
 		);
 		return $wpdb->insert_id;
 	}
 
 	static function getCountPendingOrders( $customer_id = -1 ) {
-		return Orders::getCountOrdersByStatus( $customer_id, Orders::$ORDER_PENDING );
+		return Orders::getCountOrdersByStatus( Orders::$ORDER_PENDING, $customer_id );
 	}
 
 	static function getCountProcessingOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( $customer_id, Orders::$ORDER_PROCESSING );
+		return Orders::getCountOrdersByStatus( Orders::$ORDER_PROCESSING, $customer_id );
 	}
 
 	static function getCountCompletedOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( $customer_id, Orders::$ORDER_COMPLETED );
+		return Orders::getCountOrdersByStatus( Orders::$ORDER_COMPLETED, $customer_id );
 	}
 
 	static function getCountCancelledOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( $customer_id, Orders::$ORDER_CANCELLED );
+		return Orders::getCountOrdersByStatus( Orders::$ORDER_CANCELLED, $customer_id );
 	}
 
 	static function getCountSuspendedOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( $customer_id, Orders::$ORDER_SUSPENDED );
+		return Orders::getCountOrdersByStatus( Orders::$ORDER_SUSPENDED, $customer_id );
 	}
 
-	static function getCountOrdersByStatus( $customer_id = -1, $status = 'PENDING' ) {
+	static function getCountOrdersByStatus( $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;
-		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where status=%s';
+		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where 1=1';
+		if ( $status != '' ) $sql .= ' and status=%s';
 		if ( $customer_id > -1 ) $sql .= ' and customer_id = %d';
 		return $wpdb->get_var( $wpdb->prepare( $sql, $status, $customer_id ) );
 	}
@@ -193,7 +196,7 @@ class Orders {
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, customer_id, status, post_id, price, tax,
 				qty_ordered, shipping_amount, discount_amount, payment_name,
-				payment_method, payment_amount, order_currency_code,
+				payment_method, payment_amount, transaction_id, order_currency_code,
 				code_tracking, is_downloadable, max_downloads, expires_at, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
 				$wpdb->prefix . 'tcp_orders_details od
@@ -210,7 +213,37 @@ class Orders {
 		$sql .= ' order by created_at desc';
 		return $wpdb->get_results( $sql );
 	}
-	
+
+	static function getOrdersEx( $paged, $per_page = 20, $status = 'PENDING', $customer_id = -1 ) {
+		global $wpdb;
+		$sql = 'select order_id, shipping_firstname, shipping_lastname, created_at, customer_id,
+				status, shipping_method, shipping_amount, discount_amount, payment_name,
+				payment_method, payment_amount, transaction_id, order_currency_code,
+				code_tracking, billing_email
+				from ' . $wpdb->prefix . 'tcp_orders ';
+				//o left join ' .
+				//$wpdb->prefix . 'tcp_orders_details od
+				//on o.order_id = od.order_id';
+		if ( strlen( $status ) > 0 ) {
+			if ( $customer_id > -1 ) {
+				$sql = $wpdb->prepare( $sql . ' where status = %s and customer_id = %d', $status, $customer_id );
+			} else {
+				$sql = $wpdb->prepare( $sql . ' where status = %s', $status );
+			}
+		} elseif ( $customer_id > -1 ) {
+			$sql = $wpdb->prepare( $sql . ' where customer_id = %d', $customer_id );
+		}
+		$sql .= ' order by created_at desc';
+		$sql = $wpdb->prepare( $sql . ' limit %d, %d', ($paged-1) * $per_page, $per_page );
+		return $wpdb->get_results( $sql );
+	}
+
+	static function getOrderByTransactionId( $payment_method, $transaction_id ) {
+		global $wpdb;
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_orders where payment_method = %s and transaction_id = %s';
+		return $wpdb->get_row( $wpdb->prepare( $sql, $payment_method, $transaction_id ) );
+	}
+
 	static function quickEdit( $order_id, $new_status, $new_code_tracking ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
@@ -221,7 +254,7 @@ class Orders {
 			array(
 				'order_id'		=> $order_id,
 			), 
-			array( '%s', '%s' ), array( '%d' ) );
+			array( '%s', '%s', '%s' ), array( '%d' ) );
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
@@ -241,18 +274,25 @@ class Orders {
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
-	static function editStatus( $order_id, $new_status, $comment_internal = '' ) {
+	static function editStatus( $order_id, $new_status, $transaction_id, $comment_internal = '' ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
 				'status'			=> $new_status,
+				'transaction_id'	=> $transaction_id,
 				'comment_internal'	=> $comment_internal,
 			),
 			array(
 				'order_id'		=> $order_id,
 			), 
-			array( '%s', '%s' ), array( '%d' ) );
+			array( '%s', '%s', '%s' ), array( '%d' ) );
 		Orders::edit_downloadable_details( $order_id, $new_status );
+	}
+
+	static function getStatus( $order_id ) {
+		global $wpdb;
+		$sql = "select status from {$wpdb->prefix}tcp_orders where order_id = %d";
+		return $wpdb->get_var( $wpdb->prepare( $sql, $order_id ) );
 	}
 
 	static function edit_downloadable_details( $order_id, $new_status ) {

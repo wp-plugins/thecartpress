@@ -17,7 +17,7 @@
  */
 
 /**
- * Shows a mp3 player based on flash
+ * Shows a mp3 player based on HTML5 or flash
  * @see http://flash-mp3-player.net/players/multi/documentation/
  */
 class MP3Player {
@@ -49,19 +49,25 @@ class MP3Player {
 	 * @param $formato posible values BIG, SMALL
 	 */
 	static function showItemPlayer( $format, $mp3, $title ) {
-		if ( count( $mp3 ) == 0)
+		if ( count( $mp3 ) == 0 ) {
 			return;
-		elseif ( $format == MP3Player::$BIG ) {
-			$height = 20 + count($mp3) * 10;
-			return '<object type="application/x-shockwave-flash" data="' . plugins_url( '/swfs/player_mp3_multi.swf', dirname( __FILE__ ) ) . '" width="200" height="' . $height . '">
-						<param name="movie" value="player_mp3_multi.swf" />
-						<param name="FlashVars" value="mp3=' . $mp3 . '&' . 'title=' . $title . '&showvolume=1&showlist=1&height=100" />
-					</object>';
-		} elseif ( $format == MP3Player::$SMALL )
-			return '<object width="150" height="20" data="' . plugins_url( '/swfs/player_mp3_multi.swf', dirname( __FILE__ ) ) . '" type="application/x-shockwave-flash">
+		} else {
+			$html = '<audio controls><source src="' . $mp3 . '" type="audio/mpeg" />';
+			if ( $format == MP3Player::$BIG ) {
+				$height = 20 + count($mp3) * 10;
+				$html .= '<object type="application/x-shockwave-flash" data="' . plugins_url( '/swfs/player_mp3_multi.swf', dirname( __FILE__ ) ) . '" width="200" height="' . $height . '">
+							<param name="movie" value="player_mp3_multi.swf" />
+							<param name="FlashVars" value="mp3=' . $mp3 . '&' . 'title=' . $title . '&showvolume=1&showlist=1&height=100" />
+						</object>';
+			} elseif ( $format == MP3Player::$SMALL ) {
+				return '<object width="150" height="20" data="' . plugins_url( '/swfs/player_mp3_multi.swf', dirname( __FILE__ ) ) . '" type="application/x-shockwave-flash">
 						<param name="movie" value="player_mp3_multi.swf" />
 					<param value="mp3=' . $mp3 . '&showstop=0&width=100&showslider=0" name="FlashVars">
 					</object>';
+			}
+			$html .= '</audio>';
+			return $html;
+		}
 	}
 }
 ?>

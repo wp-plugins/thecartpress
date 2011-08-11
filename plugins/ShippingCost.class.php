@@ -55,8 +55,9 @@ class ShippingCost extends TCP_Plugin {
 				'2' => 6
 			),
 		);
-//var_dump( $costs ); echo '<br><br>';
-//var_dump( $zones );
+//echo '<br><br>zones: ';var_dump( $zones );
+//echo '<br><br>costs: ';var_dump( $costs );
+//echo '<br><br>ranges: ';var_dump( $ranges );
 		if ( isset( $_REQUEST['tcp_copy_from_instance'] ) ) {
 			$plugin_data = get_option( 'tcp_plugins_data_shi_' . get_class( $this ) );
 			$data = reset( $plugin_data );
@@ -64,31 +65,65 @@ class ShippingCost extends TCP_Plugin {
 			$zones = $data['zones'];
 			$costs = $data['costs'];?>
 			<div id="message" class="updated"><p>
-				<?php _e( 'Remember to <strong>save</strong> before delete other rows or columns', 'tcp' );?>
+				<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' );?>
 			</p></div><?php
 			$stored_data = false;
 		} elseif ( isset( $_REQUEST['tcp_insert_range'] ) && isset( $_REQUEST['tcp_insert_range_value'] ) ) {
 			$new_range = (int)$_REQUEST['tcp_insert_range_value'];
-			$ranges[] = $new_range;
 			foreach( $zones as $z => $zone )
-				$costs[$new_range][$z] = 0;
-			sort( $ranges );?>
+				$new_cost[] = 0;
+			$new_ranges = array();
+			$new_costs = array();
+			$insert_new_range = false;
+			foreach( $ranges as $r => $range ) {
+				if ( $range < $new_range ) {
+					$new_ranges[] = $range;
+					$new_costs[] = $costs[$r];
+				} elseif ( ! $insert_new_range ) {
+					$new_ranges[] = $new_range;
+					$new_ranges[] = $range;
+					$new_costs[] = $new_cost;
+					$new_costs[] = $costs[$r];
+					$insert_new_range = true;
+				} else {
+					$new_ranges[] = $range;
+					$new_costs[] = $costs[$r];
+				}
+			}
+			if ( ! $insert_new_range ) {
+				$new_ranges[] = $new_range;
+				$new_costs[] = $new_cost;
+			}
+			$ranges = $new_ranges;
+			$costs = $new_costs;?>
 			<div id="message" class="updated"><p>
-				<?php _e( 'Remember to <strong>save</strong> before delete other rows or columns', 'tcp' );?>
+				<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' );?>
 			</p></div><?php
 			$stored_data = false;
 		} elseif ( isset( $_REQUEST['tcp_add_zone'] ) ) {
 			$zones[] = array();
 			foreach( $ranges as $range )
 				$costs[$range][] = 0;
-		} else
-			foreach( $_REQUEST as $index => $value )
+			$stored_data = false;
+			?><div id="message" class="updated"><p>
+				<?php _e( 'Remember to <strong>save</strong> to add the new zone', 'tcp' );?>
+			</p></div><?php
+		} else {
+			foreach( $_REQUEST as $index => $value ) {
 				if ( $this->startsWith( $index, 'tcp_delete_range-' ) ) {
 					$names = explode( '-', $index );
-					$range = $names[1];
-					unset( $ranges[$range] );?>
+					$range_to_delete = $names[1];
+					
+					$new_ranges = array();
+					$new_costs = array();
+					foreach( $ranges as $r => $range ) {
+						if ( $r != $range_to_delete ) $new_ranges[] = $range;
+						if ( $r != $range_to_delete ) $new_costs[] = $costs[$r];
+					}
+					$ranges = $new_ranges;
+					$costs = $new_costs;?>
 					<div id="message" class="updated"><p>
-						<?php _e( 'Remember to <strong>save</strong> before delete other rows or columns', 'tcp' );?>
+						<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' );?>
 					</p></div><?php
 					$stored_data = false;
 					break;
@@ -97,7 +132,7 @@ class ShippingCost extends TCP_Plugin {
 					$zone = $names[1];
 					unset( $zones[$zone] );
 					?><div id="message" class="updated"><p>
-						<?php _e( 'Remember to <strong>save</strong> before delete other rows or columns', 'tcp' );?>
+						<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' );?>
 					</p></div><?php
 					$stored_data = false;
 					break;
@@ -106,10 +141,12 @@ class ShippingCost extends TCP_Plugin {
 					$zone_id = $names[1];
 					unset( $zones[$zone_id] );
 					?><div id="message" class="updated"><p>
-						<?php _e( 'Remember to <strong>save</strong> before delete other zones', 'tcp' );?>
+						<?php _e( 'Remember to <strong>save</strong> before deleting other zones', 'tcp' );?>
 					</p></div><?php
 					$stored_data = false;
-				}?>
+				}
+			}
+		}?>
 		</tbody></table>
 	<?php if ( $stored_data ) : ?>
 		<p>
@@ -145,11 +182,10 @@ class ShippingCost extends TCP_Plugin {
 		</tr>
 		</tfoot>
 		<tbody>
-		<?php sort( $ranges );
-		foreach( $ranges as $r => $range ) : ?>
+		<?php foreach( $ranges as $r => $range ) : ?>
 		<tr>
 			<th scope="row">
-				<?php printf( __( 'Range %d', 'tcp' ), $r );?>:
+				<?php printf( __( 'Range %d, less or equal than', 'tcp' ), $r );?>: 
 				<input type="text" name="ranges[]" value="<?php echo $range;?>" size="5" maxlength="10"/>&nbsp;<?php tcp_the_unit_weight();?>
 			</th>
 			<?php foreach( $zones as $z => $zone ) : ?>
@@ -162,15 +198,15 @@ class ShippingCost extends TCP_Plugin {
 			</td>
 		</tr>
 		<?php endforeach;?>
+		<?php if ( $stored_data ) : ?>
 		<tr>
 			<td colspan="<?php echo count( $zones ) + 2;?>">
-			<?php if ( $stored_data ) : ?>
 				<input type="submit" name="tcp_insert_range" value="<?php _e( 'insert new range', 'tcp' );?>" class="button-secondary" />
 				<input type="text" name="tcp_insert_range_value" size="5" maxlength="10" />
-				<span><?php _e( 'Remember to save all values before insert a new range', 'tcp' );?></span>
-			<?php endif;?>&nbsp;
+				<span><?php _e( 'Remember to save all values before inserting a new range', 'tcp' );?></span>
 			</td>
 		</tr>
+		<?php endif;?>
 		</tbody></table>
 
 		<p class="submit">
@@ -197,20 +233,24 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
 			<td>
-				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" style="height:auto" size="8" multiple="true">
-				<?php //global $countries_db;
-				global $thecartpress;
-				$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
-				if ( $shipping_isos )
-					$countries = Countries::getSome( $shipping_isos );
-				else
-					$countries = Countries::getAll();
-				foreach( $countries as $country ) :?>
+				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" class="tcp_zones" style="height:auto" size="8" multiple="true">
+				<?php
+				if ( count( $data['countries'] ) != 1 ) {
+					global $thecartpress;
+					$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+					if ( $shipping_isos ) {
+						$countries = Countries::getSome( $shipping_isos );
+					} else {
+						$countries = Countries::getAll();
+					}
+					foreach( $countries as $country ) :?>
 					<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $isos, $country->iso );?>><?php echo $country->name;?></option>
-				<?php endforeach;?>
+					<?php endforeach;
+				}?>
 				</select>
 			</td>
 			<td>
+			<?php if ( count( $data['countries'] ) != 1 ) :?>
 				<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
@@ -220,17 +260,49 @@ class ShippingCost extends TCP_Plugin {
 				<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('zones_isos_<?php echo $z;?>');" class="button-secondary"/>
 				<br/>
-				<?php if ( count( $zones ) > 1) :?>
-				<input type="submit" name="tcp_delete_def_zone-<?php echo $z;?>" id="tcp_delete_def_zone" value="<?php _e( 'delete zone', 'tcp');?>" title="<?php _e( 'To delete a defined zone', 'tcp' );?>" class="button-primary"/>
+			<?php endif;?>
+				<?php if ( $stored_data && count( $zones ) > 1) :?>
+				<input type="submit" name="tcp_delete_def_zone-<?php echo $z;?>" id="tcp_delete_def_zone" value="<?php _e( 'delete zone', 'tcp');?>" title="<?php _e( 'To delete a defined zone', 'tcp' );?>" class="button-<?php if ( count( $data['countries'] ) == 1 ):?>primary<?php else:;?>secondary<?php endif;?>"/>
 				<?php endif;?>
 			</td>
 		<?php endforeach;?>
+<?php //do_action( 'tcp_states_loading' );
+if ( count( $data['countries'] ) == 1 ) :
+	$zones_states = $data['zones'];?>
+<script>
+jQuery(document).ready(function() {
+<?php echo 'var sel_states = new Array();', "\n";
+foreach( $zones_states as $i => $states ) {
+	echo 'sel_states[', $i, '] = new Array();' , "\n";
+	foreach( $states as $j => $state ) {
+		echo 'sel_states[', $i, '][', $j, '] = \'', $state, '\';', "\n";
+	}
+}?>
+	var selects = jQuery('.tcp_zones');
+	if (selects) {
+		var i = 0;
+		jQuery.each(selects, function(i, region_select) {
+			region_select = jQuery('#' + region_select.id);
+			var states = countries['<?php echo $data['countries'][0];?>'];
+			if (states) {
+				if (region_select) {
+					jQuery.each(states, function(key, title) {
+						region_select.append(jQuery('<option></option>').attr('value', key).text(title));
+					});
+					if (sel_states) region_select.val(sel_states[i++]);
+				}
+			}
+		});
+	}
+});
+</script>
+<?php endif;?>
 		</tr>
 		<?php if ( $stored_data ) : ?>
 		<tr>
 		<td colspan="<?php echo count( $zones );?>">
 			<input type="submit" id="tcp_add_zone" name="tcp_add_zone" value="<?php _e( 'Add new zone', 'tcp' );?>" class="button-secondary" />
-			<span><?php _e( 'Remember to save all values before insert a new range', 'tcp' );?></span>
+			<span><?php _e( 'Remember to save all values before inserting a new zone', 'tcp' );?></span>
 		</td>
 		</tr>
 		<?php endif;?>
@@ -263,22 +335,65 @@ class ShippingCost extends TCP_Plugin {
 		$zones = $data['zones'];
 		$ranges = $data['ranges'];
 		$costs = $data['costs'];
-		foreach( $ranges as $r => $range )
+		foreach( $ranges as $r => $range ) {
 			if ( $range > $totalWeight ) {
-				$selected_range = $r;//ange;
+				$selected_range = $r;
 				break;
 			}
+		}
+		if ( ! isset($selected_range) ) {
+			end( $ranges );
+			$selected_range = key( $ranges );
+		}
 		$selected_zone = 0;
-		foreach( $zones as $z => $zone)
-			if ( in_array( $shippingCountry, $zone ) ) {
-				$selected_zone = $z;
-				break;
+		if ( count( $data['countries'] ) == 1 ) {
+			$region_id = $this->get_shipping_region_id();
+			foreach( $zones as $z => $zone ) {
+				if ( in_array( $region_id, $zone ) ) {
+					$selected_zone = $z;
+					break;
+				}
 			}
+		} else {
+			foreach( $zones as $z => $zone ) {
+				if ( in_array( $shippingCountry, $zone ) ) {
+					$selected_zone = $z;
+					break;
+				}
+			}
+		}
+		if ( ! isset( $selected_zone ) ) {
+			end( $zones );
+			$selected_zone = key( $zones );
+		}
 		return $costs[$selected_range][$selected_zone];
 	}
 
 	private function startsWith( $Haystack, $Needle ) {
     	return strpos( $Haystack, $Needle ) === 0;
+	}
+	
+	private function get_shipping_region_id() {
+		$shipping_region = '';
+		$selected_shipping_address = isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : false;
+		if ( $selected_shipping_address == 'new' ) {
+			$shipping_region = $_SESSION['tcp_checkout']['shipping']['shipping_region_id'];
+		} elseif ( $selected_shipping_address == 'BIL' ) {
+			if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) && $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' )
+				$shipping_region = $_SESSION['tcp_checkout']['billing']['billing_region_id'];
+			else {
+				$address_id = $_SESSION['tcp_checkout']['billing']['selected_billing_id'];
+				$address = Addresses::get( $address_id );
+				$shipping_region = $address->region_id;
+			}
+		} elseif ( $selected_shipping_address == 'Y' ) {
+			if ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] ) ) {
+				$address_id = $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'];
+				$address = Addresses::get( $address_id );
+				$shipping_region = $address->region_id;
+			}
+		}
+		return $shipping_region;
 	}
 }
 ?>

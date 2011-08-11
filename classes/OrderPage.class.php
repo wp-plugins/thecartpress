@@ -47,7 +47,7 @@ class OrderPage {
 			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br />' . "\n";
 			if ( strlen( $order->shipping_fax ) > 0) $out .= __('Fax', 'tcp') . ': ' . $order->shipping_fax . '<br />' . "\n";
 			if ( strlen( $order->shipping_email ) > 0) $out .= $order->shipping_email . '<br />' . "\n";
-			$out .= '</div>' . "\n";
+			$out .= '</div><!-- shipping_info-->' . "\n";
 		
 			$out .= '<div id="billing_info" style="padding-bottom:1em;">' . "\n";
 			$out .= '<h3>' . __( 'Billing address', 'tcp' ) . '</h3>' . "\n";
@@ -61,7 +61,7 @@ class OrderPage {
 			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br>' . "\n";
 			if ( strlen( $order->billing_fax ) > 0) $out .= __('Fax', 'tcp') . ': ' . $order->billing_fax . '<br>' . "\n";
 			if ( strlen( $order->billing_email ) > 0) $out .= $order->billing_email . '<br><br><br><br>' . "\n";
-			$out .= '</div>' . "\n";
+			$out .= '</div><!-- billing_info -->' . "\n";
 		}
 		//$out .= '<table class="tcp_details" cellspacing="0">' . "\n";
 		$out .= '<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">' . "\n";
@@ -123,7 +123,7 @@ class OrderPage {
 			$total = $total - $discount;
 		}
 		//TODO Deprecated 1.1
-		if ( $order->shipping_amount > 0 ) {
+		/*if ( $order->shipping_amount > 0 ) {
 			$out .= '<tr';
 			if ( $i++ & 1 == 1 ) $out .= ' class="par"';
 			$out .= '>' . "\n";
@@ -142,7 +142,7 @@ class OrderPage {
 			$out .= '<td>' . tcp_format_the_price( $order->payment_amount ) . '</td>' . "\n";
 			$out .= '</tr>' . "\n";
 			$total += $order->payment_amount;
-		}
+		}*/
 		//TODO Deprecated 1.1
 		do_action( 'tcp_orderpage_calculate_other_costs', $order_id );
 		$ordersCosts = OrdersCosts::getCosts( $order_id );

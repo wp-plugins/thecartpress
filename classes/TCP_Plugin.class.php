@@ -21,10 +21,19 @@
  */ 
 class TCP_Plugin {
 	/**
-	 * Returns the title of the plugin
+	 * Returns the title of the plugin.
+	 * It's used to display the name of the plugin in the admin pages
 	 * Must be implemented
 	 */
 	function getTitle() {
+	}
+
+	/**
+	 * Returns the name of the plugin.
+	 * It's used by the orders
+	 */
+	function getName() {
+		return $this->getTitle();
 	}
 
 	/**
@@ -38,14 +47,14 @@ class TCP_Plugin {
 	 * Shows the data that the plugin need to be edited
 	 * Must be implemented
 	 */
-	function showEditFields( $data ) {
+	function showEditFields( $data, $instance = 0 ) {
 	}
 
 	/**
 	 * This functions is run when the edut plugin page is saved
 	 * Must be implemented
 	 */
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		return $data;
 	}
 

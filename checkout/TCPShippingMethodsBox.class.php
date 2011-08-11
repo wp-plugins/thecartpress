@@ -80,8 +80,8 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 				$plugin_value = $plugin_name . '#' . $instance;
 				if ( ! $shipping_method_id ) $shipping_method_id = $plugin_value;?>
 				<li>
-				<input type="radio" id="<?php echo  $plugin_name;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
-				<label for="<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
+				<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
+				<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
 				</li>
 			<?php endforeach;?>
 			</ul>
