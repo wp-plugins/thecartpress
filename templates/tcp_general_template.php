@@ -206,7 +206,7 @@ function tcp_get_sorting_fields() {
 	$sorting_fields = array(
 		array(
 			'value'	=> 'order',
-			'title'	=> __( 'Default', 'tcp' ),
+			'title'	=> __( 'Suggested', 'tcp' ),
 		),
 		array(
 			'value'	=> 'price',

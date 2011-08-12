@@ -102,7 +102,7 @@ class ActiveCheckout {//shortcode
 			$message .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
-			mail( $to_customer, $subject, $message_to_customer, $headers );
+			wp_mail( $to_customer, $subject, $message_to_customer, $headers );
 			$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';				
 			if ( strlen( $to ) ) {
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
@@ -110,7 +110,7 @@ class ActiveCheckout {//shortcode
 				$headers .= 'To: ' . $to . "\r\n";
 				$headers .= 'From: ' . $from . "\r\n";
 				$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
-				mail( $to, $subject, $message, $headers );
+				wp_mail( $to, $subject, $message, $headers );
 			}
 		}
 	}

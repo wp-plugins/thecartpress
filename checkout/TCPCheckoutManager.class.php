@@ -134,6 +134,9 @@ class TCPCheckoutManager {
 	}
 
 	private	function show_box( $box, $step = 0 ) {
+		global $thecartpress;
+		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
+		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start();?>
 		<div class="checkout" id="checkout">
 		<?php $this->show_header( $box, $step );
