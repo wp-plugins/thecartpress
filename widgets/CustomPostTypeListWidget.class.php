@@ -52,7 +52,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 			}
 		}
 		global $thecartpress;
-		remove_Action( 'loop_start', array( $thecartpress, 'loop_start' ) );
 		query_posts( $args );
 		if ( ! have_posts() ) return;
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
@@ -74,7 +73,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 		wp_reset_postdata();
 		wp_reset_query();
 		echo $after_widget;
-		add_Action( 'loop_start', array( $thecartpress, 'loop_start' ) );
 	}
 
 	function show_list( $instance ) {
