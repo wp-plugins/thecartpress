@@ -1096,182 +1096,184 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$wp_rewrite->flush_rules();
 		}
 		$version = (int)get_option( 'tcp_version', 0 );
-		if ( $version < 104 ) {
-			//
-			//TODO Deprecated 1.1
-			//
-			global $wpdb;
-			$sql = 'update ' . $wpdb->prefix .'term_taxonomy set taxonomy=\'tcp_product_supplier\'
-			where taxonomy=\'tcp_product_supplier_tag\'';
-			$wpdb->query( $sql );
+		if ( $version > 0 ) {
+			if ( $version < 104 ) {
+				//
+				//TODO Deprecated 1.1
+				//
+				global $wpdb;
+				$sql = 'update ' . $wpdb->prefix .'term_taxonomy set taxonomy=\'tcp_product_supplier\'
+				where taxonomy=\'tcp_product_supplier_tag\'';
+				$wpdb->query( $sql );
 		
-			$posts = get_posts( array( 'post_type' => 'tcp_product', 'numberposts' => -1 ) );
-			if ( is_array( $posts ) && count( $posts ) > 0 ) {
-				foreach( $posts as $post ) {
-					$order = tcp_get_the_order( $post->ID );
-					if ( $order == 0 )
-						update_post_meta( $post->ID, 'tcp_order', 0 );
+				$posts = get_posts( array( 'post_type' => 'tcp_product', 'numberposts' => -1 ) );
+				if ( is_array( $posts ) && count( $posts ) > 0 ) {
+					foreach( $posts as $post ) {
+						$order = tcp_get_the_order( $post->ID );
+						if ( $order == 0 )
+							update_post_meta( $post->ID, 'tcp_order', 0 );
+					}
 				}
+				$count = $wpdb->get_var( 'select count(*) from ' . $wpdb->prefix . 'tcp_countries' );
+				if ( $count == 234 ) {
+					$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'YT\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MYT\',175 ,0 ,0 ,0),
+					 (\'ZA\',\'SOUTH AFRICA\',\'SOUTH AFRICA\',\'SUDÁFRICA\',\'SÜDAFRIKA, REPUBLIK\',\'AFRIQUE DU SUD\',\'ZAF\',710 ,0 ,0 ,0),
+					 (\'ZM\',\'ZAMBIA\',\'ZAMBIA\',\'ZAMBIA\',\'SAMBIA\',\'ZAMBIE\',\'ZMB\',894 ,0 ,0 ,0),
+					 (\'ZW\',\'ZIMBABWE\',\'ZIMBABWE\',\'ZIMBABUE\',\'SIMBABWE\',\'ZIMBABWE\',\'ZWE\',716 ,0 ,0 ,0);';
+					$wpdb->query( $sql );
+				}
+				//
+				//TODO Deprecated 1.1
+				//
+				update_option( 'tcp_version', 104 );
 			}
-			$count = $wpdb->get_var( 'select count(*) from ' . $wpdb->prefix . 'tcp_countries' );
-			if ( $count == 234 ) {
-				$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'YT\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MAYOTTE\',\'MYT\',175 ,0 ,0 ,0),
-				 (\'ZA\',\'SOUTH AFRICA\',\'SOUTH AFRICA\',\'SUDÁFRICA\',\'SÜDAFRIKA, REPUBLIK\',\'AFRIQUE DU SUD\',\'ZAF\',710 ,0 ,0 ,0),
-				 (\'ZM\',\'ZAMBIA\',\'ZAMBIA\',\'ZAMBIA\',\'SAMBIA\',\'ZAMBIE\',\'ZMB\',894 ,0 ,0 ,0),
-				 (\'ZW\',\'ZIMBABWE\',\'ZIMBABWE\',\'ZIMBABUE\',\'SIMBABWE\',\'ZIMBABWE\',\'ZWE\',716 ,0 ,0 ,0);';
+			if ( $version < 105 ) {
+				//
+				//TODO Deprecated 1.1
+				//
+				global $wpdb;
+				$sql = 'ALTER TABLE `'. $wpdb->prefix . 'tcp_orders`
+						MODIFY COLUMN `shipping_email` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+						MODIFY COLUMN `billing_email`  VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL';
 				$wpdb->query( $sql );
-			}
-			//
-			//TODO Deprecated 1.1
-			//
-			update_option( 'tcp_version', 104 );
-		}
-		if ( $version < 105 ) {
-			//
-			//TODO Deprecated 1.1
-			//
-			global $wpdb;
-			$sql = 'ALTER TABLE `'. $wpdb->prefix . 'tcp_orders`
-					MODIFY COLUMN `shipping_email` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-					MODIFY COLUMN `billing_email`  VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE `'. $wpdb->prefix . 'tcp_addresses`
-					MODIFY COLUMN `email` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL';
-			$wpdb->query( $sql );
-			remove_role( 'super_merchant' );			
+				$sql = 'ALTER TABLE `'. $wpdb->prefix . 'tcp_addresses`
+						MODIFY COLUMN `email` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL';
+				$wpdb->query( $sql );
+				remove_role( 'super_merchant' );			
 			
-			$this->settings['product_rewrite']	= 'product';
-			$this->settings['category_rewrite']	= 'category';
-			$this->settings['tag_rewrite']		= 'tag';
-			$this->settings['supplier_rewrite']	= 'supplier';
-			update_option( 'tcp_settings', $this->settings );
-			add_option( 'tcp_shortcodes_data', array( array(
-				'id'					=> 'all_products',
-				'title'					=> '',
-				'desc'					=> 'List of all products',
-				'post_type'				=> 'tcp_product',
-				'use_taxonomy'			=> false,
-				'taxonomy'				=> 'tcp_product_category',
-				'included'				=> array(),
-				'term'					=> '', //'tables',
-				'loop'					=> '',
-				'columns'				=> 2,
-				'see_title'				=> true,
-				'see_image'				=> false,
-				'image_size'			=> 'thumbnail',
-				'see_content'			=> false,
-				'see_excerpt'			=> true,
-				'see_author'			=> false,
-				'see_meta_data'			=> false,
-				'see_meta_utilities'	=> false,
-				'see_price'				=> false,
-				'see_buy_button'		=> false,
-				'see_first_custom_area'	=> false,
-				'see_second_custom_area'=> false,
-				'see_third_custom_area'	=> false,
-			) ) );
-			update_option( 'tcp_version', 105 );
-			update_option( 'tcp_version', 106 );
-			//
-			//TODO Deprecated 1.1
-			//
-		}
-		if ( $version < 107 ) {
-			//
-			//TODO Deprecated 2.1
-			//
-			$this->settings['decimal_point']		= '.';
-			$this->settings['thousands_separator']	= ',';
-			update_option( 'tcp_settings', $this->settings );
-			global $wpdb;
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders`
-				MODIFY COLUMN `shipping_city_id`	char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `shipping_region_id`	char(2)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `billing_city_id`		char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `billing_region_id`	char(2)  NOT NULL DEFAULT \'\';';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_addresses`
-				MODIFY COLUMN `city_id`		char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `region_id`	char(2)  NOT NULL DEFAULT \'\';';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders` MODIFY COLUMN `payment_name` VARCHAR(255) NOT NULL;';
-			$wpdb->query( $sql );
-			require_once( dirname( __FILE__ ) . '/daos/OrdersCosts.class.php' );
-			OrdersCosts::createTable();
-			update_option( 'tcp_version', 107 );
-			//
-			//TODO Deprecated 1.1
-			//
-		}
-		if ( $version < 108 ) {
-			if ( strlen( $this->settings['downloadable_path'] ) == 0 ) $this->settings['downloadable_path'] = WP_PLUGIN_DIR . '/thecartpress/uploads';
-			update_option( 'tcp_settings', $this->settings );
-			update_option( 'tcp_version', 108 );
-			//
-			//TODO Deprecated 2.1
-			//
+				$this->settings['product_rewrite']	= 'product';
+				$this->settings['category_rewrite']	= 'product_category';
+				$this->settings['tag_rewrite']		= 'product_tag';
+				$this->settings['supplier_rewrite']	= 'product_supplier';
+				update_option( 'tcp_settings', $this->settings );
+				add_option( 'tcp_shortcodes_data', array( array(
+					'id'					=> 'all_products',
+					'title'					=> '',
+					'desc'					=> 'List of all products',
+					'post_type'				=> 'tcp_product',
+					'use_taxonomy'			=> false,
+					'taxonomy'				=> 'tcp_product_category',
+					'included'				=> array(),
+					'term'					=> '', //'tables',
+					'loop'					=> '',
+					'columns'				=> 2,
+					'see_title'				=> true,
+					'see_image'				=> false,
+					'image_size'			=> 'thumbnail',
+					'see_content'			=> false,
+					'see_excerpt'			=> true,
+					'see_author'			=> false,
+					'see_meta_data'			=> false,
+					'see_meta_utilities'	=> false,
+					'see_price'				=> false,
+					'see_buy_button'		=> false,
+					'see_first_custom_area'	=> false,
+					'see_second_custom_area'=> false,
+					'see_third_custom_area'	=> false,
+				) ) );
+				update_option( 'tcp_version', 105 );
+				update_option( 'tcp_version', 106 );
+				//
+				//TODO Deprecated 1.1
+				//
+			}
+			if ( $version < 107 ) {
+				//
+				//TODO Deprecated 2.1
+				//
+				$this->settings['decimal_point']		= '.';
+				$this->settings['thousands_separator']	= ',';
+				update_option( 'tcp_settings', $this->settings );
+				global $wpdb;
+				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders`
+					MODIFY COLUMN `shipping_city_id`	char(4)  NOT NULL DEFAULT \'\',
+					MODIFY COLUMN `shipping_region_id`	char(2)  NOT NULL DEFAULT \'\',
+					MODIFY COLUMN `billing_city_id`		char(4)  NOT NULL DEFAULT \'\',
+					MODIFY COLUMN `billing_region_id`	char(2)  NOT NULL DEFAULT \'\';';
+				$wpdb->query( $sql );
+				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_addresses`
+					MODIFY COLUMN `city_id`		char(4)  NOT NULL DEFAULT \'\',
+					MODIFY COLUMN `region_id`	char(2)  NOT NULL DEFAULT \'\';';
+				$wpdb->query( $sql );
+				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders` MODIFY COLUMN `payment_name` VARCHAR(255) NOT NULL;';
+				$wpdb->query( $sql );
+				require_once( dirname( __FILE__ ) . '/daos/OrdersCosts.class.php' );
+				OrdersCosts::createTable();
+				update_option( 'tcp_version', 107 );
+				//
+				//TODO Deprecated 1.1
+				//
+			}
+			if ( $version < 108 ) {
+				if ( strlen( $this->settings['downloadable_path'] ) == 0 ) $this->settings['downloadable_path'] = WP_PLUGIN_DIR . '/thecartpress/uploads';
+				update_option( 'tcp_settings', $this->settings );
+				update_option( 'tcp_version', 108 );
+				//
+				//TODO Deprecated 2.1
+				//
 
-		}
-		if ( $version < 109 ) {
-			global $wpdb;
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_taxes WHERE field = \'tax\'';
-			$row = $wpdb->get_row( $sql );
-			if ( $row ) {
-				$sql = 'DROP TABLE ' . $wpdb->prefix . 'tcp_taxes;';
-				$wpdb->get_row( $sql );
-				require_once( dirname( __FILE__ ) . '/daos/Taxes.class.php' );
-				Taxes::createTable();
 			}
-			require_once( dirname( __FILE__ ) . '/daos/TaxRates.class.php' );
-			TaxRates::createTable();
-			TaxRates::initData();
-			$sql = 'delete FROM ' . $wpdb->prefix . 'postmeta where meta_key = \'tcp_tax_label\' or meta_key = \'tcp_tax\'';
-			$wpdb->query( $sql );
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders_costs WHERE field = \'tax\'';
-			$row = $wpdb->get_row( $sql );
-			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders_costs ADD COLUMN `tax` float UNSIGNED NOT NULL DEFAULT 0 AFTER `cost`';
+			if ( $version < 109 ) {
+				global $wpdb;
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_taxes WHERE field = \'tax\'';
+				$row = $wpdb->get_row( $sql );
+				if ( $row ) {
+					$sql = 'DROP TABLE ' . $wpdb->prefix . 'tcp_taxes;';
+					$wpdb->get_row( $sql );
+					require_once( dirname( __FILE__ ) . '/daos/Taxes.class.php' );
+					Taxes::createTable();
+				}
+				require_once( dirname( __FILE__ ) . '/daos/TaxRates.class.php' );
+				TaxRates::createTable();
+				TaxRates::initData();
+				$sql = 'delete FROM ' . $wpdb->prefix . 'postmeta where meta_key = \'tcp_tax_label\' or meta_key = \'tcp_tax\'';
 				$wpdb->query( $sql );
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders_costs WHERE field = \'tax\'';
+				$row = $wpdb->get_row( $sql );
+				if ( ! $row ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders_costs ADD COLUMN `tax` float UNSIGNED NOT NULL DEFAULT 0 AFTER `cost`';
+					$wpdb->query( $sql );
+				}
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'ip\'';
+				$row = $wpdb->get_row( $sql );
+				if ( ! $row ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN ip VARCHAR(20) NOT NULL AFTER customer_id;';
+					$wpdb->query( $sql );
+				}
+				update_option( 'tcp_version', 109 );
+				//
+				//TODO Deprecated 2.1
+				//
 			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'ip\'';
-			$row = $wpdb->get_row( $sql );
-			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN ip VARCHAR(20) NOT NULL AFTER customer_id;';
-				$wpdb->query( $sql );
-			}
-			update_option( 'tcp_version', 109 );
-			//
-			//TODO Deprecated 2.1
-			//
-		}
-		if ( $version < 110 ) {
-			global $wpdb;
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'transaction_id\'';
-			$row = $wpdb->get_row( $sql );
-			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `transaction_id` VARCHAR(250)  NOT NULL AFTER `payment_amount`;';
-				$wpdb->query( $sql );
-			}
+			if ( $version < 110 ) {
+				global $wpdb;
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'transaction_id\'';
+				$row = $wpdb->get_row( $sql );
+				if ( ! $row ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `transaction_id` VARCHAR(250)  NOT NULL AFTER `payment_amount`;';
+					$wpdb->query( $sql );
+				}
 
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'custom_id\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `custom_id` bigint(250) unsigned NOT NULL AFTER `customer_id`;';
-				$wpdb->query( $sql );
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'custom_id\'';
+				if ( ! $wpdb->get_row( $sql ) ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `custom_id` bigint(250) unsigned NOT NULL AFTER `customer_id`;';
+					$wpdb->query( $sql );
+				}
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'tax_id_number\'';
+				if ( ! $wpdb->get_row( $sql ) ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `tax_id_number` bigint(250) unsigned NOT NULL AFTER `company`;';
+					$wpdb->query( $sql );
+				}
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'company_id\'';
+				if ( ! $wpdb->get_row( $sql ) ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `company_id` bigint(250) unsigned NOT NULL AFTER `tax_id_number`;';
+					$wpdb->query( $sql );
+				}
+				update_option( 'tcp_version', 110 );
+				//
+				//TODO Deprecated 2.1
+				//
 			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'tax_id_number\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `tax_id_number` bigint(250) unsigned NOT NULL AFTER `company`;';
-				$wpdb->query( $sql );
-			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'company_id\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `company_id` bigint(250) unsigned NOT NULL AFTER `tax_id_number`;';
-				$wpdb->query( $sql );
-			}
-			//update_option( 'tcp_version', 110 );//TODO
-			//
-			//TODO Deprecated 2.1
-			//
 		}
 	}
 
