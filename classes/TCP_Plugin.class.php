@@ -157,6 +157,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 		$tcp_plugins = $tcp_payment_plugins;
 	}
 	$applicable_plugins = array();
+	$applicable_for_country = false;
 	foreach( $tcp_plugins as $plugin_id => $plugin ) {
 		$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 		if ( is_array( $plugin_data ) && count( $plugin_data ) > 0 ) {
@@ -167,19 +168,18 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 					$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
 					if ( $all_countries ) {
 						$applicable_instance_id = $instance_id;
-						//TODO
 						$data = $plugin_data[$applicable_instance_id];
-						if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
+						if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) ) {
 							$applicable_plugins[] = array(
 								'plugin'	=> $plugin,
 								'instance'	=> $applicable_instance_id,
 							);
+						}
 					} else {
 						$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
 						if ( in_array( $shipping_country, $countries ) ) {
 							$applicable_instance_id = $instance_id;
 							$applicable_for_country = true;
-							//TODO
 							$data = $plugin_data[$applicable_instance_id];
 							if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
 								$applicable_plugins[] = array(
@@ -191,19 +191,17 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 					}
 				}
 			}
-/*			if ( $applicable_instance_id > -1 ) {
+			/*if ( $applicable_instance_id > -1 ) {
 				$data = $plugin_data[$applicable_instance_id];
 				if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
 					$applicable_plugins[] = array(
 						'plugin'	=> $plugin,
 						'instance'	=> $applicable_instance_id,
 					);
-			}
-*/
+			}*/
 		}
 	}
-
-	if ( isset( $applicable_for_country ) )
+	if ( isset( $applicable_for_country ) && $applicable_for_country )
 		foreach( $applicable_plugins as $id => $plugin_instance ) {
 			$data = tcp_get_shipping_plugin_data( get_class( $plugin_instance['plugin'] ), $plugin_instance['instance'] );
 			$all_countrie =	isset( $data['all_countries'] ) ? $data['all_countries'] == 'yes' : false;

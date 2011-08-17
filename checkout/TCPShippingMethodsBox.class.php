@@ -68,7 +68,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}
 		if ( ! $shipping_country ) $shipping_country = '';
-		$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart );?>
+		$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart ); ?>
 		<div class="sending_layer_info checkout_info clearfix" id="sending_layer_info"><?php
 		if ( is_array( $applicable_sending_plugins ) && count( $applicable_sending_plugins ) > 0 ) : ?>
 			<ul><?php
@@ -86,6 +86,8 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			<?php endforeach;?>
 			</ul>
 			<?php if ( isset( $this->errors['shipping_method_id'] ) ) : ?><br/><span class="error"><?php echo $this->errors['shipping_method_id'];?></span><?php endif;?>
+		<?php else : ?>
+			<?php _e( 'There is not applicable méthods', 'tcp' ); ?>
 		<?php endif;
 		do_action( 'tcp_checkout_sending' );?>
 		</div><!-- sending_layer_info --><?php
