@@ -132,7 +132,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 			</div><!-- login_guess -->
 		<?php endif;?>
 		</div> <!-- identify_layer_info -->
-		<?php return true;
+		<?php return ! $user_registration;
 	}
 }
 ?>

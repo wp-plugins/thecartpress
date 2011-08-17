@@ -203,7 +203,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 		}
 	}
 
-	if ( $applicable_for_country )
+	if ( isset( $applicable_for_country ) )
 		foreach( $applicable_plugins as $id => $plugin_instance ) {
 			$data = tcp_get_shipping_plugin_data( get_class( $plugin_instance['plugin'] ), $plugin_instance['instance'] );
 			$all_countrie =	isset( $data['all_countries'] ) ? $data['all_countries'] == 'yes' : false;

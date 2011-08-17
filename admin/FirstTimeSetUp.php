@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function get_plugins_info( $plugins ) {
+function tcp_get_plugins_info( $plugins ) {
 	$out = '';
 	$total_active = 0;
 	if ( is_array( $plugins ) && count( $plugins ) > 0 ) {
@@ -42,7 +42,7 @@ function get_plugins_info( $plugins ) {
 	return $out;
 }
 
-function get_step_title( $step ) {
+function tcp_get_step_title( $step ) {
 	if ( $step > 0 )
 		return sprintf( __( 'Step %d', 'tcp' ), $step );
 	elseif ( $step == 1 )
@@ -88,7 +88,7 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 <div class="tcp_first_time_setup" style="background: url('<?php echo plugins_url('thecartpress/images/tcp_logo.png');?>') no-repeat top left rgb(8,71,113); border: 0px; color: white; height: 5.5em;">
 <h2 style="padding-left: 4em; color: white;"><?php _e( 'First time setup', 'tcp' ); ?></h2>
 </div>
-<h2><?php echo get_step_title( $step );?></h2>
+<h2><?php echo tcp_get_step_title( $step );?></h2>
 <form method="post">
 <input type="hidden" name="step" value="<?php echo $step; ?>"/>
 <?php if ( $step == -1 ) :
@@ -97,10 +97,10 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	<p><?php _e( 'The eCommerce has actived the following shipping and payments methods:', 'tcp' );?></p>
 	<h3><?php _e( 'Shipping methods', 'tcp' );?></h3>
 	<?php global $tcp_shipping_plugins;
-	echo get_plugins_info( $tcp_shipping_plugins );?>
+	echo tcp_get_plugins_info( $tcp_shipping_plugins );?>
 	<h3><?php _e( 'Payment methods', 'tcp' );?></h3>
 	<?php global $tcp_payment_plugins;
-	echo get_plugins_info( $tcp_payment_plugins );?>
+	echo tcp_get_plugins_info( $tcp_payment_plugins );?>
 	<p><?php _e( 'To activate or deactivate Shipping/Payment methods you have to visit the <a href="admin.php?page=thecartpress/admin/PluginsList.php">Shipping/Payment page</a>.', 'tcp' ); ?></p>
 	<p><?php _e( 'Remmember, you have more configuration settings in the <a href="admin.php?page=tcp_settings_page">settings page</a>.', 'tcp' ); ?></p>
 <?php elseif ( $step == 1 ) :

@@ -56,7 +56,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	$subject = 'Order from '.get_bloginfo( 'name' );
 	$message = OrderPage::show( $order_id, true, false );
 	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
-	mail( $to, $subject, $message_to_customer, $headers );?>
+	wp_mail( $to, $subject, $message_to_customer, $headers );?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Mail sent', 'tcp' );?>
 	</p></div><?php
