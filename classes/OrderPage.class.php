@@ -102,7 +102,7 @@ class OrderPage {
 				} else
 					$price = $orderDetail->price;*/
 				$price = $orderDetail->price * $orderDetail->qty_ordered;
-				$tax = $price * ( $orderDetail->tax / 100 ) * $orderDetail->qty_ordered;
+				$tax = $price * ( $orderDetail->tax / 100 ); // * $orderDetail->qty_ordered;
 				$total_tax += $tax;
 				$total += $price;
 				//$out .= '<td class="tcp_order_page_total">' . tcp_format_the_price( $price, $order->order_currency_code ) . '</td>' . "\n";
