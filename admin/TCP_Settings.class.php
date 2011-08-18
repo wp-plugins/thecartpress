@@ -215,13 +215,14 @@ class TCP_Settings {
 			global $thecartpress;
 			$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';
 		}?>
-		<label for="tcp_custom_layouts"><?php _e( 'Custom layouts', 'tcp' ); ?>:</label>
+		<label for="tcp_custom_layouts"><?php _e( 'Default layouts', 'tcp' ); ?>:</label>
 		<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
 			<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' );?></option>
 			<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' );?></option>
-			<option value="%2$s% 1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' );?></option>
+			<option value="%2$s %1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' );?></option>
 		</select>
 		<br/>
+		<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
 		<input type="text" id="currency_layout" name="tcp_settings[currency_layout]" value="<?php echo $currency_layout;?>" size="20" maxlength="25" />
 		<br/><span class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' );?>
 		<br/><span class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' );?>
@@ -303,9 +304,7 @@ class TCP_Settings {
 	function show_hide_downloadable_menu() {
 		global $thecartpress;
 		$hide_downloadable_menu = isset( $thecartpress->settings['hide_downloadable_menu'] ) ? $thecartpress->settings['hide_downloadable_menu'] : false;?>
-		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> />
-		<br /><span class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' );?></span>
-		<br /><span class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' );?></span><?php
+		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> /><?php
 	}
 
 	function show_downloadable_path() {
@@ -319,7 +318,9 @@ class TCP_Settings {
 	function show_continue_url() {
 		global $thecartpress;
 		$continue_url = isset( $thecartpress->settings['continue_url'] ) ? $thecartpress->settings['continue_url'] : '';?>
-		<input type="text" id="continue_url" name="tcp_settings[continue_url]" value="<?php echo $continue_url;?>" size="50" maxlength="255" /><?php
+		<input type="text" id="continue_url" name="tcp_settings[continue_url]" value="<?php echo $continue_url;?>" size="50" maxlength="255" />
+		<br /><span class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' );?></span>
+		<br /><span class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' );?></span><?php
 	}
 
 	function show_countries_section() {
