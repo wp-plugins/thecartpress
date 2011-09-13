@@ -40,7 +40,7 @@ class OrdersSummaryDashboard {
 		if ( $order_status['show_in_dashboard'] ) : ?>
 	<tr class="first">
 		<td class="first b"><a href="<?php echo $admin_path, 'OrdersListTable.class.php&status=', $order_status['name']; ?>"><?php echo Orders::getCountOrdersByStatus( $order_status['name'], $customer_id );?></a></td>
-		<td class="t "><a href="<?php echo $admin_path, 'OrdersListTable.class.php&status=', $order_status['name']; ?>"><?php echo $order_status['label']; ?></a></td>
+		<td class="t tcp_status_<?php echo $order_status['name']; ?>"><a href="<?php echo $admin_path, 'OrdersListTable.class.php&status=', $order_status['name']; ?>"><?php echo $order_status['label']; ?></a></td>
 	</tr>
 		<?php endif;
 	endforeach; ?>

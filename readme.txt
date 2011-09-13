@@ -140,7 +140,6 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 [TheCartPress Site](http://thecartpress.com)
 [TheCartPress Community](http://community.thecartpress.com/activity/)
 
-
 == Installation ==
 
 This section describes how to install the plugin and get it working.

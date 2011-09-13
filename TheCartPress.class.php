@@ -30,7 +30,7 @@ Parent: thecartpress
 function __autoload( $class_name ) {
     if ( $class_name == 'ShoppingCart' ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
 }
-//if ( ! is_admin() ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
+if ( ! is_admin() ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
 require_once( dirname( __FILE__ ) . '/customposttypes/ProductCustomPostType.class.php' );
 require_once( dirname( __FILE__ ) . '/customposttypes/TemplateCustomPostType.class.php' );
 require_once( dirname( __FILE__ ) . '/metaboxes/CustomTemplateMetabox.class.php' );
