@@ -101,7 +101,7 @@ class TCPPayPal extends TCP_Plugin {
 
 		<tr valign="top">
 		<th scope="row">
-			<label for="test_mode"><?php _e( 'Test mode', 'tcp' );?>:</label>
+			<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
 		</th><td>
 			<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
 		</td></tr><?php
@@ -129,22 +129,13 @@ class TCPPayPal extends TCP_Plugin {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$business = $data['business'];
 		$test_mode = $data['test_mode'];
-
 		$profile_shipping = $data['profile_shipping'];
 		$profile_taxes = $data['profile_taxes'];
 		$no_shipping = isset($data['no_shipping'])?$data['no_shipping']:0 ;
 		$send_detail = isset($data['send_detail'])?$data['send_detail']:0 ;
 		$logging = $data['logging'];
 		$merchant = get_bloginfo( 'name' );
-
 		$new_status = $data['new_status'];
-		$transaction_type = isset( $data['transaction_type'] ) ? $data['transaction_type'] : 1;
-		$return_url = add_query_arg( 'tcp_checkout', 'ok', get_permalink() );
-		$notify_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php?action=ok' );
-		$cancel_url = plugins_url( 'thecartpress/plugins/PayPal/notify.php' );//home_url();
-		$payment_amount = $shoppingCart->getTotal( true );
-		$currency_code = tcp_get_the_currency_iso();
-
 		$p = new paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
@@ -155,9 +146,9 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
 		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant );		 //text for the Return to Merchant button
 		$p->add_field( 'no_shipping', $no_shipping );
-		if ( empty( $send_detail ) && empty( $profile_shipping ) && empty( $profile_taxes ) ) {// Buy Now - one total
+		if ( empty($send_detail) && empty($profile_shipping) && empty($profile_taxes) ) {		// Buy Now - one total
 			$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
-			$p->add_field( 'amount', number_format( $shoppingCart->getTotal( true ), 2, '.', '' ) );
+			$p->add_field( 'amount', tcp_number_format( $shoppingCart->getTotal( true ) ) );
 		} else { // Cart upload
 			$p->add_field( 'cmd', '_cart' );
 			$p->add_field( 'upload', '1' );

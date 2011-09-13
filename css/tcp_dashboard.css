@@ -18,7 +18,7 @@ div#tcp_orders_resume
 
 div#tcp_orders_resume h3
 {
-	text-shadow: 0 1px 0 rgb(0,0, 100);
+	text-shadow: 0 1px 0 rgb(0,0,0);
 	font-weight: bold;
 }
 
@@ -37,6 +37,23 @@ div#tcp_orders_resume a.tcp_link_to_tcp:hover
 {
 	text-decoration: underline;
 }
+
+div#tcp_orders_resume td.tcp_status_COMPLETED a {
+	color: #54ff42;
+	font-weight: bold;
+}
+
+div#tcp_orders_resume td.tcp_status_PENDING a {
+	color: #ffb497;
+	font-weight: bold;
+}
+
+div#tcp_orders_resume td.tcp_status_CANCELLED a,
+div#tcp_orders_resume td.tcp_status_SUSPENDED a {
+	color: #ffa0a0;
+	font-weight: bold;
+}
+
 /*
 Plugins list
 */
