@@ -30,14 +30,17 @@ table#tcp_shopping_cart_table tr td {
 	border-top: 1px dotted #ccc;
 	border-right: 1px dotted #f0f0f0;
 }
+
 table#tcp_shopping_cart_table tr.odd td {
 	background-color: #FfF7FC;
 }
+
 table#tcp_shopping_cart_table .tcp_cart_name {
 	background-color: #f7f7f7;
 	width: inherit;
 	font-size: 11px;
 }
+
 table#tcp_shopping_cart_table .tcp_cart_name a{
 	text-decoration: none;
 }
@@ -46,15 +49,25 @@ table#tcp_shopping_cart_table .tcp_cart_name a{
 	font-size: 11px;
 	margin-bottom: 0px;
 }
-table#tcp_shopping_cart_table .tcp_cart_subtotal_row td{
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td,
+table#tcp_shopping_cart_table .tcp_cart_discount_row td,
+table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
+table#tcp_shopping_cart_table .tcp_cart_tax_row td {
 	color: #666;
 }
-table#tcp_shopping_cart_table .tcp_cart_total_row  td {
+
+table#tcp_shopping_cart_table .tcp_cart_total_row  td,
+table#tcp_shopping_cart_table .tcp_cart_discount_row td,
+table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
+table#tcp_shopping_cart_table .tcp_cart_tax_row td {
 	border: 1px solid #ccc;
 }
 
 table#tcp_shopping_cart_table .tcp_cart_total_row  td,
-table#tcp_shopping_cart_table .tcp_cart_subtotal_row td {
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td,
+table#tcp_shopping_cart_table .tcp_cart_discount_row td,
+table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
+table#tcp_shopping_cart_table .tcp_cart_tax_row td {
 	font-weight: bold;
 	text-transform: uppercase;
 	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
@@ -62,20 +75,24 @@ table#tcp_shopping_cart_table .tcp_cart_subtotal_row td {
 	background-position: 1px 0px;
 	border: 1px solid #ccc;
 }
+
 table#tcp_shopping_cart_table .tcp_cart_total_row  td.tcp_cart_total_title,
-table#tcp_shopping_cart_table .tcp_cart_subtotal_row td.tcp_cart_subtotal_title {
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td.tcp_cart_subtotal_title,
+table#tcp_shopping_cart_table .tcp_cart_discount_row td.tcp_cart_discount_title,
+table#tcp_shopping_cart_table .tcp_cart_other_costs_row td.tcp_cart_other_costs_title,
+table#tcp_shopping_cart_table .tcp_cart_tax_row td.tcp_cart_tax_title {
 	text-align: right;
 }
-
-
 
 table#tcp_shopping_cart_table .tcp_cart_total {
 	color: #c00;
 }
+
 .tcp_sc_links {
 	list-style-type: none;
 	float: right;
 }
+
 .tcp_sc_links li {
 	border: 1px solid #ccc;
 	-moz-border-radius: 5px;
@@ -90,9 +107,11 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	border-bottom: 1px solid #888;
 	border-right: 1px solid #888;
 }
+
 .tcp_sc_links li:hover {
 	border-top: 1px dotted #ccc;
 }
+
 .tcp_sc_links li a{
 	text-decoration: none;
 	background-image:url(/wp-content/plugins/thecartpress/css/arrowClara.jpg);
@@ -101,6 +120,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	line-height: 27px;
 	padding: 3px 20px 3px 28px;
 }
+
 .tcp_sc_links .tcp_sc_checkout a{
 	font-weight: bold;
 }
@@ -111,11 +131,12 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 #checkout  {
 
 }
-#checkout  p{
+
+#checkout  p {
 	margin-bottom:6px;
 
 }
-#checkout h3{
+#checkout h3 {
 	font-family: Arial, Helvetica, sans-serif;
 	line-height: 24px !important;
 	color: #333 !important;
@@ -130,10 +151,12 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	font-weight: normal;
 	text-transform: uppercase;
 }
-#checkout h3 a{
+
+#checkout h3 a {
 	text-decoration: none;	
 }
-.checkout_active h3.active{
+
+.checkout_active h3.active {
 	font-weight: bold;
 	color: #000;
 }
@@ -148,6 +171,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	margin-bottom:10px;
 	font-weight: normal;
 }
+
 #checkout ul {
 	list-style-type: none;
 }
@@ -165,18 +189,22 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	background-position: left -10px;
 	border: 1px #ccc solid;
 	font-family: Arial, Helvetica, sans-serif;
-	}
+}
+
 .identify_layer .checkout_info {
 	padding-top: 0px;
-	}
+}
+
 .checkout_info strong{
 	color: #666 !important;	
-	}
+}
+
 .checkout_info input {
 	margin: 5px 0px 5px 0px !important;
 }
+
 .checkout_info input[type="submit"],
-.checkout_info input[type="button"]{
+.checkout_info input[type="button"] {
 }
 
 .checkout_info select {
@@ -188,6 +216,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	padding: 0px 0px 0px 4px;
 	margin: 0px;
 }
+
 .checkout_info span.description {
 	clear: left;
 	color: #C00;
@@ -195,6 +224,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	margin-bottom: 10px;
 	text-align: right;
 }
+
 #login_form {
 	float:right;
 	width:45%;

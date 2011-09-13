@@ -72,11 +72,10 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 <label for="status"><?php _e( 'Status', 'tcp' );?>:</label>
 	<select class="postform" id="status" name="status">
 		<option value="" <?php selected( '', $status );?>><?php _e( 'all', 'tcp' );?></option>
-		<option value="<?php echo Orders::$ORDER_PENDING;?>" <?php selected( Orders::$ORDER_PENDING, $status );?>><?php _e( 'pending', 'tcp' );?></option>
-		<option value="<?php echo Orders::$ORDER_PROCESSING;?>" <?php selected( Orders::$ORDER_PROCESSING, $status );?>><?php _e( 'processing', 'tcp' );?></option>
-		<option value="<?php echo Orders::$ORDER_COMPLETED;?>" <?php selected( Orders::$ORDER_COMPLETED, $status );?>><?php _e( 'completed', 'tcp' );?></option>
-		<option value="<?php echo Orders::$ORDER_CANCELLED;?>" <?php selected( Orders::$ORDER_CANCELLED, $status );?>><?php _e( 'cancelled', 'tcp' );?></option>
-		<option value="<?php echo Orders::$ORDER_SUSPENDED;?>" <?php selected( Orders::$ORDER_SUSPENDED, $status );?>><?php _e( 'suspended', 'tcp' );?></option>
+		<?php $order_status_list = tcp_get_order_status();
+		foreach ( $order_status_list as $order_status ) : ?>
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $status );?>><?php echo $order_status['label']; ?></option>		
+		<?php endforeach; ?>
 	</select>
 	<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'tcp' );?>" id="post-query-submit" />
 </p>
@@ -167,11 +166,10 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 				<span class="title"><?php _e( 'Status', 'tcp' );?></span>
 				<span class="input-text-wrap">
 				<select class="postform" id="new_status" name="new_status">
-					<option value="<?php echo Orders::$ORDER_PENDING;?>" <?php selected( Orders::$ORDER_PENDING, $order['status'] );?>><?php _e( 'pending', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_PROCESSING;?>" <?php selected( Orders::$ORDER_PROCESSING, $order['status'] );?>><?php _e( 'processing', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_COMPLETED;?>" <?php selected( Orders::$ORDER_COMPLETED, $order['status'] );?>><?php _e( 'completed', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_CANCELLED;?>" <?php selected( Orders::$ORDER_CANCELLED, $order['status'] );?>><?php _e( 'cancelled', 'tcp' );?></option>
-					<option value="<?php echo Orders::$ORDER_SUSPENDED;?>" <?php selected( Orders::$ORDER_SUSPENDED, $order['status'] );?>><?php _e( 'suspended', 'tcp' );?></option>
+				<?php $order_status_list = tcp_get_order_status();
+				foreach ( $order_status_list as $order_status ) : ?>
+					<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $order['status'] );?>><?php echo $order_status['label']; ?></option>		
+				<?php endforeach; ?>
 				</select>
 				</span>
 			</label>
@@ -181,7 +179,6 @@ if ( is_array( $orders_db ) && count( $orders_db ) > 0 )
 			</label>
 			<input type="hidden" name="status" value="<?php echo $status;?>" />
 			<input type="hidden" name="order_id" value="<?php echo $order['order_id'];?>" />
-			
 			<p class="submit inline-edit-save">
 			<a class="button-secondary cancel alignleft" title="Cancel" href="#inline-edit" accesskey="c" 
 			onclick="jQuery('#quick_<?php echo $order['order_id'];?>').hide();"><?php _e( 'cancel', 'tcp' );?></a>&nbsp;

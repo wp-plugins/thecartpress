@@ -16,6 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
+add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 
 $address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : '0';
 
@@ -28,7 +29,7 @@ if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 
 //array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
-$regions = apply_filters( 'tcp_address_editor_load_regions', false );
+$regions = array(); //apply_filters( 'tcp_address_editor_load_regions', false );
 $error_address = array();
 	
 if ( isset( $_REQUEST['tcp_save_address'] ) ) {

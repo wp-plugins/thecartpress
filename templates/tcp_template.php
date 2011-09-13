@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//Multilingua support: WPML or Qtranslate
+//Multilingual support: WPML or Qtranslate (or by any other plugin)
 function tcp_get_admin_language_iso() {
 	if ( strlen( WPLANG ) > 0 ) {
 		$lang_country = explode ( '_', WPLANG );
@@ -30,13 +30,18 @@ function tcp_get_admin_language_iso() {
 	}
 }
 
-global $sitepress;
-if ( $sitepress ) {
-	include_once( dirname( __FILE__ ) . '/tcp_wpml_template.php' );
+$multilingual_template_path = apply_filters( 'tcp_get_multilingual_template_path', '' );
+if ( strlen( $multilingual_template_path ) > 0 ) {
+	include_once( $multilingual_template_path );
 } else {
-	include_once( dirname( __FILE__ ) . '/tcp_qt_template.php' );
+	global $sitepress;
+	if ( $sitepress ) {
+		include_once( dirname( __FILE__ ) . '/tcp_wpml_template.php' );
+	} else {
+		include_once( dirname( __FILE__ ) . '/tcp_qt_template.php' );
+	}
 }
-//End Multilingua support
+//End Multilingual support
 
 //Returns the title of a product (with/without options)
 function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $html = true ) {
@@ -104,7 +109,7 @@ function tcp_get_the_currency_iso() {
 
 function tcp_the_currency_layout( $echo = true ) {
 	global $thecartpress;
-	$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';
+	$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : _x( '%1$s%2$s (%3$s)', 'currency + price + (currency ISO)', 'tcp' );
 	$currency_layout = apply_filters( 'tcp_the_currency_layout', $currency_layout );
 	if ( $echo )
 		echo $currency_layout;
@@ -176,7 +181,7 @@ function tcp_the_price( $before = '', $after = '', $echo = true ) {
  */
 function tcp_get_the_price( $post_id = 0 ) {
 	$price = (float)tcp_get_the_meta( 'tcp_price', $post_id );
-	$price = apply_filters( 'tcp_get_the_price', $price, $post_id );
+	$price = (float)apply_filters( 'tcp_get_the_price', $price, $post_id );
 	return $price;
 }
 
@@ -195,7 +200,29 @@ function tcp_format_the_price( $price, $currency = '') {
 }
 
 /**
- * Display the price
+ * Since 1.1.1
+ */
+function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	if ( $price === false ) $price = tcp_get_the_price( $post_id );
+	if ( tcp_is_display_prices_with_taxes() ) {
+		if ( tcp_is_prices_include_tax() ) {
+			return $price;
+		} else { //add tax from price
+			$tax = tcp_get_the_tax( $post_id );
+			$amount = $price * $tax / 100;
+			return $price + $amount;
+		}
+	} elseif ( ! tcp_is_prices_include_tax() ) {
+		return $price;
+	} else { //remove tax from price
+		$tax = tcp_get_the_tax( $post_id );
+		return $price / ( 1 + $tax / 100 );
+	}
+}
+
+/**
+ * Display the price with currency
  * since 1.0.9
  */
 function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
@@ -208,14 +235,14 @@ function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
 }
 
 /**
- * Returns the price
+ * Returns the price with currency
  * since 1.0.9
  */
 function tcp_get_the_price_label( $post_id = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$type = tcp_get_the_meta( 'tcp_type', $post_id );
 	if ( $type == 'SIMPLE' ) {
-		$price = tcp_get_the_price_with_tax( $post_id );
+		$price = tcp_get_the_price_to_show( $post_id );
 		$label = tcp_format_the_price( $price );
 	} else { //GROUPED
 		$min_max = tcp_get_min_max_price( $post_id );
@@ -248,13 +275,14 @@ function tcp_get_min_max_price( $post_id = 0 ) {
 		$max = 0;
 		foreach( $products as $product ) {
 			if ( ! tcp_is_exclude_range( $product->id_to ) ) {
-				$price = (float)tcp_get_the_price( $product->id_to );
+				$price = (float)tcp_get_the_price_to_show( $product->id_to );
 				if ( $price > 0 ) {
 					if ( $price < $min ) $min = $price;
 					if ( $price > $max ) $max = $price;
 				}
 			}
 		}
+		if ( $min == 99999999999 ) $min = $max;
 		return array( $min, $max );
 	} else {
 		return false;
@@ -292,7 +320,7 @@ function tcp_get_max_price( $post_id = 0 ) {
 /**
  * Calculates the tax and returns the price with tax
  * since 1.0.9
- */
+ *
 function tcp_get_the_price_with_tax( $post_id, $price = false ) {
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_display_prices_with_taxes() ) {
@@ -309,7 +337,7 @@ function tcp_get_the_price_with_tax( $post_id, $price = false ) {
 		$tax = tcp_get_the_tax( $post_id );
 		return $price / ( 1 + $tax / 100 );
 	}
-}
+}*/
 
 /**
  * Returns the price without tax
@@ -326,6 +354,7 @@ function tcp_get_the_price_without_tax( $post_id, $price = false ) {
 	}
 }
 
+/*
 function tcp_get_the_tax_amount( $post_id, $price = false ) {
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	$tax = tcp_get_the_tax( $post_id );
@@ -334,7 +363,7 @@ function tcp_get_the_tax_amount( $post_id, $price = false ) {
 	} else {
 		return $price * $tax / 100;
 	}
-}
+}*/
 
 /**
  * Returns the tax applied to a product
@@ -386,8 +415,10 @@ function tcp_get_the_tax_type( $post_id = 0 ) {
 	}
 }
 
+//
+//for themes
+//
 function tcp_posted_on() {
-
 	printf( __( '<span class="tcp_posted_on"><span class="sep">Posted on </span><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s" pubdate>%4$s</time></a></span>', 'tcp' ),
 		esc_url( get_permalink() ),
 		esc_attr( get_the_time() ),
@@ -452,7 +483,7 @@ function tcp_get_tax_region() {
 }
 
 /**
- * Calculates the shipping/payment/other costs with tax
+ * Calculates the shipping/payment/other costs tax
  * since 1.0.9
  */
 function tcp_calculate_tax_for_shipping( $cost ) {
@@ -480,7 +511,7 @@ function tcp_get_the_shipping_cost_without_tax( $cost ) {
 }
 
 /**
- * Returns the tax to apply to the shipping/payment/other costs
+ * Returns the tax (float) to apply to the shipping/payment/other costs
  * since 1.0.9
  */
 function tcp_get_the_shipping_tax() {
@@ -491,10 +522,14 @@ function tcp_get_the_shipping_tax() {
 	$region_iso = tcp_get_tax_region();
 	$tax = TaxRates::find( $country_iso, $region_iso, 'all', $tax_id );
 	$tax = apply_filters( 'tcp_get_the_shipping_tax', $tax );
-	if ( $tax ) return $tax->rate; //$tax->label
+	if ( $tax ) return $tax->rate;
 	else return 0;
 }
 
+/**
+ * Returns the tax id to apply to the shipping/payment/other costs
+ * since 1.0.9
+ */
 function tcp_get_the_shipping_tax_id() {
 	global $thecartpress;
 	$tax_id = isset( $thecartpress->settings['tax_for_shipping'] ) ? $thecartpress->settings['tax_for_shipping'] : 0;
@@ -696,6 +731,16 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 	return RelEntities::getParents( $post_id, $rel_type );
 }
 
+function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$image = get_the_post_thumbnail( $post_id, $size );
+	if ( ! $image ) {
+		$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+		$image = get_the_post_thumbnail( $post_id, $size );
+	}
+	return $image;
+}
+
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
 	$meta_value = tcp_get_the_meta( $meta_key );
 	if ( strlen( $meta_value ) == 0 ) return '';
@@ -738,9 +783,76 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 }
 
 //
-// Utils and Tools
+//Order status template functions
+//
+function tcp_get_order_status() {
+	$status_list = array(
+		array(
+			'name'	=> Orders::$ORDER_PENDING,
+			'label'	=>__( 'Pending', 'tcp' ),
+			'show_in_dashboard'		=> true,
+			'valid_for_deleting'	=> false,
+		),
+		array(
+			'name'	=> Orders::$ORDER_PROCESSING,
+			'label'	=>__( 'Processing', 'tcp' ),
+			'show_in_dashboard'		=> true,
+			'valid_for_deleting'	=> false,
+		),
+		array(
+			'name'	=> Orders::$ORDER_COMPLETED,
+			'label'	=>__( 'Completed', 'tcp' ),
+			'show_in_dashboard'		=> true,
+			'valid_for_deleting'	=> false,
+			'is_completed'			=> true,
+		),
+		array(
+			'name'	=> Orders::$ORDER_CANCELLED,
+			'label'	=>__( 'Cancelled', 'tcp' ),
+			'show_in_dashboard'		=> true,
+			'valid_for_deleting'	=> true,
+			'is_cancelled'			=> true,
+		),
+		array(
+			'name'	=> Orders::$ORDER_SUSPENDED,
+			'label'	=>__( 'Suspended', 'tcp' ),
+			'show_in_dashboard'		=> true,
+			'valid_for_deleting'	=> true,
+		)
+	);
+	return apply_filters( 'tcp_get_order_status', $status_list );
+}
+
+function tcp_is_order_status_valid_for_deleting( $status ) {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $s )
+		if ( $s['name'] == $status && isset( $s['valid_for_deleting'] ) && $s['valid_for_deleting'] )
+			return true;
+	return false;
+}
+
+function tcp_get_cancelled_order_status() {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $status )
+		if ( isset( $status['is_cancelled'] ) && $status['is_cancelled'] )
+			return $status['name'];
+	return 'CANCELLED';
+}
+
+function tcp_get_completed_order_status() {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $status )
+		if ( isset( $status['is_completed'] ) && $status['is_completed'] )
+			return $status['name'];
+	return 'COMPLETED';
+}
+//
+// End Order status functions templates
 //
 
+//
+// Utils and Tools
+//
 /**
  * Selected in a multiple select control
  */
@@ -768,7 +880,7 @@ function tcp_checked_multiple( $values, $value, $echo = true ) {
  */
 function tcp_number_format( $number, $decimals = 2 ) {
 	global $thecartpress;
-	return number_format( $number, $decimals,  $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
+	return number_format( $number, $decimals, $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
 }
 
 /**
@@ -828,5 +940,21 @@ function tcp_get_request_array( $name ) {
 		}
 	}
 	return $values;
+}
+
+/**
+ * Creates a select in html format
+ * @param $options = array( 'value' => 'title', ...);
+ */
+function tcp_html_select( $name, $options, $value, $echo = true, $class = '', $id = false ) {
+	if ( $id === false ) $id = $name;
+	$out = '<select id="' . $id . '" name="' . $name . '"';
+	if ( strlen( $class ) > 0 ) $out .= 'class="' . $class . '"';
+	$out .= '>' . "\n";
+	foreach( $options as $option_value => $option_text )
+		$out .= '<option value="' . $option_value . '" ' . selected( $value, $option_value, false ) . '>' . $option_text . '</option>' . "\n";
+	$out .= '</select>' . "\n";
+	if ( $echo ) echo $out;
+	else return $out;
 }
 ?>

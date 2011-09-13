@@ -26,7 +26,6 @@ class BuyButton {
 		$disable_shopping_cart	= isset( $thecartpress->settings['disable_shopping_cart'] ) ? (bool)$thecartpress->settings['disable_shopping_cart'] : false;
 		$after_add_to_cart		= isset( $thecartpress->settings['after_add_to_cart'] ) ? $thecartpress->settings['after_add_to_cart'] : '';
 		$enabled_wish_list		= isset( $thecartpress->settings['enabled_wish_list'] ) ? $thecartpress->settings['enabled_wish_list'] : '';
-
 		if ( $after_add_to_cart == 'ssc' ) {
 			$action = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) );
 		} else {
@@ -41,8 +40,6 @@ class BuyButton {
 			$out .= MP3Player::showPlayer( $post_id, MP3Player::$SMALL, false );
 			$out .= '</div>' . "\n";
 		} elseif ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {				
-			$price = tcp_get_the_price_with_tax( $post_id );
-			$tax = tcp_get_the_tax( $post_id );
 			$out .= '<script type="text/javascript">
 			function add_to_the_cart_' . $post_id . '() {
 				var count = jQuery("#tcp_count_' . $post_id .'").val();
@@ -53,9 +50,10 @@ class BuyButton {
 			</script>' . "\n";
 			$out .=	'<form method="post" id="tcp_frm_' . $post_id . '" action="' . $action . '">' . "\n";
 			$out .= '<input type="hidden" name="tcp_post_id[]" id="tcp_post_id" value="' . $post_id . '" />' . "\n";
-			$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . $price . '" />' . "\n";
-			$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . $tax . '" />' . "\n";
-			$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $post_id ) . '" />' . "\n";
+			//$out .= '<input type="hidden" name="tcp_price_to_show[]" id="tcp_price_to_show" value="' . tcp_get_the_price_to_show( $post_id ) . '" />' . "\n";
+			//$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . tcp_get_the_price_without_tax( $post_id ) . '" />' . "\n";
+			//$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . tcp_get_the_tax( $post_id ) . '" />' . "\n";
+			//$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $post_id ) . '" />' . "\n";
 			$out .= '<table class="tcp_buy_button"><tbody>' . "\n";
 			$out .= '<tr>';
 			$out .= '<th>' . __( 'Price', 'tcp' ) . '</th>' . "\n";
@@ -88,7 +86,7 @@ class BuyButton {
 
 			$html = '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $post_id . '" value="0" />' . "\n";
 			$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $post_id . '" value="0" />' . "\n";
-			$html .= '<span class="tcp_price">' . tcp_get_the_price_label( $post_id ) . '</span>';
+			$html .= '<span class="tcp_unit_price">' . tcp_get_the_price_label( $post_id ) . '</span>';
 			$out .= apply_filters( 'tcp_buy_button_options', $html, $post_id );
 			$out .= '</td>' . "\n";
 			if ( $enabled_wish_list && ! $shoppingCart->isInWishList( $post_id ) ) {
@@ -164,7 +162,7 @@ class BuyButton {
 				$product_id = tcp_get_current_id( $product->id_to, get_post_type( $product->id_to ) );
 				if ( get_post_status( $product_id ) == 'publish' ) {
 					$tcp_exclude_range = get_post_meta( $product_id, 'tcp_exclude_range', true );
-					$price	= tcp_get_the_price_with_tax( $product_id );
+					$price	= tcp_get_the_price_without_tax( $product_id );
 					$tax	= tcp_get_the_tax( $product_id );
 					$stock	= tcp_get_the_stock( $product_id );
 					$is_downloadable = tcp_is_downloadable( $product_id );
@@ -182,9 +180,10 @@ class BuyButton {
 					}
 					$out .= $tr_classes . '>' . "\n";
 					$out .= '<input type="hidden" name="tcp_post_id[]" id="tcp_post_id" value="' . $product_id . '" />' . "\n";
-					$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . $price . '" />' . "\n";
-					$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . $tax . '" />' . "\n";
-					$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product_id ) . '" />' . "\n";
+					//$out .= '<input type="hidden" name="tcp_price_to_show[]" id="tcp_price_to_show" value="' . tcp_get_the_price_to_show( $product_id ) . '" />' . "\n";
+					//$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . tcp_get_the_price_without_tax( $product_id ) . '" />' . "\n";
+					//$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . tcp_get_the_tax( $product_id ) . '" />' . "\n";
+					//$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product_id ) . '" />' . "\n";
 					$out .= '<td class="tcp_buy_button_name">';
 					if ( $is_downloadable )
 						$out .= MP3Player::showPlayer( $product->id_to, MP3Player::$SMALL, false );

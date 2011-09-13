@@ -87,6 +87,17 @@ class Orders {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders where order_id = %d', $order_id ) );
 	}
 
+
+	static function getTotal( $order_id ) {
+		$order = Orders::get( $order_id );
+		if ( $order ) {
+			$total = OrdersCosts::getTotalCost( $order_id, -$order->discount_amount );
+			return OrdersDetails::getTotal( $order_id, $total );
+		} else {
+			return 0;
+		}
+	}
+
 	static function delete( $order_id ) {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
@@ -160,7 +171,7 @@ class Orders {
 		return $wpdb->insert_id;
 	}
 
-	static function getCountPendingOrders( $customer_id = -1 ) {
+/*	static function getCountPendingOrders( $customer_id = -1 ) {
 		return Orders::getCountOrdersByStatus( Orders::$ORDER_PENDING, $customer_id );
 	}
 
@@ -178,7 +189,7 @@ class Orders {
 
 	static function getCountSuspendedOrders( $customer_id = -1) {
 		return Orders::getCountOrdersByStatus( Orders::$ORDER_SUSPENDED, $customer_id );
-	}
+	}*/
 
 	static function getCountOrdersByStatus( $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;
@@ -274,7 +285,7 @@ class Orders {
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
-	static function editStatus( $order_id, $new_status, $transaction_id, $comment_internal = '' ) {
+	static function editStatus( $order_id, $new_status, $transaction_id = '', $comment_internal = '' ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -296,7 +307,8 @@ class Orders {
 	}
 
 	static function edit_downloadable_details( $order_id, $new_status ) {
-		if ( $new_status ==  Orders::$ORDER_COMPLETED ) {
+		$completed = tcp_get_completed_order_status();
+		if ( $new_status == $completed ) {
 			$details = OrdersDetails::getDetails( $order_id );
 			foreach( $details as $detail ) {
 				$days_to_expire = get_post_meta( $detail->post_id, 'tcp_days_to_expire', true );
@@ -315,28 +327,30 @@ class Orders {
 
 	static function getProductsDownloadables( $customer_id ) {
 		global $wpdb;
+		$completed = tcp_get_completed_order_status();
 		$today = date ( 'Y-m-d' );
 		$max_date = date ( 'Y-m-d', mktime( 0, 0, 0, 1, 1, 2000 ) );
 		$sql = $wpdb->prepare( 'select o.order_id as order_id, order_detail_id, post_id, expires_at, max_downloads from 
 			' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details d 
 			on o.order_id = d.order_id
-			where customer_id = %d and d.is_downloadable = \'Y\' and status=\'COMPLETED\'
+			where customer_id = %d and d.is_downloadable = \'Y\' and status=%s
 			and ( ( d.expires_at > %s and ( d.max_downloads <0 or d.max_downloads > 0 ) )
 				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads < 0 ) ) )'
-			, $customer_id, $today, $max_date );
+			, $customer_id, $completed, $today, $max_date );
 		return $wpdb->get_results( $sql );
 	}
 
 	static function isProductDownloadable( $customer_id, $orders_details_id ) {
 		global $wpdb;
+		$completed = tcp_get_completed_order_status();
 		$today = date ( 'Y-m-d' );
 		$max_date = date ( 'Y-m-d', mktime( 0, 0, 0, 1, 1, 2000 ) );
 		$sql = $wpdb->prepare( 'select count(*) from ' . $wpdb->prefix . 'tcp_orders o
 			left join ' . $wpdb->prefix . 'tcp_orders_details d on o.order_id = d.order_id
-			where customer_id = %d and order_detail_id = %d and d.is_downloadable = \'Y \' and status=\'COMPLETED\'
+			where customer_id = %d and order_detail_id = %d and d.is_downloadable = \'Y \' and status=%s
 			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
 				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
-			, $customer_id, $orders_details_id, $today, $max_date );
+			, $customer_id, $completed, $orders_details_id, $today, $max_date );
 
 		$count = $wpdb->get_var( $sql );
 		return $count > 0;

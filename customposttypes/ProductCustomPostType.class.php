@@ -122,33 +122,22 @@ class ProductCustomPostType {
 
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
 	static function register_post_type_archives( $post_type, $base_path = '' ) {
-//echo "register_post_type_archives( $post_type, $base_path )<br>";
-
 		global $wp_rewrite;
-		//the root of the post type, ie mysite.com/movie-reviews/ will be the landing page for the post type
-		$permalink_prefix = $base_path;
-		//the permalink structure for the post type that will be appended to the prefix, mysite.com/movie-reviews/2010/11/25/test-movie-review/
-		$permalink_structure = '%year%/%monthnum%/%day%/%' . $post_type . '%/';
-
-		//we use the WP_Rewrite class to generate all the endpoints WordPress can handle by default.
-		$rewrite_rules = $wp_rewrite->generate_rewrite_rules( $permalink_prefix . '/' . $permalink_structure, EP_ALL, true, true, true, true, true );
-
-		//build a rewrite rule from just the prefix to be the base url for the post type
-		$rewrite_rules = array_merge( $wp_rewrite->generate_rewrite_rules( $permalink_prefix ), $rewrite_rules );
-		$rewrite_rules[$permalink_prefix . '/?$'] = 'index.php?paged=1';
-		foreach( $rewrite_rules as $regex => $redirect ) {
-			if ( strpos( $redirect, 'attachment=' ) === false ) {
-			//add the post_type to the rewrite rule
+		if ( ! $base_path ) {
+			$base_path = $post_type;
+		}
+		$rules = $wp_rewrite->generate_rewrite_rules( $base_path );
+		$rules[$base_path.'/?$'] = 'index.php?paged=1';
+		foreach ( $rules as $regex => $redirect ) {
+			if ( strpos( $redirect, 'attachment=' ) == FALSE ) {
 				$redirect .= '&post_type=' . $post_type;
-			}
-			//turn all of the $1, $2,... variables in the matching regex into $matches[] form
-			if ( 0 < preg_match_all('@\$([0-9])@', $redirect, $matches ) ) {
-				for( $i = 0; $i < count( $matches[0] ); $i++ ) {
-					$redirect = str_replace( $matches[0][$i], '$matches[' . $matches[1][$i] . ']', $redirect );
+				if (  0 < preg_match_all( '@\$([0-9])@', $redirect, $matches ) ) {
+					for ( $i = 0 ; $i < count( $matches[0] ) ; $i++ ) {
+						$redirect = str_replace( $matches[0][$i], '$matches[' . $matches[1][$i] . ']', $redirect );
+					}
 				}
 			}
-			//add the rewrite rule to wp_rewrite
-			$wp_rewrite->add_rule( $regex, $redirect, 'top' );
+			add_rewrite_rule( $regex, $redirect, 'top' );
 		}
 	}
 
@@ -182,11 +171,14 @@ class ProductCustomPostType {
 	 */
 	function customColumnsDefinition( $columns ) {
 		$columns = array(
-			'cb'	=> '<input type="checkbox" />',
-			'title'	=> __( 'Name', 'tcp' ),
+			'cb'			=> '<input type="checkbox" />',
+			'thumbnail'		=> __( 'Thumbnail', 'tcp' ),
+			'title'			=> __( 'Name', 'tcp' ),
 			'grouped_in'	=> __( 'Grouped in', 'tcp' ),
-			'price'	=> __( 'Price  Type', 'tcp' ),
-			'date'	=> __( 'Date', 'tcp' ),
+			'sku'			=> __( 'SKU', 'tcp' ),
+			'price'			=> __( 'Price - Type', 'tcp' ),
+			'stok'			=> __( 'Stock', 'tcp' ),
+			//'date'			=> __( 'Date', 'tcp' ),
 			//'comments'	=> __('Comments', 'tcp' ),
 		);
 		global $thecartpress;
@@ -200,9 +192,12 @@ class ProductCustomPostType {
 	 */
 	function managePostCustomColumns( $column_name ) {
 		global $post;
-		if ( tcp_is_saleable_post_type( $post->post_type ) )
+		if ( tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
+			} elseif ( 'thumbnail' == $column_name ) {
+				$image = tcp_get_the_thumbnail( $post->ID, array( '50', '50' )  );
+				echo $image;
 			} elseif ( 'grouped_in' == $column_name ) {
 				$post_ids = tcp_get_the_parents( $post->ID );
 				$titles = '';
@@ -220,6 +215,10 @@ class ProductCustomPostType {
 				} else { //if ( $product_type == 'GROUPED' ) {
 					_e( 'Grouped', 'tcp' );
 				}*/
+			} elseif ( 'sku' == $column_name ) {
+				$sku = tcp_get_the_sku( $post->ID );
+				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
+				echo $sku;
 			} elseif ( 'price' == $column_name ) {
 				$price = tcp_get_the_price( $post->ID );
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
@@ -230,7 +229,13 @@ class ProductCustomPostType {
 				} else { //if ( $product_type == 'GROUPED' ) {
 					_e( 'Grouped', 'tcp' );
 				}
+			} elseif ( 'stok' == $column_name ) {
+				$stock = tcp_get_the_stock(  $post->ID );
+				if ( $stock == -1 ) $stock = __( 'N/A', 'tcp' );
+				elseif ( $stock < 10 ) $stock = sprintf( '<span style="color: red">%s</span>', $stock );
+				echo $stock;
 			}
+		}
 	}
 
 	/**

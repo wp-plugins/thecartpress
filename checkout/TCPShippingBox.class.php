@@ -22,6 +22,11 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 class TCPShippingBox extends TCPCheckoutBox {
 	private $errors = array();
 
+	function __construct() {
+		parent::__construct();
+		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+	}
+
 	function get_title() {
 		return __( 'Shipping options', 'tcp' );
 	}
@@ -104,7 +109,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 					'shipping_city'				=> isset( $_REQUEST['shipping_city'] ) ? $_REQUEST['shipping_city'] : '',
 					'shipping_city_id'			=> isset( $_REQUEST['shipping_city_id'] ) ? $_REQUEST['shipping_city_id'] : 0,
 					'shipping_street'			=> isset( $_REQUEST['shipping_street'] ) ? $_REQUEST['shipping_street'] : '',
-					'shipping_postcode'			=> isset( $_REQUEST['shipping_postcode'] ) ? $_REQUEST['shipping_postcode'] : '',
+					'shipping_postcode'			=> isset( $_REQUEST['shipping_postcode'] ) ? str_replace( ' ' , '', $_REQUEST['shipping_postcode'] ): '',
 					'shipping_telephone_1'		=> isset( $_REQUEST['shipping_telephone_1'] ) ? $_REQUEST['shipping_telephone_1'] : '',
 					'shipping_telephone_2'		=> isset( $_REQUEST['shipping_telephone_2'] ) ? $_REQUEST['shipping_telephone_2'] : '',
 					'shipping_fax'				=> isset( $_REQUEST['shipping_fax'] ) ? $_REQUEST['shipping_fax'] : '',
@@ -144,7 +149,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				<br />
 				<select id="selected_shipping_id" name="selected_shipping_id">
 				<?php foreach( $addresses as $address ) :?>
-					<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo $address->name;?></option>
+					<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->name );?></option>
 				<?php endforeach;?>
 				</select>
 				<?php if ( $selected_shipping_address == 'Y' ) $this->showErrorMsg( 'shipping_country_id' );?>
@@ -169,7 +174,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_firstname'] ) ) {
 				$firstname = $_SESSION['tcp_checkout']['shipping']['shipping_firstname'];
 			} elseif ( $default_address ) {
-				$firstname = $default_address->firstname;
+				$firstname = stripslashes( $default_address->firstname );
 			} elseif ( $current_user && $current_user instanceof WP_User ) {
 				$firstname = $current_user->first_name;
 			} else {
@@ -180,7 +185,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_lastname'] ) ) {
 				$lastname = $_SESSION['tcp_checkout']['shipping']['shipping_lastname'];
 			} elseif ( $default_address ) {
-				$lastname = $default_address->lastname;
+				$lastname = stripslashes( $default_address->lastname );
 			} elseif ( $current_user && $current_user instanceof WP_User ) {
 				$lastname = $current_user->last_name;
 			} else {
@@ -191,7 +196,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_lastname'] ) ) {
 				$company = $_SESSION['tcp_checkout']['shipping']['shipping_company'];
 			} else {
-				$company = $default_address ? $default_address->company : '';
+				$company = $default_address ? stripslashes( $default_address->company ) : '';
 			}
 			if ( isset( $_REQUEST['shipping_tax_id_number'] ) ) {
 				$tax_id_number = $_REQUEST['shipping_tax_id_number'];
@@ -205,7 +210,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_street'] ) ) {
 				$street = $_SESSION['tcp_checkout']['shipping']['shipping_street'];
 			} else {
-				$street = $default_address ? $default_address->street : '';
+				$street = $default_address ? stripslashes( $default_address->street ) : '';
 			}
 			if ( isset( $_REQUEST['shipping_city_id'] ) ) {
 				$city_id = $_REQUEST['shipping_city_id'];
@@ -219,7 +224,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_city'] ) ) {
 				$city = $_SESSION['tcp_checkout']['shipping']['shipping_city'];
 			} else {
-				$city = $default_address ? $default_address->city : '';
+				$city = $default_address ? stripslashes( $default_address->city ) : '';
 			}
 			if ( isset( $_REQUEST['shipping_region_id'] ) ) {
 				$region_id = $_REQUEST['shipping_region_id'];
@@ -233,14 +238,14 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_region'] ) ) {
 				$region = $_SESSION['tcp_checkout']['shipping']['shipping_region'];
 			} else {
-				$region = $default_address ? $default_address->region : '';
+				$region = $default_address ? stripslashes( $default_address->region ) : '';
 			}
 			if ( isset( $_REQUEST['shipping_postcode'] ) ) {
 				$postcode = $_REQUEST['shipping_postcode'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_postcode'] ) ) {
 				$postcode = $_SESSION['tcp_checkout']['shipping']['shipping_postcode'];
 			} else {
-				$postcode = $default_address ? $default_address->postcode : '';
+				$postcode = $default_address ? str_replace( ' ' , '', $default_address->postcode ) : '';
 			}
 			if ( isset( $_REQUEST['shipping_country_id'] ) ) {
 				$country_id = $_REQUEST['shipping_country_id'];

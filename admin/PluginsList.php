@@ -86,7 +86,7 @@ foreach( $plugins as $id => $plugin ) :
 		$out = __( 'Not in use', 'tcp' );
 	}?>
 	<tr <?php echo $tr_class;?>>
-		<td><?php echo $plugin->getTitle();?></td>
+		<td><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>" title="<?php _e( 'Edit', 'tcp' );?>"><?php echo $plugin->getTitle();?></a></td>
 		<td><?php echo $plugin->getDescription();?></td>
 		<td><?php echo $out;?></td>
 		<td style="width: 20%;">

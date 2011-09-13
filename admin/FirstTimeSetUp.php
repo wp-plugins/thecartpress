@@ -85,8 +85,8 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	$step = -1;
 }?>
 <div class="wrap">
-<div class="tcp_first_time_setup" style="background: url('<?php echo plugins_url('thecartpress/images/tcp_logo.png');?>') no-repeat top left rgb(8,71,113); border: 0px; color: white; height: 5.5em;">
-<h2 style="padding-left: 4em; color: white;"><?php _e( 'First time setup', 'tcp' ); ?></h2>
+<div class="tcp_first_time_setup">
+<h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
 </div>
 <h2><?php echo tcp_get_step_title( $step );?></h2>
 <form method="post">
@@ -106,11 +106,11 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 <?php elseif ( $step == 1 ) :
 	$values = array( 'country' );
 	$country = isset( $_REQUEST['tcp_settings']['country'] ) ? $_REQUEST['tcp_settings']['country'] : false;?>
-	<p><?php _e( 'Please, select your country', 'tcp' ); ?></p>
+	<p><?php _e( 'Please, select the base country', 'tcp' ); ?></p>
 	<table class="form-table" style="display: table;">
 	<tbody>
 	<tr valign="top">
-		<th scope="row"><label for="country"><?php _e( 'Your country', 'tcp' ); ?></label>:</th>
+		<th scope="row"><label for="country"><?php _e( 'Base country', 'tcp' ); ?></label>:</th>
 		<td><?php $settings->show_country( $country );?></td>
 	</tr>
 	</tbody>
@@ -152,7 +152,7 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 <?php elseif ( $step == 3 ) :
 	$values = array( 'user_registration', 'emails', 'from_email' );
 	$user_registration = isset( $_REQUEST['tcp_settings']['user_registration'] ) ;
-	$emails = isset( $_REQUEST['tcp_settings']['emails'] ) ? $_REQUEST['tcp_settings']['emails'] : false;
+	$emails = isset( $_REQUEST['tcp_settings']['emails'] ) ? $_REQUEST['tcp_settings']['emails'] : get_option('admin_email');
 	$from_email = isset( $_REQUEST['tcp_settings']['from_email'] ) ? $_REQUEST['tcp_settings']['from_email'] : false;?>
 	<p><?php _e( 'Please, select the checkout settings', 'tcp' ); ?></p>
 	<table class="form-table" style="display: table;">

@@ -19,6 +19,7 @@
 require_once( dirname( dirname( __FILE__ ) ).'/daos/Countries.class.php' );
 require_once( dirname( dirname( __FILE__ ) ).'/daos/Taxes.class.php' );
 require_once( dirname( dirname( __FILE__ ) ).'/daos/TaxRates.class.php' );
+add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 
 if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
 	$_REQUEST['country_iso']	= isset( $_REQUEST['country_iso'] ) ? $_REQUEST['country_iso'] : 'all';

@@ -60,7 +60,6 @@ class TCPRemboursement extends TCP_Plugin {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
-		$cost = tcp_number_format( $cost );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 

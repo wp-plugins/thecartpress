@@ -20,6 +20,13 @@ class ActiveCheckout {//shortcode
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
+			$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
+			//We have to check if the order wasn't cancelled
+			$order_status = Orders::getStatus( $order_id );
+			$cancelled = tcp_get_cancelled_order_status();
+			if ( $order_status == $cancelled ) $_REQUEST['tcp_checkout'] = 'ko';
+		}
+		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
 			TheCartPress::removeShoppingCart();
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			if ( strlen( $html ) == 0 ) {
@@ -32,11 +39,10 @@ class ActiveCheckout {//shortcode
 				}
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 			if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
 			$html .= '<br>';
 			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
-			unset( $_SESSION['order_page'] );//TODO
+			unset( $_SESSION['order_page'] );
 			$html .= '<br />';
 			$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 			do_action( 'tcp_checkout_end', $order_id );
@@ -56,6 +62,7 @@ class ActiveCheckout {//shortcode
 				$html .= '<br/>' . sprintf( __( 'Retry again the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
 				$html .= '</div>' . "\n" . '</div>';
 			}
+			ActiveCheckout::sendMails( $order_id, true, 'Payment Error: (' . $response_reason_code . ') ' . $response_reason_text );
 			return $html;
 		} elseif ( $shoppingCart->isEmpty() ) { 
 			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
@@ -67,7 +74,7 @@ class ActiveCheckout {//shortcode
 			$param = apply_filters( 'tcp_checkout_validate_before_enter', $param );
 			if ( ! $param['validate'] ) {
 				require_once( dirname( dirname( __FILE__ ) ) . '/shortcodes/ShoppingCartPage.class.php' );
-				$shoppingCartPage = new ShoppingCartPage();
+				$shoppingCartPage = new TCP_ShoppingCartPage();
 				echo $shoppingCartPage->show( $param['msg'] );
 				return;
 			}
@@ -110,7 +117,7 @@ class ActiveCheckout {//shortcode
 				$headers .= 'To: ' . $to . "\r\n";
 				$headers .= 'From: ' . $from . "\r\n";
 				$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
-				wp_mail( $to, $subject, $message, $headers );
+				wp_mail( $to, $subject, $message_to_merchant, $headers );
 			}
 		}
 	}

@@ -26,6 +26,7 @@ class RelatedListWidget extends CustomListWidget {
 
 	function widget( $args, $instance ) {
 		$loop_args = array();
+		$loop_args['posts_per_page'] = $instance['limit'];
 		if ( is_single() && ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' || $instance['rel_type'] == 'PROD-PROD' || $instance['rel_type'] == 'POST-PROD' ) ) {
 			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
 				$post_type_search = 'tcp_product';
@@ -45,14 +46,14 @@ class RelatedListWidget extends CustomListWidget {
 			$loop_args['post__in'] = $ids;
 			$loop_args['post_type'] = $post_type;
 		} else {
-
 		//TODO falta?
-			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) )
+			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) ) {
 				$instance['taxonomy'] = ProductCustomPostType::$PRODUCT_CATEGORY;
-			else if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_POST' || $instance['rel_type'] == 'CAT_POST-CAT_POST' ) )
+			} elseif ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_POST' || $instance['rel_type'] == 'CAT_POST-CAT_POST' ) ) {
 				$instance['taxonomy'] = 'category';
-			else
+			} else {
 				return;
+			}
 			if ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_PROD-CAT_POST' ) {
 				$taxonomy_search = ProductCustomPostType::$PRODUCT_CATEGORY;
 				$cat = get_the_terms( get_the_ID(), ProductCustomPostType::$PRODUCT_CATEGORY );

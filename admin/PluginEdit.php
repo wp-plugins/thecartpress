@@ -20,7 +20,7 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 
 $plugin_id = isset( $_REQUEST['plugin_id'] ) ? $_REQUEST['plugin_id'] : '';
-$plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : '';
+$plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : tcp_get_plugin_type( $plugin_id );
 $instance = isset( $_REQUEST['instance'] ) ? (int)$_REQUEST['instance'] : 0;
 
 if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
@@ -29,6 +29,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
 	$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
+	$plugin_data[$instance]['not_for_downloadable'] = isset( $_REQUEST['not_for_downloadable'] );
 	if ( isset( $_REQUEST['all_countries'] ) ) {
 		$plugin_data[$instance]['all_countries'] = $_REQUEST['all_countries'];
 		$plugin_data[$instance]['countries'] = array();
@@ -113,20 +114,30 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<input type="checkbox" name="active" id="active" <?php checked( isset( $data['active'] ) ? $data['active'] : false, true );?> value="yes" />
 	</td>
 	</tr>
+<?php if ( $plugin_type == 'payment' ) : ?>
+	<tr valign="top">
+	<th scope="row">
+		<label for="not_for_downloadable"><?php _e( 'Do not Apply for downloadable products', 'tcp' );?></label>
+	</th>
+	<td>
+		<input type="checkbox" name="not_for_downloadable" id="not_for_downloadable" <?php checked( isset( $data['not_for_downloadable'] ) ? $data['not_for_downloadable'] : false, true );?> value="yes" />
+	</td>
+	</tr>
 	<tr valign="top">
 	<th scope="row">
 		<label for="new_status"><?php _e( 'New status', 'tcp' );?></label>
 	</th>
 	<td>
-		<select class="postform" id="new_status" name="new_status">
-			<option value="<?php echo Orders::$ORDER_PENDING;?>"<?php selected( Orders::$ORDER_PENDING, $new_status );?>><?php _e( 'pending', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_PROCESSING;?>"<?php selected( Orders::$ORDER_PROCESSING, $new_status );?>><?php _e( 'processing', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_COMPLETED;?>"<?php selected( Orders::$ORDER_COMPLETED, $new_status );?>><?php _e( 'completed', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $new_status );?>><?php _e( 'cancelled', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $new_status );?>><?php _e( 'suspended', 'tcp' );?></option>
+		<select class="postform" id="new_status" name="new_status"><?php 
+		$order_status_list = tcp_get_order_status();
+		foreach ( $order_status_list as $order_status ) : ?>
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $new_status );?>><?php echo $order_status['label']; ?></option>		
+		<?php endforeach; ?>
 		</select>
-		<span class="description"><?php _e( 'This value is only used by payment plugins. If the payment is right, the order status will be the selected', 'tcp' );?></span>
-	</td></tr>
+		<span class="description"><?php _e( 'If the payment is right, the order status will be the selected one.', 'tcp' );?></span>
+	</td>
+	</tr>
+<?php endif; ?>
 	<tr valign="top">
 	<th scope="row">
 		<label for="all_countries"><?php _e( 'Apply the plugin to all countries', 'tcp' );?>:</label>
@@ -134,7 +145,8 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	<td>
 		<input type="checkbox" name="all_countries" id="all_countries" <?php checked( isset( $data['all_countries'] ) ? $data['all_countries'] : '', 'yes' );?> value="yes"
 		onclick="if (this.checked) jQuery('.sel_countries').hide(); else jQuery('.sel_countries').show();"/>
-	</td></tr>
+	</td>
+	</tr>
 	<tr valign="top" class="sel_countries" <?php
 		$all = isset( $data['all_countries'] ) ? $data['all_countries'] : '';
 		if ( $all == 'yes' ) echo 'style="display:none;"';

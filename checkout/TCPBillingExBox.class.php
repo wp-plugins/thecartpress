@@ -22,8 +22,13 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 class TCPBillingExBox extends TCPCheckoutBox {
 	private $errors = array();
 
+	function __construct() {
+		parent::__construct();
+		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+	}
+
 	function get_title() {
-		return __( 'Billing options Ex', 'tcp' );
+		return __( 'Billing options', 'tcp' );
 	}
 
 	function get_class() {
@@ -130,7 +135,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					'billing_city'				=> isset( $_REQUEST['billing_city'] ) ? $_REQUEST['billing_city'] : '',
 					'billing_city_id'			=> isset( $_REQUEST['billing_city_id'] ) ? $_REQUEST['billing_city_id'] : 0,
 					'billing_street'			=> $_REQUEST['billing_street'],
-					'billing_postcode'			=> $_REQUEST['billing_postcode'],
+					'billing_postcode'			=> str_replace( ' ' , '', $_REQUEST['billing_postcode'] ),
 					'billing_telephone_1'		=> isset( $_REQUEST['billing_telephone_1'] ) ? $_REQUEST['billing_telephone_1'] : '',
 					'billing_telephone_2'		=> isset( $_REQUEST['billing_telephone_2'] ) ? $_REQUEST['billing_telephone_2'] : '',
 					'billing_fax'				=> isset( $_REQUEST['billing_fax'] ) ? $_REQUEST['billing_fax'] : '',
@@ -288,7 +293,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					<br />
 					<select id="selected_billing_id" name="selected_billing_id">
 					<?php foreach( $addresses as $address ) :?>
-						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo $address->name;?></option>
+						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->name );?></option>
 					<?php endforeach;?>
 					</select>
 					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' );?>
@@ -309,7 +314,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_firstname'] ) ) {
 				$firstname = $_SESSION['tcp_checkout']['billing']['billing_firstname'];
 			} elseif ( $default_address ) {
-				$firstname = $default_address->firstname;
+				$firstname = stripslashes( $default_address->firstname );
 			} elseif ( $current_user && $current_user instanceof WP_User ) {
 				$firstname = $current_user->first_name;
 			} else {
@@ -320,7 +325,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_lastname'] ) ) {
 				$lastname = $_SESSION['tcp_checkout']['billing']['billing_lastname'];
 			} elseif ( $default_address ) {
-				$lastname = $default_address->lastname;
+				$lastname = stripslashes($default_address->lastname );
 			} elseif ( $current_user && $current_user instanceof WP_User ) {
 				$lastname = $current_user->last_name;
 			} else {
@@ -331,7 +336,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_company'] ) ) {
 				$company = $_SESSION['tcp_checkout']['billing']['billing_company'];
 			} else {
-				$company = $default_address ? $default_address->company : '';
+				$company = $default_address ? stripslashes( $default_address->company ) : '';
 			}
 			if ( isset( $_REQUEST['billing_tax_id_number'] ) ) {
 				$tax_id_number = $_REQUEST['billing_tax_id_number'];
@@ -345,7 +350,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_street'] ) ) {
 				$street = $_SESSION['tcp_checkout']['billing']['billing_street'];
 			} else {
-				$street = $default_address ? $default_address->street : '';
+				$street = $default_address ? stripslashes( $default_address->street ) : '';
 			}
 			if ( isset( $_REQUEST['billing_city_id'] ) ) {
 				$city_id = $_REQUEST['billing_city_id'];
@@ -359,7 +364,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_city'] ) ) {
 				$city = $_SESSION['tcp_checkout']['billing']['billing_city'];
 			} else {
-				$city = $default_address ? $default_address->city : '';
+				$city = $default_address ? stripslashes( $default_address->city ) : '';
 			}
 			if ( isset( $_REQUEST['billing_region_id'] ) ) {
 				$region_id = $_REQUEST['billing_region_id'];
@@ -373,14 +378,14 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_region'] ) ) {
 				$region = $_SESSION['tcp_checkout']['billing']['billing_region'];
 			} else {
-				$region = $default_address ? $default_address->region : '';
+				$region = $default_address ? stripslashes( $default_address->region ) : '';
 			}
 			if ( isset( $_REQUEST['billing_postcode'] ) ) {
 				$postcode = $_REQUEST['billing_postcode'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_postcode'] ) ) {
 				$postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];
 			} else {
-				$postcode = $default_address ? $default_address->postcode : '';
+				$postcode = $default_address ? str_replace( ' ' , '', $default_address->postcode ) : '';
 			}
 			if ( isset( $_REQUEST['billing_country_id'] ) ) {
 				$country_id = $_REQUEST['billing_country_id'];
@@ -493,7 +498,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					<?php $this->showErrorMsg( 'billing_street' );?></li>
 
 					<li><label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="7" maxlength="7" />
+					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="5" maxlength="10" />
 					<?php $this->showErrorMsg( 'billing_postcode' );?></li>
 
 					<?php if ( $see_telephone_1 ) :?>

@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress, html5
 Requires at least: 3.1
 Tested up to: 3.2
-Stable Tag: 1.1.0
+Stable Tag: 1.1.1
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -161,6 +161,23 @@ This plugin is released under a GPL license.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.1 =
+* Allow to add multilingual plugins
+* wp_mail (Thanks to the community)
+* Plugins page: filter for the children of TheCartPress
+* Fixed tax settings bugs (Thanks to the community)
+* Payment/Shipping methods: Apply for downloadable products (Suggested in the community)
+* Speed improvements (2)
+* Custom fields admin page redesign
+* New template function: tcp_get_order_status
+* New filter: tcp_get_order_status
+* No error if Curl is not installed
+* Thumbnail support by default
+* Unified Shopping Carts
+* Postcode verification
+* PayPal payment gateway: shows summary or items in the paypal site (Thanks to Joy)
+* UI enhancements
 
 = 1.1.0 =
 * User registration: The registration has been improved in the checkout process

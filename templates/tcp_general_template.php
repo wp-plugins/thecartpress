@@ -114,11 +114,10 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 	$shoppingCart		= TheCartPress::getShoppingCart();
 	$summary = '<ul class="tcp_shopping_cart_resume">';
-	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotal( true ) ) . '</li>';
-	
 	$discount = $shoppingCart->getAllDiscounts();
 	if ( $discount > 0 )
 		$summary .= '<li><span class="tcp_resumen_discount">' . __( 'Discount', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $discount ) . '</li>';
+	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotalToShow( false ) ) . '</li>';
 
 	if ( isset( $args['see_product_count'] ) ? $args['see_product_count'] : false )
 		$summary .=	'<li><span class="tcp_resumen_count">' . __( 'N<sup>o</sup> products', 'tcp' ) . ':</span>&nbsp;' . $shoppingCart->getCount() . '</li>';
@@ -130,7 +129,7 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	$see_weight = isset( $args['see_weight'] ) ? $args['see_weight'] : false;
 	if ( $see_weight && $shoppingCart->getWeight() > 0 ) 
 		$summary .= '<li><span class="tcp_resumen_weight">' . __( 'Weigth', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getWeight() ) . '&nbsp;' . $unit_weight . '</li>';
-
+		
 	if ( isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true )
 		$summary .= '<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="' . tcp_get_the_shopping_cart_url() . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
 

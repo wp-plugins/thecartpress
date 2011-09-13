@@ -24,7 +24,7 @@ class Currencies {
 			`code`		int(4)			NOT NULL,
 			`decimal`	int(1)			NOT NULL,
 			`currency`	varchar(50)		NOT NULL,
-			`entities`	varchar(100)	NOT NULL,
+			`entities`	varchar(300)	NOT NULL,
 			PRIMARY KEY (`iso`)
 		) ENGINE = MyISAM DEFAULT CHARSET=utf8;';
 		$wpdb->query( $sql );
