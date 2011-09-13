@@ -82,41 +82,36 @@ class TCPCartBox extends TCPCheckoutBox {
 		</tr>
 		</thead>
 		<tbody><?php
-		$tax_amount = 0;
-		$subtotal = 0;
 		$i = 0;
-		foreach( $shoppingCart->getItems() as $item ) {
-			$post_id = tcp_get_current_id( $item->getPostId(), get_post_type( $item->getPostId() ) );
-			$option_1_id = tcp_get_current_id( $item->getOption1Id(), get_post_type( $item->getOption1Id() ) );
-			$option_2_id = tcp_get_current_id( $item->getOption2Id(), get_post_type( $item->getOption2Id() ) );?>
+		$decimals = tcp_get_decimal_currency();
+		$table_amount_without_tax = 0;
+		$table_amount_with_tax = 0;
+		foreach( $shoppingCart->getItems() as $item ) :
+			//$item->setTax( tcp_get_the_tax( $item->getPostId() ) );
+			$tax = tcp_get_the_tax( $item->getPostId() );
+			//$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $item->getTax() / 100 );
+			$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $tax / 100 );
+			$unit_price_with_tax = round( $unit_price_with_tax,  $decimals );
+			$line_price_without_tax = $item->getUnitPrice() * $item->getUnits();
+			$line_price_with_tax = $unit_price_with_tax * $item->getUnits();
+			$table_amount_without_tax += $line_price_without_tax;
+			$table_amount_with_tax += $line_price_with_tax; ?>
 			<tr class="tcp_cart_product_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
-			<td class="tcp_cart_name"><?php echo tcp_get_the_title( $post_id, $item->getOption1Id(), $item->getOption2Id() );?>
-			</td><?php
-			$price = tcp_get_the_price( $post_id );
-			if ( $option_1_id > 0 ) $price += tcp_get_the_price( $option_1_id );
-			if ( $option_2_id > 0 ) $price += tcp_get_the_price( $option_2_id );
-			$price_without_tax = tcp_get_the_price_without_tax( $post_id, $price );
-			$tax = tcp_get_the_tax_amount( $post_id, $price );
-			//$tax = $price - $price_without_tax;?>
-			<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $price_without_tax );?></td>
-			<td class="tcp_cart_units"><?php echo tcp_number_format( $item->getCount(), 0 );?></td>
-			<?php //TODO remove weight if...?>
-			<td class="tcp_cart_weight"><?php echo tcp_number_format( $item->getWeight(), 0 );?>&nbsp;<?php echo tcp_get_the_unit_weight();?></td><?php
-			$tax = $tax * $item->getUnits();
-			$tax_amount += $tax;
-			$price = $price_without_tax * $item->getUnits();
-			$subtotal += $price;?>
-			<td class="tcp_cart_price"><?php echo tcp_format_the_price( $price );?></td>
-			</tr><?php
-		}
-		//$discount = $shoppingCart->getDiscount();
+				<td class="tcp_cart_name"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></td>
+				<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $item->getUnitPrice() );?></td>
+				<td class="tcp_cart_units"><?php echo tcp_number_format( $item->getCount(), 0 );?></td>
+				<?php //TODO remove weight if...?>
+				<td class="tcp_cart_weight"><?php echo tcp_number_format( $item->getWeight(), 0 );?>&nbsp;<?php echo tcp_get_the_unit_weight();?></td>
+				<td><?php echo tcp_format_the_price( $line_price_without_tax );?></td>
+			</tr>
+		<?php endforeach;
 		$discount = $shoppingCart->getAllDiscounts();
 		if ( $discount > 0 ) : ?>
 			<tr id="discount" class="tcp_cart_discount_row<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif;?>">
 			<td colspan="4" style="text-align:right"><?php _e( 'Discounts', 'tcp' );?></td>
 			<td><?php echo tcp_format_the_price( $discount );?></td>
 			</tr><?php
-			$subtotal -= $discount;
+			//$table_amount_with_tax -= $discount; //discount is applied to the taxed prices
 		endif;
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
 			$smi = $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];
@@ -143,34 +138,37 @@ class TCPCartBox extends TCPCheckoutBox {
 		do_action( 'tcp_checkout_calculate_other_costs' );
 		$costs = $shoppingCart->getOtherCosts();
 		asort( $costs, SORT_STRING );
-		foreach( $costs as $cost_id => $cost ) : ?>
-			<tr id="other_costs"<?php if ( $i++ & 1 == 1 ) :?> class="tcp_par"<?php endif;?>>
+		foreach( $costs as $cost_id => $cost ) : 
+			$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
+			$cost_with_tax = $cost->getCost(); ?>
+			<tr id="other_costs" class="tcp_cart_other_costs_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
 			<td colspan="4" class="tcp_cost_' . $cost_id . '" style="text-align:right"><?php echo $cost->getDesc();?></td>
-			<?php $cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );?>
 			<td><?php echo tcp_format_the_price( $cost_without_tax );?></td>
 			</tr><?php
-			$tax_amount += tcp_calculate_tax_for_shipping( $cost->getCost() );
-			$subtotal += $cost_without_tax;
+			$table_amount_with_tax += $cost_with_tax;
+			$table_amount_without_tax += $cost_without_tax;
 		endforeach;
 		$show_tax_summary = false;
-		if ( $tax_amount == 0 ) {
+		if ( $table_amount_without_tax == $table_amount_with_tax ) {
 			$show_tax_summary = tcp_get_display_zero_tax_subtotal();
 		} elseif ( tcp_is_display_full_tax_summary() ) {
 			$show_tax_summary = true;
 		}
 		if ( $show_tax_summary ) : ?>
 			<tr id="subtotal" class="tcp_cart_subtotal_row <?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
-			<td colspan="4" class="tcp_cart_subtotal_title"><?php _e( 'Taxes', 'tcp');?></td>
-			<td class="tcp_cart_subtotal"><span id="subtotal"><?php echo tcp_format_the_price( $tax_amount );?></span></td>
+				<td colspan="4" class="tcp_cart_subtotal_title"><?php _e( 'Taxes', 'tcp');?></td>
+				<td class="tcp_cart_subtotal"><span id="subtotal"><?php echo tcp_format_the_price( $table_amount_with_tax - $table_amount_without_tax );?></span></td>
 			</tr>
 		<?php endif;
-		$subtotal += $tax_amount;
-		$total = apply_filters( 'tcp_checkout_set_total', $subtotal );
+
+		$table_amount_with_tax -= $discount;
+		$total = apply_filters( 'tcp_checkout_set_total', $table_amount_with_tax );
 		do_action( 'tcp_checkout_before_total' );?>
 		<tr id="total" class="tcp_cart_total_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
 		<td colspan="4" class="tcp_cart_total_title"><?php _e( 'Total', 'tcp');?></td>
 		<td class="tcp_cart_total"><span id="total"><?php echo tcp_format_the_price( $total );?></span></td>
 		</tr>
+		
 		</tbody></table><?php
 		do_action( 'tcp_checkout_after_order_cart' );
 	}

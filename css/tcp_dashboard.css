@@ -1,23 +1,136 @@
-div#tcp_orders_resume
-{
-	border-color: rgb(8,71,113);
-}
+/*
+ Dashboard
+*/
 
 div#tcp_orders_resume,
 div#tcp_orders_resume h3,
 div#tcp_orders_resume a
 {
-	background: rgb(8,71,113);
+	background: #5e6b7c;
 	color: rgb(255, 255, 255);
 	border-bottom-width: 0;
 }
 
+div#tcp_orders_resume
+{
+	border-color: #5e6b7c;
+}
+
 div#tcp_orders_resume h3
 {
-	text-shadow: none;
+	text-shadow: 0 1px 0 rgb(0,0, 100);
+	font-weight: bold;
 }
 
 div#tcp_orders_resume div.inside
 {
 	padding: .5em;
+}
+
+div#tcp_orders_resume a.tcp_link_to_tcp
+{
+	font-weight: bold;
+	text-decoration: none;
+}
+
+div#tcp_orders_resume a.tcp_link_to_tcp:hover
+{
+	text-decoration: underline;
+}
+/*
+Plugins list
+*/
+
+/*table.plugins tr#thecartpress
+{
+	background: #5e6b7c;
+	height: 69px;
+}*/
+
+table.plugins tr#thecartpress td.plugin-title
+{
+	background: url('../images/tcp_logo_32.png') no-repeat;
+	padding-left: 35px;
+}
+
+/*table.plugins tr#thecartpress td.plugin-title strong,
+table.plugins tr#thecartpress td.column-description p,
+table.plugins tr#thecartpress td.column-description div
+{
+	color: white;
+}
+
+table.plugins tr#thecartpress td.plugin-title div.row-actions-visible a,
+table.plugins tr#thecartpress td.column-description div a
+{
+	text-decoration: underline;
+	color: white;
+}*/
+
+/*
+ Admin downloadable list
+*/
+li.tcp_file
+{
+	padding-left: 20px;
+}
+
+span.tcp_folder_options,
+span.tcp_file_options
+{
+	padding-left: 100px;
+}
+
+.popup_close
+{
+	float:right; 
+	margin-right:5px; 
+	cursor:pointer; 
+	font:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:12px; 
+	font-weight:bold; 
+	color:#FFFFFF; 
+	background-color:#666666; 
+	width:12px; 
+	position:relative; 
+	margin-top:-1px; 
+	text-align:center;
+}
+
+/*First time setup*/
+
+div.tcp_first_time_setup
+{
+	background: url('../images/tcp_logo.png') no-repeat top left #5e6b7c;
+	border: 0px;
+	height: 68px;
+}
+
+div.tcp_first_time_setup h2
+{
+	padding-left: 4em;
+	color: white;
+}
+
+//Settings
+ul.tabs_section
+{
+
+}
+
+ul.tabs_section li
+{
+	padding-left: 0;
+	padding-right: 2em;
+	float: left;
+}
+
+ul.tabs_section li a
+{
+	text-decoration: none;
+}
+
+.section_active
+{
+	font-weight: bold;
 }

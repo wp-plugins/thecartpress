@@ -423,7 +423,7 @@ class TCPCheckoutManager {
 			$ordersDetails['name']				= $post->post_title;
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
+			$ordersDetails['price']				= $item->getUnitPrice();
 			//$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 			$ordersDetails['original_price']	= $item->getUnitPrice();
 			$ordersDetails['tax']				= $item->getTax();
@@ -473,8 +473,11 @@ class TCPCheckoutManager {
 		$html = '<div class="tcp_payment_area">' . "\n";
 		if ( $no_stock_enough ) {
 			Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
-			$html .= '<p>' . __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ) . '</p>';
+			$message = tcp_do_template( 'tcp_error_stock_when_pay', false );
+			if ( strlen( $message ) == 0 ) $html .= '<p>' . __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ) . '</p>';
+			else $html .= $message;
 		}
+		
 		$html .= '<p>' . __( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ) . '</p>';
 		if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
@@ -492,7 +495,7 @@ class TCPCheckoutManager {
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;
 		$html .= $order_page;
-		//sendMails??
+
 		$html .= '<br />';
 		$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 		$html .= '</div><!-- tcp_payment_area-->' . "\n";

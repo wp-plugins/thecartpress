@@ -48,7 +48,7 @@ class ShoppingCartWidget extends WP_Widget {
 		$see_delete_all		= isset( $instance['see_delete_all'] ) ? $instance['see_delete_all'] : true;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? $instance['see_shopping_cart'] : true;
 		$see_checkout		= isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true;
-		foreach( $shoppingCart->getItems() as $item ) :?>
+		foreach( $shoppingCart->getItems() as $item ) : ?>
 			<li><form method="post">
 				<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId();?>" />
 				<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="<?php echo $item->getOption1Id();?>" />
@@ -58,7 +58,7 @@ class ShoppingCartWidget extends WP_Widget {
 				<input type="hidden" name="tcp_unit_weight" id="tcp_unit_weight" value="<?php echo $item->getWeight();?>" />
 				<ul class="tcp_shopping_cart_widget">
 					<li class="tcp_cart_widget_item"><span class="tcp_name"><?php echo $this->getProductTitle( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
-					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getUnitPrice() );?></span></li>
+					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() );?></span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li>
 						<?php if ( $see_modify_item ) :?>
@@ -78,7 +78,7 @@ class ShoppingCartWidget extends WP_Widget {
 					<?php if ( $item->getDiscount() > 0 ) : ?>
 					<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getDiscount() );?></span></li>
 					<?php endif;?>
-					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotal() );?></li>
+					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() );?></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<?php if ( $see_weight && $item->getWeight() > 0 ) :?>
 						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() );?>&nbsp;<?php echo $unit_weight;?></li>
@@ -92,6 +92,11 @@ class ShoppingCartWidget extends WP_Widget {
 				</ul>
 			</form></li>
 		<?php endforeach;?>
+		<?php $discount = $shoppingCart->getAllDiscounts();
+		if ( $discount > 0 ) : ?>
+			<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $discount );?></li>
+		<?php endif; ?>
+			<li><span class="tcp_total"><?php _e( 'Total', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $shoppingCart->getTotalToShow() );?></li>
 		<?php if ( $see_shopping_cart ) :?>
 			<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php tcp_the_shopping_cart_url();?>"><?php _e( 'shopping cart', 'tcp' );?></a></li>
 		<?php endif;?>

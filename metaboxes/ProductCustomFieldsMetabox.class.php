@@ -126,7 +126,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" type="text" style="width:12em" /></td>
+				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" type="text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?></td>
 			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
 			<tr valign="top">

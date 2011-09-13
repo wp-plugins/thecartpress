@@ -3,10 +3,11 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.0
+Version: 1.1.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
+Parent: thecartpress
 */
 
 /**
@@ -26,20 +27,14 @@ License: GPL
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/templates/tcp_template.php' );
-require_once( dirname( __FILE__ ) . '/templates/tcp_general_template.php' );
-require_once( dirname( __FILE__ ) . '/templates/tcp_template_template.php' );
-require_once( dirname( __FILE__ ) . '/templates/tcp_custom_fields_template.php' );
-require_once( dirname( __FILE__ ) . '/templates/tcp_custom_templates.php' );
-require_once( dirname( __FILE__ ) . '/checkout/tcp_checkout_template.php' );
-
-if ( ! is_admin() ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
-
+function __autoload( $class_name ) {
+    if ( $class_name == 'ShoppingCart' ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
+}
+//if ( ! is_admin() ) require_once( dirname( __FILE__ ) . '/classes/ShoppingCart.class.php' );
 require_once( dirname( __FILE__ ) . '/customposttypes/ProductCustomPostType.class.php' );
 require_once( dirname( __FILE__ ) . '/customposttypes/TemplateCustomPostType.class.php' );
 require_once( dirname( __FILE__ ) . '/metaboxes/CustomTemplateMetabox.class.php' );
 require_once( dirname( __FILE__ ) . '/classes/TCP_Plugin.class.php' );
-require_once( dirname( __FILE__ ) . '/classes/States.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/ShoppingCartSummaryWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/ShoppingCartWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/LastVisitedWidget.class.php' );
@@ -53,7 +48,8 @@ require_once( dirname( __FILE__ ) . '/widgets/CommentsCustomPostTypeWidget.class
 require_once( dirname( __FILE__ ) . '/widgets/BrothersListWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/CheckoutWidget.class.php' );
 require_once( dirname( __FILE__ ) . '/widgets/TCPArchivesWidget.class.php' );
-
+require_once( dirname( __FILE__ ) . '/admin/TCP_Settings.class.php' );
+			
 class TheCartPress {
 
 	public $settings = array();
@@ -61,6 +57,7 @@ class TheCartPress {
 
 	function __construct() {	
 		$this->loadSettings();
+		if ( function_exists( 'add_theme_support' ) ) add_theme_support( 'post-thumbnails' );
 		$disable_ecommerce = isset( $this->settings['disable_ecommerce'] ) ? $this->settings['disable_ecommerce'] : false;
 		add_action( 'init', array( $this, 'init' ) );
 		if ( ! $disable_ecommerce ) {
@@ -68,10 +65,6 @@ class TheCartPress {
 			if ( is_admin() ) {
 				register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 				register_deactivation_hook( __FILE__, array( $this, 'deactivate_plugin' ) );
-				tcp_add_template_class( 'tcp_checkout_email', __( 'The notice will be added in the email to the customer when the Checkout process ends.', 'tcp' )  );
-				tcp_add_template_class( 'tcp_checkout_notice', __( 'The notice will be showed in the Checkout Notice Box into the checkout process.', 'tcp' ) );
-				tcp_add_template_class( 'tcp_checkout_end', __( 'The notice will be showed if the checkout process ends right.', 'tcp' ) );
-				tcp_add_template_class( 'tcp_checkout_end_ko', __( 'The notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 				require_once( dirname( __FILE__ ) . '/metaboxes/ProductCustomFieldsMetabox.class.php' );
@@ -84,15 +77,14 @@ class TheCartPress {
 				$templateMetabox = new TCPTemplateMetabox();
 				add_action( 'admin_init', array( $templateMetabox, 'registerMetaBox' ) );
 				//if ( function_exists( 'register_theme_directory') ) register_theme_directory( WP_PLUGIN_DIR . '/thecartpress/themes-templates' );
-				add_filter( 'admin_footer_text', array( $this, 'adminFooterText' ) );
 				add_action( 'tcp_product_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
 				add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
 				add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+				add_filter( 'screen_settings', array( $this, 'screen_settings' ), 10, 2);
 			} else {
 				add_filter( 'the_content', array( $this, 'the_content' ) );
 				add_filter( 'the_excerpt', array( $this, 'the_excerpt' ) );
 				add_action( 'wp_head', array( $this, 'wp_head' ) );
-				add_action( 'wp_meta', array( $this, 'wp_meta' ) );
 				add_filter( 'request', array( $this, 'request' ) );
 				add_filter( 'posts_request', array( $this, 'posts_request' ) );
 				add_filter( 'posts_join', array( $this, 'posts_join' ) );
@@ -106,30 +98,34 @@ class TheCartPress {
 				add_shortcode( 'tcp_buy_button', array( $this, 'shortCodeBuyButton' ) );
 				add_shortcode( 'tcp_price', array( $this, 'shortCodePrice' ) );
 				require_once( dirname( __FILE__ ) . '/shortcodes/ShoppingCartPage.class.php' );
-				$shoppingCartPage = new ShoppingCartPage();
+				$shoppingCartPage = new TCP_ShoppingCartPage();
 				add_shortcode( 'tcp_shopping_cart', array( $shoppingCartPage, 'show' ) );
 				require_once( dirname( __FILE__ ) . '/checkout/ActiveCheckout.class.php' );
 				$activeCheckout = new ActiveCheckout();
 				add_shortcode( 'tcp_checkout', array( $activeCheckout, 'show' ) );
 				add_filter( 'login_form_bottom', array( $this, 'loginFormBottom' ) );
+				add_action( 'twentyten_credits', array( $this, 'twentyten_credits' ) );
+				add_action( 'twentyeleven_credits', array( $this, 'twentyten_credits' ) );
 			}
 			add_filter( 'tcp_get_saleable_post_types', array( $this, 'tcp_get_saleable_post_types' ) );
 			add_filter( 'tcp_the_currency', array( $this, 'tcp_the_currency' ) );
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 65 );
 			add_action( 'wp_before_admin_bar_render', array( $this, 'wp_before_admin_bar_render' ) );
-			$this->loadingDefaultCheckoutBoxes();
-			$this->loadingDefaultCheckoutPlugins();
 		}
 		if ( is_admin() ) {
+			add_filter( 'extra_plugin_headers', array( $this, 'extra_plugin_headers' ) );
+			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ) , 10, 4 );
+			add_filter( 'views_plugins', array( $this, 'views_plugins' ) );
+			add_filter( 'all_plugins', array( $this, 'all_plugins' ) );
+			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			$customTemplateMetabox = new TCPCustomTemplateMetabox();
 			add_action( 'admin_init', array( $customTemplateMetabox, 'registerMetaBox' ) );
-			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
-			require_once( dirname( __FILE__ ) . '/admin/TCP_Settings.class.php' );
 			new TCP_Settings();
 			add_action( 'tcp_show_settings', array( $this,  'tcp_show_settings' ) );
 			require_once( dirname( __FILE__ ) . '/admin/TCP_LoopsSettings.class.php' );
 			new TCP_LoopsSettings();
+			add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
 		} else {
 			require_once( dirname( __FILE__ ) . '/shortcodes/TCP_Shortcode.class.php' );
 			$tcp_shortcode = new TCP_Shortcode();
@@ -137,6 +133,7 @@ class TheCartPress {
 			add_filter( 'single_template', array( $this, 'single_template' ) );
 			add_filter( 'taxonomy_template', array( $this, 'taxonomy_template' ) );
 			add_filter( 'archive_template', array( $this, 'archive_template' ) );
+			add_action( 'wp_meta', array( $this, 'wp_meta' ) );
 		}
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 	}
@@ -144,7 +141,7 @@ class TheCartPress {
 	function wp_head() {
 		if ( is_single() && ! is_page() ) {//Last visited
 			global $post;
-			if ( $post->post_type == 'tcp_product' ) {
+			if ( tcp_is_saleable_post_type( $post->post_type ) ) {
 				do_action( 'tcp_visited_product', $post );
 				$shoppingCart = TheCartPress::getShoppingCart();
 				$shoppingCart->addVisitedPost( $post->ID );
@@ -165,32 +162,44 @@ class TheCartPress {
 						if ( $tcp_option_id > 0 ) {
 							$option_ids = explode( '-',  $tcp_option_id);
 							if ( count( $option_ids ) == 2 ) {
-								$option_1_id	= $option_ids[0];
-								$price_1		= tcp_get_the_price( $option_1_id );
-								$price_1		= tcp_get_the_price_with_tax( $post_id, $price_1 );
-								$option_2_id	= $option_ids[1];
-								$price_2		= (float)tcp_get_the_price( $option_2_id );
-								$price_2		= tcp_get_the_price_with_tax( $post_id, $price_2 );
+								$option_1_id		= $option_ids[0];
+								$price_1			= tcp_get_the_price( $option_1_id );
+								$price_to_show_1	= tcp_get_the_price_to_show( $post_id, $price_1 );
+								$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
+								$option_2_id		= $option_ids[1];
+								$price_2			= tcp_get_the_price( $option_2_id );
+								$price_to_show_2	= tcp_get_the_price_to_show( $post_id, $price_2 );
+								$price_2			= tcp_get_the_price_without_tax( $post_id, $price_2 );
 							} else {
-								$option_1_id	= $tcp_option_id;
-								$price_1		= tcp_get_the_price( $option_1_id );
-								$price_1		= tcp_get_the_price_with_tax( $post_id, $price_1 );
-								$option_2_id	= '0';
-								$price_2		= 0;
+								$option_1_id		= $tcp_option_id;
+								$price_1			= tcp_get_the_price( $option_1_id );
+								$price_to_show_1	= tcp_get_the_price_to_show( $post_id, $price_1 );
+								$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
+								$option_2_id		= '0';
+								$price_2			= 0;
+								$price_to_show_2	= 0;
 							}
 						} else {
-							$option_1_id	= isset( $_REQUEST['tcp_option_1_id'][$i] ) ? $_REQUEST['tcp_option_1_id'][$i] : 0;
-							$price_1		= tcp_get_the_price( $option_1_id );
-							$price_1		= $option_1_id > 0 ? tcp_get_the_price_with_tax( $post_id, $price_1 ) : 0;
-							$option_2_id	= isset( $_REQUEST['tcp_option_2_id'][$i] ) ? $_REQUEST['tcp_option_2_id'][$i] : 0;
-							$price_2		= tcp_get_the_price( $option_2_id );
-							$price_2		= $option_2_id > 0 ? tcp_get_the_price_with_tax( $post_id, $price_2 ) : 0;
+							$option_1_id		= isset( $_REQUEST['tcp_option_1_id'][$i] ) ? $_REQUEST['tcp_option_1_id'][$i] : 0;
+							$price_1			= tcp_get_the_price( $option_1_id );
+							$price_to_show_1	= $option_1_id > 0 ? tcp_get_the_price_to_show( $post_id, $price_1 ) : 0;
+							$price_1			= $option_1_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_1 ) : 0;
+							$option_2_id		= isset( $_REQUEST['tcp_option_2_id'][$i] ) ? $_REQUEST['tcp_option_2_id'][$i] : 0;
+							$price_2			= tcp_get_the_price( $option_2_id );
+							$price_to_show_2	= $option_2_id > 0 ? tcp_get_the_price_to_show( $post_id, $price_2 ) : 0;
+							$price_2			= $option_2_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_2 ) : 0;
 						}
-						$unit_price		= isset( $_REQUEST['tcp_unit_price'][$i] ) ? $_REQUEST['tcp_unit_price'][$i] : 0;
+						$price_to_show	= tcp_get_the_price_to_show( $post_id );
+						//$price_to_show	= isset( $_REQUEST['tcp_price_to_show'][$i] ) ? $_REQUEST['tcp_price_to_show'][$i] : 0;
+						$price_to_show	+= $price_to_show_1 + $price_to_show_2;
+						$unit_price		= tcp_get_the_price( $post_id );
+						//$unit_price		= isset( $_REQUEST['tcp_unit_price'][$i] ) ? $_REQUEST['tcp_unit_price'][$i] : 0;
 						$unit_price		+= $price_1 + $price_2;
-						$tax			= isset( $_REQUEST['tcp_tax'][$i] ) ? $_REQUEST['tcp_tax'][$i] : 0;
-						$unit_weight	= isset( $_REQUEST['tcp_unit_weight'][$i] ) ? $_REQUEST['tcp_unit_weight'][$i] : 0;
-						$shoppingCart->add( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight );
+						//$tax			= isset( $_REQUEST['tcp_tax'][$i] ) ? $_REQUEST['tcp_tax'][$i] : 0;
+						$tax			= tcp_get_the_tax( $post_id );
+						//$unit_weight	= isset( $_REQUEST['tcp_unit_weight'][$i] ) ? $_REQUEST['tcp_unit_weight'][$i] : 0;
+						$unit_weight	= tcp_get_the_weight( $post_id );
+						$shoppingCart->add( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight, $price_to_show );
 					}
 				}
 				do_action( 'tcp_add_shopping_cart', $post_id );
@@ -374,82 +383,19 @@ class TheCartPress {
 	}
 
 	function posts_request( $input ) {
-//echo '<br>SELECT: ', $input;
-/*global $wpdb;
+/*echo '<br>SELECT: ', $input;
+global $wpdb;
 $res = $wpdb->get_results( $input );
 echo '<br>RES=', count( $res ), '<br>';*/
 		return $input;
 	}
 
-	//WP 3.1
-	/*function parse_query( $query ) {
-		if ( ! is_admin() ) {
-			if ( is_tax( 'tcp_product_category' ) || is_tax( 'tcp_product_tag' ) || is_tax( 'tcp_product_supplier' ) ) {
-				if ( isset( $_REQUEST['tcp_order_type'] ) )
-					$tcp_order_type = $_REQUEST['tcp_order_type'];
-				else
-					$tcp_order_type = isset( $_SESSION['tcp_order_type'] ) ? $_SESSION['tcp_order_type'] : 'order';
-				$_SESSION['tcp_order_type'] = $tcp_order_type;
-				if ( isset( $_REQUEST['tcp_order_desc'] ) )
-					$tcp_order_desc =  $_REQUEST['tcp_order_desc'];
-				else
-					$tcp_order_desc = isset( $_SESSION['tcp_order_desc'] ) ? $_SESSION['tcp_order_desc'] : 'asc';
-				$_SESSION['tcp_order_desc'] = $tcp_order_desc;
-		        $query->query_vars['order'] = strtoupper( $_SESSION['tcp_order_desc'] );
-		        $query->query_vars['meta_key'] = 'tcp_price';
-		        $query->query_vars['post_type'] = 'tcp_product';
-				switch ( $_SESSION['tcp_order_type'] ) {
-					case 'order':
-						$query->query_vars['orderby'] = 'meta_value_num';
-						$query->query_vars['meta_key'] = 'tcp_order';
-						break;
-					case 'price':
-						$query->query_vars['orderby'] = 'meta_value_num';
-						$query->query_vars['meta_key'] = 'tcp_price';
-						break;
-					case 'title':
-						$query->query_vars['orderby'] = 'title';
-						break;
-					case 'date':
-						$query->query_vars['orderby'] = 'date';
-						break;
-					case 'author':
-						$query->query_vars['orderby'] = 'author title';
-						break;
-					case 'rand':
-						$query->query_vars['orderby'] = 'rand';
-						break;
-					case 'comment_count':
-						$query->query_vars['orderby'] = 'comment_count title';
-						break;
-				}
-				$query->query_vars['meta_query'] = 	array(
-					array(
-						'key'		=> 'tcp_price',
-						'value'		=> 0,
-						'compare'	=> '>=',
-						'type'		=> 'numeric'
-					),
-					array(
-						'key'		=> 'tcp_order',
-						'value'		=> 0,
-						'compare'	=> '>=',
-						'type'		=> 'numeric'
-					),
-					array(
-						'key'		=> 'tcp_is_visible',
-						'value'		=> 1,
-						'compare'	=> '=',
-						'type'		=> 'numeric',
-					),
-				);
-			}
-		}
-		return $query;
-	}*/
-
 	function loginFormBottom( $content ) {
 		return '<p class="login-lostpassword"><a href="'. wp_lostpassword_url( get_permalink() ) . '" title="' . __( 'Lost Password', 'tcp' ) . '">' . __( 'Lost Password', 'tcp' ) . '</a></p>';
+	}
+
+	function twentyten_credits() { ?>
+		<a href="http://thecartpress.com/'" title="<?php esc_attr_e( 'eCommerce platform', 'tcp' ); ?>" rel="generator"><?php printf( __( 'Powered by %s.', 'tcp' ), 'TheCartPress' ); ?></a><?php
 	}
 
 	function shortCodeBuyButton( $atts ) {
@@ -466,7 +412,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		echo '<li><a href="http://thecartpress.com" title="', __( 'Powered by TheCartPress, eCommerce platform for WordPress', 'tcp' ), '">TheCartPress.com</a></li>';
 	}
 
-	function adminFooterText( $content ) {
+	function admin_footer_text( $content ) {
 		$pos = strrpos( $content, '</a>.' ) + strlen( '</a>' );
 		$content = substr( $content, 0, $pos ) . ' and <a href="http://thecartpress.com">TheCartPress</a>' . substr( $content, $pos );
 		return $content;
@@ -529,11 +475,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	 * Runs when a user is registered (or created) before email
 	 */
 	function user_register( $user_id ) {
-		$disable_ecommerce = isset( $this->settings['disable_ecommerce'] ) ? $this->settings['disable_ecommerce'] : false;
-		if ( ! $disable_ecommerce ) {
-			$user = new WP_User( $user_id );
-			$user->set_role( 'customer' );
-		}
+		$user = new WP_User( $user_id );
+		$user->set_role( 'customer' );
 	}
 
 	function wp_dashboard_setup() {
@@ -576,6 +519,52 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		return $base;
 	}
 
+	//Plugin screen
+	function extra_plugin_headers( $headers ) {
+		$headers['parent'] = 'Parent';
+		return $headers;
+	}
+
+	function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+		if ( isset( $plugin_data['Parent'] ) && strtolower( $plugin_data['Parent'] ) == 'thecartpress' && $plugin_data['Name'] != 'TheCartPress' )
+			$plugin_meta[] = __( 'Child of TheCartPress', 'tcp' );
+		return $plugin_meta;
+	}
+
+	function views_plugins( $views ) {
+		global $plugins;
+		$children = 0;
+		foreach( $plugins['all'] as $id => $plugin_data )
+			if ( isset( $plugin_data['Parent'] ) && strtolower( $plugin_data['Parent'] ) == 'thecartpress' )
+				$children++;
+		$views['thecartpress'] = sprintf( '<a href="%s" %s>%s</a>%s',
+			add_query_arg( 'plugin_status', 'child_of_thecartpress', 'plugins.php' ),
+			' class="child_of_thecartpress"',
+			'TheCartPress',
+			$children > 0 ? " ($children)" : ''
+		);
+		return $views;
+	}
+
+	function plugin_action_links( $links, $file ) {
+		if ( $file == 'thecartpress/TheCartPress.class.php' && function_exists( 'admin_url' ) ) {
+			$settings_link = '<a href="' . admin_url( 'admin.php?page=tcp_settings_page' ). '">' . __( 'Settings', 'tcp' ) . '</a>';
+			array_unshift( $links, $settings_link );
+		}
+		return $links;
+	}
+
+	function all_plugins( $plugins ) {
+		if ( isset( $_REQUEST['plugin_status'] ) && $_REQUEST['plugin_status'] == 'child_of_thecartpress' )
+			foreach( $plugins as $id => $plugin_data )
+				if ( ! isset( $plugin_data['Parent'] ) ) 
+					unset( $plugins[$id] );
+				elseif( strtolower( $plugin_data['Parent'] ) != 'thecartpress' )
+					unset( $plugins[$id] );
+		return $plugins;
+	}
+
+	// End Plugins Screen
 	function admin_menu() {
 		$base = $this->get_base();
 		$disable_ecommerce = isset( $this->settings['disable_ecommerce'] ) ? $this->settings['disable_ecommerce'] : false;
@@ -583,16 +572,14 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_menu_page( '', 'TheCartPress', 'tcp_read_orders', $base, '', plugins_url( '/images/tcp.png', __FILE__ ) );
 			add_submenu_page( $base, __( 'Orders', 'tcp' ), __( 'Orders', 'tcp' ), 'tcp_read_orders', $base );
 			add_submenu_page( $base, __( 'First time setup', 'tcp' ), __( 'First time setup', 'tcp' ), 'tcp_edit_settings', dirname( __FILE__ ) . '/admin/FirstTimeSetUp.php' );
-			add_submenu_page( $base, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_addresses', dirname( __FILE__ ) . '/admin/AddressesList.php' );
 			add_submenu_page( $base, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', dirname( __FILE__ ) . '/admin/TaxesList.php' );
 			add_submenu_page( $base, __( 'Taxes Rates', 'tcp' ), __( 'Taxes Rates', 'tcp' ), 'tcp_edit_taxes', dirname( __FILE__ ) . '/admin/TaxesRates.php' );
 			add_submenu_page( $base, __( 'Payment and Shipping Methods', 'tcp' ), __( 'Payment and Shipping methods', 'tcp' ), 'tcp_edit_plugins', dirname( __FILE__ ) . '/admin/PluginsList.php' );
-			$hide_downloadable_menu = isset( $this->settings['hide_downloadable_menu'] ) ? $this->settings['hide_downloadable_menu'] : false;
-			if ( ! $hide_downloadable_menu ) {
-				add_submenu_page( $base, __( 'Downloadable Products', 'tcp' ), __( 'Downloadable Products', 'tcp' ), 'tcp_downloadable_products', dirname( __FILE__ ) . '/admin/DownloadableList.php' );
-			}
 			add_submenu_page( $base, __( 'Notices', 'tcp' ), __( 'Notices', 'tcp' ), 'tcp_edit_orders', 'edit.php?post_type=tcp_template' );
-			//register pages
+			add_submenu_page( $base, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_addresses', dirname( __FILE__ ) . '/admin/AddressesList.php' );
+			$hide_downloadable_menu = isset( $this->settings['hide_downloadable_menu'] ) ? $this->settings['hide_downloadable_menu'] : false;
+			if ( ! $hide_downloadable_menu ) add_submenu_page( $base, __( 'Downloadable Products', 'tcp' ), __( 'Downloadable Products', 'tcp' ), 'tcp_downloadable_products', dirname( __FILE__ ) . '/admin/DownloadableList.php' );
+			//registered pages
 			add_submenu_page( 'tcpm', __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', dirname( __FILE__ ) . '/admin/OrderEdit.php' );
 			add_submenu_page( 'tcpm', __( 'list of Assigned products', 'tcp' ), __( 'list of Assigned products', 'tcp' ), 'tcp_edit_product', dirname( __FILE__ ) . '/admin/AssignedProductsList.php' );
 			add_submenu_page( 'tcpm', __( 'Plugin editor', 'tcp' ), __( 'Plugin editor', 'tcp' ), 'tcp_edit_plugins', dirname( __FILE__ ) . '/admin/PluginEdit.php' );
@@ -823,29 +810,34 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		else
 			wp_publish_post( (int)$shopping_cart_page_id );
 		$page_id = get_option( 'tcp_checkout_page_id' );
-		if ( ! $page_id || ! get_page( $page_id ) )
+		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCheckoutPage( $shopping_cart_page_id );
-		else
+		} else {
 			wp_publish_post( (int)$page_id );
+		}
 		//initial shipping and payment method
 		add_option( 'tcp_plugins_data_shi_FreeTrans', array(
 				array(
-					'active'		=> true,
-					'all_countries'	=> 'yes',
-					'countries'		=> array(),
-					'new_status'	=> 'PENDING',
-					'minimun'		=> 0,
+					'title'				=> __( 'Free transport', 'tcp' ),
+					'active'			=> true,
+					'for_downloadable'	=> true,
+					'all_countries'		=> 'yes',
+					'countries'			=> array(),
+					'new_status'		=> 'PENDING',
+					'minimun'			=> 0,
 				),
 			)
 		);
 		add_option( 'tcp_plugins_data_pay_Remboursement', array(
 				array(
-					'active'		=> true,
-					'all_countries'	=> 'yes',
-					'countries'		=> array(),
-					'new_status'	=> 'PROCESSING',
-					'notice'		=> 'Cash on delivery! (5%)',
-					'percentage'	=> 5,
+					'title'				=> __( 'Cash on delivery', 'tcp' ),
+					'active'			=> true,
+					'for_downloadable'	=> false,
+					'all_countries'		=> 'yes',
+					'countries'			=> array(),
+					'new_status'		=> 'PROCESSING',
+					'notice'			=> 'Cash on delivery! (5%)',
+					'percentage'		=> 5,
 				),
 			)
 		);
@@ -887,11 +879,11 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				'see_price_in_content'		=> false,
 				'see_price_in_excerpt'		=> true,
 				'downloadable_path'			=> WP_PLUGIN_DIR . '/thecartpress/uploads',
-				'load_default_buy_button_style'		=> true,
-				'load_default_shopping_cart_style'	=> true,
-				'load_default_checkout_style'		=> true,
-				'load_default_loop_style'			=> true,
+				'load_default_buy_button_style'				=> true,
+				'load_default_shopping_cart_checkout_style'	=> true,
+				'load_default_loop_style'					=> true,
 				'search_engine_activated'	=> true,
+				'emails'					=> get_option('admin_email'),
 				'currency'					=> 'EUR',
 				'decimal_point'				=> '.',
 				'thousands_separator'		=> ',',
@@ -964,6 +956,10 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					$merchant->add_cap( $cap );
 				}
 		}
+		//feed: http://<site>/?feed=tcp-products
+		global $wp_rewrite;
+		add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
+		$wp_rewrite->flush_rules();
 	}
 
 	static function createShoppingCartPage() {
@@ -1040,6 +1036,11 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function admin_init() {
+		tcp_add_template_class( 'tcp_checkout_email', __( 'This notice will be added in the email to the customer when the Checkout process ends.', 'tcp' )  );
+		tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process.', 'tcp' ) );
+		tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right.', 'tcp' ) );
+		tcp_add_template_class( 'tcp_checkout_end_ko', __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
+		tcp_add_template_class( 'tcp_error_stock_when_pay', __( 'This notice will be showed when the client is going to pay and there is no stock of any product in the cart.', 'tcp') );
 		$this->checkThePlugin();
 	}
 
@@ -1047,53 +1048,38 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		$this->settings = get_option( 'tcp_settings' );
 	}
 
-	function plugin_action_links( $links, $file ) {
-		if ( $file == 'thecartpress/TheCartPress.class.php' && function_exists( 'admin_url' ) ) {
-			$settings_link = '<a href="' . admin_url( 'admin.php?page=tcp_settings_page' ). '">' . __( 'Settings', 'tcp' ) . '</a>';
-			array_unshift( $links, $settings_link );
-		}
-		return $links;
-	}
-
 	function init() {
-		if ( function_exists( 'load_plugin_textdomain' ) )
-			load_plugin_textdomain( 'tcp', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_template.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_general_template.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_template_template.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_custom_fields_template.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_custom_templates.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_states_template.php' );
+		require_once( dirname( __FILE__ ) . '/checkout/tcp_checkout_template.php' );
+
+		if ( function_exists( 'load_plugin_textdomain' ) ) load_plugin_textdomain( 'tcp', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
 		$this->load_custom_post_types_and_custom_taxonomies();
-		if ( is_admin() ) {
-			wp_enqueue_script( 'tcp_scripts' );
-		} else {
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'tcp_scripts' );
-		}
+		if ( ! is_admin() ) wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'tcp_scripts' );
 		$disable_ecommerce = isset( $this->settings['disable_ecommerce'] ) ? $this->settings['disable_ecommerce'] : false;
 		if ( ! $disable_ecommerce ) {
 			if ( ! session_id() ) session_start();
-
-			//$load_default_styles = isset( $this->settings['load_default_styles'] ) ? $this->settings['load_default_styles'] : true;
-			//if ( $load_default_styles ) {
-				wp_enqueue_style( 'tcp_style', plugins_url( 'thecartpress/css/tcp_base.css' ) ); //TODO delete these 4 lines
-			//}
 			$load_default_buy_button_style = isset( $this->settings['load_default_buy_button_style'] ) ? $this->settings['load_default_buy_button_style'] : true;
-			if ( $load_default_buy_button_style )
-				wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
-
+			if ( $load_default_buy_button_style ) wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
 			$load_default_shopping_cart_checkout_style = isset( $this->settings['load_default_shopping_cart_checkout_style'] ) ? $this->settings['load_default_shopping_cart_checkout_style'] : true;
-			if ( $load_default_shopping_cart_checkout_style )
-				wp_enqueue_style( 'tcp_shopping_cart_checkout_style', plugins_url( 'thecartpress/css/tcp_shopping_cart_checkout.css' ) );
-
+			if ( $load_default_shopping_cart_checkout_style ) wp_enqueue_style( 'tcp_shopping_cart_checkout_style', plugins_url( 'thecartpress/css/tcp_shopping_cart_checkout.css' ) );
 			$load_default_loop_style = isset( $this->settings['load_default_loop_style'] ) ? $this->settings['load_default_loop_style'] : true;
-			if ( $load_default_loop_style ) 
-				wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
+			if ( $load_default_loop_style ) wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
 			if ( is_admin() ) wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 			new ProductCustomPostType();
 			new TemplateCustomPostType();
-			//feed
-			//http://localhost/<tcp>/?feed=tcp-products
-			add_feed( 'tcp-products', array( $this, 'registerProductsFeed' ) );
-			global $wp_rewrite;
-			add_action( 'generate_rewrite_rules', array( $this, 'rewriteRules' ) );
-			$wp_rewrite->flush_rules();
+
+			$this->loadingDefaultCheckoutBoxes();
+			$this->loadingDefaultCheckoutPlugins();
+
+			//feed: http://<site>/?feed=tcp-products
+			add_feed( 'tcp-products', array( $this, 'create_products_feed' ) );
 		}
 		$version = (int)get_option( 'tcp_version', 0 );
 		if ( $version > 0 ) {
@@ -1280,13 +1266,13 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	/**
 	 * Allows to generate the xml for thecartpress search engine
 	 */
-	function registerProductsFeed() {
+	function create_products_feed() {
 		require_once( dirname( __FILE__ ) . '/classes/FeedForSearchEngine.class.php' );
 		$feedForSearchEngine = new FeedForSearchEngine();
 		$feedForSearchEngine->generateXML();
 	}
 
-	function rewriteRules( $wp_rewrite ) {
+	function rewrite_rules_feed( $wp_rewrite ) {
 		$new_rules = array(
 			'feed/(.+)' => 'index.php?feed=' . $wp_rewrite->preg_index( 1 )
 		);
@@ -1311,11 +1297,51 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			return $currency;
 	}
 
-	function tcp_show_settings() {?>
+	function tcp_show_settings() { ?>
 		<script>
 		jQuery(document).ready(function() {
 			jQuery('.form-table').hide();
-			jQuery('.form-table').before('<input type="button" class="button-secondary" onclick="jQuery(this).next().toggle();" value="<?php _e( 'show/hide', 'tcp');?>"/>');
+			jQuery('div.wrap h3').hide();
+			var sections = jQuery('<ul class="tabs_section"></ul>');
+			sections.insertAfter('div.wrap h2');
+			var first_li = true;
+			jQuery('div.wrap h3').each( function() {
+				var next = jQuery(this).nextAll('.form-table');
+				if (next) next = next[0];
+				if (next) {
+					var a = jQuery('<a href="javascript: void(0);" class="section_a">' + jQuery(this).text() + '</a>');
+					a.click(function() {
+						jQuery('.form-table').hide();
+						jQuery(next).toggle();
+						jQuery('ul.tabs_section li.section_active').removeClass('section_active');
+						jQuery(this).parent().addClass('section_active');
+					});
+					var li = jQuery('<li></li>');
+					if (first_li) {
+						first_li = false;
+						li.addClass('section_active');
+					}
+					li.append(a);
+					sections.append(li);
+				}
+			});
+			var first_section = jQuery('div.wrap h3');
+			if (first_section) first_section = first_section[0];
+			var next = jQuery(first_section).nextAll('.form-table');
+			if (next) next = next[0];
+			jQuery(next).toggle();
+
+/*			jQuery('input').mouseover(function() {
+				jQuery(this).next('div.description').find('.description').each( function() {
+					jQuery(this).addClass('active_description');
+				});
+			});
+			jQuery('input').mouseout(function() {
+				jQuery(this).next('div.description').find('.description').each( function() {
+					jQuery(this).removeClass('active_description');
+				});
+			});*/
+			//var btn = jQuery('.form-table').before('<input type="button" class="button-secondary" onclick="jQuery(this).next().toggle();" value="<?php _e( 'show/hide', 'tcp');?>"/>');
 		});
 		</script><?php
 	}
@@ -1326,59 +1352,26 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	function tcp_product_metabox_custom_fields( $post_id ) {
 		$post_type = get_post_type( $post_id );
 		if ( tcp_is_saleable_post_type( $post_type ) ) {
-			$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
-			if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) :?>
-				<tr><th colspan="2"><h4><?php _e( 'Custom fields', 'tcp' );?></h4></td></tr>
-			<?php foreach( $custom_fields as $custom_field ) :
-				$value = get_post_meta( $post_id, $custom_field['id'], true );?>
-				<tr valign="top">
-					<th scope="row"><label for="<?php echo $custom_field['id'];?>"><?php echo $custom_field['label'];?>:</label></th>
-					<td>
-					<?php if ( $custom_field['type'] == 'list' ) :?>
-						<select name="<?php echo $custom_field['id'];?>" id="<?php echo $custom_field['id'];?>">
-						<?php 
-						$poss_values = explode( ',', $custom_field['values'] );
-						foreach( $poss_values as $poss_value ) :?>
-							<option value="<?php echo $poss_value;?>" <?php selected( $value, $poss_value );?>><?php echo $poss_value;?></option>
-						<?php endforeach;?>
-						</select>
-					<?php else :?>
-						<input name="<?php echo $custom_field['id'];?>" id="<?php echo $custom_field['id'];?>" value="<?php echo htmlspecialchars( $value );?>" class="regular-text" type="text" style="width:20em">
-					<?php endif;?>
-					<?php if ( isset( $custom_field['desc'] ) && strlen( $custom_field['desc'] ) > 0 ) :?>
-						<br/><span class="description"><?php echo $custom_field['desc'];?></span>
-					<?php endif;?>
-					</td>
-				</tr>
-			<?php endforeach;?>
-			<?php endif;
+			tcp_display_custom_fields( $post_id, $post_type );
 		}
 	}
 
 	function tcp_product_metabox_save_custom_fields( $post_id ) {
 		$post_type = get_post_type( $post_id );
 		if ( tcp_is_saleable_post_type( $post_type ) ) {
-			$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
-			if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
-				foreach( $custom_fields as $custom_field ) {
-					$value = isset( $_POST[$custom_field['id']] ) ? $_POST[$custom_field['id']] : '';
-					update_post_meta( $post_id, $custom_field['id'], $value );
-				}
-			}
+			tcp_save_custom_fields( $post_id, $post_type );
 		}
 	}
 
 	function tcp_product_metabox_delete_custom_fields( $post_id ) {
 		$post_type = get_post_type( $post_id );
 		if ( tcp_is_saleable_post_type( $post_type ) ) {
-			$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
-			if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
-				foreach( $custom_fields as $custom_field ) {
-					delete_post_meta( $post_id, $custom_field['id'] );
-				}
-			}
+			tcp_delete_custom_fields( $post_id, $post_type );
 		}
 	}
+	//
+	// end Custom fields hooks
+	//
 
 	function load_custom_post_types_and_custom_taxonomies() {
 		$post_types = get_option( 'tcp-posttypes-generator' );
@@ -1406,7 +1399,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					register_post_type( $post_type['name_id'], $register );
 					$is_saleable = isset( $post_type['is_saleable'] ) ? $post_type['is_saleable'] : false;
 					if ( $is_saleable ) $this->saleable_post_types[] = $post_type['name_id'];
-					if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $post_type['name_id'], $register['has_archive'] );
+					if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $post_type['name_id'], $register['has_archive'] );//TODO
 				}
 			}
 		}
@@ -1439,6 +1432,23 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			}
 		}
 		return $result;
+	}
+
+	function screen_settings( $current, $screen ) {
+		$features = '<a href="http://thecartpress.com/features/wordpress-ecommerce-features/" target="_blank">' . __( 'TheCartPress features' , 'tcp' ) .'</a>';
+		$support = '<a href="http://community.thecartpress.com/forums/" target="_blank">' . __( 'Support from TheCartPress community' , 'tcp' ) .'</a>';
+		if ( 'thecartpress/admin/TaxesRates' == $screen->id || 'thecartpress/admin/TaxesList' == $screen->id ) {
+			$text = $features . '<br/><a href="http://thecartpress.com/docs/working-with-the-thecartpress/tax-rates/" target="_blank">' . __( 'Help from TheCartPress website' , 'tcp' ) .'</a><br/>';
+			$text .= '<a href="http://thecartpress.com/docs/working-with-the-thecartpress/settings-for-tax/" target="_blank">' . __( 'Settings for Taxes' , 'tcp' ) .'</a><br/>' . $support;
+		} elseif ( 'thecartpress_page_tcp_settings_page' == $screen->id ) {
+			$text = $features . '<br/><a href="http://thecartpress.com/docs/working-with-the-thecartpress/settings-for-countries/" target="_blank">' . __( 'Settings for Countries' , 'tcp' ) .'</a><br/>';
+			$text .= '<a href="http://thecartpress.com/docs/working-with-the-thecartpress/settings-for-tax/" target="_blank">' . __( 'Settings for Taxes' , 'tcp' ) .'</a><br/>' . $support;
+		} elseif ( strrpos( $screen->id, 'thecartpress') !== false || strrpos( $screen->id, 'tcp_') !== false ) {
+			$text = $features . '<br/>' . $support;
+		}
+		if ( isset( $text ) ) add_contextual_help( $screen->id, $text );
+		if ( WP_DEBUG ) $current .= $screen->id;
+		return $current;
 	}
 }
 

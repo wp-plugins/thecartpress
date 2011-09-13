@@ -34,7 +34,7 @@ class FeedForSearchEngine {
 			return;
 		}
 		$search_engine_activated = isset( $thecartpress->settings['search_engine_activated'] ) ? $thecartpress->settings['search_engine_activated'] : true;
-		if ( $search_engineactivated ) {
+		if ( $search_engine_activated ) {
 			header( 'Content-Type: text/xml;', true );
 			header( 'Cache-Control: no-cache, must-revalidate' ); // HTTP/1.1
 			header( '"Expires: Sat, 26 Jul 1997 05:00:00 GMT' ); // Date in the past

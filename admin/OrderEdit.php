@@ -89,7 +89,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 
 <div class="clear"></div>
 <?php 
-$orderpage = OrderPage::show( $order_id, true, false );
+$orderpage = OrderPage::show( $order_id, true, false, true, true );
 $_SESSION['order_page'] = $orderpage;
 $orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
 echo $orderpage;
@@ -153,11 +153,10 @@ if ( $order ) :?>
 	</th>
 	<td>
 		<select class="postform" id="new_status" name="new_status">
-			<option value="<?php echo Orders::$ORDER_PENDING;?>"<?php selected( Orders::$ORDER_PENDING, $order->status );?>><?php _e( 'pending', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_PROCESSING;?>"<?php selected( Orders::$ORDER_PROCESSING, $order->status );?>><?php _e( 'processing', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_COMPLETED;?>"<?php selected( Orders::$ORDER_COMPLETED, $order->status );?>><?php _e( 'completed', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_CANCELLED;?>"<?php selected( Orders::$ORDER_CANCELLED, $order->status );?>><?php _e( 'cancelled', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>"<?php selected( Orders::$ORDER_SUSPENDED, $order->status );?>><?php _e( 'suspended', 'tcp' );?></option>
+		<?php $order_status_list = tcp_get_order_status();
+		foreach ( $order_status_list as $order_status ) : ?>
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $order->status );?>><?php echo $order_status['label']; ?></option>		
+		<?php endforeach; ?>
 		</select>
 	</td>
 	</tr>
@@ -189,7 +188,8 @@ if ( $order ) :?>
 	</tbody></table>
 	<p class="submit">
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
-	<?php if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) :?>
+	<?php //if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) : ?>
+	<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
 		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'delete', 'tcp' );?></a></div>
 		<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
 			<form method="post">

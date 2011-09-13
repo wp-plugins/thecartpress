@@ -167,3 +167,18 @@ function add_url_param(url, key, value) {
    		return url + "?" + key + "=" + value;
     }
 }
+
+function tcp_show_order_view( order_id ) {
+	var src = jQuery('#inline_' + order_id)
+	var dest = jQuery('<div class="popup">').html('Loading......');
+	dest.css('z-index', 99);
+	dest.css('position', 'absolute');
+	dest.css('background', '#ffffff');
+	dest.css('border', '1px solid #333333');
+	dest.css('padding', '2em');
+	var w = src.width();
+	dest.css('left', (jQuery(document).width() - w) / 2);
+	dest.css('top', '2em');
+	jQuery('body').prepend(dest);
+	dest.html('<div class="popup_close" onclick="jQuery(\'.popup\').remove();">X</div>' + src.html());
+}

@@ -65,7 +65,6 @@ class OrdersListTable extends  WP_List_Table {
 	}
 
 	function column_total( $item ) {
-		//$total = $item->shipping_amount - $item->discount_amount + $item->payment_amount;
 		$total = - $item->discount_amount;
 		$total = OrdersCosts::getTotalCost( $item->order_id, $total );
 		echo tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
@@ -74,8 +73,6 @@ class OrdersListTable extends  WP_List_Table {
 	function column_customer_id( $item ) {
 		$user_data = get_userdata( $item->customer_id );
 		if ( $user_data ) {
-			//echo $user_data->first_name, ' ', $user_data->last_name, ' &lt;', $user_data->user_email, '&gt;';
-			//user_login
 			echo $user_data->user_nicename, ' &lt;', $user_data->user_email, '&gt;';
 		} else {
 			echo '&lt;', $item->billing_email, '&gt;';
@@ -89,9 +86,11 @@ class OrdersListTable extends  WP_List_Table {
 		$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : 0;
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 		$href = $admin_path . 'OrderEdit.php&order_id= ' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
-		$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit' ) . '</a>';
-		//$actions['inline hide-if-no-js'] = '<a href="#" class="editinline" title="' . esc_attr( __( 'Edit this item inline' ) ) . '">' . __( 'Quick&nbsp;Edit', 'tcp' ) . '</a>';
+		if ( current_user_can( 'tcp_edit_orders' ) )
+			$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit', 'tcp' ) . '</a>';
+		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'Edit this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
 		echo $this->row_actions( $actions );
+		$this->get_inline_data( $item->order_id );
 	}
 
 	function column_default( $item, $column_name ) {
@@ -104,51 +103,23 @@ class OrdersListTable extends  WP_List_Table {
 		<label for="status"><?php _e( 'Status', 'tcp' );?>:</label>
 		<select class="postform" id="status" name="status">
 			<option value="" <?php selected( '', $status );?>><?php _e( 'all', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_PENDING;?>" <?php selected( Orders::$ORDER_PENDING, $status );?>><?php _e( 'pending', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_PROCESSING;?>" <?php selected( Orders::$ORDER_PROCESSING, $status );?>><?php _e( 'processing', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_COMPLETED;?>" <?php selected( Orders::$ORDER_COMPLETED, $status );?>><?php _e( 'completed', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_CANCELLED;?>" <?php selected( Orders::$ORDER_CANCELLED, $status );?>><?php _e( 'cancelled', 'tcp' );?></option>
-			<option value="<?php echo Orders::$ORDER_SUSPENDED;?>" <?php selected( Orders::$ORDER_SUSPENDED, $status );?>><?php _e( 'suspended', 'tcp' );?></option>
+		<?php $order_status_list = tcp_get_order_status();
+		foreach ( $order_status_list as $order_status ) : ?>
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $status );?>><?php echo $order_status['label']; ?></option>		
+		<?php endforeach; ?>
 		</select>
 		<?php do_action( 'tcp_restrict_manage_orders' );
 		submit_button( __( 'Filter' ), 'secondary', false, false, array( 'id' => 'order-query-submit' ) );
 	}
-	
-	/*function get_bulk_actions() {
-		$actions = array();
-		$actions['edit'] = __( 'Edit', 'tcp' );
-		return $actions;
-	}
 
-	function inline_edit() { ?>
-		<form method="get" action="">
-		<table style="display: none">
-		<tbody id="inlineedit">
-		<?php $bulk = 0;
-		while ( $bulk < 2 ) : ?>
-		<tr id="<?php echo $bulk ? 'bulk-edit' : 'inline-edit'; ?>" class="inline-edit-row inline-edit-row-<?php echo "$hclass inline-edit-$screen->post_type ";
-			echo $bulk ? "bulk-edit-row bulk-edit-row-$hclass bulk-edit-$screen->post_type" : "quick-edit-row quick-edit-row-$hclass inline-edit-$screen->post_type";
-		?>" style="display: none">
-		<td colspan="<?php echo $this->get_column_count(); ?>" class="colspanchange">
-
-		<fieldset class="inline-edit-col-left"><div class="inline-edit-col">
-			<h4><?php echo $bulk ? __( 'Bulk Edit' ) : __( 'Quick Edit' ); ?></h4>
-			<label>
-				<span class="title"><?php _e( 'Title' ); ?></span>
-				<span class="input-text-wrap"><input type="text" name="post_title" class="ptitle" value="" /></span>
-			</label>
-		</td></tr>
-		<?php $bulk++;
-		endwhile; ?>
-		</tbody>
-		</table>
-		</form>
-	<?php }*/
+	private function get_inline_data( $order_id ) {
+		echo '<div class="hidden" id="inline_', $order_id, '">';
+		OrderPage::show( $order_id, true, true, true, true );
+		echo '</div>';
+ 	}
 }
 
 $ordersListTable = new OrdersListTable();
-
-//$doaction = $ordersListTable->current_action();
 
 $ordersListTable->prepare_items();?>
 <form id="posts-filter" method="get" action="">
@@ -161,8 +132,5 @@ $ordersListTable->prepare_items();?>
 
 <?php $ordersListTable->display(); ?>
 </form>
-
-<?php //if ( $ordersListTable->has_items() ) $ordersListTable->inline_edit(); ?>
-
 </div>
 

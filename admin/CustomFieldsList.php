@@ -83,14 +83,56 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 <label><?php _e( 'Post type', 'tcp');?></label>: 
 <select name="post_type" id="post_type">
 <?php foreach( get_post_types() as $type ) :
-	if ( $type != 'tcp_product_option' ) :?>
+	//if ( $type != 'tcp_product_option' ) :?>
 	<option value="<?php echo $type;?>"<?php selected( $post_type, $type ); ?>><?php echo $type;?></option>
-	<?php endif;
+	<?php //endif;
 endforeach;?>
 </select>
 <input type="submit" id="tcp_filter" name="tcp_filter" value="<?php _e( 'filter', 'tcp' );?>" class="button-secondary"/>
 </form>
 </p>
+
+<h3><?php _e( 'New custom field definition', 'tcp' );?></h3>
+<form method="post">
+<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>
+
+<table class="form-table">
+<tr valign="top">
+<th scope="row">
+	<label for="label"><?php _e( 'Label', 'tcp' );?>: </label>
+</th><td>
+	<input type="text" name="label" id="label" size="20" />
+</td>
+</tr>
+<tr>
+<th>
+	<label for="type"><?php _e( 'Type', 'tcp' );?>: </label>
+</th><td>
+		<select id="type" name="type">
+			<option value="string"><?php _e( 'Text', 'tcp' );?></option>
+			<option value="number"><?php _e( 'Number', 'tcp' );?></option>
+			<option value="list"><?php _e( 'list', 'tcp' );?></option>
+		</select>
+</td>
+</tr>
+<th>
+	<label for="values"><?php _e( 'Possible values', 'tcp' );?></label>:
+</th>
+<td>
+	<input type="text" id="values" name="values" size="40"/><p class="description"><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></p>
+</td>
+</tr>
+<tr>
+<th>
+	<label for="desc"><?php _e( 'Description', 'tcp' );?></label>:
+</th>
+<td>
+	<input type="text" id="desc" name="desc" size="40"/>
+</td>
+</tr>
+</table>
+<p><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" /></p>
+</form>
 
 <table class="widefat fixed" cellspacing="0">
 <thead>
@@ -112,24 +154,6 @@ endforeach;?>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th></tr>
 </tfoot>
 <tbody>
-<tr>
-	<td colspan="5">
-	<label for="label"><?php _e( 'Add new field definition', 'tcp' );?></label>:
-		<form method="post">
-			<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>
-			<label for="label"><?php _e( 'Label', 'tcp' );?>: </label><input type="text" name="label" id="label" size="20" />
-			<label for="type"><?php _e( 'Type', 'tcp' );?>: </label>
-			<select id="type" name="type">
-				<option value="string"><?php _e( 'Text', 'tcp' );?></option>
-				<option value="number"><?php _e( 'Number', 'tcp' );?></option>
-				<option value="list"><?php _e( 'list', 'tcp' );?></option>
-			</select>
-			<label for="values"><?php _e( 'Possible values', 'tcp' );?></label>: <input type="text" id="values" name="values" size="40"/><span><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></span>
-			<br/><label for="desc"><?php _e( 'Description', 'tcp' );?></label>: <input type="text" id="desc" name="desc" size="40"/>
-			<p><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-secondary" /></p>
-		</form>
-	</td>
-</tr>
 <?php
 $custom_fields = tcp_get_custom_fields_def( $post_type );
 if ( count( $custom_fields ) == 0 ) : ?>
@@ -161,16 +185,17 @@ if ( count( $custom_fields ) == 0 ) : ?>
 				<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>
 				<input type="hidden" name="custom_field_id" value="<?php echo $id;?>" />
 				<input type="hidden" name="internal_id" value="<?php echo $field['id'];?>" />
-				<label for="label_<?php echo $id;?>"><?php _e( 'Label', 'tcp' );?></label>:<input type="text" id="label_<?php echo $id;?>" name="label" value="<?php echo $field['label'];?>" size="20" />
-				<label for="name_<?php echo $id;?>"><?php _e( 'Type', 'tcp' );?></label>: <select id="name_<?php echo $id;?>" name="type">
+				<p><label for="label_<?php echo $id;?>"><?php _e( 'Label', 'tcp' );?></label>:<input type="text" id="label_<?php echo $id;?>" name="label" value="<?php echo $field['label'];?>" size="20" /></p>
+				<p><label for="name_<?php echo $id;?>"><?php _e( 'Type', 'tcp' );?></label>: <select id="name_<?php echo $id;?>" name="type">
 					<option value="string" <?php checked( $field['type'], 'string' );?>><?php _e( 'Text', 'tcp' );?></option>
 					<option value="number" <?php checked( $field['type'], 'number' );?>><?php _e( 'Number', 'tcp' );?></option>
 					<option value="list" <?php checked( $field['type'], 'list' );?>><?php _e( 'List', 'tcp' );?></option>
-				</select>
-				<label for="values_<?php echo $id;?>"><?php _e( 'Description', 'tcp' );?></label>: <input type="text" id="values_<?php echo $id;?>"" name="values" value="<?php echo $field['values'];?>" size="40"/><span><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></span>
-				<br/><label for="desc_<?php echo $id;?>"><?php _e( 'Description', 'tcp' );?></label>: <input type="text" id="desc_<?php echo $id;?>" name="desc" size="40"/>
+				</select></p>
+				<p><label for="values_<?php echo $id;?>"><?php _e( 'Possible values', 'tcp' );?></label>: <input type="text" id="values_<?php echo $id;?>"" name="values" value="<?php echo $field['values'];?>" size="40"/>
+				<span class="description"><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></span></p>
+				<p><label for="desc_<?php echo $id;?>"><?php _e( 'Description', 'tcp' );?></label>: <input type="text" id="desc_<?php echo $id;?>" name="desc" size="40"/></p>
 				<p>
-				<input type="submit" name="tcp_modify_custom_field" value="<?php _e( 'modify' , 'tcp' );?>" class="button-secondary" /> |
+				<input type="submit" name="tcp_modify_custom_field" value="<?php _e( 'modify' , 'tcp' );?>" class="button-primary" /> |
 				<a href="#" onclick="jQuery('#modify_<?php echo $id;?>').hide();"><?php _e( 'close' , 'tcp' );?></a></p>
 			</form>
 		</td>

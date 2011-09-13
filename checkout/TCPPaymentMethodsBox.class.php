@@ -81,6 +81,8 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 			<?php endforeach;?>
 			</ul>
 			<?php if ( isset( $this->errors['payment_method_id'] ) ) : ?><br/><span class="error"><?php echo $this->errors['payment_method_id'];?></span><?php endif;?>
+		<?php else: ?>
+			<?php _e( 'There is not applicable methods', 'tcp' ); ?>
 		<?php endif;?>
 		<?php do_action( 'tcp_checkout_payments' );?>
 		</div><!-- payment_layer_info --><?php

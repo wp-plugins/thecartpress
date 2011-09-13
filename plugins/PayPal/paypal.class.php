@@ -135,6 +135,15 @@ class paypal_class {
       $this->fields["$field"] = $value;
    }
 
+	function add_fieldEx($field, $value) {
+		if ( isset( $this->fields["$field"] ) ) {
+			$v = $this->fields["$field"];
+			$this->fields["$field"] = $v + $value;
+		} else {
+			$this->add_field( $field, $value );
+		}
+	}
+
    function submit_paypal_post() {
  
       // this function actually generates an entire HTML page consisting of

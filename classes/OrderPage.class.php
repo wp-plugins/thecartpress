@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersDetails.class.php' );
@@ -25,7 +25,15 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersCosts.class.php' );
  */
 class OrderPage {
 
-	static function show( $order_id, $see_comment = true, $echo = true, $see_address = true ) {
+	static function show( $order_id, $see_comment = true, $echo = true, $see_address = true, $see_full = false ) {
+		require_once( dirname( dirname( __FILE__ ) ) . '/classes/CartTable.class.php' );
+		require_once( dirname( dirname( __FILE__ ) ) . '/classes/CartSourceDB.class.php' );
+		$cart_table = new TCP_CartTable( );
+		return $cart_table->show( new TCP_CartSourceDB( $order_id, $see_address, $see_full, true, $see_comment ), $echo );
+	}
+
+	//TODO to remove
+/*	static function show2( $order_id, $see_comment = true, $echo = true, $see_address = true, $see_full = false ) {
 		do_action( 'tcp_orderpage_create_order_cart', $order_id );
 		$order = Orders::get( $order_id );
 		$out = '';
@@ -37,11 +45,11 @@ class OrderPage {
 			} 
 			$out .= '<div id="shipping_info" ' . $style . '>' . "\n";
 			$out .= '<h3>' . __( 'Shipping address', 'tcp' ) . '</h3>' . "\n";
-			$out .= $order->shipping_firstname . ' ' . $order->shipping_lastname . '<br />' . "\n";
-			if ( strlen( $order->shipping_company ) > 0 ) $out .= $order->shipping_company . '<br />' . "\n";
-			$out .= $order->shipping_street . '<br />' . "\n";
-			$out .= $order->shipping_postcode . ', ' . $order->shipping_city . '<br />' . "\n";
-			$out .= $order->shipping_region . ', ' . $order->shipping_country . '<br />' . "\n";
+			$out .= stripslashes( $order->shipping_firstname ) . ' ' . stripslashes( $order->shipping_lastname ) . '<br />' . "\n";
+			if ( strlen( $order->shipping_company ) > 0 ) $out .= stripslashes( $order->shipping_company ) . '<br />' . "\n";
+			$out .= stripslashes( $order->shipping_street ) . '<br />' . "\n";
+			$out .= $order->shipping_postcode . ', ' . stripslashes( $order->shipping_city ) . '<br />' . "\n";
+			$out .= stripslashes( $order->shipping_region ) . ', ' . stripslashes( $order->shipping_country ) . '<br />' . "\n";
 			$telephone = $order->shipping_telephone_1;
 			if ( strlen( $order->shipping_telephone_2 ) > 0 ) $telephone .= ' - ' . $order->shipping_telephone_2;
 			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br />' . "\n";
@@ -51,11 +59,11 @@ class OrderPage {
 		
 			$out .= '<div id="billing_info" style="padding-bottom:1em;">' . "\n";
 			$out .= '<h3>' . __( 'Billing address', 'tcp' ) . '</h3>' . "\n";
-			$out .= $order->billing_firstname . ' ' . $order->billing_lastname . '<br />' . "\n";
-			if ( strlen( $order->billing_company ) > 0 ) $out .= $order->billing_company . '<br>' . "\n";
-			$out .= $order->billing_street . '<br>' . "\n";
-			$out .= $order->billing_postcode . ', ' . $order->billing_city . '<br>' . "\n";
-			$out .= $order->billing_region . ', ' . $order->billing_country . '<br>' . "\n";
+			$out .= stripslashes( $order->billing_firstname ) . ' ' . stripslashes( $order->billing_lastname ) . '<br />' . "\n";
+			if ( strlen( $order->billing_company ) > 0 ) $out .= stripslashes( $order->billing_company ) . '<br>' . "\n";
+			$out .= stripslashes( $order->billing_street ) . '<br>' . "\n";
+			$out .= $order->billing_postcode . ', ' . stripslashes( $order->billing_city ) . '<br>' . "\n";
+			$out .= stripslashes( $order->billing_region ) . ', ' . stripslashes( $order->billing_country ) . '<br>' . "\n";
 			$telephone = $order->billing_telephone_1;
 			if ( strlen( $order->billing_telephone_2 ) > 0 ) $telephone .= ' - ' . $order->billing_telephone_2;
 			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br>' . "\n";
@@ -63,13 +71,18 @@ class OrderPage {
 			if ( strlen( $order->billing_email ) > 0) $out .= $order->billing_email . '<br><br><br><br>' . "\n";
 			$out .= '</div><!-- billing_info -->' . "\n";
 		}
-		//$out .= '<table class="tcp_details" cellspacing="0">' . "\n";
 		$out .= '<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">' . "\n";
 		$out .= '<thead>' . "\n";
 		$out .= '<tr class="tcp_cart_title_row">' . "\n";
+		if ( $see_full ) {
+			$out .= '<th class="tcp_order_page_id">' . __( 'Id.', 'tcp' ) . '</th>' . "\n";
+		}
 		$out .= '<th class="tcp_order_page_name">' . __( 'Name', 'tcp' ) . '</th>' . "\n";
 		$out .= '<th class="tcp_order_page_price">' . __( 'Price', 'tcp' ) . '</th>' . "\n";
 		$out .= '<th class="tcp_order_page_units">' . __( 'Units', 'tcp' ) . '</th>' . "\n";
+		if ( $see_full ) {
+			$out .= '<th class="tcp_order_page_sku">' . __( 'Sku', 'tcp' ) . '</th>' . "\n";
+		}
 		$out .= '<th class="tcp_order_page_weight">' . __( 'Weight', 'tcp' ) . '</th>' . "\n";
 		$out .= '<th class="tcp_order_page_total">' . __( 'Total', 'tcp' ) . '</th>' . "\n";
 		$out .= '</tr>' . "\n";
@@ -84,6 +97,9 @@ class OrderPage {
 				$out .= '<tr class="tcp_cart_product_row';
 				if ( $i++ & 1 == 1 ) $out .= ' par ';
 				$out .= '">' . "\n";
+				if ( $see_full ) {
+					$out .= '<td class="tcp_order_page_id">' . $orderDetail->post_id . '</td>' . "\n";
+				}
 				$out .= '<td class="tcp_order_page_name">' . $orderDetail->name;
 				if ( strlen( $orderDetail->option_1_name ) > 0 ) $out .= '<br />' . $orderDetail->option_1_name;
 				if ( strlen( $orderDetail->option_2_name ) > 0 ) $out .= '-' . $orderDetail->option_2_name;
@@ -95,17 +111,14 @@ class OrderPage {
 					//$out .= '<td class="tcp_order_page_price">' . tcp_format_the_price( $orderDetail->price, $order->order_currency_code ) .'</td>' . "\n";
 					$out .= '<td class="tcp_order_page_price">' . tcp_format_the_price( $orderDetail->price ) .'</td>' . "\n";
 				$out .= '<td class="tcp_order_page_units">' . tcp_number_format( $orderDetail->qty_ordered, 0 ) . '</td>' . "\n";
+				if ( $see_full ) {
+					$out .= '<td class="tcp_order_page_sku">' . $orderDetail->sku . '</td>' . "\n";
+				}
 				$out .= '<td class="tcp_order_page_weight">' . tcp_number_format( $orderDetail->weight, 0 ). '&nbsp;' . tcp_get_the_unit_weight() . '</td>' . "\n";
-				/*if ( $orderDetail->tax > 0 ) {
-					$tax = 1 + $orderDetail->tax / 100;
-					$price = $orderDetail->price * $tax;
-				} else
-					$price = $orderDetail->price;*/
 				$price = $orderDetail->price * $orderDetail->qty_ordered;
-				$tax = $price * ( $orderDetail->tax / 100 ); // * $orderDetail->qty_ordered;
+				$tax = round( $orderDetail->price * ( $orderDetail->tax / 100 ), tcp_get_decimal_currency() ) * $orderDetail->qty_ordered;
 				$total_tax += $tax;
 				$total += $price;
-				//$out .= '<td class="tcp_order_page_total">' . tcp_format_the_price( $price, $order->order_currency_code ) . '</td>' . "\n";
 				$out .= '<td class="tcp_order_page_total">' . tcp_format_the_price( $price ) . '</td>' . "\n";
 				$out .= '</tr>' . "\n";
 			}
@@ -122,28 +135,6 @@ class OrderPage {
 			$out .= $dis;
 			$total = $total - $discount;
 		}
-		//TODO Deprecated 1.1
-		/*if ( $order->shipping_amount > 0 ) {
-			$out .= '<tr';
-			if ( $i++ & 1 == 1 ) $out .= ' class="par"';
-			$out .= '>' . "\n";
-			$out .= '<td colspan="4" style="text-align:right">' . __( 'Shipping cost', 'tcp' ) .'</td>' . "\n";
-			//$out .= '<td>' . tcp_format_the_price( $order->shipping_amount, $order->order_currency_code ) . '</td>' . "\n";
-			$out .= '<td>' . tcp_format_the_price( $order->shipping_amount ) . '</td>' . "\n";
-			$out .= '</tr>' . "\n";
-			$total += $order->shipping_amount;
-		}
-		if ( $order->payment_amount > 0 ) {
-			$out .= '<tr';
-			if ( $i++ & 1 == 1 ) $out .= ' class="par"';
-			$out .= '>' . "\n";
-			$out .= '<td colspan="4" style="text-align:right">' . __( 'Payment cost', 'tcp' ) . '</td>' . "\n";
-			//$out .= '<td>' . tcp_format_the_price( $order->payment_amount, $order->order_currency_code ) . '</td>' . "\n";
-			$out .= '<td>' . tcp_format_the_price( $order->payment_amount ) . '</td>' . "\n";
-			$out .= '</tr>' . "\n";
-			$total += $order->payment_amount;
-		}*/
-		//TODO Deprecated 1.1
 		do_action( 'tcp_orderpage_calculate_other_costs', $order_id );
 		$ordersCosts = OrdersCosts::getCosts( $order_id );
 		if ( is_array( $ordersCosts ) ) {
@@ -187,6 +178,6 @@ class OrderPage {
 			echo $out;
 		else
 			return $out;
-	}
+	}*/
 }
 ?>

@@ -87,7 +87,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			</ul>
 			<?php if ( isset( $this->errors['shipping_method_id'] ) ) : ?><br/><span class="error"><?php echo $this->errors['shipping_method_id'];?></span><?php endif;?>
 		<?php else : ?>
-			<?php _e( 'There is not applicable méthods', 'tcp' ); ?>
+			<?php _e( 'There is not applicable methods', 'tcp' ); ?>
 		<?php endif;
 		do_action( 'tcp_checkout_sending' );?>
 		</div><!-- sending_layer_info --><?php

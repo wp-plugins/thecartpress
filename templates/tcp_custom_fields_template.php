@@ -78,4 +78,55 @@ function tcp_exists_custom_field_def( $post_type, $id ) {
 	}
 	return false;
 }
+
+function tcp_display_custom_fields( $post_id, $post_type = false ) {
+	if ( $post_type === false ) $post_type = get_post_type( $post_id );
+	$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
+	if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) :?>
+		<tr><th colspan="2"><h4><?php _e( 'Custom fields', 'tcp' );?></h4></td></tr>
+	<?php foreach( $custom_fields as $custom_field ) :
+		$value = get_post_meta( $post_id, $custom_field['id'], true );?>
+		<tr valign="top">
+			<th scope="row"><label for="<?php echo $custom_field['id'];?>"><?php echo $custom_field['label'];?>:</label></th>
+			<td>
+			<?php if ( $custom_field['type'] == 'list' ) :?>
+				<select name="<?php echo $custom_field['id'];?>" id="<?php echo $custom_field['id'];?>">
+				<?php 
+				$poss_values = explode( ',', $custom_field['values'] );
+				foreach( $poss_values as $poss_value ) :?>
+					<option value="<?php echo $poss_value;?>" <?php selected( $value, $poss_value );?>><?php echo $poss_value;?></option>
+				<?php endforeach;?>
+				</select>
+			<?php else :?>
+				<input name="<?php echo $custom_field['id'];?>" id="<?php echo $custom_field['id'];?>" value="<?php echo htmlspecialchars( $value );?>" class="regular-text" type="text" style="width:20em">
+			<?php endif;?>
+			<?php if ( isset( $custom_field['desc'] ) && strlen( $custom_field['desc'] ) > 0 ) :?>
+				<br/><span class="description"><?php echo $custom_field['desc'];?></span>
+			<?php endif;?>
+			</td>
+		</tr>
+	<?php endforeach;?>
+	<?php endif;
+}
+
+function tcp_save_custom_fields( $post_id, $post_type = false ) {
+	if ( $post_type === false ) $post_type = get_post_type( $post_id );
+	$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
+	if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
+		foreach( $custom_fields as $custom_field ) {
+			$value = isset( $_POST[$custom_field['id']] ) ? $_POST[$custom_field['id']] : '';
+			update_post_meta( $post_id, $custom_field['id'], $value );
+		}
+	}
+}
+
+function tcp_delete_custom_fields( $post_id, $post_type = false ) {
+	if ( $post_type === false ) $post_type = get_post_type( $post_id );
+	$custom_fields = tcp_get_custom_fields( $post_id, $post_type );
+	if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
+		foreach( $custom_fields as $custom_field ) {
+			delete_post_meta( $post_id, $custom_field['id'] );
+		}
+	}
+}
 ?>

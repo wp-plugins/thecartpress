@@ -156,6 +156,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 		global $tcp_payment_plugins;
 		$tcp_plugins = $tcp_payment_plugins;
 	}
+	$isDownloadable = $shoppingCart->isDownloadable();
 	$applicable_plugins = array();
 	$applicable_for_country = false;
 	foreach( $tcp_plugins as $plugin_id => $plugin ) {
@@ -165,28 +166,31 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 			$applicable_for_country = false;
 			foreach( $plugin_data as $instance_id => $instance ) {
 				if ( $instance['active'] ) {
-					$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
-					if ( $all_countries ) {
-						$applicable_instance_id = $instance_id;
-						$data = $plugin_data[$applicable_instance_id];
-						if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) ) {
-							$applicable_plugins[] = array(
-								'plugin'	=> $plugin,
-								'instance'	=> $applicable_instance_id,
-							);
-						}
-					} else {
-						$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
-						if ( in_array( $shipping_country, $countries ) ) {
+					$not_for_downloadable = isset( $instance['not_for_downloadable'] ) ? $instance['not_for_downloadable'] : false;
+					if ( ! $isDownloadable || ( $isDownloadable && ! $not_for_downloadable ) ) {
+						$all_countries = isset( $instance['all_countries'] ) ? $instance['all_countries'] == 'yes' : false;
+						if ( $all_countries ) {
 							$applicable_instance_id = $instance_id;
-							$applicable_for_country = true;
 							$data = $plugin_data[$applicable_instance_id];
-							if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) )
+							if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) ) {
 								$applicable_plugins[] = array(
 									'plugin'	=> $plugin,
 									'instance'	=> $applicable_instance_id,
 								);
-							//break;
+							}
+						} else {
+							$countries = isset( $instance['countries'] ) ? $instance['countries'] : array();
+							if ( in_array( $shipping_country, $countries ) ) {
+								$applicable_instance_id = $instance_id;
+								$applicable_for_country = true;
+								$data = $plugin_data[$applicable_instance_id];
+								if ( $plugin->isApplicable( $shipping_country, $shoppingCart, $data ) ) {
+									$applicable_plugins[] = array(
+										'plugin'	=> $plugin,
+										'instance'	=> $applicable_instance_id,
+									);
+								}
+							}
 						}
 					}
 				}

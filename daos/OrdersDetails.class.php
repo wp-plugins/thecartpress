@@ -54,6 +54,7 @@ class OrdersDetails {
 	}
 
 	static function getTotal( $order_id, $total = 0) {
+		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
 		$res =  $wpdb->get_results( $wpdb->prepare( 'select price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
@@ -61,7 +62,7 @@ class OrdersDetails {
 				$total += $row->price * $row->qty_ordered;
 			} else {
 				$t = $row->price * $row->tax / 100;
-				$t = ( $row->price + $t ) * $row->qty_ordered;
+				$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
 				$total += $t;
 			}
 		}

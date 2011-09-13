@@ -38,24 +38,24 @@ $x_trans_id		= isset( $_REQUEST['x_trans_id'] ) ? $_REQUEST['x_trans_id'] : 'no 
 $order_id		= $_REQUEST['order_id'];
 $fingerprint	= strtolower( md5( $md5_hash . $api_login_id . $x_trans_id . $x_amount ) );
 
-if ( $fingerprint != $x_md5_hash ) {
-	$new_status		= $_REQUEST['new_status'];
+$cancelled_status = tcp_get_cancelled_order_status();
+$completed_status = tcp_get_completed_order_status();
+if ( $fingerprint == $x_md5_hash ) {
+	$new_status = $_REQUEST['new_status'];
 	$response_code = isset( $_REQUEST['x_response_code'] ) ? $_REQUEST['x_response_code'] : 0;//1 ->OK, 2->declined, else->error
 	if ( $response_code == 1) {
 		if ( Orders::isDownloadable( $order_id ) ) {
-			Orders::editStatus( $order_id, Orders::$ORDER_COMPLETED, $x_trans_id );
+			Orders::editStatus( $order_id, $completed_status, $x_trans_id );
 		} else {
 			Orders::editStatus( $order_id, $new_status, $x_trans_id );
 		}
-		ActiveCheckout::sendMails( $order_id );
 	} else {
 		$response_reason_text = isset( $_REQUEST['x_response_reason_text'] ) ? $_REQUEST['x_response_reason_text'] : 'no reason';
 		$response_reason_code = isset( $_REQUEST['x_response_reason_code'] ) ? $_REQUEST['x_response_reason_code'] : 0;
-		Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $x_trans_id, $response_reason_text . '(' . $response_reason_code . ')' );
-		ActiveCheckout::sendMails( $order_id, true, 'Autorized.net Error: (' . $response_reason_code . ') ' . $response_reason_text );
+		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $response_reason_text . '(' . $response_reason_code . ')' );
 	}
 } else {
-	Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $x_trans_id, __( 'Error notifiying Authotized.net payment', 'tcp' ) );
+	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, __( 'Error notifiying Authotized.net payment', 'tcp' ) );
 }
 $redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>

@@ -37,28 +37,30 @@ class TCP_Settings {
 
 	function admin_init() {
 		register_setting( 'thecartpress_options', 'tcp_settings', array( $this, 'validate' ) );
-		add_settings_section( 'tcp_main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_main_section' ), __FILE__ );
-		add_settings_field( 'after_add_to_cart', __( 'After adding to cart', 'tcp' ), array( $this, 'show_after_add_to_cart' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), __FILE__ , 'tcp_main_section' );
+		add_settings_section( 'tcp_main_section', __( 'Main', 'tcp' ) , array( $this, 'show_main_section' ), __FILE__ );
 		add_settings_field( 'disable_ecommerce', __( 'Disable eCommerce', 'tcp' ), array( $this, 'show_disable_ecommerce' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'disable_shopping_cart', __( 'Disable shopping cart', 'tcp' ), array( $this, 'show_disable_shopping_cart' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'continue_url', __( 'Continue Shopping in', 'tcp' ), array( $this, 'show_continue_url' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), __FILE__ , 'tcp_main_section' );
+		add_settings_field( 'after_add_to_cart', __( 'After adding to cart', 'tcp' ), array( $this, 'show_after_add_to_cart' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'enabled_wish_list', __( 'Enabled Wish list', 'tcp' ), array( $this, 'show_enabled_wish_list' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'currency_layout', __( 'Currency layout', 'tcp' ), array( $this, 'show_currency_layout' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'currency', __( 'Currency', 'tcp' ), array( $this, 'show_currency' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'decimal_currency', __( 'Currency decimals', 'tcp' ), array( $this, 'show_decimal_currency' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'decimal_point', __( 'Decimal point separator', 'tcp' ), array( $this, 'show_decimal_point' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'thousands_separator', __( 'Thousands separator', 'tcp' ), array( $this, 'show_thousands_separator' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'unit_weight', __( 'Unit weight', 'tcp' ), array( $this, 'show_unit_weight' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'hide_downloadable_menu', __( 'Hide downloadable menu', 'tcp' ), array( $this, 'show_hide_downloadable_menu' ), __FILE__ , 'tcp_main_section' );
 		add_settings_field( 'downloadable_path', __( 'Downloadable path', 'tcp' ), array( $this, 'show_downloadable_path' ), __FILE__ , 'tcp_main_section' );
-		add_settings_field( 'continue_url', __( 'Continue Shopping in', 'tcp' ), array( $this, 'show_continue_url' ), __FILE__ , 'tcp_main_section' );
 
-		add_settings_section( 'tcp_countries_section', __( 'Countries settings', 'tcp' ) , array( $this, 'show_countries_section' ), __FILE__ );
-		add_settings_field( 'country', __( 'Country', 'tcp' ), array( $this, 'show_country' ), __FILE__ , 'tcp_countries_section' );
+		add_settings_section( 'tcp_currency_section', __( 'Currency', 'tcp' ) , array( $this, 'show_currency_section' ), __FILE__ );
+		add_settings_field( 'currency', __( 'Currency', 'tcp' ), array( $this, 'show_currency' ), __FILE__ , 'tcp_currency_section' );
+		add_settings_field( 'currency_layout', __( 'Currency layout', 'tcp' ), array( $this, 'show_currency_layout' ), __FILE__ , 'tcp_currency_section' );
+		add_settings_field( 'decimal_currency', __( 'Currency decimals', 'tcp' ), array( $this, 'show_decimal_currency' ), __FILE__ , 'tcp_currency_section' );
+		add_settings_field( 'decimal_point', __( 'Decimal point separator', 'tcp' ), array( $this, 'show_decimal_point' ), __FILE__ , 'tcp_currency_section' );
+		add_settings_field( 'thousands_separator', __( 'Thousands separator', 'tcp' ), array( $this, 'show_thousands_separator' ), __FILE__ , 'tcp_currency_section' );
+		add_settings_field( 'unit_weight', __( 'Unit weight', 'tcp' ), array( $this, 'show_unit_weight' ), __FILE__ , 'tcp_currency_section' );
+
+		add_settings_section( 'tcp_countries_section', __( 'Countries', 'tcp' ) , array( $this, 'show_countries_section' ), __FILE__ );
+		add_settings_field( 'country', __( 'Base country', 'tcp' ), array( $this, 'show_country' ), __FILE__ , 'tcp_countries_section' );
 		add_settings_field( 'billing_isos', __( 'Allowed Billing countries', 'tcp' ), array( $this, 'show_countries_for_billing' ), __FILE__ , 'tcp_countries_section' );
 		add_settings_field( 'shipping_isos', __( 'Allowed Shipping countries', 'tcp' ), array( $this, 'show_countries_for_shipping' ), __FILE__ , 'tcp_countries_section' );
 
-		add_settings_section( 'tcp_tax_section', __( 'Tax settings', 'tcp' ) , array( $this, 'show_tax_section' ), __FILE__ );
+		add_settings_section( 'tcp_tax_section', __( 'Tax', 'tcp' ) , array( $this, 'show_tax_section' ), __FILE__ );
 		add_settings_field( 'default_tax_country', __( 'Default tax country', 'tcp' ), array( $this, 'show_default_tax_country' ), __FILE__ , 'tcp_tax_section' );
 		add_settings_field( 'prices_include_tax', __( 'Prices include tax', 'tcp' ), array( $this, 'show_prices_include_tax' ), __FILE__ , 'tcp_tax_section' );
 		add_settings_field( 'tax_based_on', __( 'Tax based on', 'tcp' ), array( $this, 'show_tax_based_on' ), __FILE__ , 'tcp_tax_section' );
@@ -74,20 +76,20 @@ class TCP_Settings {
 		add_settings_field( 'display_zero_tax_subtotal', __( 'Display zero tax subtotal', 'tcp' ), array( $this, 'show_display_zero_tax_subtotal' ), __FILE__ , 'tcp_tax_section' );
 		//add_settings_field( 'display_Cart_Order_prices', __( 'Display Cart/Order prices', 'tcp' ), array( $this, 'show_display_Cart_Order_prices' ), __FILE__ , 'tcp_tax_section' );
 
-		add_settings_section( 'tcp_checkout_section', __( 'Checkout settings', 'tcp' ) , array( $this, 'show_checkout_section' ), __FILE__ );
+		add_settings_section( 'tcp_checkout_section', __( 'Checkout', 'tcp' ) , array( $this, 'show_checkout_section' ), __FILE__ );
 		add_settings_field( 'user_registration', __( 'User registration required', 'tcp' ), array( $this, 'show_user_registration' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'emails', __( '@mails to send orders', 'tcp' ), array( $this, 'show_emails' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'from_email', __( 'From email', 'tcp' ), array( $this, 'show_from_email' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'legal_notice', __( 'Checkout notice', 'tcp' ), array( $this, 'show_legal_notice' ), __FILE__ , 'tcp_checkout_section' );
 		add_settings_field( 'checkout_successfully_message', __( 'Checkout successfully message', 'tcp' ), array( $this, 'show_checkout_successfully_message' ), __FILE__ , 'tcp_checkout_section' );
 
-		add_settings_section( 'tcp_permalinks_section', __( 'Permalinks settings', 'tcp' ) , array( $this, 'show_permalink_section' ), __FILE__ );
+		add_settings_section( 'tcp_permalinks_section', __( 'Permalinks', 'tcp' ) , array( $this, 'show_permalink_section' ), __FILE__ );
 		add_settings_field( 'product_rewrite', __( 'Product base', 'tcp' ), array( $this, 'show_product_rewrite' ), __FILE__ , 'tcp_permalinks_section' );
 		add_settings_field( 'category_rewrite', __( 'Category base', 'tcp' ), array( $this, 'show_category_rewrite' ), __FILE__ , 'tcp_permalinks_section' );
 		add_settings_field( 'tag_rewrite', __( 'Tag base', 'tcp' ), array( $this, 'show_tag_rewrite' ), __FILE__ , 'tcp_permalinks_section' );
 		add_settings_field( 'supplier_rewrite', __( 'Supplier base', 'tcp' ), array( $this, 'show_supplier_rewrite' ), __FILE__ , 'tcp_permalinks_section' );
 
-		add_settings_section( 'tcp_theme_compatibility_section', __( 'Theme compatibility settings', 'tcp' ) , array( $this, 'show_theme_compatibility_section' ), __FILE__ );
+		add_settings_section( 'tcp_theme_compatibility_section', __( 'Theme compatibility', 'tcp' ) , array( $this, 'show_theme_compatibility_section' ), __FILE__ );
 		add_settings_field( 'use_tcp_loops', __( 'Use TCP Loops Configurables', 'tcp' ), array( $this, 'show_use_tcp_loops' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'load_default_buy_button_style', __( 'Load default buy button style', 'tcp' ), array( $this, 'show_load_default_buy_button_style' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'load_default_shopping_cart_checkout_style', __( 'Load default shopping cart & checkout style', 'tcp' ), array( $this, 'show_load_default_shopping_cart_checkout_style' ), __FILE__ , 'tcp_theme_compatibility_section' );
@@ -111,7 +113,7 @@ class TCP_Settings {
 		add_settings_section( 'tcp_admin_section', __( 'Admin settings', 'tcp' ) , array( $this, 'show_admin_section' ), __FILE__ );
 		add_settings_field( 'hide_visibles', __( 'Hide invisible products', 'tcp' ), array( $this, 'show_hide_visibles' ), __FILE__ , 'tcp_admin_section' );
 //		add_settings_field( 'show_back_end_label', __( 'Show back end label', 'tcp' ), array( $this, 'show_back_end_label' ), __FILE__ , 'tcp_admin_section' );
-		add_settings_section( 'tcp_search_engine_section', __( 'Search engine', 'tcp' ) , array( $this, 'show_search_engine_section' ), __FILE__ );
+		add_settings_section( 'tcp_search_engine_section', __( 'eMarketing tools', 'tcp' ) , array( $this, 'show_search_engine_section' ), __FILE__ );
 		add_settings_field( 'search_engine_activated', __( 'Search engine activated', 'tcp' ), array( $this, 'show_search_engine_activated' ), __FILE__ , 'tcp_search_engine_section' );
 	}
 
@@ -142,12 +144,10 @@ class TCP_Settings {
 	}
 
 	function show_main_section() {
-		$content = '';
-		$content = apply_filters( 'tcp_main_section', $content );
-		echo $content;
-		echo '<div class="tcp_notice_from_thecartpress" style="float:right;"><div style="border: 1px dotted;padding-left: 1em;padding-right: 1em;"><h4>', __( 'Notice from TheCartPress', 'tcp' ), '</h4>';
-		wp_widget_rss_output( 'http://thecartpress.com/feed', array( 'items' => 3, 'show_author' => 0, 'show_date' => 1, 'show_summary' => 0 ) );
-		echo '</div></div>';
+		/*?><div class="tcp_notice_from_thecartpress" style="float:right;"><div style="border: 1px dotted;padding-left: 1em;padding-right: 1em;">
+		<h4><?php _e( 'Notice from TheCartPress', 'tcp' ); ?></h4>
+		<?php wp_widget_rss_output( 'http://thecartpress.com/feed', array( 'items' => 3, 'show_author' => 0, 'show_date' => 1, 'show_summary' => 0 ) ); ?>
+		</div></div><?php*/
 	}
 
 	function show_user_registration( $user_registration = false ) {
@@ -155,16 +155,18 @@ class TCP_Settings {
 			global $thecartpress;
 			$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
 		}?>
-		<input type="checkbox" id="user_registration" name="tcp_settings[user_registration]" value="yes" <?php checked( true, $user_registration );?> /><?php
+		<input type="checkbox" id="user_registration" name="tcp_settings[user_registration]" value="yes" <?php checked( true, $user_registration );?> />
+		<p class="description"><?php _e( 'Indicates if the clients should be or not registered to buy.', 'tcp' );?></p><?php
 	}
 
 	function show_emails( $emails = false ) {
 		if ( ! $emails ) {
 			global $thecartpress;
-			$emails = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';
+			$emails = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : get_option('admin_email');
 		}?>
 		<input type="text" id="emails" name="tcp_settings[emails]" value="<?php echo $emails;?>" size="40" maxlength="2550" />
-		<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' );?></span><?php
+		<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' );?></span>
+		<p class="description"><?php _e( 'These emails will receive orders notifications.', 'tcp' );?></p><?php
 	}
 
 	function show_from_email( $from_email = false ) {
@@ -172,7 +174,8 @@ class TCP_Settings {
 			global $thecartpress;
 			$from_email = isset( $thecartpress->settings['from_email'] ) ? $thecartpress->settings['from_email'] : '';
 		}?>
-		<input type="text" id="from_email" name="tcp_settings[from_email]" value="<?php echo $from_email;?>" size="40" maxlength="255" /><?php
+		<input type="text" id="from_email" name="tcp_settings[from_email]" value="<?php echo $from_email;?>" size="40" maxlength="255" />
+		<p class="description"><?php _e( 'Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com', 'tcp' );?></p><?php
 	}
 
 	function show_after_add_to_cart() {
@@ -181,7 +184,30 @@ class TCP_Settings {
 		<select id="after_add_to_cart" name="tcp_settings[after_add_to_cart]">
 			<option value="" <?php selected( $after_add_to_cart, '' );?>><?php _e( 'Nothing', 'tcp' );?></option>
 			<option value="ssc" <?php selected( $after_add_to_cart, 'ssc' );?>><?php _e( 'Show the Shopping Cart', 'tcp' );?></option>
-		</select><?php
+		</select>
+		<p class="description"><?php _e( '', 'tcp' ); ?></p><?php
+	}
+
+	function show_disable_ecommerce() {
+		global $thecartpress;
+		$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;?>
+		<input type="checkbox" id="disable_ecommerce" name="tcp_settings[disable_ecommerce]" value="yes" <?php checked( true, $disable_ecommerce );?> />
+		<span class="description"><?php _e( 'To use TheCartPress as a Framework, disabling all eCommerce functionalities.', 'tcp' );?></span><?php
+	}
+
+	function show_disable_shopping_cart() {
+		global $thecartpress;
+		$disable_shopping_cart = isset( $thecartpress->settings['disable_shopping_cart'] ) ? $thecartpress->settings['disable_shopping_cart'] : false;?>
+		<input type="checkbox" id="disable_shopping_cart" name="tcp_settings[disable_shopping_cart]" value="yes" <?php checked( true, $disable_shopping_cart );?> />
+		<span class="description"><?php _e( 'To use TheCartPress as a catalog, disabling the Shopping cart and the Checkout.', 'tcp' );?></span><?php
+	}
+
+	function show_continue_url() {
+		global $thecartpress;
+		$continue_url = isset( $thecartpress->settings['continue_url'] ) ? $thecartpress->settings['continue_url'] : '';?>
+		<input type="text" id="continue_url" name="tcp_settings[continue_url]" value="<?php echo $continue_url;?>" size="50" maxlength="255" />
+		<p class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' );?></p>
+		<p class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' );?></p><?php
 	}
 
 	function show_stock_management() {
@@ -190,44 +216,27 @@ class TCP_Settings {
 		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management );?> /><?php
 	}
 
-	function show_disable_shopping_cart() {
-		global $thecartpress;
-		$disable_shopping_cart = isset( $thecartpress->settings['disable_shopping_cart'] ) ? $thecartpress->settings['disable_shopping_cart'] : false;?>
-		<input type="checkbox" id="disable_shopping_cart" name="tcp_settings[disable_shopping_cart]" value="yes" <?php checked( true, $disable_shopping_cart );?> />
-		<span class="description"><?php _e( 'To use TheCartPress as a catalog.', 'tcp' );?></span><?php
-	}
-
-	function show_disable_ecommerce() {
-		global $thecartpress;
-		$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;?>
-		<input type="checkbox" id="disable_ecommerce" name="tcp_settings[disable_ecommerce]" value="yes" <?php checked( true, $disable_ecommerce );?> />
-		<span class="description"><?php _e( 'To use TheCartPress as a Framework (disabling all eCommerce functionalities).', 'tcp' );?></span><?php
-	}
-
 	function show_enabled_wish_list() {
 		global $thecartpress;
 		$enabled_wish_list = isset( $thecartpress->settings['enabled_wish_list'] ) ? $thecartpress->settings['enabled_wish_list'] : false;?>
 		<input type="checkbox" id="enabled_wish_list" name="tcp_settings[enabled_wish_list]" value="yes" <?php checked( true, $enabled_wish_list );?> /><?php
 	}
 
-	function show_currency_layout( $currency_layout = false) {
-		if ( ! $currency_layout ) {
-			global $thecartpress;
-			$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';
-		}?>
-		<label for="tcp_custom_layouts"><?php _e( 'Default layouts', 'tcp' ); ?>:</label>
-		<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
-			<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' );?></option>
-			<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' );?></option>
-			<option value="%2$s %1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' );?></option>
-		</select>
-		<br/>
-		<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
-		<input type="text" id="currency_layout" name="tcp_settings[currency_layout]" value="<?php echo $currency_layout;?>" size="20" maxlength="25" />
-		<br/><span class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' );?>
-		<br/><span class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' );?>
-		<br/><span class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files).', 'tcp' );?>
-		</span><?php
+	function show_hide_downloadable_menu() {
+		global $thecartpress;
+		$hide_downloadable_menu = isset( $thecartpress->settings['hide_downloadable_menu'] ) ? $thecartpress->settings['hide_downloadable_menu'] : false;?>
+		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> /><?php
+	}
+
+	function show_downloadable_path() {
+		global $thecartpress;
+		$downloadable_path = isset( $thecartpress->settings['downloadable_path'] ) ? $thecartpress->settings['downloadable_path'] : '';?>
+		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255" />
+		<p class="description"><?php _e( 'To protect the downloadable files, from public download, this path must be non-public directory.', 'tcp' );?></p>
+		<p class="description"><?php printf( __( 'For example, path for the current page in your server is: %s' , 'tcp' ), dirname( __FILE__ ) );?></p><?php
+	}
+
+	function show_currency_section() {
 	}
 
 	function show_currency( $currency = false ) {
@@ -242,6 +251,26 @@ class TCP_Settings {
 		<?php endforeach;?>
 		</select><?php
 	}
+	
+	function show_currency_layout( $currency_layout = false) {
+		if ( ! $currency_layout ) {
+			global $thecartpress;
+			$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : '%1$s%2$s (%3$s)';
+		}?>
+		<p><label for="tcp_custom_layouts"><?php _e( 'Default layouts', 'tcp' ); ?>:</label>
+		<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
+			<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' );?></option>
+			<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' );?></option>
+			<option value="%2$s %1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' );?></option>
+		</select>
+		</p>
+		<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
+		<input type="text" id="currency_layout" name="tcp_settings[currency_layout]" value="<?php echo $currency_layout;?>" size="20" maxlength="25" />
+		<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' );?></p>
+		<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' );?></p>
+		<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal "%1$s%2$s (%3$s)."', 'tcp' );?></p><?php
+	}
+
 	
 	function show_decimal_currency( $decimal_currency = false) {
 		if ( ! $decimal_currency ) {
@@ -301,28 +330,6 @@ class TCP_Settings {
 		</select><?php
 	}
 
-	function show_hide_downloadable_menu() {
-		global $thecartpress;
-		$hide_downloadable_menu = isset( $thecartpress->settings['hide_downloadable_menu'] ) ? $thecartpress->settings['hide_downloadable_menu'] : false;?>
-		<input type="checkbox" id="hide_downloadable_menu" name="tcp_settings[hide_downloadable_menu]" value="yes" <?php checked( $hide_downloadable_menu, true );?> /><?php
-	}
-
-	function show_downloadable_path() {
-		global $thecartpress;
-		$downloadable_path = isset( $thecartpress->settings['downloadable_path'] ) ? $thecartpress->settings['downloadable_path'] : '';?>
-		<input type="text" id="downloadable_path" name="tcp_settings[downloadable_path]" value="<?php echo $downloadable_path;?>" size="50" maxlength="255" />
-		<br /><span class="description"><?php _e( 'To protect the downloadable files from public download, this path must be non-public directory.', 'tcp' );?></span>
-		<br /><span class="description"><?php printf( __( 'This is the path for this page in your server: %s' , 'tcp' ), dirname( __FILE__ ) );?></span><?php
-	}
-	
-	function show_continue_url() {
-		global $thecartpress;
-		$continue_url = isset( $thecartpress->settings['continue_url'] ) ? $thecartpress->settings['continue_url'] : '';?>
-		<input type="text" id="continue_url" name="tcp_settings[continue_url]" value="<?php echo $continue_url;?>" size="50" maxlength="255" />
-		<br /><span class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' );?></span>
-		<br /><span class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' );?></span><?php
-	}
-
 	function show_countries_section() {
 	}
 
@@ -343,9 +350,9 @@ class TCP_Settings {
 	function show_countries_for_shipping() {
 		global $thecartpress;
 		$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : array();?>
-		<?php _e( 'All countries', 'tcp' );?>:&nbsp;<input type="checkbox" name="all_shipping_isos" id="all_shipping_isos" <?php checked( count( $shipping_isos ), 0 );?> value="yes"
+		<p><?php _e( 'All countries', 'tcp' );?>:&nbsp;<input type="checkbox" name="all_shipping_isos" id="all_shipping_isos" <?php checked( count( $shipping_isos ), 0 );?> value="yes"
 		onclick="if (this.checked) { jQuery('.sel_shipping_isos').hide(); jQuery('#shipping_isos option').attr('selected', false);  } else { jQuery('.sel_shipping_isos').show(); }"/>
-		<br />
+		</p>
 		<div class="sel_shipping_isos" <?php if ( ! $shipping_isos ) echo 'style="display:none;"';?>>
 			<select id="shipping_isos" name="tcp_settings[shipping_isos][]" style="height:auto" size="8" multiple="true">
 			<?php $countries = Countries::getAll();
@@ -353,7 +360,7 @@ class TCP_Settings {
 				<option value="<?php echo $item->iso;?>" <?php tcp_selected_multiple( $shipping_isos, $item->iso );?>><?php echo $item->name;?></option>
 			<?php endforeach;?>
 			</select>
-			<br/>
+			<p>
 			<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('shipping_isos');" class="button-secondary"/>
@@ -362,6 +369,7 @@ class TCP_Settings {
 			<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('shipping_isos');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('shipping_isos');" class="button-secondary"/>
+			</p>
 		</div>
 	<?php
 	}
@@ -369,9 +377,8 @@ class TCP_Settings {
 	function show_countries_for_billing() {
 		global $thecartpress;
 		$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : array();?>
-		<?php _e( 'All countries', 'tcp' );?>:&nbsp;<input type="checkbox" name="all_billing_isos" id="all_billing_isos" <?php checked( count( $billing_isos ), 0 );?> value="yes"
-		onclick="if (this.checked) { jQuery('.sel_billing_isos').hide(); jQuery('#billing_isos option').attr('selected', false);  } else { jQuery('.sel_billing_isos').show(); }"/>
-		<br />
+		<p><?php _e( 'All countries', 'tcp' );?>:&nbsp;<input type="checkbox" name="all_billing_isos" id="all_billing_isos" <?php checked( count( $billing_isos ), 0 );?> value="yes"
+		onclick="if (this.checked) { jQuery('.sel_billing_isos').hide(); jQuery('#billing_isos option').attr('selected', false);  } else { jQuery('.sel_billing_isos').show(); }"/></p>
 		<div class="sel_billing_isos" <?php if ( ! $billing_isos ) echo 'style="display:none;"';?>>
 			<select id="billing_isos" name="tcp_settings[billing_isos][]" style="height:auto" size="8" multiple="true">
 			<?php $countries = Countries::getAll();
@@ -379,7 +386,7 @@ class TCP_Settings {
 				<option value="<?php echo $item->iso;?>" <?php tcp_selected_multiple( $billing_isos, $item->iso );?>><?php echo $item->name;?></option>
 			<?php endforeach;?>
 			</select>
-			<br/>
+			<p>
 			<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('billing_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('billing_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'CARICOM', 'tcp');?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' );?>" onclick="tcp_select_caricom('billing_isos');" class="button-secondary"/>
@@ -388,6 +395,7 @@ class TCP_Settings {
 			<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('billing_isos');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('billing_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('billing_isos');" class="button-secondary"/>
+			</p>
 		</div>
 	<?php
 	}
@@ -499,22 +507,19 @@ class TCP_Settings {
 		global $thecartpress;
 		$legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : __( 'Checkout notice', 'tcp' );?>
 		<textarea id="legal_notice" name="tcp_settings[legal_notice]" cols="40" rows="5" maxlength="1020"><?php echo $legal_notice;?></textarea>
-		<br /><span class="description"><?php _e( 'If the checkout notice is blank, the Checkout page will try to use the template class called "tcp_checkout_notice"', 'tcp' );?></span>
-		<br /><span class="description"><?php _e( 'The template class allows to create a multilingual notice', 'tcp' );?></span>
-		<br /><span class="description"><?php _e( 'If the checkout notice is blank and no template is assigned, then the Checkout page will not show the "Accept conditions" check.', 'tcp' );?></span><?php
+		<p class="description"><?php _e( 'If the checkout notice is blank, the Checkout page will try to use the Notice class called "tcp_checkout_notice"', 'tcp' );?></p>
+		<p class="description"><?php _e( 'The Notice class allows to create a multilingual notice', 'tcp' );?></p>
+		<p class="description"><?php _e( 'If the checkout notice is blank and no Notice class is assigned, then the Checkout page will not show the "Accept conditions" check.', 'tcp' );?></p><?php
 	}
 
 	function show_checkout_successfully_message() {
 		global $thecartpress;
 		$checkout_successfully_message = isset( $thecartpress->settings['checkout_successfully_message'] ) ? $thecartpress->settings['checkout_successfully_message'] : __( 'The order has been completed successfully', 'tcp' );?>
 		<textarea id="checkout_successfully_message" name="tcp_settings[checkout_successfully_message]" cols="40" rows="5" maxlength="1020"><?php echo $checkout_successfully_message;?></textarea>
-		<br /><span class="description"><?php _e( 'This text will show at the end of the checkout process.', 'tcp' );?></span><?php
+		<p class="description"><?php _e( 'This text will show at the end of the checkout process.', 'tcp' );?></p><?php
 	}
 
 	function show_permalink_section() {
-		$content = apply_filters( 'tcp_permalink_section', '' );
-		if ( strlen( $content ) > 0 )
-			echo '<span class="description">', $content, '</span>';
 	}
 
 	function show_product_rewrite() {
@@ -527,14 +532,14 @@ class TCP_Settings {
 		global $thecartpress;
 		$category_rewrite = isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category';?>
 		<input type="text" id="category_rewrite" name="tcp_settings[category_rewrite]" value="<?php echo $category_rewrite;?>" size="50" maxlength="255" />
-		<br /><span class="description"><?php printf( __( 'Category base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'category_base' ) );?></span><?php
+		<p class="description"><?php printf( __( 'Category base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'category_base' ) );?></p><?php
 	}
 
 	function show_tag_rewrite() {
 		global $thecartpress;
 		$tag_rewrite = isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag';?>
 		<input type="text" id="tag_rewrite" name="tcp_settings[tag_rewrite]" value="<?php echo $tag_rewrite;?>" size="50" maxlength="255" />
-		<br /><span class="description"><?php printf( __( 'Tag base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'tag_base' ) );?></span><?php
+		<p class="description"><?php printf( __( 'Tag base for post is "%s". Remember to set a different value.', 'tcp' ), get_option( 'tag_base' ) );?></p><?php
 	}
 
 	function show_supplier_rewrite() {
@@ -544,17 +549,14 @@ class TCP_Settings {
 	}
 
 	function show_theme_compatibility_section() {
-		global $thecartpress;
-		$content = __( 'You can uncheck all these options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template functions</a>.', 'tcp' );
-		$content = apply_filters( 'tcp_theme_compatibility_section', $content );
-		echo '<span class="description">', $content, '</span>';
 	}
 
 	function show_use_tcp_loops() {
 		global $thecartpress;
 		$use_tcp_loops = isset( $thecartpress->settings['use_tcp_loops'] ) ? $thecartpress->settings['use_tcp_loops'] : true;?>
 		<input type="checkbox" id="use_tcp_loops" name="tcp_settings[use_tcp_loops]" value="yes" <?php checked( true, $use_tcp_loops );?> />
-		<br /><span><?php _e( 'To show the Loops Settings of TheCartPress', 'tcp' );?></span><?php
+		<p class="description"><?php _e( 'To show the Loops Settings of TheCartPress', 'tcp' );?></p>
+		<p class="description"><?php _e( 'You could uncheck all these options if your theme uses the <a href="http://thecartpress.com" target="_blank">TheCartPress template functions</a>.', 'tcp' ); ?></p><?php
 	}
 
 	function show_load_default_buy_button_style() {
@@ -704,7 +706,8 @@ class TCP_Settings {
 	function show_hide_visibles() {
 		global $thecartpress;
 		$hide_visibles = isset( $thecartpress->settings['hide_visibles'] ) ? $thecartpress->settings['hide_visibles'] : false;?>
-		<input type="checkbox" id="hide_visibles" name="tcp_settings[hide_visibles]" value="yes" <?php checked( true, $hide_visibles );?> /><?php
+		<input type="checkbox" id="hide_visibles" name="tcp_settings[hide_visibles]" value="yes" <?php checked( true, $hide_visibles );?> />
+		<p class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></p><?php
 	}
 
 	function show_back_end_label() {
@@ -713,8 +716,7 @@ class TCP_Settings {
 		<input type="checkbox" id="show_back_end_label" name="tcp_settings[show_back_end_label]" value="yes" <?php checked( true, $show_back_end_label );?> /><?php
 	}
 
-	function show_search_engine_section() {?>
-		<span class="description"><?php _e( '&nbsp;', 'tcp' );?></span><?php
+	function show_search_engine_section() {
 	}
 
 	function show_search_engine_activated() {
@@ -729,7 +731,7 @@ class TCP_Settings {
 		$input['thousands_separator']		= isset( $input['thousands_separator'] ) ? $input['thousands_separator'] : ',';
 		$input['legal_notice']				=  wp_filter_nohtml_kses( isset( $input['legal_notice'] ) ? $input['legal_notice'] : '' );
 		$input['from_email']				=  wp_filter_nohtml_kses( isset( $input['from_email'] ) ? $input['from_email'] : '' );
-		$input['emails']					=  wp_filter_nohtml_kses( isset( $input['emails'] ) ? $input['emails'] : '' );
+		$input['emails']					=  wp_filter_nohtml_kses( isset( $input['emails'] ) ? $input['emails'] : get_option('admin_email') );
 		$input['stock_management']			= isset( $input['stock_management'] ) ? $input['stock_management'] == 'yes' : false;
 		$input['hide_downloadable_menu']	= isset( $input['hide_downloadable_menu'] ) ? $input['hide_downloadable_menu'] == 'yes' : false;
 		$input['disable_ecommerce']			= isset( $input['disable_ecommerce'] ) ? $input['disable_ecommerce'] == 'yes' : false;
