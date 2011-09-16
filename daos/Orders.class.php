@@ -141,7 +141,7 @@ class Orders {
 			'shipping_city_id'		=> $order['shipping_city_id'],
 			'shipping_region'		=> $order['shipping_region'],
 			'shipping_region_id'	=> $order['shipping_region_id'],
-			'shipping_postcode'		=> $order['shipping_postcode'],
+			'shipping_postcode'		=> Orders::removeSpaces( $order['shipping_postcode'] ),
 			'shipping_country'		=> $order['shipping_country'],
 			'shipping_country_id'	=> $order['shipping_country_id'],
 			'shipping_telephone_1'	=> $order['shipping_telephone_1'],
@@ -156,7 +156,7 @@ class Orders {
 			'billing_city_id'		=> $order['billing_city_id'],
 			'billing_region'		=> $order['billing_region'],
 			'billing_region_id'		=> $order['billing_region_id'],
-			'billing_postcode'		=> $order['billing_postcode'],
+			'billing_postcode'		=> Orders::removeSpaces( $order['billing_postcode'] ),
 			'billing_country'		=> $order['billing_country'],
 			'billing_country_id'	=> $order['billing_country_id'],
 			'billing_telephone_1'	=> $order['billing_telephone_1'],
@@ -362,6 +362,10 @@ class Orders {
 		$sql = 'update ' . $wpdb->prefix . 'tcp_orders_details set 
 			max_downloads = max_downloads - 1 where order_detail_id = %d';
 		$wpdb->query( $wpdb->prepare( $sql, $order_detail_id ) );
+	}
+
+	static function removeSpaces( $postcode ) {
+		return str_replace( ' ', '', $postcode );
 	}
 }
 ?>
