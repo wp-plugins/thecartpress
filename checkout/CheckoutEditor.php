@@ -18,10 +18,12 @@
 
 require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
 
+$initial_path = dirname( dirname( dirname( __FILE__ ) ) );
+
 if ( isset( $_REQUEST['tcp_save_fields'] ) ) {
-	$path = $_REQUEST['tcp_box_path'];
+	$partial_path = $_REQUEST['tcp_box_path'];
 	$class_name = $_REQUEST['tcp_box_name'];
-	require_once( $path );
+	require_once( $initial_path . $partial_path );
 	$box = new $class_name();
 	$box->save_config_settings();?>
 	<div id="message" class="updated"><p>
@@ -82,7 +84,7 @@ $order_steps = TCPCheckoutManager::get_steps();?>
 if ( $number_of_items > 0 ) :
 	$first_item = true;
 	foreach( $order_steps as $class_name ) :
-		$path = $tcp_checkout_boxes[$class_name];
+		$partial_path = $tcp_checkout_boxes[$class_name];
 		$number_of_items--;?>
 		<li style="border-bottom: 1px solid grey;">
 		<h4>
@@ -103,7 +105,7 @@ if ( $number_of_items > 0 ) :
 		<input type="button" id="tcp_edit_button_<?php echo $class_name;?>" value="<?php _e( 'Show/Hide edit fields', 'tcp' );?>" class="button-secondary" onclick="jQuery('#tcp_edit_<?php echo $class_name;?>').toggle();"/>
 		<p id="tcp_no_edit_<?php echo $class_name;?>" style="display: none;"><?php _e( 'No config settings', 'tcp' );?></p>
 		<div id="tcp_edit_<?php echo $class_name;?>" style="display: none;">
-			<?php require_once( $path );?>
+			<?php require_once( $initial_path . $partial_path );?>
 			<?php $box = new $class_name();?>
 			<form method="post">
 			<table class="form-table">
@@ -112,7 +114,7 @@ if ( $number_of_items > 0 ) :
 			</tbody>
 			</table>
 			<?php if ( $exists_config ) :?>
-				<input type="hidden" name="tcp_box_path" value="<?php echo $path;?>" />
+				<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path;?>" />
 				<input type="hidden" name="tcp_box_name" value="<?php echo $class_name;?>" />
 				<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name;?>" value="<?php _e( 'save', 'tcp' );?>" class="button-secondary"/></p>
 			<?php else :?>
@@ -138,7 +140,7 @@ $order_steps = array_diff( $tcp_checkout_boxes, $order_steps );?>
 <h3><?php _e( 'Deactivated boxes', 'tcp' ); ?></h3>
 <ul class="tcp_deactivated_boxes" style="padding-left:4em;">
 <?php if ( count( $order_steps ) > 0 ) :
-	foreach( $tcp_checkout_boxes as $class_name => $path ) :?>
+	foreach( $tcp_checkout_boxes as $class_name => $partial_path ) :?>
 		<li style="border-bottom: 1px solid grey;">
 		<h4>
 		<form method="post">
@@ -150,7 +152,7 @@ $order_steps = array_diff( $tcp_checkout_boxes, $order_steps );?>
 		<input type="button" id="tcp_edit_button_<?php echo $class_name;?>" value="<?php _e( 'Show/Hide edit fields', 'tcp' );?>" class="button-secondary" onclick="jQuery('#tcp_edit_<?php echo $class_name;?>').toggle();"/>
 		<p id="tcp_no_edit_<?php echo $class_name;?>" style="display: none;"><?php _e( 'No config settings', 'tcp' );?></p>
 		<div id="tcp_edit_<?php echo $class_name;?>" style="display: none;">
-			<?php require_once( $path );?>
+			<?php require_once( $initial_path . $partial_path );?>
 			<?php $box = new $class_name();?>
 			<form method="post">
 			<table class="form-table">
@@ -159,7 +161,7 @@ $order_steps = array_diff( $tcp_checkout_boxes, $order_steps );?>
 			</tbody>
 			</table>
 			<?php if ( $exists_config ) :?>
-				<input type="hidden" name="tcp_box_path" value="<?php echo $path;?>" />
+				<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path;?>" />
 				<input type="hidden" name="tcp_box_name" value="<?php echo $class_name;?>" />
 				<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name;?>" value="<?php _e( 'save', 'tcp' );?>" class="button-secondary"/></p>
 			<?php else :?>

@@ -257,7 +257,7 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 	if ( $type == 'SIMPLE' ) {
 		$price = tcp_get_the_price_to_show( $post_id );
 		$label = tcp_format_the_price( $price );
-	} else if ( $type == 'GROUPED' ) {
+	} elseif ( $type == 'GROUPED' ) {
 		$min_max = tcp_get_min_max_price( $post_id );
 		if ( is_array( $min_max ) ) {
 			$min = $min_max[0];

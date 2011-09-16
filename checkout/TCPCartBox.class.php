@@ -87,9 +87,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		$table_amount_without_tax = 0;
 		$table_amount_with_tax = 0;
 		foreach( $shoppingCart->getItems() as $item ) :
-			//$item->setTax( tcp_get_the_tax( $item->getPostId() ) );
-			$tax = tcp_get_the_tax( $item->getPostId() );
-			//$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $item->getTax() / 100 );
+			$tax = $item->getTax();
 			$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $tax / 100 );
 			$unit_price_with_tax = round( $unit_price_with_tax,  $decimals );
 			$line_price_without_tax = $item->getUnitPrice() * $item->getUnits();
@@ -111,7 +109,6 @@ class TCPCartBox extends TCPCheckoutBox {
 			<td colspan="4" style="text-align:right"><?php _e( 'Discounts', 'tcp' );?></td>
 			<td><?php echo tcp_format_the_price( $discount );?></td>
 			</tr><?php
-			//$table_amount_with_tax -= $discount; //discount is applied to the taxed prices
 		endif;
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
 			$smi = $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];

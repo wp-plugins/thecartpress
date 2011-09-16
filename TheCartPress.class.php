@@ -155,7 +155,6 @@ class TheCartPress {
 			if ( is_array( $post_id ) ) {
 				for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 					$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
-
 					if ( $count > 0 ) {
 						$post_id		= isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
 						$post_id		= tcp_get_default_id( $post_id, get_post_type( $post_id ) );
@@ -191,14 +190,10 @@ class TheCartPress {
 							$price_2			= $option_2_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_2 ) : 0;
 						}
 						$price_to_show	= tcp_get_the_price_to_show( $post_id );
-						//$price_to_show	= isset( $_REQUEST['tcp_price_to_show'][$i] ) ? $_REQUEST['tcp_price_to_show'][$i] : 0;
 						$price_to_show	+= $price_to_show_1 + $price_to_show_2;
 						$unit_price		= tcp_get_the_price( $post_id );
-						//$unit_price		= isset( $_REQUEST['tcp_unit_price'][$i] ) ? $_REQUEST['tcp_unit_price'][$i] : 0;
 						$unit_price		+= $price_1 + $price_2;
-						//$tax			= isset( $_REQUEST['tcp_tax'][$i] ) ? $_REQUEST['tcp_tax'][$i] : 0;
 						$tax			= tcp_get_the_tax( $post_id );
-						//$unit_weight	= isset( $_REQUEST['tcp_unit_weight'][$i] ) ? $_REQUEST['tcp_unit_weight'][$i] : 0;
 						$unit_weight	= tcp_get_the_weight( $post_id );
 						$shoppingCart->add( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight, $price_to_show );
 					}
@@ -745,14 +740,24 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function loadingDefaultCheckoutBoxes() {
-		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPBillingExBox.class.php', 'TCPBillingExBox' );
+/*		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPBillingExBox.class.php', 'TCPBillingExBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPBillingBox.class.php', 'TCPBillingBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPShippingBox.class.php', 'TCPShippingBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPShippingMethodsBox.class.php', 'TCPShippingMethodsBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPPaymentMethodsBox.class.php', 'TCPPaymentMethodsBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPCartBox.class.php', 'TCPCartBox' );
 		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPNoticeBox.class.php', 'TCPNoticeBox' );
-		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPSigninBox.class.php', 'TCPSigninBox' );
+		tcp_register_checkout_box( dirname( __FILE__ ) . '/checkout/TCPSigninBox.class.php', 'TCPSigninBox' );*/
+
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPBillingExBox.class.php', 'TCPBillingExBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPBillingBox.class.php', 'TCPBillingBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPShippingBox.class.php', 'TCPShippingBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPShippingMethodsBox.class.php', 'TCPShippingMethodsBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPPaymentMethodsBox.class.php', 'TCPPaymentMethodsBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPCartBox.class.php', 'TCPCartBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPNoticeBox.class.php', 'TCPNoticeBox' );
+		tcp_register_checkout_box( '/thecartpress/checkout/TCPSigninBox.class.php', 'TCPSigninBox' );
+
 	}
 
 	function loadingDefaultCheckoutPlugins() {

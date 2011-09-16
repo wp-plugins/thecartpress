@@ -38,9 +38,9 @@ class ProductCustomFieldsMetabox {
 		global $thecartpress;
 		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$lang				= isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
-		$source_lang		= isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
+		$source_lang		= isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : '';//isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
 		$is_translation		= $lang != $source_lang;
-		if ( $is_translation && $post_id == $post->ID) {
+		if ( $is_translation && $post_id == $post->ID ) {
 			_e( 'After saving the title and content, you will be able to edit the specific fields of the product.', 'tcp' );
 			return;
 		}
@@ -69,9 +69,8 @@ class ProductCustomFieldsMetabox {
 			<!--<li>|</li>
 			<li><a href="<?php echo $admin_path;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
 			-->
-		<?php 
-		$product_type = tcp_get_the_product_type();
-		
+		<?php
+		$product_type = tcp_get_the_product_type( $post_id );
 		if ( 'SIMPLE' == $product_type ) :
 			$parents = RelEntities::getParents( $post_id );
 			if ( is_array( $parents ) && count( $parents ) > 0 ) :
@@ -79,14 +78,14 @@ class ProductCustomFieldsMetabox {
 				<li>|</li>
 				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED;"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
 			<?php endif;
-		else : //At this moment, if not SIMPLE then is GROUPED or any other type that looks like GROUPED
+		elseif ( 'GROUPED' == $product_type ) :
 			$count = RelEntities::count( $post_id );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'assigned products', 'tcp' );?><?php echo $count;?></a></li>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'grouped products', 'tcp' );?><?php echo $count;?></a></li>
 			<li>|</li>
-			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'create new assigned product', 'tcp' );?></a></li>
+			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'create new grouped product', 'tcp' );?></a></li>
 		<?php endif; ?>
 		<?php do_action( 'tcp_product_metabox_toolbar', $post_id );?>
 		<?php if ( tcp_is_downloadable( $post_id ) ) :?>

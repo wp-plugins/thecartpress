@@ -212,7 +212,8 @@ class TCPCheckoutManager {
 			$checkout_box = isset( $this->steps[$step] ) ? $this->steps[$step] : false;
 			if ( $checkout_box ) {
 				global $tcp_checkout_boxes;
-				require_once( $tcp_checkout_boxes[$checkout_box] );
+				$initial_path = dirname( dirname( dirname( __FILE__ ) ) );
+				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box] );
 				return new $checkout_box();
 			} else {
 				return false;
@@ -402,7 +403,6 @@ class TCPCheckoutManager {
 		foreach( $shoppingCart->getItems() as $item ) {
 			$post = get_post( $item->getPostId() );
 			$sku = tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-			//$sku = tcp_get_the_sku();
 			$days_to_expire = (int)get_post_meta( $post->ID, 'tcp_days_to_expire', true );
 			if ( $days_to_expire > 0 ) {
 				$today = date( 'Y-m-d' );
