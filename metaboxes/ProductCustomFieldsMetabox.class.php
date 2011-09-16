@@ -38,77 +38,78 @@ class ProductCustomFieldsMetabox {
 		global $thecartpress;
 		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$lang				= isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
-		$source_lang		= isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
+		$source_lang		= isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : '';//isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
 		$is_translation		= $lang != $source_lang;
-		if ( $is_translation && $post_id == $post->ID) {
+		if ( $is_translation && $post_id == $post->ID ) {
 			_e( 'After saving the title and content, you will be able to edit the specific fields of the product.', 'tcp' );
 			return;
 		}
 		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
 		if ( $tcp_product_parent_id > 0 ) {
 			$create_grouped_relation = true;
+			$tcp_rel_type = isset( $_REQUEST['rel_type'] ) ? $_REQUEST['rel_type'] : 'GROUPED';
 		} else {
 			$create_grouped_relation = false;
+			$tcp_rel_type = tcp_get_the_product_type();
 			if ( $post_id > 0 )
 				$tcp_product_parent_id = RelEntities::getParent( $post_id );
-		}?>
-		<ul class="subsubsub">
-		<?php 
+		}
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		$count = RelEntities::count( $post_id );
-		if ( $count > 0 ) $count = ' (' . $count . ')';
-		else $count = '';
-		$product_type = tcp_get_the_product_type( $post_id );?>
-		<!--<li><a href="<?php echo $admin_path;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
-		<li>|</li>-->
-		<?php if ( $product_type != '' && $product_type != 'SIMPLE' ) :?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'assigned products', 'tcp' );?><?php echo $count;?></a></li>
+		?>
+		<ul class="subsubsub">
+			<?php $count = RelEntities::count( $post_id, 'PROD-PROD' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
+			<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>"><?php _e( 'create new assigned product', 'tcp' );?></a></li>
-		<?php endif;
-		$count = RelEntities::count( $post_id, 'PROD-PROD' );
-		if ( $count > 0 ) $count = ' (' . $count . ')';
-		else $count = '';?>
-		<?php if ( $product_type != '' && $product_type != 'SIMPLE' ) : ?>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<!--<li>|</li>
+			<li><a href="<?php echo $admin_path;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
+			-->
+		<?php
+		$product_type = tcp_get_the_product_type( $post_id );
+		if ( 'SIMPLE' == $product_type ) :
+			$parents = RelEntities::getParents( $post_id );
+			if ( is_array( $parents ) && count( $parents ) > 0 ) :
+				$parent = $parents[0]->id_from; ?>aaaa
+				<li>|</li>
+				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED;"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
+			<?php endif;
+		elseif ( 'GROUPED' == $product_type ) :
+			$count = RelEntities::count( $post_id );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
 			<li>|</li>
-		<?php endif;?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-PROD"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
-		<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
-		if ( $count > 0 ) $count = ' (' . $count . ')';
-		else $count = '';?>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'grouped products', 'tcp' );?><?php echo $count;?></a></li>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-POST"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
-		<?php if ( $tcp_product_parent_id > 0 ) :?>
-			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $tcp_product_parent_id;?>&rel_type=GROUPED"><?php _e( 'parent assigned products', 'tcp' );?> <?php echo $count;?></a></li>
-			<li>|</li>
-			<li><a href="post.php?action=edit&post=<?php echo $tcp_product_parent_id;?>"><?php printf( __( 'edit parent product (%s)', 'tcp' ), get_the_title( $tcp_product_parent_id ) );?></a></li>
-		<?php endif;?>
+			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'create new grouped product', 'tcp' );?></a></li>
+		<?php endif; ?>
+		<?php do_action( 'tcp_product_metabox_toolbar', $post_id );?>
 		<?php if ( tcp_is_downloadable( $post_id ) ) :?>
 			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>UploadFiles.php&post_id=<?php echo $post_id;?>"><?php echo __( 'file upload', 'tcp' ), $count;?></a></li>
 			<!--<li>|</li>
 			<li><a href="<?php echo $admin_path;?>FilesList.php&post_id=<?php echo $post_id;?>"><?php echo __( 'files', 'tcp' ), $count;?></a></li>-->
 		<?php endif;?>
-		<?php do_action( 'tcp_product_metabox_toolbar', $post_id );?>
 		</ul>
 		<?php if ( $create_grouped_relation ): ?>
-			<input type="hidden" name="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id;?>" />
+			<input type="hidden" name="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id; ?>" />
+			<input type="hidden" name="tcp_rel_type" value="<?php echo $tcp_rel_type; ?>" />
 		<?php endif;?>
 		<div class="form-wrap">
 			<?php wp_nonce_field( 'tcp_noncename', 'tcp_noncename' );?>
 			<table class="form-table"><tbody>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_type"><?php _e( 'Type', 'tcp' );?>:</label></th>
-				<td><select name="tcp_type" id="tcp_type">
-						<option value="SIMPLE" <?php selected( $product_type, 'SIMPLE' );?>><?php _e( 'Simple', 'tcp' );?></option>
-						<option value="GROUPED" <?php selected( $product_type, 'GROUPED' );?>><?php _e( 'Grouped', 'tcp' );?></option>
-					</select>
-				</td>
+				<td><?php tcp_html_select( 'tcp_type', tcp_get_product_types(), $product_type ); ?></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" type="text" style="width:12em" />&nbsp;<?php tcp_the_currency();?></td>
+				<td><input type="text" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_currency();?>
+				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
 			<tr valign="top">
@@ -126,7 +127,8 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" type="text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?></td>
+				<td><input type="text" min="0" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
+				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
 			<tr valign="top">
@@ -145,7 +147,8 @@ class ProductCustomFieldsMetabox {
 			<tr valign="top">
 				<th scope="row"><label for="tcp_hide_buy_button"><?php _e( 'Hide buy button', 'tcp' );?>:</label></th>
 				<?php $tcp_hide_buy_button = get_post_meta( $post_id, 'tcp_hide_buy_button', true );?>
-				<td><input type="checkbox" name="tcp_hide_buy_button" id="tcp_hide_buy_button" <?php checked( $tcp_hide_buy_button, true );?> /></td>
+				<td><input type="checkbox" name="tcp_hide_buy_button" id="tcp_hide_buy_button" <?php checked( $tcp_hide_buy_button, true );?> />
+				<p class="description"><?php _e( 'Allow to hide the buy button for this product', 'tcp' ); ?></p></td>
 			</tr>
 
 			<tr valign="top">
@@ -218,8 +221,9 @@ class ProductCustomFieldsMetabox {
 		$tcp_product_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
 		$create_grouped_relation = $tcp_product_parent_id > 0;
 		if ( $create_grouped_relation ) {
-			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id ) ) 
-				RelEntities::insert( $tcp_product_parent_id, $post_id );
+			$rel_type = isset( $_REQUEST['tcp_rel_type'] ) ? $_REQUEST['tcp_rel_type'] : 'GROUPED';
+			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id, $rel_type ) ) 
+				RelEntities::insert( $tcp_product_parent_id, $post_id, $rel_type );
 			$args = array( 'fields' => 'ids' );
 			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$PRODUCT_CATEGORY, array( 'fields' => 'ids' ) );
 			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$PRODUCT_CATEGORY );

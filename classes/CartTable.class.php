@@ -98,7 +98,7 @@ class TCP_CartTable {
 						$det .= '<a href="' . get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ) . '">' . $name . '</a>';
 					}
 				}
-
+				$det = apply_filters( 'tcp_cart_table_title_order_detail', $det, $order_detail->get_post_id() );
 				$det .= '</td>' . "\n";
 				$det .= '<td class="tcp_cart_price">' . tcp_format_the_price( $order_detail->get_price() );
 				if ( $order_detail->get_discount() > 0 ) 

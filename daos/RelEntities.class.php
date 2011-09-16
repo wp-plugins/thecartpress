@@ -25,38 +25,37 @@ class RelEntities {
 			`id_to`			bigint(20) unsigned NOT NULL,
 			`rel_type`		varchar(20)			NOT NULL,
    			`list_order`	int(4) unsigned		NOT NULL default 0,
-  			`units`			int(4) unsigned		NOT NULL default 0,
+  			`meta_value`	longtext			NOT NULL,
 			PRIMARY KEY (`id_to`,`id_from`,`rel_type`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
 		$wpdb->query( $sql );
 	}
 
-	static function insert( $id_from, $id_to, $rel_type = 'GROUPED', $list_order = 0, $units = 1 ) {
+	static function insert( $id_from, $id_to, $rel_type = 'GROUPED', $list_order = 0, $meta_value = '' ) {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_rel_entities', array(
 			'id_from'		=> $id_from,
 			'id_to'			=> $id_to,
 			'rel_type'		=> $rel_type,
 			'list_order'	=> $list_order,
-			'units'			=> $units,
-			),
-			array( '%d', '%d', '%s', '%d', '%d' )
+			'meta_value'	=> serialize( $meta_value ) ),
+			array( '%d', '%d', '%s', '%d', '%s' )
 		);
 	}
 
-	static function update( $id_from, $id_to, $rel_type = 'GROUPED', $list_order = 0, $units = 1 ) {
+	static function update( $id_from, $id_to, $rel_type = 'GROUPED', $list_order = 0, $meta_value = '' ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_rel_entities',
 			array(
 				'list_order'	=> $list_order,
-				'units'			=> $units,
+				'meta_value'	=> serialize( $meta_value ),
 			),
 			array(
 				'id_from'		=> $id_from,
 				'id_to'			=> $id_to,
 				'rel_type'		=> $rel_type,
 			),
-			array( '%d', '%d' ),
+			array( '%d', '%s' ),
 			array( '%d', '%d', '%s', )
 		);
 	}

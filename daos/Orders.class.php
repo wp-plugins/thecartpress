@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( 'OrdersDetails.class.php' );
@@ -55,7 +55,7 @@ class Orders {
 		  `shipping_city_id`		char(4)				NOT NULL DEFAULT \'\',
 		  `shipping_region`			varchar(100)		NOT NULL,
 		  `shipping_region_id`		char(2)				NOT NULL DEFAULT \'\',
-		  `shipping_postcode`		char(6)				NOT NULL,
+		  `shipping_postcode`		char(10)			NOT NULL,
  		  `shipping_country`		varchar(50)			NOT NULL,
 		  `shipping_country_id`		char(2)				NOT NULL,
 		  `shipping_telephone_1`	varchar(50)			NOT NULL,
@@ -70,7 +70,7 @@ class Orders {
 		  `billing_city_id`			char(4)				NOT NULL DEFAULT \'\',
 		  `billing_region`			varchar(100)		NOT NULL,
 		  `billing_region_id`		char(2)				NOT NULL DEFAULT \'\',
-		  `billing_postcode`		char(6)				NOT NULL,
+		  `billing_postcode`		char(10)			NOT NULL,
  		  `billing_country`			varchar(50)			NOT NULL,
 		  `billing_country_id`		char(2)				NOT NULL,
 		  `billing_telephone_1`		varchar(50)			NOT NULL,

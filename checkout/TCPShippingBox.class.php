@@ -370,7 +370,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 					<?php $this->showErrorMsg( 'shipping_fax' );?></li>
 
 					<li><label for="shipping_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_email" name="shipping_email" value="<?php echo $email;?>" size="15" maxlength="255" />
+					<input type="email" id="shipping_email" name="shipping_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 					<?php $this->showErrorMsg( 'shipping_email' );?></li>
 				</ul>
 			</div> <!-- new_shipping_area -->

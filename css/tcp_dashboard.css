@@ -114,6 +114,11 @@ span.tcp_file_options
 	text-align:center;
 }
 
+/*AssignedProductList*/
+th.tcp_meta_value {
+	width: 50%;
+}
+
 /*First time setup*/
 
 div.tcp_first_time_setup
@@ -129,7 +134,7 @@ div.tcp_first_time_setup h2
 	color: white;
 }
 
-//Settings
+/*Settings*/
 ul.tabs_section
 {
 
