@@ -520,7 +520,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					<?php endif;?>
 
 					<li><label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
+					<input type="email" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 					<?php $this->showErrorMsg( 'billing_email' );?></li>
 				</ul>
 			</div> <!-- new_billing_area -->

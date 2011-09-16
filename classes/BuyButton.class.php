@@ -32,7 +32,7 @@ class BuyButton {
 			$action = '';
 		}
 		if ( $post_id == 0 ) $post_id = tcp_get_default_id ( get_the_ID(), get_post_type( get_the_ID() ) );
-		$out  = '<div class="tcp_buy_button">' . "\n";
+		$out = '<div class="tcp_buy_button">' . "\n";
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( tcp_is_downloadable( $post_id ) &&  $shoppingCart->exists( $post_id ) ) {
 			$out .= '<div class="tcp_already_in_cart">' . "\n";
@@ -83,7 +83,6 @@ class BuyButton {
 			}
 			$out .= $tr_classes . '>' . "\n";
 			$out .= '<td class="tcp_buy_button_price">' . "\n";
-
 			$html = '<input type="hidden" name="tcp_option_1_id[]" id="tcp_option_1_id_' . $post_id . '" value="0" />' . "\n";
 			$html .= '<input type="hidden" name="tcp_option_2_id[]" id="tcp_option_2_id_' . $post_id . '" value="0" />' . "\n";
 			$html .= '<span class="tcp_unit_price">' . tcp_get_the_price_label( $post_id ) . '</span>';
@@ -134,7 +133,7 @@ class BuyButton {
 			$out .= '</tbody></table>' . "\n";
 			$out .= '<input type="hidden" value="" name="tcp_new_wish_list_item" id="tcp_new_wish_list_item" />';
 			$out .= '</form>' . "\n";
-		} else { // if ( tcp_get_the_product_type() == 'GROUPED' ) {
+		} elseif ( tcp_get_the_product_type() == 'GROUPED' ) {
 			$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 			$out .= '<script type="text/javascript">
 				function add_to_the_cart_' . $post_id . '(id_to) {
@@ -151,12 +150,14 @@ class BuyButton {
 			$out .=	'<form method="post" id="tcp_buy_button_form_' . $post_id . '" action="' . $action . '">' . "\n";
 			$out .= '<table class="tcp_buy_button"><tbody>' . "\n";
 			$out .= '<tr>';
+			
 			$out .= '<th>' . __('Name', 'tcp') . '</th>' . "\n";
 			$out .= '<th>' . __('Price', 'tcp') . '</th>' . "\n";
 			if ( ! $disable_shopping_cart ) {
 				$out .= '<th>' . __('Units', 'tcp') . '</th>' . "\n";
-			} else
-			$out .= '</tr>' . "\n";
+			} else {
+				$out .= '</tr>' . "\n";
+			}
 			$products = RelEntities::select( $post_id );
 			foreach( $products as $product ) {
 				$product_id = tcp_get_current_id( $product->id_to, get_post_type( $product->id_to ) );
@@ -166,6 +167,7 @@ class BuyButton {
 					$tax	= tcp_get_the_tax( $product_id );
 					$stock	= tcp_get_the_stock( $product_id );
 					$is_downloadable = tcp_is_downloadable( $product_id );
+					$href = get_permalink( tcp_get_current_id( $product_id, get_post_type( $product_id ) ) );
 					$out .= '<tr';
 					$classes = apply_filters( 'tcp_buy_button_get_product_classes', array(), $product_id );
 					if ( $stock_management && tcp_get_the_stock( $product_id ) == 0 ) $classes[] = 'tcp_out_of_stock';
@@ -184,10 +186,25 @@ class BuyButton {
 					//$out .= '<input type="hidden" name="tcp_unit_price[]" id="tcp_unit_price" value="' . tcp_get_the_price_without_tax( $product_id ) . '" />' . "\n";
 					//$out .= '<input type="hidden" name="tcp_tax[]" id="tcp_tax" value="' . tcp_get_the_tax( $product_id ) . '" />' . "\n";
 					//$out .= '<input type="hidden" name="tcp_unit_weight[]" id="tcp_unit_weight" value="' . tcp_get_the_weight( $product_id ) . '" />' . "\n";
+
+					$out .= '<td class="tcp_buy_button_thumbnail">';
+					$thumbnail = '<div id="tcp_thumbnail_' . $product_id . '" class="tcp_thumbnail">' . get_the_post_thumbnail( $product_id, array( 32, 32 ) ) . '</div>';
+					if ( tcp_is_visible( $product_id ) ) {
+						$out .= '<a href="' . $href . '">' . $thumbnail . '</a>';
+					} else {
+						$out .= $thumbnail;
+					}
+					$out .= '</td>';
+
 					$out .= '<td class="tcp_buy_button_name">';
-					if ( $is_downloadable )
-						$out .= MP3Player::showPlayer( $product->id_to, MP3Player::$SMALL, false );
-					$out .= get_the_title( $product_id );
+					if ( $is_downloadable )	$out .= MP3Player::showPlayer( $product->id_to, MP3Player::$SMALL, false );
+						
+					$title = get_the_title( $product_id );
+					if ( tcp_is_visible( $product_id ) ) {
+						$out .= '<a href="' . $href . '">' . $title . '</a>';
+					} else {
+						$out .= $title;
+					}
 					$out .= '</td>' . "\n";
 					$out .= '<td class="tcp_buy_button_price">';
 					$html = '<span class="tcp_price">' . tcp_get_the_price_label( $product_id ) . '</span>';
@@ -245,6 +262,8 @@ class BuyButton {
 			}
 			$out .= '<input type="hidden" value="" name="tcp_new_wish_list_item" id="tcp_new_wish_list_item" />';
 			$out .= '</form>' . "\n";
+		} else {
+			$out = apply_filters( 'tcp_buy_button_unkonw_product_type', $out, $post_id );
 		}
 		$out .= '</div>' . "\n";
 		if ( $echo )

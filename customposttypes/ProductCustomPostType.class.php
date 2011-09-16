@@ -210,11 +210,8 @@ class ProductCustomPostType {
 				echo $titles, '&nbsp;';
 			/*} elseif ( 'type' == $column_name ) {
 				$product_type = tcp_get_the_product_type( $post->ID );
-				if ( $product_type == 'SIMPLE' ) {
-					echo __( 'Simple', 'tcp' );
-				} else { //if ( $product_type == 'GROUPED' ) {
-					_e( 'Grouped', 'tcp' );
-				}*/
+				$types = tcp_get_product_types();
+				echo $types[$product_type];*/
 			} elseif ( 'sku' == $column_name ) {
 				$sku = tcp_get_the_sku( $post->ID );
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
@@ -224,11 +221,8 @@ class ProductCustomPostType {
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
 				echo '<br/>';
 				$product_type = tcp_get_the_product_type( $post->ID );
-				if ( $product_type == 'SIMPLE' ) {
-					echo __( 'Simple', 'tcp' );
-				} else { //if ( $product_type == 'GROUPED' ) {
-					_e( 'Grouped', 'tcp' );
-				}
+				$types = tcp_get_product_types();
+				echo $types[$product_type];
 			} elseif ( 'stok' == $column_name ) {
 				$stock = tcp_get_the_stock(  $post->ID );
 				if ( $stock == -1 ) $stock = __( 'N/A', 'tcp' );

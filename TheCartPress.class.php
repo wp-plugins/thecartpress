@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.1
+Version: 1.1.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -155,6 +155,7 @@ class TheCartPress {
 			if ( is_array( $post_id ) ) {
 				for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 					$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
+
 					if ( $count > 0 ) {
 						$post_id		= isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
 						$post_id		= tcp_get_default_id( $post_id, get_post_type( $post_id ) );
@@ -575,7 +576,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_submenu_page( $base, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', dirname( __FILE__ ) . '/admin/TaxesList.php' );
 			add_submenu_page( $base, __( 'Taxes Rates', 'tcp' ), __( 'Taxes Rates', 'tcp' ), 'tcp_edit_taxes', dirname( __FILE__ ) . '/admin/TaxesRates.php' );
 			add_submenu_page( $base, __( 'Payment and Shipping Methods', 'tcp' ), __( 'Payment and Shipping methods', 'tcp' ), 'tcp_edit_plugins', dirname( __FILE__ ) . '/admin/PluginsList.php' );
-			add_submenu_page( $base, __( 'Notices', 'tcp' ), __( 'Notices', 'tcp' ), 'tcp_edit_orders', 'edit.php?post_type=tcp_template' );
+			add_submenu_page( $base, __( 'Notices, eMails', 'tcp' ), __( 'Notices, eMails', 'tcp' ), 'tcp_edit_orders', 'edit.php?post_type=tcp_template' );
 			add_submenu_page( $base, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_addresses', dirname( __FILE__ ) . '/admin/AddressesList.php' );
 			$hide_downloadable_menu = isset( $this->settings['hide_downloadable_menu'] ) ? $this->settings['hide_downloadable_menu'] : false;
 			if ( ! $hide_downloadable_menu ) add_submenu_page( $base, __( 'Downloadable Products', 'tcp' ), __( 'Downloadable Products', 'tcp' ), 'tcp_downloadable_products', dirname( __FILE__ ) . '/admin/DownloadableList.php' );
@@ -686,7 +687,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				$thumbnail_id	= get_post_thumbnail_id( $post->ID );
 				$attr			= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured' );
 			    //$image_attributes = array{0 => url, 1 => width, 2 => height};
-				$image_attributes	= wp_get_attachment_image_src( $thumbnail_id, $image_size );
+				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, $image_size );
 				if ( strlen( $image_link ) > 0 ) {
 					if ( $image_link == 'file' ) {
 						$href = $image_attributes[0];
@@ -800,6 +801,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		OrdersDetails::createTable();
 		require_once( dirname( __FILE__ ) . '/daos/OrdersCosts.class.php' );
 		OrdersCosts::createTable();
+		require_once( dirname( __FILE__ ) . '/daos/OrdersMeta.class.php' );
+		OrdersMeta::createTable();
 		require_once( dirname( __FILE__ ) . '/daos/Currencies.class.php' );
 		Currencies::createTable();
 		Currencies::initData();
@@ -1055,6 +1058,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		require_once( dirname( __FILE__ ) . '/templates/tcp_custom_fields_template.php' );
 		require_once( dirname( __FILE__ ) . '/templates/tcp_custom_templates.php' );
 		require_once( dirname( __FILE__ ) . '/templates/tcp_states_template.php' );
+		require_once( dirname( __FILE__ ) . '/templates/tcp_ordersmeta_template.php' );
 		require_once( dirname( __FILE__ ) . '/checkout/tcp_checkout_template.php' );
 
 		if ( function_exists( 'load_plugin_textdomain' ) ) load_plugin_textdomain( 'tcp', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -1256,6 +1260,30 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					$wpdb->query( $sql );
 				}
 				update_option( 'tcp_version', 110 );
+				update_option( 'tcp_version', 111 );
+				//
+				//TODO Deprecated 2.1
+				//
+			}
+			if ( $version < 112 ) {
+				global $wpdb;
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+				$wpdb->query( $sql );
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+				$wpdb->query( $sql );
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_rel_entities WHERE field = \'units\'';
+				if ( $wpdb->get_row( $sql ) ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_rel_entities DROP COLUMN `units`;';
+					$wpdb->query( $sql );
+				}
+				$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_rel_entities WHERE field = \'meta_value\'';
+				if ( ! $wpdb->get_row( $sql ) ) {
+					$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_rel_entities ADD COLUMN `meta_value` longtext NOT NULL AFTER `list_order`;';
+					$wpdb->query( $sql );
+				}
+				require_once( dirname( __FILE__ ) . '/daos/OrdersMeta.class.php' );
+				OrdersMeta::createTable();
+				update_option( 'tcp_version', 112 );
 				//
 				//TODO Deprecated 2.1
 				//

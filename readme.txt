@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress, html5
 Requires at least: 3.1
 Tested up to: 3.2
-Stable Tag: 1.1.1
+Stable Tag: 1.1.2
 
 Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -64,7 +64,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 
 = Multilingual =
 
-* Compatible with WordPress Multi Lingual Plugin: WPML and other WordPress Plugins
+* Compatible with WordPress Multi Lingual Plugins: WPML and other WordPress Plugins
 
 = Checkout Offering =
 
@@ -145,7 +145,8 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 This section describes how to install the plugin and get it working.
 
 1. Upload TheCartpress E-commerce plugin to the '/wp-content/plugins/' directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Re-save permalink settings
 
 == Frequently Asked Questions ==
 
@@ -160,6 +161,10 @@ This plugin is released under a GPL license.
 == Screenshots ==
 
 == Changelog ==
+= 1.1.2 =
+* Added more useful hooks for plugin development
+* Support for any product type
+* Thumbnail support on admin panels
 
 = 1.1.1 =
 * Allow to add multilingual plugins

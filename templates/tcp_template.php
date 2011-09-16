@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 //Multilingual support: WPML or Qtranslate (or by any other plugin)
@@ -44,7 +44,7 @@ if ( strlen( $multilingual_template_path ) > 0 ) {
 //End Multilingual support
 
 //Returns the title of a product (with/without options)
-function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $html = true ) {
+function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $html = true, $show_parent = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$title = '';
 	if ( $html ) $title .= '<span class="tcp_nested_title">';
@@ -64,7 +64,7 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 		$title .= get_the_title( $option_2_id );
 		if ( $html ) $title .= '</span>';
 	}
-	if ( ! tcp_is_visible( $post_id ) ) {
+	if ( $show_parent && ! tcp_is_visible( $post_id ) ) {
 		$post_id = tcp_get_the_parent( $post_id );
 		$title = get_the_title( $post_id ) . ' - ' . $title;
 	}
@@ -126,6 +126,18 @@ function tcp_get_decimal_currency() {
 	$decimal_currency = isset( $thecartpress->settings['decimal_currency'] ) ? $thecartpress->settings['decimal_currency'] : '2';
 	$decimal_currency = apply_filters( 'tcp_get_decimal_currency', $decimal_currency );
 	return $decimal_currency;
+}
+
+function tcp_get_number_format_example( $number = 19.99, $see_eg = true, $echo = false ) {
+	$out = '';
+	if ( $see_eg ) $out .= 'e.g. ';
+	$out .= tcp_number_format( $number );
+	if ( $echo ) echo $out;
+	else return $out;
+}
+
+function tcp_number_format_example( $number = 19.99, $see_eg = true ) {
+	tcp_get_number_format_example( $number, $see_eg, true );
 }
 
 function tcp_the_unit_weight( $echo = true ) {
@@ -240,11 +252,12 @@ function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
  */
 function tcp_get_the_price_label( $post_id = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$type = tcp_get_the_meta( 'tcp_type', $post_id );
+	//$type = tcp_get_the_meta( 'tcp_type', $post_id );
+	$type = tcp_get_the_product_type( $post_id );
 	if ( $type == 'SIMPLE' ) {
 		$price = tcp_get_the_price_to_show( $post_id );
 		$label = tcp_format_the_price( $price );
-	} else { //GROUPED
+	} else if ( $type == 'GROUPED' ) {
 		$min_max = tcp_get_min_max_price( $post_id );
 		if ( is_array( $min_max ) ) {
 			$min = $min_max[0];
@@ -257,6 +270,8 @@ function tcp_get_the_price_label( $post_id = 0 ) {
 		} else {
 			$label = '';
 		}
+	} else {
+		$label = apply_filters( 'tcp_get_the_price_label_unkonw_product_type', '', $post_id );
 	}
 	$label = apply_filters( 'tcp_get_the_price_label', $label, $post_id );
 	return $label;
@@ -304,7 +319,7 @@ function tcp_get_min_price( $post_id = 0 ) {
 }
 
 /**
- * Returns the min price of a grouped product
+ * Returns the max price of a grouped product
  * since 1.1.0
  */
 function tcp_get_max_price( $post_id = 0 ) {
@@ -316,28 +331,6 @@ function tcp_get_max_price( $post_id = 0 ) {
 		return 0;
 	}
 }
-
-/**
- * Calculates the tax and returns the price with tax
- * since 1.0.9
- *
-function tcp_get_the_price_with_tax( $post_id, $price = false ) {
-	if ( $price === false ) $price = tcp_get_the_price( $post_id );
-	if ( tcp_is_display_prices_with_taxes() ) {
-		if ( tcp_is_prices_include_tax() ) {
-			return $price;
-		} else { //add tax from price
-			$tax = tcp_get_the_tax( $post_id );
-			$amount = $price * $tax / 100;
-			return $price + $amount;
-		}
-	} elseif ( ! tcp_is_prices_include_tax() ) {
-		return $price;
-	} else { //remove tax from price
-		$tax = tcp_get_the_tax( $post_id );
-		return $price / ( 1 + $tax / 100 );
-	}
-}*/
 
 /**
  * Returns the price without tax
@@ -353,17 +346,6 @@ function tcp_get_the_price_without_tax( $post_id, $price = false ) {
 		return $price;
 	}
 }
-
-/*
-function tcp_get_the_tax_amount( $post_id, $price = false ) {
-	if ( $price === false ) $price = tcp_get_the_price( $post_id );
-	$tax = tcp_get_the_tax( $post_id );
-	if ( tcp_is_prices_include_tax() ) {
-		return $price * $tax / ( 100 + $tax );
-	} else {
-		return $price * $tax / 100;
-	}
-}*/
 
 /**
  * Returns the tax applied to a product
@@ -434,6 +416,9 @@ function tcp_posted_by() {
 		esc_html( get_the_author() )
 	);
 }
+//
+//End for themes
+//
 
 /**
  * Returns the default country to calculate tax
@@ -590,13 +575,15 @@ function display_zero_tax_subtotal() {
 }
 
 //TODO Deprecated 1.1
-function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
-	return '';
-}
+//function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
+//	return '';
+//}
 //TODO
 
 function tcp_get_the_product_type( $post_id = 0 ) {
-	return tcp_get_the_meta( 'tcp_type', $post_id );
+	$type = tcp_get_the_meta( 'tcp_type', $post_id );
+	if ( $type == '' ) $type = 'SIMPLE';
+	return $type;
 }
 
 function tcp_get_the_weight( $post_id = 0 ) {
@@ -762,7 +749,9 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 	return $meta_value;
 }
 
+//
 //Saleable_post_type
+//
 function tcp_get_saleable_post_types() {
 	$saleable_post_types = array( 'tcp_product' );
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
@@ -848,6 +837,20 @@ function tcp_get_completed_order_status() {
 }
 //
 // End Order status functions templates
+//
+
+//
+//Product types
+//
+function tcp_get_product_types( $no_one = false ) {
+	$types = array();
+	if ( $no_one ) 	$types['']	= __( 'No one', 'tcp' );
+	$types['SIMPLE']	= __( 'Simple', 'tcp' );
+	$types['GROUPED']	= __( 'Grouped', 'tcp' );
+	return apply_filters( 'tcp_get_product_types', $types );
+}
+//
+//End product types
 //
 
 //

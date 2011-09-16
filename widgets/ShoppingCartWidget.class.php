@@ -57,7 +57,7 @@ class ShoppingCartWidget extends WP_Widget {
 				<input type="hidden" name="tcp_tax" id="tcp_tax" value="<?php echo $item->getTax();?>" />
 				<input type="hidden" name="tcp_unit_weight" id="tcp_unit_weight" value="<?php echo $item->getWeight();?>" />
 				<ul class="tcp_shopping_cart_widget">
-					<li class="tcp_cart_widget_item"><span class="tcp_name"><?php echo $this->getProductTitle( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
+					<li class="tcp_cart_widget_item"><span class="tcp_name"><?php echo $this->get_product_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );?></span></li>
 					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' );?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() );?></span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li>
@@ -179,11 +179,12 @@ class ShoppingCartWidget extends WP_Widget {
 		<?php
 	}
 
-	private function getProductTitle( $post_id, $option_1_id, $option_2_id ) {
+	private function get_product_title( $post_id, $option_1_id, $option_2_id ) {
 		$post_id = tcp_get_current_id( $post_id, get_post_type( $post_id ) );
 		$title = tcp_get_the_title( $post_id, $option_1_id, $option_2_id );
 		if ( ! tcp_is_visible( $post_id ) ) $post_id = tcp_get_the_parent( $post_id );
 		$title = '<a href="' . get_permalink( $post_id ) . '">' . $title . '</a>';
+		$title = apply_filters( 'tcp_shopping_cart_widget_get_product_title', $title, $post_id );//, $option_1_id, $option_2_id
 		return $title;
 	}
 }
