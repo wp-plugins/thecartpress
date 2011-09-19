@@ -60,7 +60,7 @@ class ProductCustomFieldsMetabox {
 			<?php $count = RelEntities::count( $post_id, 'PROD-PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=tcp_product&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>

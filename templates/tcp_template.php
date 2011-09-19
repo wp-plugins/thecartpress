@@ -575,14 +575,15 @@ function display_zero_tax_subtotal() {
 }
 
 //TODO Deprecated 1.1
-//function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
-//	return '';
-//}
+function tcp_the_tax_label( $before = '', $after = '', $echo = true ) {
+	trigger_error( 'tcp_the_tax_label is deprecated since 1.1 version' );
+	return '';
+}
 //TODO
 
 function tcp_get_the_product_type( $post_id = 0 ) {
 	$type = tcp_get_the_meta( 'tcp_type', $post_id );
-	if ( $type == '' ) $type = 'SIMPLE';
+	if ( $type == '' ) $type = '';
 	return $type;
 }
 
@@ -727,6 +728,16 @@ function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
 	}
 	return $image;
 }
+
+/*function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = array( 32, 32 ) ) {
+	$id = $post_id;
+	if ( $option_2_id > 0 ) {
+		$id = $option_2_id;
+	} elseif ( $option_1_id > 0 ) {
+		$id = $option_1_id;
+	}
+	return get_the_post_thumbnail( $id, $size );
+}*/
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
 	$meta_value = tcp_get_the_meta( $meta_key );

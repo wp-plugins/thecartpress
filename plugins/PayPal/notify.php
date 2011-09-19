@@ -17,8 +17,7 @@
  */
 
 $custom = isset( $_REQUEST['custom'] ) ? $_REQUEST['custom'] : '0-1-CANCELLED-TCPPayPal-0';//Order_id-test_mode-new_status-class-instance
-
-$custom = split( '-', $custom );
+$custom = explode( '-', $custom );
 $order_id = $custom[0];
 $test_mode = $custom[1] == '1';
 $new_status = $custom[2];
