@@ -139,6 +139,8 @@ class ProductCustomPostType {
 			}
 			add_rewrite_rule( $regex, $redirect, 'top' );
 		}
+		//$rewrite = $wp_rewrite->wp_rewrite_rules();
+		//var_dump($rewrite);
 	}
 
 	/*function quickEditCustomBox( $column_name, $post_type ) {
@@ -203,7 +205,6 @@ class ProductCustomPostType {
 				$titles = '';
 				if ( is_array( $post_ids ) && count( $post_ids ) > 0 ) {
 					foreach( $post_ids as $post_id ) {
-						if ( strlen( $titles) > 0 ) $titles .= ', ';
 						$titles .= get_the_title( $post_id->id_from );
 					}
 				}
@@ -222,11 +223,35 @@ class ProductCustomPostType {
 				echo '<br/>';
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
-				echo $types[$product_type];
+				if ( isset( $types[$product_type] ) ) echo $types[$product_type];
 			} elseif ( 'stok' == $column_name ) {
 				$stock = tcp_get_the_stock(  $post->ID );
-				if ( $stock == -1 ) $stock = __( 'N/A', 'tcp' );
-				elseif ( $stock < 10 ) $stock = sprintf( '<span style="color: red">%s</span>', $stock );
+				if ( $stock == -1 ) {
+					$options_1 = RelEntities::select( $post->ID, 'OPTIONS' );
+					if ( is_array( $options_1 ) && count( $options_1 ) > 0 ) {
+						$stock = '';
+						foreach( $options_1 as $option_1 ) {
+							$options_2 = RelEntities::select( $option_1->id_to, 'OPTIONS' );
+							if ( is_array( $options_2 ) && count( $options_2 ) > 0 ) {
+								foreach( $options_2 as $option_2 ) {
+									$option_stock = tcp_get_the_stock( $option_2->id_to );
+									if ( $option_stock != -1 ) {
+										$stock .= sprintf( '%d for %s, ', $option_stock, get_the_title( $option_1->id_to ) . ' ' . get_the_title( $option_2->id_to ) );
+									}
+								}
+							} else {
+								$option_stock = tcp_get_the_stock( $option_1->id_to );
+								if ( $option_stock != -1 ) {
+									$stock .= sprintf( '%d for %s, ', $option_stock, get_the_title( $option_1->id_to ) );
+								}
+							}
+						}
+						if ( $stock == '' ) $stock = __( 'N/A', 'tcp' );
+						else $stock = substr( $stock, 0, strlen( $stock ) -2 );
+					} else {
+						$stock = __( 'N/A', 'tcp' );
+					}
+				} else if ( $stock < 10 ) $stock = sprintf( '<span style="color: red">%s</span>', $stock );
 				echo $stock;
 			}
 		}
