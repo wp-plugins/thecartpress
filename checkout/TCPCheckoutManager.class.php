@@ -47,6 +47,17 @@ class TCPCheckoutManager {
 	}
 	
 	function show() {
+		global $thecartpress;
+		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
+		if ( $stock_management ) {
+			$shoppingCart = TheCartPress::getShoppingCart();
+			if ( ! $shoppingCart->isThereStock() ) {
+				require_once( dirname( dirname( __FILE__ ) ) . '/shortcodes/ShoppingCartPage.class.php' );
+				$shoppingCartPage = new TCP_ShoppingCartPage();
+				return $shoppingCartPage->show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products.', 'tcp' ) );
+			}
+
+		}
 		$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 0;
 		$box = $this->get_box( $step );
 		if ( isset( $_REQUEST['tcp_continue'] ) ) {
@@ -426,7 +437,7 @@ class TCPCheckoutManager {
 			$ordersDetails['price']				= $item->getUnitPrice();
 			//$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 			$ordersDetails['original_price']	= $item->getUnitPrice();
-			$ordersDetails['tax']				= $item->getTax();
+			$ordersDetails['tax']				= $tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax();
 			$ordersDetails['qty_ordered']		= $item->getCount();
 			$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
