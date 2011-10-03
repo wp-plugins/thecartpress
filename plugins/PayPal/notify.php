@@ -35,7 +35,10 @@ $cancelled_status = tcp_get_cancelled_order_status();
 $completed_status = tcp_get_completed_order_status();
 
 if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
-	Orders::editStatus( $order_id, $cancelled_status, $transaction_id, 'Cancel PayPal.' );
+	$error = 'Cancel PayPal';
+	Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $error );
+	require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+	ActiveCheckout::sendMails( $order_id, true, $error );
 	$redirect = add_query_arg( 'tcp_checkout', 'ko', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>
 <html><head><title>Canceling Payment</title>
@@ -49,51 +52,58 @@ window.location="<?php echo $redirect;?>";
 <p>Canceling your order. Please wait...</p>
 </body></html>
 <?php
-}
-else {
+} else {
 	$data = tcp_get_payment_plugin_data( $classname, $instance );
 	$p = new paypal_class( $test_mode, $data['logging'] );
-
 	if ( $p->validate_ipn() ) {
-		$order_row=Orders::getOrderByTransactionId( $classname, $transaction_id );
-
-		if ( $p->ipn_data['business'] == $data['business']	 &&		//check it is right business	and
-				 !isset($order_row) ) {								                //check transaction id --should not be in database already
-			switch ($p->ipn_data['payment_status']) {
+		//$order_row = Orders::getOrderByTransactionId( $classname, $transaction_id );
+		if ( $p->ipn_data['business'] == $data['business'] ) {//check it is right business
+			//&& ! isset( $order_row ) ) { //and check transaction id --should not be in database already
+			switch ( $p->ipn_data['payment_status'] ) {
 				case 'Completed':
 				case 'Canceled_Reversal':
-				case 'Processed':									 //should check price, but with profile options, we can't know it
-					$comment = 'mc_gross='.$p->ipn_data['mc_gross'].' '.$p->ipn_data['mc_currency'];
-					$comment .= ', mc_shipping='.$p->ipn_data['mc_shipping'].', tax='.$p->ipn_data['tax'];
-					$comment .= "\n". $p->ipn_data['receipt_id']."\n". $p->ipn_data['memo'];
+				case 'Processed': //should check price, but with profile options, we can't know it
+					$comment = 'mc_gross=' . $p->ipn_data['mc_gross'] . ' ' . $p->ipn_data['mc_currency'];
+					$comment .= ', mc_shipping=' . $p->ipn_data['mc_shipping'] . ', tax=' . $p->ipn_data['tax'];
+					$comment .= "\n" . $p->ipn_data['receipt_id'] . "\n" . $p->ipn_data['memo'];
 					if ( Orders::isDownloadable( $order_id ) )
 						Orders::editStatus( $order_id, $completed_status, $transaction_id, $comment );
 					else
 						Orders::editStatus( $order_id, $new_status, $transaction_id, $comment );
+					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+					ActiveCheckout::sendMails( $order_id );
 					break;
 				case 'Refunded':
 				case 'Reversed':
-					Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $p->ipn_data['payment_status']. ': ' . $p->ipn_data['reason_code'] );
+					$error = $p->ipn_data['payment_status']. ': ' . $p->ipn_data['reason_code'];
+					Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $error );
+					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+					ActiveCheckout::sendMails( $order_id, true, $error );
 					break;
 				case 'Expired':
 				case 'Failed':
 					Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $transaction_id, $p->ipn_data['payment_status'] );
+					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+					ActiveCheckout::sendMails( $order_id );
 					break;
 				case 'Pending':
 					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, $transaction_id, $p->ipn_data['pending_reason'] );
+					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+					ActiveCheckout::sendMails( $order_id );
 					break;
 				case 'Denied':
 				case 'Voided':
-					Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $p->ipn_data['payment_status'] );
+					$error = $p->ipn_data['payment_status'];
+					Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $error );
+					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+					ActiveCheckout::sendMails( $order_id, true, $error );
 					break;
 				default :
 					break;
 			}
 		}
-	}
-	else {
+	} else {
 	 //save for further investigation?
 	}
 }
-
 ?>

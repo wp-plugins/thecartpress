@@ -293,7 +293,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					<br />
 					<select id="selected_billing_id" name="selected_billing_id">
 					<?php foreach( $addresses as $address ) :?>
-						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->name );?></option>
+						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->street . ', ' . $address->city );?></option>
 					<?php endforeach;?>
 					</select>
 					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' );?>

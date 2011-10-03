@@ -2,58 +2,132 @@
  Dashboard
 */
 
-div#tcp_orders_resume,
+
+/* gral tcp boxes */
 div#tcp_orders_resume h3,
-div#tcp_orders_resume a
-{
-	background: #5e6b7c;
-	color: rgb(255, 255, 255);
-	border-bottom-width: 0;
+div#tcp_sales_chart h3 {
+	color: #5e6b7c;
+	font-weight:bold;
+}
+#tcp_rss_widget h3,
+#tcp_orders_resume h3,
+#tcp_sales_chart h3 {
+	color: #5e6b7c;
+	font-weight:bold;
 }
 
-div#tcp_orders_resume
-{
-	border-color: #5e6b7c;
+
+#tcp_rss_widget .inside ul,
+#tcp_orders_resume .table_content {
+	background-image:url(/wp-content/plugins/thecartpress/images/tcp_icon.png);
+	background-repeat:no-repeat;
+	background-position: right top;	
+	
 }
 
-div#tcp_orders_resume h3
-{
-	text-shadow: 0 1px 0 rgb(0,0,0);
-	font-weight: bold;
+/* Latest Orders*/
+.table_last_orders  {
+}
+#tcp_orders_resume .table_last_orders h4 {
+	font-weight:bold;
+	border-radius: 3px;
+	line-height:2em;
+	color: #5e6b7c;
+	text-shadow: 0 1px 0 #FFFFFF;
+	padding 0 0 0 .625em;
+	font-family: sans-serif;
+}
+.last_orders {
+	border-collapse: separate;
+	border-spacing: 0px;
+	border:1px solid #dfdfdf;
+	border-bottom: 0;
 }
 
-div#tcp_orders_resume div.inside
-{
-	padding: .5em;
+.last_orders td, .last_orders th  {
+	text-align:left;
+	padding:0.325em;
+	border-bottom: 1px solid #dfdfdf;
+	border-top:1px solid #fff;
+	border-left:0;
+	border-right:0;
+	font-size:.9em;
+}
+.last_orders  .tcp_alternate td {
+	background-color:#FFF;
+}
+.last_orders td  {
+	color:#777;
+	background-color:transparent;
+}
+.last_orders th  {
+	text-shadow: 0 1px 0 #FFFFFF;
+}
+.tcp_link_to_tcp {
+	font-size:0.9em;
+	color:#999;
 }
 
-div#tcp_orders_resume a.tcp_link_to_tcp
+/* sales chart */
+#tcp_sales_chart .inside {
+	padding:0px;
+}
+#tcp_sales_chart div.inside {
+	margin:0px;
+}
+#tcp_sales_chart .dashboard-widget-control-form {
+	padding:10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*div#tcp_orders_resume a.tcp_link_to_tcp
 {
 	font-weight: bold;
 	text-decoration: none;
 }
+*/
 
+div#tcp_orders_resume {
+	line-height:1.325em;	
+}
 div#tcp_orders_resume a.tcp_link_to_tcp:hover
 {
 	text-decoration: underline;
 }
 
 div#tcp_orders_resume td.tcp_status_COMPLETED a {
-	color: #54ff42;
+	color: green;
 	font-weight: bold;
 }
 
 div#tcp_orders_resume td.tcp_status_PENDING a {
-	color: #ffb497;
+	color: #f90;
+	font-weight: bold;
+}
+
+div#tcp_orders_resume td.tcp_status_PROCESSING a {
+	color: red;
 	font-weight: bold;
 }
 
 div#tcp_orders_resume td.tcp_status_CANCELLED a,
 div#tcp_orders_resume td.tcp_status_SUSPENDED a {
-	color: #ffa0a0;
-	font-weight: bold;
 }
 
+div#tcp_orders_resume .table_content td a:hover {
+	text-decoration:underline;
+}
 /*
 Plugins list
 */
@@ -64,10 +138,9 @@ Plugins list
 	height: 69px;
 }*/
 
-table.plugins tr#thecartpress td.plugin-title
-{
-	background: url('../images/tcp_logo_32.png') no-repeat;
-	padding-left: 35px;
+table.plugins tr#thecartpress td.plugin-title {
+   background: url("../images/tcp_icon.png") no-repeat scroll 0 4px transparent;
+   padding-left: 44px;
 }
 
 /*table.plugins tr#thecartpress td.plugin-title strong,
@@ -123,15 +196,11 @@ th.tcp_meta_value {
 
 div.tcp_first_time_setup
 {
-	background: url('../images/tcp_logo.png') no-repeat top left #5e6b7c;
-	border: 0px;
-	height: 68px;
-}
-
-div.tcp_first_time_setup h2
-{
-	padding-left: 4em;
-	color: white;
+	background: url('../images/tcp_icon.png') no-repeat top left;
+    float: left;
+    height: 48px;
+    margin: 7px 8px 0 0;
+    width: 48px;
 }
 
 /*Settings*/
@@ -156,3 +225,4 @@ ul.tabs_section li a
 {
 	font-weight: bold;
 }
+

@@ -83,7 +83,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			} else {
 				$title_tag = '';
 				$title_end_tag = '';
-			}?>
+			} ?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">
@@ -162,9 +162,9 @@ class CustomPostTypeListWidget extends WP_Widget {
 		//custom areas. Usefull to insert other template tag from WordPress or anothers plugins 
 		$see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
 		$see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
-		$see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
-		?>
-	<table class="tcp_products_list"><?php
+		$see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false; ?>
+	<table class="tcp_products_list">
+	<tr class="tcp_first-row"><?php
 		if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 			$title_tag = '<' . $instance['title_tag'] . ' class="entry-title">';
 			$title_end_tag = '</' . $instance['title_tag'] . '>';
@@ -185,9 +185,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<?php $column--;?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( $see_title ) : ?>
-				<div class="entry-title">
 					<?php echo $title_tag;?><a href="<?php the_permalink( );?>" border="0"><?php the_title(); ?></a><?php echo $title_end_tag;?>
-				</div>
 				<?php endif;?>
 
 				<?php if ( $see_posted_on ) : ?>
@@ -257,7 +255,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 					<div class="entry-taxonomies">
 						<span class="tcp_taxonomies">
 						<?php
-						$taxonomies = get_object_taxonomies( get_post_type(), 'objects' );
+						$taxonomies = get_object_taxonomies( get_post_type( array( 'show_in_nav_menus' => true ) ), 'objects' );
 						foreach( $taxonomies as $id => $taxonomy ) :
 							$terms_list = get_the_term_list( 0, $id, '', ', ' );
 							if ( strlen( $terms_list ) > 0 ) : ?>
@@ -339,26 +337,26 @@ class CustomPostTypeListWidget extends WP_Widget {
 			'see_excerpt'	=> false,
 			'see_posted_on'	=> false,
 			'see_taxonomies'=> false,
-			'see_meta_utilities'	=> false,
+			'see_meta_utilities' => false,
 			'see_price'		=> true,
 			'see_buy_button'=> false,
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		$see_title		= isset( $instance['see_title'] ) ? $instance['see_title'] : false;
-		$title_tag		= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
-		$order_type		= isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
-		$order_desc		= isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
-		$see_image		= isset( $instance['see_image'] ) ? $instance['see_image'] : false;
-		$image_size		= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
-		$see_content	= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
-		$see_excerpt	= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : false;
-		$see_author		= isset( $instance['see_author'] ) ? $instance['see_author'] : false;
-		$see_posted_on	= isset( $instance['see_posted_on'] ) ? $instance['see_posted_on'] : false;
-		$see_taxonomies	= isset( $instance['see_taxonomies'] ) ? $instance['see_taxonomies'] : false;
+		$see_title			= isset( $instance['see_title'] ) ? $instance['see_title'] : false;
+		$title_tag			= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
+		$order_type			= isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
+		$order_desc			= isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
+		$see_image			= isset( $instance['see_image'] ) ? $instance['see_image'] : false;
+		$image_size			= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
+		$see_content		= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
+		$see_excerpt		= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : false;
+		$see_author			= isset( $instance['see_author'] ) ? $instance['see_author'] : false;
+		$see_posted_on		= isset( $instance['see_posted_on'] ) ? $instance['see_posted_on'] : false;
+		$see_taxonomies		= isset( $instance['see_taxonomies'] ) ? $instance['see_taxonomies'] : false;
 		$see_meta_utilities	= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
-		$see_price		= isset( $instance['see_price'] ) ? $instance['see_price'] : false;
-		$see_buy_button	= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
-		$use_taxonomy 	= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
+		$see_price			= isset( $instance['see_price'] ) ? $instance['see_price'] : false;
+		$see_buy_button		= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
+		$use_taxonomy 		= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
 		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
 		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
 		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
@@ -393,9 +391,9 @@ class CustomPostTypeListWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ) : 
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : 
 				if ( $post_type != 'tcp_product_option' ) : ?>
-				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+				<option value="<?php echo $post_type->name;?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name; ?></option>
 				<?php endif;?>
 			<?php endforeach; ?>
 			</select>

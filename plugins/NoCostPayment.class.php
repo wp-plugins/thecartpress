@@ -16,7 +16,6 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class NoCostPayment extends TCP_Plugin {
 	function getTitle() {
 		return 'No Payment';
@@ -55,13 +54,15 @@ class NoCostPayment extends TCP_Plugin {
 			'tcp_checkout'	=> 'ok',
 			'order_id'		=> $order_id,
 		);?>
-		<p><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></p>
+		<h2><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></h2>
 		<p><?php echo $data['notice'];?></p>
 		<p>
 		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING );
+		require_once( dirname( dirname( __FILE__ ) ) . '/checkout/ActiveCheckout.class.php' );
+		ActiveCheckout::sendMails( $order_id );
 	}
 }
 ?>

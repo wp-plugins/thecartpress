@@ -98,7 +98,7 @@ $taxes = Taxes::getAll();
 	</td><td>&nbsp;</td></tr>
 
 <?php if ( count( $taxes ) == 0 ) :?>
-	<tr><td colspan="3"><?php _e( 'The list of taxes is empty', 'tcp' );?></td></tr>
+	<tr><td colspan="4"><?php _e( 'The list of taxes is empty', 'tcp' );?></td></tr>
 <?php else :?>
 	 <?php foreach( $taxes as $tax ) :?> 
 	<tr>
@@ -141,5 +141,7 @@ $taxes = Taxes::getAll();
 endif;?>
 </tbody>
 </table>
+
+<?php include( dirname( __FILE__ ) . '/TaxesRates.php' ); ?>
 
 </div> <!-- end wrap -->

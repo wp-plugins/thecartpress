@@ -25,15 +25,17 @@ require_once( dirname( dirname( __FILE__ ) ) . '/classes/ICartSource.interface.p
 class TCP_CartSourceDB implements TCP_ICartSource {
 
 	private $order; //order from Orders table
+
 	private $orders_details;//details from OrdersDetails table
 	private $orders_costs;//costs from OrdersCosts table
 
 	private $see_address;
 	private $see_full;
+	private $see_thumbnail;
 	private $see_tax_summary;
 	private $see_comment;
 
-	function __construct( $order_id, $see_address = true, $see_full = true, $see_tax_summary = true, $see_comment = true ) {
+	function __construct( $order_id, $see_address = true, $see_full = true, $see_tax_summary = true, $see_comment = true, $see_thumbnail = false ) {
 		$this->order			= Orders::get( $order_id );
 		$this->orders_details	= OrdersDetails::getDetails( $order_id );
 		$this->orders_costs		= OrdersCosts::getCosts( $order_id );
@@ -42,8 +44,34 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 		$this->see_full			= $see_full;
 		$this->see_tax_summary	= $see_tax_summary;
 		$this->see_comment		= $see_comment;
+		$this->see_thumbnail	= $see_thumbnail;
 	}
 
+	public function get_order_id() {
+		if ( $this->order )	return $this->order->order_id;
+		else false;
+	}
+
+	public function get_created_at() {
+		if ( $this->order )	return $this->order->created_at;
+		else false;
+	}
+
+	public function get_payment_method() {
+		if ( $this->order )	return $this->order->payment_name;
+		else false;
+	}
+
+	public function get_shipping_method() {
+		if ( $this->order )	return $this->order->shipping_method;
+		else false;
+	}
+
+	public function get_status() {
+		if ( $this->order )	return $this->order->status;
+		else false;
+	}
+	
 	public function see_other_costs() {
 		return true;
 	}
@@ -54,6 +82,10 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 
 	public function see_full() {
 		return $this->see_full;
+	}
+	
+	public function see_thumbnail() {
+		return $this->see_thumbnail;
 	}
 
 	public function see_tax_summary() {

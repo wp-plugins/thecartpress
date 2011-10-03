@@ -66,16 +66,14 @@ echo '<br>';
 <tbody>
 
 <?php $templates = tcp_get_custom_templates();
-$post_types = get_post_types();
-foreach( $post_types as $post_type ) :
-	$post_type_object = get_post_type_object( $post_type );
-	if ( $post_type != 'tcp_product_option' ) : ?>
-	<tr class="tcp_<?php echo $post_type;?> alternate">
-		<td><?php echo $post_type_object->labels->name;?></td>
-		<td><?php echo $post_type;?></td>
-		<?php $custom_template = tcp_get_custom_template_by_post_type( $post_type ); ?>
+$post_types = get_post_types( array( 'show_in_nav_menus' => true ), object );
+foreach( $post_types as $post_type ) : ?>
+	<tr class="tcp_<?php echo $post_type->name;?> alternate">
+		<td><?php echo $post_type->labels->name;?></td>
+		<td><?php echo $post_type->name;?></td>
+		<?php $custom_template = tcp_get_custom_template_by_post_type( $post_type->name ); ?>
 		<td style="<?php echo $custom_template == '' ? 'padding-left: 2em;' : '';?>">
-			<input type="hidden" name="tcp_custom_post_type_template_id[]" value="<?php echo $post_type;?>"/>
+			<input type="hidden" name="tcp_custom_post_type_template_id[]" value="<?php echo $post_type->name;?>"/>
 			<select name="tcp_custom_post_type_template[]" id="tcp_custom_post_type_template">
 				<option value="" <?php selected( ! $custom_template );?>><?php _e( 'Default Template', 'tcp' ); ?></option>
 				<?php foreach( $templates as $template => $file_name ) : ?>
@@ -84,14 +82,14 @@ foreach( $post_types as $post_type ) :
 			</select>
 		</td>
 	</tr>
-		<?php $taxonomies = get_object_taxonomies( $post_type );
+		<?php $taxonomies = get_object_taxonomies( $post_type->name, object );
 		foreach( $taxonomies as $taxonomy_object ) : ?>
 	<tr>
-		<td style="padding-left: 2em;"><?php echo $taxonomy_object;?></td>
+		<td style="padding-left: 2em;"><?php echo $taxonomy_object->labels->name;?></td>
 		<td></td>
-		<?php $custom_template = tcp_get_custom_template_by_taxonomy( $taxonomy_object ); ?>
+		<?php $custom_template = tcp_get_custom_template_by_taxonomy( $taxonomy_object->name ); ?>
 		<td style="<?php echo $custom_template == '' ? 'padding-left: 2em;' : '';?>">
-			<input type="hidden" name="tcp_custom_taxonomy_template_id[]" value="<?php echo $taxonomy_object;?>"/>
+			<input type="hidden" name="tcp_custom_taxonomy_template_id[]" value="<?php echo $taxonomy_object->name;?>"/>
 			<select name="tcp_custom_taxonomy_template[]" id="tcp_custom_taxonomy_template">
 				<option value="" <?php selected( ! $custom_template );?>><?php _e( 'Default Template', 'tcp' ); ?></option>
 				<?php foreach( $templates as $template => $file_name ) : ?>
@@ -100,12 +98,12 @@ foreach( $post_types as $post_type ) :
 			</select>
 		</td>
 	</tr><?php
-			$taxonomy = get_taxonomy( $taxonomy_object );
+			$taxonomy = get_taxonomy( $taxonomy_object->name );
 			$args = array (
 				'taxonomy'		=> $taxonomy,
 				'hide_empty'	=> false,
 			);
-			$terms = get_terms( $taxonomy_object, 'orderby=name&hide_empty=false');
+			$terms = get_terms( $taxonomy_object->name, 'orderby=name&hide_empty=false');
 			foreach( $terms as $term ) : ?>
 			<td style="padding-left: 4em;"><?php echo $term->name;?></td>
 			<td><?php echo $term->slug;?></td>
@@ -122,7 +120,6 @@ foreach( $post_types as $post_type ) :
 		</tr><?php
 			endforeach;
 		endforeach;
-	endif;
 endforeach;?>
 </tbody>
 </table>

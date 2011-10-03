@@ -71,7 +71,8 @@ if ( isset( $_REQUEST['save_posttype'] ) ) {
 		$posttypes[] = $posttype;
 		$posttype_id = end( array_keys( $posttypes ) );
 	}
-	update_option( 'tcp-posttypes-generator', $posttypes );?>
+	update_option( 'tcp-posttypes-generator', $posttypes );
+	update_option( 'tcp_rewrite_rules', true ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Post type saved', 'tcp' );?> 
 	</p></div><?php

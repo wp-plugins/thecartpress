@@ -72,22 +72,27 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 			$_REQUEST['tcp_settings']['decimal_point'] = '.';
 		}
 	}
-	$thecartpress->settings['user_registration'] = $_REQUEST['tcp_settings']['user_registration'] == 'yes';
-	$thecartpress->settings['emails'] = $_REQUEST['tcp_settings']['emails'];
-	$thecartpress->settings['from_email'] = $_REQUEST['tcp_settings']['from_email'];
-	$thecartpress->settings['currency'] = $_REQUEST['tcp_settings']['currency'];
-	$thecartpress->settings['currency_layout'] = $_REQUEST['tcp_settings']['currency_layout'];
-	$thecartpress->settings['decimal_currency'] = $_REQUEST['tcp_settings']['decimal_currency'];
-	$thecartpress->settings['decimal_point'] = $_REQUEST['tcp_settings']['decimal_point'];
-	$thecartpress->settings['thousands_separator'] = $_REQUEST['tcp_settings']['thousands_separator'];
-	$thecartpress->settings['country'] = $_REQUEST['tcp_settings']['country'];
+	$thecartpress->settings['user_registration']	= isset( $_REQUEST['tcp_settings']['user_registration'] ) ? true : false;
+	$thecartpress->settings['emails']				= $_REQUEST['tcp_settings']['emails'];
+	$thecartpress->settings['from_email']			= $_REQUEST['tcp_settings']['from_email'];
+	$thecartpress->settings['currency']				= $_REQUEST['tcp_settings']['currency'];
+	$thecartpress->settings['currency_layout']		= $_REQUEST['tcp_settings']['currency_layout'];
+	$thecartpress->settings['decimal_currency']		= $_REQUEST['tcp_settings']['decimal_currency'];
+	$thecartpress->settings['decimal_point']		= $_REQUEST['tcp_settings']['decimal_point'];
+	$thecartpress->settings['thousands_separator']	= $_REQUEST['tcp_settings']['thousands_separator'];
+	$thecartpress->settings['country']				= $_REQUEST['tcp_settings']['country'];
+	$thecartpress->settings['use_default_loop']		= isset( $_REQUEST['tcp_settings']['use_default_loop'] ) ? true : false;
 	update_option( 'tcp_settings', $thecartpress->settings );
 	$step = -1;
 }?>
 <div class="wrap">
 <div class="tcp_first_time_setup">
-<h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
+<br>
 </div>
+<h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
+<ul class="subsubsub">
+</ul>
+<br>
 <h2><?php echo tcp_get_step_title( $step );?></h2>
 <form method="post">
 <input type="hidden" name="step" value="<?php echo $step; ?>"/>
@@ -151,9 +156,9 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	</table>
 <?php elseif ( $step == 3 ) :
 	$values = array( 'user_registration', 'emails', 'from_email' );
-	$user_registration = isset( $_REQUEST['tcp_settings']['user_registration'] ) ;
-	$emails = isset( $_REQUEST['tcp_settings']['emails'] ) ? $_REQUEST['tcp_settings']['emails'] : get_option('admin_email');
-	$from_email = isset( $_REQUEST['tcp_settings']['from_email'] ) ? $_REQUEST['tcp_settings']['from_email'] : false;?>
+	$user_registration	= isset( $_REQUEST['tcp_settings']['user_registration'] );
+	$emails				= isset( $_REQUEST['tcp_settings']['emails'] ) ? $_REQUEST['tcp_settings']['emails'] : get_option('admin_email');
+	$from_email			= isset( $_REQUEST['tcp_settings']['from_email'] ) ? $_REQUEST['tcp_settings']['from_email'] : false; ?>
 	<p><?php _e( 'Please, select the checkout settings', 'tcp' ); ?></p>
 	<table class="form-table" style="display: table;">
 	<tbody>
@@ -171,9 +176,18 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	</tr>
 	</tbody>
 	</table>
-<?php else : 
-	$values = array();?>
-	<?php _e( 'The first time setup has finished. Press "Save" to save all the settings.', 'tcp');?>
+<?php else : //if ( $step == 4 ) :
+	$values = array( 'use_default_loop' );
+	$use_default_loop = isset( $_REQUEST['tcp_settings']['use_default_loop'] ); ?>
+		<table class="form-table" style="display: table;">
+	<tbody>
+	<tr valign="top">
+		<th scope="row" style="align:left"><label for="use_default_loop"><?php _e( 'Use default loop', 'tcp' ); ?></label>:</th>
+		<td><?php $settings->show_use_default_loop( $use_default_loop );?></td>
+	</tr>
+	</tbody>
+	</table>
+	<p><?php _e( 'The first time setup has finished. Press "Save" to save all the settings.', 'tcp');?></p>
 <?php endif; ?>
 <p>
 	<?php if ( $step > 1 ) {
@@ -186,6 +200,7 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 		submit_button( __( 'Save', 'tcp' ), 'primary', 'tcp_save', false, array( 'id' => 'tcp_save' ) );
 	}?>
 </p>
+
 <?php if ( isset( $_REQUEST['tcp_settings'] ) && is_array( $_REQUEST['tcp_settings'] ) && count( $_REQUEST['tcp_settings'] ) > 0 ) {
 	foreach( $_REQUEST['tcp_settings'] as $id => $value ) {
 		if ( ! in_array( $id, $values ) ) { ?>

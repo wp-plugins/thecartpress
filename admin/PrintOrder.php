@@ -68,14 +68,12 @@ require($wordpress_path . 'wp-blog-header.php');
 	}
    .tcp_shopping_cart_table tr th,
    .tcp_shopping_cart_table thead th {
-		width: 90%;
 	    background-color: #333;
 	    padding: 4px 10px;
 	    line-height: 22px;
 	    color: #CCC;
 	}
    .tcp_shopping_cart_table tr td {
-		width: 90%;
 	    background-color: #f7f7f7;
 	    font-size: 11px;
 	    padding: 4px 10px;

@@ -26,7 +26,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'width'		=> 400,
 			'id_base'	=> 'taxonomytreesposttype-widget',
 		);
-		$this->WP_Widget( 'taxonomytreesposttype-widget', 'TCP Taxonomy trees', $widget, $control );
+		$this->WP_Widget( 'taxonomytreesposttype-widget', 'TCP Navigation Tree', $widget, $control );
 		
 		//add_filter( 'get_terms', array( $this, 'get_terms' ), 9, 3 );
 	}
@@ -113,7 +113,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'					=> 'Taxonomy trees post type',
+			'title'					=> 'Navigation trees',
 			'post_type'				=> 'tcp_product',
 			'taxonomy'				=> 'tcp_product_category',
 			'see_number_products'	=> true,
@@ -132,9 +132,10 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ) : 
-				if ( $post_type != 'tcp_product_option' ) :?>
-				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
+				if ( $post_type != 'tcp_product_option' ) :
+					$obj_type = get_post_type_object( $post_type ); ?>
+				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
 				<?php endif;
 			endforeach;?>
 			</select>

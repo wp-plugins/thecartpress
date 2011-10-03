@@ -22,7 +22,7 @@ class TCPArchivesWidget extends WP_Widget {
 	function TCPArchivesWidget() {
 		$widget = array(
 			'classname'		=> 'tcparchives',
-			'description'	=> __( 'Use this widget to add a monthly/year/daily etc. lists of different post types', 'tcp' ),
+			'description'	=> __( 'Use this widget to add a monthly/year/daily/... lists of different post types', 'tcp' ),
 		);
 		$control = array(
 			'width'		=> 400,
@@ -34,7 +34,7 @@ class TCPArchivesWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract($args);
 		$type		= isset( $instance['type'] ) ? $instance['type'] : 'monthly';
-		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'post';
+		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';
 		$count		= $instance['count'] ? '1' : '0';
 		$dropdown	= $instance['dropdown'] ? '1' : '0';
 		$title		= apply_filters('widget_title', empty($instance['title']) ? __('Archives') : $instance['title'], $instance, $this->id_base);
@@ -50,7 +50,19 @@ class TCPArchivesWidget extends WP_Widget {
 		}
 		if ( $dropdown ) : ?>
 		<select name="archive-dropdown" onchange='document.location.href=this.options[this.selectedIndex].value;'>
-			<option value=""><?php echo esc_attr(__('Select Month')); ?></option>
+			<option value="">
+			<?php if ( $type == 'monthly' ) {
+				echo esc_attr(__('Select Month' ) );
+			} elseif ( $type == 'yearly' ) {
+				echo esc_attr(__('Select Year' ) );
+			} elseif ( $type == 'weekly' ) {
+				echo esc_attr(__('Select Week' ) );
+			} elseif ( $type == 'daily' ) {
+				echo esc_attr(__('Select Day' ) );
+			} else {
+				echo esc_attr(__('Select One', 'tcp' ) );
+			} ?>
+			</option>
 			<?php
 			$args = array(
 				'type'				=> $type,
@@ -80,7 +92,7 @@ class TCPArchivesWidget extends WP_Widget {
 	}
 
 	function home_url( $url, $path, $orig_scheme, $blog_id ) {
-		if ( $this->type == 'yearly' || $this->type == 'monthly' || $this->type == 'dayly' ) {
+		if ( $this->type == 'yearly' || $this->type == 'monthly' || $this->type == 'daily' ) {
 			$post_type_object = get_post_type_object( $this->post_type );
 			$new_url = substr( $url, 0, -strlen( $path ) ) . '/' . $post_type_object->rewrite['slug'] . $path;
 		} elseif ( $this->type == 'weekly' ) {
@@ -89,6 +101,7 @@ class TCPArchivesWidget extends WP_Widget {
 		} else {
 			$new_url = $url;
 		}
+		//$new_url = str_replace( 'archives/date/', '', $new_url );
 		return $new_url;
 	}
 
@@ -125,18 +138,16 @@ class TCPArchivesWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => 'TCP Archives', 'count' => 0, 'dropdown' => '', 'type' => 'monthly' ) );
 		$title		= strip_tags($instance['title']);
 		$type		= isset( $instance['type'] ) ? $instance['type'] : 'monthly';
-		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'post';
+		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';
 		$count		= $instance['count'] ? 'checked="checked"' : '';
 		$dropdown	= $instance['dropdown'] ? 'checked="checked"' : '';?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?></label>:<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ) : 
-				if ( $post_type != 'tcp_product_option' ) :?>
-				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
-				<?php endif;
-			endforeach;?>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : ?>
+				<option value="<?php echo $post_type->name;?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name;?></option>
+			<?php endforeach;?>
 			</select>
 		</p><p>		
 		<label for="<?php echo $this->get_field_id('type'); ?>"><?php _e( 'Type', 'tcp' ); ?></label>:

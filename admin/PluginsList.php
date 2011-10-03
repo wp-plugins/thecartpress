@@ -17,16 +17,12 @@
  */
 
 $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-
-$plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : '';
-
-//if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) return;?>
+$plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'payment'; ?>
 
 <div class="wrap">
-<h2><?php _e( 'TheCartPress Payment and Shipping methods', 'tcp' );?></h2>
+<h2><?php $plugin_type == 'payment' ? _e( 'TheCartPress Payment methods', 'tcp' ) : _e( 'TheCartPress Shipping methods', 'tcp' );?></h2>
 <ul class="subsubsub"></ul>
 <div class="clear"></div>
-
 
 <form method="post">
 <div class="tablenav">

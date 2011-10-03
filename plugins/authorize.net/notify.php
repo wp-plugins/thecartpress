@@ -49,13 +49,21 @@ if ( $fingerprint == $x_md5_hash ) {
 		} else {
 			Orders::editStatus( $order_id, $new_status, $x_trans_id );
 		}
+		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+		ActiveCheckout::sendMails( $order_id );
 	} else {
 		$response_reason_text = isset( $_REQUEST['x_response_reason_text'] ) ? $_REQUEST['x_response_reason_text'] : 'no reason';
 		$response_reason_code = isset( $_REQUEST['x_response_reason_code'] ) ? $_REQUEST['x_response_reason_code'] : 0;
-		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $response_reason_text . '(' . $response_reason_code . ')' );
+		$error = $response_reason_text . '(' . $response_reason_code . ')';
+		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
+		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+		ActiveCheckout::sendMails( $order_id, true, $error );
 	}
 } else {
-	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, __( 'Error notifiying Authotized.net payment', 'tcp' ) );
+	$error = __( 'Error notifiying Authotized.net payment', 'tcp' );
+	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
+	require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+	ActiveCheckout::sendMails( $order_id, true, $error );
 }
 $redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>

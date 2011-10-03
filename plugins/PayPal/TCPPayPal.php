@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  *
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('paypal.class.php');
@@ -30,6 +30,12 @@ class TCPPayPal extends TCP_Plugin {
 
 	function getDescription() {
 		return 'PayPal Standard payment method.<br>Author: <a href="http://thecartpress.com">TheCartPress team</a>';
+	}
+
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+		$data = tcp_get_payment_plugin_data( 'TCPPayPal', $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
+		return $title;
 	}
 
 	function showEditFields( $data ) {?>
@@ -107,12 +113,6 @@ class TCPPayPal extends TCP_Plugin {
 		</td></tr><?php
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data = tcp_get_payment_plugin_data( 'TCPPayPal', $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
-		return $title;
-	}
-
 	function saveEditFields( $data ) {
 		$data['business']				= isset( $_REQUEST['business'] ) ? $_REQUEST['business'] : '';
 		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] ) ? $_REQUEST['profile_shipping'] == 'yes' : false;
@@ -144,9 +144,9 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
 		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status . '-' . get_class($this) . '-' . $instance);
 		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
-		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant );		 //text for the Return to Merchant button
+		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant ); //text for the Return to Merchant button
 		$p->add_field( 'no_shipping', $no_shipping );
-		if ( empty($send_detail) && empty($profile_shipping) && empty($profile_taxes) ) {		// Buy Now - one total
+		if ( empty($send_detail) && empty($profile_shipping) && empty($profile_taxes) ) { // Buy Now - one total
 			$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
 			$p->add_field( 'amount', tcp_number_format( $shoppingCart->getTotal( true ) ) );
 		} else { // Cart upload
@@ -201,7 +201,6 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'email', $order->billing_email );
 		if ( ! empty( $data['cpp_cart_border_color'] ) ) $p->add_field( 'cpp_cart_border_color', $data['cpp_cart_border_color'] );
 		echo $p->submit_paypal_post();
-
 
 		/*if ( ! $this->isSupportedCurrency( $currency_code ) ) {
 			require_once( dirname( __FILE__ ) . '/PayPal_Platform_PHP_SDK/lib/AdaptivePayments.php' );

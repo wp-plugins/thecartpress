@@ -137,6 +137,17 @@ class ShoppingCart {
 		return $total - $this->discount;
 	}
 
+	/**
+	 * Returns the total amount to calculate shipping cost
+	 */
+	function getTotalForShipping() {
+		$total = 0;
+		foreach( $this->shopping_cart_items as $item )
+			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
+				$total += $item->getTotal();
+		return $total;
+	}
+
 	function getTotalToShow( $otherCosts = false ) {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
@@ -164,6 +175,18 @@ class ShoppingCart {
 	}
 
 	/**
+	 * Returns the total weight to calculate shipping cost
+	 */
+	function getWeightForShipping() {
+		$weight = 0;
+		foreach( $this->shopping_cart_items as $shopping_cart_item )
+			if ( ! $shopping_cart_item->isDownloadable() && ! $shopping_cart_item->isFreeShipping() )
+				$weight += $shopping_cart_item->getWeight();
+		return $weight;
+	}
+
+
+	/**
 	 * Returns true if the cart is empty
 	 */
 	function isEmpty() {
@@ -188,6 +211,15 @@ class ShoppingCart {
 	}
 
 	/**
+	 * Return true if anyone of the products in the cart is downloadable
+	 */
+	function hasDownloadable() {
+		foreach( $this->shopping_cart_items as $item )
+			if ( $item->isDownloadable() ) return true;
+		return false;
+	}
+
+	/**
 	 * Order_id if the cart has been saved in the database
 	 * @since 1.1.0
 	 */
@@ -206,17 +238,6 @@ class ShoppingCart {
 
 	function removeOrderId() {
 		return $this->setOrderId(0);
-	}
-
-	/**
-	 * Returns the total amount to calculate shipping cost
-	 */
-	function getTotalForShipping() {
-		$total = 0;
-		foreach( $this->shopping_cart_items as $item )
-			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
-				$total += $item->getTotal();
-		return $total;
 	}
 
 	/**

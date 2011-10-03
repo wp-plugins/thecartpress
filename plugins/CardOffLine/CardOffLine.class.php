@@ -117,18 +117,18 @@ class TCPCardOffLine extends TCP_Plugin {
 				<?php $types = array (
 					array(
 						'id'	=> 'maestro',
-						'title'	=> 'maestro',
+						'title'	=> 'Maestro',
 					),
 					array(
 						'id'	=> 'mastercard',
-						'title'	=> 'mastercard',
+						'title'	=> 'Master Card',
 					),
 					array(
 						'id'	=> 'visa',
-						'title'	=> 'visa',
+						'title'	=> 'Visa',
 					),
 				);
-				$types = apply_filters( 'tcp_card_offline_cart_type', $types );
+				$types = apply_filters( 'tcp_card_offline_cart_types', $types );
 				foreach( $types as $type ) :?>
 					<option value="<?php echo $type['id'];?>"><?php echo $type['title'];?></option>
 				<?php endforeach;?>

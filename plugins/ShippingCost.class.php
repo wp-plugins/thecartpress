@@ -58,6 +58,7 @@ class ShippingCost extends TCP_Plugin {
 //echo '<br><br>zones: ';var_dump( $zones );
 //echo '<br><br>costs: ';var_dump( $costs );
 //echo '<br><br>ranges: ';var_dump( $ranges );
+		$data = array();
 		if ( isset( $_REQUEST['tcp_copy_from_instance'] ) ) {
 			$plugin_data = get_option( 'tcp_plugins_data_shi_' . get_class( $this ) );
 			$data = reset( $plugin_data );
@@ -330,7 +331,8 @@ foreach( $zones_states as $i => $states ) {
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
-		$totalWeight = $shoppingCart->getWeight();
+		//$totalWeight = $shoppingCart->getWeight();
+		$totalWeight = $shoppingCart->getWeightForShipping();
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$zones = $data['zones'];
 		$ranges = $data['ranges'];

@@ -387,6 +387,9 @@ div#billing_info h3{
 	padding-right: 10px;
 	font-weight: bold;
 }
+#tcp_status {
+	clear: both;
+}
 #content .tcp_payment_area table.widefat {
 	clear: both;
 	margin-top:20px;
