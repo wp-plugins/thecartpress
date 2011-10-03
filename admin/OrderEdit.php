@@ -155,7 +155,7 @@ if ( $order ) :?>
 		<select class="postform" id="new_status" name="new_status">
 		<?php $order_status_list = tcp_get_order_status();
 		foreach ( $order_status_list as $order_status ) : ?>
-			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $order->status );?>><?php echo $order_status['label']; ?></option>		
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $order->status );?>><?php echo $order_status['label']; ?></option>
 		<?php endforeach; ?>
 		</select>
 	</td>

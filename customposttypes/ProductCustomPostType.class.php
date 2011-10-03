@@ -60,7 +60,7 @@ class ProductCustomPostType {
 			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) && $thecartpress->settings['product_rewrite'] != '' ? $thecartpress->settings['product_rewrite'] : 'products',
 		);
 		register_post_type( ProductCustomPostType::$PRODUCT, $register );
-		if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( ProductCustomPostType::$PRODUCT, $register['has_archive'] );
+		//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( ProductCustomPostType::$PRODUCT, $register['has_archive'] );
 		if ( is_admin() ) {
 			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 			$post_types = tcp_get_saleable_post_types();
@@ -120,27 +120,35 @@ class ProductCustomPostType {
 		}
 	}
 
+
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
 	static function register_post_type_archives( $post_type, $base_path = '' ) {
+echo "register_post_type_archives( $post_type, $base_path )<br>";
+
 		global $wp_rewrite;
-		if ( ! $base_path ) {
-			$base_path = $post_type;
-		}
-		$rules = $wp_rewrite->generate_rewrite_rules( $base_path );
-		$rules[$base_path.'/?$'] = 'index.php?paged=1';
-		foreach ( $rules as $regex => $redirect ) {
-			if ( strpos( $redirect, 'attachment=' ) == FALSE ) {
+		$permalink_prefix = $base_path;
+		$permalink_structure = '%year%/%monthnum%/%day%/%' . $post_type . '%/';
+
+		//we use the WP_Rewrite class to generate all the endpoints WordPress can handle by default.
+		$rewrite_rules = $wp_rewrite->generate_rewrite_rules( $permalink_prefix . '/' . $permalink_structure, EP_ALL, true, true, true, true, true );
+
+		//build a rewrite rule from just the prefix to be the base url for the post type
+		$rewrite_rules = array_merge( $wp_rewrite->generate_rewrite_rules( $permalink_prefix ), $rewrite_rules );
+		$rewrite_rules[$permalink_prefix . '/?$'] = 'index.php?paged=1';
+		foreach( $rewrite_rules as $regex => $redirect ) {
+			if ( strpos( $redirect, 'attachment=' ) === false ) {
+			//add the post_type to the rewrite rule
 				$redirect .= '&post_type=' . $post_type;
-				if (  0 < preg_match_all( '@\$([0-9])@', $redirect, $matches ) ) {
-					for ( $i = 0 ; $i < count( $matches[0] ) ; $i++ ) {
-						$redirect = str_replace( $matches[0][$i], '$matches[' . $matches[1][$i] . ']', $redirect );
-					}
+			}
+			//turn all of the $1, $2,... variables in the matching regex into $matches[] form
+			if ( 0 < preg_match_all('@\$([0-9])@', $redirect, $matches ) ) {
+				for( $i = 0; $i < count( $matches[0] ); $i++ ) {
+					$redirect = str_replace( $matches[0][$i], '$matches[' . $matches[1][$i] . ']', $redirect );
 				}
 			}
-			add_rewrite_rule( $regex, $redirect, 'top' );
+			//add the rewrite rule to wp_rewrite
+			$wp_rewrite->add_rule( $regex, $redirect, 'top' );
 		}
-		//$rewrite = $wp_rewrite->wp_rewrite_rules();
-		//var_dump($rewrite);
 	}
 
 	/*function quickEditCustomBox( $column_name, $post_type ) {
@@ -198,7 +206,7 @@ class ProductCustomPostType {
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
 			} elseif ( 'thumbnail' == $column_name ) {
-				$image = tcp_get_the_thumbnail( $post->ID, array( '50', '50' )  );
+				$image = tcp_get_the_thumbnail( $post->ID, 0, 0, array( '50', '50' )  );
 				echo $image;
 			} elseif ( 'grouped_in' == $column_name ) {
 				$post_ids = tcp_get_the_parents( $post->ID );

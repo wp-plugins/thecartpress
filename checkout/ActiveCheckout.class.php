@@ -19,15 +19,14 @@
 class ActiveCheckout {//shortcode
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
+		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
-			$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 			//We have to check if the order wasn't cancelled
 			$order_status = Orders::getStatus( $order_id );
 			$cancelled = tcp_get_cancelled_order_status();
 			if ( $order_status == $cancelled ) $_REQUEST['tcp_checkout'] = 'ko';
 		}
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
-			TheCartPress::removeShoppingCart();
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			if ( strlen( $html ) == 0 ) {
 				$html .= '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_successfully">';
@@ -35,11 +34,15 @@ class ActiveCheckout {//shortcode
 				if ( strlen( $checkout_successfully_message ) > 0 ) {
 					$html .= '<p>' . str_replace ( "\n" , '<p></p>', $checkout_successfully_message ) . '</p>';
 				} else {
-					$html .= '<span class="tcp_checkout_ok">' . __( 'The order has been completed successfully.', 'tcp' ) . '</span>';
+					$html .= '<span class="tcp_checkout_ok">' . __( 'The order has been completed successfully.', 'tcp' );
+					if ( $shoppingCart->hasDownloadable() )
+						$html .= '<br/>' . sprintf( __( 'Please, to download the products visit <a href="%s">My Downloads</a> page (login required).', 'tcp' ), home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' ) );
+					$html .= '</span>';
 				}
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
+			TheCartPress::removeShoppingCart();
+			//if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
 			$html .= '<br>';
 			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
 			unset( $_SESSION['order_page'] );
@@ -62,7 +65,7 @@ class ActiveCheckout {//shortcode
 				$html .= '<br/>' . sprintf( __( 'Retry again the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			ActiveCheckout::sendMails( $order_id, true, 'Payment Error: (' . $response_reason_code . ') ' . $response_reason_text );
+			//ActiveCheckout::sendMails( $order_id, true, $html );
 			return $html;
 		} elseif ( $shoppingCart->isEmpty() ) { 
 			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';

@@ -27,9 +27,9 @@
 }
 #content .tcp_buy_button table tr td:hover  {
 }
-.tcp_buy_button table label {
+/*.tcp_buy_button table label {
 	display: none;
-}
+}*/
 #content .tcp_buy_button table input[type="button"], #content .tcp_buy_button table input[type="submit"] {
 	-moz-border-radius:4px 4px 4px 4px;
 	border:1px solid #ccc;
@@ -136,9 +136,9 @@
 }
 .tcp_buy_button table tr td:hover  {
 }
-.tcp_buy_button table label {
+/*.tcp_buy_button table label {
 	display: none;
-}
+}*/
 .tcp_buy_button table input[type="button"], .tcp_buy_button table input[type="submit"] {
 	-moz-border-radius:4px 4px 4px 4px;
 	border:1px solid #ccc;

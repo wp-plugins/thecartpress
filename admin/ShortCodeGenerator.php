@@ -66,7 +66,8 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'see_content'			=> isset( $_REQUEST['see_content'] ) ? $_REQUEST['see_content'] == 'yes' : false,
 			'see_excerpt'			=> isset( $_REQUEST['see_excerpt'] ) ? $_REQUEST['see_excerpt'] == 'yes' : false,
 			'see_author'			=> isset( $_REQUEST['see_author'] ) ? $_REQUEST['see_author'] == 'yes' : false,
-			'see_meta_data'			=> isset( $_REQUEST['see_meta_data'] ) ? $_REQUEST['see_meta_data'] == 'yes' : false,
+			'see_posted_on'			=> isset( $_REQUEST['see_posted_on'] ) ? $_REQUEST['see_posted_on'] == 'yes' : false,
+			'see_taxonomies'		=> isset( $_REQUEST['see_taxonomies'] ) ? $_REQUEST['see_taxonomies'] == 'yes' : false,
 			'see_meta_utilities'	=> isset( $_REQUEST['see_meta_utilities'] ) ? $_REQUEST['see_meta_utilities'] == 'yes' : false,
 			'see_price'				=> isset( $_REQUEST['see_price'] ) ? $_REQUEST['see_price'] == 'yes' : false,
 			'see_buy_button'		=> isset( $_REQUEST['see_buy_button'] ) ? $_REQUEST['see_buy_button'] == 'yes' : false,
@@ -151,7 +152,8 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 	$see_content			= isset( $shortcode_data['see_content'] ) ? $shortcode_data['see_content'] == 'yes' : false;
 	$see_excerpt			= isset( $shortcode_data['see_excerpt'] ) ? $shortcode_data['see_excerpt'] == 'yes' : false;
 	$see_author				= isset( $shortcode_data['see_author'] ) ? $shortcode_data['see_author'] == 'yes' : false;
-	$see_meta_data			= isset( $shortcode_data['see_meta_data'] ) ? $shortcode_data['see_meta_data'] == 'yes' : false;
+	$see_posted_on			= isset( $shortcode_data['see_posted_on'] ) ? $shortcode_data['see_posted_on'] == 'yes' : false;
+	$see_taxonomies			= isset( $shortcode_data['see_taxonomies'] ) ? $shortcode_data['see_taxonomies'] == 'yes' : false;
 	$see_meta_utilities		= isset( $shortcode_data['see_meta_utilities'] ) ? $shortcode_data['see_meta_utilities'] == 'yes' : false;
 	$see_price				= isset( $shortcode_data['see_price'] ) ? $shortcode_data['see_price'] == 'yes' : false;
 	$see_buy_button			= isset( $shortcode_data['see_buy_button'] ) ? $shortcode_data['see_buy_button'] == 'yes' : false;
@@ -206,10 +208,8 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 			</th>
 			<td>
 				<select name="post_type" id="post_type">
-				<?php foreach( get_post_types() as $post_type_item ) : 
-					if ( $post_type_item != 'tcp_product_option' ) : ?>
-					<option value="<?php echo $post_type_item;?>"<?php selected( $post_type, $post_type_item );?>><?php echo $post_type_item;?></option>
-					<?php endif; ?>
+				<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type_item ) : ?>
+					<option value="<?php echo $post_type_item->name;?>"<?php selected( $post_type, $post_type_item->name );?>><?php echo $post_type_item->labels->name; ?></option>
 				<?php endforeach; ?>
 				</select>
 				<span class="description"><?php _e( 'Save to load the list of taxonomies', 'tcp' );?></span>
@@ -396,11 +396,15 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="see_author" name="see_author" value="yes" <?php checked( $see_author );?> />
-			<label for="see_author"><?php _e( 'Show author', 'tcp' );?></label>
+			<label for="see_author"><?php _e( 'Show about author', 'tcp' );?></label>
 		</p>
 		<p>
-			<input type="checkbox" class="checkbox" id="see_meta_data" name="see_meta_data" value="yes" <?php checked( $see_meta_data );?> />
-			<label for="see_meta_data"><?php _e( 'Show tags', 'tcp' );?></label>
+			<input type="checkbox" class="checkbox" id="see_posted_on" name="see_posted_on" value="yes" <?php checked( $see_posted_on );?> />
+			<label for="see_posted_on"><?php _e( 'Show posted on', 'tcp' );?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="see_taxonomies" name="see_taxonomies" value="yes" <?php checked( $see_taxonomies ); ?> />
+			<label for="see_taxonomies"><?php _e( 'Show taxonomies', 'tcp' ); ?></label>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="see_meta_utilities" name="see_meta_utilities" value="yes" <?php checked( $see_meta_utilities );?> />

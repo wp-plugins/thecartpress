@@ -3,7 +3,7 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersDetails.class.php' );
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersCosts.class.php' );
 
-class OrdersListTable extends  WP_List_Table {
+class OrdersListTable extends WP_List_Table {
 
 	function __construct() {
 		parent::__construct( array(
@@ -56,7 +56,7 @@ class OrdersListTable extends  WP_List_Table {
 		$orders_columns['payment_name'] = _x( 'Payment', 'column name', 'tcp' );
 		$orders_columns['shipping_method'] = _x( 'Shipping', 'column name', 'tcp' );
 		$orders_columns['total'] = _x( 'Total', 'column name', 'tcp' );
-		$orders_columns = apply_filters( "tcp_manage_orders_columns", $orders_columns );
+		$orders_columns = apply_filters( 'tcp_manage_orders_columns', $orders_columns );
 		return array( $orders_columns, array(), array() );
 	}
 

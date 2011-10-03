@@ -2,30 +2,31 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class TCP_LoopsSettings {
 
 	function __construct() {
+		$settings = get_option( 'tcp_settings' );
 		if ( is_admin() ) {
-			$settings = get_option( 'tcp_settings' );
-			if ( isset( $settings['use_tcp_loops'] ) && $settings['use_tcp_loops'] ) {
+			if ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-				//add_filter( 'contextual_help', array( $this, 'contextual_help' ) , 10, 3 );
 			}
+		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
+			add_filter( 'template_include', array( $this, 'template_include' ) );
 		}
 	}
 
@@ -39,12 +40,12 @@ class TCP_LoopsSettings {
 	function admin_init() {
 		register_setting( 'twentytencart_options', 'ttc_settings', array( $this, 'validate' ) );
 		add_settings_section( 'ttc_main_section', __( 'Main settings', 'tcp' ) , array( $this, 'show_ttc_main_section' ), __FILE__ );
-		
+
+		add_settings_field( 'see_sorting_panel', __( 'See sorting panel', 'tcp' ), array( $this, 'show_see_sorting_panel' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'disabled_order_types', __( 'Disabled order types:', 'tcp' ), array( $this, 'disabled_order_types' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'order_type', __( 'Order type:', 'tcp' ), array( $this, 'order_type' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'order_desc', __( 'Order desc:', 'tcp' ), array( $this, 'order_desc' ), __FILE__ , 'ttc_main_section' );
-		add_settings_field( 'see_sorting_panel', __( 'See sorting panel', 'tcp' ), array( $this, 'show_see_sorting_panel' ), __FILE__ , 'ttc_main_section' );
-		
+
 		add_settings_field( 'columns', __( 'Columns:', 'tcp' ), array( $this, 'columns' ), __FILE__ , 'ttc_main_section' );	
 		add_settings_field( 'see_title', __( 'See title:', 'tcp' ), array( $this, 'see_title' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'title_tag', __( 'Title tag:', 'tcp' ), array( $this, 'title_tag' ), __FILE__ , 'ttc_main_section' );
@@ -66,12 +67,12 @@ class TCP_LoopsSettings {
 	function admin_menu() {
 		global $thecartpress;
 		$base = $thecartpress->get_base();
-		add_submenu_page( $base, __( 'TCP Loops settings', 'tcp' ), __( 'Loops Settings', 'tcp' ), 'tcp_edit_settings', 'ttc_settings_page', array( $this, 'show_settings' ) );
+		add_submenu_page( $base, __( 'TheCartPress Loop settings', 'tcp' ), __( 'Loop Settings', 'tcp' ), 'tcp_edit_settings', 'ttc_settings_page', array( $this, 'show_settings' ) );
 	}
 
 	function show_settings() {?>
 		<div class="wrap">
-			<h2><?php _e( 'TCP Loop Settings', 'tcp' );?></h2>
+			<h2><?php _e( 'TheCartPress Loop Settings', 'tcp' );?></h2>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'twentytencart_options' ); ?>
 				<?php do_settings_sections( __FILE__ ); ?>
@@ -82,7 +83,8 @@ class TCP_LoopsSettings {
 		</div><?php
 	}
 
-	function show_ttc_main_section() {
+	function show_ttc_main_section() { ?>
+	<p class="description"><?php _e( 'This set of settings allow to manage the data to be displayed in the default grid provided by TheCartPress.', 'tcp' ); ?></p><?php
 	}
 
 	function see_title() {
@@ -250,6 +252,19 @@ class TCP_LoopsSettings {
 		$input['see_second_custom_area']= isset( $input['see_second_custom_area'] ) ? $input['see_second_custom_area']  == 'yes' : false;
 		$input['see_third_custom_area']	= isset( $input['see_third_custom_area'] ) ? $input['see_third_custom_area']  == 'yes' : false;
 		return $input;
+	}
+
+	function template_include( $template ) {
+		global $wp_query;
+		if ( isset( $wp_query->tax_query ) ) {
+			foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
+				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
+					$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/taxonomy-tcp.php';
+					break;
+				}
+			}
+		}
+		return $template;
 	}
 }
 ?>

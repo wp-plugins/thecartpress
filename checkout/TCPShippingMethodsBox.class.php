@@ -73,12 +73,24 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 		if ( is_array( $applicable_sending_plugins ) && count( $applicable_sending_plugins ) > 0 ) : ?>
 			<ul><?php
 			$shipping_method_id = isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ? $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] : false;
+			$exist_id = false;
+			foreach( $applicable_sending_plugins as $plugin_data ) {
+				$tcp_plugin = $plugin_data['plugin'];
+				$instance = $plugin_data['instance'];
+				$plugin_name = get_class( $tcp_plugin );
+				$id = $plugin_name . '#' . $instance;
+				if ( $shipping_method_id == $id ) {
+					$exist_id = true;
+					break;
+				}
+			}
+			if ( ! $exist_id ) $shipping_method_id = false;
 			foreach( $applicable_sending_plugins as $plugin_data ) :
 				$tcp_plugin = $plugin_data['plugin'];
 				$instance = $plugin_data['instance'];
 				$plugin_name = get_class( $tcp_plugin );
 				$plugin_value = $plugin_name . '#' . $instance;
-				if ( ! $shipping_method_id ) $shipping_method_id = $plugin_value;?>
+				if ( ! $shipping_method_id ) $shipping_method_id = $plugin_value; ?>
 				<li>
 				<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
 				<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>

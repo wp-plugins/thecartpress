@@ -21,6 +21,7 @@ require_once( dirname( dirname( __FILE__ ) ).'/daos/Taxes.class.php' );
 require_once( dirname( dirname( __FILE__ ) ).'/daos/TaxRates.class.php' );
 add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 
+?><h2><?php _e( 'Taxes Rates', 'tcp' );?></h2><?php
 if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
 	$_REQUEST['country_iso']	= isset( $_REQUEST['country_iso'] ) ? $_REQUEST['country_iso'] : 'all';
 	$_REQUEST['region_id']		= isset( $_REQUEST['region_id'] ) ? $_REQUEST['region_id'] : 'all';
@@ -44,7 +45,6 @@ if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
 	}
 }
 ?>
-<h2><?php _e( 'Taxes Rates', 'tcp' );?></h2>
 <ul class="subsubsub">
 </ul>
 <div class="clear"></div>

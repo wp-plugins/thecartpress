@@ -149,7 +149,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				<br />
 				<select id="selected_shipping_id" name="selected_shipping_id">
 				<?php foreach( $addresses as $address ) :?>
-					<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->name );?></option>
+					<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->street . ', ' . $address->city );?></option>
 				<?php endforeach;?>
 				</select>
 				<?php if ( $selected_shipping_address == 'Y' ) $this->showErrorMsg( 'shipping_country_id' );?>

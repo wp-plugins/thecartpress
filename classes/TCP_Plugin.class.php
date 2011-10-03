@@ -141,7 +141,15 @@ function tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart )
 	if ( $shoppingCart->isDownloadable() )
 		return array();
 	else
-		return tcp_get_applicable_plugins( $shipping_country, $shoppingCart );
+		$shipping_plugins = tcp_get_applicable_plugins( $shipping_country, $shoppingCart );
+		//FreeTrans
+		//var_dump( $shipping_plugins );
+		/*foreach( $shipping_plugins as $shipping_plugin )
+			if ( get_class( $shipping_plugin['plugin'] ) == 'FreeTrans' ) {
+				$shipping_plugins = array ( $shipping_plugin );
+				break;
+			}*/
+		return $shipping_plugins;
 }
 
 function tcp_get_applicable_payment_plugins( $shipping_country, $shoppingCart ) {

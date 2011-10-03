@@ -28,14 +28,36 @@ class TCP_CartSourceSession implements TCP_ICartSource {
 	private $see_other_costs;
 	private $see_address;
 	private $see_full;
+	private $see_thumbnail;
 	private $see_tax_summary;
 
-	function __construct( $is_editing_units = true, $see_other_costs = false, $see_address = false, $see_full = false, $see_tax_summary = false ) {
+	function __construct( $is_editing_units = true, $see_other_costs = false, $see_address = false, $see_full = false, $see_tax_summary = false, $see_thumbnail = true ) {
 		$this->is_editing_units	= $is_editing_units;
 		$this->see_other_costs	= $see_other_costs;
 		$this->see_address		= $see_address;
 		$this->see_full			= $see_full;
 		$this->see_tax_summary	= $see_tax_summary;
+		$this->see_thumbnail	= $see_thumbnail;
+	}
+
+	public function get_order_id() {
+		return false;
+	}
+
+	public function get_created_at() {
+			return false;
+	}
+
+	public function get_payment_method() {
+		return false;
+	}
+
+	public function get_shipping_method() {
+		return false;
+	}
+
+	public function get_status() {
+		return false;
 	}
 
 	public function see_other_costs() {
@@ -48,6 +70,10 @@ class TCP_CartSourceSession implements TCP_ICartSource {
 
 	public function see_full() {
 		return $this->see_full;
+	}
+
+	public function see_thumbnail() {
+		return $this->see_thumbnail;
 	}
 
 	public function see_tax_summary() {

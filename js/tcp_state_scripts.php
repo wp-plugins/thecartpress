@@ -21,7 +21,7 @@
 
 var countries = {
 	'CA': { //Canada
-		'AL' : 'Alberta', 'BC' : 'British Columbia', 'MA' : 'Manitoba', 'NB' : 'New Brunswick', 'NL' : 'Newfoundland and Labrador', 'NT' : 'Northwest Territories', 'NS' : 'Nova Scotia', 'NU' : 'Nunavut', 'ON' : 'Ontario', 'PE' : 'Prince Edward Island', 'QU' : 'Québec', 'SA' : 'Saskatchewan', 'YU' : 'Yukon'
+		'AB' : 'Alberta', 'BC' : 'British Columbia', 'MA' : 'Manitoba', 'NB' : 'New Brunswick', 'NL' : 'Newfoundland and Labrador', 'NT' : 'Northwest Territories', 'NS' : 'Nova Scotia', 'NU' : 'Nunavut', 'ON' : 'Ontario', 'PE' : 'Prince Edward Island', 'QU' : 'Québec', 'SA' : 'Saskatchewan', 'YU' : 'Yukon'
 	},
 	'ES' : { //Spain
 			'C' : 'La Coruña', 'VI' : 'Álava', 'AB' : 'Albacete', 'A' : 'Alicante', 'AL' : 'Almería', 'O' : 'Asturias',

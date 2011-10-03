@@ -92,9 +92,10 @@ class CommentsCustomPostTypeWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 				<option value=""<?php selected( '', $post_type ); ?>><?php _e( 'All', 'tcp' );?></option>
-			<?php foreach( get_post_types() as $post_type ) : 
-				if ( $post_type_item != 'tcp_product_option' ) : ?>
-				<option value="<?php echo $post_type;?>"<?php selected( $type, $post_type ); ?>><?php echo $post_type;?></option>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
+				if ( $post_type_item != 'tcp_product_option' ) : 
+					$obj_type = get_post_type_object( $post_type ); ?>
+				<option value="<?php echo $post_type;?>"<?php selected( $type, $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
 				<?php endif;?>
 			<?php endforeach; ?>
 			</select>

@@ -51,7 +51,8 @@ if ( isset( $_REQUEST['save_taxo'] ) ) {
 		$taxonomies[] = $taxo;
 		$taxonomy_id = end( array_keys( $taxonomies ) );
 	}
-	update_option( 'tcp-taxonomies-generator', $taxonomies );?>
+	update_option( 'tcp-taxonomies-generator', $taxonomies );
+	update_option( 'tcp_rewrite_rules', true ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Taxonomy saved', 'tcp' );?>
 	</p></div><?php
@@ -122,8 +123,8 @@ if ( $load_from_request ) {
 		</th>
 		<td>
 			<select name="post_type" id="post_type">
-			<?php foreach( get_post_types() as $type ) : ?>
-				<option value="<?php echo $type;?>"<?php selected( $post_type, $type ); ?>><?php echo $type;?></option>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $type ) : ?>
+				<option value="<?php echo $type->name; ?>"<?php selected( $post_type, $type->name ); ?>><?php echo $type->labels->name; ?></option>
 			<?php endforeach; ?>
 			</select>
 		</td>

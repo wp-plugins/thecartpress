@@ -2,26 +2,26 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
  * The loop that displays products in configurable GRID mode.
  *
- * @package WordPress
- * @subpackage Twenty_Ten_Ecommerce
- * @since Twenty Ten Ecommerce 1.0
+ * @package TheCartPRess
+ * @subpackage 
+ * @since 1.1.3
  */
 ?>
 <?php /* Display navigation to next/previous pages when applicable */ ?>
@@ -82,7 +82,7 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 <?php /* Start the Loop.*/ ?>
 
 <table class="tcp_products_list">
-<tr class="tcp_first-row"">
+<tr class="tcp_first-row">
 <?php 
 while ( have_posts() ) : the_post();
 	if ( $column == 0 ) : $column = $number_of_columns ?>
@@ -103,7 +103,6 @@ while ( have_posts() ) : the_post();
 				<?php tcp_posted_on(); ?> <?php tcp_posted_by(); ?>
 			</div><!-- .entry-meta -->
 			<?php endif; ?>
-		
 			<?php if ( $see_price ) :?>
 			<div class="entry-price">
 				<?php tcp_the_price_label();?>

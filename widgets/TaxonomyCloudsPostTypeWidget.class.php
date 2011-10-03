@@ -26,7 +26,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 			'width'		=> 300,
 			'id_base'	=> 'taxonomycloudsposttype-widget',
 		);
-		$this->WP_Widget( 'taxonomycloudsposttype-widget', 'TCP Taxonomy clouds', $widget, $control );
+		$this->WP_Widget( 'taxonomycloudsposttype-widget', 'TCP Navigation Cloud', $widget, $control );
 	}
 
 	function widget( $args, $instance ) {
@@ -73,7 +73,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'			=> 'Taxonomy clouds',
+			'title'			=> 'Navigation clouds',
 			'min_size'		=> 8,
 			'max_size'		=> 22,
 			'size_units'	=> 'pt',
@@ -90,9 +90,10 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types() as $post_type ) : 
-				if ( $post_type != 'tcp_product_option' ) : ?>
-				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $post_type;?></option>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
+				if ( $post_type != 'tcp_product_option' ) : 
+					$obj_type = get_post_type_object( $post_type ); ?>
+				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
 				<?php endif;?>
 			<?php endforeach; ?>
 			</select>

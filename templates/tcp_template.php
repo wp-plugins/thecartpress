@@ -719,7 +719,7 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 	return RelEntities::getParents( $post_id, $rel_type );
 }
 
-function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
+/*function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$image = get_the_post_thumbnail( $post_id, $size );
 	if ( ! $image ) {
@@ -727,17 +727,33 @@ function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
 		$image = get_the_post_thumbnail( $post_id, $size );
 	}
 	return $image;
-}
-
-/*function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = array( 32, 32 ) ) {
-	$id = $post_id;
-	if ( $option_2_id > 0 ) {
-		$id = $option_2_id;
-	} elseif ( $option_1_id > 0 ) {
-		$id = $option_1_id;
-	}
-	return get_the_post_thumbnail( $id, $size );
 }*/
+
+function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
+	$image = '';
+	if ( $option_2_id > 0 ) {
+		$image = get_the_post_thumbnail( $option_2_id, $size );
+		if ( strlen( $image ) == 0 ) {
+			$option_2_id = tcp_get_default_id( $option_2_id, get_post_type( $option_2_id ) );
+			$image = get_the_post_thumbnail( $option_2_id, $size );
+		}
+	}
+	if ( strlen( $image ) == 0 && $option_1_id > 0 ) {
+		$image = get_the_post_thumbnail( $option_1_id, $size );
+		if ( strlen( $image ) == 0 ) {
+			$option_1_id = tcp_get_default_id( $option_1_id, get_post_type( $option_1_id ) );
+			$image = get_the_post_thumbnail( $option_1_id, $size );
+		}
+	}
+	if ( strlen( $image ) == 0 && $post_id > 0 ) {
+		$image = get_the_post_thumbnail( $post_id, $size );
+		if ( strlen( $image ) == 0 ) {
+			$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+			$image = get_the_post_thumbnail( $post_id, $size );
+		}
+	}
+	return $image;
+}
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
 	$meta_value = tcp_get_the_meta( $meta_key );
@@ -787,33 +803,33 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 //
 function tcp_get_order_status() {
 	$status_list = array(
-		array(
+		Orders::$ORDER_PENDING		=> array(
 			'name'	=> Orders::$ORDER_PENDING,
 			'label'	=>__( 'Pending', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
 		),
-		array(
+		Orders::$ORDER_PROCESSING	=> array(
 			'name'	=> Orders::$ORDER_PROCESSING,
 			'label'	=>__( 'Processing', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
 		),
-		array(
+		Orders::$ORDER_COMPLETED	=> array(
 			'name'	=> Orders::$ORDER_COMPLETED,
 			'label'	=>__( 'Completed', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
 			'is_completed'			=> true,
 		),
-		array(
+		Orders::$ORDER_CANCELLED	=> array(
 			'name'	=> Orders::$ORDER_CANCELLED,
 			'label'	=>__( 'Cancelled', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> true,
 			'is_cancelled'			=> true,
 		),
-		array(
+		Orders::$ORDER_SUSPENDED	=> array(
 			'name'	=> Orders::$ORDER_SUSPENDED,
 			'label'	=>__( 'Suspended', 'tcp' ),
 			'show_in_dashboard'		=> true,
@@ -825,9 +841,8 @@ function tcp_get_order_status() {
 
 function tcp_is_order_status_valid_for_deleting( $status ) {
 	$status_list = tcp_get_order_status();
-	foreach( $status_list as $s )
-		if ( $s['name'] == $status && isset( $s['valid_for_deleting'] ) && $s['valid_for_deleting'] )
-			return true;
+	if ( isset( $status_list[$status] ) && isset( $status_list[$status]['valid_for_deleting'] ) && $status_list[$status]['valid_for_deleting'] )
+		return true;
 	return false;
 }
 

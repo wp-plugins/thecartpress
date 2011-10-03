@@ -33,7 +33,7 @@ if ( isset( $_REQUEST['tcp_create_relation'] ) ) {
 	$list_order = isset( $_REQUEST['list_order'] ) ? (int)$_REQUEST['list_order'] : 0;
 	if ( $post_id_to > 0 ) {
 		$meta_value = array( 'units' => $units );
-		$meta_value = apply_filters( 'tcp_create_assigned_relation', $post_id, $post_id_to, $meta_value );
+		$meta_value = apply_filters( 'tcp_create_assigned_relation', $meta_value, $post_id, $post_id_to );
 		RelEntities::insert( $post_id, $post_id_to, $rel_type, $list_order, $meta_value );?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'The relation has been created', 'tcp' );?>
@@ -57,7 +57,7 @@ if ( isset( $_REQUEST['tcp_create_relation'] ) ) {
 	$list_order = isset( $_REQUEST['list_order'] ) ? $_REQUEST['list_order'] : 0;
 	$units = isset( $_REQUEST['units'] ) ? $_REQUEST['units'] : 0;
 	$meta_value = array( 'units' => $units );
-	$meta_value = apply_filters( 'tcp_modify_assigned_relation', $post_id, $post_id_to, $meta_value );
+	$meta_value = apply_filters( 'tcp_modify_assigned_relation', $meta_value, $post_id, $post_id_to );
 	RelEntities::update( $post_id, $post_id_to, $rel_type, $list_order, $meta_value );?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'The relation has been modified', 'tcp' );?>
@@ -129,9 +129,14 @@ if ( $post_id ) :
 			$meta_value = unserialize( $assigned->meta_value );
 			$units = isset( $meta_value['units'] )	? $meta_value['units'] : 0; ?>
 			<tr>
-			<td><a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>" title="<?php _e( 'edit product', 'tcp_po' ); ?>"><?php echo get_the_post_thumbnail( $assigned_post->ID, array( '50', '50' ) ); ?></a></td>
-			<td><a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>" title="<?php _e( 'edit product', 'tcp_po' ); ?>"><?php echo $assigned_post->post_title;?></a></td>
-			<?php if ( tcp_is_saleable_post_type( $product_type ) ) :?><td><?php echo tcp_get_the_price_label( $assigned->id_to );?></td><?php endif;?>
+			<td><a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo get_the_post_thumbnail( $assigned_post->ID, array( '50', '50' ) ); ?></a></td>
+			<td><a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php
+				$title = $assigned_post->post_title;
+				echo apply_filters( 'tcp_assigned_product_list_title', $title, $assigned_post->ID ); ?></a></td>
+			<?php if ( tcp_is_saleable_post_type( $product_type ) ) : ?>
+				<td><?php $price = tcp_get_the_price_label( $assigned->id_to );
+				echo apply_filters( 'tcp_assigned_product_list_price', $price, $post_id, $assigned->id_to ); ?></td>
+			<?php endif;?>
 			<td><?php if ( $show_back_end_label ) echo get_post_meta( $assigned->id_to, 'tcp_back_end_label', true );
 				else echo $assigned_post->post_excerpt;?></td>
 			<td class="tcp_meta_value">
@@ -139,7 +144,7 @@ if ( $post_id ) :
 					<a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>"><?php _e( 'edit product', 'tcp' );?></a>
 					&nbsp;|&nbsp;
 					<label for="list_order"><?php echo _x( 'Order', 'to sort the list', 'tcp' );?>:&nbsp;</label><input type="text" name="list_order" id="list_order" size="2" maxlength="4" value="<?php echo $assigned->list_order;?>"/>
-					<label for="units"><?php _e( 'Units', 'tcp' );?>:&nbsp;</label><input type="text" name="units" id="units" size="2" maxlength="4" value="<?php echo $units;?>"/>
+					<label for="units"><?php _e( 'Units', 'tcp' );?>:&nbsp;</label><input type="text" name="units" id="units" size="2" maxlength="4" value="<?php echo $units; ?>"/>
 					<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, $assigned->id_to, $meta_value ); ?>
 					<input type="submit" name="tcp_modify_relation" id="tcp_modify_relation" value="<?php _e( 'modify', 'tcp' );?>" class="button-secondary"/>
 					&nbsp;|&nbsp;
@@ -185,10 +190,10 @@ if ( $post_id ) :
 				<?php endforeach; ?>
 				</select>
 				<?php if ( tcp_is_saleable_post_type( $post_type_to ) ) : ?>
-				<label for="product_type">Products type:</label>
+				<label for="product_type"><?php _e( 'Products type', 'tcp' ); ?>:</label>
 				<?php tcp_html_select( 'product_type', tcp_get_product_types( true ), $product_type );
 				endif;?>
-				<input id="tcp_filter_product_type" name="tcp_filter_product_type" value="<?php _e( 'filter', 'tcp' ); ?>" type="submit">
+				<input id="tcp_filter_product_type" name="tcp_filter_product_type" value="<?php _e( 'filter', 'tcp' ); ?>" type="submit" />
 			</p><!-- search-box -->
 		</form>
 	</div><!-- wrap -->
@@ -235,8 +240,8 @@ if ( $post_id ) :
 		if ( $query->have_posts() ) :
 			while ( $query->have_posts() ) : $query->the_post();?>
 				<tr>
-				<td><a href="post.php?action=edit&post=<?php the_ID();?>" title="<?php _e( 'edit product', 'tcp_po' ); ?>"><?php echo get_the_post_thumbnail( get_the_ID(), array( '50', '50' ) ); ?></a></td>
-				<td><a href="post.php?action=edit&post=<?php the_ID();?>" title="<?php _e( 'edit product', 'tcp_po' ); ?>"><?php the_title();?></a></td>
+				<td><a href="post.php?action=edit&post=<?php the_ID();?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo get_the_post_thumbnail( get_the_ID(), array( '50', '50' ) ); ?></a></td>
+				<td><a href="post.php?action=edit&post=<?php the_ID();?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo get_the_title(); ?></a></td>
 				<td><?php tcp_the_price();?></td>
 				<td><?php if ( $show_back_end_label ) echo get_post_meta( get_the_ID(), 'tcp_back_end_label', true );
 				else the_excerpt();?></td>
@@ -253,7 +258,7 @@ if ( $post_id ) :
 						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
 						| <label for="list_order"><?php _e( 'Order', 'tcp' );?>:&nbsp;</label><input type="text" name="list_order" id="list_order" size="2" maxlength="4" value="0"/>
 						<label for="units"><?php _e( 'units', 'tcp' );?>:&nbsp;</label><input id="units" name="units" value="1" size="2" maxlength="3" type="text" />
-						<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, $post_type_to ); ?>
+						<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, get_the_ID() ); ?>
 						<a href="javascript:document.frm_create_relation_<?php the_ID();?>.submit();"><?php _e( 'assign' , 'tcp' );?></a>
 					</form>
 				</div>

@@ -58,8 +58,9 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	<th scope="row"><label for="post_type"><?php _e( 'Post type', 'tcp' )?>:</label></th>
 	<td>
 		<select name="post_type" id="post_type">
-		<?php foreach( tcp_get_saleable_post_types() as $pt ) :?>
-			<option value="<?php echo $pt;?>"<?php selected( $post_type, $pt ); ?>><?php echo $pt;?></option>
+		<?php foreach( tcp_get_saleable_post_types() as $pt ) :
+			$obj_type = get_post_type_object( $pt ); ?>
+			<option value="<?php echo $pt;?>"<?php selected( $post_type, $pt ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
 		<?php endforeach;?>
 		</select>
 		<input type="submit" name="tcp_load_taxonomies" value="<?php _e( 'Load taxonomies', 'tcp' );?>" class="button-secondary"/>

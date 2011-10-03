@@ -27,12 +27,8 @@ class OrdersSummaryDashboard {
 			global $current_user;
 			get_currentuserinfo();
 			$customer_id = $current_user->ID;
-		}	
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';?>
-<div class="alignright browser-icon">
-	<a href="http://thecartpress.com/" target="_blank" title="<?php _e( 'link to TheCartPress site', 'tcp'); ?>"><img alt="" src="../wp-content/plugins/thecartpress/images/tcp_logo.png"></a>
-</div>
-
+		}
+		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/'; ?>
 <div class="table table_content">
 	<table width="100%"><tbody>
 	<?php $order_status_list = tcp_get_order_status();
@@ -45,10 +41,48 @@ class OrdersSummaryDashboard {
 		<?php endif;
 	endforeach; ?>
 	</tbody></table>
-	<hr style="color: white;">
+</div>
+<div class="table_last_orders">
+<h4><?php _e( 'Latest orders', 'tcp' ); ?></h4>
+	<?php
+	if ( current_user_can( 'tcp_edit_orders' ) ) {
+		$orders = Orders::getLastOrders();
+	} else {
+		$current_user = wp_get_current_user();
+		$orders = Orders::getLastOrders( 10, '', $current_user->ID );
+	}
+	if ( is_array( $orders ) && count ( $orders ) > 0 ) : 
+		$all_status = tcp_get_order_status(); ?>
+		<table class="last_orders" width="100%">
+		<thead>
+		<th><?php _e( 'Id', 'tcp' ); ?></th>
+		<th><?php _e( 'Date', 'tcp' ); ?></th>
+		<th><?php _e( 'Customer', 'tcp' ); ?></th>
+		<th><?php _e( 'Status', 'tcp' ); ?></th>
+		<th><?php _e( 'Total', 'tcp' ); ?></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php 
+		$alternate = true;
+		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
+		foreach( $orders as $order ) : ?>
+			<tr class="tcp_status_<?php echo $order->status; ?><?php if ( $alternate ) : ?> tcp_alternate<?php endif; $alternate = ! $alternate;?>">
+			<td class="tcp_id"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo $order->order_id; ?></a></td>
+			<td class="tcp_date"><?php echo date( 'M d' , strtotime( $order->created_at) ); ?></td>
+			<td class="tcp_email"><?php echo $order->billing_email; ?></td>
+			<td class="tcp_status"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo isset( $all_status[$order->status]['label'] ) ? $all_status[$order->status]['label'] : '&nbsp;'; ?></a></td>
+			<td class="tcp_price"><?php echo tcp_format_the_price( Orders::getTotal( $order->order_id ) ); ?></td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php endif; ?>
+</div>
+<div class="tcp_dashboard_links">
 	<p><a class="tcp_link_to_tcp" href="http://thecartpress.com/" target="_blank" title="<?php _e( 'link to TheCartPress site', 'tcp'); ?>"><?php _e( 'Visit TheCartPress site', 'tcp'); ?></a>
 	| <a class="tcp_link_to_tcp" href="http://community.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress community', 'tcp'); ?>"><?php _e( 'Visit TheCartPress community', 'tcp'); ?></a></p>
-</div><?php
-	}
+</div>
+	<?php }
 }
 ?>

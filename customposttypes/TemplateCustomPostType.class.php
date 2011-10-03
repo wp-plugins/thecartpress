@@ -17,7 +17,8 @@
  */
 
 /**
- * This class defines the post type 'tcp_notice'.
+ * Notices, emails, adverstisment
+ * This class defines the post type 'tcp_template'.
  */
 class TemplateCustomPostType {
 	public static $TEMPLATE = 'tcp_template';
@@ -45,6 +46,7 @@ class TemplateCustomPostType {
 			'show_ui'			=> true,
 			'show_in_menu'		=> false,
 			'can_export'		=> true,
+			'show_in_nav_menus'	=> false,
 			'_builtin'			=> false, // It's a custom post type, not built in! (http://kovshenin.com/archives/extending-custom-post-types-in-wordpress-3-0/)
 			'_edit_link'		=> 'post.php?post=%d',
 			'capability_type'	=> 'post',

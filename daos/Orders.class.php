@@ -281,7 +281,7 @@ class Orders {
 			array(
 				'order_id'		=> $order_id,
 			), 
-			array( '%s', '%s', '%s', '%s' ), array( '%d' ) );
+			array( '%s', '%s', '%s', '%s', ), array( '%d' ) );
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
@@ -367,5 +367,56 @@ class Orders {
 	static function removeSpaces( $postcode ) {
 		return str_replace( ' ', '', $postcode );
 	}
+
+	/**
+	 * Returns the lastest orders
+	 */
+	static function getLastOrders( $limit = 5, $status = '', $customer_id = -1 ) {
+		global $wpdb;
+		$sql = 'select order_id, billing_firstname,
+				billing_lastname, created_at, customer_id, status, billing_email, billing_country
+				from ' . $wpdb->prefix . 'tcp_orders';
+		if ( strlen( $status ) > 0 ) {
+			if ( $customer_id > -1 ) {
+				$sql = $sql . $wpdb->prepare( ' where status = %s and customer_id = %d', $status, $customer_id );
+			} else {
+				$sql = $sql . $wpdb->prepare( ' where status = %s', $status );
+			}
+		} elseif ( $customer_id > -1 ) {
+			$sql = $sql . $wpdb->prepare( ' where customer_id = %d', $customer_id );
+		}
+		$sql = $sql . $wpdb->prepare(' order by created_at desc limit 0, %d', $limit );
+		return $wpdb->get_results( $sql );
+	}
+
+	/**
+	 * Author: Joy Reynolds and TheCartPress team
+	 */
+	static function getCounts( $status = '', $days_prev = 7, $customer_id = -1 ) {
+		global $wpdb;
+
+		$sql = 'SELECT DATE(created_at) AS thedate, SUM(payment_amount) AS sales, SUM(1) AS count FROM ' . $wpdb->prefix . 'tcp_orders';
+		$sql .= ' WHERE DATE_SUB( NOW(), INTERVAL %d DAY)  <= created_at';
+		if ( $status != '' ) $sql .= $wpdb->prepare( ' AND status = %s', $status );
+		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' AND customer_id = %d', $customer_id );
+		$sql .= ' GROUP BY DATE(created_at)';
+		$sql = $wpdb->prepare( $sql, $days_prev );
+		return $wpdb->get_results( $sql );
+	}
+
+	static function getAmountByDay( $date, $status = '' ) {
+		global $wpdb;
+		
+		$tomorrow = date( 'Y-m-d', strtotime( $date . ' +1 day' ) );
+		$sql = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'tcp_orders where created_at > %s and created_at < %s', $date, $tomorrow );
+		if ( $status != '' ) $sql .= $wpdb->prepare( ' AND status = %s', $status );
+		$orders = $wpdb->get_results( $sql );
+		$amount = 0;
+		foreach( $orders as $order ) {
+			$amount += Orders::getTotal( $order->order_id );
+		}
+		return $amount;
+	}
+
 }
 ?>

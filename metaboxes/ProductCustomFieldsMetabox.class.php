@@ -76,7 +76,7 @@ class ProductCustomFieldsMetabox {
 			if ( is_array( $parents ) && count( $parents ) > 0 ) :
 				$parent = $parents[0]->id_from; ?>aaaa
 				<li>|</li>
-				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED;"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
+				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
 			<?php endif;
 		elseif ( 'GROUPED' == $product_type ) :
 			$count = RelEntities::count( $post_id );

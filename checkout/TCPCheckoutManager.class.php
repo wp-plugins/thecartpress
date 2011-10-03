@@ -497,11 +497,11 @@ class TCPCheckoutManager {
 			$instance = $pmi[1];
 			$payment_method = new $class();
 			do_action( 'tcp_checkout_calculate_other_costs' );
-			$html .= '<p class="tcp_pay_form">';
+			$html .= '<div class="tcp_pay_form">';
 			ob_start();
 			$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id );
 			$html .= ob_get_clean();
-			$html .= '</p>';
+			$html .= '</div>';
 		}
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;

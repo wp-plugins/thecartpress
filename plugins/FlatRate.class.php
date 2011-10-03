@@ -33,32 +33,43 @@ class FlatRateShipping extends TCP_Plugin {
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data ) {
+		$calculate_by = isset( $data['calculate_by'] ) ? $data['calculate_by'] : 'per'; ?>
 		<tr valign="top">
 		<th scope="row">
 			<label for="calculate_by"><?php _e( 'Calculate', 'tcp' );?>:</label>
 		</th><td>
-			<select id="calculate_by" name="calculate_by">
-				<option value="per" <?php selected( 'per', isset( $data['calculate_by'] ) ? $data['calculate_by'] : '' );?>><?php _e( 'Percentage', 'tcp' );?></option>
-				<option value="fix" <?php selected( 'fix', isset( $data['calculate_by'] ) ? $data['calculate_by'] : '' );?>><?php _e( 'Fix', 'tcp' );?></option>
+		<?php $script = 'if ( jQuery(this).val() == \'fix\' ) {
+			jQuery(\'.tcp_fixed_cost\').show();
+			jQuery(\'.tcp_type\').show();
+			jQuery(\'.tcp_percentage\').hide();
+		} else {
+			jQuery(\'.tcp_fixed_cost\').hide();
+			jQuery(\'.tcp_type\').hide();
+			jQuery(\'.tcp_percentage\').show();
+		}';
+		?>
+			<select id="calculate_by" name="calculate_by" onchange="<?php echo $script; ?>">
+				<option value="per" <?php selected( 'per', $calculate_by );?>><?php _e( 'Percentage', 'tcp' );?></option>
+				<option value="fix" <?php selected( 'fix', $calculate_by );?>><?php _e( 'Fix', 'tcp' );?></option>
 			</select>
 		</td></tr>
 
-		<tr valign="top">
+		<tr valign="top" class="tcp_fixed_cost" <?php if ( $calculate_by == 'per' ) : ?>style="display: none;"<?php endif; ?> >
 		<th scope="row">
 			<label for="fixed_cost"><?php _e( 'Fixed cost', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="fixed_cost" name="fixed_cost" value="<?php echo isset( $data['fixed_cost'] ) ? $data['fixed_cost'] : 0;?>" size="8" maxlength="13"/><?php tcp_the_currency();?>
 		</td></tr>
 
-		<tr valign="top">
+		<tr valign="top" class="tcp_percentage" <?php if ( $calculate_by == 'fix' ) : ?>style="display: none;"<?php endif; ?>>
 		<th scope="row">
 			<label for="percentage"><?php _e( 'Percentage', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="percentage" name="percentage" value="<?php echo isset( $data['percentage'] ) ? $data['percentage'] : 0;?>" size="3" maxlength="5"/>%
 		</td></tr>
 
-		<tr valign="top">
+		<tr valign="top" class="tcp_type" <?php if ( $calculate_by == 'per' ) : ?>style="display: none;"<?php endif; ?>>
 		<th scope="row">
 			<label for="calculate_type"><?php _e( 'Type', 'tcp' );?>:</label>
 		</th><td>

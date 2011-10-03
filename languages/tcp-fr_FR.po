@@ -4584,6 +4584,382 @@ msgstr "Après avoir sauvegardé le titre et le contenu, vous pourrez éditer ce
 msgid "Notice points"
 msgstr "Avertissement"
 
+#: ProductOptionsForTheCartPress.class.php:66
+msgid "Options type"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:73
+msgid "Single"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:75
+msgid "Double"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:80
+msgid "list of Options"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:89
+#: ProductOptionsForTheCartPress.class.php:100
+#: ProductOptionsForTheCartPress.class.php:109
+#: customposttypes/OptionCustomPostType.class.php:55
+msgid "options"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:218
+#: ProductOptionsForTheCartPress.class.php:295
+msgid "Apply to options"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:343
+#: ProductOptionsForTheCartPress.class.php:344
+#: ProductOptionsForTheCartPress.class.php:365
+#: ProductOptionsForTheCartPress.class.php:366
+msgid "units"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:345
+#: ProductOptionsForTheCartPress.class.php:367
+msgid "no stock"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:401
+#: ProductOptionsForTheCartPress.class.php:440
+#, php-format
+msgctxt "min_price to max_price"
+msgid "%s to %s"
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:475
+#: ProductOptionsForTheCartPress.class.php:484
+msgid "<strong>Product Options for TheCartPress</strong> requires TheCartPress plugin is activated."
+msgstr ""
+
+#: ProductOptionsForTheCartPress.class.php:476
+msgid "The plugin has been <strong>deactivated</strong>"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:24
+msgid "Option Custom Fields"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:40
+msgid "After saving the title and content, you will be able to edit the specific fields of the option."
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:60
+#: metaboxes/OptionCustomFieldsMetabox.class.php:63
+#, php-format
+msgid "return to %s"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:66
+msgid "return to Options list"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:68
+msgid "create a new 'sister' option"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:68
+#: admin/OptionsList.php:171
+msgid "create new option"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:71
+msgid "create a new second level option"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:71
+#: admin/OptionsList.php:262
+msgid "create child option"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:83
+msgid "Price"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:86
+msgid "This price will be added to the price of the parent."
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:89
+msgid "Weight"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:92
+msgid "If value is zero then the weight will be the weight of the parent. This weight will not be added to the weight of the parent anyway."
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:95
+msgid "Order"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:99
+msgid "Sku"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:103
+msgid "Stock"
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:106
+#, php-format
+msgid "Stock management is disabled. See the <a href=\"%s\">settings</a> page to change this value."
+msgstr ""
+
+#: metaboxes/OptionCustomFieldsMetabox.class.php:109
+msgid "Use value -1 (or left blank) for stores/products with no stock management."
+msgstr ""
+
+#: admin/OptionsList.php:73
+msgid "Relation created"
+msgstr ""
+
+#: admin/OptionsList.php:87
+msgid "Relation deleted"
+msgstr ""
+
+#: admin/OptionsList.php:103
+msgid "Children deleted"
+msgstr ""
+
+#: admin/OptionsList.php:118
+msgid "Options copied"
+msgstr ""
+
+#: admin/OptionsList.php:132
+msgid "Options created"
+msgstr ""
+
+#: admin/OptionsList.php:146
+msgid "Price and Order updated"
+msgstr ""
+
+#: admin/OptionsList.php:167
+msgid "Options for"
+msgstr ""
+
+#: admin/OptionsList.php:169
+msgid "return to the product"
+msgstr ""
+
+#: admin/OptionsList.php:178
+#: admin/OptionsPostsList.php:56
+msgid "Category"
+msgstr ""
+
+#: admin/OptionsList.php:180
+#: admin/OptionsPostsList.php:58
+msgid "no one selected"
+msgstr ""
+
+#: admin/OptionsList.php:186
+msgid "filter"
+msgstr ""
+
+#: admin/OptionsList.php:188
+msgid "product"
+msgstr ""
+
+#: admin/OptionsList.php:203
+msgid "Please, filter first a category"
+msgstr ""
+
+#: admin/OptionsList.php:206
+msgid "copy"
+msgstr ""
+
+#: admin/OptionsList.php:211
+#: admin/OptionsList.php:351
+msgid "modify all"
+msgstr ""
+
+#: admin/OptionsList.php:215
+#: admin/OptionsList.php:225
+#: customposttypes/OptionCustomPostType.class.php:42
+msgid "Option"
+msgstr ""
+
+#: admin/OptionsList.php:216
+#: admin/OptionsList.php:226
+msgid "Description"
+msgstr ""
+
+#: admin/OptionsList.php:217
+#: admin/OptionsList.php:227
+msgid "Status"
+msgstr ""
+
+#: admin/OptionsList.php:218
+#: admin/OptionsList.php:228
+msgid "Price and order"
+msgstr ""
+
+#: admin/OptionsList.php:249
+#: admin/OptionsList.php:317
+msgctxt "to sort lists"
+msgid "Order"
+msgstr ""
+
+#: admin/OptionsList.php:250
+#: admin/OptionsList.php:318
+msgid "modify"
+msgstr ""
+
+#: admin/OptionsList.php:254
+#: admin/OptionsList.php:323
+msgid "edit option"
+msgstr ""
+
+#: admin/OptionsList.php:257
+#: admin/OptionsList.php:326
+msgid "delete option"
+msgstr ""
+
+#: admin/OptionsList.php:259
+msgid "delete children"
+msgstr ""
+
+#: admin/OptionsList.php:269
+msgid "copy from"
+msgstr ""
+
+#: admin/OptionsList.php:287
+msgid "Do you really want to delete this option?"
+msgstr ""
+
+#: admin/OptionsList.php:288
+#: admin/OptionsList.php:299
+#: admin/OptionsList.php:334
+msgid "Yes"
+msgstr ""
+
+#: admin/OptionsList.php:289
+#: admin/OptionsList.php:300
+#: admin/OptionsList.php:335
+msgid "No, I don't"
+msgstr ""
+
+#: admin/OptionsList.php:298
+msgid "Do you really want to delete those children?"
+msgstr ""
+
+#: admin/OptionsList.php:333
+msgid "Do you really want to delete the option?"
+msgstr ""
+
+#: admin/OptionsList.php:346
+msgid "The options list is empty"
+msgstr ""
+
+#: admin/OptionsPostsList.php:35
+msgid "Options Posts Update"
+msgstr ""
+
+#: admin/OptionsPostsList.php:40
+msgid "Post type"
+msgstr ""
+
+#: admin/OptionsPostsList.php:47
+msgid "Load taxonomies"
+msgstr ""
+
+#: admin/OptionsPostsList.php:49
+msgid "Taxonomy"
+msgstr ""
+
+#: admin/OptionsPostsList.php:55
+msgid "Load categories"
+msgstr ""
+
+#: admin/OptionsPostsList.php:65
+msgid "Search"
+msgstr ""
+
+#: admin/OptionsPostsList.php:88
+msgid "No change"
+msgstr ""
+
+#: admin/OptionsPostsList.php:113
+msgid "Updated"
+msgstr ""
+
+#: admin/OptionsPostsList.php:115
+#: admin/OptionsPostsList.php:155
+msgid "Update"
+msgstr ""
+
+#: admin/OptionsPostsList.php:120
+#: admin/OptionsPostsList.php:127
+msgid "Title"
+msgstr ""
+
+#: admin/OptionsPostsList.php:121
+#: admin/OptionsPostsList.php:128
+msgid "Label"
+msgstr ""
+
+#: admin/OptionsPostsList.php:140
+msgid "No create options"
+msgstr ""
+
+#: admin/OptionsPostsList.php:143
+msgid "Copy to all"
+msgstr ""
+
+#: admin/OptionsPostsList.php:152
+msgid "No products to update"
+msgstr ""
+
+#: admin/OptionsPostsList.php:158
+msgid "First, you must perform a search:"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:28
+msgctxt "post type general name"
+msgid "Options"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:29
+msgctxt "post type singular name"
+msgid "Options"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:30
+#: customposttypes/OptionCustomPostType.class.php:31
+msgid "Add New Option"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:32
+msgid "Edit Option"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:33
+msgid "New Option"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:34
+msgid "View Option"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:35
+msgid "Search Options"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:36
+msgid "No options found"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:37
+msgid "No options found in Trash"
+msgstr ""
+
+#: customposttypes/OptionCustomPostType.class.php:41
+msgid "Options"
+msgstr ""
+
 #, fuzzy
 #~ msgid "size"
 #~ msgstr "Taille min."

@@ -17,6 +17,7 @@
  */
 
 function tcp_create_id( $post_type, $label ) {
+	//$internal_id = 'tcp_' . str_replace ( ' ' , '_' , $label );
 	$internal_id = 'tcp_' . str_replace ( ' ' , '_' , $label );
 	$i = 0;
 	while ( tcp_exists_custom_field_def( $post_type, $internal_id ) ) {
@@ -82,11 +83,9 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 <form method="post">
 <label><?php _e( 'Post type', 'tcp');?></label>: 
 <select name="post_type" id="post_type">
-<?php foreach( get_post_types() as $type ) :
-	//if ( $type != 'tcp_product_option' ) :?>
-	<option value="<?php echo $type;?>"<?php selected( $post_type, $type ); ?>><?php echo $type;?></option>
-	<?php //endif;
-endforeach;?>
+<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $type ) : ?>
+	<option value="<?php echo $type->name;?>"<?php selected( $post_type, $type->name ); ?>><?php echo $type->labels->name; ?></option>
+<?php endforeach;?>
 </select>
 <input type="submit" id="tcp_filter" name="tcp_filter" value="<?php _e( 'filter', 'tcp' );?>" class="button-secondary"/>
 </form>
