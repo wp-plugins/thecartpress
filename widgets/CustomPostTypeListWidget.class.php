@@ -469,7 +469,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 					$files[] = $file;
 				endif;?>
 			<?php endwhile; closedir( $handle );
-			
+
 			$folder = get_template_directory();
 			if ( STYLESHEETPATH != $folder )
 				if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
