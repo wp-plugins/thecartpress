@@ -256,6 +256,7 @@ class TCP_LoopsSettings {
 
 	function template_include( $template ) {
 		global $wp_query;
+
 		if ( isset( $wp_query->tax_query ) ) {
 			foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
