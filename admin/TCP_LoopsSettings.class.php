@@ -25,7 +25,7 @@ class TCP_LoopsSettings {
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			}
-		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
+		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] == 'yes' ) {
 			add_filter( 'template_include', array( $this, 'template_include' ) );
 		}
 	}
