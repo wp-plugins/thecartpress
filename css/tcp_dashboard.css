@@ -34,7 +34,7 @@ div#tcp_sales_chart h3 {
 	line-height:2em;
 	color: #5e6b7c;
 	text-shadow: 0 1px 0 #FFFFFF;
-	padding 0 0 0 .625em;
+	padding: 0 0 0 .625em;
 	font-family: sans-serif;
 }
 .last_orders {
