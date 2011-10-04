@@ -65,7 +65,7 @@ class ProductCustomPostType {
 			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 			$post_types = tcp_get_saleable_post_types();
 			foreach( $post_types as $post_type ) {
-				add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'customColumnsDefinition' ) );
+				add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'custom_columns_definition' ) );
 			}
 		}
 		$labels = array(
@@ -112,7 +112,7 @@ class ProductCustomPostType {
 		) );
 
 		if ( is_admin() ) {
-			add_action( 'manage_posts_custom_column', array( $this, 'managePostCustomColumns' ) );
+			add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ) );
 			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
 			add_filter( 'parse_query', array( $this, 'parseQuery' ) ); //TODO 3.1
 			//for quick edit
@@ -179,7 +179,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 	/**
 	 * Custom definition for the products list
 	 */
-	function customColumnsDefinition( $columns ) {
+	function custom_columns_definition( $columns ) {
 		$columns = array(
 			'cb'			=> '<input type="checkbox" />',
 			'thumbnail'		=> __( 'Thumbnail', 'tcp' ),
@@ -194,13 +194,13 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 		global $thecartpress;
 		$show_back_end_label = isset( $thecartpress->settings['show_back_end_label'] ) ? $thecartpress->settings['show_back_end_label'] : false;
 		if ( ! $show_back_end_label ) unset( $columns['label'] );
-		return $columns;
+		return apply_filters( 'tcp_custom_columns_definition', $columns );
 	}
 
 	/**
 	 * Prints the custom fields values in the products list
 	 */
-	function managePostCustomColumns( $column_name ) {
+	function manage_posts_custom_column( $column_name ) {
 		global $post;
 		if ( tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( 'ID' == $column_name ) {
@@ -262,6 +262,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 				} else if ( $stock < 10 ) $stock = sprintf( '<span style="color: red">%s</span>', $stock );
 				echo $stock;
 			}
+			do_action( 'tcp_manage_posts_custom_column', $column_name, $post );
 		}
 	}
 
