@@ -36,6 +36,8 @@ class ShippingCost extends TCP_Plugin {
 	}
 
 	function showEditFields( $data ) {
+		add_action( 'admin_footer', 'tcp_states_footer_scripts' );
+
 		$stored_data = isset( $data['costs'] );
 		$ranges = isset( $data['ranges'] ) ? $data['ranges'] : array( 10, 20 );
 		$zones = isset( $data['zones'] ) ? $data['zones'] : array(
@@ -58,7 +60,6 @@ class ShippingCost extends TCP_Plugin {
 //echo '<br><br>zones: ';var_dump( $zones );
 //echo '<br><br>costs: ';var_dump( $costs );
 //echo '<br><br>ranges: ';var_dump( $ranges );
-		$data = array();
 		if ( isset( $_REQUEST['tcp_copy_from_instance'] ) ) {
 			$plugin_data = get_option( 'tcp_plugins_data_shi_' . get_class( $this ) );
 			$data = reset( $plugin_data );
@@ -267,8 +268,7 @@ class ShippingCost extends TCP_Plugin {
 				<?php endif;?>
 			</td>
 		<?php endforeach;?>
-<?php //do_action( 'tcp_states_loading' );
-if ( count( $data['countries'] ) == 1 ) :
+<?php if ( count( $data['countries'] ) == 1 ) :
 	$zones_states = $data['zones'];?>
 <script>
 jQuery(document).ready(function() {
