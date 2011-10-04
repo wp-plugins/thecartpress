@@ -149,12 +149,14 @@ class TCPCardOffLine extends TCP_Plugin {
 		function tcp_checkCard() {
 			var errors = 0;
 			jQuery(".error").hide();
+			<?php if ( ! $store_part_number ) : ?>
 			var card_number = jQuery('#card_number_1').val() + "" + jQuery('#card_number_2').val() + "" + jQuery('#card_number_3').val() + "" + jQuery('#card_number_4').val();
 			if ( ! card_number.luhnCheck() ) {
 				jQuery("#tcp_error_offline").html("<?php _e( 'Wrong Card number', 'tcp' );?>");
 				jQuery("#tcp_error_offline").show();
 				errors++;
 			}
+			<?php endif; ?>
 			if ( jQuery('#card_holder').val().length < 4 ) {
 				jQuery("#tcp_error_card_holder").html("<?php _e( 'The field Card Holder must be completed', 'tcp' );?>");
 				jQuery("#tcp_error_card_holder").show();

@@ -43,13 +43,12 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 				'order_id'	=> $order_id,
 			), 
 			array( '%s' ), array( '%d' ) );
-		require_once( dirname( dirname( __FILE__ ) ) . '/checkout/ActiveCheckout.class.php' );
+		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );
 		header( 'Location: ' . $url );
 		exit;
-		die( __( 'OK data card', 'tcp' ) );
 	} else {
-		die( __( 'Wrong data card', 'tcp' ) );
+		die( 'Wrong data card' );
 	}
 }
 
