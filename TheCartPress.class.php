@@ -625,8 +625,9 @@ echo '<br>RES=', count( $res ), '<br>';*/
 
 	function plugin_action_links( $links, $file ) {
 		if ( $file == 'thecartpress/TheCartPress.class.php' && function_exists( 'admin_url' ) ) {
+			$first_link = '<a href="' . admin_url( 'admin.php?page=thecartpress/admin/FirstTimeSetUp.php' ). '">' . __( 'First time setup', 'tcp' ) . '</a>';
 			$settings_link = '<a href="' . admin_url( 'admin.php?page=tcp_settings_page' ). '">' . __( 'Settings', 'tcp' ) . '</a>';
-			array_unshift( $links, $settings_link );
+			array_unshift( $links, $first_link, $settings_link );
 		}
 		return $links;
 	}

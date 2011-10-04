@@ -157,15 +157,14 @@ class ShoppingCartWidget extends WP_Widget {
 		$see_delete_item	= isset( $instance['see_delete_item'] ) ? (bool)$instance['see_delete_item'] : false;
 		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
-		$see_checkout		= isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false;
-		?>
+		$see_checkout		= isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false; ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_if_empty' ); ?>"<?php checked( $hide_if_empty ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>"><?php _e( 'Hide if empty', 'tcp' ); ?></label>
-		</p>
+		</p><p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'see_thumbnail' ); ?>"<?php checked( $see_thumbnail ); ?> 
 			onchange="if (jQuery(this).is(':checked')) jQuery('.tcp_thumbnail_size').show(); else jQuery('.tcp_thumbnail_size').hide();"/>
 			<label for="<?php echo $this->get_field_id( 'see_thumbnail' ); ?>"><?php _e( 'See thumbnail', 'tcp' ); ?></label>

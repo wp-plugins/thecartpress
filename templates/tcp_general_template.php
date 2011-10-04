@@ -235,6 +235,7 @@ function tcp_the_sort_panel() {
 	$filter = new TCPFilterNavigation();
 	$order_type = $filter->get_order_type();
 	$order_desc = $filter->get_order_desc();
+	$settings = get_option( 'ttc_settings' );
 	$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
 	$sorting_fields = tcp_get_sorting_fields(); ?>
 <div class="tcp_order_panel">

@@ -81,7 +81,7 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	$thecartpress->settings['decimal_point']		= $_REQUEST['tcp_settings']['decimal_point'];
 	$thecartpress->settings['thousands_separator']	= $_REQUEST['tcp_settings']['thousands_separator'];
 	$thecartpress->settings['country']				= $_REQUEST['tcp_settings']['country'];
-	$thecartpress->settings['use_default_loop']		= isset( $_REQUEST['tcp_settings']['use_default_loop'] ) ? true : false;
+	$thecartpress->settings['use_default_loop']		= $_REQUEST['tcp_settings']['use_default_loop'];
 	update_option( 'tcp_settings', $thecartpress->settings );
 	$step = -1;
 }?>
@@ -103,11 +103,12 @@ if ( isset( $_REQUEST['tcp_next_step'] ) ) {
 	<h3><?php _e( 'Shipping methods', 'tcp' );?></h3>
 	<?php global $tcp_shipping_plugins;
 	echo tcp_get_plugins_info( $tcp_shipping_plugins );?>
+	<p><?php _e( 'To activate or deactivate Shipping methods you have to visit the <a href="admin.php?page=thecartpress/admin/PluginsListShipping.php">Shipping page</a>.', 'tcp' ); ?></p>
 	<h3><?php _e( 'Payment methods', 'tcp' );?></h3>
 	<?php global $tcp_payment_plugins;
 	echo tcp_get_plugins_info( $tcp_payment_plugins );?>
-	<p><?php _e( 'To activate or deactivate Shipping/Payment methods you have to visit the <a href="admin.php?page=thecartpress/admin/PluginsList.php">Shipping/Payment page</a>.', 'tcp' ); ?></p>
-	<p><?php _e( 'Remmember, you have more configuration settings in the <a href="admin.php?page=tcp_settings_page">settings page</a>.', 'tcp' ); ?></p>
+	<p><?php _e( 'To activate or deactivate Payment methods you have to visit the <a href="admin.php?page=thecartpress/admin/PluginsList.php">Payment page</a>.', 'tcp' ); ?></p>
+	<p><?php _e( 'Remmember, you have more configuration settings in the <a href="admin.php?page=tcp_settings_page">Settings page</a>.', 'tcp' ); ?></p>
 <?php elseif ( $step == 1 ) :
 	$values = array( 'country' );
 	$country = isset( $_REQUEST['tcp_settings']['country'] ) ? $_REQUEST['tcp_settings']['country'] : false;?>
