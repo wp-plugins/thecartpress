@@ -749,7 +749,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		if ( ! is_single() ) {
 			global $post;
 			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
-			$use_default_loop = isset( $this->settings['use_default_loop'] ) ? $this->settings['use_default_loop'] : 'none';
+			$use_default_loop = isset( $this->settings['use_default_loop'] ) ? $this->settings['use_default_loop'] : 'only_settings';
 			if ( $use_default_loop != 'none' ) return $content;
 			$see_buy_button_in_excerpt	= isset( $this->settings['see_buy_button_in_excerpt'] ) ? $this->settings['see_buy_button_in_excerpt'] : false;
 			$align_buy_button_in_excerpt= isset( $this->settings['align_buy_button_in_excerpt'] ) ? $this->settings['align_buy_button_in_excerpt'] : 'north';
