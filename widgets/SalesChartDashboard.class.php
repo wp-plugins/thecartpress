@@ -57,7 +57,7 @@ class SalesChartDashboard {
 		    $r = 0;
 		    $script = 'data.addRows(' . count($days) . ');' . "\n";
 		    foreach( $days as $day ) {
-				$script .= 'data.setCell(' . $r . ', 0, "new Date('. date( 'M j, Y', strtotime( $day[0] ) ) . '));' . "\n";
+				$script .= 'data.setCell(' . $r . ', 0, new Date("'. date( 'M j, Y', strtotime( $day[0] ) ) . '"));' . "\n";
 				$script .= 'data.setCell(' . $r . ', 1, '. $day[1] . ');' . "\n";
 				$script .= 'data.setCell(' . $r . ', 2, '. $day[2] . ');' . "\n";
 				$r++;
@@ -88,7 +88,7 @@ class SalesChartDashboard {
 			$script = 'data.addRows([' . rtrim( $script, ",\n" ) . ']);';
 			$options = 'var options = {
 				width: "100%",
-				height:300
+				height: 300
 			};';
 		} else {
 			$data_column  = 'data.addColumn("date", "' . __( 'Date', 'tcp' ) . '");' . "\n";
@@ -102,7 +102,7 @@ class SalesChartDashboard {
 				$options = 'var options = {
 					width: "100%",
 					height: 300,
-					title: ' . __( 'Sales and Orders', 'tcp' ) . '",
+					title: "' . __( 'Sales and Orders', 'tcp' ) . '",
 					hAxis: {
 						title: "dates",
 						titleTextStyle: {
@@ -177,13 +177,13 @@ class SalesChartDashboard {
 <p>
 	<label for="chart_type"><?php _e( 'Chart type', 'tcp' ); ?>:
 		<select id="chart_type" name="chart_type">
-			<option value="MotionChart" <?php selected( $chart_type, 'MotionChart' );?>><?php _e( 'Motion Chart', 'tcp' ); ?></option>
 			<option value="LineChart" <?php selected( $chart_type, 'LineChart' );?>><?php _e( 'Line Chart', 'tcp' ); ?></option>
 			<!--<option value="BarChart" <?php selected( $chart_type, 'BarChart' );?>><?php _e( 'Bar Chart', 'tcp' ); ?></option>-->
 			<!--<option value="ColumnChart" <?php selected( $chart_type, 'ColumnChart' );?>><?php _e( 'Column Chart', 'tcp' ); ?></option>-->
 			<option value="AreaChart" <?php selected( $chart_type, 'AreaChart' );?>><?php _e( 'Area Chart', 'tcp' ); ?></option>
 			<!--<option value="ComboChart" <?php selected( $chart_type, 'ComboChart' );?>><?php _e( 'Combo Chart', 'tcp' ); ?></option>-->
-			<option value="Scatter" <?php selected( $chart_type, 'Scatter' );?>><?php _e( 'Scatter', 'tcp' ); ?></option>
+			<option value="MotionChart" <?php selected( $chart_type, 'MotionChart' );?>><?php _e( 'Motion Chart', 'tcp' ); ?></option>
+			<option value="ScatterChart" <?php selected( $chart_type, 'ScatterChart' );?>><?php _e( 'Scatter', 'tcp' ); ?></option>
 			<option value="Table" <?php selected( $chart_type, 'Table' );?>><?php _e( 'Table', 'tcp' ); ?></option>
 			<option value="Gauge" <?php selected( $chart_type, 'Gauge' );?>><?php _e( 'Gauge', 'tcp' ); ?></option>
 		</select>
