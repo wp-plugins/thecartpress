@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of TheCartPress.
- * 
+ *
  * TheCartPress is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -56,18 +56,18 @@ class ActiveCheckout {//shortcode
 				echo $html;
 			} else {
 				$html = '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_unsuccessfully">';
-				$checkout_unsuccessfully_message = __( 'Transaction Error. The order has been cancelled', 'tcp');
+				$checkout_unsuccessfully_message = __( 'Transaction Error. The order has been canceled', 'tcp');
 				if ( strlen( $checkout_unsuccessfully_message ) > 0 ) {
 					$html .= '<p>' . str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message ). '</p>';
 				} else {
-					$html .= '<span class="tcp_checkout_ko">' . __( 'Transaction Error. The order has been cancelled', 'tcp') . '</span>';
+					$html .= '<span class="tcp_checkout_ko">' . __( 'Transaction Error. The order has been canceled', 'tcp') . '</span>';
 				}
-				$html .= '<br/>' . sprintf( __( 'Retry again the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
+				$html .= '<br/>' . sprintf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			//ActiveCheckout::sendMails( $order_id, true, $html );
+			//ActiveCheckout::sendMails( $order_id, $html );
 			return $html;
-		} elseif ( $shoppingCart->isEmpty() ) { 
+		} elseif ( $shoppingCart->isEmpty() ) {
 			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
 		} else {
 			$param = array(
@@ -87,7 +87,7 @@ class ActiveCheckout {//shortcode
 		}
 	}
 
-	static function sendMails( $order_id, $error = false, $error_text = '' ) {
+	static function sendMails( $order_id, $additional_msg = '', $only_for_customers = false ) {
 		require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
 		global $thecartpress;
 		$order = Orders::get( $order_id );
@@ -99,28 +99,27 @@ class ActiveCheckout {//shortcode
 			$from = isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-			$headers .= 'To: ' . $to_customer . "\r\n";
+			//$headers .= 'To: ' . $to_customer . "\r\n";
 			$headers .= 'From: ' . $from . "\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
 			$message = '';
 			$subject = sprintf( __( 'Order from %s', 'tcp' ), get_bloginfo( 'name' ) );
-			if ( $error ) {
-				$subject = __( 'Error in transaction.', 'tcp' ) . ' ' . $subject;
-				$message = $error_text;
-			}
+			$message = $additional_msg . "\n";
 			$message .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
 			wp_mail( $to_customer, $subject, $message_to_customer, $headers );
-			$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';				
-			if ( strlen( $to ) ) {
-				$headers  = 'MIME-Version: 1.0' . "\r\n";
-				$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-				$headers .= 'To: ' . $to . "\r\n";
-				$headers .= 'From: ' . $from . "\r\n";
-				$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
-				wp_mail( $to, $subject, $message_to_merchant, $headers );
+			if ( ! $only_for_customers ) {
+				$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';
+				if ( strlen( $to ) ) {
+					$headers  = 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+					//$headers .= 'To: ' . $to . "\r\n";
+					$headers .= 'From: ' . $from . "\r\n";
+					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
+					wp_mail( $to, $subject, $message_to_merchant, $headers );
+				}
 			}
 		}
 	}

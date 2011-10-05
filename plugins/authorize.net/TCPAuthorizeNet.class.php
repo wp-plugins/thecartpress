@@ -60,6 +60,20 @@ class TCPAuthorizeNet extends TCP_Plugin {
 			<label for="md5_hash"><?php _e( 'MD5 Hash', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="md5_hash" name="md5_hash" value="<?php echo isset( $data['md5_hash'] ) ? $data['md5_hash'] : '';?>" />
+		</td></tr>
+		
+		<tr valign="top">
+		<th scope="row">
+			<label><?php _e( 'Response URL', 'tcp' ); ?>:</label>
+		</th><td>
+			<?php echo plugins_url( 'thecartpress/plugins/authorize.net/notify.php' ); ?>
+		</td></tr>
+		
+		<tr valign="top">
+		<th scope="row">
+			<label for=""><?php _e( 'Sandbox account', 'tcp' );?>:</label>
+		</th><td>
+			<a href="https://sandbox.authorize.net/">https://sandbox.authorize.net/</a>
 		</td></tr><?php
 	}
 
