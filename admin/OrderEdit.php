@@ -51,7 +51,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	$from = isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-	$headers .= 'To: ' . $to . "\r\n";
+	//$headers .= 'To: ' . $to . "\r\n";
 	$headers .= 'From: ' . $from . "\r\n";
 	$subject = 'Order from '.get_bloginfo( 'name' );
 	$message = OrderPage::show( $order_id, true, false );
