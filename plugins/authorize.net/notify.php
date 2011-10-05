@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of TheCartPress.
- * 
+ *
  * TheCartPress is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -40,6 +40,7 @@ $fingerprint	= strtolower( md5( $md5_hash . $api_login_id . $x_trans_id . $x_amo
 
 $cancelled_status = tcp_get_cancelled_order_status();
 $completed_status = tcp_get_completed_order_status();
+$error = '';
 if ( $fingerprint == $x_md5_hash ) {
 	$new_status = $_REQUEST['new_status'];
 	$response_code = isset( $_REQUEST['x_response_code'] ) ? $_REQUEST['x_response_code'] : 0;//1 ->OK, 2->declined, else->error
@@ -49,22 +50,18 @@ if ( $fingerprint == $x_md5_hash ) {
 		} else {
 			Orders::editStatus( $order_id, $new_status, $x_trans_id );
 		}
-		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
-		ActiveCheckout::sendMails( $order_id );
 	} else {
 		$response_reason_text = isset( $_REQUEST['x_response_reason_text'] ) ? $_REQUEST['x_response_reason_text'] : 'no reason';
 		$response_reason_code = isset( $_REQUEST['x_response_reason_code'] ) ? $_REQUEST['x_response_reason_code'] : 0;
-		$error = $response_reason_text . '(' . $response_reason_code . ')';
+		$error = __( 'Error from Authorize.net: ', 'tcp' ) . $response_reason_text . '(' . $response_reason_code . ')';
 		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
-		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
-		ActiveCheckout::sendMails( $order_id, true, $error );
 	}
 } else {
-	$error = __( 'Error notifiying Authotized.net payment', 'tcp' );
+	$error = __( 'Error notifiying Authorize.net payment', 'tcp' );
 	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
 	require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
-	ActiveCheckout::sendMails( $order_id, true, $error );
 }
+ActiveCheckout::sendMails( $order_id, $error );
 $redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>
 <html>

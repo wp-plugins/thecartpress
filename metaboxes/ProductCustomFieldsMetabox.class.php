@@ -130,7 +130,6 @@ class ProductCustomFieldsMetabox {
 				<td><input type="text" min="0" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
-			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops/catalogue)', 'tcp' );?>:</label></th>
 				<td><?php
