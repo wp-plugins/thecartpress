@@ -1333,20 +1333,13 @@ echo '<br>RES=', count( $res ), '<br>';*/
 
 	//TheCartPress hooks	
 	function tcp_the_currency( $currency ) {
-		if ( $currency == 'EUR' )
-			return '&euro;';
-		elseif ( $currency == 'CHF' )
-			return 'SFr.';
-		elseif ( $currency == 'GBP' )
-			return '&pound;';
-		elseif ( $currency == 'USD' || $currency = 'AUD' )
-			return '$';
-		elseif ( $currency == 'JPY' )
-			return '&yen;';
-		elseif ( $currency == 'IRR' )
-			return 'ریال';
-		else
-			return $currency;
+		if ( $currency == 'EUR' ) return '&euro;';
+		elseif ( $currency == 'CHF' ) return 'SFr.';
+		elseif ( $currency == 'GBP' ) return '&pound;';
+		elseif ( $currency == 'USD' || $currency = 'AUD' ) return '$';
+		elseif ( $currency == 'JPY' ) return '&yen;';
+		elseif ( $currency == 'IRR' ) return 'ریال';
+		else return $currency;
 	}
 
 	function tcp_show_settings() { ?>

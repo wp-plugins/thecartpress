@@ -187,7 +187,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			'grouped_in'	=> __( 'Grouped in', 'tcp' ),
 			'sku'			=> __( 'SKU', 'tcp' ),
 			'price'			=> __( 'Price - Type', 'tcp' ),
-			'stok'			=> __( 'Stock', 'tcp' ),
+			'stock'			=> __( 'Stock', 'tcp' ),
 			//'date'			=> __( 'Date', 'tcp' ),
 			//'comments'	=> __('Comments', 'tcp' ),
 		);
@@ -232,7 +232,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
 				if ( isset( $types[$product_type] ) ) echo $types[$product_type];
-			} elseif ( 'stok' == $column_name ) {
+			} elseif ( 'stock' == $column_name ) {
 				$stock = tcp_get_the_stock(  $post->ID );
 				if ( $stock == -1 ) {
 					$options_1 = RelEntities::select( $post->ID, 'OPTIONS' );

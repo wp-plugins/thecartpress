@@ -22,9 +22,9 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Currencies.class.php' );
 class TCP_Settings {
 	function __construct( $register = true ) {
 		if ( $register && is_admin() ) {
-			add_action('admin_init', array( $this, 'admin_init' ) );
-			add_action('admin_menu', array( $this, 'admin_menu' ) );
-			//add_filter('contextual_help', array( $this, 'contextual_help') , 10, 3);
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			//add_filter( 'contextual_help', array( $this, 'contextual_help' ) , 10, 3);
 		}
 	}
 
