@@ -48,8 +48,8 @@ function tcp_get_shipping_region() {
 		if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'new' ) {
 			$shipping_region_id = $_SESSION['tcp_checkout']['shipping']['shipping_region_id'];
 		} elseif ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'BIL' ) {
-			if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) == 'new' ) {
-				$shipping_region_id = $_SESSION['tcp_checkout']['billing']['billing_region_id'];;
+			if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) && $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+				$shipping_region_id = $_SESSION['tcp_checkout']['billing']['billing_region_id'];
 			} else {
 				require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
 				$shipping_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
