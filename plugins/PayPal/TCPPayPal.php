@@ -62,7 +62,7 @@ class TCPPayPal extends TCP_Plugin {
 		<th scope="row">&nbsp;
 		</th><td>
 		</td></tr>
-		<tr valign="top">
+<!--		<tr valign="top">
 		<th scope="row">
 			<label for="profile_shipping"><?php _e( 'Use PayPal profile shipping', 'tcp' );?>:</label>
 		</th><td>
@@ -77,7 +77,7 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="profile_taxes"><?php _e( 'Use PayPal profile taxes', 'tcp' );?>:</label>
 		</th><td>
 			<input type="checkbox" id="profile_taxes" name="profile_taxes" value="yes" <?php checked( true , isset( $data['profile_taxes'] ) ? $data['profile_taxes'] : false );?> />
-		</td></tr>
+		</td></tr>-->
 		<tr valign="top">
 		<th scope="row">
 			<?php _e( 'PayPal is sent', 'tcp' );?>:
@@ -104,7 +104,6 @@ class TCPPayPal extends TCP_Plugin {
 			<input type="text" id="cart_border_color" name="cpp_cart_border_color" size="6" maxlength="8" value="<?php echo isset( $data['cpp_cart_border_color'] ) ? $data['cpp_cart_border_color'] : '';?>" />
 			<span class="description"><?php _e( 'Optional, for customizing the PayPal page, and can be set from your PayPal account.<br /> Enter a 6 digit hex color code.', 'tcp' );?></span>
 		</td></tr>
-
 		<tr valign="top">
 		<th scope="row">
 			<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
@@ -115,13 +114,13 @@ class TCPPayPal extends TCP_Plugin {
 
 	function saveEditFields( $data ) {
 		$data['business']				= isset( $_REQUEST['business'] ) ? $_REQUEST['business'] : '';
-		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] ) ? $_REQUEST['profile_shipping'] == 'yes' : false;
-		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] ) ? $_REQUEST['profile_taxes'] == 'yes' : false;
+		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] );
+		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] );
 		$data['no_shipping']			= isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
 		$data['send_detail']			= isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
-		$data['logging']				= isset( $_REQUEST['logging'] ) ? $_REQUEST['logging'] == 'yes' : false;
+		$data['logging']				= isset( $_REQUEST['logging'] );
 		$data['cpp_cart_border_color']	= isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
-		$data['test_mode']				= isset( $_REQUEST['test_mode'] ) ? $_REQUEST['test_mode'] == 'yes' : false;
+		$data['test_mode']				= isset( $_REQUEST['test_mode'] );
 		return $data;
 	}
 
@@ -131,8 +130,8 @@ class TCPPayPal extends TCP_Plugin {
 		$test_mode = $data['test_mode'];
 		$profile_shipping = $data['profile_shipping'];
 		$profile_taxes = $data['profile_taxes'];
-		$no_shipping = isset($data['no_shipping'])?$data['no_shipping']:0 ;
-		$send_detail = isset($data['send_detail'])?$data['send_detail']:0 ;
+		$no_shipping = isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
+		$send_detail = isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
 		$logging = $data['logging'];
 		$merchant = get_bloginfo( 'name' );
 		$new_status = $data['new_status'];
@@ -146,48 +145,63 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
 		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant ); //text for the Return to Merchant button
 		$p->add_field( 'no_shipping', $no_shipping );
-		if ( empty($send_detail) && empty($profile_shipping) && empty($profile_taxes) ) { // Buy Now - one total
+		$taxes = 0;
+		$tax_percentage = tcp_get_the_shipping_tax();
+		if ( $send_detail == 0 ) { // && empty( $profile_shipping ) && empty( $profile_taxes ) ) { // Buy Now - one total
 			$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
-			$p->add_field( 'amount', tcp_number_format( $shoppingCart->getTotal( true ) ) );
-		} else { // Cart upload
+			$amount = 0;
+			foreach( $shoppingCart->getItems() as $item ) {
+				$tax = tcp_get_the_tax( $item->getPostId() );
+				$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $tax / 100 );
+				$unit_price_with_tax = round( $unit_price_with_tax, 2 );
+				$line_price_with_tax = $unit_price_with_tax * $item->getUnits();
+				$line_price_without_tax = $item->getUnitPrice() * $item->getUnits();
+				$amount += $line_price_without_tax;
+				$taxes += $line_price_with_tax - $line_price_without_tax;
+			}
+			foreach( $shoppingCart->getOtherCosts() as $cost_id => $cost ) {
+				$tax = tcp_get_the_shipping_tax();
+				$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
+				$cost_with_tax = $cost->getCost() * ( 1 + $tax / 100 );
+				$amount += $cost_without_tax;
+				$taxes += $cost_with_tax - $cost_without_tax;
+			}
+			$p->add_field( 'amount', tcp_number_format( $amount ) );
+			$p->add_field( 'tax', tcp_number_format( $taxes ) );
+			$discount = $shoppingCart->getAllDiscounts();
+			if ( $discount > 0 ) $p->add_field( 'discount_amount_cart', number_format( $discount, 2, '.', '' ) );
+		} else { //Item by item
 			$p->add_field( 'cmd', '_cart' );
 			$p->add_field( 'upload', '1' );
 			$discount = $shoppingCart->getAllDiscounts();
-			if ( $discount > 0 )
-				$p->add_field( 'discount_amount_cart', number_format( $discount, 2, '.', '' ) );
 			$i = 1;
-			if ( $send_detail ) { // item detail
-				foreach( $shoppingCart->getItems() as $item ) {
-					$p->add_field( "item_name_$i", strip_tags( html_entity_decode( $item->getTitle(), ENT_QUOTES ) ) );
-					$p->add_field( "amount_$i", number_format( $item->getUnitPrice(), 2, '.', '' ) );
-					$p->add_field( "quantity_$i", (int) $item->getUnits() );
-					if ( $profile_shipping ) {
-						$p->add_field( "weight_$i", $item->getWeight() );
-						if ( $item->isFreeShipping() ) $p->add_field( "shipping_$i", '0' );
+			foreach( $shoppingCart->getItems() as $item ) {
+				$p->add_field( "item_name_$i", strip_tags( html_entity_decode( $item->getTitle(), ENT_QUOTES ) ) );
+				$p->add_field( "amount_$i", number_format( $item->getUnitPrice(), 2, '.', '' ) );
+				$p->add_field( "quantity_$i", $item->getUnits() );
+				$tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax()
+				$tax = ( $item->getUnitPrice() * $tax / 100 ) * $item->getUnits();
+				$p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
+				if ( $discount > 0 ) {
+					$price = $item->getUnits() * $item->getUnitPrice();
+					if ( $price > $discount) {
+						$p->add_field( "discount_amount_$i", $discount );
+						$discount_amount = 0;
+					} else {
+						$price -= 0.1;
+						$p->add_field( "discount_amount_$i", $price );
+						$discount_amount -= $price;
 					}
-					$i++;
 				}
-			} else { // one total for items, with separate other costs
-				$p->add_field( "item_name_$i", __( 'Purchase from ', 'tcp' ) . $merchant );
-				$p->add_field( 'amount_' . $i++, number_format( $shoppingCart->getTotalToShow() + $discount, 2, '.', '' ) );
-				if ( $profile_shipping ) {
-					$p->add_field( 'weight_cart', $shoppingCart->getWeight() );
-					$p->add_field( 'quantity', $shoppingCart->getCount() );
-				}
+				$i++;
 			}
-
-			foreach( $shoppingCart->getOtherCosts() as $cost ) { // TODO Not internationalized!
-				$desc = $cost->getDesc();
-				if ( false !== stripos( $desc, __( 'Shipping cost', 'tcp' ) ) ) { //TODO
-					if ( empty( $profile_shipping ) ) $p->add_field( 'shipping_1', $cost->getCost() );
-				} else {
-					$p->add_field( "item_name_$i", $desc );
-					$p->add_field( 'amount_' . $i++, $cost->getCost() );
-				}
+			foreach( $shoppingCart->getOtherCosts() as $cost ) {
+				$p->add_field( "item_name_$i", $cost->getDesc() );
+				$p->add_field( "amount_$i", $cost->getCost() );
+				$tax = $cost->getCost() * $tax_percentage / 100;
+				$p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
+				$i++;
 			}
-			$taxes = $shoppingCart->getTotal() - $shoppingCart->getTotalToShow();
-			if ( empty( $profile_taxes ) ) $p->add_field( 'tax_cart', number_format( $taxes, 2, '.', '' ) );
-			if ( $profile_shipping ) $p->add_field( 'weight_unit', (trim(tcp_get_the_unit_weight(),'.')=='kg'? "kgs":"lbs") );		//only 2 options for PayPal
 		}
 		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/daos/Orders.class.php' );
 		$order = Orders::get( $order_id );

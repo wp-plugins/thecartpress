@@ -135,9 +135,10 @@ class TCPCartBox extends TCPCheckoutBox {
 		do_action( 'tcp_checkout_calculate_other_costs' );
 		$costs = $shoppingCart->getOtherCosts();
 		asort( $costs, SORT_STRING );
-		foreach( $costs as $cost_id => $cost ) : 
+		foreach( $costs as $cost_id => $cost ) :
+			$tax = tcp_get_the_shipping_tax();
 			$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
-			$cost_with_tax = $cost->getCost(); ?>
+			$cost_with_tax = $cost->getCost() * ( 1 + $tax / 100 ); ?>
 			<tr id="other_costs" class="tcp_cart_other_costs_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif;?>">
 			<td colspan="4" class="tcp_cost_' . $cost_id . '" style="text-align:right"><?php echo $cost->getDesc();?></td>
 			<td><?php echo tcp_format_the_price( $cost_without_tax );?></td>
