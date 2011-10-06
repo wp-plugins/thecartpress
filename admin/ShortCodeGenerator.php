@@ -303,21 +303,26 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 				<?php
 				$files = array();
 				$folder = STYLESHEETPATH;
-				if ( $handle = opendir( $folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
-					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>"><?php echo $file; ?></option>
-					<?php 
-						$files[] = $file;
-					endif;?>
-				<?php endwhile; closedir( $handle );
-			
+				if ( $handle = opendir( $folder ) ) :
+					while ( false !== ( $file = readdir( $handle ) ) ) :
+						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
+							<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>"><?php echo $file; ?></option>
+						<?php 
+							$files[] = $file;
+						endif;?>
+					<?php endwhile;
+					closedir( $handle );
+				endif;			
 				$folder = get_template_directory();
 				if ( STYLESHEETPATH != $folder )
-					if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
-						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-							<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
-						<?php endif;?>
-					<?php endwhile; closedir( $handle );?>
+					if ( $handle = opendir($folder ) ) :
+						while ( false !== ( $file = readdir( $handle ) ) ) :
+							if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
+								<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $loop, $folder . '/' . $file );?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
+							<?php endif;?>
+						<?php endwhile;
+					closedir( $handle );
+				endif;?>
 				</select>
 			</td>
 		</tr>
