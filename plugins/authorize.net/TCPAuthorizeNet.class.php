@@ -73,7 +73,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		<th scope="row">
 			<label for=""><?php _e( 'Sandbox account', 'tcp' );?>:</label>
 		</th><td>
-			<a href="https://sandbox.authorize.net/">https://sandbox.authorize.net/</a>
+			<a href="https://sandbox.authorize.net/" target="_blank">https://sandbox.authorize.net/</a>
 		</td></tr><?php
 	}
 
