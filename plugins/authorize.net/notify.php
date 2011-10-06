@@ -26,14 +26,14 @@ require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
 
 $plugin_path = dirname( dirname( dirname( __FILE__ ) ) )  . '/classes/TCP_Plugin.class.php';
 $instance = $_REQUEST['instance'];
-$data = tcp_get_payment_plugin_data( 'AuthorizeNet', $instance );
+$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
 
 $api_login_id	= $data['api_login_id'];
 $md5_hash		= $data['md5_hash'];
 //$x_login		= $_REQUEST['x_login'];
 $x_md5_hash		= strtolower( $_REQUEST['x_MD5_Hash'] );
 $x_amount		= $_REQUEST['x_amount'];
-$x_md5_hash		= $_REQUEST['x_MD5_Hash'];
+$x_md5_hash		= strtolower( $_REQUEST['x_MD5_Hash'] );
 $x_trans_id		= isset( $_REQUEST['x_trans_id'] ) ? $_REQUEST['x_trans_id'] : 'no id';
 $order_id		= $_REQUEST['order_id'];
 $fingerprint	= strtolower( md5( $md5_hash . $api_login_id . $x_trans_id . $x_amount ) );
@@ -44,7 +44,7 @@ $error = '';
 if ( $fingerprint == $x_md5_hash ) {
 	$new_status = $_REQUEST['new_status'];
 	$response_code = isset( $_REQUEST['x_response_code'] ) ? $_REQUEST['x_response_code'] : 0;//1 ->OK, 2->declined, else->error
-	if ( $response_code == 1) {
+	if ( $response_code == 1 ) {
 		if ( Orders::isDownloadable( $order_id ) ) {
 			Orders::editStatus( $order_id, $completed_status, $x_trans_id );
 		} else {
@@ -56,14 +56,14 @@ if ( $fingerprint == $x_md5_hash ) {
 		$error = __( 'Error from Authorize.net: ', 'tcp' ) . $response_reason_text . '(' . $response_reason_code . ')';
 		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
 	}
+	ActiveCheckout::sendMails( $order_id, $error );
+	$redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 } else {
 	$error = __( 'Error notifiying Authorize.net payment', 'tcp' );
+	$error .= ' fp=' . $fingerprint . ', md5=' . $x_md5_hash;
 	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
-	require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
-}
-ActiveCheckout::sendMails( $order_id, $error );
-$redirect = add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
-?>
+	$redirect = add_query_arg( 'tcp_checkout', 'ko', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
+} ?>
 <html>
 <head>
 <title>Processing Payment</title>
