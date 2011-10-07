@@ -180,6 +180,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 	get_currentuserinfo();
 	$customer_id = $current_user->ID;
 
+	require_once( dirname( dirname( __FILE__ ) ) . '/templates/tcp_template.php' );
 	require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 
 	if ( Orders::isProductDownloadable( $customer_id, $order_detail_id ) ) {
@@ -238,7 +239,8 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 		} else {
 			wp_die( __( 'The file doesn\'t exists.', 'tcp' ) );
 		}
-	} else
+	} else {
 		wp_die( __( 'You do not have sufficient permissions to access this page.', 'tcp' ) );
+	}
 }
 ?>
