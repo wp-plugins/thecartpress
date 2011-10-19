@@ -149,7 +149,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				'selected_shipping_address' => "BIL",
 			);
 		}
-		return true;
+		return apply_filters( 'tcp_after_billing_ex_box', true );
 	}
 
 	function show_config_settings() {

@@ -117,7 +117,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				);
 			}
 			$_SESSION['tcp_checkout']['shipping'] = $shipping;
-			return true;
+			return apply_filters( 'tcp_after_shipping_box', true );
 		}
 	}
 

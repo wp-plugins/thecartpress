@@ -143,8 +143,8 @@ if ( $post_id ) :
 				<form method="post" name="frm_delete_relation_<?php echo $assigned->id_to;?>" id="frm_create_relation_<?php echo $assigned_post->id_to;?>">
 					<a href="post.php?action=edit&post=<?php echo $assigned->id_to;?>"><?php _e( 'edit product', 'tcp' );?></a>
 					&nbsp;|&nbsp;
-					<label for="list_order"><?php echo _x( 'Order', 'to sort the list', 'tcp' );?>:&nbsp;</label><input type="text" name="list_order" id="list_order" size="2" maxlength="4" value="<?php echo $assigned->list_order;?>"/>
-					<label for="units"><?php _e( 'Units', 'tcp' );?>:&nbsp;</label><input type="text" name="units" id="units" size="2" maxlength="4" value="<?php echo $units; ?>"/>
+					<label for="list_order"><?php echo _x( 'Order', 'to sort the list', 'tcp' );?>:&nbsp;</label><input type="number" min="0" name="list_order" id="list_order" size="2" maxlength="4" value="<?php echo $assigned->list_order;?>" class="tcp_count"/>
+					<label for="units"><?php _e( 'Units', 'tcp' );?>:&nbsp;</label><input type="number" min="0" name="units" id="units" size="2" maxlength="4" value="<?php echo $units; ?>" class="tcp_count"/>
 					<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, $assigned->id_to, $meta_value ); ?>
 					<input type="submit" name="tcp_modify_relation" id="tcp_modify_relation" value="<?php _e( 'modify', 'tcp' );?>" class="button-secondary"/>
 					&nbsp;|&nbsp;
@@ -172,6 +172,7 @@ if ( $post_id ) :
 	<?php endif;?>
 	</tbody>
 	</table>
+</div> <!-- .wrap -->
 	<div class="wrap">
 		<form name="frm" id="frm" method="post">
 			<input id="post_id" name="post_id" value="<?php echo $post_id;?>" type="hidden" />
@@ -256,8 +257,8 @@ if ( $post_id ) :
 						<input id="rel_type" name="rel_type" value="<?php echo $rel_type;?>" type="hidden" />
 						<input id="product_type" name="product_type" value="<?php echo $product_type;?>" type="hidden" />
 						<input id="category_slug" name="category_slug" value="<?php echo $category_slug;?>" type="hidden" />
-						| <label for="list_order"><?php _e( 'Order', 'tcp' );?>:&nbsp;</label><input type="text" name="list_order" id="list_order" size="2" maxlength="4" value="0"/>
-						<label for="units"><?php _e( 'units', 'tcp' );?>:&nbsp;</label><input id="units" name="units" value="1" size="2" maxlength="3" type="text" />
+						| <label for="list_order"><?php _e( 'Order', 'tcp' );?>:&nbsp;</label><input type="number" name="list_order" id="list_order" size="2" maxlength="4" value="0" class="tcp_count"/>
+						<label for="units"><?php _e( 'units', 'tcp' );?>:&nbsp;</label><input id="units" name="units" value="1" size="2" maxlength="3" type="number" class="tcp_count"/>
 						<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, get_the_ID() ); ?>
 						<a href="javascript:document.frm_create_relation_<?php the_ID();?>.submit();"><?php _e( 'assign' , 'tcp' );?></a>
 					</form>

@@ -6,6 +6,7 @@
 table#tcp_shopping_cart_table {
 	border:0px;
 	width: 100%;
+	font-size: 12px !important;
 }
 
 table#tcp_shopping_cart_table tr th,
@@ -17,7 +18,7 @@ table#tcp_shopping_cart_table thead th {
 	padding: 10px;
 	background-position: 1px 0px;
 	margin: 0px 0px 1px 0px !important;
-	font-size: 11px;
+	font-size: 1em;
 	background-color: #f0f0f0;
 	border: 1px solid #CCCCCC;
 	font-weight: bold;
@@ -25,30 +26,36 @@ table#tcp_shopping_cart_table thead th {
 
 table#tcp_shopping_cart_table tr td {
 	background-color: #fff;
-	font-size: 11px;
 	padding: 4px 10px;
 	border-top: 1px dotted #ccc;
 	border-right: 1px dotted #f0f0f0;
+	vertical-align:middle;
 }
 
 table#tcp_shopping_cart_table tr.odd td {
 	background-color: #FfF7FC;
 }
 
-table#tcp_shopping_cart_table .tcp_cart_name {
+table#tcp_shopping_cart_table .tcp_cart_name,
+table#tcp_shopping_cart_table .tcp_cart_thumbnail{
 	background-color: #f7f7f7;
 	width: inherit;
-	font-size: 11px;
 }
-
+table#tcp_shopping_cart_table .tcp_cart_unit_price,
+table#tcp_shopping_cart_table .tcp_cart_price,
+table#tcp_shopping_cart_table .tcp_cart_total,
+table#tcp_shopping_cart_table .tcp_cart_weight{
+ 	white-space:nowrap;
+}
+#shopping_cart input {
+	font-size: 12px;
+	margin-bottom: 0;
+	margin-top: 0;
+}
 table#tcp_shopping_cart_table .tcp_cart_name a{
 	text-decoration: none;
 }
 
-#shopping_cart input {
-	font-size: 11px;
-	margin-bottom: 0px;
-}
 table#tcp_shopping_cart_table .tcp_cart_subtotal_row td,
 table#tcp_shopping_cart_table .tcp_cart_discount_row td,
 table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
@@ -145,7 +152,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	padding-left: 10px;
 	background-position: 1px 0px;
 	margin: 0px 0px 1px 0px !important;
-	font-size: 11px;
+	font-size: 14px;
 	background-color: #f0f0f0;
 	border: 1px solid #CCCCCC;
 	font-weight: normal;
@@ -156,13 +163,12 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 	text-decoration: none;	
 }
 
-.checkout_active h3.active {
+#checkout .active h3{
 	font-weight: bold;
-	color: #000;
 }
 #checkout h4{
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 12px;
 	color: #333;
 	text-transform: uppercase;
 	line-height: 20px;
@@ -181,7 +187,7 @@ table#tcp_shopping_cart_table .tcp_cart_total {
 
 .checkout_info {
 	margin-bottom: 1px;
-	font-size: 11px;
+	font-size: 1em;
 	padding: 20px 10px 10px 10px;
 	background-color: #FFF; /*FAF7EE*/
 	background-image: url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
@@ -271,7 +277,7 @@ p.login-lostpassword {
 }
 #login_guess a, p.login-lostpassword a, #login_guess .tcp_error {
 	font-weight: bolder;
-	font-size: 11px;
+	font-size: 1em;
 	text-decoration: none;
 }
 #login_guess .tcp_error {
@@ -349,7 +355,7 @@ p.login-lostpassword {
 }
 #cart_layer .checkout_total  {
 	font-weight: bolder;
-	font-size: 12px;
+	font-size: 1em;
 }
 #cart_layer .checkout_total  td{
 	border-top:#999 dotted 1px;

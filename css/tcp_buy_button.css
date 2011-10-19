@@ -1,212 +1,44 @@
-/*///////  BUY BUTTON  ///////////////////////////////*/
-
-/*For themes with div id content*/
-#content .tcp_buy_button table {
-	margin-top: 10px;
-}
-#content .tcp_buy_button table {
-	clear: both;
-	width: inherit;
-    border: 0px;
-}
-#content .tcp_buy_button table tr:nth-child(1) {
-	display: none;
-}
-#content .tcp_buy_button table tr {
-	color: #666;
-	background-color: #F5F7FB;
-}
-#content .tcp_buy_button table tr td {
-	vertical-align:baseline;
-	padding:4px 10px 4px 10px !important;
-	border-top: 1px solid #fff;
-}
-#content .tcp_buy_button table tr:hover {
-	color: #333;
-	background-color: #F1F4FB;
-}
-#content .tcp_buy_button table tr td:hover  {
-}
-/*.tcp_buy_button table label {
-	display: none;
-}*/
-#content .tcp_buy_button table input[type="button"], #content .tcp_buy_button table input[type="submit"] {
-	-moz-border-radius:4px 4px 4px 4px;
-	border:1px solid #ccc;
-	border-bottom: 1px solid #888;
-	border-right: 1px solid #888;
-	color:#348ABB;
-	cursor:pointer !important;
-	font:11px/16px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
-	padding:1px 4px 1px 4px !important;
-	text-decoration:none;
-	text-shadow:0 1px 1px #fff;
-	background-color: #F1F4FB;
-	text-transform: capitalize;
-	display: inline;
-	margin: 1px 2px;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-}
-#content .tcp_buy_button table input[type="button"]:hover, #content .tcp_buy_button table input[type="submit"]:hover {
-	border:1px solid #99b;
-	color:#000;
-	cursor:pointer;
-	text-shadow:0 1px 1px #F1F4FB
-}
-#content .tcp_buy_button table input {
-	margin: 2px 2px !important;
-	display: inline;
-}
-#content .tcp_buy_button table tr td select {
-	margin: 2px 0px 2px!important;
-	display: inline;
-	color: #666;
-}
-
-.tcp_added_product_title {
-	clear: left;
-	font-size: 11px;
-	color: #000;
-	margin: 3px 0px 0px 10px;
-	display: block;
-}
-.tcp_added_product_title a{
-	color: #348ABB;
-	text-decoration: none;
-}
-.tcp_added_product_title a:hover{
-	color: #FF4B33;
-	text-decoration: none;
-}
-#content .tcp_add_to_shopping_cart {
-	-moz-border-radius:4px 4px 4px 4px;
-	border:1px solid #ccc;
-	border-bottom: 1px solid #888;
-	border-right: 1px solid #888;
-	color:#348ABB;
-	cursor:pointer !important;
-	font:11px/16px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
-	padding:2px 4px 2px 4px !important;
-	text-decoration:none;
-	text-shadow:0 1px 1px #fff;
-	background-color: #F1F4FB;
-	text-transform: capitalize;
-	display: inline;
-	margin: 1px 2px;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-}
-#content .tcp_add_to_shopping_cart:hover {
-	border:1px solid #99b;
-	color:#000;
-}
-
-
-
-
-
-
-/*For themes without div id content*/
-
-
-.tcp_buy_button table {
-	margin-top: 10px;
+/*tcp-buy_button
+---------------------------*/
+.tcp_buy_button_price .tcp_unit_price {
+	font-weight:bold;
 }
 .tcp_buy_button table {
+	margin-top: 10px;
 	clear: both;
-	width: inherit;
-    border: 0px;
+	width: auto !important;
+	font-size:12px !important;
 }
-.tcp_buy_button table tr:nth-child(1) {
+.tcp_buy_button table tr th {
 	display: none;
-}
-.tcp_buy_button table tr {
-	color: #666;
-	background-color: #F5F7FB;
 }
 .tcp_buy_button table tr td {
-	vertical-align:baseline;
-	padding:4px 10px 4px 10px !important;
-	border-top: 1px solid #fff;
+	vertical-align:middle;
+	padding:4px 4px !important;
+	width:auto;
 }
-.tcp_buy_button table tr:hover {
-	color: #333;
-	background-color: #F1F4FB;
-}
-.tcp_buy_button table tr td:hover  {
-}
-/*.tcp_buy_button table label {
-	display: none;
-}*/
-.tcp_buy_button table input[type="button"], .tcp_buy_button table input[type="submit"] {
-	-moz-border-radius:4px 4px 4px 4px;
-	border:1px solid #ccc;
-	border-bottom: 1px solid #888;
-	border-right: 1px solid #888;
-	color:#348ABB;
-	cursor:pointer !important;
-	font:11px/16px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
-	padding:1px 4px 1px 4px !important;
-	text-decoration:none;
-	text-shadow:0 1px 1px #fff;
-	background-color: #F1F4FB;
-	text-transform: capitalize;
-	display: inline;
-	margin: 1px 2px;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-}
-.tcp_buy_button table input[type="button"]:hover, .tcp_buy_button table input[type="submit"]:hover {
-	border:1px solid #99b;
-	color:#000;
-	cursor:pointer;
-	text-shadow:0 1px 1px #F1F4FB
-}
+.tcp_buy_button table select,
 .tcp_buy_button table input {
-	margin: 2px 2px !important;
-	display: inline;
+    margin: 1px 0 1px;
+	font-size:12px !important;
 }
-.tcp_buy_button table tr td select {
-	margin: 2px 0px 2px!important;
-	display: inline;
-	color: #666;
+.tcp_added_product_title {
+	display:block;
+	clear:left;
+	font-size:0.9em;
+	color:#C00;
+}
+.tcp_count {
+	height:22px;
+	border: 1px solid #bbbbbb;
+	line-height: 1em;
+	text-align: center;
+	vertical-align: middle;
+	box-shadow:inset 0 0 0 2px #eee;
+	-webkit-box-shadow:inset 0 0 0 2px #eee;
+	-moz-box-shadow:inset 0 0 0 2px #eee;
+}
+.tcp_add_row {
 }
 
-.tcp_added_product_title {
-	clear: left;
-	font-size: 11px;
-	color: #000;
-	margin: 3px 0px 0px 10px;
-	display: block;
-}
-.tcp_added_product_title a{
-	color: #348ABB;
-	text-decoration: none;
-}
-.tcp_added_product_title a:hover{
-	color: #FF4B33;
-	text-decoration: none;
-}
-.tcp_add_to_shopping_cart {
-	-moz-border-radius:4px 4px 4px 4px;
-	border:1px solid #ccc;
-	border-bottom: 1px solid #888;
-	border-right: 1px solid #888;
-	color:#348ABB;
-	cursor:pointer !important;
-	font:11px/16px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
-	padding:2px 4px 2px 4px !important;
-	text-decoration:none;
-	text-shadow:0 1px 1px #fff;
-	background-color: #F1F4FB;
-	text-transform: capitalize;
-	display: inline;
-	margin: 1px 2px;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-}
-.tcp_add_to_shopping_cart:hover {
-	border:1px solid #99b;
-	color:#000;
-}
+

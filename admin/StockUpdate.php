@@ -92,7 +92,7 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 	<tr valign="top">
 	<th scope="row"><label for="added_stock"><?php _e( 'Units to add', 'tcp' );?>:</label></th>
 	<td>
-		<input type="text" name="added_stock" id="added_stock" value="<?php echo $added_stock;?>" sixe="4" maxlength="8"/>
+		<input type="text" name="added_stock" id="added_stock" value="<?php echo $added_stock;?>" sixe="4" maxlength="8" class="tcp_count"/>
 	</td>
 	</tr>
 	<?php do_action( 'tcp_update_stock_search_controls' );?>
@@ -150,7 +150,7 @@ if ( isset( $_REQUEST['tcp_update_stock'] ) ) {
 			<tr>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
 				<td><?php echo $stock;?> <?php _e( 'units', 'tcp' );?></td>
-				<td><input type="text" value="<?php echo $new_stock;?>" id="tcp_new_stock_<?php echo $post->ID;?>" name="tcp_new_stock_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' );?>
+				<td><input type="text" value="<?php echo $new_stock;?>" id="tcp_new_stock_<?php echo $post->ID;?>" name="tcp_new_stock_<?php echo $post->ID;?>" size="13" maxlength="13" class="tcp_count"/> <?php _e( 'units', 'tcp' );?>
 				<input type="button" value="<?php _e( 'no stock', 'tcp' );?>" onclick="jQuery('#tcp_new_stock_<?php echo $post->ID;?>').val(-1);" class="button-secondary" /></td>
 				<td>&nbsp;</td>
 			</tr>

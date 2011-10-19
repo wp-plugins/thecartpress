@@ -105,7 +105,7 @@ class TCP_Settings {
 		add_settings_field( 'see_buy_button_in_content', __( 'See buy button in content', 'tcp' ), array( $this, 'show_see_buy_button_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'align_buy_button_in_content', __( 'Align of buy button in content', 'tcp' ), array( $this, 'show_align_buy_button_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_price_in_content', __( 'See price in content', 'tcp' ), array( $this, 'show_see_price_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
-		add_settings_field( 'image_size_grouped_by_button', __( 'Image size grouped by button', 'tcp' ), array( $this, 'show_image_size_grouped_by_button' ), __FILE__ , 'tcp_theme_compatibility_section' );		
+		add_settings_field( 'image_size_grouped_by_button', __( 'Image size grouped buy button', 'tcp' ), array( $this, 'show_image_size_grouped_by_button' ), __FILE__ , 'tcp_theme_compatibility_section' );		
 		add_settings_field( 'see_image_in_content', __( 'See image in content', 'tcp' ), array( $this, 'show_see_image_in_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'image_size_content', __( 'Image size in content', 'tcp' ), array( $this, 'image_size_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'image_align_content', __( 'Image align in content', 'tcp' ), array( $this, 'image_align_content' ), __FILE__ , 'tcp_theme_compatibility_section' );
@@ -311,7 +311,7 @@ class TCP_Settings {
 			global $thecartpress;
 			$decimal_currency = isset( $thecartpress->settings['decimal_currency'] ) ? $thecartpress->settings['decimal_currency'] : '2';
 		}?>
-		<input type="text" id="decimal_currency" name="tcp_settings[decimal_currency]" value="<?php echo $decimal_currency;?>" size="1" maxlength="1" /><?php
+		<input type="text" id="decimal_currency" name="tcp_settings[decimal_currency]" value="<?php echo $decimal_currency;?>" size="1" maxlength="1" class="tcp_count"/><?php
 	}
 
 	function show_decimal_point( $decimal_point = false ) {
@@ -626,7 +626,7 @@ class TCP_Settings {
 	function show_products_per_page() {
 		global $thecartpress;
 		$products_per_page = isset( $thecartpress->settings['products_per_page'] ) ? $thecartpress->settings['products_per_page'] : '10';?>
-		<input type="text" id="products_per_page" name="tcp_settings[products_per_page]" value="<?php echo $products_per_page;?>" class="small-text" maxlength="4" /><?php
+		<input type="text" id="products_per_page" name="tcp_settings[products_per_page]" value="<?php echo $products_per_page;?>" class="small-text tcp_count" maxlength="4"/><?php
 		_e( 'products', 'tcp');
 	}
 

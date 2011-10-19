@@ -128,7 +128,7 @@ class TCP_CartTable {
 					$det .= '<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="' . $order_detail->get_option_1_id() . '" />' . "\n";
 					$det .= '<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="' . $order_detail->get_option_2_id() . '" />' . "\n";
 					if ( ! tcp_is_downloadable( $order_detail->get_post_id() ) ) {
-						$det .= '<input name="tcp_count" id="tcp_count" value="' . $order_detail->get_qty_ordered() . '" size="2" maxlength="4" type="text" />' . "\n";
+						$det .= '<input name="tcp_count" id="tcp_count" value="' . $order_detail->get_qty_ordered() . '" size="2" maxlength="4" type="text" class="tcp_count"/>' . "\n";
 						$det .= '<input name="tcp_modify_item_shopping_cart" value="' . __( 'Modify', 'tcp' ) . '" type="submit" />' . "\n";
 					} else {
 						$det .= '1&nbsp;' . "\n";

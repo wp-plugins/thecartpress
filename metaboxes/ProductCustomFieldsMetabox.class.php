@@ -18,6 +18,7 @@
 
 require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
 require_once( dirname(dirname( __FILE__ ) ) . '/daos/Taxes.class.php' );
+
 		
 class ProductCustomFieldsMetabox {
 
@@ -108,7 +109,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input type="text" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_currency();?>
+				<td><input type="number" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_currency();?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
@@ -127,7 +128,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input type="text" min="0" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
+				<td><input type="number" min="0" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<tr valign="top">
@@ -159,7 +160,7 @@ class ProductCustomFieldsMetabox {
 
 			<tr valign="top">
 				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' );?>:</label></th>
-				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text" type="text" style="width:4em">
+				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text tcp_count" type="number" style="width:4em">
 				<span class="description"><?php _e( 'Numerical order.', 'tcp' );?></span></td>
 			</tr>
 			
@@ -175,7 +176,7 @@ class ProductCustomFieldsMetabox {
 					<span class="description"><?php printf( __( 'Stock management is disabled. See the <a href="%s">settings</a> page to change this value.', 'tcp' ), $path );?></span>
 				<?php endif;?>
 				</th>
-				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_stock', true ) );?>" class="regular-text" type="text" style="width:10em" />
+				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_stock', true ) );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:10em" />
 				<br /><span class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></span></td>
 			</tr>
 			
@@ -196,13 +197,13 @@ class ProductCustomFieldsMetabox {
 			?>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
-				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4" />
+				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:4em" maxlength="4" />
 				<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
 				</td>
 			</tr>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
-				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text" type="text" style="width:4em" maxlength="4" />
+				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:4em" maxlength="4" />
 				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
 				</td>
 			</tr>

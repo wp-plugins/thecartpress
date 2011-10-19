@@ -100,7 +100,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	<tbody>
 	<tr valign="top">
 	<th scope="row">
-		<label for="title"><?php _e( 'Title', 'tcp' );?></label>
+		<label for="title"><?php _e( 'Title', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" />
@@ -108,7 +108,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	</tr>
 	<tr valign="top">
 	<th scope="row">
-		<label for="active"><?php _e( 'Active', 'tcp' );?></label>
+		<label for="active"><?php _e( 'Active', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<input type="checkbox" name="active" id="active" <?php checked( isset( $data['active'] ) ? $data['active'] : false, true );?> value="yes" />
@@ -117,7 +117,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 <?php if ( $plugin_type == 'payment' ) : ?>
 	<tr valign="top">
 	<th scope="row">
-		<label for="not_for_downloadable"><?php _e( 'Do not Apply for downloadable products', 'tcp' );?></label>
+		<label for="not_for_downloadable"><?php _e( 'Do not Apply for downloadable products', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<input type="checkbox" name="not_for_downloadable" id="not_for_downloadable" <?php checked( isset( $data['not_for_downloadable'] ) ? $data['not_for_downloadable'] : false, true );?> value="yes" />
@@ -125,7 +125,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	</tr>
 	<tr valign="top">
 	<th scope="row">
-		<label for="new_status"><?php _e( 'New status', 'tcp' );?></label>
+		<label for="new_status"><?php _e( 'New status', 'tcp' );?>:</label>
 	</th>
 	<td>
 		<select class="postform" id="new_status" name="new_status"><?php 

@@ -100,7 +100,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				);
 			}
 			$_SESSION['tcp_checkout']['billing'] = $billing;
-			return true;
+			return apply_filters( 'tcp_after_billing_box', true );
 		}
 	}
 

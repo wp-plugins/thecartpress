@@ -122,7 +122,7 @@ class ProductCustomPostType {
 
 
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
-	static function register_post_type_archives( $post_type, $base_path = '' ) {
+	/*static function register_post_type_archives( $post_type, $base_path = '' ) {
 echo "register_post_type_archives( $post_type, $base_path )<br>";
 
 		global $wp_rewrite;
@@ -149,7 +149,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			//add the rewrite rule to wp_rewrite
 			$wp_rewrite->add_rule( $regex, $redirect, 'top' );
 		}
-	}
+	}*/
 
 	/*function quickEditCustomBox( $column_name, $post_type ) {
 		if ( $post_type == ProductCustomPostType::$PRODUCT ) {

@@ -26,6 +26,7 @@ class ProductOptionsForTheCartPress {
 			add_action( 'admin_init', array( $this, 'admin_init' ), 99 );
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
+			add_action( 'tcp_relations_metabox_options_toolbar', array( $this, 'tcp_relations_metabox_options_toolbar' ) );
 			add_action( 'tcp_assigned_products_product_toolbar', array( $this, 'tcp_assigned_products_product_toolbar' ), 10, 2 );
 			require_once( dirname( dirname( __FILE__ ) ) . '/metaboxes/OptionCustomFieldsMetabox.class.php' );
 			$optionCustomFieldsMetabox = new OptionCustomFieldsMetabox();
@@ -99,6 +100,14 @@ class ProductOptionsForTheCartPress {
 		}
 	}
 
+	function tcp_relations_metabox_options_toolbar( $post_id ) {
+		if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {
+			$count = RelEntities::count( $post_id, 'OPTIONS' );
+			$count = $count > 0 ? ' (' . $count . ')' : '';
+			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__  ) ) ) . '/admin/';
+			echo '<li><a href="', $admin_path, 'OptionsList.php&post_id=', $post_id, '">', __( 'Manage options', 'tcp_op' ), $count, '</a></li>';
+		}
+	}
 	function tcp_assigned_products_product_toolbar( $parent_id, $post_id ) {
 		if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {
 			$count = RelEntities::count( $post_id, 'OPTIONS' );
@@ -527,7 +536,7 @@ class ProductOptionsForTheCartPress {
 					}					
 				}
 				if ( $min != $max ) {
-					$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
+					$label = sprintf( __( '%s to %s', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
 				} else {
 					$label = tcp_format_the_price( $min );
 				}
@@ -566,7 +575,7 @@ class ProductOptionsForTheCartPress {
 					}
 				}
 				if ( $min != $max ) {
-					$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
+					$label = sprintf( __( '%s to %s', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
 				} else {
 					$label = tcp_format_the_price( $min );
 				}

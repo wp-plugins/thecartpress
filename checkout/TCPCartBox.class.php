@@ -31,7 +31,8 @@ class TCPCartBox extends TCPCheckoutBox {
 			'comment' => isset( $_REQUEST['comment'] ) ? $_REQUEST['comment'] : 0,
 		);
 		$_SESSION['tcp_checkout']['cart'] = $comment;
-		return true;
+		do_action( 'tcp_after_cart_cart_box' );
+		return apply_filters( 'tcp_after_cart_box', true );
 	}
 
 	function show() {

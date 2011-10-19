@@ -940,6 +940,23 @@ function tcp_get_remote_ip() {
 	return $ip;
 }
 
+function tcp_get_current_url() {
+	$path = '';
+	$path .= strstr( strtolower( $_SERVER['SERVER_PROTOCOL'] ), '/', true);
+	$path .= ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ? 's' : '' ) . '://';
+	$path .= $_SERVER['SERVER_NAME'];
+	if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) {
+		if ( $_SERVER['SERVER_PORT'] != '443' ) {
+			$path .= ':' . $_SERVER['SERVER_PORT'];
+		}
+	} else {
+		if ( $_SERVER['SERVER_PORT'] != '80' ) {
+		    $path .= ':' . $_SERVER['SERVER_PORT'];
+		}
+	}
+	$path .= $_SERVER['REQUEST_URI'];
+	return $path;
+}
 /**
  * Returns a subfix from a request action
  * For example: if $_REQUEST['action_1'] exists,

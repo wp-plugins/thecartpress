@@ -414,7 +414,7 @@ class ShoppingCart {
 		$discount = $this->getDiscount();
 		foreach( $this->shopping_cart_items as $item )
 			$discount += $item->getDiscount();
-		return $discount;
+		return apply_filters( 'tcp_get_all_discounts', $discount );
 	}
 
 	function deleteAllDiscounts() {

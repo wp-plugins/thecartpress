@@ -44,7 +44,7 @@ class WishListWidget extends CustomListWidget {
 	function tcp_after_custom_list_widget() { ?>
 		<form method="post">
 		<input type="submit" name="tcp_remove_wish_list" value="<?php _e( 'delete all', 'tcp' );?>" />
-		<input type="submit" name="tcp_buy_wish_list" value="<?php _e( 'buy all', 'tcp' );?>" />
+		<!--<input type="submit" name="tcp_buy_wish_list" value="<?php _e( 'buy all', 'tcp' );?>" />-->
 		</form><?php
 	}
 
