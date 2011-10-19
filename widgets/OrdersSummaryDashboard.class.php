@@ -46,7 +46,7 @@ class OrdersSummaryDashboard {
 <h4><?php _e( 'Latest orders', 'tcp' ); ?></h4>
 	<?php
 	if ( current_user_can( 'tcp_edit_orders' ) ) {
-		$orders = Orders::getLastOrders();
+		$orders = Orders::getLastOrders( 10 );
 	} else {
 		$current_user = wp_get_current_user();
 		$orders = Orders::getLastOrders( 10, '', $current_user->ID );
@@ -71,7 +71,7 @@ class OrdersSummaryDashboard {
 			<td class="tcp_id"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo $order->order_id; ?></a></td>
 			<td class="tcp_date"><?php echo date( 'M d' , strtotime( $order->created_at) ); ?></td>
 			<td class="tcp_email"><?php echo $order->billing_email; ?></td>
-			<td class="tcp_status"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo isset( $all_status[$order->status]['label'] ) ? $all_status[$order->status]['label'] : '&nbsp;'; ?></a></td>
+			<td class="tcp_status tcp_status_<?php echo $all_status[$order->status]['name']; ?>"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo isset( $all_status[$order->status]['label'] ) ? $all_status[$order->status]['label'] : '&nbsp;'; ?></a></td>
 			<td class="tcp_price"><?php echo tcp_format_the_price( Orders::getTotal( $order->order_id ) ); ?></td>
 			</tr>
 		<?php endforeach; ?>

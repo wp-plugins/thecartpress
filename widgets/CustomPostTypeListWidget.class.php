@@ -51,7 +51,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 				$args['post__in'] = $instance['included'];
 			}
 		}
-		global $thecartpress;
+		$args = apply_filters( 'tcp_custom_post_type_list_widget', $args, $instance );
 		query_posts( $args );
 		if ( ! have_posts() ) return;
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
@@ -98,7 +98,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php if ( isset( $instance['see_image'] ) && $instance['see_image'] ) : 
 					$image_size = isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';?>
 				<div class="entry-post-<?php echo $image_size;?>">
-					<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail' ); ?></a>
+					<a class="size-<?php echo $image_size; ?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail' ); ?></a>
 				</div><!-- .entry-post-thumbnail -->
 				<?php endif; ?>
 				<?php if ( isset( $instance['see_excerpt'] ) && $instance['see_excerpt'] ) : ?>
@@ -313,7 +313,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$instance['see_first_custom_area']	= $new_instance['see_first_custom_area'] == 'yes';
 		$instance['see_second_custom_area']	= $new_instance['see_second_custom_area'] == 'yes';
 		$instance['see_third_custom_area']	= $new_instance['see_third_custom_area'] == 'yes';
-		return $instance;
+		return apply_filters( 'tcp_custom_post_type_list_widget_update', $instance, $new_instance );
 	}
 
 	function form( $instance ) {
@@ -385,16 +385,15 @@ class CustomPostTypeListWidget extends WP_Widget {
 		}
 		</script>
 	<div id="column_1">
+		<?php do_action( 'tcp_custom_post_type_list_widget_form_before', $this ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : 
-				if ( $post_type != 'tcp_product_option' ) : ?>
+			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : ?>
 				<option value="<?php echo $post_type->name;?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name; ?></option>
-				<?php endif;?>
 			<?php endforeach; ?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
@@ -497,6 +496,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
 			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
 		</p>
+		<?php do_action( 'tcp_custom_post_type_list_widget_form_after', $this ); ?>
 	</div>
 	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>

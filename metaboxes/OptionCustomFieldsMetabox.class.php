@@ -80,17 +80,17 @@ class OptionCustomFieldsMetabox {
 			<table class="form-table"><tbody>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input type="text" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" style="width:12em">&nbsp;<?php tcp_the_currency();?>
+				<td><input type="number" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text" style="width:12em">&nbsp;<?php tcp_the_currency();?>
 				<p class="description"><?php _e( 'This price will be added to the price of the parent.', 'tcp' );?></p></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input type="text" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( tcp_get_the_weight( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
+				<td><input type="number" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( tcp_get_the_weight( $post_id ) );?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
 				<p class="description"><?php _e( 'If value is zero then the weight will be the weight of the parent. This weight will not be added to the weight of the parent anyway.', 'tcp' );?></p></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_order"><?php _e( 'Order', 'tcp' );?>:</label></th>
-				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( tcp_get_the_order( $post_id ) );?>" class="regular-text" type="text" style="width:4em" /></td>
+				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( tcp_get_the_order( $post_id ) );?>" class="regular-text" type="number" min="0" style="width:4em" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_sku"><?php _e( 'Sku', 'tcp' );?>:</label></th>
@@ -102,7 +102,7 @@ class OptionCustomFieldsMetabox {
 					$path = 'admin.php?page=tcp_settings_page';?>
 					<p class="description"><?php printf( __( 'Stock management is disabled. See the <a href="%s">settings</a> page to change this value.', 'tcp' ), $path );?></p>
 				<?php endif;?></th>
-				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo tcp_get_the_stock( $post_id );?>" class="regular-text" type="text" style="width:10em">
+				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo tcp_get_the_stock( $post_id );?>" class="regular-text" type="number" min="-1" style="width:10em">
 				<p class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></p></td>
 			</tr>
 			<?php do_action( 'tcp_options_metabox_custom_fields', $post_id );?>

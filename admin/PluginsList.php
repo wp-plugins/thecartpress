@@ -44,7 +44,6 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'p
 	<th scope="col" class="manage-column"><?php _e( 'Plugin', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Instances', 'tcp' );?></th>
-	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
 </thead>
 
@@ -53,7 +52,6 @@ $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'p
 	<th scope="col" class="manage-column"><?php _e( 'Plugin', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' );?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Instances', 'tcp' );?></th>
-	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
 </tr>
 </tfoot>
 <tbody>
@@ -82,12 +80,10 @@ foreach( $plugins as $id => $plugin ) :
 		$out = __( 'Not in use', 'tcp' );
 	}?>
 	<tr <?php echo $tr_class;?>>
-		<td><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>" title="<?php _e( 'Edit', 'tcp' );?>"><?php echo $plugin->getTitle();?></a></td>
+		<td><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>" title="<?php _e( 'Edit', 'tcp' );?>"><?php echo $plugin->getTitle();?></a>
+		<div class="tcp_plugins_edit" style="display: none;"><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>"><?php _e( 'edit', 'tcp' );?></a></div></td>
 		<td><?php echo $plugin->getDescription();?></td>
 		<td><?php echo $out;?></td>
-		<td style="width: 20%;">
-		<a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>"><?php _e( 'edit', 'tcp' );?></a>
-		</td>
 	</tr>
 <?php endforeach;?>
 </tbody></table>

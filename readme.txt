@@ -1,21 +1,20 @@
-=== TheCartPress, E-Commerce for WordPress Stores ===
+=== TheCartPress, eCommerce Shopping Cart ===
 Contributors: thecartpress
-Tags: CartPress, ecommerce, e-commerce, store, shop, shopping, shopping cart, cart, custom post type, taxonomy, taxonomies, ecomerce, products, TheCartPress, html5
+Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
 Tested up to: 3.2
-Stable Tag: 1.1.3
+Stable Tag: 1.1.4
 
-Native integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
+Native eCommerce integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
 == Description ==
 
-E-Commerce plugin to create professional stores with WordPress. TheCartPress is an e-commerce plugin natively integrated into WordPress.
+The Professional WordPress eCommerce Plugin
 
-Design and look of your store whith native WordPress ability to manage themes and templates.
-You can create new WordPress plugins to extend the functionality and fit your needs.
+100% WordPress, naturaly flexible & Scalable. Powerful backend tools to make your Store Easy and Useful
 
-Extends the TheCartPress e-commerce funcionalities with the large WordPress plugins repository.
-It is compatible with many existing plugins in the WordPress repository: All In One SEO Pack, WordPress Multi Lingual Plugin, Google Analytics for WordPress, TubePress, Members only, GD star rating, etc.
+Ideal for merchants, themes constructors and developers. Use it as shopping cart, catalog or framework.
+Extend the eCommerce functionality with plugins and themes exactly in same way that you do with WordPress.
 
 = Product Browsing Offering =
 
@@ -103,7 +102,7 @@ It is compatible with many existing plugins in the WordPress repository: All In 
 * PayPal
 * Authorize.net
 * TPV Plugins, POS terminal plugins
-** Develop your own
+* Develop your own
 
 = Customer Accounts Offering =
 
@@ -183,7 +182,14 @@ This plugin is released under a GPL license.
 
 == Screenshots ==
 
+* http://thecartpress.com/wp-content/uploads/2011/10/order_summary.png
+
 == Changelog ==
+= 1.1.4 =
+* UI enhancements - html5
+* More hooks
+* Usability improvements in product management
+
 = 1.1.3 =
 * Dashboard improvements: last orders and graphical view of sales (Thanks to Joy)
 * Integrated Product Options into the core

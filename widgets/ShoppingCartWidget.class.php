@@ -66,9 +66,8 @@ class ShoppingCartWidget extends WP_Widget {
 					<?php endif; ?>
 					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-					<li>
-						<?php if ( $see_modify_item ) :?>
-							<input type="text" name="tcp_count" id="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" />
+					<li><?php if ( $see_modify_item ) :?>
+							<input type="text" name="tcp_count" id="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
 							<input type="submit" name="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
 						<?php else :?>
 							<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
@@ -78,8 +77,7 @@ class ShoppingCartWidget extends WP_Widget {
 							if ( $stock != -1 && $stock < $item->getCount() ) :?>
 								<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock ); ?></span>
 							<?php endif;
-						endif; ?>
-					</li>
+						endif; ?></li>
 					<?php endif;?>
 					<?php if ( $item->getDiscount() > 0 ) : ?>
 					<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getDiscount() ); ?></span></li>

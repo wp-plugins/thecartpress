@@ -106,13 +106,13 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 			onclick="if (this.checked) {jQuery('#div_per').show();jQuery('#div_fix').hide();}"
 			value="per" <?php checked( $update_type, 'per' );?>/>
 		<label for="by_category_per"><?php _e( 'percentage', 'tcp' );?></label>
-		<span id="div_per"<?php if ( $update_type != 'per' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="per" value="<?php echo $per;?>" size="5" maxlength="5" />&nbsp;&#37;</span>
+		<span id="div_per"<?php if ( $update_type != 'per' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="per" value="<?php echo $per;?>" size="5" maxlength="5" class="tcp_count"/>&nbsp;&#37;</span>
 		<br />
 		<input type="radio" id="by_category_fix" name="update_type"
 			onclick="if (this.checked) {jQuery('#div_per').hide();jQuery('#div_fix').show();}"
 			value="fix" <?php checked( $update_type, 'fix' );?> />
 		<label for="by_category_fix"><?php _e( 'fix value', 'tcp' );?></label>
-		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" /><?php tcp_the_currency();?></span>
+		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" class="tcp_count"/><?php tcp_the_currency();?></span>
 	</td>
 	</tr>
 	<?php do_action( 'tcp_update_price_search_controls' ); ?>
@@ -161,7 +161,7 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 			<tr>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
 				<td><?php echo tcp_format_the_price( $price );?></td>
-				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php tcp_the_currency();?></td>
+				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" class="tcp_count"/> <?php tcp_the_currency();?></td>
 				<td>&nbsp;</td>
 			</tr>
 			<?php do_action( 'tcp_update_price_controls', $post );

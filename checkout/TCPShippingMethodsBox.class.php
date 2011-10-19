@@ -49,7 +49,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 				'shipping_method_id' => isset( $_REQUEST['shipping_method_id'] ) ? $_REQUEST['shipping_method_id'] : 0,
 			);
 			$_SESSION['tcp_checkout']['shipping_methods'] = $shipping_method;
-			return true;
+			return apply_filters( 'tcp_after_shipping_methods_box', true );
 		}
 	}
 

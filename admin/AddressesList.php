@@ -33,9 +33,9 @@ if ( is_user_logged_in() ) {
 		}
 	}
 	$addresses = Addresses::getCustomerAddresses( $current_user->ID );
-} else
+} else {
 	wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-?>
+} ?>
 <div class="wrap">
 
 <h2><?php _e( 'List of addresses', 'tcp' );?></h2>

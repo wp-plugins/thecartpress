@@ -40,7 +40,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				'payment_method_id' => isset( $_REQUEST['payment_method_id'] ) ? $_REQUEST['payment_method_id'] : 0,
 			);
 			$_SESSION['tcp_checkout']['payment_methods'] = $payment_method;
-			return true;
+			return apply_filters( 'tcp_after_payment_methods_box', true );
 		}
 	}
 

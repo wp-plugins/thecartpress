@@ -33,7 +33,7 @@ class TCPNoticeBox extends TCPCheckoutBox {
 	function after_action() {
 		if ( ! isset( $_REQUEST['legal_notice_accept'] ) || strlen( $_REQUEST['legal_notice_accept'] ) == 0 )
 			$this->errors['legal_notice_accept'] = __( 'You must accept the conditions!!', 'tcp' );
-		return count( $this->errors ) == 0;
+		return apply_filters( 'tcp_after_notice_box', count( $this->errors ) == 0 );
 	}
 
 	function show() {

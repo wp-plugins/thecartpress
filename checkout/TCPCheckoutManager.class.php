@@ -370,7 +370,8 @@ class TCPCheckoutManager {
 			$shipping_amount = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
 			$order['shipping_amount'] = 0;
-			$order['shipping_method'] = $class;
+			//$order['shipping_method'] = $class;
+			$order['shipping_method'] = $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) . ' [' . $class . ']';
 		} else {
 			$order['shipping_amount'] = 0;
 			$order['shipping_method'] = '';
@@ -385,7 +386,8 @@ class TCPCheckoutManager {
 			$order['payment_amount'] = 0;
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $payment_amount, __( 'Payment cost', 'tcp' ) );
 			$order['payment_method'] = $class;
-			$order['payment_name']   = $payment_method->getName();
+			//$order['payment_name']   = $payment_method->getName();
+			$order['payment_name']   = $payment_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) . ' [' . $payment_method->getName() . ']';
 		} else {
 			$order['payment_amount'] = 0;
 			$order['payment_method'] = '';

@@ -188,7 +188,7 @@ while ( have_posts() ) : the_post();
 </td>
 <?php endwhile; // End the loop ?>
 <?php for(; $column > 0; $column-- )
-		echo '<td>&nbsp;</td>';
+		echo '<td class="tcp_td_empty">&nbsp;</td>';
 ?>
 </tr></table>
 <?php /* Display navigation to next/previous pages when applicable */ ?>
