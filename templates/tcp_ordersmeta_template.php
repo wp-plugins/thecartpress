@@ -24,8 +24,8 @@ function delete_order_meta( $order_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value );
 }
 
-function get_order_meta( $order_id, $key, $single = true ) {
-	return get_metadata( 'tcp_orders', $order_id, $key, $single );
+function get_order_meta( $order_id, $meta_key, $single = true ) {
+	return get_metadata( 'tcp_orders', $order_id, $meta_key, $single );
 }
 
 function update_order_meta( $order_id, $meta_key, $meta_value, $prev_value = '' ) {

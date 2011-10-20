@@ -91,7 +91,7 @@ Extend the eCommerce functionality with plugins and themes exactly in same way t
 * Table rates for weight and destination
 * On-site order tracking from customer accounts
 * Extend
-** Develop your own plugin
+* Develop your own plugin
 
 = Payment Offering =
 
