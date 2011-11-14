@@ -1197,15 +1197,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			//
 		}
 		update_option( 'tcp_version', 114 );
-		if ( $version < 115 ) {
-			global $wpdb;
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_ordersmeta CHANGE COLUMN `term_id` `tcp_orders_id` BIGINT(20) UNSIGNED NOT NULL;';
-			$wpdb->query( $sql );
-			//update_option( 'tcp_version', 115 ); //TODO
-			//
-			//TODO Deprecated 2.1
-			//
-		}
+		update_option( 'tcp_version', 115 ); //TODO
 	}
 
 	/**
