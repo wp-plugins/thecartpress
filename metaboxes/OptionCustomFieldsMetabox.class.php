@@ -126,8 +126,8 @@ class OptionCustomFieldsMetabox {
 		$post_id = tcp_get_default_id( $post_id, 'tcp_product_option' );
 		//if ( ! isset( $_POST[ 'tcp-option-custom-fields_wpnonce' ] ) || ! wp_verify_nonce( $_POST[ 'tcp-option-custom-fields_wpnonce' ], 'tcp-option-custom-fields' ) ) return;
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return $post_id;
-		if ( $post->post_type != 'tcp_product_option' ) return $post_id;
 		$post = get_post( $post_id );
+		if ( $post->post_type != 'tcp_product_option' ) return $post_id;
 		RelEntities::deleteAllTo( $post_id, 'OPTIONS' );
 		delete_post_meta( $post_id, 'tcp_price' );
 		delete_post_meta( $post_id, 'tcp_order' );
