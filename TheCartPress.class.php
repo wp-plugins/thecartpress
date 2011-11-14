@@ -371,16 +371,18 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	function wp_before_admin_bar_render() {
 		global $wp_admin_bar;
 		$tcp_admin_bar_hidden_items = get_option( 'tcp_admin_bar_hidden_items', array() );
-		$menu_bar = $wp_admin_bar->menu;
-		foreach( $menu_bar as $id => $menu ) {
-			if ( isset( $tcp_admin_bar_hidden_items[$id] ) ) {
-				unset( $wp_admin_bar->menu->$id );
-			} else {
-				foreach( $menu as $id_menu => $menu_item ) {
-					if ( $id_menu == 'children' ) {
-						foreach( $menu_item as $id_item => $item ) {
-							if ( isset( $tcp_admin_bar_hidden_items[$id_item] ) ) {
-								unset( $menu_item->$id_item );
+		if ( isset( $wp_admin_bar->menu ) ) {
+			$menu_bar = $wp_admin_bar->menu;
+			foreach( $menu_bar as $id => $menu ) {
+				if ( isset( $tcp_admin_bar_hidden_items[$id] ) ) {
+					unset( $wp_admin_bar->menu->$id );
+				} else {
+					foreach( $menu as $id_menu => $menu_item ) {
+						if ( $id_menu == 'children' ) {
+							foreach( $menu_item as $id_item => $item ) {
+								if ( isset( $tcp_admin_bar_hidden_items[$id_item] ) ) {
+									unset( $menu_item->$id_item );
+								}
 							}
 						}
 					}
