@@ -21,13 +21,13 @@ require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntitiesOptions.class.ph
 class OptionCustomFieldsMetabox {
 
 	function registerMetaBox() {
-		add_meta_box( 'tcp-option-custom-fields', __( 'Option Custom Fields', 'tcp' ), array( &$this, 'showCustomFields' ), OptionCustomPostType::$PRODUCT_OPTION, 'normal', 'high' );
+		add_meta_box( 'tcp-option-custom-fields', __( 'Option Custom Fields', 'tcp' ), array( &$this, 'showCustomFields' ), 'tcp_product_option', 'normal', 'high' );
 	}
 
 	function showCustomFields() {
 		global $post;
-		if ( $post->post_type != OptionCustomPostType::$PRODUCT_OPTION ) return;
-		$post_id = tcp_get_default_id( $post->ID, OptionCustomPostType::$PRODUCT_OPTION );
+		if ( $post->post_type != 'tcp_product_option' ) return;
+		$post_id = tcp_get_default_id( $post->ID, 'tcp_product_option' );
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 		$lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
 		$source_lang = isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : '';
@@ -100,10 +100,10 @@ class OptionCustomFieldsMetabox {
 	}
 
 	function saveCustomFields( $post_id, $post ) {
-		if ( $post->post_type != OptionCustomPostType::$PRODUCT_OPTION ) return array( $post_id, $post );
+		if ( $post->post_type != 'tcp_product_option' ) return array( $post_id, $post );
 		if ( ! isset( $_POST[ 'tcp-option-custom-fields_wpnonce' ] ) || ! wp_verify_nonce( $_POST[ 'tcp-option-custom-fields_wpnonce' ], 'tcp-option-custom-fields' ) ) return array( $post_id, $post );
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return array( $post_id, $post );
-		$post_id = tcp_get_default_id( $post_id, OptionCustomPostType::$PRODUCT_OPTION );
+		$post_id = tcp_get_default_id( $post_id, 'tcp_product_option' );
 		$tcp_parent_id = isset( $_REQUEST['tcp_product_option_parent_id'] ) ? $_REQUEST['tcp_product_option_parent_id'] : 0;
 		if ( $tcp_parent_id == 0 ) $tcp_parent_id = isset( $_REQUEST['tcp_product_parent_id'] ) ? $_REQUEST['tcp_product_parent_id'] : 0;
 		$price	= isset( $_POST['tcp_price'] )  ? tcp_input_number( $_POST['tcp_price'] ) : 0;
@@ -123,10 +123,10 @@ class OptionCustomFieldsMetabox {
 	}
 
 	function deleteCustomFields( $post_id ) {
-		$post_id = tcp_get_default_id( $post_id, OptionCustomPostType::$PRODUCT_OPTION );
+		$post_id = tcp_get_default_id( $post_id, 'tcp_product_option' );
 		//if ( ! isset( $_POST[ 'tcp-option-custom-fields_wpnonce' ] ) || ! wp_verify_nonce( $_POST[ 'tcp-option-custom-fields_wpnonce' ], 'tcp-option-custom-fields' ) ) return;
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return $post_id;
-		if ( $post->post_type != OptionCustomPostType::$PRODUCT_OPTION ) return $post_id;
+		if ( $post->post_type != 'tcp_product_option' ) return $post_id;
 		$post = get_post( $post_id );
 		RelEntities::deleteAllTo( $post_id, 'OPTIONS' );
 		delete_post_meta( $post_id, 'tcp_price' );
