@@ -29,7 +29,7 @@ class ShoppingCart {
 	private $shopping_cart_items = array();
 	private $other_costs = array();
 	private $freeShipping = false;
-	private $discount = 0;
+	private $discounts = array();
 	private $order_id = 0;
 	
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0, $price_to_show = 0 ) {
@@ -101,7 +101,8 @@ class ShoppingCart {
 	}
 
 	function getItems() {
-		return $this->shopping_cart_items;
+		$items = $this->shopping_cart_items;
+		return apply_filters( 'tcp_shopping_cart_get_items', $items );
 	}
 
 	/**
@@ -133,8 +134,9 @@ class ShoppingCart {
 		foreach( $items as $item )
 			$total += $item->getTotal();
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
+		$total -= $this->getCartDiscounts();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total', $total );
-		return $total - $this->discount;
+		return $total;
 	}
 
 	/**
@@ -153,8 +155,9 @@ class ShoppingCart {
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
 			$total += $shopping_cart_item->getTotalToShow();
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
+		$total += $this->getCartDiscounts();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total_to_show', $total );
-		return $total - $this->discount;
+		return $total;
 	}
 
 	/**
@@ -179,9 +182,9 @@ class ShoppingCart {
 	 */
 	function getWeightForShipping() {
 		$weight = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
-			if ( ! $shopping_cart_item->isDownloadable() && ! $shopping_cart_item->isFreeShipping() )
-				$weight += $shopping_cart_item->getWeight();
+		foreach( $this->shopping_cart_items as $item )
+			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
+				$weight += $item->getWeight();
 		return $weight;
 	}
 
@@ -337,23 +340,6 @@ class ShoppingCart {
 	/**
 	 * End WishList functions
 	 */
-
-	function isThereStock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
-		if ( $post_id == 0 ) {
-			foreach( $this->shopping_cart_items as $item ) {
-				$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-				if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
-					return false;
-			}
-			return true;
-		} else {
-			$stock = tcp_get_the_stock( $post_id, $option_1_id, $option_2_id );
-			if ( $stock == 0 || ( $stock > -1 && $stock < $item->getCount() ) )
-				return false;
-			else
-				return true;
-		}
-	}
 	
 	/**
 	 * Other costs API
@@ -386,8 +372,11 @@ class ShoppingCart {
 
 	function getTotalOtherCosts() {
 		$total = 0;
+		//$tax = tcp_get_the_shipping_tax();
 		foreach( $this->other_costs as $other_cost ) {
-			$total += $other_cost->getCost();
+			//$total += $other_cost->getCost();
+			//$total += $other_cost->getCost() * ( 1 + $tax / 100 );
+			$total += tcp_get_the_shipping_cost_with_tax( $other_cost->getCost() );
 		}
 		return $total;
 	}
@@ -400,27 +389,49 @@ class ShoppingCart {
 		return $this->freeShipping;
 	}
 
-	function setDiscount( $discount ) {
-		$decimals = tcp_get_decimal_currency();	
-		$discount = round( $discount, $decimals );
-		$this->discount = $discount;
+	//Returns the total of discounts in the cart (not for each product)
+	function getCartDiscounts() {
+		$discount = 0;
+		foreach( $this->discounts as $discount_item )
+			$discount += $discount_item->getDiscount();
+		$discount = (float)apply_filters( 'tcp_shopping_cart_get_cart_discounts', $discount );
+		return $discount;
 	}
 
-	function getDiscount() {
-		return $this->discount;
+	//Adds a cart discount
+	function addDiscount( $id, $discount = 0, $desc = '' ) {
+		if ( $discount == 0 ) {
+			$this->deleteDiscount( $id );
+		} else {
+			$discount = new ShoppingCartDiscount( $discount, $desc );
+			$this->discounts[$id] = $discount;
+		}
+	}
+
+	//Deletes a cart discount
+	function deleteDiscount( $id ) {
+		if ( isset( $this->discounts[$id] ) )
+			unset( $this->discounts[$id] );
+	}
+
+	//Deletes all cart discounts
+	function deleteAllCartDiscounts() {
+		unset( $this->discounts );
+		$this->discounts = array();
 	}
 
 	function getAllDiscounts() {
-		$discount = $this->getDiscount();
+		$discount = $this->getCartDiscounts();
 		foreach( $this->shopping_cart_items as $item )
 			$discount += $item->getDiscount();
 		return apply_filters( 'tcp_get_all_discounts', $discount );
 	}
 
 	function deleteAllDiscounts() {
-		$this->setDiscount( 0 );
 		foreach( $this->shopping_cart_items as $item )
 			$item->setDiscount( 0 );
+		unset( $this->discounts );
+		$this->discounts = array();
 	}
 }
 
@@ -577,10 +588,6 @@ class ShoppingCartOtherCost {
 		$this->cost_to_show	= round( $cost_to_show, $decimals );
 	}
 	
-	function __toString() {
-		return $this->order . $this->desc;
-	}
-
 	function getCost() {
 		return $this->cost;
 	}
@@ -597,5 +604,31 @@ class ShoppingCartOtherCost {
 		return $this->cost_to_show;
 	}
 
+	function __toString() {
+		return $this->order . $this->desc;
+	}
+}
+
+class ShoppingCartDiscount {
+	private $discount;
+	private $desc;
+
+	function __construct( $discount, $desc = '' ) {
+		$decimals		= tcp_get_decimal_currency();
+		$this->discount	= round( $discount, $decimals );
+		$this->desc		= $desc;
+	}
+
+	function getDiscount() {
+		return $this->discount;
+	}
+
+	function getDesc() {
+		return $this->desc;
+	}
+
+	function __toString() {
+		return $this->desc . ': ' . $this->discount;
+	}
 }
 ?>

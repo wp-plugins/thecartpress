@@ -16,45 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntitiesOptions.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/customposttypes/OptionCustomPostType.class.php' );
-
 class ProductOptionsForTheCartPress {
-	function __construct() {
-		add_action( 'init', array( $this, 'init' ), 99 );
-		if ( is_admin() ) {
-			add_action( 'admin_init', array( $this, 'admin_init' ), 99 );
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
-			add_action( 'tcp_relations_metabox_options_toolbar', array( $this, 'tcp_relations_metabox_options_toolbar' ) );
-			add_action( 'tcp_assigned_products_product_toolbar', array( $this, 'tcp_assigned_products_product_toolbar' ), 10, 2 );
-			require_once( dirname( dirname( __FILE__ ) ) . '/metaboxes/OptionCustomFieldsMetabox.class.php' );
-			$optionCustomFieldsMetabox = new OptionCustomFieldsMetabox();
-			add_action( 'admin_menu', array( $optionCustomFieldsMetabox, 'registerMetaBox' ) );
-			add_action( 'save_post', array( $optionCustomFieldsMetabox, 'saveCustomFields' ), 1, 2 );
-			add_action( 'delete_post', array( $optionCustomFieldsMetabox, 'deleteCustomFields' ) );
-
-			add_action( 'tcp_update_price_search_controls', array( $this, 'tcp_update_price_search_controls' ) );
-			add_action( 'tcp_update_price', array( $this, 'tcp_update_price' ) );
-			add_action( 'tcp_update_price_controls', array( $this, 'tcp_update_price_controls' ) );
-
-			add_action( 'tcp_update_stock_search_controls', array( $this, 'tcp_update_stock_search_controls' ) );
-			add_action( 'tcp_update_stock', array( $this, 'tcp_update_stock') );
-			add_action( 'tcp_update_stock_controls', array( $this, 'tcp_update_stock_controls' ) );
-
-			add_action( 'tcp_copying_product', array( $this, 'tcp_copying_product' ), 1, 2 );
-
-			add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_options_metabox_custom_fields' ) );
-			add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_options_metabox_save_custom_fields' ) );
-			add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_options_metabox_delete_custom_fields' ) );
-		} else {
-			add_filter( 'tcp_buy_button_options', array( $this, 'tcp_buy_button_options' ), 10, 3 );
-			add_filter( 'tcp_get_image_in_content', array( $this, 'tcp_get_image_in_content' ), 10, 2 );
-			add_filter( 'tcp_get_image_in_grouped_buy_button', array( $this, 'tcp_get_image_in_content' ), 10, 3 );
-			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ), 10, 2 );
-		}
-	}
-
 	function admin_init() {
 		add_filter( 'tcp_product_row_actions', array( $this, 'productRowActions' ) );
 		$tcp_settings_page = dirname( dirname ( __FILE__ ) ) . '/admin/TCP_Settings.class.php';
@@ -63,15 +25,15 @@ class ProductOptionsForTheCartPress {
 
 	function show_options_type() {
 		global $thecartpress;
-		$options_type = isset( $thecartpress->settings['options_type'] ) ? $thecartpress->settings['options_type'] : 'single';?>
-		<input type="radio" id="options_type_single" name="tcp_settings[options_type]" value="single" <?php checked( 'single', $options_type );?> />
-		<label for="options_type_single"><?php _e( 'Single', 'tcp' );?></label>
+		$options_type = isset( $thecartpress->settings['options_type'] ) ? $thecartpress->settings['options_type'] : 'single'; ?>
+		<input type="radio" id="options_type_single" name="tcp_settings[options_type]" value="single" <?php checked( 'single', $options_type ); ?> />
+		<label for="options_type_single"><?php _e( 'Single', 'tcp' ); ?></label>
 		<br />
-		<input type="radio" id="options_type_double" name="tcp_settings[options_type]" value="double" <?php checked( 'double', $options_type );?> />
-		<label for="options_type_double"><?php _e( 'Double', 'tcp' );?></label>
+		<input type="radio" id="options_type_double" name="tcp_settings[options_type]" value="double" <?php checked( 'double', $options_type ); ?> />
+		<label for="options_type_double"><?php _e( 'Double', 'tcp' ); ?></label>
 		<br />
-		<input type="radio" id="options_type_list" name="tcp_settings[options_type]" value="list" <?php checked( 'list', $options_type );?> />
-		<label for="options_type_list"><?php _e( 'List', 'tcp' );?></label>
+		<input type="radio" id="options_type_list" name="tcp_settings[options_type]" value="list" <?php checked( 'list', $options_type ); ?> />
+		<label for="options_type_list"><?php _e( 'List', 'tcp' ); ?></label>
 		<?php
 	}
 
@@ -139,13 +101,14 @@ class ProductOptionsForTheCartPress {
 						$sub_option_price = tcp_get_the_price( $sub_id );
 						$sub_option_price = $price + tcp_get_the_price_to_show( $post_id, $sub_option_price );
 						$option_title = get_the_title( $current_id ) . '&nbsp;-&nbsp;' . htmlspecialchars( get_the_title( $current_sub_id ) ) . ':&nbsp;<span class="tcp_price">' . tcp_format_the_price( $sub_option_price ) . '</span>';
-						$option_title = html_entity_decode( $option_title, ENT_NOQUOTES, "UTF-8");
-						$out .= '<option value="' . $option_id . '-' . $sub_id . '">' . $option_title . '</option>' . "\n";
+						$option_title = apply_filters( 'tcp_options_title', $option_title, $post_id, $option_id, $sub_id );
+						$out .= '<option value="' . $option_id . '-' . $sub_id . '">' . html_entity_decode( $option_title, ENT_NOQUOTES, "UTF-8") . '</option>' . "\n";
 					}
 				} else {
-					$out .= '<option value="' . $option_id . '">' . get_the_title( $current_id );
-					//$price = tcp_get_the_price_to_show( $post_id, $price );
-					if ( $price > 0 ) $out .= '&nbsp;' . tcp_format_the_price( $price );
+					$option_title = get_the_title( $current_id );
+					if ( $price > 0 ) $option_title .= '&nbsp;' . tcp_format_the_price( $price );
+					$option_title = apply_filters( 'tcp_options_title', $option_title, $post_id, $option_id );
+					$out .= '<option value="' . $option_id . '">' .  html_entity_decode( $option_title, ENT_NOQUOTES, "UTF-8");
 					$out .= '</option>' . "\n";
 				}
 				add_filter( 'the_title', 'wptexturize' );
@@ -176,7 +139,7 @@ class ProductOptionsForTheCartPress {
 								$sub_price = $price + tcp_get_the_price( $sub_id );
 								$sub_price = tcp_get_the_price_to_show( $post_id, $sub_price );
 								$option_title = get_the_title( $current_sub_id ) . ': ' . tcp_format_the_price( $sub_price );
-								$option_title = html_entity_decode( $option_title, ENT_NOQUOTES, "UTF-8");
+								$option_title = html_entity_decode( apply_filters( 'tcp_options_title', $option_title, $post_id, $option_id, $sub_id ), ENT_NOQUOTES, "UTF-8");
 								$out .= "\t" . 'jQuery("#tcp_option_2_id_' . $post_id . '_' . $parent_id . '").append(jQuery("<option></option>").attr("value", ' . $sub_id . ').text("' . $option_title . '"));' . "\n";
 							}
 						add_filter( 'the_title', 'wptexturize' );
@@ -211,14 +174,13 @@ class ProductOptionsForTheCartPress {
 			$out .= '<select name="tcp_option_1_id[]" id="tcp_option_1_id_' . $post_id . '_' . $parent_id . '" onchange="load_option_' . $post_id . '_' . $parent_id . '(this.value);' . $script . '">' . "\n";
 			foreach( $options as $id => $option ) {
 				$price = $product_price + tcp_get_the_price( $id );
+				$option_title = get_the_title( tcp_get_current_id( $id, OptionCustomPostType::$PRODUCT_OPTION ) );
 				if ( ! is_array( $option ) ) {
-					$out .= '<option value="' . $id . '">' . htmlspecialchars( get_the_title( tcp_get_current_id( $id, OptionCustomPostType::$PRODUCT_OPTION ) ) );
 					$price = tcp_get_the_price_to_show( $post_id, $price );
-					if ( $price > 0 ) $out .= '&nbsp;' . tcp_format_the_price( $price );
-					$out .= '</option>' . "\n";
-				} else {
-					$out .= '<option value="' . $id . '">' . htmlspecialchars( get_the_title( tcp_get_current_id( $id, OptionCustomPostType::$PRODUCT_OPTION ) ) ) . '</option>' . "\n";
+					if ( $price > 0 ) $option_title .= ': ' . tcp_format_the_price( $price );
 				}
+				$option_title = apply_filters( 'tcp_options_title', $option_title, $post_id, $id );
+				$out .= '<option value="' . $id . '">' . html_entity_decode( $option_title ) . '</option>' . "\n";
 			}
 			$out .= '</select>' . "\n";
 			$script = 'if (jQuery(\'.tcp_thumbnail_option_\' + jQuery(this).val()).length) { jQuery(\'.tcp_thumbnail_' . $post_id .'\').hide(); jQuery(\'.tcp_thumbnail_option_\' + jQuery(this).val()).show();}';
@@ -253,7 +215,8 @@ class ProductOptionsForTheCartPress {
 						if ( $first ) $value_first = $option_id_1 . '-' . $option_id_2;
 						$first = false;
 						$out .= '<label for="tcp_list_id_' . $option_id_2 . '">' . htmlspecialchars( get_the_title( $current_id_2 ) );
-						if ( $option_price_2 > 0 ) $out .= ':&nbsp;<span class="tcp_price">' . tcp_format_the_price( $option_price_2 ) . '</span>';
+
+						if ( $option_price_2 > 0 ) $out .= ':&nbsp;<span class="tcp_price">' . apply_filters( 'tcp_options_title', tcp_format_the_price( $option_price_2 ), $post_id, $option_id_1, $option_id_2 ) . '</span>';
 						$out .= '</label>';
 						$out .= '</li>' . "\n";
 					}
@@ -268,9 +231,11 @@ class ProductOptionsForTheCartPress {
 						$first = false;
 					}
 					$out .= ' onclick="' . $script . '" id="tcp_list_id_' . $option_id_1 . '" name="tcp_list_id_' . $post_id . '" value="' . $option_id_1 . '"/>';
-					$out .= '<label for="tcp_list_id_' . $option_id_1 . '" class="tcp_price">' . get_the_title( $current_id_1 );
-					if ( $option_price_1 > 0 ) $out .= ':&nbsp;' . tcp_format_the_price( $option_price_1 );
-					$out .= '</label>';
+					$out .= '<label for="tcp_list_id_' . $option_id_1 . '" class="tcp_price">';
+					$option_title = get_the_title( $current_id_1 );
+					if ( $option_price_1 > 0 ) $option_title .= ': ' . tcp_format_the_price( $option_price_1 );
+					$option_title = apply_filters( 'tcp_options_title', $option_title, $post_id, $option_id_1 );
+					$out .= $option_title . '</label>';
 					$out .= '</li>' . "\n";
 				}
 				add_filter( 'the_title', 'wptexturize' );
@@ -354,9 +319,9 @@ class ProductOptionsForTheCartPress {
 
 	function tcp_update_price_search_controls() { ?>
 		<tr valign="top">
-		<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' );?>:</label></th>
+		<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' ); ?>:</label></th>
 		<td>
-			<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php if ( isset( $_REQUEST['apply_to_options'] ) ) :?>checked="true"<?php endif;?>/>
+			<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php if ( isset( $_REQUEST['apply_to_options'] ) ) :?>checked="true"<?php endif; ?>/>
 		</td>
 		</tr><?php
 	}
@@ -404,9 +369,9 @@ class ProductOptionsForTheCartPress {
 						$new_price = $price + $fix;
 					}?>
 		<tr>
-			<td><span style="padding-left: 3em;"><?php echo get_the_title( $first_level_option->id_to );?></span></td>
-			<td><?php echo tcp_format_the_price( $price );?></td>
-			<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $first_level_option->id_to;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
+			<td><span style="padding-left: 3em;"><?php echo get_the_title( $first_level_option->id_to ); ?></span></td>
+			<td><?php echo tcp_format_the_price( $price ); ?></td>
+			<td><input type="text" value="<?php echo tcp_number_format( $new_price ); ?>" name="tcp_new_price_<?php echo $first_level_option->id_to; ?>" size="13" maxlength="13" /> <?php echo $currency; ?></td>
 			<td>&nbsp;</td>
 		</tr><?php	$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
 					if ( is_array( $second_level_options ) && count( $second_level_options ) > 0 ) {
@@ -418,9 +383,9 @@ class ProductOptionsForTheCartPress {
 								$new_price = $price + $fix;
 							}?>
 		<tr>
-			<td><span style="padding-left: 6em;"><?php echo get_the_title( $second_level_option->id_to );?></span></td>
-			<td><?php echo tcp_format_the_price( $price );?></td>
-			<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $second_level_option->id_to;?>" size="13" maxlength="13" /> <?php echo $currency;?></td>
+			<td><span style="padding-left: 6em;"><?php echo get_the_title( $second_level_option->id_to ); ?></span></td>
+			<td><?php echo tcp_format_the_price( $price ); ?></td>
+			<td><input type="text" value="<?php echo tcp_number_format( $new_price ); ?>" name="tcp_new_price_<?php echo $second_level_option->id_to; ?>" size="13" maxlength="13" /> <?php echo $currency; ?></td>
 			<td>&nbsp;</td>
 		</tr><?php		}
 					}
@@ -431,9 +396,9 @@ class ProductOptionsForTheCartPress {
 
 	function tcp_update_stock_search_controls() {?>
 		<tr valign="top">
-		<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' );?>:</label></th>
+		<th scope="row"><label for="apply_to_options"><?php _e( 'Apply to options', 'tcp' ); ?>:</label></th>
 		<td>
-			<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php if ( isset( $_REQUEST['apply_to_options'] ) ) :?>checked="true"<?php endif;?>/>
+			<input type="checkbox" id="apply_to_options" name="apply_to_options" value="yes" <?php if ( isset( $_REQUEST['apply_to_options'] ) ) :?>checked="true"<?php endif; ?>/>
 		</td>
 		</tr><?php
 	}
@@ -478,10 +443,10 @@ class ProductOptionsForTheCartPress {
 						}
 					}?>
 				<tr>
-					<td><span style="padding-left: 3em;"><?php echo get_the_title( $first_level_option->id_to );?></span></td>
-					<td><?php echo $stock, '&nbsp;', __( 'units', 'tcp' ) ;?></td>
-					<td><input type="text" value="<?php echo $new_stock;?>" name="tcp_new_stock_<?php echo $first_level_option->id_to;?>" id="tcp_new_stock_<?php echo $first_level_option->id_to;?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' );?>
-					<input type="button" value="<?php _e( 'no stock', 'tcp' );?>" onclick="jQuery('#tcp_new_stock_<?php echo $first_level_option->id_to;?>').val(-1);" class="button-secondary" /></td>
+					<td><span style="padding-left: 3em;"><?php echo get_the_title( $first_level_option->id_to ); ?></span></td>
+					<td><?php echo $stock, '&nbsp;', __( 'units', 'tcp' ) ; ?></td>
+					<td><input type="text" value="<?php echo $new_stock; ?>" name="tcp_new_stock_<?php echo $first_level_option->id_to; ?>" id="tcp_new_stock_<?php echo $first_level_option->id_to; ?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' ); ?>
+					<input type="button" value="<?php _e( 'no stock', 'tcp' ); ?>" onclick="jQuery('#tcp_new_stock_<?php echo $first_level_option->id_to; ?>').val(-1);" class="button-secondary" /></td>
 					<td>&nbsp;</td>
 				</tr><?php
 					$second_level_options = RelEntities::select( $first_level_option->id_to, 'OPTIONS');
@@ -500,10 +465,10 @@ class ProductOptionsForTheCartPress {
 								}
 							}?>
 				<tr>
-					<td><span style="padding-left: 6em;"><?php echo get_the_title( $second_level_option->id_to );?></span></td>
-					<td><?php echo $stock, '&nbsp;', __( 'units', 'tcp' );?></td>
-					<td><input type="text" value="<?php echo $new_stock;?>" name="tcp_new_stock_<?php echo $second_level_option->id_to;?>" id="tcp_new_stock_<?php echo $second_level_option->id_to;?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' );?>
-					<input type="button" value="<?php _e( 'no stock', 'tcp' );?>" onclick="jQuery('#tcp_new_stock_<?php echo $second_level_option->id_to;?>').val(-1);" class="button-secondary" /></td>
+					<td><span style="padding-left: 6em;"><?php echo get_the_title( $second_level_option->id_to ); ?></span></td>
+					<td><?php echo $stock, '&nbsp;', __( 'units', 'tcp' ); ?></td>
+					<td><input type="text" value="<?php echo $new_stock; ?>" name="tcp_new_stock_<?php echo $second_level_option->id_to; ?>" id="tcp_new_stock_<?php echo $second_level_option->id_to; ?>" size="13" maxlength="13" /> <?php _e( 'units', 'tcp' ); ?>
+					<input type="button" value="<?php _e( 'no stock', 'tcp' ); ?>" onclick="jQuery('#tcp_new_stock_<?php echo $second_level_option->id_to; ?>').val(-1);" class="button-secondary" /></td>
 					<td>&nbsp;</td>
 				</tr>
 		<?php			}
@@ -623,9 +588,45 @@ class ProductOptionsForTheCartPress {
 	//
 	// end Custom fields hooks
 	//
-
 	function init() {
+		require_once( dirname( dirname( __FILE__ ) ) . '/customposttypes/OptionCustomPostType.class.php' );
 		new OptionCustomPostType();
+		require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntitiesOptions.class.php' );
+	}
+
+	function __construct() {
+		add_action( 'init', array( $this, 'init' ) );
+		if ( is_admin() ) {
+			add_action( 'admin_init', array( $this, 'admin_init' ), 99 );
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
+			add_action( 'tcp_relations_metabox_options_toolbar', array( $this, 'tcp_relations_metabox_options_toolbar' ) );
+			add_action( 'tcp_assigned_products_product_toolbar', array( $this, 'tcp_assigned_products_product_toolbar' ), 10, 2 );
+			require_once( dirname( dirname( __FILE__ ) ) . '/metaboxes/OptionCustomFieldsMetabox.class.php' );
+			$optionCustomFieldsMetabox = new OptionCustomFieldsMetabox();
+			add_action( 'admin_menu', array( $optionCustomFieldsMetabox, 'registerMetaBox' ) );
+			add_action( 'save_post', array( $optionCustomFieldsMetabox, 'saveCustomFields' ), 1, 2 );
+			add_action( 'delete_post', array( $optionCustomFieldsMetabox, 'deleteCustomFields' ) );
+
+			add_action( 'tcp_update_price_search_controls', array( $this, 'tcp_update_price_search_controls' ) );
+			add_action( 'tcp_update_price', array( $this, 'tcp_update_price' ) );
+			add_action( 'tcp_update_price_controls', array( $this, 'tcp_update_price_controls' ) );
+
+			add_action( 'tcp_update_stock_search_controls', array( $this, 'tcp_update_stock_search_controls' ) );
+			add_action( 'tcp_update_stock', array( $this, 'tcp_update_stock') );
+			add_action( 'tcp_update_stock_controls', array( $this, 'tcp_update_stock_controls' ) );
+
+			add_action( 'tcp_copying_product', array( $this, 'tcp_copying_product' ), 1, 2 );
+
+			add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_options_metabox_custom_fields' ) );
+			add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_options_metabox_save_custom_fields' ) );
+			add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_options_metabox_delete_custom_fields' ) );
+		} else {
+			add_filter( 'tcp_buy_button_options', array( $this, 'tcp_buy_button_options' ), 10, 3 );
+			add_filter( 'tcp_get_image_in_content', array( $this, 'tcp_get_image_in_content' ), 10, 2 );
+			add_filter( 'tcp_get_image_in_grouped_buy_button', array( $this, 'tcp_get_image_in_content' ), 10, 3 );
+			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ), 10, 2 );
+		}
 	}
 }
 ?>

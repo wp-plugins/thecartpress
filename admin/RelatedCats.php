@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
@@ -108,7 +108,7 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 		<tr>
 			<td><?php echo $term->name;?><input type="hidden" name="tcp_term_1_id[]" value="<?php echo $term->term_id;?>" /></td>
 			<td>
-				<select name="tcp_term_2_id_<?php echo $term->term_id;?>[]" multiple="true" size="8" style="height: auto;">
+				<select name="tcp_term_2_id_<?php echo $term->term_id;?>[]" multiple size="8" style="height: auto;">
 					<option value=""><?php _e( 'no one', 'tcp' );?></option>
 				<?php
 				$res = RelEntities::select( $term->term_id, $rel_type );
@@ -116,7 +116,7 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 				if ( $res ) foreach( $res as $row ) $ids[] = $row->id_to;
 				foreach( $second_terms as $second_term ) : 
 					$term_id = tcp_get_default_id( $second_term->term_id, $second_taxonomy );
-					if ( $term_id != $second_term->term_id ) continue; ?>?>
+					if ( $term_id != $second_term->term_id ) continue; ?>
 					<option value="<?php echo $second_term->term_id;?>" <?php tcp_selected_multiple( $ids, $second_term->term_id );?>><?php echo $second_term->name;?></option>
 				<?php endforeach;?>
 				</select>

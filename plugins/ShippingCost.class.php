@@ -148,17 +148,15 @@ class ShippingCost extends TCP_Plugin {
 					$stored_data = false;
 				}
 			}
-		}?>
-		</tbody></table>
-	<?php if ( $stored_data ) : ?>
-		<p>
-		<input type="submit" name="tcp_copy_from_instance" value="<?php _e( 'copy from first instance', 'tcp' );?>" class="button-secondary"/>
-		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
-		<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
-		</p>
-	<?php endif;?>
-
-		<table class="widefat fixed" cellspacing="0">
+		}
+		if ( $stored_data ) : ?>
+			<p>
+			<input type="submit" name="tcp_copy_from_instance" value="<?php _e( 'copy from first instance', 'tcp' );?>" class="button-secondary"/>
+			<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
+			<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
+			</p>
+		<?php endif; ?>
+		<table class="widefat fixed">
 		<thead>
 		<tr>
 			<th class="manage-column"><?php _e( 'Weight ranges', 'tcp' );?></th>
@@ -216,7 +214,7 @@ class ShippingCost extends TCP_Plugin {
 		<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
 		</p>
 
-		<table  class="widefat fixed" cellspacing="0">
+		<table  class="widefat fixed">
 		<thead>
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
@@ -235,7 +233,7 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
 			<td>
-				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" class="tcp_zones" style="height:auto" size="8" multiple="true">
+				<select id="zones_isos_<?php echo $z;?>" name="zones_isos_<?php echo $z;?>[]" class="tcp_zones" style="height:auto" size="8" multiple>
 				<?php
 				if ( count( $data['countries'] ) != 1 ) {
 					global $thecartpress;
@@ -281,7 +279,7 @@ foreach( $zones_states as $i => $states ) {
 }?>
 	var selects = jQuery('.tcp_zones');
 	if (selects) {
-		var i = 0;
+		//var i = 0;
 		jQuery.each(selects, function(i, region_select) {
 			region_select = jQuery('#' + region_select.id);
 			var states = countries['<?php echo $data['countries'][0];?>'];
@@ -307,6 +305,7 @@ foreach( $zones_states as $i => $states ) {
 		</td>
 		</tr>
 		<?php endif;?>
+		</tbody></table>
 	<?php
 	}
 
@@ -331,19 +330,18 @@ foreach( $zones_states as $i => $states ) {
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
-		//$totalWeight = $shoppingCart->getWeight();
-		$totalWeight = $shoppingCart->getWeightForShipping();
+		$total_weight = $shoppingCart->getWeightForShipping();
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$zones = $data['zones'];
 		$ranges = $data['ranges'];
 		$costs = $data['costs'];
 		foreach( $ranges as $r => $range ) {
-			if ( $range > $totalWeight ) {
+			if ( $range >= $total_weight ) {
 				$selected_range = $r;
 				break;
 			}
 		}
-		if ( ! isset($selected_range) ) {
+		if ( ! isset( $selected_range ) ) {
 			end( $ranges );
 			$selected_range = key( $ranges );
 		}

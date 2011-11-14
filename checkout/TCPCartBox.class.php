@@ -93,15 +93,17 @@ class TCPCartBox extends TCPCheckoutBox {
 		$table_amount_with_tax = 0;
 		foreach( $shoppingCart->getItems() as $item ) :
 			$tax = tcp_get_the_tax( $item->getPostId() );
-			$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $tax / 100 );
-			$unit_price_with_tax = round( $unit_price_with_tax,  $decimals );
-			$line_price_without_tax = $item->getUnitPrice() * $item->getUnits();
-			$line_price_with_tax = $unit_price_with_tax * $item->getUnits();
+			$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
+			$unit_price_without_tax = round( $res[0], $decimals );
+			$tax_amount = round( $res[1] * $item->getUnits(), $decimals );
+			$line_price_without_tax = $unit_price_without_tax * $item->getUnits();
+			$line_price_with_tax = $line_price_without_tax + $tax_amount; 
 			$table_amount_without_tax += $line_price_without_tax;
-			$table_amount_with_tax += $line_price_with_tax; ?>
+			$table_amount_with_tax += $line_price_with_tax;
+			?>
 			<tr class="tcp_cart_product_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 				<td class="tcp_cart_name"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?></td>
-				<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $item->getUnitPrice() ); ?></td>
+				<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $unit_price_without_tax ); ?></td>
 				<td class="tcp_cart_units"><?php echo tcp_number_format( $item->getCount(), 0 ); ?></td>
 				<?php //TODO remove weight if...?>
 				<td class="tcp_cart_weight"><?php echo tcp_number_format( $item->getWeight(), 0 ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
@@ -142,15 +144,18 @@ class TCPCartBox extends TCPCheckoutBox {
 		asort( $costs, SORT_STRING );
 		foreach( $costs as $cost_id => $cost ) :
 			$tax = tcp_get_the_shipping_tax();
-			$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
-			$cost_with_tax = $cost->getCost() * ( 1 + $tax / 100 ); ?>
+			$res = tcp_get_shipping_cost_and_tax( $cost->getCost(), $tax );
+			$cost_without_tax = $res[0];
+			$tax_amount = round( $res[1], $decimals );
+			$cost_with_tax = $cost_without_tax + $tax_amount;
+			$table_amount_with_tax += $cost_with_tax;
+			$table_amount_without_tax += $cost_without_tax;
+			?>
 			<tr id="other_costs" class="tcp_cart_other_costs_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 			<td colspan="4" class="tcp_cost_' . $cost_id . '" style="text-align:right"><?php echo $cost->getDesc(); ?></td>
 			<td><?php echo tcp_format_the_price( $cost_without_tax ); ?></td>
-			</tr><?php
-			$table_amount_with_tax += $cost_with_tax;
-			$table_amount_without_tax += $cost_without_tax;
-		endforeach;
+			</tr>
+		<?php endforeach;
 		$show_tax_summary = false;
 		if ( $table_amount_without_tax == $table_amount_with_tax ) {
 			$show_tax_summary = tcp_get_display_zero_tax_subtotal();

@@ -103,7 +103,6 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	if ( ! $args )
 		$args = array(
 			'see_product_count' => false,
-			'see_stock_notice'	=> true,
 			'see_weight'		=> true,
 			'see_delete_all'	=> false,
 			'see_shopping_cart'	=> true,
@@ -111,7 +110,6 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 		);
 	global $thecartpress;
 	$unit_weight		= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
-	$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 	$shoppingCart		= TheCartPress::getShoppingCart();
 	$summary = '<ul class="tcp_shopping_cart_resume">';
 	$discount = $shoppingCart->getAllDiscounts();
@@ -121,10 +119,6 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 
 	if ( isset( $args['see_product_count'] ) ? $args['see_product_count'] : false )
 		$summary .=	'<li><span class="tcp_resumen_count">' . __( 'N<sup>o</sup> products', 'tcp' ) . ':</span>&nbsp;' . $shoppingCart->getCount() . '</li>';
-
-	if ( $stock_management && isset( $args['see_stock_notice'] ) ? $args['see_stock_notice'] : false )
-		if ( ! $shoppingCart->isThereStock() )
-			$summary .= '<li><span class="tcp_no_stock_nough">' . printf( __( 'No enough stock for some products. Visit the <a href="%s">Shopping Cart</a> to see more details.', 'tcp' ), tcp_get_the_shopping_cart_url() ) . '</span></li>';
 
 	$see_weight = isset( $args['see_weight'] ) ? $args['see_weight'] : false;
 	if ( $see_weight && $shoppingCart->getWeight() > 0 ) 
@@ -152,7 +146,7 @@ function tcp_get_taxonomies_cloud( $args = false, $echo = true, $before = '', $a
 		$args = array(
 			'taxonomy'	=> 'tcp_product_tag',
 			'echo'		=> false,
-    	);
+		);
 	$cloud = wp_tag_cloud( $args );
 	$cloud = apply_filters( 'tcp_get_taxonomies_cloud', $cloud );
 	if ( $echo )
@@ -177,7 +171,7 @@ function tcp_get_suppliers_cloud( $args = false, $echo = true, $before = '', $af
 		$args = array(
 			'taxonomy'	=> 'tcp_product_supplier',
 			'echo'		=> false,
-    	);
+		);
 	$cloud = tcp_get_taxonomies_cloud( $args, false, $before, $after );
 	$cloud = apply_filters( 'tcp_get_suppliers_cloud', $cloud );
 	if ( $echo )
@@ -287,5 +281,69 @@ function tcp_attribute_list( $taxonomies = false ) {
 		</tbody>
 		</table>
 	<?php endif;
+}
+
+/**
+'echo'				=> true,
+'redirect'			=> get_permalink(),
+'form_id'			=> 'loginform',
+'label_username'	=> __( 'Username', 'tcp' ),
+'label_password'	=> __( 'Password', 'tcp' ),
+'label_remember'	=> __( 'Remember Me', 'tcp' ),
+'label_log_in'		=> __( 'Log In', 'tcp' ),
+'id_username'		=> 'user_login',
+'id_password'		=> 'user_pass',
+'id_remember'		=> 'rememberme',
+'id_submit'			=> 'wp-submit',
+'remember'			=> true,
+'value_username'	=> '',
+'value_remember'	=> false
+*/
+function tcp_login_form( $args ) {
+	$defaults = array(
+		'echo'				=> true,
+		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+		'form_id'			=> 'loginform',
+		'label_username'	=> __( 'Username' ),
+		'label_password'	=> __( 'Password' ),
+		'label_remember'	=> __( 'Remember Me' ),
+		'label_log_in'		=> __( 'Log In' ),
+		'id_username'		=> 'user_login',
+		'id_password'		=> 'user_pass',
+		'id_remember'		=> 'rememberme',
+		'id_submit'			=> 'wp-submit',
+		'remember'			=> true,
+		'value_username'	=> '',
+		'value_remember'	=> false, // Set this to true to default the "Remember me" checkbox to checked
+	);
+	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
+	ob_start(); ?>
+	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo plugins_url( 'checkout/login.php' , dirname( __FILE__ ) ); ?>" name="<?php echo $args['form_id']; ?>">
+		<?php echo apply_filters( 'login_form_top', '', $args ); ?>
+		<p class="login-username">
+		<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label><input id="<?php echo $args['id_username']; ?>" class="input" type="text" size="20" value="" name="tcp_log" />
+		</p>
+		<p class="login-password">
+		<label for="<?php echo esc_attr( $args['id_password'] ); ?>"><?php echo esc_html( $args['label_password'] ); ?></label><input id="<?php echo $args['id_password']; ?>" class="input" type="password" size="20" value="" name="tcp_pwd" />
+		</p>
+		<?php apply_filters( 'login_form_middle', '', $args ); ?>
+		<p class="login-remember">
+		<label><input id="<?php echo esc_attr( $args['id_remember'] ); ?>" type="checkbox" value="forever" name="tcp_rememberme" <?php echo $args['value_remember'] ? ' checked="checked"' : ''; ?>/> <?php echo esc_html( $args['label_remember'] ); ?></label>
+		</p>
+		<p class="login-submit">
+		<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
+		<input type="hidden" value="<?php echo esc_attr( $args['redirect'] ); ?>" name="tcp_redirect_to" />
+		</p>
+		<?php echo apply_filters( 'login_form_bottom', '', $args ); ?>
+		<?php do_action( 'login_form' ); ?>
+	</form>
+<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
+	<p class="error">
+	<strong><?php _e( 'ERROR', 'tcp' ); ?></strong>: <?php _e( 'Invalid username.', 'tcp' ); ?> <a title="<?php _e( 'Password Lost and Found', 'tcp' ); ?>" href="<?php site_url( 'wp-login.php?action=lostpassword' ); ?>"><?php _e( 'Lost your password', 'tcp' ); ?></a>?
+	</p>
+<?php endif;
+	$out = ob_get_clean();
+	if ( $args['echo'] ) echo $out;
+	else return $out;
 }
 ?>

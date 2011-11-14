@@ -45,7 +45,6 @@ class TCP_CartTable {
 			if ( strlen( $source->get_shipping_fax() ) > 0) $out .= __('Fax', 'tcp') . ': ' . $source->get_shipping_fax() . '<br />' . "\n";
 			if ( strlen( $source->get_shipping_email() ) > 0) $out .= $source->get_shipping_email() . '<br />' . "\n";
 			$out .= '</div><!-- #shipping_info-->' . "\n";
-		
 			$out .= '<div id="billing_info">' . "\n";
 			$out .= '<h3>' . __( 'Billing address', 'tcp' ) . '</h3>' . "\n";
 			$out .= $source->get_billing_firstname() . ' ' . $source->get_billing_lastname() . '<br />' . "\n";
@@ -59,7 +58,6 @@ class TCP_CartTable {
 			if ( strlen( $source->get_billing_fax() ) > 0) $out .= __('Fax', 'tcp') . ': ' . $source->get_billing_fax() . '<br>' . "\n";
 			if ( strlen( $source->get_billing_email() ) > 0) $out .= $source->get_billing_email() . '<br><br><br><br>' . "\n";
 			$out .= '</div><!-- #billing_info -->' . "\n";
-			
 			$out .= '<div id="tcp_status">';
 			$out .= __( 'Payment method', 'tcp' ) . ': ' . $source->get_payment_method() . '<br/>';
 			$out .= __( 'Shipping method', 'tcp' ) . ': ' . $source->get_shipping_method() . '<br/>';
@@ -124,24 +122,17 @@ class TCP_CartTable {
 					$det .= tcp_number_format( $order_detail->get_qty_ordered(), 0 );
 				} else {
 					$det .= '<form method="post">' . "\n";
-					$det .= '<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="' . $order_detail->get_post_id() . '" />' . "\n";
-					$det .= '<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="' . $order_detail->get_option_1_id() . '" />' . "\n";
-					$det .= '<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="' . $order_detail->get_option_2_id() . '" />' . "\n";
+					$det .= '<input type="hidden" name="tcp_post_id" value="' . $order_detail->get_post_id() . '" />' . "\n";
+					$det .= '<input type="hidden" name="tcp_option_1_id" value="' . $order_detail->get_option_1_id() . '" />' . "\n";
+					$det .= '<input type="hidden" name="tcp_option_2_id" value="' . $order_detail->get_option_2_id() . '" />' . "\n";
 					if ( ! tcp_is_downloadable( $order_detail->get_post_id() ) ) {
-						$det .= '<input name="tcp_count" id="tcp_count" value="' . $order_detail->get_qty_ordered() . '" size="2" maxlength="4" type="text" class="tcp_count"/>' . "\n";
-						$det .= '<input name="tcp_modify_item_shopping_cart" value="' . __( 'Modify', 'tcp' ) . '" type="submit" />' . "\n";
+						$det .= '<input name="tcp_count" value="' . $order_detail->get_qty_ordered() . '" size="2" maxlength="4" type="text" class="tcp_count"/>' . "\n";
+						$det .= '<input name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="' . __( 'Modify', 'tcp' ) . '" type="submit" />' . "\n";
 					} else {
 						$det .= '1&nbsp;' . "\n";
 					}
-					$det .= '<input name="tcp_delete_item_shopping_cart" value="' . __( 'Delete', 'tcp' ) . '" type="submit" />' . "\n";
-					if ( $stock_management ) {
-						$stock = tcp_get_the_stock( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id() );
-						if ( $stock == 0 ) {
-							$det .= '<span class="tcp_no_stock">' . __( 'Out of stock', 'tcp' ) . '</span>' . "\n";
-						} elseif ( $stock != -1 && $stock < $order_detail->get_qty_ordered() ) {
-							$det .= '<span class="tcp_no_stock_enough">' . sprintf( __( 'No enough stock. Only %s items available.', 'tcp' ), $stock ) . '</span>';
-						}
-					}
+					$det .= '<input name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="' . __( 'Delete', 'tcp' ) . '" type="submit" />' . "\n";
+					$det .= apply_filters( 'tcp_cart_units', '', $order_detail );
 					$det .= '</form>';
 				}
 				$det .= '</td>' . "\n";
@@ -163,8 +154,8 @@ class TCP_CartTable {
 		$colspan = 3;
 		if ( $source->see_full() ) $colspan += 3;
 		if ( $source->see_thumbnail() ) $colspan ++;
-		$out .= '<td colspan="' . $colspan . '"';
-		$out .= ' class="tcp_cart_subtotal_title">' . __( 'Subtotal', 'tcp' ) . '</td>' . "\n";
+		$out .= '<td colspan="' . $colspan . '" ';
+		$out .= 'class="tcp_cart_subtotal_title">' . __( 'Subtotal', 'tcp' ) . '</td>' . "\n";
 		$out .= '<td class="tcp_cart_subtotal">' . tcp_format_the_price( $total ) . '</td>' . "\n";
 		$out .= '</tr>' . "\n";
 
@@ -173,8 +164,8 @@ class TCP_CartTable {
 			$dis = '<tr id="discount" class="tcp_cart_discount_row';
 			if ( $i++ & 1 == 1 ) $dis .= ' tcp_par';
 			$dis .= '">' . "\n";
-			$dis .= '<td colspan="' . $colspan . '"';
-			$dis .= ' class="tcp_cart_discount_title">' . __( 'Discount', 'tcp' ) . '</td>' . "\n";
+			$dis .= '<td colspan="' . $colspan . '" ';
+			$dis .= 'class="tcp_cart_discount_title">' . __( 'Discount', 'tcp' ) . '</td>' . "\n";
 			$dis .= '<td class="tcp_cart_discount">' . tcp_format_the_price( $discount ) . '</td>' . "\n";
 			$dis .= '</tr>' . "\n";
 			$out .= $dis;
@@ -186,8 +177,8 @@ class TCP_CartTable {
 				$cost = '';
 				foreach( $source->get_orders_costs() as $order_cost ) {
 					$cost .= '<tr id="other_costs" class="tcp_cart_other_costs_row">' . "\n";
-					$cost .= '<td colspan="' . $colspan . '"';
-					$cost .= ' class="tcp_cart_other_costs_title">' . $order_cost->get_description() . '</td>' . "\n";
+					$cost .= '<td colspan="' . $colspan . '" ';
+					$cost .= 'class="tcp_cart_other_costs_title">' . $order_cost->get_description() . '</td>' . "\n";
 					$cost .= '<td class="tcp_cart_other_costs">' . tcp_format_the_price( $order_cost->get_cost() ) . '</td>' . "\n";
 					$tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );
 					$total_tax += $tax;
@@ -199,7 +190,7 @@ class TCP_CartTable {
 		}
 		if ( $source->see_tax_summary() && $total_tax > 0 ) {
 			$out_tax = '<tr class="tcp_cart_tax_row">' . "\n";
-			$out_tax .= '<td colspan="' . $colspan . '"';
+			$out_tax .= '<td colspan="' . $colspan . '" ';
 			$out_tax .= 'class="tcp_cart_tax_title">' . __( 'Taxes', 'tcp' ) . '</td>' . "\n";
 			$out_tax .= '<td class="tcp_cart_tax">' . tcp_format_the_price( $total_tax ) . '</td>' . "\n";
 			$out_tax .= '</tr>';
@@ -211,7 +202,7 @@ class TCP_CartTable {
 
 		$total += $total_tax;
 		$out .= '<tr class="tcp_cart_total_row">' . "\n";
-		$out .= '<td colspan="' . $colspan . '"';
+		$out .= '<td colspan="' . $colspan . '" ';
 		$out .= 'class="tcp_cart_total_title">' . __( 'Total', 'tcp' ) . '</td>' . "\n";
 		$out .= '<td class="tcp_cart_total">' . tcp_format_the_price( $total ) . '</td>' . "\n";
 		$out .= '</tr>';

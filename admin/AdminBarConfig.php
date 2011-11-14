@@ -61,3 +61,4 @@ if ( class_exists( $admin_bar_class ) ) {
 </table>
 <p class="submit"><input type="submit" name="tcp_save_admin_bar_config" class="button-primary" value="<?php _e( 'Save Changes', 'tcp'); ?>"/></p>
 </form>
+</div><!-- .wrap -->

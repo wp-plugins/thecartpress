@@ -29,22 +29,22 @@ class Transference extends TCP_Plugin {
 	function showEditFields( $data ) {?>
 		<tr valign="top">
 		<th scope="row">
-			<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
+			<label for="notice"><?php _e( 'Notice', 'tcp' ); ?>:</label>
 		</th><td>
-			<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : '';?></textarea>
+			<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : ''; ?></textarea>
 		</td></tr><tr valign="top">
 		<th scope="row">
-			<label for="owner"><?php _e( 'Owner', 'tcp' );?>:</label>
+			<label for="owner"><?php _e( 'Owner', 'tcp' ); ?>:</label>
 		</th><td>
-			<input type="text" id="owner" name="owner" size="40" maxlength="50" value="<?php echo isset( $data['owner'] ) ? $data['owner'] : '';?>" />
+			<input type="text" id="owner" name="owner" size="40" maxlength="50" value="<?php echo isset( $data['owner'] ) ? $data['owner'] : ''; ?>" />
 		</td></tr><tr valign="top">
 		<th scope="row">
-			<label for="bank"><?php _e( 'bank', 'tcp' );?>:</label>
+			<label for="bank"><?php _e( 'bank', 'tcp' ); ?>:</label>
 		</th><td>
-			<input type="text" id="bank" name="bank" size="40" maxlength="50" value="<?php echo isset( $data['bank'] ) ? $data['bank'] : '';?>" />
+			<input type="text" id="bank" name="bank" size="40" maxlength="50" value="<?php echo isset( $data['bank'] ) ? $data['bank'] : ''; ?>" />
 		</td></tr><tr valign="top">
 		<th scope="row">
-			<label for="account"><?php _e( 'Account', 'tcp' );?>:</label>
+			<label for="account"><?php _e( 'Account', 'tcp' ); ?>:</label>
 		</th><td><?php
 			if ( isset( $data['account'] ) ) {
 				$account1 = substr( $data['account'], 0, 4 );
@@ -57,20 +57,20 @@ class Transference extends TCP_Plugin {
 				$account3 = '';
 				$account4 = '';
 			}?>
-			<input type="text" id="account1" name="account1" size="4" maxlength="4" value="<?php echo $account1;?>" />
-			<input type="text" id="account2" name="account2" size="4" maxlength="4" value="<?php echo $account2;?>" />
-			<input type="text" id="account3" name="account3" size="2" maxlength="2" value="<?php echo $account3;?>" />
-			<input type="text" id="account4" name="account4" size="10" maxlength="10" value="<?php echo $account4;?>" />
+			<input type="text" id="account1" name="account1" size="4" maxlength="4" value="<?php echo $account1; ?>" />
+			<input type="text" id="account2" name="account2" size="4" maxlength="4" value="<?php echo $account2; ?>" />
+			<input type="text" id="account3" name="account3" size="2" maxlength="2" value="<?php echo $account3; ?>" />
+			<input type="text" id="account4" name="account4" size="10" maxlength="10" value="<?php echo $account4; ?>" />
 		</td></tr><tr valign="top">
 		<th scope="row">
-			<label for="iban"><?php _e( 'IBAN', 'tcp' );?>:</label>
+			<label for="iban"><?php _e( 'IBAN', 'tcp' ); ?>:</label>
 		</th><td>
-			<input type="text" id="iban" name="iban" size="20" maxlength="40" value="<?php echo isset( $data['iban'] ) ? $data['iban'] : '';?>" />
+			<input type="text" id="iban" name="iban" size="20" maxlength="40" value="<?php echo isset( $data['iban'] ) ? $data['iban'] : ''; ?>" />
 		</td></tr><tr valign="top">
 		<th scope="row">
-			<label for="swift"><?php _e( 'SWIFT', 'tcp' );?>:</label>
+			<label for="swift"><?php _e( 'SWIFT', 'tcp' ); ?>:</label>
 		</th><td>
-			<input type="text" id="swift" name="swift" size="20" maxlength="40" value="<?php echo isset( $data['swift'] ) ? $data['swift'] : '';?>" />
+			<input type="text" id="swift" name="swift" size="20" maxlength="40" value="<?php echo isset( $data['swift'] ) ? $data['swift'] : ''; ?>" />
 		</td></tr>
 	<?php }
 
@@ -89,7 +89,8 @@ class Transference extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		return __( 'Transference.', 'tcp' );
+		$data = tcp_get_payment_plugin_data( 'Transference', $instance );
+		return isset( $data['title'] ) ? $data['title'] : $this->getTitle();
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
@@ -97,20 +98,24 @@ class Transference extends TCP_Plugin {
 		$params = array(
 			'tcp_checkout'	=> 'ok',
 			'order_id'		=> $order_id,
-		);?>
-		<p><?php echo $data['notice'];?></p>
+		);
+		ob_start(); ?>
+		<p><?php echo $data['notice']; ?></p>
 		<table>
-		<tr><th scope="row"><?php _e( 'Owner', 'tcp' );?>: </th><td><?php echo $data['owner'];?></td></tr>
-		<tr><th scope="row"><?php _e( 'Bank', 'tcp' );?>: </th><td><?php echo $data['bank'];?></td></tr>
-		<tr><th scope="row"><?php _e( 'Account', 'tcp' );?>: </th><td><?php echo $data['account'];?></td></tr>
-		<tr><th scope="row"><?php _e( 'IBAN', 'tcp' );?>: </th><td><?php echo $data['iban'];?></td></tr>
-		<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' );?>: </th><td><?php echo $data['swift'];?></td></tr>
+		<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
+		<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>
+		<tr><th scope="row"><?php _e( 'Account', 'tcp' ); ?>: </th><td><?php echo $data['account']; ?></td></tr>
+		<tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr>
+		<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr>
 		</table>
 		<p>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
+		<?php $additional = ob_get_clean();
+		echo $additional; ?>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() ); ?>';"/>
 		</p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
+		ActiveCheckout::sendMails( $order_id, $additional );
 	}
 }
 ?>

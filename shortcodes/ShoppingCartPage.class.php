@@ -25,31 +25,30 @@ class TCP_ShoppingCartPage {
 		$cart_table = new TCP_CartTable( ); 
 		ob_start(); ?>
 <div class="tcp_shopping_cart_page">
-		<?php  if ( $shoppingCart->isEmpty() ) : ?>
-			<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
-		<?php else : ?>
-			<div class="entry-content" id="shopping_cart">
-			<?php if ( strlen( $notice ) > 0 ) : ?>
-				<p class="tcp_shopping_cart_notice"><?php echo $notice; ?></p>
-			<?php endif;
-			do_action( 'tcp_shopping_cart_before_cart' );
-			$cart_table->show( new TCP_CartSourceSession() ); ?>
+<?php  if ( $shoppingCart->isEmpty() ) : ?>
+	<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
+<?php else : ?>
+	<div class="entry-content" id="shopping_cart">
+	<?php if ( strlen( $notice ) > 0 ) : ?>
+		<p class="tcp_shopping_cart_notice"><?php echo $notice; ?></p>
+	<?php endif;
+	do_action( 'tcp_shopping_cart_before_cart' );
+	$cart_table->show( new TCP_CartSourceSession() ); ?>
 		<ul class="tcp_sc_links">
 			<li class="tcp_sc_checkout"><a href="<?php tcp_the_checkout_url();?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 			<li class="tcp_sc_continue"><a href="<?php tcp_the_continue_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
 			<?php do_action( 'tcp_shopping_cart_after_links' );?>
 		</ul>
 	</div><!-- .entry-content -->
-		<?php endif;
-		do_action( 'tcp_shopping_cart_after_cart' ); ?>
+	<?php endif;
+	do_action( 'tcp_shopping_cart_after_cart' ); ?>
 </div><!-- .tcp_shopping_cart_page -->
-		<?php return ob_get_clean();
+<?php return ob_get_clean();
 	}
 
-	//TODO to remove
-	function show_old( $notice = '' ) {
+	//TODO to remove!!!
+	/*function show_old( $notice = '' ) {
 		global $thecartpress;
-		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$shoppingCart		= TheCartPress::getShoppingCart();
 		ob_start(); ?>
 		<div class="tcp_shopping_cart_page">
@@ -103,14 +102,7 @@ class TCP_ShoppingCartPage {
 								1&nbsp;
 						<?php endif;?>
 						<input name="tcp_delete_item_shopping_cart" value="<?php echo __( 'Delete', 'tcp' );?>" type="submit" />
-					<?php if ( $stock_management ) :
-						$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-						if ( $stock == 0 ) : ?>
-							<span class="tcp_no_stock"><?php _e( 'Out of stock', 'tcp' );?></span>
-						<?php elseif ( $stock != -1 && $stock < $item->getCount() ) : ?>
-							<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock. Only %s items available.', 'tcp' ), $stock );?></span>
-						<?php endif;
-					endif;?>
+						<?php do_action( 'tcp_cart_units', $item ); ?>
 						</td>
 					</form>
 					<td class="tcp_cart_price">
@@ -118,7 +110,7 @@ class TCP_ShoppingCartPage {
 					</td>
 				</tr>
 			<?php endforeach;?>
-			<?php $discount = $shoppingCart->getDiscount();
+			<?php $discount = $shoppingCart->getCartDiscounts();
 			$total = $shoppingCart->getTotalToShow();
 			if ( $discount > 0) : ?>
 				<tr class="tcp_cart_subtotal_row">
@@ -147,6 +139,6 @@ class TCP_ShoppingCartPage {
 		do_action( 'tcp_shopping_cart_after_cart' ); ?>
 		</div><!-- .tcp_shopping_cart_page -->
 		<?php return ob_get_clean();
-	}
+	}*/
 }
 ?>

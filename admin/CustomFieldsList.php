@@ -18,7 +18,7 @@
 
 function tcp_create_id( $post_type, $label ) {
 	//$internal_id = 'tcp_' . str_replace ( ' ' , '_' , $label );
-	$internal_id = 'tcp_' . str_replace ( ' ' , '_' , $label );
+	$internal_id = str_replace ( ' ' , '_' , $label );
 	$i = 0;
 	while ( tcp_exists_custom_field_def( $post_type, $internal_id ) ) {
 		$internal_id = $internal_id . '_' . $i++;
@@ -43,6 +43,10 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 		<div id="message" class="updated"><p>
 			<?php _e( 'Custom field saved', 'tcp' );?>
 		</p></div><?php
+	} else {?>
+		<div id="message" class="error"><p>
+			<?php _e( 'Label field must be completed', 'tcp' );?>
+		</p></div><?php
 	}
 } elseif ( isset( $_REQUEST['tcp_modify_custom_field'] ) ) {
 	$custom_field_id = isset( $_REQUEST['custom_field_id'] ) ? trim( $_REQUEST['custom_field_id'] ) : -1;//array index
@@ -53,7 +57,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : 'string';
 		$values = isset( $_REQUEST['values'] ) ? $_REQUEST['values'] : 0;
 		$desc = isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '';
-		tcp_add_custom_field_def( $post_type, $internal_id, $label, $type, $values, $desc );?>
+		tcp_add_custom_field_def( $post_type, $internal_id, $label, $type, $values, $desc ); ?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Custom field saved', 'tcp' );?>
 		</p></div><?php
@@ -91,7 +95,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 </form>
 </p>
 
-<h3><?php _e( 'New custom field definition', 'tcp' );?></h3>
+<h3><?php $post_type_object = get_post_type_object( $post_type ); printf( __( 'New custom field definition for %s', 'tcp' ), $post_type_object->labels->name ) ;?></h3>
 <form method="post">
 <input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>
 
@@ -166,7 +170,7 @@ if ( count( $custom_fields ) == 0 ) : ?>
 		<td><?php echo $field['desc'];?></td>
 		<td style="width: 20%;">
 		<a href="#" onclick="jQuery('.modify_custom_field').hide();jQuery('#modify_<?php echo $id;?>').show();"><?php _e( 'edit', 'tcp' );?></a> |
-		<a href="#" onclick="jQuery('.delete_custom_field').hide();jQuery('#delete_<?php echo $id;?>').show();" class="delete"><?php _e( 'delete', 'tcp' );?></a></div>
+		<a href="#" onclick="jQuery('.delete_custom_field').hide();jQuery('#delete_<?php echo $id;?>').show();" class="delete"><?php _e( 'delete', 'tcp' );?></a>
 		<div id="delete_<?php echo $id;?>" class="delete_custom_field" style="display:none; border: 1px dotted orange; padding: 2px">
 			<form method="post">
 				<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>

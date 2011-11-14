@@ -82,9 +82,9 @@ if ( isset( $_REQUEST['save_taxo'] ) ) {
 	} else {
 		$load_from_request = true;
 	}
-} else
+} else {
 	$load_from_request = true;
-
+}
 if ( $load_from_request ) {
 	$post_type			= isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : 'post';
 	$name				= isset( $_REQUEST['name'] ) ? $_REQUEST['name'] : __( 'Category Name', 'tcp' );

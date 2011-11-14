@@ -35,8 +35,7 @@ class ShoppingCartWidget extends WP_Widget {
 		if ( $hide_if_empty && $shoppingCart->isEmpty() ) return;
 		extract( $args );		
 		global $thecartpress;
-		$unit_weight			= isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
-		$stock_management		= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
+		$unit_weight = isset( $thecartpress->settings['unit_weight'] ) ? $thecartpress->settings['unit_weight'] : 'gr';
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title; ?>
@@ -44,7 +43,6 @@ class ShoppingCartWidget extends WP_Widget {
 		$see_thumbnail		= isset( $instance['see_thumbnail'] ) ? $instance['see_thumbnail'] : false;
 		$thumbnail_size		= isset( $instance['thumbnail_size'] ) ? $instance['thumbnail_size'] : 'thumbnail';
 		if ( is_numeric( $thumbnail_size ) ) $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
-		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
 		$see_modify_item	= isset( $instance['see_modify_item'] ) ? $instance['see_modify_item'] : true;
 		$see_weight			= isset( $instance['see_weight'] ) ? $instance['see_weight'] : true;
 		$see_delete_item	= isset( $instance['see_delete_item'] ) ? $instance['see_delete_item'] : true;
@@ -53,12 +51,12 @@ class ShoppingCartWidget extends WP_Widget {
 		$see_checkout		= isset( $instance['see_checkout'] ) ? $instance['see_checkout'] : true;
 		foreach( $shoppingCart->getItems() as $item ) : ?>
 			<li><form method="post">
-				<input type="hidden" name="tcp_post_id" id="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
-				<input type="hidden" name="tcp_option_1_id" id="tcp_option_1_id" value="<?php echo $item->getOption1Id(); ?>" />
-				<input type="hidden" name="tcp_option_2_id" id="tcp_option_2_id" value="<?php echo $item->getOption2Id(); ?>" />
-				<input type="hidden" name="tcp_unit_price" id="tcp_unit_price" value="<?php echo $item->getUnitPrice(); ?>" />
-				<input type="hidden" name="tcp_tax" id="tcp_tax" value="<?php echo $item->getTax(); ?>" />
-				<input type="hidden" name="tcp_unit_weight" id="tcp_unit_weight" value="<?php echo $item->getWeight(); ?>" />
+				<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
+				<input type="hidden" name="tcp_option_1_id" value="<?php echo $item->getOption1Id(); ?>" />
+				<input type="hidden" name="tcp_option_2_id" value="<?php echo $item->getOption2Id(); ?>" />
+				<input type="hidden" name="tcp_unit_price" value="<?php echo $item->getUnitPrice(); ?>" />
+				<input type="hidden" name="tcp_tax" value="<?php echo $item->getTax(); ?>" />
+				<input type="hidden" name="tcp_unit_weight" value="<?php echo $item->getWeight(); ?>" />
 				<ul class="tcp_shopping_cart_widget">
 					<li class="tcp_cart_widget_item"><span class="tcp_name"><?php echo $this->get_product_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?></span></li>
 					<?php if ( $see_thumbnail ) : ?>
@@ -67,49 +65,45 @@ class ShoppingCartWidget extends WP_Widget {
 					<li><span class="tcp_unit_price"><?php _e( 'price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span></li>
 					<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<li><?php if ( $see_modify_item ) :?>
-							<input type="text" name="tcp_count" id="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
-							<input type="submit" name="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
-						<?php else :?>
+							<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
+							<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
+						<?php else : ?>
 							<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
-						<?php endif;?>
-						<?php if ( $stock_management && $see_stock_notice ) :
-							$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-							if ( $stock != -1 && $stock < $item->getCount() ) :?>
-								<span class="tcp_no_stock_enough"><?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock ); ?></span>
-							<?php endif;
-						endif; ?></li>
-					<?php endif;?>
+						<?php endif; ?>
+						<?php do_action( 'tcp_shopping_cart_widget_units', $item, $instance ); ?>
+					</li>
+					<?php endif; ?>
 					<?php if ( $item->getDiscount() > 0 ) : ?>
 					<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getDiscount() ); ?></span></li>
-					<?php endif;?>
-					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></li>
+					<?php endif; ?>
+					<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<?php if ( $see_weight && $item->getWeight() > 0 ) :?>
-						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() ); ?>&nbsp;<?php echo $unit_weight;?></li>
-					<?php endif;?>
-				<?php endif;?>
+						<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() ); ?>&nbsp;<?php echo $unit_weight; ?></li>
+					<?php endif; ?>
+				<?php endif; ?>
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item ); ?>
 				<?php if ( $see_delete_item ) :?>
 					<li><input type="submit" name="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' ); ?>"/></li>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php do_action( 'tcp_get_shopping_cart_widget_item', $instance, $item ); ?>
 				</ul>
 			</form></li>
-		<?php endforeach;?>
+		<?php endforeach; ?>
 		<?php $discount = $shoppingCart->getAllDiscounts();
 		if ( $discount > 0 ) : ?>
-			<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $discount ); ?></li>
+			<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $discount ); ?></span></li>
 		<?php endif; ?>
-			<li><span class="tcp_total"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $shoppingCart->getTotalToShow() ); ?></li>
+			<li><span class="tcp_total"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $shoppingCart->getTotalToShow() ); ?></span></li>
 		<?php if ( $see_shopping_cart ) :?>
 			<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'shopping cart', 'tcp' ); ?></a></li>
-		<?php endif;?>
+		<?php endif; ?>
 		<?php if ( $see_checkout ) :?>
 			<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php tcp_the_checkout_url(); ?>"><?php _e( 'checkout', 'tcp' ); ?></a></li>
-		<?php endif;?>
+		<?php endif; ?>
 		<?php if ( $see_delete_all ) :?>
 			<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" value="<?php _e( 'delete', 'tcp' ); ?>"/></form></li>
-		<?php endif;?>
+		<?php endif; ?>
 		<?php do_action( 'tcp_get_shopping_cart_widget', $instance ); ?>
 		</ul>
 		<?php echo $after_widget;
@@ -121,7 +115,6 @@ class ShoppingCartWidget extends WP_Widget {
 		$instance['hide_if_empty']		= isset( $new_instance['hide_if_empty'] );
 		$instance['see_thumbnail']		= isset( $new_instance['see_thumbnail'] );
 		$instance['thumbnail_size']		= isset( $new_instance['thumbnail_size'] ) ? $new_instance['thumbnail_size'] : 'thumbnail';
-		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] );
 		$instance['see_weight']			= isset( $new_instance['see_weight'] );
 		$instance['see_modify_item']	= isset( $new_instance['see_modify_item'] );
 		$instance['see_delete_item']	= isset( $new_instance['see_delete_item'] );
@@ -141,7 +134,6 @@ class ShoppingCartWidget extends WP_Widget {
 			'see_modify_item'	=> true,
 			'see_delete_item'	=> false,
 			'see_delete_all'	=> false,
-			'see_stock_notice'	=> false,
 			'see_shopping_cart'	=> true,
 			'see_checkout'		=> true,
 		);
@@ -149,7 +141,6 @@ class ShoppingCartWidget extends WP_Widget {
 		$hide_if_empty		= isset( $instance['hide_if_empty'] ) ? (bool)$instance['hide_if_empty'] : false;
 		$see_thumbnail		= isset( $instance['see_thumbnail'] ) ? (bool)$instance['see_thumbnail'] : false;
 		$thumbnail_size		= isset( $instance['thumbnail_size'] ) ? $instance['thumbnail_size'] : 'thumbnail';
-		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
 		$see_weight			= isset( $instance['see_weight'] )	? (bool)$instance['see_weight'] : false;
 		$see_modify_item	= isset( $instance['see_modify_item'] ) ? (bool)$instance['see_modify_item'] : false;
 		$see_delete_item	= isset( $instance['see_delete_item'] ) ? (bool)$instance['see_delete_item'] : false;
@@ -166,17 +157,14 @@ class ShoppingCartWidget extends WP_Widget {
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'see_thumbnail' ); ?>"<?php checked( $see_thumbnail ); ?> 
 			onchange="if (jQuery(this).is(':checked')) jQuery('.tcp_thumbnail_size').show(); else jQuery('.tcp_thumbnail_size').hide();"/>
 			<label for="<?php echo $this->get_field_id( 'see_thumbnail' ); ?>"><?php _e( 'See thumbnail', 'tcp' ); ?></label>
-		</p><p class="tcp_thumbnail_size" <?php if (!$see_thumbnail) : ?>style="display: none;"<?php endif; ?>>
+		</p><p class="tcp_thumbnail_size" style="<?php if (!$see_thumbnail) echo 'display: none;'; ?>">
 			<label for="<?php echo $this->get_field_id( 'thumbnail_size' ); ?>"><?php _e( 'Thumbnail size', 'tcp' ); ?></label><br/>
 			<select id="<?php echo $this->get_field_id( 'thumbnail_size' ); ?>" name="<?php echo $this->get_field_name( 'thumbnail_size' ); ?>" class="widefat">
-				<option value="thumbnail" <?php selected( 'thumbnail', $image_size_grouped_by_button );?>><?php _e( 'Thumbnail', 'tcp' );?></option>
-				<option value="64" <?php selected( '64', $thumbnail_size );?>><?php _e( '64x64', 'tcp' );?></option>
-				<option value="48" <?php selected( '48', $thumbnail_size );?>><?php _e( '48x48', 'tcp' );?></option>
-				<option value="32" <?php selected( '32', $thumbnail_size );?>><?php _e( '32x32', 'tcp' );?></option>
+				<option value="thumbnail" <?php selected( 'thumbnail', $image_size_grouped_by_button ); ?>><?php _e( 'Thumbnail', 'tcp' ); ?></option>
+				<option value="64" <?php selected( '64', $thumbnail_size ); ?>><?php _e( '64x64', 'tcp' ); ?></option>
+				<option value="48" <?php selected( '48', $thumbnail_size ); ?>><?php _e( '48x48', 'tcp' ); ?></option>
+				<option value="32" <?php selected( '32', $thumbnail_size ); ?>><?php _e( '32x32', 'tcp' ); ?></option>
 			</select>
-		</p><p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e( 'See stock notices', 'tcp' ); ?></label>
 		</p><p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp' ); ?></label>

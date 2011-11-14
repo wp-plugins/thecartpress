@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
@@ -36,8 +36,6 @@ class ProductCustomFieldsMetabox {
 		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return;
 		$post_id = tcp_get_default_id( $post->ID, $post->post_type );
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
-		global $thecartpress;
-		$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 		$lang				= isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
 		$source_lang		= isset( $_REQUEST['source_lang'] ) ? $_REQUEST['source_lang'] : '';//isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : '';
 		$is_translation		= $lang != $source_lang;
@@ -67,23 +65,34 @@ class ProductCustomFieldsMetabox {
 			else $count = ''; ?>
 			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<?php $count = RelEntities::count( $post_id, 'PROD-CAT_POST' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
+			<li>|</li>
+			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<?php $count = RelEntities::count( $post_id, 'PROD-CAT_PROD' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
+			<li>|</li>
+			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
 			<!--<li>|</li>
 			<li><a href="<?php echo $admin_path;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
 			-->
+		</ul>
+		<div class="clear"></div>
+		<ul class="subsubsub">
 		<?php
 		$product_type = tcp_get_the_product_type( $post_id );
 		if ( 'SIMPLE' == $product_type ) :
 			$parents = RelEntities::getParents( $post_id );
 			if ( is_array( $parents ) && count( $parents ) > 0 ) :
-				$parent = $parents[0]->id_from; ?>aaaa
-				<li>|</li>
+				$parent = $parents[0]->id_from; ?>
 				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
 			<?php endif;
 		elseif ( 'GROUPED' == $product_type ) :
 			$count = RelEntities::count( $post_id );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
-			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'grouped products', 'tcp' );?><?php echo $count;?></a></li>
 			<li>|</li>
 			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'create new grouped product', 'tcp' );?></a></li>
@@ -109,7 +118,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
-				<td><input type="number" min="0" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_currency();?>
+				<td><input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_currency();?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id );?>
@@ -128,7 +137,7 @@ class ProductCustomFieldsMetabox {
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' );?>:</label></th>
-				<td><input type="number" min="0" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
+				<td><input type="text" min="0" step="0.01" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) );?>" class="regular-text tcp_count" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 			<tr valign="top">
@@ -160,7 +169,7 @@ class ProductCustomFieldsMetabox {
 
 			<tr valign="top">
 				<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' );?>:</label></th>
-				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text tcp_count" type="number" style="width:4em">
+				<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) );?>" class="regular-text tcp_count" type="text" style="width:4em">
 				<span class="description"><?php _e( 'Numerical order.', 'tcp' );?></span></td>
 			</tr>
 			
@@ -168,18 +177,7 @@ class ProductCustomFieldsMetabox {
 				<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' );?>:</label></th>
 				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
-			
-			<tr valign="top">
-				<th scope="row"><label for="tcp_stock"><?php _e( 'Stock', 'tcp' );?>:</label>
-				<?php if ( ! $stock_management ) : 
-					$path = 'admin.php?page=tcp_settings_page';?>
-					<span class="description"><?php printf( __( 'Stock management is disabled. See the <a href="%s">settings</a> page to change this value.', 'tcp' ), $path );?></span>
-				<?php endif;?>
-				</th>
-				<td><input name="tcp_stock" id="tcp_stock" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_stock', true ) );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:10em" />
-				<br /><span class="description"><?php _e( 'Use value -1 (or left blank) for stores/products with no stock management.', 'tcp' );?></span></td>
-			</tr>
-			
+
 			<tr valign="top">
 				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
 				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
@@ -197,13 +195,13 @@ class ProductCustomFieldsMetabox {
 			?>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
-				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:4em" maxlength="4" />
+				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
 				<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
 				</td>
 			</tr>
 			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 				<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
-				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="number" min="-1" style="width:4em" maxlength="4" />
+				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
 				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
 				</td>
 			</tr>
@@ -265,9 +263,6 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_weight', $weight );
 		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
 		update_post_meta( $post_id, 'tcp_sku', isset( $_POST['tcp_sku'] ) ? $_POST['tcp_sku'] : '' );
-		$tcp_stock = isset( $_POST['tcp_stock'] ) ? $_POST['tcp_stock'] : -1;
-		if ( $tcp_stock == '' ) $tcp_stock = -1;
-		update_post_meta( $post_id, 'tcp_stock', (int)$tcp_stock );
 		
 		$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 		if ( is_array( $translations ) && count( $translations ) > 0 )
@@ -285,8 +280,8 @@ class ProductCustomFieldsMetabox {
 
 	function delete( $post_id ) {
 		$post = get_post( $post_id );
-		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return;
-		if ( !current_user_can( 'edit_post', $post_id ) ) return;
+		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $post_id;
+		if ( !current_user_can( 'edit_post', $post_id ) ) return $post_id;
 		$post_id = tcp_get_default_id( $post_id, $post->post_type );
 		RelEntities::deleteAll( $post_id );
 		RelEntities::deleteAllTo( $post_id );
@@ -300,7 +295,6 @@ class ProductCustomFieldsMetabox {
 		delete_post_meta( $post_id, 'tcp_days_to_expire' );
 		delete_post_meta( $post_id, 'tcp_weight' );
 		delete_post_meta( $post_id, 'tcp_sku' );
-		delete_post_meta( $post_id, 'tcp_stock' );
 		delete_post_meta( $post_id, 'tcp_order' );
 		$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 		if ( is_array( $translations ) && count( $translations ) > 0 ) {
@@ -319,6 +313,7 @@ class ProductCustomFieldsMetabox {
 		RelEntities::deleteAll( $post_id, 'OPTIONS' );
 		do_action( 'tcp_product_metabox_delete_custom_fields', $post_id );
 		$this->refreshMoira();
+		return $post_id;
 	}
 
 	function refreshMoira() {

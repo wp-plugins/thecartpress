@@ -206,7 +206,7 @@ class Orders {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, customer_id, status, post_id, price, tax,
-				qty_ordered, shipping_amount, discount_amount, payment_name,
+				qty_ordered, shipping_method, shipping_amount, discount_amount, payment_name,
 				payment_method, payment_amount, transaction_id, order_currency_code,
 				code_tracking, is_downloadable, max_downloads, expires_at, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
@@ -334,8 +334,8 @@ class Orders {
 			' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details d 
 			on o.order_id = d.order_id
 			where customer_id = %d and d.is_downloadable = \'Y\' and status=%s
-			and ( ( d.expires_at > %s and ( d.max_downloads <0 or d.max_downloads > 0 ) )
-				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads < 0 ) ) )'
+			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
+				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
 			, $customer_id, $completed, $today, $max_date );
 		return $wpdb->get_results( $sql );
 	}
@@ -345,8 +345,9 @@ class Orders {
 		$completed = tcp_get_completed_order_status();
 		$today = date ( 'Y-m-d' );
 		$max_date = date ( 'Y-m-d', mktime( 0, 0, 0, 1, 1, 2000 ) );
-		$sql = $wpdb->prepare( 'select count(*) from ' . $wpdb->prefix . 'tcp_orders o
-			left join ' . $wpdb->prefix . 'tcp_orders_details d on o.order_id = d.order_id
+		$sql = $wpdb->prepare( 'select count(*) from
+			' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details d
+			on o.order_id = d.order_id
 			where customer_id = %d and order_detail_id = %d and d.is_downloadable = \'Y \' and status=%s
 			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
 				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
@@ -359,7 +360,7 @@ class Orders {
 		global $wpdb;
 
 		$sql = 'update ' . $wpdb->prefix . 'tcp_orders_details set 
-			max_downloads = max_downloads - 1 where order_detail_id = %d';
+			max_downloads = max_downloads - 1 where order_detail_id = %d and max_downloads > 0';
 		$wpdb->query( $wpdb->prepare( $sql, $order_detail_id ) );
 	}
 

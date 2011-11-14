@@ -21,10 +21,11 @@ include_once( $wordpress_path . 'wp-config.php' );
 include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
 $thecartpress_path = dirname( dirname( dirname( __FILE__ ) ) )  . '/';
-require_once( $thecartpress_path . 'daos/Orders.class.php');
-require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
+require_once( $thecartpress_path . 'daos/Orders.class.php' );
+require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php' );
 
 $plugin_path = dirname( dirname( dirname( __FILE__ ) ) )  . '/classes/TCP_Plugin.class.php';
+require_once( $plugin_path );
 $instance = $_REQUEST['instance'];
 $data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
 

@@ -109,6 +109,7 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
 		</th><td>
 			<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
+			<br/><a href="https://developer.paypal.com/?login_email=<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" target="_blank">developer.paypal.com</a>
 		</td></tr><?php
 	}
 
@@ -145,29 +146,31 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'currency_code', tcp_get_the_currency_iso() );
 		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant ); //text for the Return to Merchant button
 		$p->add_field( 'no_shipping', $no_shipping );
-		$taxes = 0;
-		$tax_percentage = tcp_get_the_shipping_tax();
+		
 		if ( $send_detail == 0 ) { // && empty( $profile_shipping ) && empty( $profile_taxes ) ) { // Buy Now - one total
 			$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
 			$amount = 0;
+			$taxes = 0;
+			$decimals = tcp_get_decimal_currency();
 			foreach( $shoppingCart->getItems() as $item ) {
 				$tax = tcp_get_the_tax( $item->getPostId() );
-				$unit_price_with_tax = $item->getUnitPrice() * ( 1 + $tax / 100 );
-				$unit_price_with_tax = round( $unit_price_with_tax, 2 );
-				$line_price_with_tax = $unit_price_with_tax * $item->getUnits();
-				$line_price_without_tax = $item->getUnitPrice() * $item->getUnits();
-				$amount += $line_price_without_tax;
-				$taxes += $line_price_with_tax - $line_price_without_tax;
+				$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
+				$unit_price_without_tax = round( $res[0], $decimals );
+				$tax_amount = round( $res[1], $decimals );
+				$amount += $unit_price_without_tax * $item->getUnits();
+				$taxes += $tax_amount * $item->getUnits();
 			}
 			foreach( $shoppingCart->getOtherCosts() as $cost_id => $cost ) {
 				$tax = tcp_get_the_shipping_tax();
-				$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
-				$cost_with_tax = $cost->getCost() * ( 1 + $tax / 100 );
+				$res = tcp_get_shipping_cost_and_tax( $cost->getCost(), $tax );
+				$cost_without_tax = $res[0];
+				$cost_with_tax = $cost_without_tax + $res[1];
 				$amount += $cost_without_tax;
 				$taxes += $cost_with_tax - $cost_without_tax;
 			}
-			$p->add_field( 'amount', tcp_number_format( $amount ) );
-			$p->add_field( 'tax', tcp_number_format( $taxes ) );
+			$amount -= $shoppingCart->getAllDiscounts();
+			$p->add_field( 'amount', number_format( $amount, 2 ) );
+			if ( $taxes > 0 ) $p->add_field( 'tax', number_format( $taxes, 2 ) );
 			$discount = $shoppingCart->getAllDiscounts();
 			if ( $discount > 0 ) $p->add_field( 'discount_amount_cart', number_format( $discount, 2, '.', '' ) );
 		} else { //Item by item
@@ -181,7 +184,7 @@ class TCPPayPal extends TCP_Plugin {
 				$p->add_field( "quantity_$i", $item->getUnits() );
 				$tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax()
 				$tax = ( $item->getUnitPrice() * $tax / 100 ) * $item->getUnits();
-				$p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
+				if ( $tax > 0 ) $p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
 				if ( $discount > 0 ) {
 					$price = $item->getUnits() * $item->getUnitPrice();
 					if ( $price > $discount) {
@@ -195,11 +198,12 @@ class TCPPayPal extends TCP_Plugin {
 				}
 				$i++;
 			}
+			$tax_percentage = tcp_get_the_shipping_tax();
 			foreach( $shoppingCart->getOtherCosts() as $cost ) {
 				$p->add_field( "item_name_$i", $cost->getDesc() );
 				$p->add_field( "amount_$i", $cost->getCost() );
 				$tax = $cost->getCost() * $tax_percentage / 100;
-				$p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
+				if ( $tax > 0 ) $p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
 				$i++;
 			}
 		}

@@ -30,7 +30,7 @@ class OrdersSummaryDashboard {
 		}
 		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/'; ?>
 <div class="table table_content">
-	<table width="100%"><tbody>
+	<table style="width:100%"><tbody>
 	<?php $order_status_list = tcp_get_order_status();
 	foreach ( $order_status_list as $order_status ) : 
 		if ( $order_status['show_in_dashboard'] ) : ?>
@@ -53,8 +53,9 @@ class OrdersSummaryDashboard {
 	}
 	if ( is_array( $orders ) && count ( $orders ) > 0 ) : 
 		$all_status = tcp_get_order_status(); ?>
-		<table class="last_orders" width="100%">
+		<table class="last_orders" style="width:100%">
 		<thead>
+		<tr>
 		<th><?php _e( 'Id', 'tcp' ); ?></th>
 		<th><?php _e( 'Date', 'tcp' ); ?></th>
 		<th><?php _e( 'Customer', 'tcp' ); ?></th>

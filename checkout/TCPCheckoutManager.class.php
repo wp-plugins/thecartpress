@@ -47,17 +47,9 @@ class TCPCheckoutManager {
 	}
 	
 	function show() {
-		global $thecartpress;
-		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
-		if ( $stock_management ) {
-			$shoppingCart = TheCartPress::getShoppingCart();
-			if ( ! $shoppingCart->isThereStock() ) {
-				require_once( dirname( dirname( __FILE__ ) ) . '/shortcodes/ShoppingCartPage.class.php' );
-				$shoppingCartPage = new TCP_ShoppingCartPage();
-				return $shoppingCartPage->show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products.', 'tcp' ) );
-			}
+		$html = apply_filters( 'tcp_checkout_manager', '' );
+		if ( strlen( $html ) > 0 ) return $html;
 
-		}
 		$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 0;
 		$box = $this->get_box( $step );
 		if ( isset( $_REQUEST['tcp_continue'] ) ) {
@@ -170,7 +162,7 @@ class TCPCheckoutManager {
 			<span class="tcp_back_continue"><?php echo $html;?></span>
 			<?php endif;
 			$this->show_footer( $box, $step );?>
-		</div><! -- <?php echo $box->get_class();?> -->
+		</div><!-- <?php echo $box->get_class();?> -->
 		<?php if ( $box->is_form_encapsulated() ) :?></form><?php endif;
 		endif;?>
 		</div><!-- checkout --><?php
@@ -436,12 +428,12 @@ class TCPCheckoutManager {
 			$ordersDetails['name']				= $post->post_title;
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-			$ordersDetails['price']				= $item->getUnitPrice();
-			//$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
+			//$ordersDetails['price']				= $item->getUnitPrice();
+			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 			$ordersDetails['original_price']	= $item->getUnitPrice();
 			$ordersDetails['tax']				= $tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax();
 			$ordersDetails['qty_ordered']		= $item->getCount();
-			$ordersDetails['max_downloads']		= (int)get_post_meta( $post->ID, 'tcp_max_downloads', true );
+			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
 			global $thecartpress;
 			$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;

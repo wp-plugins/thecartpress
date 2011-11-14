@@ -16,19 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class OrdersMeta {
-
-	static function createTable() {
-		global $wpdb;
-		$table_name = 'tcp_ordersmeta';
-		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
-			`meta_id` bigint(20) UNSIGNED NOT NULL auto_increment,
-			`tcp_orders_id` bigint(20) UNSIGNED NOT NULL,
-			`meta_key` varchar(255),
-			`meta_value` longtext,
-			PRIMARY KEY (`meta_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
-		$wpdb->query( $sql );
-	}
-}
+require_once( dirname( __FILE__ ) . '/OrdersListTable.class.php' );
+$ordersList = new TCPOrdersList();
+$ordersList->show();
 ?>

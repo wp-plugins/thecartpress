@@ -87,17 +87,17 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">
-					<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
+					<?php echo $title_tag; ?><a href="<?php the_permalink( ); ?>"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_posted_on'] ) && $instance['see_posted_on'] ) : ?>
 					<div class="entry-meta">
 						<?php tcp_posted_on(); ?> <?php tcp_posted_by(); ?>
 					</div><!-- .entry-meta -->
 				<?php endif; ?>
 				<?php if ( isset( $instance['see_image'] ) && $instance['see_image'] ) : 
-					$image_size = isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';?>
-				<div class="entry-post-<?php echo $image_size;?>">
+					$image_size = isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail'; ?>
+				<div class="entry-post-<?php echo $image_size; ?>">
 					<a class="size-<?php echo $image_size; ?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail' ); ?></a>
 				</div><!-- .entry-post-thumbnail -->
 				<?php endif; ?>
@@ -105,23 +105,23 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
-					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php tcp_the_price_label();?></p>
+					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' ); ?>:&nbsp;<?php tcp_the_price_label(); ?></p>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_buy_button'] ) && $instance['see_buy_button'] ) : ?>
 				<div class="entry_tcp_buy_button">
-					<?php tcp_the_buy_button();?>
+					<?php tcp_the_buy_button(); ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_content'] ) && $instance['see_content'] ) : ?>
 				<div class="entry-content">
 					<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'tcp' ) ); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">'.__( 'Pages:', 'tcp' ), 'after' => '</div>')); ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( isset( $instance['see_meta_utilities'] ) && $instance['see_meta_utilities'] ) : ?>
 				<div class="entry-utility">
 					<?php if ( count( get_the_category() ) ): ?>
@@ -140,7 +140,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'tcp' ), __( '1 Comment', 'tcp' ), __( '% Comments', 'tcp' ) ); ?></span>
 				<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 			</div>
 		<?php endwhile;
 	}
@@ -175,18 +175,18 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$number_of_columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 2;
 		$column = $number_of_columns;
 		if ( have_posts() ) while ( have_posts() ) : the_post();
-			if ( $column == 0 ) : $column = $number_of_columns;?>
+			if ( $column == 0 ) : $column = $number_of_columns; ?>
 			</tr><tr>
 			<?php endif;
 		$tcp_col = $number_of_columns - $column + 1;
 		$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col );
 		$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
 		<td id="td-post-<?php the_ID(); ?>" <?php echo $td_class; ?>>
-		<?php $column--;?>
+		<?php $column--; ?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( $see_title ) : ?>
-					<?php echo $title_tag;?><a href="<?php the_permalink( );?>" border="0"><?php the_title(); ?></a><?php echo $title_end_tag;?>
-				<?php endif;?>
+					<?php echo $title_tag; ?><a href="<?php the_permalink( ); ?>"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
+				<?php endif; ?>
 
 				<?php if ( $see_posted_on ) : ?>
 				<div class="entry-meta">
@@ -196,13 +196,13 @@ class CustomPostTypeListWidget extends WP_Widget {
 
 				<?php if ( $see_price ) :?>
 				<div class="entry-price">
-					<?php tcp_the_price_label();?>
+					<?php tcp_the_price_label(); ?>
 				</div><!-- .entry-price -->
-				<?php endif;?>
+				<?php endif; ?>
 
 				<?php if ( $see_image ) : ?>
 				<div class="entry-post-thumbnail">
-					<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
+					<a class="tcp_size-<?php echo $image_size; ?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
 				</div><!-- .entry-post-thumbnail -->
 				<?php endif; ?>
 
@@ -214,9 +214,9 @@ class CustomPostTypeListWidget extends WP_Widget {
 
 				<?php if ( $see_buy_button ) :?>
 				<div class="entry-buy-button">	
-					<?php tcp_the_buy_button();?>
+					<?php tcp_the_buy_button(); ?>
 				</div>
-				<?php endif;?>
+				<?php endif; ?>
 
 				<?php if ( $see_content ) : ?>
 				<div class="entry-content">
@@ -226,11 +226,11 @@ class CustomPostTypeListWidget extends WP_Widget {
 				<?php endif; ?>
 
 				<?php if ( $see_first_custom_area ) :?>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( $see_second_custom_area ) :?>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( $see_third_custom_area ) :?>
-				<?php endif;?>
+				<?php endif; ?>
 
 				<?php if ( $see_author ) :?>
 					<?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
@@ -259,14 +259,14 @@ class CustomPostTypeListWidget extends WP_Widget {
 						foreach( $taxonomies as $id => $taxonomy ) :
 							$terms_list = get_the_term_list( 0, $id, '', ', ' );
 							if ( strlen( $terms_list ) > 0 ) : ?>
-							<span class="tcp_taxonomy tcp_taxonomy_<?php echo $taxonomy->name;?>"><?php echo $taxonomy->labels->singular_name; ?>:
-							<?php echo $terms_list;?>
+							<span class="tcp_taxonomy tcp_taxonomy_<?php echo $taxonomy->name; ?>"><?php echo $taxonomy->labels->singular_name; ?>:
+							<?php echo $terms_list; ?>
 							</span>
 							<?php endif; 
-						endforeach;?>
+						endforeach; ?>
 						</span>
 					</div><!-- taxonomies -->
-				<?php endif;?>
+				<?php endif; ?>
 			
 				<?php if ( $see_meta_utilities ) : ?>
 					<div class="entry-utilities">
@@ -279,8 +279,8 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<?php endwhile;
 		for(; $column > 0; $column-- ) :?>
 			<td>&nbsp;</td>
-		<?php endfor;?>
-		</tr></table>
+		<?php endfor; ?>
+		</tr>
 		</table><?php
 	}
 
@@ -393,24 +393,24 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : ?>
-				<option value="<?php echo $post_type->name;?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name; ?></option>
+				<option value="<?php echo $post_type->name; ?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name; ?></option>
 			<?php endforeach; ?>
 			</select>
-			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
+			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' ); ?></span>
 		</p><p style="margin-bottom:0;">
 			<input type="checkbox" class="checkbox" onclick="tcp_show_taxonomy(this.checked);" id="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'use_taxonomy' ); ?>" value="yes" <?php checked( $use_taxonomy, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>"><?php _e( 'Use Taxonomy', 'tcp' ); ?></label>
 		</p>
-		<div class="tcp_taxonomy_controls" style="<?php echo $use_taxonomy_style;?>">
+		<div class="tcp_taxonomy_controls" style="<?php echo $use_taxonomy_style; ?>">
 			<p style="margin-top:0;">
 				<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
-					<option value="" <?php selected( $instance['taxonomy'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
+					<option value="" <?php selected( $instance['taxonomy'], '' ); ?>><?php _e( 'all', 'tcp' ); ?></option>
 				<?php foreach( get_object_taxonomies( $instance['post_type'] ) as $taxonomy ) : $tax = get_taxonomy( $taxonomy ); ?>
-					<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
-				<?php endforeach;?>
+					<option value="<?php echo esc_attr( $taxonomy ); ?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name ); ?></option>
+				<?php endforeach; ?>
 				</select>
-				<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
+				<span class="description"><?php _e( 'Press save to load the next list', 'tcp' ); ?></span>
 			</p><p>
 				<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'term' ); ?>" id="<?php echo $this->get_field_id( 'term' ); ?>" class="widefat">
@@ -419,19 +419,19 @@ class CustomPostTypeListWidget extends WP_Widget {
 					$terms = get_terms( $instance['taxonomy'], array( 'hide_empty' => false ) );
 					if ( is_array( $terms ) && count( $terms ) )
 						foreach( $terms as $term ) : 
-							if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>?>
-								<option value="<?php echo $term->slug;?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name );?></option>
+							if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>
+								<option value="<?php echo $term->slug; ?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name ); ?></option>
 							<?php endif;
 						endforeach;
-				endif;?>
+				endif; ?>
 				</select>
 			</p>
 		</div> <!-- tcp_taxonomy_controls -->
-		<div class="tcp_post_included" style="<?php echo $included_style;?>">
-			<div id="p_included" style="<?php echo $p_included_style;?>"><p style="margin-top:0;">
-				<label for="<?php echo $this->get_field_id( 'included' );?>"><?php _e( 'Included', 'tcp' )?>:</label>
-				<select name="<?php echo $this->get_field_name( 'included' );?>[]" id="<?php echo $this->get_field_id( 'included' );?>" class="widefat" multiple="true" size="8" style="height: auto">
-					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
+		<div class="tcp_post_included" style="<?php echo $included_style; ?>">
+			<div id="p_included" style="<?php echo $p_included_style; ?>"><p style="margin-top:0;">
+				<label for="<?php echo $this->get_field_id( 'included' ); ?>"><?php _e( 'Included', 'tcp' )?>:</label>
+				<select name="<?php echo $this->get_field_name( 'included' ); ?>[]" id="<?php echo $this->get_field_id( 'included' ); ?>" class="widefat" multiple size="8" style="height: auto">
+					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' ); ?></option>
 				<?php
 				$args = array(
 					'post_type'			=> $instance['post_type'],
@@ -441,10 +441,14 @@ class CustomPostTypeListWidget extends WP_Widget {
 					$args['meta_key'] = 'tcp_is_visible';
 					$args['meta_value'] = true;
 				}
-				$query = new WP_query($args);
-				if ( $query->have_posts() ) while ( $query->have_posts() ): $query->the_post();?>
-					<option value="<?php the_ID();?>"<?php tcp_selected_multiple( $instance['included'], get_the_ID() ); ?>><?php the_title();?></option>
-				<?php endwhile; wp_reset_postdata(); wp_reset_query();?>
+				$included = isset( $instance['included'] ) ? $instance['included'] : array();
+				if ( ! is_array( $included ) ) $included = array();
+				$posts = get_posts( $args );
+				if ( is_array( $posts ) && count( $posts ) ) :
+					foreach( $posts as $post ) : ?>
+					<option value="<?php echo $post->ID; ?>"<?php tcp_selected_multiple( $included, $post->ID ); ?>><?php echo $post->post_title; ?></option>
+					<?php endforeach;
+				endif; ?>
 				</select>
 				</p>
 			</div><!-- p_included -->
@@ -455,46 +459,52 @@ class CustomPostTypeListWidget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'loop' ); ?>"><?php _e( 'Loop', 'tcp' ); ?>:</label>
-			&nbsp;(<?php _e( 'theme', 'tcp' );?>:&nbsp;<?php echo get_template();?>)
+			&nbsp;(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php echo get_template(); ?>)
 			<select name="<?php echo $this->get_field_name( 'loop' ); ?>" id="<?php echo $this->get_field_id( 'loop' ); ?>" class="widefat">
-				<option value="" <?php selected( $instance['loop'], '' ); ?>"><?php _e( 'default', 'tcp' ); ?></option>
+				<option value="" <?php selected( $instance['loop'], '' ); ?>><?php _e( 'default', 'tcp' ); ?></option>
 			<?php
 			$files = array();
 			$folder = STYLESHEETPATH;
-			if ( $handle = opendir( $folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
-				if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-					<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?php echo $file; ?></option>
-				<?php 
-					$files[] = $file;
-				endif;?>
-			<?php endwhile; closedir( $handle );
+			if ( $handle = opendir( $folder ) ) :
+				while ( false !== ( $file = readdir( $handle ) ) ) :
+					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
+					<option value="<?php echo $folder . '/' . $file; ?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>><?php echo $file; ?></option>
+					<?php $files[] = $file;
+					endif; ?>
+				<?php endwhile;
+				closedir( $handle );
+			endif;
 
 			$folder = get_template_directory();
-			if ( STYLESHEETPATH != $folder )
-				if ( $handle = opendir($folder ) ) while ( false !== ( $file = readdir( $handle ) ) ) :
+			if ( STYLESHEETPATH != $folder ) :
+				if ( $handle = opendir($folder ) ) :
+					while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
-					<?php endif;?>
-				<?php endwhile; closedir( $handle );?>
+						<option value="<?php echo $folder . '/' . $file; ?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>>[<?php _e( 'parent', 'tcp' ); ?>] <?php echo $file; ?></option>
+					<?php endif;
+					endwhile;
+				closedir( $handle );
+				endif;
+			endif; ?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'order_type' );?>"><?php _e( 'Order by', 'tcp' ); ?></label>:
+			<label for="<?php echo $this->get_field_id( 'order_type' ); ?>"><?php _e( 'Order by', 'tcp' ); ?></label>:
 			<?php $sorting_fields = tcp_get_sorting_fields();
 			//$sorting_fields[] = array( 'value' => 'rand', 'title' => __( 'Random', 'tcp' ) ); ?>
-			<select id="<?php echo $this->get_field_id( 'order_type' );?>" name="<?php echo $this->get_field_name( 'order_type' );?>">
+			<select id="<?php echo $this->get_field_id( 'order_type' ); ?>" name="<?php echo $this->get_field_name( 'order_type' ); ?>">
 			<?php foreach( $sorting_fields as $sorting_field ) : ?>
 			<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
 			<?php endforeach; ?>
 			</select>
-			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' );?>" id="<?php echo $this->get_field_id( 'order_desc' );?>" value="asc" <?php checked( $instance['order_desc'], 'asc' );?>/>
-			<label for="<?php echo $this->get_field_id( 'order_desc' );?>"><?php _e( 'Asc.', 'tcp' ); ?></label>
-			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' );?>" id="<?php echo $this->get_field_id( 'order_desc' );?>" value="desc" <?php checked( $instance['order_desc'], 'desc' );?>/>
-			<label for="<?php echo $this->get_field_id( 'order_desc' );?>"><?php _e( 'Desc.', 'tcp' ); ?></label>
+			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="asc" <?php checked( $instance['order_desc'], 'asc' ); ?>/>
+			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Asc.', 'tcp' ); ?></label>
+			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="desc" <?php checked( $instance['order_desc'], 'desc' ); ?>/>
+			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Desc.', 'tcp' ); ?></label>
 		</p>
 		<p>
-			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
-			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
+			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' ); ?>
+			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' ); ?>" class="button-secondary" />
 		</p>
 		<?php do_action( 'tcp_custom_post_type_list_widget_form_after', $this ); ?>
 	</div>
@@ -510,7 +520,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?></label>
 			<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
-				<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' );?></option>
+				<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' ); ?></option>
 				<option value="h2" <?php selected( $title_tag, 'h2' ); ?>>h2</option>
 				<option value="h3" <?php selected( $title_tag, 'h3' ); ?>>h3</option>
 				<option value="h4" <?php selected( $title_tag, 'h4' ); ?>>h4</option>
@@ -530,8 +540,8 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
 			<?php $imageSizes = get_intermediate_image_sizes();
 			foreach($imageSizes as $imageSize) : ?>
-				<option value="<?php echo $imageSize;?>" <?php selected( $imageSize, $image_size );?>><?php echo $imageSize;?></option>
-			<?php endforeach;?>
+				<option value="<?php echo $imageSize; ?>" <?php selected( $imageSize, $image_size ); ?>><?php echo $imageSize; ?></option>
+			<?php endforeach; ?>
 			</select>
 		</p>
 		<p>

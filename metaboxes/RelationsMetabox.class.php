@@ -46,7 +46,7 @@ class RelationsMetabox {
 	<?php do_action( 'tcp_relations_metabox_grouped_toolbar', $post_id ); ?>
 </ul>
 <div class="form-wrap">
-<table class="widefat fixed" cellspacing="0"><!-- Assigned -->
+<table class="widefat fixed"><!-- Assigned -->
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Thumbnail', 'tcp' ); ?></th>
@@ -101,7 +101,7 @@ if ( is_array( $assigned_list ) && count( $assigned_list ) > 0 ):
 	function show_options( $post_id ) { ?>
 	<ul class="subsubsub"><?php do_action( 'tcp_relations_metabox_options_toolbar', $post_id ); ?></ul>
 <div class="form-wrap">
-<table class="widefat fixed" cellspacing="0">
+<table class="widefat fixed">
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Thumbnail', 'tcp' ); ?></th>
