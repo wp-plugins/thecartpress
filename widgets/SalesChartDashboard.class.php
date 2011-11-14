@@ -191,7 +191,7 @@ class SalesChartDashboard {
 </p>
 <p>
 	<label for="days_prev"><?php _e( 'Days prev', 'tcp' ); ?>:
-		<input type="number" id="days_prev" name="days_prev" value="<?php echo $days_prev; ?>" min="0" max="31" size="2" maxlength="2"/>
+		<input type="text" id="days_prev" name="days_prev" value="<?php echo $days_prev; ?>" min="0" max="31" size="2" maxlength="2"/>
 	</label>
 </p>
 <p>

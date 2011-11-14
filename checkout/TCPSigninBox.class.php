@@ -46,13 +46,12 @@ class TCPSigninBox extends TCPCheckoutBox {
 		<div class="identify_layer_info checkout_info clearfix" id="identify_layer_info">
 		<?php if ( ! is_user_logged_in() ) : ?>
 			<div id="login_form">
-				<h4><?php _e( 'Login', 'tcp' );?></h4><?php 
-				global $thecartpress;
+				<h4><?php _e( 'Login', 'tcp' );?></h4>
+				<?php global $thecartpress;
 				$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
 				if ( ! $user_registration ) : ?>
-				<p>
-					<strong><?php _e( 'Already registered?', 'tcp' );?></strong><br/><?php _e( 'Please log in below:', 'tcp' );?>
-				</p><?php endif;
+					<p><strong><?php _e( 'Already registered?', 'tcp' );?></strong><br/><?php _e( 'Please log in below:', 'tcp' );?></p>
+				<?php endif;
 				$args = array(
 					'echo'				=> true,
 					'redirect'			=> get_permalink(),
@@ -69,7 +68,8 @@ class TCPSigninBox extends TCPCheckoutBox {
 					'value_username'	=> '',
 					'value_remember'	=> false
 				);
-				wp_login_form( $args ); ?>
+				//wp_login_form( $args );
+				tcp_login_form( $args ); ?>
 			</div><!--login_form -->
 
 			<div id="login_guess">
@@ -107,9 +107,6 @@ class TCPSigninBox extends TCPCheckoutBox {
 					</form>
 				</div><!-- tcp_login_register -->
 				</li>
-				<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
-					<li class="error tcp_error"><?php echo $_REQUEST['tcp_register_error'];?></li>
-				<?php endif; ?>
 				</ul>
 			<?php endif;?>
 			<?php do_action( 'tcp_checkout_identify' );?>

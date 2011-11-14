@@ -74,9 +74,7 @@ if ( isset( $_REQUEST['tcp_save_fields'] ) ) {
 </form>
 <div class="clear"></div>
 
-<form method="post">
-<?php
-global $tcp_checkout_boxes;
+<?php global $tcp_checkout_boxes;
 $order_steps = TCPCheckoutManager::get_steps();?>
 <h3><?php _e( 'Activated boxes', 'tcp' ); ?></h3>
 <ul class="tcp_activated_boxes" style="padding-left:4em;">

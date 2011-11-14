@@ -106,11 +106,13 @@ class paypal_class {
    function paypal_class( $test_mode = false, $logging = false ) {
        
       // initialization constructor.  Called when class is created.
-      if ($test_mode)
+      if ( $test_mode ) {
           $this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; // testing paypal url
-      else
+//         $this->paypal_url = 'http://www.sandbox.paypal.com/cgi-bin/webscr'; // testing paypal url
+       } else {
           $this->paypal_url = 'https://www.paypal.com/cgi-bin/webscr'; // paypal url
-      
+//          $this->paypal_url = 'http://www.paypal.com/cgi-bin/webscr'; // paypal url
+      }
       $this->last_error = '';
       
       $this->ipn_log_file = '.ipn_results.log';
@@ -184,9 +186,11 @@ class paypal_class {
          $post_string .= $field.'='.urlencode(stripslashes($value)).'&'; 
       }
       $post_string.="cmd=_notify-validate"; // append ipn command
-
+update_option( 'tcp_pay_pal_ipn_1', $post_string );//TODO
+update_option( 'tcp_pay_pal_ipn_url', $url_parsed );//TODO
       // open the connection to paypal
-      $fp = fsockopen($url_parsed['host'],"80",$err_num,$err_str,30); 
+//      $fp = fsockopen( $url_parsed['host'], 80, $err_num, $err_str, 30); 
+      $fp = fsockopen( 'ssl:' . $url_parsed['host'], 443, $err_num, $err_str, 30); 
       if(!$fp) {
           
          // could not open the connection.  If loggin is on, the error message
@@ -196,7 +200,6 @@ class paypal_class {
          return false;
          
       } else { 
- 
          // Post the data back to paypal
          fputs($fp, "POST {$url_parsed['path']} HTTP/1.1\r\n"); 
          fputs($fp, "Host: {$url_parsed['host']}\r\n"); 
@@ -209,9 +212,8 @@ class paypal_class {
          while(!feof($fp)) { 
             $this->ipn_response .= fgets($fp, 1024); 
          } 
-
          fclose($fp); // close connection
-
+update_option( 'tcp_pay_pal_ipn_2', $this->ipn_response );//TODO
       }
       
       if (eregi("VERIFIED",$this->ipn_response)) {
@@ -219,14 +221,14 @@ class paypal_class {
          // Valid IPN transaction.
          $this->log_ipn_results(true);
          return true;       
-         
+update_option( 'tcp_pay_pal_ipn_3', "OK\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO         
       } else {
   
          // Invalid IPN transaction.  Check the log for details.
          $this->last_error = 'IPN Validation Failed.';
          $this->log_ipn_results(false);   
          return false;
-         
+update_option( 'tcp_pay_pal_ipn_3', "KO\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO
       }
       
    }

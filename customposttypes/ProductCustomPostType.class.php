@@ -187,7 +187,6 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			'grouped_in'	=> __( 'Grouped in', 'tcp' ),
 			'sku'			=> __( 'SKU', 'tcp' ),
 			'price'			=> __( 'Price - Type', 'tcp' ),
-			'stock'			=> __( 'Stock', 'tcp' ),
 			//'date'			=> __( 'Date', 'tcp' ),
 			//'comments'	=> __('Comments', 'tcp' ),
 		);
@@ -205,7 +204,8 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 		if ( tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
-			} elseif ( 'thumbnail' == $column_name ) {
+			} 
+			elseif ( 'thumbnail' == $column_name ) {
 				$image = tcp_get_the_thumbnail( $post->ID, 0, 0, array( '50', '50' )  );
 				echo $image;
 			} elseif ( 'grouped_in' == $column_name ) {
@@ -232,35 +232,6 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
 				if ( isset( $types[$product_type] ) ) echo $types[$product_type];
-			} elseif ( 'stock' == $column_name ) {
-				$stock = tcp_get_the_stock(  $post->ID );
-				if ( $stock == -1 ) {
-					$options_1 = RelEntities::select( $post->ID, 'OPTIONS' );
-					if ( is_array( $options_1 ) && count( $options_1 ) > 0 ) {
-						$stock = '';
-						foreach( $options_1 as $option_1 ) {
-							$options_2 = RelEntities::select( $option_1->id_to, 'OPTIONS' );
-							if ( is_array( $options_2 ) && count( $options_2 ) > 0 ) {
-								foreach( $options_2 as $option_2 ) {
-									$option_stock = tcp_get_the_stock( $option_2->id_to );
-									if ( $option_stock != -1 ) {
-										$stock .= sprintf( '%d for %s, ', $option_stock, get_the_title( $option_1->id_to ) . ' ' . get_the_title( $option_2->id_to ) );
-									}
-								}
-							} else {
-								$option_stock = tcp_get_the_stock( $option_1->id_to );
-								if ( $option_stock != -1 ) {
-									$stock .= sprintf( '%d for %s, ', $option_stock, get_the_title( $option_1->id_to ) );
-								}
-							}
-						}
-						if ( $stock == '' ) $stock = __( 'N/A', 'tcp' );
-						else $stock = substr( $stock, 0, strlen( $stock ) -2 );
-					} else {
-						$stock = __( 'N/A', 'tcp' );
-					}
-				} else if ( $stock < 10 ) $stock = sprintf( '<span style="color: red">%s</span>', $stock );
-				echo $stock;
 			}
 			do_action( 'tcp_manage_posts_custom_column', $column_name, $post );
 		}
@@ -285,7 +256,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 				'show_count'		=> true,
 				'hide_empty'		=> true,
 			) );?>
-			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?><label>
+			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?></label>
 			<select name="tcp_product_type" id="tcp_product_type">
 				<option value="" <?php selected( "", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'all', 'tcp' );?></option>
 				<option value="SIMPLE" <?php selected( "SIMPLE", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'Simple', 'tcp' );?></option>

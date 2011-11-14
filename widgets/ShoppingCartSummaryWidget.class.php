@@ -46,7 +46,6 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title']				= strip_tags( $new_instance['title'] );
 		$instance['hide_if_empty']		= isset( $new_instance['hide_if_empty'] );
-		$instance['see_stock_notice']	= isset( $new_instance['see_stock_notice'] );
 		$instance['see_product_count']	= isset( $new_instance['see_product_count'] );
 		$instance['see_weight']			= isset( $new_instance['see_weight'] );
 		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] );
@@ -63,13 +62,12 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 			'see_delete_all'	=> true,
 		);
 		$hide_if_empty		= isset( $instance['hide_if_empty'] ) ? (bool)$instance['hide_if_empty'] : false;
-		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false;
 		$see_product_count	= isset( $instance['see_product_count'] ) ? (bool)$instance['see_product_count'] : false;
 		$see_weight			= isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
 		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
 		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
 		$see_checkout		= isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false;
-		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
@@ -79,9 +77,6 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count ' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e( 'See product count', 'tcp ' ); ?></label>
-		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_stock_notice ' ); ?>" name="<?php echo $this->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_stock_notice' ); ?>"><?php _e( 'See stock notice', 'tcp ' ); ?></label>
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight ' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp ' ); ?></label>

@@ -170,7 +170,7 @@ class CustomListWidget extends WP_Widget {
 		<?php $column--;?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( $see_title ) : ?>
-					<?php echo $title_tag;?><a href="<?php the_permalink( );?>" border="0"><?php the_title(); ?></a><?php echo $title_end_tag;?>
+					<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
 				<?php endif;?>
 
 				<?php if ( $see_posted_on ) : ?>
@@ -266,7 +266,7 @@ class CustomListWidget extends WP_Widget {
 		for(; $column > 0; $column-- ) :?>
 			<td>&nbsp;</td>
 		<?php endfor;?>
-		</tr></table>
+		</tr>
 		</table>
 		<?php do_action( 'tcp_after_custom_list_widget' );?>
 		<?php
@@ -336,14 +336,14 @@ class CustomListWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'loop' ); ?>"><?php _e( 'Loop', 'tcp' ); ?>:</label>
 			&nbsp;(<?php _e( 'theme', 'tcp' );?>:&nbsp;<?php echo get_template();?>)
 			<select name="<?php echo $this->get_field_name( 'loop' ); ?>" id="<?php echo $this->get_field_id( 'loop' ); ?>" class="widefat">
-				<option value="" <?php selected( $instance['loop'], "" ); ?>"><?_e( 'default', 'tcp' ); ?></option>
+				<option value="" <?php selected( $instance['loop'], "" ); ?>><?php _e( 'default', 'tcp' ); ?></option>
 			<?php
 			$files = array();
 			$folder = STYLESHEETPATH;
 			if ( $handle = opendir($folder ) ) :
 				while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
-						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>"><?php echo $file; ?></option>
+						<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>><?php echo $file; ?></option>
 						<?php $files[] = $file;
 					endif;?>
 				<?php endwhile; 
@@ -354,7 +354,7 @@ class CustomListWidget extends WP_Widget {
 				if ( $handle = opendir($folder ) ) :
 					while ( false !== ( $file = readdir( $handle ) ) ) :
 						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>
-				<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>">[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
+				<option value="<?php echo $folder . '/' . $file;?>" <?php selected( $instance['loop'], $folder . '/' . $file ); ?>>[<?php _e( 'parent', 'tcp' );?>] <?php echo $file; ?></option>
 						<?php endif;?>
 					<?php endwhile;
 				closedir( $handle );

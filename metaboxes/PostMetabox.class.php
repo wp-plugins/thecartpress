@@ -49,6 +49,11 @@ class PostMetabox {
 			else $count = '';?>
 			<li>|</li>
 			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-POST&post_type_to=post"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<?php $count = RelEntities::count( $post_id, 'POST-CAT_PROD' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = ''; ?>
+			<li>|</li>
+			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=POST-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php do_action( 'tcp_template_metabox_show', $post );?>
 		</ul>
 		<div class="clear"></div>

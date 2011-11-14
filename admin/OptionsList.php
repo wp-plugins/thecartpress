@@ -18,20 +18,19 @@
 
 require_once( dirname( dirname (  __FILE__ ) ) . '/daos/RelEntitiesOptions.class.php' );
 
+//Create an option from another
 function tcp_create_option( $post_id, $option_id, $rel_type = 'OPTIONS' ) {
 	$post = get_post( $option_id );
 	$price = tcp_get_the_price( $option_id );
 	$weight = tcp_get_the_weight( $option_id );
 	$order = tcp_get_the_order( $option_id );
-	$stock = tcp_get_the_stock( $option_id );
-	//TODO sku and stock?
 	unset( $post->ID );
 	$new_option_id = wp_insert_post( $post );
 	add_post_meta( $new_option_id, 'tcp_price',  $price );
 	add_post_meta( $new_option_id, 'tcp_weight', $weight );
 	add_post_meta( $new_option_id, 'tcp_order',  $order );
-	add_post_meta( $new_option_id, 'tcp_stock',  $stock );
-	//TODO sku and stock?
+	do_action( 'tcp_create_option', $option_id, $new_option_id );
+
 	RelEntities::insert( $post_id, $new_option_id, $rel_type, $order );
 	$options = tcp_get_all_translations( $option_id, 'tcp_product_option' );
 	if ( is_array( $options ) && count( $options ) > 0 )
@@ -208,7 +207,7 @@ $post = get_post( $post_id );?>
 
 <form method="post">
 <p><input type="submit" id="tcp_update_price" name="tcp_update_price" value="<?php _e( 'modify all', 'tcp' );?>" class="button-primary"/></p>
-<table class="widefat fixed" cellspacing="0">
+<table class="widefat fixed">
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Thumbnail', 'tcp' );?></th>
@@ -245,8 +244,8 @@ if ( is_array( $options ) && count( $options ) > 0 ) :
 			<input type="hidden" id="post_id" name="post_id" value="<?php echo $post_id;?>" />
 			<input type="hidden" id="post_id_from" name="post_id_from_<?php echo $i;?>" value="<?php echo $post_id;?>" />
 			<input type="hidden" id="option_id_to" name="option_id_to_<?php echo $i;?>" value="<?php echo $option->id_to;?>" />
-			<input type="number" id="tcp_price" name="tcp_price_<?php echo $i;?>" value="<?php echo tcp_number_format( tcp_get_the_price( $post->ID ) );?>" size="6" maxlength="13" class="tcp_count"/>&nbsp;<?php echo $currency;?>
-			&nbsp;<label><?php echo __( 'Order', 'tcp' );?>:&nbsp;<input type="number" id="tcp_order" name="tcp_order_<?php echo $i;?>" value="<?php echo tcp_get_the_order( $post->ID );?>" size="4" maxlength="8" class="tcp_count"/></label>
+			<input type="text" id="tcp_price" name="tcp_price_<?php echo $i;?>" value="<?php echo tcp_number_format( tcp_get_the_price( $post->ID ) );?>" size="6" maxlength="13" class="tcp_count"/>&nbsp;<?php echo $currency;?>
+			&nbsp;<label><?php echo __( 'Order', 'tcp' );?>:&nbsp;<input type="text" id="tcp_order" name="tcp_order_<?php echo $i;?>" value="<?php echo tcp_get_the_order( $post->ID );?>" size="4" maxlength="8" class="tcp_count"/></label>
 		</td>
 		<td>
 			<a href="post.php?action=edit&post_type=tcp_product_option&post=<?php echo $post->ID;?>"><?php _e( 'edit option', 'tcp' );?></a>
@@ -304,8 +303,8 @@ if ( is_array( $options ) && count( $options ) > 0 ) :
 		<td>
 			<input type="hidden" id="post_id_from" name="post_id_from_<?php echo $i, '_', $j;?>" value="<?php echo $option_2->id_from;?>" />
 			<input type="hidden" id="option_id_to" name="option_id_to_<?php echo $i, '_', $j;?>" value="<?php echo $post_2->ID?>" />
-			<input type="number" min="0" id="tcp_price" name="tcp_price_<?php echo $i, '_', $j;?>" value="<?php echo tcp_number_format( tcp_get_the_price( $post_2->ID ) );?>" size="6" maxlength="13" class="tcp_count"/>&nbsp;<?php echo $currency;?>
-			&nbsp;<label><?php echo __( 'Order', 'tcp' );?>:&nbsp;<input type="number" id="tcp_order" name="tcp_order_<?php echo $i, '_', $j;?>" value="<?php echo tcp_get_the_order( $post_2->ID );?>" size="4" maxlength="8" class="tcp_count"/></label>
+			<input type="text" min="0" id="tcp_price" name="tcp_price_<?php echo $i, '_', $j;?>" value="<?php echo tcp_number_format( tcp_get_the_price( $post_2->ID ) );?>" size="6" maxlength="13" class="tcp_count"/>&nbsp;<?php echo $currency;?>
+			&nbsp;<label><?php echo __( 'Order', 'tcp' );?>:&nbsp;<input type="text" id="tcp_order" name="tcp_order_<?php echo $i, '_', $j;?>" value="<?php echo tcp_get_the_order( $post_2->ID );?>" size="4" maxlength="8" class="tcp_count"/></label>
 		</td>
 		<td>
 			<a href="post.php?action=edit&post_type=tcp_product_option&post=<?php echo $post_2->ID;?>"><?php _e( 'edit option', 'tcp' );?></a>

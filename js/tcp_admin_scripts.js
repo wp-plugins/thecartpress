@@ -87,7 +87,7 @@ String.prototype.luhnCheck = function()
 
 //European union
 function tcp_select_eu(select_id) {
-	var values = ['BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'UK']; //,'HR', 'IS', 'TR'];
+	var values = ['BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'GB']; //,'HR', 'IS', 'TR'];
 	tcp_select_values(select_id, values);
 }
 

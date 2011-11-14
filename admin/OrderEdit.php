@@ -190,14 +190,12 @@ if ( $order ) :?>
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
 	<?php //if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) : ?>
 	<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
-		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'delete', 'tcp' );?></a></div>
+		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'delete', 'tcp' );?></a>
 		<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
-			<form method="post">
 			<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
-			<p><?php _e( 'Do you really want to delete this address?', 'tcp' );?></p>
+			<p><?php _e( 'Do you really want to delete this order?', 'tcp' );?></p>
 			<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' );?>" type="submit" class="button-secondary" />
 			<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
-			</form>
 		</div>
 		<?php endif;?>
 	</p>

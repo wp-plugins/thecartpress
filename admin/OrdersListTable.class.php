@@ -119,18 +119,21 @@ class OrdersListTable extends WP_List_Table {
  	}
 }
 
-$ordersListTable = new OrdersListTable();
-
-$ordersListTable->prepare_items();?>
+class TCPOrdersList {
+	function show( $echo = true ) {
+		ob_start();
+		$ordersListTable = new OrdersListTable();
+		$ordersListTable->prepare_items(); ?>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
-
 <div class="wrap">
-<?php //screen_icon(); ?>
-<h2><?php _e( 'Orders', 'tcp' );?></h2>
-<div class="clear"></div>
-
+	<h2><?php _e( 'Orders', 'tcp' );?></h2>
+	<div class="clear"></div>
 <?php $ordersListTable->display(); ?>
-</form>
 </div>
-
+</form>
+		<?php $out = ob_get_clean();
+		if ( $echo ) echo $out;
+		return $out; }
+}
+?>

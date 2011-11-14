@@ -31,7 +31,7 @@ class OptionsMetabox {
 		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return;
 		$post_id = tcp_get_default_id( $post->ID, $post->post_type );
 		?>
-<table class="widefat fixed" cellspacing="0">
+<table class="widefat fixed">
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Thumbnail', 'tcp' );?></th>

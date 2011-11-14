@@ -185,6 +185,16 @@ This plugin is released under a GPL license.
 * http://thecartpress.com/wp-content/uploads/2011/10/order_summary.png
 
 == Changelog ==
+= 1.1.5 =
+* PayPal: New PayPal IPN (thanks to the community)
+* Transaction Payment notification (Suggested to the community)
+* Checkout: Improvements in Login form (Suggested to the community)
+* Edit orders: Fixed html issue
+* Navigation Tree: new property, Use description for title
+* Custom fields: Now, custom fields are for any type of post type.
+* Related list widget: New relations: post &raquo; categories of products, product &raquo; categories of products and product &raquo; categories of posts.  
+* More hooks
+
 = 1.1.4 =
 * UI enhancements - html5
 * More hooks

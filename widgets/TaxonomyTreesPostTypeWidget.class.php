@@ -50,7 +50,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'style'              => 'list',
 			'show_count'         => isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : false,
 			'hide_empty'         => isset( $instance['hide_empty_taxonomies'] ) ? $instance['hide_empty_taxonomies'] : false,
-			'use_desc_for_title' => 1,
+			'use_desc_for_title' => isset( $instance['use_desc_for_title'] ) ? $instance['use_desc_for_title'] : false,
 			'child_of'           => 0,
 			//'feed'               => ,
 			//'feed_type'          => ,
@@ -104,7 +104,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$instance['post_type']				= $new_instance['post_type'];
 		$instance['taxonomy']				= $new_instance['taxonomy'];
 		$instance['see_number_products']	= $new_instance['see_number_products'];
-		$instance['hide_empty_taxonomies']	= isset( $new_instance['hide_empty_taxonomies'] ) ? true : false;
+		$instance['hide_empty_taxonomies']	= isset( $new_instance['hide_empty_taxonomies'] );
+		$instance['use_desc_for_title']		= isset( $new_instance['use_desc_for_title'] );
 		$instance['included_taxonomies']	= isset( $new_instance['included_taxonomies'] ) ? $new_instance['included_taxonomies'] : false;
 		$instance['order_included']			= $new_instance['order_included'];
 		$instance['excluded_taxonomies']	= $new_instance['excluded_taxonomies'];
@@ -121,10 +122,11 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			'order_included'		=> '',
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
-		$see_number_products = isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : false;
-		$hide_empty_taxonomies = isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
-		$included_taxonomies = isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : array();
-		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array();
+		$see_number_products	= isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : false;
+		$hide_empty_taxonomies	= isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
+		$use_desc_for_title		= isset( $instance['use_desc_for_title'] ) ? (bool)$instance['use_desc_for_title'] : false;
+		$included_taxonomies	= isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : array();
+		$excluded_taxonomies	= isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array();
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
@@ -154,9 +156,12 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty_taxonomies' ); ?>" <?php checked( $hide_empty_taxonomies, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_empty_taxonomies' ); ?>"><?php _e( 'Hide empty terms', 'tcp' ); ?></label>
+		<br />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'use_desc_for_title' ); ?>" name="<?php echo $this->get_field_name( 'use_desc_for_title' ); ?>" <?php checked( $use_desc_for_title, true ); ?> />
+			<label for="<?php echo $this->get_field_id( 'use_desc_for_title' ); ?>"><?php _e( 'Use description for title', 'tcp' ); ?></label>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included and sorted', 'tcp' )?>:</label>
-			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
+			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple size="8" style="height: auto">
 				<option value="0"<?php tcp_selected_multiple( $included_taxonomies, 0 ); ?>><?php _e( 'All', 'tcp' );?></option>
 			<?php $args = array (
 				'taxonomy'		=> $instance['taxonomy'],
@@ -175,7 +180,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		    <input type="hidden" id="<?php echo $this->get_field_id( 'order_included' ); ?>" name="<?php echo $this->get_field_name( 'order_included' ); ?>" value="<?php echo $instance['order_included'];?>"/>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>"><?php _e( 'Excluded', 'tcp' )?>:</label>
-			<select name="<?php echo $this->get_field_name( 'excluded_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>" class="widefat" multiple="true" size="6" style="height: auto">
+			<select name="<?php echo $this->get_field_name( 'excluded_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'excluded_taxonomies' ); ?>" class="widefat" multiple size="6" style="height: auto">
 				<option value="0"<?php tcp_selected_multiple( $excluded_taxonomies, 0 ); ?>><?php _e( 'No one', 'tcp' );?></option>
 			<?php $args = array (
 				'taxonomy'		=> $instance['taxonomy'],

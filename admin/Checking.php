@@ -37,6 +37,7 @@ if ( ! $disable_shopping_cart ) :
 		TheCartPress::createCheckoutPage( $shopping_cart_page_id );
 		$warnings_msg[] = __( 'The Checkout page has been created', 'tcp' );
 	}
+	$warnings_msg = apply_filters( 'tcp_checking_pages', $warnings_msg, $shopping_cart_page_id );
 	if ( count( $warnings_msg ) > 0 ) : ?>
 		<ul id="tcp_fix_bug">
 		<?php foreach( $warnings_msg as $msg ) :?>

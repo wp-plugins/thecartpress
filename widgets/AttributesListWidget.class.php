@@ -53,8 +53,9 @@ class AttributesListWidget extends WP_Widget {
 		$defaults = array(
 			'title'			=> 'Attributes List',
 			'post_type'		=> ProductCustomPostType::$PRODUCT,
+			'taxonomies'	=> array(),
 		);
-		$instance = wp_parse_args( ( array )$instance, $defaults ); ?>
+		$instance = wp_parse_args( (array)$instance, $defaults ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
@@ -70,10 +71,10 @@ class AttributesListWidget extends WP_Widget {
 		</p>
 		<p style="margin-top:0;">
 			<label for="<?php echo $this->get_field_id( 'taxonomies' ); ?>"><?php _e( 'Taxonomies', 'tcp' )?>:</label>
-			<select name="<?php echo $this->get_field_name( 'taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'taxonomies' ); ?>" class="widefat" multiple="true" size="8" style="height: auto">
+			<select name="<?php echo $this->get_field_name( 'taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'taxonomies' ); ?>" class="widefat" multiple size="8" style="height: auto">
 				<option value="" <?php selected( $instance['taxonomies'], '' ); ?>><?php _e( 'all', 'tcp' );?></option>
 			<?php foreach( get_object_taxonomies( $instance['post_type'] ) as $taxonomy ) : $tax = get_taxonomy( $taxonomy ); ?>
-				<option value="<?php echo esc_attr( $taxonomy );?>"<?php tcp_selected_multiple( $instance['taxonomies'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
+				<option value="<?php echo esc_attr( $taxonomy );?>" <?php tcp_selected_multiple( $instance['taxonomies'], $taxonomy ); ?>><?php echo esc_attr( $tax->labels->name );?></option>
 			<?php endforeach;?>
 			</select>
 		</p><?php

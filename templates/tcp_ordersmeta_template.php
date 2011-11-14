@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+global $wpdb;
+$variable_name = 'tcp_orders' . 'meta';
+$wpdb->$variable_name = $wpdb->prefix . $variable_name;
+
 function add_order_meta( $order_id, $meta_key, $meta_value, $unique = true ) {
 	return add_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value, $unique );
 }

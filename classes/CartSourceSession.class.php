@@ -228,7 +228,7 @@ class TCP_CartSourceSession implements TCP_ICartSource {
 
 	public function get_discount() {
 		$shopping_cart = TheCartPress::getShoppingCart();
-		return $shopping_cart->getDiscount();
+		return $shopping_cart->getCartDiscounts();
 	}
 
 	public function get_comment() {

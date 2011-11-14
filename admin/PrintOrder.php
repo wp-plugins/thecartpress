@@ -91,7 +91,8 @@ require($wordpress_path . 'wp-blog-header.php');
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 <body>
-	<?php echo $_SESSION['order_page'];?>
+	<?php if ( isset( $_SESSION['order_page'] ) ) echo $_SESSION['order_page'];
+	//elseif ( isset( $_REQUEST['order_id'] ) ) ?>
 	<p>
 		<a href="javascript:print();"><?php _e( 'print', 'tcp' );?></a>
 		&nbsp;|&nbsp;

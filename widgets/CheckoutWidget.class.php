@@ -21,7 +21,7 @@ class CheckoutWidget extends WP_Widget {
 	function CheckoutWidget() {
 		$widget_settings = array(
 			'classname'		=> 'checkout',
-			'description'	=> __( 'Allow to view the Checkout info', 'tcp' ),
+			'description'	=> __( 'Allow to view the Checkout info (for debugging purpose)', 'tcp' ),
 		);
 		$control_settings = array(
 			'width'		=> 300,

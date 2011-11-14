@@ -28,15 +28,19 @@ class RelatedListWidget extends CustomListWidget {
 		$loop_args = array();
 		$loop_args['posts_per_page'] = $instance['limit'];
 		if ( is_single() && ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' || $instance['rel_type'] == 'PROD-PROD' || $instance['rel_type'] == 'POST-PROD' ) ) {
-			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
+			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'POST-PROD' ) {
+				$post_type_search = 'post';
+			} else {
 				$post_type_search = 'tcp_product';
+			}
+			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
 				$post_type = 'post';
 			} else {
-				$post_type_search = 'post';
 				$post_type = 'tcp_product';
 			}
 			global $post;
 			$post_id = tcp_get_default_id( $post->ID, $post_type_search );
+			if ( get_post_type( $post_id ) != $post_type_search ) return;
 			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
 			$res = RelEntities::select( $post_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
@@ -45,6 +49,39 @@ class RelatedListWidget extends CustomListWidget {
 				$ids[] = $row->id_to;
 			$loop_args['post__in'] = $ids;
 			$loop_args['post_type'] = $post_type;
+		} elseif ( is_single() && ( $instance['rel_type'] == 'POST-CAT_PROD' || $instance['rel_type'] == 'PROD-CAT_POST' || $instance['rel_type'] == 'PROD-CAT_PROD' ) ) {
+			if ( $instance['rel_type'] == 'POST-CAT_PROD' ) {
+				$post_type_search = 'post';
+				$post_type = ProductCustomPostType::$PRODUCT;
+			} elseif ( $instance['rel_type'] == 'PROD-CAT_PROD' ) {
+				$post_type_search = ProductCustomPostType::$PRODUCT;
+				$post_type = ProductCustomPostType::$PRODUCT;
+			} else {
+				$post_type_search = ProductCustomPostType::$PRODUCT;
+				$post_type = 'post';
+			}
+			global $post;
+			$post_id = tcp_get_default_id( $post->ID, $post_type_search );
+ 			if ( get_post_type( $post_id ) != $post_type_search ) return;
+			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+			$res = RelEntities::select( $post_id, $instance['rel_type'] );
+			if ( count( $res ) == 0 ) return;
+			$ids = array();
+			foreach( $res as $re )
+				$ids[] = (int)$re->id_to;
+			if ( $post_type == 'post' ) {
+				$loop_args['category__in'] = $ids;
+				$loop_args['post_type'] = 'post';
+			} else {//ProductCustomPostType::$PRODUCT
+				$loop_args['tax_query'] = array(
+					array(
+						'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+						'terms'		=> $ids,
+						'field'		=> 'id',
+					),
+				);
+				$loop_args['post_type'] = ProductCustomPostType::$PRODUCT;
+			}
 		} else {
 		//TODO falta?
 			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) ) {
@@ -75,7 +112,6 @@ class RelatedListWidget extends CustomListWidget {
 			if ( count( $ids ) == 0) return;
 			if ( $instance['taxonomy'] == 'category' ) {
 				$loop_args['category__in'] = $ids;
-//				$loop_args['cat__in'] = $ids;
 				$loop_args['post_type'] = 'post';
 			} else {
 				$loop_args['tax_query'] = array(
@@ -85,15 +121,16 @@ class RelatedListWidget extends CustomListWidget {
 						'field'		=> 'id',
 					),
 				);
-				/*$loop_args['meta_query'] = array(
-					array(
-						'key'	=> 'tcp_is_visible',
-						'value'	=> true,
-					),
-				);*/
 				$loop_args['post_type'] = 'tcp_product';
 			}
 		}
+		if ( $loop_args['post_type'] != 'post' )
+			$loop_args['meta_query'] = array(
+				array(
+					'key'	=> 'tcp_is_visible',
+					'value'	=> true,
+				),
+			);
 		parent::widget( $args, $loop_args, $instance );
 	}
 
@@ -109,24 +146,25 @@ class RelatedListWidget extends CustomListWidget {
 			'title'			=> __( 'Related List', 'tcp' ),
 			'rel_type'		=> 'CAT_PROD-CAT_PROD',
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<div id="particular">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p>
-		<p>
+		</p><p>
 			<label for="<?php echo $this->get_field_id( 'rel_type' ); ?>"><?php _e( 'Relation type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'rel_type' ); ?>" id="<?php echo $this->get_field_id( 'rel_type' ); ?>" class="widefat">
-				<option value="CAT_POST-CAT_POST" <?php selected( $instance['rel_type'], 'CAT_POST-CAT_POST' ); ?>><?php _e( 'cat. posts &raquo; cat. posts', 'tcp' );?></option>
-				<option value="CAT_PROD-CAT_POST" <?php selected( $instance['rel_type'], 'CAT_PROD-CAT_POST' ); ?>><?php _e( 'cat. prods &raquo; cat. posts', 'tcp' );?></option>
-				<option value="CAT_POST-CAT_PROD" <?php selected( $instance['rel_type'], 'CAT_POST-CAT_PROD' ); ?>><?php _e( 'cat. posts &raquo; cat. prods', 'tcp' );?></option>
-				<option value="CAT_PROD-CAT_PROD" <?php selected( $instance['rel_type'], 'CAT_PROD-CAT_PROD' ); ?>><?php _e( 'cat. prods &raquo; cat. prods', 'tcp' );?></option>
-				<option value="POST-POST" <?php selected( $instance['rel_type'], 'POST-POST' ); ?>><?php _e( 'post &raquo; posts', 'tcp' );?></option>
-				<option value="PROD-POST" <?php selected( $instance['rel_type'], 'PROD-POST' ); ?>><?php _e( 'prod &raquo; posts', 'tcp' );?></option>
-				<option value="PROD-PROD" <?php selected( $instance['rel_type'], 'PROD-PROD' ); ?>><?php _e( 'prod &raquo; prods', 'tcp' );?></option>
-				<option value="POST-PROD" <?php selected( $instance['rel_type'], 'POST-PROD' ); ?>><?php _e( 'post &raquo; prods', 'tcp' );?></option>
+				<option value="CAT_POST-CAT_POST" <?php selected( $instance['rel_type'], 'CAT_POST-CAT_POST' ); ?>><?php _e( 'Cat. Posts &raquo; Cat. Posts', 'tcp' );?></option>
+				<option value="CAT_PROD-CAT_POST" <?php selected( $instance['rel_type'], 'CAT_PROD-CAT_POST' ); ?>><?php _e( 'Cat. Products &raquo; Cat. Posts', 'tcp' );?></option>
+				<option value="CAT_POST-CAT_PROD" <?php selected( $instance['rel_type'], 'CAT_POST-CAT_PROD' ); ?>><?php _e( 'Cat. Posts &raquo; Cat. Products', 'tcp' );?></option>
+				<option value="CAT_PROD-CAT_PROD" <?php selected( $instance['rel_type'], 'CAT_PROD-CAT_PROD' ); ?>><?php _e( 'Cat. Products &raquo; Cat. Products', 'tcp' );?></option>
+				<option value="POST-POST" <?php selected( $instance['rel_type'], 'POST-POST' ); ?>><?php _e( 'Post &raquo; Posts', 'tcp' );?></option>
+				<option value="PROD-POST" <?php selected( $instance['rel_type'], 'PROD-POST' ); ?>><?php _e( 'Product &raquo; Posts', 'tcp' );?></option>
+				<option value="PROD-PROD" <?php selected( $instance['rel_type'], 'PROD-PROD' ); ?>><?php _e( 'Product &raquo; Products', 'tcp' );?></option>
+				<option value="POST-PROD" <?php selected( $instance['rel_type'], 'POST-PROD' ); ?>><?php _e( 'Post &raquo; Products', 'tcp' );?></option>
+				<option value="POST-CAT_PROD" <?php selected( $instance['rel_type'], 'POST-CAT_PROD' ); ?>><?php _e( 'Post &raquo; Cat. Products', 'tcp' );?></option>
+				<option value="PROD-CAT_POST" <?php selected( $instance['rel_type'], 'PROD-CAT_POST' ); ?>><?php _e( 'Product &raquo; Cat. Posts', 'tcp' );?></option>
+				<option value="PROD-CAT_PROD" <?php selected( $instance['rel_type'], 'PROD-CAT_PROD' ); ?>><?php _e( 'Product &raquo; Cat. Products', 'tcp' );?></option>
 			</select>
 		</p>
 		</div>

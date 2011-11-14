@@ -95,7 +95,7 @@ while ( have_posts() ) : the_post();
 	<?php $column--;?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<?php if ( $see_title ) : ?>
-				<?php echo $title_tag;?><a href="<?php the_permalink( );?>" border="0"><?php the_title(); ?></a><?php echo $title_end_tag;?>
+				<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
 			<?php endif; ?>
 		
 			<?php if ( $see_posted_on ) : ?>

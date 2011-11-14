@@ -56,7 +56,7 @@ if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) :
 	}
 	foreach( $taxonomies as $taxonomy_id => $taxonomy ) :?>
 <tr>
-	<td><?php echo $taxonomy['post_type'];?></td>
+	<td><?php echo get_post_type_object( $taxonomy['post_type'] )->labels->name;?></td>
 	<td><?php echo $taxonomy['name'];?></td>
 	<td><?php echo $taxonomy['name_id'];?></td>
 	<td><?php echo $taxonomy['desc'];?>&nbsp;</td>
