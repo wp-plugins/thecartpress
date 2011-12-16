@@ -2,7 +2,7 @@
 Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
-Tested up to: 3.2
+Tested up to: 3.3
 Stable Tag: 1.1.5
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
