@@ -1,27 +1,26 @@
 <?php
 /**
- * This file is part of wp-taxonomy-engine.
+ * This file is part of TheCartPress.
  * 
- * wp-taxonomy-engine is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * wp-taxonomy-engine is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with wp-taxonomy-engine.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-$load_from_request = false;
-$taxonomy_id = isset( $_REQUEST['taxonomy_id'] ) ? $_REQUEST['taxonomy_id'] : -1;
+$load_from_request	= false;
+$taxonomy_id	= isset( $_REQUEST['taxonomy_id'] ) ? $_REQUEST['taxonomy_id'] : -1;
 
 if ( isset( $_REQUEST['save_taxo'] ) ) {
-	$_REQUEST['name_id'] = str_replace( ' ' , '-', $_REQUEST['name_id'] );
+	$_REQUEST['name_id'] = strtolower( str_replace( ' ' , '-', $_REQUEST['name_id'] ) );
 	$_REQUEST['name_id'] = str_replace( '_' , '-', $_REQUEST['name_id'] );
 	$taxo = array(
 		'post_type'			=> isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : 'post',
@@ -43,8 +42,7 @@ if ( isset( $_REQUEST['save_taxo'] ) ) {
 		'hierarchical'		=> isset( $_REQUEST['hierarchical'] ),
 		'rewrite'			=> isset( $_REQUEST['rewrite'] ) ? strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false : false,
 	);
-	$taxonomies = get_option( 'tcp-taxonomies-generator' );
-	if ( ! $taxonomies ) $taxonomies = array();
+	$taxonomies = get_option( 'tcp-taxonomies-generator', array() );
 	if ( $taxonomy_id > -1 )
 		$taxonomies[$taxonomy_id] = $taxo;
 	else {
@@ -58,9 +56,11 @@ if ( isset( $_REQUEST['save_taxo'] ) ) {
 	</p></div><?php
 	$load_from_request = true;
 } elseif ( $taxonomy_id > -1 ) {
-	$taxonomies = get_option( 'tcp-taxonomies-generator' );
-	if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
-		$taxo = $taxonomies[$taxonomy_id];
+	//$taxonomies = get_option( 'tcp-taxonomies-generator' );
+	//if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
+	//	$taxo = $taxonomies[$taxonomy_id];
+	$taxo = tcp_get_custom_taxonomy( $taxonomy_id );
+	if ( $taxo !== false ) {
 		$post_type			= isset( $taxo['post_type'] ) ? $taxo['post_type'] : 'post';
 		$name				= isset( $taxo['name'] ) ? $taxo['name'] : __( 'Category name', 'tcp' );
 		$name_id			= isset( $taxo['name_id'] ) ? $taxo['name_id'] : __( 'category-name', 'tcp' );
@@ -109,7 +109,7 @@ if ( $load_from_request ) {
 <div class="wrap">
 <h2><?php _e( 'Taxonomy', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>TaxonomyList.php"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyList.php"><?php _e( 'return to the list', 'tcp' );?></a></li>
 </ul>
 <div class="clear"></div>
 

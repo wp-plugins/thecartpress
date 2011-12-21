@@ -65,10 +65,11 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 		if ( $html ) $title .= '</span>';
 	}
 	if ( $show_parent && ! tcp_is_visible( $post_id ) ) {
-		$post_id = tcp_get_the_parent( $post_id );
+		$parent_id = tcp_get_the_parent( $post_id );
+		if ( $parent_id > 0 ) $post_id = $parent_id;
 		$title = get_the_title( $post_id ) . ' - ' . $title;
 	}
-	return $title;
+	return apply_filters ( 'tcp_get_the_title', $title, $post_id, $html, $show_parent );
 }
 
 function tcp_the_title( $echo = true, $html = true ) {
@@ -165,7 +166,7 @@ function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 		if ( $echo ) echo $html;
 		else return $html;
 	} else {
-		require_once( dirname( dirname( __FILE__ ) ) . '/classes/BuyButton.class.php' );	
+		require_once( TCP_CLASSES_FOLDER . 'BuyButton.class.php' );	
 		return BuyButton::show( $post_id, $echo );
 	}
 }
@@ -276,30 +277,17 @@ function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
  * Returns the price with currency
  * since 1.0.9
  */
-function tcp_get_the_price_label( $post_id = 0 ) {
+function tcp_get_the_price_label( $post_id = 0, $price = false ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	//$type = tcp_get_the_meta( 'tcp_type', $post_id );
+	$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 	$type = tcp_get_the_product_type( $post_id );
 	if ( $type == 'SIMPLE' ) {
-		$price = tcp_get_the_price_to_show( $post_id );
+		$price = tcp_get_the_price_to_show( $post_id, $price );
 		$label = tcp_format_the_price( $price );
-	} elseif ( $type == 'GROUPED' ) {
-		$min_max = tcp_get_min_max_price( $post_id );
-		if ( is_array( $min_max ) ) {
-			$min = $min_max[0];
-			$max = $min_max[1];
-			if ( $min != $max ) {
-				$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
-			} else {
-				$label = tcp_format_the_price( $min );
-			}
-		} else {
-			$label = '';
-		}
 	} else {
-		$label = apply_filters( 'tcp_get_the_price_label_unkonw_product_type', '', $post_id );
+		$label = '';
 	}
-	$label = apply_filters( 'tcp_get_the_price_label', $label, $post_id );
+	$label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
 	return $label;
 }
 
@@ -309,7 +297,7 @@ function tcp_get_the_price_label( $post_id = 0 ) {
  */
 function tcp_get_min_max_price( $post_id = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+	require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 	$products = RelEntities::select( $post_id, 'GROUPED' );
 	if ( is_array( $products ) && count( $products ) > 0 ) {
 		$min = 99999999999;
@@ -749,18 +737,9 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 	return RelEntities::getParents( $post_id, $rel_type );
 }
 
-/*function tcp_get_the_thumbnail( $post_id = 0, $size = 'thumbnail' ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$image = get_the_post_thumbnail( $post_id, $size );
-	if ( ! $image ) {
-		$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
-		$image = get_the_post_thumbnail( $post_id, $size );
-	}
-	return $image;
-}*/
-
 function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
 	$image = '';
+	//TODO DEPRECATED options
 	if ( $option_2_id > 0 ) {
 		$image = get_the_post_thumbnail( $option_2_id, $size );
 		if ( strlen( $image ) == 0 ) {
@@ -782,7 +761,38 @@ function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0
 			$image = get_the_post_thumbnail( $post_id, $size );
 		}
 	}
-	return $image;
+	return apply_filters( 'tcp_get_the_thumbnail', $image, $post_id, $size );
+}
+
+function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $echo = true ) {
+	$image = '';
+ 	if ( has_post_thumbnail( $post_id ) ) {
+		$image_size			= isset( $args['size'] ) ? $args['size'] : 'thumbnail';
+		$image_align		= isset( $args['align'] ) ? $args['align'] : '';
+		$image_link			= isset( $args['link'] ) ? $args['link'] : 'permalink';
+		$thumbnail_id		= get_post_thumbnail_id( $post_id );
+		$attr				= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_thumbnail_' . $post_id );
+		//$image_attributes = array{ 0 => url, 1 => width, 2 => height };
+		$image_attributes	= wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
+		if ( function_exists( 'get_the_post_thumbnail' ) ) 	$image = get_the_post_thumbnail( $post_id, $image_size, $attr );
+		if ( strlen( $image_link ) > 0 ) {
+			$href	= $image_link == 'file' ? $image_attributes[0] : get_permalink( $thumbnail_id );
+			$image	= '<a href="' . $href . '">' . $image . '</a>';
+		}
+		$thumbnail_post = get_post( $thumbnail_id );
+	}
+	if ( $echo ) echo $image;
+	else return $image;
+}
+
+function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+	$post_id = tcp_get_current_id( $post_id, get_post_type( $post_id ) );
+	if ( ! tcp_is_visible( $post_id ) ) {
+		$parent_id = tcp_get_the_parent( $post_id );
+		if ( $parent_id > 0 ) $post_id = $parent_id;
+	}
+	$url = get_permalink( $post_id );
+	return apply_filters( 'tcp_get_permalink', $url, $post_id );
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
@@ -810,7 +820,7 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 //Saleable_post_type
 //
 function tcp_get_saleable_post_types() {
-	$saleable_post_types = array( 'tcp_product' );
+	$saleable_post_types = array( TCP_PRODUCT_POST_TYPE );
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
 	return $saleable_post_types;
 }
@@ -818,6 +828,23 @@ function tcp_get_saleable_post_types() {
 function tcp_is_saleable_post_type( $post_type ) {
 	$saleable_post_types = tcp_get_saleable_post_types();
 	return in_array( $post_type, $saleable_post_types );
+}
+
+/**
+ * Returns true if a post, defined by post_id, is saleable
+ * @since 1.1.6
+ */
+function tcp_is_saleable( $post_id ) {
+	return tcp_is_saleable_post_type( get_post_type( $post_id ) );
+}
+
+/**
+ * Register a post type as saleable
+ * @since 1.1.6
+ */
+function tcp_register_saleable_post_type( $saleable_post_type ) {
+	global $thecartpress;
+	$thecartpress->register_saleable_post_type( $saleable_post_type );
 }
 
 function tcp_is_saleable_taxonomy( $taxonomy ) {
@@ -898,11 +925,10 @@ function tcp_get_completed_order_status() {
 //
 //Product types
 //
-function tcp_get_product_types( $no_one = false ) {
+function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 	$types = array();
-	if ( $no_one ) 	$types['']	= __( 'No one', 'tcp' );
-	$types['SIMPLE']	= __( 'Simple', 'tcp' );
-	$types['GROUPED']	= __( 'Grouped', 'tcp' );
+	if ( $no_one ) $types[''] = $no_one_desc != '' ? $no_one_desc : __( 'No one', 'tcp' );
+	$types['SIMPLE'] = __( 'Simple', 'tcp' );
 	return apply_filters( 'tcp_get_product_types', $types );
 }
 //

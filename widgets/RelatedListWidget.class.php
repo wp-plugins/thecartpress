@@ -2,21 +2,21 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
+require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
 class RelatedListWidget extends CustomListWidget {
 
@@ -31,17 +31,17 @@ class RelatedListWidget extends CustomListWidget {
 			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'POST-PROD' ) {
 				$post_type_search = 'post';
 			} else {
-				$post_type_search = 'tcp_product';
+				$post_type_search = TCP_PRODUCT_POST_TYPE;
 			}
 			if ( $instance['rel_type'] == 'POST-POST' || $instance['rel_type'] == 'PROD-POST' ) {
 				$post_type = 'post';
 			} else {
-				$post_type = 'tcp_product';
+				$post_type = TCP_PRODUCT_POST_TYPE;
 			}
 			global $post;
 			$post_id = tcp_get_default_id( $post->ID, $post_type_search );
 			if ( get_post_type( $post_id ) != $post_type_search ) return;
-			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+			require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 			$res = RelEntities::select( $post_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
 			$ids = array();
@@ -52,18 +52,18 @@ class RelatedListWidget extends CustomListWidget {
 		} elseif ( is_single() && ( $instance['rel_type'] == 'POST-CAT_PROD' || $instance['rel_type'] == 'PROD-CAT_POST' || $instance['rel_type'] == 'PROD-CAT_PROD' ) ) {
 			if ( $instance['rel_type'] == 'POST-CAT_PROD' ) {
 				$post_type_search = 'post';
-				$post_type = ProductCustomPostType::$PRODUCT;
+				$post_type = TCP_PRODUCT_POST_TYPE;
 			} elseif ( $instance['rel_type'] == 'PROD-CAT_PROD' ) {
-				$post_type_search = ProductCustomPostType::$PRODUCT;
-				$post_type = ProductCustomPostType::$PRODUCT;
+				$post_type_search = TCP_PRODUCT_POST_TYPE;
+				$post_type = TCP_PRODUCT_POST_TYPE;
 			} else {
-				$post_type_search = ProductCustomPostType::$PRODUCT;
+				$post_type_search = TCP_PRODUCT_POST_TYPE;
 				$post_type = 'post';
 			}
 			global $post;
 			$post_id = tcp_get_default_id( $post->ID, $post_type_search );
  			if ( get_post_type( $post_id ) != $post_type_search ) return;
-			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+			require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 			$res = RelEntities::select( $post_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
 			$ids = array();
@@ -72,28 +72,28 @@ class RelatedListWidget extends CustomListWidget {
 			if ( $post_type == 'post' ) {
 				$loop_args['category__in'] = $ids;
 				$loop_args['post_type'] = 'post';
-			} else {//ProductCustomPostType::$PRODUCT
+			} else {//TCP_PRODUCT_POST_TYPE
 				$loop_args['tax_query'] = array(
 					array(
-						'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+						'taxonomy'	=> TCP_PRODUCT_CATEGORY,
 						'terms'		=> $ids,
 						'field'		=> 'id',
 					),
 				);
-				$loop_args['post_type'] = ProductCustomPostType::$PRODUCT;
+				$loop_args['post_type'] = TCP_PRODUCT_POST_TYPE;
 			}
 		} else {
 		//TODO falta?
 			if ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_PROD' ) ) {
-				$instance['taxonomy'] = ProductCustomPostType::$PRODUCT_CATEGORY;
+				$instance['taxonomy'] = TCP_PRODUCT_CATEGORY;
 			} elseif ( ! is_single() && ( $instance['rel_type'] == 'CAT_PROD-CAT_POST' || $instance['rel_type'] == 'CAT_POST-CAT_POST' ) ) {
 				$instance['taxonomy'] = 'category';
 			} else {
 				return;
 			}
 			if ( $instance['rel_type'] == 'CAT_PROD-CAT_PROD' || $instance['rel_type'] == 'CAT_PROD-CAT_POST' ) {
-				$taxonomy_search = ProductCustomPostType::$PRODUCT_CATEGORY;
-				$cat = get_the_terms( get_the_ID(), ProductCustomPostType::$PRODUCT_CATEGORY );
+				$taxonomy_search = TCP_PRODUCT_CATEGORY;
+				$cat = get_the_terms( get_the_ID(), TCP_PRODUCT_CATEGORY );
 			} else {//if ( $instance['rel_type'] == 'CAT_POST-CAT_PROD' || $instance['rel_type'] == 'CAT_POST-CAT_POST' )
 				$taxonomy_search = 'category';
 				$cat = get_the_category();
@@ -103,7 +103,7 @@ class RelatedListWidget extends CustomListWidget {
 			$term_id = $cat[0]->term_id;
 			if ( $term_id <= 0 ) return;
 			$term_id = tcp_get_default_id( $term_id, $taxonomy_search );
-			require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+			require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 			$res = RelEntities::select( $term_id, $instance['rel_type'] );
 			if ( count( $res ) == 0 ) return;
 			$ids = array();
@@ -116,12 +116,12 @@ class RelatedListWidget extends CustomListWidget {
 			} else {
 				$loop_args['tax_query'] = array(
 					array(
-						'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+						'taxonomy'	=> TCP_PRODUCT_CATEGORY,
 						'terms'		=> $ids,
 						'field'		=> 'id',
 					),
 				);
-				$loop_args['post_type'] = 'tcp_product';
+				$loop_args['post_type'] = TCP_PRODUCT_POST_TYPE;
 			}
 		}
 		if ( $loop_args['post_type'] != 'post' )

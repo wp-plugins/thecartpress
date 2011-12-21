@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
 class CustomPostTypeListWidget extends WP_Widget {
@@ -33,24 +33,26 @@ class CustomPostTypeListWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		global $wp_query;
+		$paged	= isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
+		$args = array(
+			'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE,
+			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
+		);
 		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
-			$args = array(
-				'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product',
-				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
-			);
 			if ( strlen( $taxonomy ) > 0 ) {
 				$args[$taxonomy] = $instance['term'];
 			}
 		} else {
-			$args = array(
-				'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product',
-				'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
-			);
 			if ( isset( $instance['included'] ) && count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {
 				$args['post__in'] = $instance['included'];
 			}
 		}
+		$see_pagination = isset( $instance['pagination'] ) ? $instance['pagination'] : false;
+		if ( $see_pagination ) {
+			$args['paged'] = $paged;
+		}		
 		$args = apply_filters( 'tcp_custom_post_type_list_widget', $args, $instance );
 		query_posts( $args );
 		if ( ! have_posts() ) return;
@@ -60,6 +62,11 @@ class CustomPostTypeListWidget extends WP_Widget {
 	
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
+
+		if ( $see_pagination ) {
+			echo tcp_pagination_bar();
+		}
+		
 		if ( isset( $instance['loop'] ) && strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
 			include( $instance['loop'] );
 		} else {
@@ -180,8 +187,8 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<?php endif;
 		$tcp_col = $number_of_columns - $column + 1;
 		$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col );
-		$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
-		<td id="td-post-<?php the_ID(); ?>" <?php echo $td_class; ?>>
+		//$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
+		<td id="td-post-<?php the_ID(); ?>" class="<?php echo implode( ' ', $class ); ?>">
 		<?php $column--; ?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( $see_title ) : ?>
@@ -278,7 +285,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		</td>
 		<?php endwhile;
 		for(; $column > 0; $column-- ) :?>
-			<td>&nbsp;</td>
+			<td class="tcp_td_empty">&nbsp;</td>
 		<?php endfor; ?>
 		</tr>
 		</table><?php
@@ -319,10 +326,10 @@ class CustomPostTypeListWidget extends WP_Widget {
 	function form( $instance ) {
 		$defaults = array(
 			'title'			=> 'Custom Post Type List',
-			'post_type'		=> 'tcp_product',
+			'post_type'		=> TCP_PRODUCT_POST_TYPE,
 			'use_taxonomy'	=> true,
 			'taxonomy'		=> true,
-			'term'			=> 'tcp_product_category',
+			'term'			=> TCP_PRODUCT_CATEGORY,
 			'included'		=> array(),
 			'limit'			=>  5,
 			'loop'			=> '',
@@ -437,7 +444,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 					'post_type'			=> $instance['post_type'],
 					'posts_per_page'	=> -1,
 				);
-				if ( $instance['post_type'] == 'tcp_product' ) {
+				if ( $instance['post_type'] == TCP_PRODUCT_POST_TYPE ) {
 					$args['meta_key'] = 'tcp_is_visible';
 					$args['meta_value'] = true;
 				}

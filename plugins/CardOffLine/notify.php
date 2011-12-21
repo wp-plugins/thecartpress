@@ -43,7 +43,7 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 				'order_id'	=> $order_id,
 			), 
 			array( '%s' ), array( '%d' ) );
-		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );
 		header( 'Location: ' . $url );
 		exit;

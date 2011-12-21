@@ -2,49 +2,55 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
-$plugin_id = isset( $_REQUEST['plugin_id'] ) ? $_REQUEST['plugin_id'] : '';
-$plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : tcp_get_plugin_type( $plugin_id );
-$instance = isset( $_REQUEST['instance'] ) ? (int)$_REQUEST['instance'] : 0;
+$plugin_id		= isset( $_REQUEST['plugin_id'] ) ? $_REQUEST['plugin_id'] : '';
+$plugin_type	= isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : tcp_get_plugin_type( $plugin_id );
+$instance		= isset( $_REQUEST['instance'] ) ? (int)$_REQUEST['instance'] : 0;
 
 if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id, array() );
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
-	$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
-	$plugin_data[$instance]['not_for_downloadable'] = isset( $_REQUEST['not_for_downloadable'] );
-	if ( isset( $_REQUEST['all_countries'] ) ) {
-		$plugin_data[$instance]['all_countries'] = $_REQUEST['all_countries'];
-		$plugin_data[$instance]['countries'] = array();
-	} else {
-		$plugin_data[$instance]['all_countries']	= '';
-		$plugin_data[$instance]['countries'] = isset( $_REQUEST['countries'] ) ? $_REQUEST['countries'] : array();
+	if ( strlen($plugin_data[$instance]['title'] ) > 0 ) {
+		$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
+		$plugin_data[$instance]['not_for_downloadable'] = isset( $_REQUEST['not_for_downloadable'] );
+		if ( isset( $_REQUEST['all_countries'] ) ) {
+			$plugin_data[$instance]['all_countries'] = $_REQUEST['all_countries'];
+			$plugin_data[$instance]['countries'] = array();
+		} else {
+			$plugin_data[$instance]['all_countries']	= '';
+			$plugin_data[$instance]['countries'] = isset( $_REQUEST['countries'] ) ? $_REQUEST['countries'] : array();
+		}
+		$plugin_data[$instance]['new_status'] = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : Orders::$ORDER_PENDING;
+		$plugin = tcp_get_plugin( $plugin_id );
+		$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance], $instance );
+		$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $plugin_id, $instance );
+		update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );?>
+		<div id="message" class="updated"><p>
+			<?php _e( 'Instance saved', 'tcp' ); ?>
+		</p></div><?php
+	} else {?>
+		<div id="message" class="error"><p>
+			<?php _e( 'The title must be completed', 'tcp' ); ?>
+		</p></div><?php
 	}
-	$plugin_data[$instance]['new_status'] = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : Orders::$ORDER_PENDING;
-	$plugin = tcp_get_plugin( $plugin_id );
-	$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance], $instance );
-	$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $plugin_id, $instance );
-	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );?>
-	<div id="message" class="updated"><p>
-		<?php _e( 'Instance saved', 'tcp' );?>
-	</p></div><?php
 } elseif ( isset( $_REQUEST['tcp_plugin_delete'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 	do_action( 'tcp_plugin_edit_delete', $plugin_id );
@@ -54,17 +60,16 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 		<?php _e( 'Instance deleted', 'tcp' );?>
 	</p></div><?php
 }
-$admin_path		= 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 $plugin			= tcp_get_plugin( $plugin_id );
 $plugin_type	= tcp_get_plugin_type( $plugin_id );
 $plugin_data	= get_option( 'tcp_plugins_data_' . $plugin_id );
-$instance_href	= $admin_path . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance=';
+$instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance=';
 ?>
 
 <div class="wrap">
 <h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle();?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>PluginsList.php&plugin_type=<?php echo $plugin_type?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PluginsList.php&plugin_type=<?php echo $plugin_type?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
 </ul><!-- subsubsub -->
 <div class="clear"></div>
 

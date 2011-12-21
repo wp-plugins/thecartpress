@@ -19,199 +19,178 @@
 /**
  * Shows a Cart table.
  */
-class TCP_CartTable {
+class TCPCartTable {
 
 	static function show( $source, $echo = true ) {
-		$out = '';
-		if ( $source->see_address() ) {
-			$out .= '<div id="tcp_order_id">';
-			$out .= __( 'Order ID', 'tcp' ) . ': ' . $source->get_order_id() . '&nbsp;&nbsp;' . __( 'Create at', 'tcp' ) . ': ' . $source->get_created_at();
-			$out .= '</div>';
-			if ( $source->get_shipping_firstname() == "" ) {
+		ob_start();
+		if ( $source->see_address() ) : ?>
+			<div id="tcp_order_id">
+			<span class="tcp_order_id_row"><?php _e( 'Order ID', 'tcp' ); ?>: <span class="tcp_order_id_value tcp_order_id"><?php echo $source->get_order_id(); ?></span></span>
+			<br/>
+			<span class="tcp_order_id_row"><?php _e( 'Create at', 'tcp' ); ?>: <span class="tcp_order_id_value tcp_created_at"><?php echo $source->get_created_at(); ?></span></span>
+			</div>
+			<?php if ( $source->get_shipping_firstname() == "" ) {
 				$style = 'style="display:none"';
 			} else {
-				$style = '';'style="padding-bottom:1em;"';
-			} 
-			$out .= '<div id="shipping_info" ' . $style . '>' . "\n";
-			$out .= '<h3>' . __( 'Shipping address', 'tcp' ) . '</h3>' . "\n";
-			$out .= $source->get_shipping_firstname() . ' ' . $source->get_shipping_lastname() . '<br />' . "\n";
-			if ( strlen( $source->get_shipping_company() ) > 0 ) $out .= $source->get_shipping_company() . '<br />' . "\n";
-			$out .= $source->get_shipping_street() . '<br />' . "\n";
-			$out .= $source->get_shipping_postcode() . ', ' . $source->get_shipping_city() . '<br />' . "\n";
-			$out .= $source->get_shipping_region() . ', ' . $source->get_shipping_country() . '<br />' . "\n";
-			$telephone = $source->get_shipping_telephone_1();
+				$style = '';//'style="padding-bottom:1em;"';
+			} ?>
+			<div id="shipping_info" <?php echo $style; ?>>
+			<h3><?php _e( 'Shipping address', 'tcp' ); ?></h3>
+			<?php echo $source->get_shipping_firstname(); ?> <?php echo $source->get_shipping_lastname(); ?><br />
+			<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : echo $source->get_shipping_company(); ?><br /><?php endif; ?>
+			<?php echo $source->get_shipping_street(); ?><br/>
+			<?php echo $source->get_shipping_postcode() . ', ' . $source->get_shipping_city(); ?><br/>
+			<?php echo $source->get_shipping_region() . ', ' . $source->get_shipping_country(); ?><br/>
+			<?php $telephone = $source->get_shipping_telephone_1();
 			if ( strlen( $source->get_shipping_telephone_2() ) > 0 ) $telephone .= ' - ' . $source->get_shipping_telephone_2();
-			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br />' . "\n";
-			if ( strlen( $source->get_shipping_fax() ) > 0) $out .= __('Fax', 'tcp') . ': ' . $source->get_shipping_fax() . '<br />' . "\n";
-			if ( strlen( $source->get_shipping_email() ) > 0) $out .= $source->get_shipping_email() . '<br />' . "\n";
-			$out .= '</div><!-- #shipping_info-->' . "\n";
-			$out .= '<div id="billing_info">' . "\n";
-			$out .= '<h3>' . __( 'Billing address', 'tcp' ) . '</h3>' . "\n";
-			$out .= $source->get_billing_firstname() . ' ' . $source->get_billing_lastname() . '<br />' . "\n";
-			if ( strlen( $source->get_billing_company() ) > 0 ) $out .= $source->get_billing_company() . '<br>' . "\n";
-			$out .= $source->get_billing_street() . '<br>' . "\n";
-			$out .= $source->get_billing_postcode() . ', ' . $source->get_billing_city() . '<br>' . "\n";
-			$out .= $source->get_billing_region() . ', ' . $source->get_billing_country() . '<br>' . "\n";
-			$telephone = $source->get_billing_telephone_1();
+			if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
+			<?php if ( strlen( $source->get_shipping_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_shipping_fax(); ?><br/><?php endif; ?>
+			<?php if ( strlen( $source->get_shipping_email() ) > 0 ) : echo $source->get_shipping_email(); ?><br/><?php endif; ?>
+			</div><!-- #shipping_info-->
+			
+			<div id="billing_info">
+			<h3><?php _e( 'Billing address', 'tcp' ); ?></h3>
+			<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?><br/>
+			<?php if ( strlen( $source->get_billing_company() ) > 0 ) : echo $source->get_billing_company(); ?><br/><?php endif; ?>
+			<?php echo $source->get_billing_street(); ?><br/>
+			<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?><br/>
+			<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?><br/>
+			<?php $telephone = $source->get_billing_telephone_1();
 			if ( strlen( $source->get_billing_telephone_2() ) > 0 ) $telephone .= ' - ' . $source->get_billing_telephone_2();
-			if ( strlen( $telephone ) > 0) $out .= __('Telephones', 'tcp') . ': ' . $telephone . '<br>' . "\n";
-			if ( strlen( $source->get_billing_fax() ) > 0) $out .= __('Fax', 'tcp') . ': ' . $source->get_billing_fax() . '<br>' . "\n";
-			if ( strlen( $source->get_billing_email() ) > 0) $out .= $source->get_billing_email() . '<br><br><br><br>' . "\n";
-			$out .= '</div><!-- #billing_info -->' . "\n";
-			$out .= '<div id="tcp_status">';
-			$out .= __( 'Payment method', 'tcp' ) . ': ' . $source->get_payment_method() . '<br/>';
-			$out .= __( 'Shipping method', 'tcp' ) . ': ' . $source->get_shipping_method() . '<br/>';
-			$out .= __( 'Status', 'tcp' ) . ': ' . $source->get_status();
-			$out .= '</div>';
-		}
-		$out .= '<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">' . "\n";
-		$out .= '<thead>' . "\n";
-		$out .= '<tr class="tcp_cart_title_row">' . "\n";
-		if ( $source->see_full() ) $out .= '<th class="tcp_cart_id">' . __( 'Id.', 'tcp' ) . '</th>' . "\n";
-		if ( $source->see_thumbnail() ) $out .= '<th class="tcp_cart_thumbnail">&nbsp;</th>' . "\n";
-		$out .= '<th class="tcp_cart_name">' . __( 'Name', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th class="tcp_cart_price">' . __( 'Price', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th class="tcp_cart_units">' . __( 'Units', 'tcp' ) . '</th>' . "\n";
-		if ( $source->see_full() ) $out .= '<th class="tcp_cart_sku">' . __( 'Sku', 'tcp' ) . '</th>' . "\n";
-		if ( $source->see_full() ) $out .= '<th class="tcp_cart_weight">' . __( 'Weight', 'tcp' ) . '</th>' . "\n";
-		$out .= '<th class="tcp_cart_total">' . __( 'Total', 'tcp' ) . '</th>' . "\n";
-		$out .= '</tr>' . "\n";
-		$out .= '</thead>' . "\n";
-		$out .= '<tbody>' . "\n";
-
-		if ( $source->has_order_details() ) {
+			if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
+			<?php if ( strlen( $source->get_billing_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_billing_fax(); ?><br/><?php endif; ?>
+			<?php if ( strlen( $source->get_billing_email() ) > 0 ) : echo $source->get_billing_email(); ?><br/><?php endif; ?>
+			</div><!-- #billing_info -->
+			<div id="tcp_status">
+			<span class="tcp_status_row"><?php _e( 'Payment method', 'tcp' ); ?>: <span class="tcp_status_value tcp_payment_method" ><?php echo $source->get_payment_method(); ?></span></span><br/>
+			<span class="tcp_status_row"><?php _e( 'Shipping method', 'tcp' ); ?>: <span class="tcp_status_value tcp_shipping_method"><?php echo $source->get_shipping_method(); ?></span></span><br/>
+			<span class="tcp_status_row"><?php _e( 'Status', 'tcp' ); ?>: <span class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo $source->get_status(); ?></span></span>
+			</div>
+		<?php endif; ?>
+		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
+		<thead>
+		<tr class="tcp_cart_title_row">
+		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_id"><?php _e( 'Id.', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_thumbnail() ) : ?><th class="tcp_cart_thumbnail">&nbsp;</th><?php endif; ?>
+		<th class="tcp_cart_name"><?php _e( 'Name', 'tcp' ); ?></th>
+		<th class="tcp_cart_price"><?php _e( 'Price', 'tcp' ); ?></th>
+		<th class="tcp_cart_units"><?php _e( 'Units', 'tcp' ); ?></th>
+		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_sku"><?php _e( 'Sku', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_weight"><?php _e( 'Weight', 'tcp' ); ?></th><?php endif; ?>
+		<th class="tcp_cart_total"><?php _e( 'Total', 'tcp' ); ?></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php if ( $source->has_order_details() ) {
 			global $thecartpress;
 			$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
 			$total = 0;
 			$total_tax = 0;
 			$i = 0;
-			$det = '';
-			foreach( $source->get_orders_details() as $order_detail ) {
-				$det .= '<tr class="tcp_cart_product_row';
-				if ( $i++ & 1 == 1 ) $det .= ' par ';
-				$det .= '">' . "\n";
-				if ( $source->see_full() ) $det .= '<td class="tcp_cart_id">' . $order_detail->get_post_id() . '</td>' . "\n";
-				if ( $source->see_thumbnail() ) {
-					$det .= '<td class="tcp_cart_thumbnail">';
-					$size = apply_filters( 'tcp_get_shopping_cart_image_size', array( 32, 32 ) );
-					$det .= tcp_get_the_thumbnail( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id(), $size );
-					$det .= '</td>' . "\n";
+			foreach( $source->get_orders_details() as $order_detail ) : ?>
+				<tr class="tcp_cart_product_row <?php if ( $i++ & 1 == 1 ) : ?> par<?php endif; ?>">
+				<?php if ( $source->see_full() ) : ?><td class="tcp_cart_id"><?php echo $order_detail->get_post_id(); ?></td><?php endif; ?>
+				<?php if ( $source->see_thumbnail() ) : ?>
+					<td class="tcp_cart_thumbnail">
+					<?php $size = apply_filters( 'tcp_get_shopping_cart_image_size', array( 32, 32 ) );
+					echo tcp_get_the_thumbnail( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id(), $size ); ?>
+					</td>
+				<?php endif; ?>
+				<td class="tcp_cart_name">
+				<?php $name = $order_detail->get_name();
+				if ( $source->see_product_link() ) {
+				//} elseif ( tcp_is_visible( $order_detail->get_post_id() ) ) {
+					$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ). '">' . $name . '</a>';
+				//} else {
+				//	$post_id = tcp_get_the_parent( $order_detail->get_post_id() );
+				//	if ( $post_id > 0 ) {
+				//		$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $post_id, get_post_type( $post_id ) ) ) . '">' . $name . '</a>';
+				//	} else {
+				//		$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ) . '">' . $name . '</a>';
+				//	}
 				}
-				$det .= '<td class="tcp_cart_name">';
-				$name = $order_detail->get_name();
-				if ( ! $source->see_product_link() ) {
-					$det .= $name;
-				} elseif ( tcp_is_visible( $order_detail->get_post_id() ) ) {
-					$det .= '<a href="' . get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ) . '">' . $name . '</a>';
-				} else {
-					$post_id = tcp_get_the_parent( $order_detail->get_post_id() );
-					if ( $post_id > 0 ) {
-						$det .= '<a href="' . get_permalink( tcp_get_current_id( $post_id, get_post_type( $post_id ) ) ) . '">' . $name . '</a>';
-					} else {
-						$det .= '<a href="' . get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ) . '">' . $name . '</a>';
-					}
-				}
-				$det = apply_filters( 'tcp_cart_table_title_order_detail', $det, $order_detail->get_post_id() );
-				$det .= '</td>' . "\n";
-				$det .= '<td class="tcp_cart_price">' . tcp_format_the_price( $order_detail->get_price() );
-				if ( $order_detail->get_discount() > 0 ) 
-					$det .= '&nbsp;<span class="tcp_cart_discount">' . sprintf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() ) ) . '</span>';
-				$det .= '</td>' . "\n";
-				$det .= '<td class="tcp_cart_units">';
-				if ( ! $source->is_editing_units() ) {
-					$det .= tcp_number_format( $order_detail->get_qty_ordered(), 0 );
-				} else {
-					$det .= '<form method="post">' . "\n";
-					$det .= '<input type="hidden" name="tcp_post_id" value="' . $order_detail->get_post_id() . '" />' . "\n";
-					$det .= '<input type="hidden" name="tcp_option_1_id" value="' . $order_detail->get_option_1_id() . '" />' . "\n";
-					$det .= '<input type="hidden" name="tcp_option_2_id" value="' . $order_detail->get_option_2_id() . '" />' . "\n";
-					if ( ! tcp_is_downloadable( $order_detail->get_post_id() ) ) {
-						$det .= '<input name="tcp_count" value="' . $order_detail->get_qty_ordered() . '" size="2" maxlength="4" type="text" class="tcp_count"/>' . "\n";
-						$det .= '<input name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="' . __( 'Modify', 'tcp' ) . '" type="submit" />' . "\n";
-					} else {
-						$det .= '1&nbsp;' . "\n";
-					}
-					$det .= '<input name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="' . __( 'Delete', 'tcp' ) . '" type="submit" />' . "\n";
-					$det .= apply_filters( 'tcp_cart_units', '', $order_detail );
-					$det .= '</form>';
-				}
-				$det .= '</td>' . "\n";
-				if ( $source->see_full() ) $det .= '<td class="tcp_cart_sku">' . $order_detail->get_sku() . '</td>' . "\n";
-				if ( $source->see_full() )$det .= '<td class="tcp_cart_weight">' . tcp_number_format( $order_detail->get_weight(), 0 ). '&nbsp;' . tcp_get_the_unit_weight() . '</td>' . "\n";
-				$price = $order_detail->get_price() * $order_detail->get_qty_ordered() - $order_detail->get_discount();
+				echo apply_filters( 'tcp_cart_table_title_order_detail', $name, $order_detail->get_post_id() ); ?>
+				</td>
+				<td class="tcp_cart_price"><?php echo tcp_format_the_price( $order_detail->get_price() ); ?>
+				<?php if ( $order_detail->get_discount() > 0 ) : ?>
+					&nbsp;<span class="tcp_cart_discount"><?php  printf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() ) ); ?></span>
+				<?php endif; ?>
+				</td>
+				<td class="tcp_cart_units">
+				<?php if ( ! $source->is_editing_units() ) :
+					tcp_number_format( $order_detail->get_qty_ordered(), 0 );
+				else : ?>
+					<form method="post">
+					<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
+					<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
+					<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />
+					<?php if ( ! tcp_is_downloadable( $order_detail->get_post_id() ) ) : ?>
+						<input name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" type="text" class="tcp_count"/>
+						<input name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" type="submit" />
+					<?php else : ?>
+						1&nbsp;
+					<?php endif; ?>
+					<input name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" type="submit" />
+					<?php do_action( 'tcp_cart_units', $order_detail ); ?>
+					</form>
+				<?php endif; ?>
+				</td>
+				<?php if ( $source->see_full() ) : ?><td class="tcp_cart_sku"><?php echo $order_detail->get_sku(); ?></td><?php endif; ?>
+				<?php if ( $source->see_full() ) : ?><td class="tcp_cart_weight"><?php echo tcp_number_format( $order_detail->get_weight(), 0 ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td><?php endif; ?>
+				<?php $price = $order_detail->get_price() * $order_detail->get_qty_ordered() - $order_detail->get_discount();
 				$tax = round( $order_detail->get_price() * ( $order_detail->get_tax() / 100 ), tcp_get_decimal_currency() ) * $order_detail->get_qty_ordered();
 				$total_tax += $tax;
-				$total += $price;
-				$det .= '<td class="tcp_cart_total">' . tcp_format_the_price( $price ) . '</td>' . "\n";
-				$det .= '</tr>' . "\n";
-			}
-			$out .= $det;
-			$det = '';
-		}
-
-		$out .= '<tr class="tcp_cart_subtotal_row">' . "\n";
-		
-		$colspan = 3;
+				$total += $price; ?>
+				<td class="tcp_cart_total"><?php echo tcp_format_the_price( $price ); ?></td>
+				</tr>
+			<?php endforeach;
+		} ?>
+		<tr class="tcp_cart_subtotal_row">
+		<?php $colspan = 3;
 		if ( $source->see_full() ) $colspan += 3;
-		if ( $source->see_thumbnail() ) $colspan ++;
-		$out .= '<td colspan="' . $colspan . '" ';
-		$out .= 'class="tcp_cart_subtotal_title">' . __( 'Subtotal', 'tcp' ) . '</td>' . "\n";
-		$out .= '<td class="tcp_cart_subtotal">' . tcp_format_the_price( $total ) . '</td>' . "\n";
-		$out .= '</tr>' . "\n";
-
-		$discount = $source->get_discount();
-		if ( $discount > 0 ) {
-			$dis = '<tr id="discount" class="tcp_cart_discount_row';
-			if ( $i++ & 1 == 1 ) $dis .= ' tcp_par';
-			$dis .= '">' . "\n";
-			$dis .= '<td colspan="' . $colspan . '" ';
-			$dis .= 'class="tcp_cart_discount_title">' . __( 'Discount', 'tcp' ) . '</td>' . "\n";
-			$dis .= '<td class="tcp_cart_discount">' . tcp_format_the_price( $discount ) . '</td>' . "\n";
-			$dis .= '</tr>' . "\n";
-			$out .= $dis;
-			$dis = '';
-			$total = $total - $discount;
-		}
+		if ( $source->see_thumbnail() ) $colspan ++; ?>
+		<td colspan="<?php echo $colspan; ?>" class="tcp_cart_subtotal_title"><?php _e( 'Subtotal', 'tcp' ); ?></td>
+		<td class="tcp_cart_subtotal"><?php echo tcp_format_the_price( $total ); ?></td>
+		</tr>
+		<?php $discount = $source->get_discount();
+		if ( $discount > 0 ) : ?>
+			<tr id="discount" class="tcp_cart_discount_row'<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif; ?>">
+			<td colspan="<?php echo $colspan; ?>" class="tcp_cart_discount_title"><?php _e( 'Discount', 'tcp' ); ?></td>
+			<td class="tcp_cart_discount"><?php echo tcp_format_the_price( $discount ); ?></td>
+			</tr>
+			<?php $total = $total - $discount; ?>
+		<?php endif;
 		if ( $source->see_other_costs() ) {
 			if ( $source->has_orders_costs() ) {
-				$cost = '';
-				foreach( $source->get_orders_costs() as $order_cost ) {
-					$cost .= '<tr id="other_costs" class="tcp_cart_other_costs_row">' . "\n";
-					$cost .= '<td colspan="' . $colspan . '" ';
-					$cost .= 'class="tcp_cart_other_costs_title">' . $order_cost->get_description() . '</td>' . "\n";
-					$cost .= '<td class="tcp_cart_other_costs">' . tcp_format_the_price( $order_cost->get_cost() ) . '</td>' . "\n";
-					$tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );
+				foreach( $source->get_orders_costs() as $order_cost ) : ?>
+					<tr id="other_costs" class="tcp_cart_other_costs_row">
+					<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo $order_cost->get_description(); ?></td>
+					<td class="tcp_cart_other_costs"><?php echo tcp_format_the_price( $order_cost->get_cost() ); ?></td>
+					<?php $tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );
 					$total_tax += $tax;
-					$total += $order_cost->get_cost();
-					$cost .= '</tr>' . "\n";
-				}
-				$out .= $cost;
+					$total += $order_cost->get_cost(); ?>
+					</tr>
+				<?php endforeach;
 			}
 		}
-		if ( $source->see_tax_summary() && $total_tax > 0 ) {
-			$out_tax = '<tr class="tcp_cart_tax_row">' . "\n";
-			$out_tax .= '<td colspan="' . $colspan . '" ';
-			$out_tax .= 'class="tcp_cart_tax_title">' . __( 'Taxes', 'tcp' ) . '</td>' . "\n";
-			$out_tax .= '<td class="tcp_cart_tax">' . tcp_format_the_price( $total_tax ) . '</td>' . "\n";
-			$out_tax .= '</tr>';
-			$out .= $out_tax;
-			$out_tax = '';
-		} else {
+		if ( $source->see_tax_summary() && $total_tax > 0 ) : ?>
+			<tr class="tcp_cart_tax_row">
+			<td colspan="<?php echo $colspan;?>" class="tcp_cart_tax_title"><?php _e( 'Taxes', 'tcp' ); ?></td>
+			<td class="tcp_cart_tax"><?php echo tcp_format_the_price( $total_tax ); ?></td>
+			</tr>
+		<?php else :
 			$total_tax = 0;
-		}
-
-		$total += $total_tax;
-		$out .= '<tr class="tcp_cart_total_row">' . "\n";
-		$out .= '<td colspan="' . $colspan . '" ';
-		$out .= 'class="tcp_cart_total_title">' . __( 'Total', 'tcp' ) . '</td>' . "\n";
-		$out .= '<td class="tcp_cart_total">' . tcp_format_the_price( $total ) . '</td>' . "\n";
-		$out .= '</tr>';
-		$out .= '</tbody></table>' . "\n";
-
-		if ( $source->see_comment() && strlen( $source->get_comment() ) > 0 ) $out .= '<p>' . $source->get_comment() . '</p>';
+		endif;
+		$total += $total_tax; ?>
+		<tr class="tcp_cart_total_row">
+		<td colspan="<?php echo $colspan; ?>" class="tcp_cart_total_title"><?php _e( 'Total', 'tcp' ); ?></td>
+		<td class="tcp_cart_total"><?php echo tcp_format_the_price( $total ); ?></td>
+		</tr>
+		</tbody></table>
+		<?php if ( $source->see_comment() && strlen( $source->get_comment() ) > 0 ) : ?><p><?php echo $source->get_comment(); ?></p><?php endif;
+		$out = ob_get_clean();
 		if ( $echo ) echo $out;
 		else return $out;
 	}
-
 }
 ?>

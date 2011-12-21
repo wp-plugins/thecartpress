@@ -43,7 +43,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 	}
 
 	function show() {?>
-		<div class="identify_layer_info checkout_info clearfix" id="identify_layer_info">
+		<div class="checkout_info clearfix" id="identify_layer_info">
 		<?php if ( ! is_user_logged_in() ) : ?>
 			<div id="login_form">
 				<h4><?php _e( 'Login', 'tcp' );?></h4>
@@ -73,14 +73,14 @@ class TCPSigninBox extends TCPCheckoutBox {
 			</div><!--login_form -->
 
 			<div id="login_guess">
-			<?php if ( get_option( 'users_can_register' ) ) :?>
-				<?php if ( ! $user_registration ) :?>
-					<h4><?php _e( 'Checkout as registered', 'tcp' );?></h4>
+			<?php if ( get_option( 'users_can_register' ) ) : ?>
+				<?php if ( ! $user_registration ) : ?>
+					<h4><?php _e( 'Checkout as registered', 'tcp' ); ?></h4>
 				<?php endif;?>
-				<p><strong><?php _e( 'Register with us for future convenience:', 'tcp' )?></strong></p>
+				<p><strong><?php _e( 'Register with us for future convenience:', 'tcp' ); ?></strong></p>
 				<ul class="disc">
-					<li><?php _e( 'Fast and easy checkout', 'tcp' );?></li>
-					<li><?php _e( 'Easy access to yours orders history and status', 'tcp' );?></li>
+					<li><?php _e( 'Fast and easy checkout', 'tcp' ); ?></li>
+					<li><?php _e( 'Easy access to yours orders history and status', 'tcp' ); ?></li>
 					<?php //wp_register( '<li>', '</li>', true );?>
 					<li><a href="javascript: void(0)" onclick="jQuery('li.tcp_login_and_register').toggle();"><?php _e( 'Register', 'tcp' ); ?></a></li>
 					<li class="tcp_login_and_register" style="display:none;"><div id="tcp_login_and_register">
@@ -99,37 +99,37 @@ class TCPSigninBox extends TCPCheckoutBox {
 							<input type="password" name="tcp_repeat_user_pass" size="12" maxlength="12" />
 						</p>
 						<p>
-							<label for="tcp_user_email"><?php _e( 'E-mail', 'tcp' );?></label>
+							<label for="tcp_user_email"><?php _e( 'E-mail', 'tcp' ); ?></label>
 							<input type="text" name="tcp_new_user_email" size="12" maxlength="100"/>
 						</p>
 						<input type="hidden" name="tcp_redirect_to" value="<?php echo get_permalink(); ?>" />
-						<p><input type="submit" value="<?php _e( 'Register', 'tcp' ); ?>" name="tcp_register_action"/></p>
+						<p><input type="submit" value="<?php _e( 'Register', 'tcp' ); ?>" name="tcp_register_action" id="tcp_register_action" class="tcp_checkout_button" /></p>
 					</form>
 				</div><!-- tcp_login_register -->
 				</li>
 				</ul>
-			<?php endif;?>
-			<?php do_action( 'tcp_checkout_identify' );?>
+			<?php endif; ?>
+			<?php do_action( 'tcp_checkout_identify' ); ?>
 			<?php if ( ! $user_registration ) : ?>
-				<h4><?php _e( 'Checkout as a guest', 'tcp' );?></h4>
+				<h4><?php _e( 'Checkout as a guest', 'tcp' ); ?></h4>
 				<p><strong>
-				<?php if ( get_option( 'users_can_register' ) ) :?>
-					<?php _e( 'Or you can make as a guest.', 'tcp' );?>
-				<?php else :?>
-					<?php _e( 'You can make as a guest.', 'tcp' );?>
-				<?php endif?>
+				<?php if ( get_option( 'users_can_register' ) ) : ?>
+					<?php _e( 'Or you can make as a guest.', 'tcp' ); ?>
+				<?php else : ?>
+					<?php _e( 'You can make as a guest.', 'tcp' ); ?>
+				<?php endif; ?>
 				</strong></p>
 				<ul>
-					<li><?php _e( 'If you prefer this way then press the continue button', 'tcp' );?></li>
+					<li><?php _e( 'If you prefer this way then press the continue button', 'tcp' ); ?></li>
 				</ul>
-				<!--<p><input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' );?>" /></p>-->
+				<!--<p><input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" /></p>-->
 			<?php else : ?>
-				 <p><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' );?></strong></p>
-			<?php endif;?>
+				 <p><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' ); ?></strong></p>
+			<?php endif; ?>
 			</div><!-- login_guess -->
-		<?php endif;?>
+		<?php endif; ?>
 		</div> <!-- identify_layer_info -->
-		<?php return ! $user_registration;
+		<?php return !$user_registration;
 	}
 }
 ?>

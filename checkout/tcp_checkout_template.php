@@ -21,7 +21,7 @@ $tcp_checkout_boxes = array();
 function tcp_register_checkout_box( $path, $class_name ) {
 	global $tcp_checkout_boxes;
 	$tcp_checkout_boxes[$class_name] = $path;
-	require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
+	//require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
 	
 }
 

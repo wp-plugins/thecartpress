@@ -16,8 +16,8 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$shortcodes_data = get_option( 'tcp_shortcodes_data' );
-$shortcode_id = isset( $_REQUEST['shortcode_id'] ) ? $_REQUEST['shortcode_id'] : -1;
+$shortcodes_data	= get_option( 'tcp_shortcodes_data' );
+$shortcode_id		= isset( $_REQUEST['shortcode_id'] ) ? $_REQUEST['shortcode_id'] : -1;
 
 function tcp_exists_shortcode_id( $id ) {
 	global $shortcodes_data;
@@ -55,6 +55,7 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'included'				=> isset( $_REQUEST['included'] ) ? $_REQUEST['included'] : array(),
 			'term'					=> isset( $_REQUEST['term'] ) ? $_REQUEST['term'] : '',
 			'limit'					=> isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : '10',
+			'pagination'			=> isset( $_REQUEST['pagination'] ),
 			'loop'					=> isset( $_REQUEST['loop'] ) ? $_REQUEST['loop'] : 'default',
 			'order_type'			=> isset( $_REQUEST['order_type'] ) ? $_REQUEST['order_type'] : 'date',
 			'order_desc'			=> isset( $_REQUEST['order_desc'] ) ? 'desc' : 'asc',
@@ -103,18 +104,13 @@ if ( $shortcode_id == -1 ) {
 } else {
 	$shortcode_data = array();
 }
-
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-$shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
-?>
+$shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 
 <div class="wrap">
 	<h2><?php _e( 'ShortCode Generator', 'tcp' );?></h2>
 	<ul class="subsubsub">
 	</ul><!-- subsubsub -->
-
 	<div class="clear"></div>
-
 	<div class="instances">
 	<?php if ( is_array( $shortcodes_data ) && count( $shortcodes_data ) > 0 ) :
 		foreach( $shortcodes_data as $id => $data ) :
@@ -141,6 +137,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 	$included				= isset( $shortcode_data['included'] ) ? $shortcode_data['included'] : array();
 	$term					= isset( $shortcode_data['term'] ) ? $shortcode_data['term'] : '';
 	$limit					= isset( $shortcode_data['limit'] ) ? $shortcode_data['limit'] : 10;
+	$pagination				= isset( $shortcode_data['pagination'] ) ? $shortcode_data['pagination'] : false;
 	$loop					= isset( $shortcode_data['loop'] ) ? $shortcode_data['loop'] : '';
 	$columns				= isset( $shortcode_data['columns'] ) ? $shortcode_data['columns'] : 2;
 	$order_type				= isset( $shortcode_data['order_type'] ) ? $shortcode_data['order_type'] : 'date';
@@ -167,7 +164,7 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 	} else {
 		$use_taxonomy_style = 'display: none;';
 		$included_style = '';
-	}?>
+	} ?>
 	</div>
 	<script>
 		function tcp_show_taxonomy(checked) {
@@ -290,6 +287,15 @@ $shortcode_href = $admin_path . 'ShortCodeGenerator.php&shortcode_id=';
 			<td>
 				<input type="text" name="limit" id="limit" value="<?php echo $limit;?>" size="3" maxlength="4" />
 				<br/><span class="description"><?php _e( 'Set -1 to show all possible items.', 'tcp' );?></span>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="id"><?php _e( 'Pagination', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" name="pagination" id="pagination" value="yes" <?php checked( $pagination ); ?>/>
+				<br/><span class="description"><?php _e( 'Allows to set pagination in the shortcode.', 'tcp' );?></span>
 			</td>
 		</tr>
 		<tr valign="top">

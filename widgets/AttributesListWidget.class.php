@@ -52,7 +52,7 @@ class AttributesListWidget extends WP_Widget {
 	function form( $instance ) {
 		$defaults = array(
 			'title'			=> 'Attributes List',
-			'post_type'		=> ProductCustomPostType::$PRODUCT,
+			'post_type'		=> TCP_PRODUCT_POST_TYPE,
 			'taxonomies'	=> array(),
 		);
 		$instance = wp_parse_args( (array)$instance, $defaults ); ?>

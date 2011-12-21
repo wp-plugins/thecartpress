@@ -2,8 +2,8 @@
 Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
-Tested up to: 3.2
-Stable Tag: 1.1.5
+Tested up to: 3.3
+Stable Tag: 1.1.6
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
 
@@ -11,148 +11,248 @@ Native eCommerce integration & interaction with WordPress. Flexibility & Scalabi
 
 The Professional WordPress eCommerce Plugin
 
+TheCartPress is a WordPress e-commerce plugin natively integrated into WordPress. Therefore you can extend its functionality with plugins and themes to customize your store exactly in same way that you do with WordPress.
+
+It is compatible with many existing plugins in the WordPress repository.
+
 100% WordPress, naturaly flexible & Scalable. Powerful backend tools to make your Store Easy and Useful
 
 Ideal for merchants, themes constructors and developers. Use it as shopping cart, catalog or framework.
 Extend the eCommerce functionality with plugins and themes exactly in same way that you do with WordPress.
 
-= Product Browsing Offering =
+* [TheCartPress Demo](http://demo.thecartpress.com)
+* [TheCartPress Site](http://thecartpress.com)
+* [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
 
-* WordPress native features
-* Simple products with 2 level of options. Dynamic Images for combos of options.
-* Grouped products: Lists of simple products with 2 level of options inside the grouped. Dynamic Images for options.
-* Prices and price ranges in list of products. Excludes products from the calculation of the price range.
-* Multiple Images Per Product
-* WordPress image galleries
-* Auto-embed media player for Downloadable products (mp3)
-* Product Review/Comments
-* Related Products
-* Related Posts
-* Selectable custom templates for single product pages and taxonomy pages.
-* Improve your store with WordPress plugins: Send to a Friend, Social share, Lightbox for images, Video galleries, etc.
+= 100% WordPress, naturaly flexible & Scalable =
 
-= Full Catalog Browsing Offering =
+* Native integration with WordPress since conception of TheCartPress.
+* New WordPress user roles: Customer and Merchant.
+* WordPress (MU) network compatibility.
+* Powerful backend tools to make your Store Easy and Useful.
+* Use it as a complete ecommerce solution, as a catalog or as a framework.
+* WordPress dashboard adapted to an eCommerce use.
 
-* Filter by: Custom saleable post type, Custom taxonomy (Atributes), Category, Supplier, Product Tag, Author, Date, Reviews and Searches
-* Widgets
-** TCP Navigation Tree and TCP Navigation Cloud  widgets: Product categories.
-** Product suppliers. Product tags. Product custom taxonomies or attributes.
-** Product comments widget.
-** Product archives widget: yearly, monthly, weekly, daily.
-** Custom and configurable product and post type lists  widget.
-** Last visited widget.
-** Related items in many ways (post and products. One to one. Category to categories).
-** Product listing in configurable grid or list format.  You can have as many loop templates as you need. The widgets and shortcodes let you choose the template loop and let you set the visibility of each of the elements when working with Tcp loops.
-* Shortcode Generator, insert configurable product lists when writing in the editor. See some shortcode examples in TheCartPerss Basic Demo. Also you can use your shortcodes in your in BUDDYPRESS installation.
-* Cross-sells and Related Items in many ways.
-* Design and look of your store whith native WordPress ability to manage themes and templates. Custom post types and taxonomies.
-* Use WordPress plugins to extend: private sales, etc
+International Sales
 
-= Catalog Management Offering =
+* Multicurrency, flexible and custom price formats.
+* International weight units.
+* International taxes.
+ * Prices with or without taxes. Rules for taxes. Flexibility and power.
+* Payment and Shipping methods filter by buyer country.
+ * Restrict Countries for shipping and payment.
+* Multilanguage eCommerce.
+* TheCartPress is compatible with all major multilanguage plugins. We have tested successfully with WPML (WordPress multilingual plugin) and qTranslate.
 
-* Prices with or without taxes
-* New WordPress user role: Merchan
-* International tax management. Tax Rates per product. Lot of flexibility in how taxes work. Tax rules.
-* Stock management
-* Post Types generator: You can create as many salable WordPress “post types” as you need. Take advantage of the WordPress template hierarchy to customize your megastores.
-* Taxonomies Generator: Provides access to your products in many different ways. You can create as many attributes to sort your products.
-* Grouped Products
-* Simple products
-* Two options levels for simple products.
-* Downloadable/Digital Products. Downloads from the customer’s account.
-* Batch Updates to products. Extending
-* Native WordPress Media Manager with featured image, automatic image resizing and watermarking
-* Create, Edit and Delete products, and product attributes: products categories, products tags, products suppliers and custom attributes
-* Custom permalinks for products and product attributes: products categories, products tags and products suppliers.
-* Approve, Respond and Delete Product Comments.
-* Disable Shopping cart setting: To use TheCartPress as a catalogue
+Physical and downloadable products
 
-= Multilingual =
+* New WordPress custom post type for products: tcp_product.
+* Create as many saleable post type as you need to structure different types of stores and take advance of WordPress template hierarchy to customize the design/layout. Custom saleable post types are  ideal for stores with very different products in nature (megastores, etc.).
+* Auto embed media player for audio products.
 
-* TheCartPress was conceived  minded multilingual from its first version, it is compatible with WordPress Multilingual (WPML) and other popular plugins: qTranslate
+= Complex Products and Catalog Structures =
 
-= Checkout Offering =
+* Grouped products with excerpt, content, images, author, date, comments, cross content, etc.
+* Simple products with price, stock, sku, excerpt, content, images, author, date, comments, cross content, attributes, etc.
+* Product variations with price, stock, sku, excerpt, content, images, author,  date, comments, etc.
+* Attributes.
+ * “n” levels of attributes for simple products.
+ * Attribute sets: Group your attributes and optimize the work of the merchant assigning a set of attributes for each product.
+ * Dynamic options: Product variations based on product attributes.
+* Buy options format for attributes (extending).
+* Default taxonomies for the products: Category, supplier and tag.
+* Custom taxonomies to sort your products.
+* Classic or Layered navigation to filter the catalog by taxonomies (plugin).
 
-* Configurable checkout
-* Checkout without account/Guest Checkout
-* Checkout with account to use address book
-* Create account at beginning of checkout.
-* In WordPress Network installations the plugin register the user as a subscriber in main site and as customer in shop site if they are differents
-* Shopping Cart with custom tax and shipping estimates
-* Bind to accept the terms of the sale to proceed
+= Marketing highlights =
 
-= Shipping Offering =
-
-* Taxes.
-* Ability to specify allowed destination countries per method
-* Flat rate shipping per order
-* Flat rate shipping per item
-* Free Shipping
-* Table rates for weight and destination
-* On-site order tracking from customer accounts
-* Extend
-* Develop your own plugin
-
-= Payment Offering =
-
-* Ability to specify allowed payment countries per method
-* Saved Credit Card method for offline payments.
-* Bank Transfer
-* Cash On delivery
-* PayPal
-* Authorize.net
-* TPV Plugins, POS terminal plugins
-* Develop your own
+* Search Engine Friendly URL’s. Custom permalinks for product archives, single product and taxonomy pages.
+* Free Shipping Option.
+* Discounts.
+* Coupons.
+* Recently Viewed Products.
+* Cross-sells and cros-content in many ways.
+ * Single product – Single products.
+ * Single product – Single posts.
+ * Single product – Product categories.
+ * Single product – Post categories.
+ * Category of product – Categories of products.
+ * Category of product – Categories of posts.
+ * Single post – Single posts.
+ * Single post – Single products.
+ * Single post – Post categories.
+ * Single post – Product categories.
+ * Category of post – Categories of Posts.
+ * Category of post – Categories of Products.
+* Compatibility with more relevant SEO WordPress plugins: WordPress SEO (Yoast), All in one SEO pack, etc.
 
 = Customer Accounts Offering =
 
-* New WordPress user role: Customer
-* Order status and history
-* Downloadable Products
-* Address Book with unlimited addresses
-* Default Billing and Shipping addressest
-* Product Reviews submitted
-* Account Dashboard for overview of: orders resume,  products reviews, TheCartPress news, etc.
+* New WordPress user role: Customer.
+* Customizable Order Emails.
+* Account Dashboard for customers.
+* Order status and history.
+* Downloadable area.
+* Address Book with unlimited addresses.
+* Default Billing and Shipping addresses.
+* Product Reviews submitted.
 
-= Customer Service Offering =
+= Product listing, Configurable loops =
 
-* Feature-rich Customer Accounts
-* Order History
-* Order Tracking from Account
-* Forgot Password Email from front-end
-* Order and Account Update Emails
-* Customizable Order Emails
+* Use configurable TCP loops and custom WordPress loops to list your products.
+* Sort panel by: price, title, suggested, date, popular. Asc or Desc.
+* 2 default and configurable loops: Grid and Listing loops with options:
+ * Number of columns.
+ * Number of products.
+ * See pagination.
+ * See sort panel.
+ * Order products by.
+ * See Title.
+ * See buy options.
+ * See image.
+ * See excerpt.
+ * See content.
+ * See taxonomies.
+ * See utilities.
+ * See author.
+ * See custom areas.
+* Use custom and configurable loops also in shortcode generator and widgets.
 
-= Marketing Promotions and Tools Offering =
+= Full Catalog Browsing Offering =
 
-* Free Shipping Option
-* Discounts Plugin
-* Search Engine Friendly URL’s
-* URL Rewrites
-* Recently Viewed Products
-* Cross-sells on product category pages, post category pages, single product and single post pages
-* Compatibility with more relevant SEO WordPress plugins: All in one SEO pack, etc.
+* Filter by Product archives and Product taxonomies: Archive, Author, Date and taxonomies: Category, Supplier, Tag and custom taxonomies.
+* Widgets.
+ * TCP Navigation Tree and TCP Navigation Cloud  widgets: Product categories  and  Product custom taxonomies trees and clouds.
+ * TCP Layered navigation. (plugin)
+ * Product comments widget.
+ * Product archives widget: yearly, monthly, weekly, daily.
+ * Custom and configurable product and post type lists  widget.
+ * Last visited widget.
+ * Related items in many ways. Cross-sales, Cross-contents. (see marketing section).
+ * Product listing in configurable grid or list format.  You can have as many loop templates as you need. The widgets and shortcodes let you choose the template loop and let you set the visibility of each of the elements when working with Tcp loops.
+* Shortcodes, insert configurable product lists when writing in the editor. See some shortcode examples in TheCartPerss Basic Demo. Also you can use your shortcodes in your in BUDDYPRESS installation.
 
-= Theme Compatibility =
+= Product Browsing Offering =
 
-* Load default buy options style
-* Load default shopping cart & checkout style
-* Load default loop style
-* Pages show at most products “x” products
-* See buy options in content
-* Align of buy options in content
-* See buy options in excerpt
-* Align of buy options in excerpt
-* See price in content
-* See price in excerpt
-* See image in content
-* Image size in content
-* Image align in content
-* Image link in content
-* See image in excerpt
-* Image size in excerpt
-* Image align in excerpt
-* Image link in excerpt
+* WordPress native features.
+* Product Review/Comments.
+* Related Products.
+* Related Posts.
+* Improve your store with WordPress plugins: Send to a Friend, Social share, Lightbox for images, Video galleries, etc.
+
+= Catalog Management Offering =
+
+* New WordPress user role: Merchant.
+* Prices with or without taxes. Tax Rates per product. Tax rules. Lot of flexibility in how taxes work.
+* Stock management.
+* Post Types generator: You can create as many salable WordPress “post types” as you need. Take advantage of the WordPress template hierarchy to customize your megastores.
+* Taxonomy Generator: Provides access to your products in many different ways. You can create as many taxonomies as you need to sort your products.
+* Custom fields generator for your products.
+* Selectable custom templates for single product pages and taxonomy pages.
+* Native WordPress Media Manager with featured image, automatic image resizing and watermarking.
+* WordPress galleries for products.
+* Custom permalinks for products and product attributes: products categories, products tags and products suppliers.
+* Approve, Respond and Delete Product Comments.
+* Disable Shopping cart setting: To use TheCartPress as a catalogue
+* Disable buy button for individual products.
+
+= Checkout Offering =
+
+* Configurable checkout.
+* Checkout without account/Guest Checkout.
+* Checkout with account to use address book.
+* Create account at beginning of checkout.
+* In WordPress Network installations the plugin register the user as a subscriber in main site and as customer in shop site if they are differents.
+* Bind to accept the terms of the sale to proceed.
+* Custom multilanguage notices for payment methods in checkout steps, end checkout OK, end checkout KO and emails.
+* Custom multilanguage global notices for end checkout OK, end checkout KO and emails.
+
+= Shipping Offering =
+
+* Shipping methods: Multiple Instances.
+* Shiping rates with or without taxes.
+* Ability to specify allowed destination countries per method.
+* Flat rate shipping per order amount.
+* Flat rate shipping per item.
+* Free Shipping.
+* Table rates for weight and destination.
+* Custom multilanguage notices for shipment methods in checkout steps, end checkout OK, end checkout KO and emails.
+* Extend.
+ * TheCartPress Plugin repository
+ * Develop your own plugin.
+ * Or looking for a developer in the community.
+
+= Payment Offering =
+
+* Payment methods: Multiple Instances.
+* Ability to specify allowed payment countries per method.
+* Saved Credit Card method for offline payments.
+* Bank Transfer.
+* Cash On delivery with extra cost: fixed or %.
+* PayPal.
+* Authorize.net.
+* Payment gateways plugins.
+ * PayFlow Pro, PayFlow Link, BarclayCard, PayMate, PayWay, FreshBooks, Ceca and growing.
+* Extend.
+ * TheCartPress Plugin repository
+ * Develop your own plugin.
+ * Or looking for a developer in the community.
+
+= + Theme Compatibility =
+
+* Flexibility:
+ * Use configurable TCP loops in your templates.
+ * Use default templates for eCommerce archive and product pages (based on Twentyeleven).
+ * Make your theme from scratch.
+* Load default buy options style.
+* Load default shopping cart & checkout style.
+* Load default loop style.
+* Pages show at most  ”x” products.
+* See buy options in content.
+* Align of buy options in content.
+* See price in content.
+* See image in content.
+* Image size in content.
+* Image align in content.
+* Image link in content.
+* See buy options in excerpt.
+* Align of buy options in excerpt.
+* See price in excerpt.
+* See image in excerpt.
+* Image size in excerpt.
+* Image align in excerpt.
+* Image link in excerpt.
+
+= WordrPress improvements, Powerful tools =
+
+TheCartPress integrate some tools to works with your products. This tools are useful also to work with all your post types: posts and other custom post types.
+
+* Widgets: TheCartPress widgets are useful to navigate all your post types.
+* Taxonomy generator: Sort all your post types in many different ways.
+* Shortcode generator: insert configurable post type lists (products, posts, etc) when writing in the editor. See some shortcode examples in TheCartPerss Basic Demo. Also you can use your shortcodes in your in BUDDYPRESS installation.
+* Custom Field generator for all your post types.
+* Post type generator: Create saleable or not saleable WordPress “custom post types”.
+* Template manager: Manage custom templates for all the WordPress post types. With priority over the wordpress template hierarchy.
+
+= Theme Constructors =
+
+You can create your themes for TheCartPress exactly in same way you create the themes for WordPress. TheCartPress is 100% integrated with WordPress.
+
+* Extend your theme adding some extra templates for eCommerce
+ * Integrate easily the configurable tcp loop in your theme.
+* Take advance of WordPress template hierarchy to customize the design/layout
+* Template manager: Manage custom templates for all the WordPress post types.
+* TheCartPress puts at your disposal a large number of WordPress template tags.
+
+= Extending TheCartPress =
+
+* Improve your store with standar WordPress plugins.
+* Take a look at TheCartPress plugin repository.
+* Creating TheCartPress plugins easily.
+
+= Developers:TheCartPress API / Actions and Filters =
+
+* TheCartPress defines useful hooks for use in plugin development. Those functions has been defined in the same way WordPress has defined its Actions and Filters.
 
 = Unlimited features =
 
@@ -185,10 +285,17 @@ This plugin is released under a GPL license.
 * http://thecartpress.com/wp-content/uploads/2011/10/order_summary.png
 
 == Changelog ==
+= 1.1.6 =
+* Redesign of the core: to make it smaller, to better support  future improvements
+* Shortcodes: now, they allow pagination, make your showcases in seconds
+* Dynamic Options: no-limits in levels of options, no-limits in catalogues
+* Checkout editor - Payment methods: allows to sort the different Payment methods
+* Checkout editor - Shipping methods: allows to sort the different Shipping methods
+
 = 1.1.5 =
 * PayPal: New PayPal IPN (thanks to the community)
-* Transaction Payment notification (Suggested to the community)
-* Checkout: Improvements in Login form (Suggested to the community)
+* Transaction Payment notification (Suggested in the community)
+* Checkout: Improvements in Login form (Suggested in the community)
 * Edit orders: Fixed html issue
 * Navigation Tree: new property, Use description for title
 * Custom fields: Now, custom fields are for any type of post type.

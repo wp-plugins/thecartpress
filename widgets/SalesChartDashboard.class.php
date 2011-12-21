@@ -207,5 +207,15 @@ class SalesChartDashboard {
 </p>
 </div><?php
 	}
+
+	function __construct() {
+		if ( current_user_can( 'tcp_edit_orders' ) ) {
+			wp_add_dashboard_widget( 'tcp_sales_chart', __( 'Sales and Orders', 'tcp' ), array( $this, 'show' ), array( $this, 'show_form' ) );
+		} else {
+			wp_add_dashboard_widget( 'tcp_sales_chart', __( 'Sales and Orders', 'tcp' ), array( $this, 'show' ) );
+		}
+	}
 }
+
+new SalesChartDashboard();
 ?>

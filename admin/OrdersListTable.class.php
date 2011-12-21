@@ -1,7 +1,9 @@
 <?php
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersDetails.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersCosts.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
+require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
+
+require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class OrdersListTable extends WP_List_Table {
 
@@ -17,7 +19,6 @@ class OrdersListTable extends WP_List_Table {
 
 	function prepare_items() {
 		if ( ! is_user_logged_in() ) return;
-
 		$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
 		$per_page = apply_filters( 'tcp_orders_per_page', 15 );
 		$paged = $this->get_pagenum();
@@ -67,7 +68,8 @@ class OrdersListTable extends WP_List_Table {
 	function column_total( $item ) {
 		$total = - $item->discount_amount;
 		$total = OrdersCosts::getTotalCost( $item->order_id, $total );
-		echo tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
+		$total = tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
+		echo apply_filters( 'tcp_orders_list_column_total', $total, $item );
 	}
 
 	function column_customer_id( $item ) {
@@ -84,8 +86,7 @@ class OrdersListTable extends WP_List_Table {
 		$actions = array();
 		$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
 		$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : 0;
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		$href = $admin_path . 'OrderEdit.php&order_id= ' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
+		$href = TCP_ADMIN_PATH . 'OrderEdit.php&order_id= ' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
 		if ( current_user_can( 'tcp_edit_orders' ) )
 			$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit', 'tcp' ) . '</a>';
 		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'Edit this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
@@ -112,10 +113,11 @@ class OrdersListTable extends WP_List_Table {
 		submit_button( __( 'Filter' ), 'secondary', false, false, array( 'id' => 'order-query-submit' ) );
 	}
 
-	private function get_inline_data( $order_id ) {
-		echo '<div class="hidden" id="inline_', $order_id, '">';
-		OrderPage::show( $order_id, true, true, true, true );
-		echo '</div>';
+	private function get_inline_data( $order_id ) { ?>
+		<div class="hidden" id="inline_<?php echo $order_id; ?>">
+		<?php $out = OrderPage::show( $order_id, true, false, true, true );
+		echo apply_filters( 'tcp_orders_list_get_inline_data', $out, $order_id ); ?>
+		</div><?php
  	}
 }
 

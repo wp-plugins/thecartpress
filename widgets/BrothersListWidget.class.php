@@ -2,21 +2,21 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
+require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
 /**
  * Shows products of the same category of the displayed current product
@@ -46,7 +46,7 @@ class BrothersListWidget extends CustomListWidget {
 			}
 			$instance['title'] .= ': ' . $title;
 			$loop_args = array(
-				'post_type'			=> $post->post_type, //ProductCustomPostType::$PRODUCT,
+				'post_type'			=> $post->post_type, //TCP_PRODUCT_POST_TYPE,
 				'posts_per_page'	=> $instance['limit'],
 				'exclude'			=> array( $post->ID, ),//TODO
 				'tax_query'			=> array(

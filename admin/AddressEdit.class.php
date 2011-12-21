@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 
 class TCPAddressEdit {
 
@@ -78,11 +78,8 @@ class TCPAddressEdit {
 		} elseif ( $address_id > 0 ) {
 			$this->address = Addresses::get( $address_id );
 		}
-		if ( is_admin() ) {
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/AddressesList.php';
-		} else {
-			$admin_path = get_permalink( get_option( 'tcp_addresses_list_page_id' ) );
-		} ?>
+		if ( is_admin() ) $admin_path = TCP_ADMIN_PATH . 'AddressesList.php';
+		else $admin_path = get_permalink( get_option( 'tcp_addresses_list_page_id' ) ); ?>
 		<div class="wrap">
 		<?php if ( is_admin() ) : ?><h2><?php _e( 'Address', 'tcp' ); ?></h2><?php endif; ?>
 		<ul class="subsubsub">

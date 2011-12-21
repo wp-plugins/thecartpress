@@ -77,7 +77,7 @@ if ( $post_id ) :
 	</script>
 	<h2><?php _e( 'Assigned products/post for', 'tcp' ); ?>&nbsp;<i><?php echo $post->post_title; ?></i></h2>
 	<ul class="subsubsub">
-		<li><a href="post.php?action=edit&post=<?php echo $post_id; ?>"><?php _e( 'return to the parent', 'tcp' ); ?></a></li>
+		<li><a href="post.php?action=edit&post=<?php echo $post_id; ?>"><?php printf( __( 'return to %s', 'tcp' ), $post->post_title ); ?></a></li>
 		<li>&nbsp;|&nbsp;</li>
 		<?php $url = add_query_arg( 'tcp_delete_all_relation', 'y' ); ?>
 		<li>

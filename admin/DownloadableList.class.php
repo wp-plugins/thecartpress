@@ -45,7 +45,7 @@ if ( is_array( $orders ) && count( $orders ) > 0 ) {
 	$path = get_bloginfo('url') . '/wp-content/plugins/' . plugin_basename(dirname(__FILE__)) . '/VirtualProductDownloader.php';
 	//$path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/VirtualProductDownloader.php';
 	$max_date = date( 'Y-m-d', mktime( 0, 0, 0, 1, 1, 2000 ) );
-	foreach( $orders as $order ) {?>
+	foreach( $orders as $order ) : ?>
 		<div id="tcp_down_item" style="display: in-line;">
 		<ul>
 			<?php $url = $path;
@@ -60,10 +60,10 @@ if ( is_array( $orders ) && count( $orders ) > 0 ) {
 		<?php endif;?>
 		</ul>
 		</div>
-	<?php
-	}
-} else
-	_e( 'No products to download', 'tcp' );?>
+	<?php endforeach;
+} else  {
+	_e( 'No products to download', 'tcp' );
+}?>
 </div>
 	<?php
 	$out = ob_get_clean();

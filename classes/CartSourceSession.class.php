@@ -16,9 +16,9 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/classes/ICartSource.interface.php' );
+require_once( TCP_CLASSES_FOLDER . 'ICartSource.interface.php' );
 
-class TCP_CartSourceSession implements TCP_ICartSource {
+class TCPCartSourceSession implements TCP_ICartSource {
 
 	private $order;
 	private $orders_details;
@@ -228,7 +228,7 @@ class TCP_CartSourceSession implements TCP_ICartSource {
 
 	public function get_discount() {
 		$shopping_cart = TheCartPress::getShoppingCart();
-		return $shopping_cart->getCartDiscounts();
+		return $shopping_cart->getCartDiscountsTotal();
 	}
 
 	public function get_comment() {

@@ -18,5 +18,5 @@
 
 $_REQUEST['plugin_type'] = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'shipping';
 
-include_once( dirname( __FILE__ ) . '/PluginsList.php' );
+include_once( TCP_ADMIN_FOLDER . 'PluginsList.php' );
 ?>

@@ -43,7 +43,7 @@ class WishListWidget extends CustomListWidget {
 
 	function tcp_after_custom_list_widget() { ?>
 		<form method="post">
-		<input type="submit" name="tcp_remove_wish_list" value="<?php _e( 'delete all', 'tcp' );?>" />
+		<input type="submit" name="tcp_remove_wish_list" class="tcp_remove_wish_list" value="<?php _e( 'delete all', 'tcp' );?>" />
 		<!--<input type="submit" name="tcp_buy_wish_list" value="<?php _e( 'buy all', 'tcp' );?>" />-->
 		</form><?php
 	}
@@ -51,7 +51,7 @@ class WishListWidget extends CustomListWidget {
 	function tcp_after_custom_list_widget_item( $post_id ) { ?>
 		<form method="post">
 		<input type="hidden" name="tcp_wish_list_post_id" value="<?php echo $post_id;?>" />
-		<input type="submit" name="tcp_remove_from_wish_list" value="<?php _e( 'delete', 'tcp' );?>" />
+		<input type="submit" name="tcp_remove_from_wish_list" class="tcp_remove_from_wish_list" value="<?php _e( 'delete', 'tcp' );?>" />
 		</form><?php
 	}
 

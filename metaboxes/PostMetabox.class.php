@@ -16,11 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 		
 class PostMetabox {
 
-	function registerMetaBox() {
+	function register_metabox() {
 		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( $this, 'show' ), 'post', 'normal', 'high' );
 		add_action( 'delete_post', array( $this, 'delete' ) );
 	}
@@ -36,24 +36,23 @@ class PostMetabox {
 		if ( $is_translation && $post_id == $post->ID) {
 			_e( 'After saving the title and content, you will be able to edit these relations.', 'tcp' );
 			return;
-		}
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( dirname( __FILE__ ) ) ) . '/thecartpress' ) . '/admin/';?>
+		} ?>
 		<?php wp_nonce_field( 'tcp_pm_noncename', 'tcp_pm_noncename' );?>
 		<ul class="subsubsub">
 			<?php $count = RelEntities::count( $post_id, 'POST-PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = '';?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-PROD"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-PROD"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'POST-POST' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = '';?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-POST&post_type_to=post"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-POST&post_type_to=post"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'POST-CAT_PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=POST-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=POST-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php do_action( 'tcp_template_metabox_show', $post );?>
 		</ul>
 		<div class="clear"></div>
@@ -68,5 +67,11 @@ class PostMetabox {
 		do_action( 'tcp_template_metabox_delete', $post_id );
 		return $post_id;
 	}
+
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+	}
 }
+
+new PostMetabox();
 ?>

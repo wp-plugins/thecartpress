@@ -107,4 +107,8 @@ div.tcp_order_panel {
 #content table.tcp_products_list tr td.tcp_2_cols {
 	width: 50%;
 	}
-
+ul.tcp_paging { list-style: none; padding: 0; font-weight: bold; }
+ul.tcp_paging li { display:inline; margin: 0 6px 6px 0; }
+ul.tcp_paging li a,
+ul.tcp_paging li.tcp_active { padding: 3px 6px; background-color: #f5f5f5; border: 1px solid #ccc; }
+ul.tcp_paging li.tcp_active { background-color: #000; border-color: #000; color: #fff; }

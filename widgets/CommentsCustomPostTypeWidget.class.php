@@ -43,7 +43,7 @@ class CommentsCustomPostTypeWidget extends WP_Widget {
 		if ( ! $number = absint( $instance['number'] ) )
  			$number = 5;
 
-		$post_type = isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';
+		$post_type = isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE;
 		$comments = get_comments( array( 'number' => $number, 'status' => 'approve' ) );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
@@ -81,7 +81,7 @@ class CommentsCustomPostTypeWidget extends WP_Widget {
 	function form( $instance ) {
 		$title		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : __( 'Comments for Custom Post Type', 'tcp' );
 		$number		= isset( $instance['number'] ) ? (int)$instance['number'] : 5;
-		$type		= isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';?>
+		$type		= isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE;?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' ); ?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
@@ -91,12 +91,10 @@ class CommentsCustomPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
-				<option value=""<?php selected( '', $post_type ); ?>><?php _e( 'All', 'tcp' );?></option>
+				<option value=""<?php selected( '', $type ); ?>><?php _e( 'All', 'tcp' );?></option>
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
-				if ( $post_type_item != 'tcp_product_option' ) : 
-					$obj_type = get_post_type_object( $post_type ); ?>
+				$obj_type = get_post_type_object( $post_type ); ?>
 				<option value="<?php echo $post_type;?>"<?php selected( $type, $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
-				<?php endif;?>
 			<?php endforeach; ?>
 			</select>
 		</p><?php

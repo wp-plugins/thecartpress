@@ -44,6 +44,72 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		}
 	}
 
+	function show_config_settings() { ?>
+		<style>
+		#tcp_payment_list {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 60%;
+		}
+		#tcp_payment_list li { 
+			margin: 0 3px 3px 3px;
+			padding: 0.4em;
+			padding-left: 1.5em;
+			font-size: 1.1em;
+			height: 18px;
+			border: 1px solid #BBBBBB;
+			padding: 2px;
+			background: url("../images/white-grad.png") repeat-x scroll left top #F2F2F2;
+		    text-shadow: 0 1px 0 #FFFFFF;
+		    -moz-box-sizing: content-box;
+		    border-radius: 5px 0px 0px 0px;
+			cursor: move;
+		}
+		</style>
+		<script>
+		jQuery(document).ready(function() {
+			jQuery('#tcp_payment_list').sortable();
+			jQuery('#tcp_payment_list').disableSelection();
+			
+			jQuery('#tcp_save_TCPPaymentMethodsBox').click(function(e) {
+				var vals = '';
+				jQuery('li.tcp_payment_item').each(function(index) {
+					vals += jQuery(this).attr('id') + ',';
+				});
+				vals = vals.slice(0, -1);
+				jQuery('#tcp_payment_sorting').val(vals);
+			});
+		});
+		</script>
+		<p><?php _e( 'Drag the payments plugins to sort them', 'tcp' ); ?></p>
+		<?php $settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : ''; ?>
+		<input type="hidden" name="tcp_payment_sorting" id="tcp_payment_sorting" value="" />
+		<ul id="tcp_payment_list">
+		<?php global $tcp_payment_plugins;
+		if ( is_array( $payment_sorting ) && count( $payment_sorting ) > 0)
+			foreach( $payment_sorting as $id ) 
+				if ( isset( $tcp_payment_plugins[$id] ) ) :
+				$tcp_payment_plugin = $tcp_payment_plugins[$id]; ?>
+				<li class="tcp_payment_item" id="<?php echo $id; ?>"><?php echo $tcp_payment_plugin->getName(); ?></li>
+			<?php endif;
+		else
+			foreach( $tcp_payment_plugins as $id => $tcp_payment_plugin ) : ?>
+				<li class="tcp_payment_item" id="<?php echo $id; ?>"><?php echo $tcp_payment_plugin->getName(); ?></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php return true;
+	}
+
+	function save_config_settings() {
+		$settings = array(
+			'sorting'	=> isset( $_REQUEST['tcp_payment_sorting'] ) ? explode( ',', $_REQUEST['tcp_payment_sorting'] ) : '',
+		);
+		update_option( 'tcp_' . get_class( $this ), $settings );
+		return true;
+	}
+
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$billing_country = '';
@@ -62,8 +128,18 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		} elseif ( $selected_shipping_address == 'Y' ) {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}
-		$applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );?>
-		<div class="payment_layer_info checkout_info clearfix" id="payment_layer_info">
+		$applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
+		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+		if ( is_array( $payment_sorting ) && count( $payment_sorting ) > 0 ) {
+			$plugins = array();
+			foreach( $payment_sorting as $id )
+				foreach( $applicable_plugins as $ap => $applicable_plugin )
+					if ( $applicable_plugin['id'] == $id )
+						$plugins[] = $applicable_plugin;
+			$applicable_plugins = $plugins;
+		} ?>
+		<div class="checkout_info clearfix" id="payment_layer_info">
 		<?php if ( is_array( $applicable_plugins ) && count( $applicable_plugins ) > 0 ) : ?>
 			<ul><?php
 			$first_plugin_value = false;
@@ -77,6 +153,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				<li>
 					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>"	name="payment_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $payment_method_id );?> />
 					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>" class="tcp_payment_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
+					<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template_excerpt( 'tcp_payment_plugins_' . $plugin_name ); ?></div>
 				</li>
 			<?php endforeach;?>
 			</ul>

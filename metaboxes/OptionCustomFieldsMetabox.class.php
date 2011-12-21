@@ -2,25 +2,25 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntitiesOptions.class.php' );
+require_once( TCP_DAOS_FOLDER . 'RelEntitiesOptions.class.php' );
 		
 class OptionCustomFieldsMetabox {
 
-	function registerMetaBox() {
+	function register_metabox() {
 		add_meta_box( 'tcp-option-custom-fields', __( 'Option Custom Fields', 'tcp' ), array( &$this, 'showCustomFields' ), 'tcp_product_option', 'normal', 'high' );
 	}
 
@@ -50,8 +50,7 @@ class OptionCustomFieldsMetabox {
 			}
 		}
 		$product_parent = get_post( $tcp_product_parent_id );
-		if ( $tcp_product_option_parent_id > 0 ) $option_parent = get_post( $tcp_product_option_parent_id );
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/'; ?>
+		if ( $tcp_product_option_parent_id > 0 ) $option_parent = get_post( $tcp_product_option_parent_id ); ?>
 		<ul class="subsubsub">
 			<li><a href="post.php?action=edit&post=<?php echo $tcp_product_parent_id; ?>"><?php printf( __( 'return to %s', 'tcp' ), $product_parent->post_title ); ?></a></li>
 		<?php if ( $tcp_product_option_parent_id > 0 ) : ?>
@@ -59,7 +58,7 @@ class OptionCustomFieldsMetabox {
 			<li><a href="post.php?action=edit&post_type=tcp_product_option&post=<?php echo $tcp_product_option_parent_id; ?>"><?php printf( __( 'return to %s', 'tcp' ), $option_parent->post_title ); ?></a></li>
 		<?php endif; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path; ?>OptionsList.php&post_id=<?php echo $tcp_product_parent_id; ?>"><?php echo __( 'return to Options list', 'tcp' ); ?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH; ?>OptionsList.php&post_id=<?php echo $tcp_product_parent_id; ?>"><?php echo __( 'return to Options list', 'tcp' ); ?></a></li>
 			<li>|</li>
 			<li><a href="post-new.php?post_type=tcp_product_option&tcp_product_parent_id=<?php echo $tcp_product_parent_id; ?>&tcp_product_option_parent_id=<?php echo $tcp_product_option_parent_id; ?>" title="<?php echo __( 'create a new \'sister\' option', 'tcp' ); ?>"><?php echo __( 'create new option', 'tcp' ); ?></a></li>
 		<?php if ( $tcp_product_option_parent_id == 0 ) : ?>
@@ -150,5 +149,13 @@ class OptionCustomFieldsMetabox {
 		RelEntities::deleteAll( $post_id, 'OPTIONS' );
 		do_action( 'tcp_options_metabox_delete_custom_fields', $post_id );
 	}
+	
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+		add_action( 'save_post', array( $this, 'saveCustomFields' ), 1, 2 );
+		add_action( 'delete_post', array( $this, 'deleteCustomFields' ) );
+	}
 }
+
+new OptionCustomFieldsMetabox();
 ?>

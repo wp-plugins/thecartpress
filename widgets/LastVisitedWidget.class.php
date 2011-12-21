@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
+require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
 class LastVisitedWidget extends CustomListWidget {
 
@@ -31,7 +31,7 @@ class LastVisitedWidget extends CustomListWidget {
 		if ( count( $ids ) == 0 ) return;
 		$loop_args = array(
 			'post__in'			=> $ids,
-			'post_type'			=> 'tcp_product',
+			'post_type'			=> TCP_PRODUCT_POST_TYPE,
 			'posts_per_page'	=> $instance['limit'],
 		);
 		parent::widget( $args, $loop_args, $instance );

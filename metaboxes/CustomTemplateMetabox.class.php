@@ -18,7 +18,7 @@
 
 class TCPCustomTemplateMetabox {
 
-	function registerMetaBox() {
+	function register_metabox() {
 		$saleable_post_types = tcp_get_saleable_post_types();
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
@@ -80,5 +80,11 @@ class TCPCustomTemplateMetabox {
 		tcp_set_custom_template_by_post_type( $post->post_type );
 		do_action( 'tcp_custom_template_metabox_delete', $post );
 	}
+
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+	}
 }
+
+new TCPCustomTemplateMetabox();
 ?>

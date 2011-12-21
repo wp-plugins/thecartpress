@@ -2,22 +2,22 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
- * Session shopping cart
+ * Session Shopping Cart
  */
 class ShoppingCart {
 
@@ -62,6 +62,7 @@ class ShoppingCart {
 	}
 
 	function modify( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 0 ) {
+		$count = (int)$count;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			if ($count > 0) {
@@ -134,7 +135,7 @@ class ShoppingCart {
 		foreach( $items as $item )
 			$total += $item->getTotal();
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
-		$total -= $this->getCartDiscounts();
+		$total -= $this->getCartDiscountsTotal();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total', $total );
 		return $total;
 	}
@@ -155,7 +156,7 @@ class ShoppingCart {
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
 			$total += $shopping_cart_item->getTotalToShow();
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
-		$total += $this->getCartDiscounts();
+		$total -= $this->getCartDiscountsTotal();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total_to_show', $total );
 		return $total;
 	}
@@ -389,8 +390,10 @@ class ShoppingCart {
 		return $this->freeShipping;
 	}
 
-	//Returns the total of discounts in the cart (not for each product)
-	function getCartDiscounts() {
+	/**
+	 * Returns the total of discounts in the cart (not for each product)
+	 */
+	function getCartDiscountsTotal() {
 		$discount = 0;
 		foreach( $this->discounts as $discount_item )
 			$discount += $discount_item->getDiscount();
@@ -398,7 +401,16 @@ class ShoppingCart {
 		return $discount;
 	}
 
-	//Adds a cart discount
+	/**
+	 * Returns the total of discounts in the cart (not for each product)
+	 */
+	function getCartDiscounts() {
+		return $this->discounts;
+	}
+
+	/**
+	 * Adds a cart discount
+	 */
 	function addDiscount( $id, $discount = 0, $desc = '' ) {
 		if ( $discount == 0 ) {
 			$this->deleteDiscount( $id );
@@ -408,25 +420,35 @@ class ShoppingCart {
 		}
 	}
 
-	//Deletes a cart discount
+	/**
+	 * Deletes a cart discount
+	 */
 	function deleteDiscount( $id ) {
 		if ( isset( $this->discounts[$id] ) )
 			unset( $this->discounts[$id] );
 	}
 
-	//Deletes all cart discounts
+	/**
+	 * Deletes all cart discounts
+	 */
 	function deleteAllCartDiscounts() {
 		unset( $this->discounts );
 		$this->discounts = array();
 	}
 
+	/**
+	 * Returns the total of discounts in the cart (product discount + cart discounts)
+	 */
 	function getAllDiscounts() {
-		$discount = $this->getCartDiscounts();
+		$discount = $this->getCartDiscountsTotal();
 		foreach( $this->shopping_cart_items as $item )
 			$discount += $item->getDiscount();
 		return apply_filters( 'tcp_get_all_discounts', $discount );
 	}
 
+	/**
+	 * Deletes all discounts
+	 */
 	function deleteAllDiscounts() {
 		foreach( $this->shopping_cart_items as $item )
 			$item->setDiscount( 0 );
@@ -446,13 +468,14 @@ class ShoppingCartItem {
 	private $price_to_show; //unit price to show
 	private $is_downloadable = false;
 	private $discount = 0;
+	private $discount_desc = '';//not in use
 	private $free_shipping = false;
 
 	function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0, $price_to_show = 0 ) {
 		$this->post_id		= $post_id;
 		$this->option_1_id	= $option_1_id;
 		$this->option_2_id	= $option_2_id;
-		$this->count		= $count;
+		$this->count		= (int)$count;
 		$decimals			= tcp_get_decimal_currency();
 		$this->unit_price	= round( $unit_price, $decimals );
 		$this->tax			= round( $tax, 3 );

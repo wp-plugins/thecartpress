@@ -126,5 +126,5 @@ $wishListTable->prepare_items();?>
 <h2><?php _e( 'Wish List', 'tcp' );?></h2>
 <div class="clear"></div>
 <?php $wishListTable->display(); ?>
-</form>
 </div>
+</form>

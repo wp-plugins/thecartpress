@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class TCPArchivesWidget extends WP_Widget {
@@ -34,7 +34,7 @@ class TCPArchivesWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract($args);
 		$type		= isset( $instance['type'] ) ? $instance['type'] : 'monthly';
-		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';
+		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE;
 		$count		= $instance['count'] ? '1' : '0';
 		$dropdown	= $instance['dropdown'] ? '1' : '0';
 		$title		= apply_filters('widget_title', empty($instance['title']) ? __('Archives') : $instance['title'], $instance, $this->id_base);
@@ -138,7 +138,7 @@ class TCPArchivesWidget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => 'TCP Archives', 'count' => 0, 'dropdown' => '', 'type' => 'monthly' ) );
 		$title		= strip_tags($instance['title']);
 		$type		= isset( $instance['type'] ) ? $instance['type'] : 'monthly';
-		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : 'tcp_product';
+		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE;
 		$count		= $instance['count'] ? 'checked="checked"' : '';
 		$dropdown	= $instance['dropdown'] ? 'checked="checked"' : '';?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?></label>:<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
@@ -146,7 +146,7 @@ class TCPArchivesWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $post_type ) : ?>
-				<option value="<?php echo $post_type->name;?>"<?php selected( $instance['post_type'], $post_type->name ); ?>><?php echo $post_type->labels->name;?></option>
+				<option value="<?php echo $post_type->name;?>"<?php selected( $type, $post_type->name ); ?>><?php echo $post_type->labels->name;?></option>
 			<?php endforeach;?>
 			</select>
 		</p><p>		

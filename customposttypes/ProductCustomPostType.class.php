@@ -2,31 +2,30 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+define( 'TCP_PRODUCT_POST_TYPE'	, 'tcp_product' );
+define( 'TCP_PRODUCT_CATEGORY'	, 'tcp_product_category' );
+define( 'TCP_PRODUCT_TAG'		, 'tcp_product_tag' );
+define( 'TCP_SUPPLIER_TAG'		, 'tcp_product_supplier' );
 
 /**
- * This class defines the post type 'tcp_product'.
+ * This class defines the post type 'tcp_product'
+ * @author sensei
  */
-require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
-
 class ProductCustomPostType {
-	public static $PRODUCT			= 'tcp_product';
-	public static $PRODUCT_CATEGORY	= 'tcp_product_category';
-	public static $PRODUCT_TAG		= 'tcp_product_tag';
-	public static $SUPPLIER_TAG		= 'tcp_product_supplier';
-
 	function __construct() {
 		global $thecartpress;
 		$labels = array(
@@ -55,12 +54,12 @@ class ProductCustomPostType {
 			'hierarchical'		=> false, //allways false
 			'query_var'			=> true,
 			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments' ),
-			'taxonomies'		=> array( ProductCustomPostType::$PRODUCT_CATEGORY ), // Permalinks format
+			'taxonomies'		=> array( TCP_PRODUCT_CATEGORY ), // Permalinks format
 			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
 			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) && $thecartpress->settings['product_rewrite'] != '' ? $thecartpress->settings['product_rewrite'] : 'products',
 		);
-		register_post_type( ProductCustomPostType::$PRODUCT, $register );
-		//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( ProductCustomPostType::$PRODUCT, $register['has_archive'] );
+		register_post_type( TCP_PRODUCT_POST_TYPE, $register );
+		if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( TCP_PRODUCT_POST_TYPE, $register['has_archive'] );
 		if ( is_admin() ) {
 			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
 			$post_types = tcp_get_saleable_post_types();
@@ -85,20 +84,20 @@ class ProductCustomPostType {
 			'hierarchical'	=> true,
 			'query_var'		=> true, //'cat_prods',
 			'label'			=> __( 'Category', 'tcp' ),
-			'rewrite'		=> array('slug' => isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category' ), //false
+			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category' ), //false
 		);
-		register_taxonomy( ProductCustomPostType::$PRODUCT_CATEGORY, ProductCustomPostType::$PRODUCT, $register );
-		register_taxonomy( ProductCustomPostType::$PRODUCT_TAG, ProductCustomPostType::$PRODUCT, array(
+		register_taxonomy( TCP_PRODUCT_CATEGORY, TCP_PRODUCT_POST_TYPE, $register );
+		register_taxonomy( TCP_PRODUCT_TAG, TCP_PRODUCT_POST_TYPE, array(
 			'public'		=> true,
 			'hierarchical'	=> false,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag' ), //false
+			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag' ), //false
 			'label'			=> __( 'Products Tags', 'tcp' ),
 		) );
-		register_taxonomy( ProductCustomPostType::$SUPPLIER_TAG, ProductCustomPostType::$PRODUCT, array(
+		register_taxonomy( TCP_SUPPLIER_TAG, TCP_PRODUCT_POST_TYPE, array(
 			'hierarchical'	=> true,
 			'query_var'		=> true,
-			'rewrite'		=> array('slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
+			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
 			'labels'		=> array(
 				'name'				=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
 				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name', 'tcp' ),
@@ -122,23 +121,20 @@ class ProductCustomPostType {
 
 
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
-	/*static function register_post_type_archives( $post_type, $base_path = '' ) {
-echo "register_post_type_archives( $post_type, $base_path )<br>";
+	static function register_post_type_archives( $post_type, $base_path = '' ) {
+//echo "register_post_type_archives( $post_type, $base_path )<br>";
 
 		global $wp_rewrite;
 		$permalink_prefix = $base_path;
 		$permalink_structure = '%year%/%monthnum%/%day%/%' . $post_type . '%/';
-
 		//we use the WP_Rewrite class to generate all the endpoints WordPress can handle by default.
 		$rewrite_rules = $wp_rewrite->generate_rewrite_rules( $permalink_prefix . '/' . $permalink_structure, EP_ALL, true, true, true, true, true );
-
 		//build a rewrite rule from just the prefix to be the base url for the post type
 		$rewrite_rules = array_merge( $wp_rewrite->generate_rewrite_rules( $permalink_prefix ), $rewrite_rules );
 		$rewrite_rules[$permalink_prefix . '/?$'] = 'index.php?paged=1';
 		foreach( $rewrite_rules as $regex => $redirect ) {
 			if ( strpos( $redirect, 'attachment=' ) === false ) {
-			//add the post_type to the rewrite rule
-				$redirect .= '&post_type=' . $post_type;
+				$redirect .= '&post_type=' . $post_type; //add the post_type to the rewrite rule
 			}
 			//turn all of the $1, $2,... variables in the matching regex into $matches[] form
 			if ( 0 < preg_match_all('@\$([0-9])@', $redirect, $matches ) ) {
@@ -146,13 +142,12 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 					$redirect = str_replace( $matches[0][$i], '$matches[' . $matches[1][$i] . ']', $redirect );
 				}
 			}
-			//add the rewrite rule to wp_rewrite
-			$wp_rewrite->add_rule( $regex, $redirect, 'top' );
+			$wp_rewrite->add_rule( $regex, $redirect, 'top' ); //add the rewrite rule to wp_rewrite
 		}
-	}*/
+	}
 
 	/*function quickEditCustomBox( $column_name, $post_type ) {
-		if ( $post_type == ProductCustomPostType::$PRODUCT ) {
+		if ( $post_type == TCP_PRODUCT_POST_TYPE ) {
 			global $post; //TODO
 			if ('price' == $column_name)
 				echo 'price:', tcp_get_the_price( $post->ID );
@@ -161,18 +156,8 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 
 	function postRowActions( $actions, $post_line = null ) {
 		global $post;
-		//if ( $post->post_type != 'tcp_product' ) return $actions;
 		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $actions;
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		if ( tcp_get_the_product_type( $post->ID ) == 'GROUPED' ) {
-			$count = RelEntities::count( $post->ID );
-			if ( $count > 0 )
-				$count = ' (' . $count . ')';
-			else
-				$count = '';
-			$actions['tcp_assigned'] = '<a href="' . $admin_path . 'AssignedProductsList.php&post_id=' . $post->ID . '&rel_type=GROUPED" title="' . esc_attr( __( 'See assigned products', 'tcp' ) ) . '">' . __( 'assigned products', 'tcp' ) . $count . '</a>';
-		}
-		$actions = apply_filters( 'tcp_product_row_actions', $actions );
+		$actions = apply_filters( 'tcp_product_row_actions', $actions, $post );
 		return $actions;
 	}
 
@@ -184,7 +169,6 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			'cb'			=> '<input type="checkbox" />',
 			'thumbnail'		=> __( 'Thumbnail', 'tcp' ),
 			'title'			=> __( 'Name', 'tcp' ),
-			'grouped_in'	=> __( 'Grouped in', 'tcp' ),
 			'sku'			=> __( 'SKU', 'tcp' ),
 			'price'			=> __( 'Price - Type', 'tcp' ),
 			//'date'			=> __( 'Date', 'tcp' ),
@@ -208,19 +192,6 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			elseif ( 'thumbnail' == $column_name ) {
 				$image = tcp_get_the_thumbnail( $post->ID, 0, 0, array( '50', '50' )  );
 				echo $image;
-			} elseif ( 'grouped_in' == $column_name ) {
-				$post_ids = tcp_get_the_parents( $post->ID );
-				$titles = '';
-				if ( is_array( $post_ids ) && count( $post_ids ) > 0 ) {
-					foreach( $post_ids as $post_id ) {
-						$titles .= get_the_title( $post_id->id_from );
-					}
-				}
-				echo $titles, '&nbsp;';
-			/*} elseif ( 'type' == $column_name ) {
-				$product_type = tcp_get_the_product_type( $post->ID );
-				$types = tcp_get_product_types();
-				echo $types[$product_type];*/
 			} elseif ( 'sku' == $column_name ) {
 				$sku = tcp_get_the_sku( $post->ID );
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
@@ -242,12 +213,12 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 	 */
 	function restrictManagePosts() {
 		global $typenow;
-		if ( $typenow == ProductCustomPostType::$PRODUCT ) {
+		if ( $typenow == TCP_PRODUCT_POST_TYPE ) {
 		//if ( tcp_is_saleable_post_type( $post->post_type ) )
 			global $wp_query;
 			wp_dropdown_categories( array(
 				'show_option_all'	=> __( 'View all categories', 'tcp' ),
-				'taxonomy'			=> ProductCustomPostType::$PRODUCT_CATEGORY,
+				'taxonomy'			=> TCP_PRODUCT_CATEGORY,
 				'name'				=> 'tcp_product_cat',
 				'orderby'			=> 'name',
 				'selected'			=> isset( $wp_query->query['term'] ) ? $wp_query->query['term'] : '',
@@ -257,12 +228,8 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 				'hide_empty'		=> true,
 			) );?>
 			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?></label>
-			<select name="tcp_product_type" id="tcp_product_type">
-				<option value="" <?php selected( "", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'all', 'tcp' );?></option>
-				<option value="SIMPLE" <?php selected( "SIMPLE", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'Simple', 'tcp' );?></option>
-				<option value="GROUPED" <?php selected( "GROUPED", isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );?>><?php _e( 'Grouped', 'tcp' );?></option>
-			</select>
-		<?php
+			<?php $product_types = tcp_get_product_types( true, __( 'all', 'tcp' ) );
+			tcp_html_select( 'tcp_product_type', $product_types, isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );
 		}
 	}
 
@@ -273,7 +240,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0) {
 			$query->query_vars['tax_query'] = array(
 				array(
-					'taxonomy'	=> ProductCustomPostType::$PRODUCT_CATEGORY,
+					'taxonomy'	=> TCP_PRODUCT_CATEGORY,
 					'terms'		=> array( $_REQUEST['tcp_product_cat'] ),
 					'field'		=> 'id',
 				),
@@ -290,7 +257,7 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 			);
 		}
 		
-		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == ProductCustomPostType::$PRODUCT ) {
+		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == TCP_PRODUCT_POST_TYPE ) {
 			global $pagenow;
 			if ( $pagenow == 'edit.php' ) {
 				global $thecartpress;
@@ -308,4 +275,6 @@ echo "register_post_type_archives( $post_type, $base_path )<br>";
 		return $query;
 	}
 }
+
+new ProductCustomPostType();
 ?>

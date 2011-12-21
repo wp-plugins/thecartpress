@@ -2,21 +2,21 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
 class OrdersSummaryDashboard {
 
@@ -27,16 +27,15 @@ class OrdersSummaryDashboard {
 			global $current_user;
 			get_currentuserinfo();
 			$customer_id = $current_user->ID;
-		}
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/'; ?>
+		} ?>
 <div class="table table_content">
 	<table style="width:100%"><tbody>
 	<?php $order_status_list = tcp_get_order_status();
 	foreach ( $order_status_list as $order_status ) : 
 		if ( $order_status['show_in_dashboard'] ) : ?>
 	<tr class="first">
-		<td class="first b"><a href="<?php echo $admin_path, 'OrdersListTable.class.php&status=', $order_status['name']; ?>"><?php echo Orders::getCountOrdersByStatus( $order_status['name'], $customer_id );?></a></td>
-		<td class="t tcp_status_<?php echo $order_status['name']; ?>"><a href="<?php echo $admin_path, 'OrdersListTable.class.php&status=', $order_status['name']; ?>"><?php echo $order_status['label']; ?></a></td>
+		<td class="first b"><a href="<?php echo TCP_ADMIN_PATH, 'OrdersListTable.php&status=', $order_status['name']; ?>"><?php echo Orders::getCountOrdersByStatus( $order_status['name'], $customer_id );?></a></td>
+		<td class="t tcp_status_<?php echo $order_status['name']; ?>"><a href="<?php echo TCP_ADMIN_PATH, 'OrdersListTable.php&status=', $order_status['name']; ?>"><?php echo $order_status['label']; ?></a></td>
 	</tr>
 		<?php endif;
 	endforeach; ?>
@@ -66,13 +65,12 @@ class OrdersSummaryDashboard {
 		<tbody>
 		<?php 
 		$alternate = true;
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 		foreach( $orders as $order ) : ?>
 			<tr class="tcp_status_<?php echo $order->status; ?><?php if ( $alternate ) : ?> tcp_alternate<?php endif; $alternate = ! $alternate;?>">
-			<td class="tcp_id"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo $order->order_id; ?></a></td>
+			<td class="tcp_id"><a href="<?php echo TCP_ADMIN_PATH;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo $order->order_id; ?></a></td>
 			<td class="tcp_date"><?php echo date( 'M d' , strtotime( $order->created_at) ); ?></td>
 			<td class="tcp_email"><?php echo $order->billing_email; ?></td>
-			<td class="tcp_status tcp_status_<?php echo $all_status[$order->status]['name']; ?>"><a href="<?php echo $admin_path;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo isset( $all_status[$order->status]['label'] ) ? $all_status[$order->status]['label'] : '&nbsp;'; ?></a></td>
+			<td class="tcp_status tcp_status_<?php echo $all_status[$order->status]['name']; ?>"><a href="<?php echo TCP_ADMIN_PATH;?>OrderEdit.php&order_id=<?php echo $order->order_id;?>"><?php echo isset( $all_status[$order->status]['label'] ) ? $all_status[$order->status]['label'] : '&nbsp;'; ?></a></td>
 			<td class="tcp_price"><?php echo tcp_format_the_price( Orders::getTotal( $order->order_id ) ); ?></td>
 			</tr>
 		<?php endforeach; ?>
@@ -85,5 +83,11 @@ class OrdersSummaryDashboard {
 	| <a class="tcp_link_to_tcp" href="http://community.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress community', 'tcp'); ?>"><?php _e( 'Visit TheCartPress community', 'tcp'); ?></a></p>
 </div>
 	<?php }
+
+	function __construct() {
+		wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders Summary', 'tcp' ), array( $this, 'show' ) );
+	}
 }
+
+new OrdersSummaryDashboard();
 ?>

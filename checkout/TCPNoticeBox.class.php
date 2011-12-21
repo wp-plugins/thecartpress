@@ -38,7 +38,7 @@ class TCPNoticeBox extends TCPCheckoutBox {
 
 	function show() {
 		$legal_notice_accept = isset( $_REQUEST['legal_notice_accept'] ) ? $_REQUEST['legal_notice_accept'] : '';?>
-		<div id="legal_notice_layer_info" class="legal_notice_layer_info checkout_info clearfix"><?php
+		<div id="legal_notice_layer_info" class="checkout_info clearfix"><?php
 			global $thecartpress;
 			$legal_notice = tcp_do_template( 'tcp_checkout_notice', false );
 			if ( strlen( $legal_notice ) == 0 ) $legal_notice = isset( $thecartpress->settings['legal_notice'] ) ? $thecartpress->settings['legal_notice'] : '';

@@ -16,16 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 
 class TCPAddressesList {
 
 	function show( $echo = true ) {
-		if ( is_admin() ) {
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/AddressEdit.php';
-		} else {
-			$admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
-		}
+		if ( is_admin() ) $admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
+		else $admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
 		if ( is_user_logged_in() ) {
 			global $current_user;
 			get_currentuserinfo();

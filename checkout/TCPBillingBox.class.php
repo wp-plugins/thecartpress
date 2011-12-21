@@ -16,8 +16,8 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/TCPCheckoutBox.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
+require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
+require_once( TCP_DAOS_FOLDER .'Countries.class.php' );
 
 class TCPBillingBox extends TCPCheckoutBox {
 	private $errors = array();
@@ -112,7 +112,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		} else {
 			$selected_billing_address = 'Y';
 		}?>
-		<div class="billing_layer_info checkout_info clearfix" id="billing_layer_info">
+		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php global $current_user;
 		get_currentuserinfo();
 		$addresses = Addresses::getCustomerAddresses( $current_user->ID );
@@ -303,7 +303,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 					<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 					<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-					<?php foreach( $regions as $id => $region ) : ?>
+					<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
 						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
 					<?php endforeach;?>
 					</select>

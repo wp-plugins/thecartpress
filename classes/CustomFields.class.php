@@ -19,7 +19,7 @@
 class TCPCustomFields {
 
 	function init() {
-		require_once( dirname( dirname( __FILE__ ) ) . '/templates/tcp_custom_fields_template.php' );
+		require_once( TCP_TEMPLATES_FOLDER . 'tcp_custom_fields_template.php' );
 	}
 
 	function admin_menu() {
@@ -37,4 +37,6 @@ class TCPCustomFields {
 		}
 	}
 }
+
+new TCPCustomFields();
 ?>

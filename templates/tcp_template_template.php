@@ -33,7 +33,11 @@ function tcp_get_templates_classes() {
 	return array_keys( $tcp_template_classes );
 }
 
-function tcp_do_template( $template_class, $echo = true ) {
+function tcp_do_template_excerpt( $template_class, $echo = true ) {
+	return tcp_do_template( $template_class, $echo, true );
+}
+
+function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 	$args = array(
 		'post_type'			=> TemplateCustomPostType::$TEMPLATE,
 		'posts_per_page'	=> -1,
@@ -53,7 +57,8 @@ function tcp_do_template( $template_class, $echo = true ) {
 		$post_id = tcp_get_current_id( get_the_ID(), TemplateCustomPostType::$TEMPLATE );
 		$post = get_post( $post_id );
 		//$html .= apply_filters( 'the_content', get_the_content() );
-		$html .= apply_filters( 'the_content', $post->post_content );
+		if ( $excerpt ) $html .= get_the_excerpt();
+		else $html .= apply_filters( 'the_content', $post->post_content );
 	}
 	wp_reset_postdata();
 	wp_reset_query();

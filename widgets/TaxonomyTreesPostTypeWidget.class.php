@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class TaxonomyTreesPostTypeWidget extends WP_Widget {
@@ -31,40 +31,35 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		//add_filter( 'get_terms', array( $this, 'get_terms' ), 9, 3 );
 	}
 	
-	//function get_terms( $terms, $taxonomies, $args ) {
-	//	if ( in_array( 'tcp_product_category', $taxonomies ) )
-	//		var_dump( $terms );
-	//	return $terms;
-	//}
-
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
-		if ( $title )	echo $before_title, $title, $after_title;
+		if ( $title ) echo $before_title, $title, $after_title;
 		$args = array(
-			//'show_option_all'    => ,
-			//'orderby'            => 'name',
-			//'order'              => 'ASC',
-			'show_last_update'   => 0,
-			'style'              => 'list',
-			'show_count'         => isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : false,
-			'hide_empty'         => isset( $instance['hide_empty_taxonomies'] ) ? $instance['hide_empty_taxonomies'] : false,
-			'use_desc_for_title' => isset( $instance['use_desc_for_title'] ) ? $instance['use_desc_for_title'] : false,
-			'child_of'           => 0,
-			//'feed'               => ,
-			//'feed_type'          => ,
-			//'feed_image'         => ,
-			//'exclude'            => ,
-			//'exclude_tree'       => ,
-			//'include'            => ,
-			'current_category'   => 0,
-			'hierarchical'       => true,
-			'title_li'           => '', //$options['txt_title_li'],
-			'number'             => NULL,
-			'echo'               => 0,
-			'depth'              => 0,
-			'taxonomy'			 => isset( $instance['taxonomy'] ) ? $instance['taxonomy'] : 'tcp_product_category',
+			//'show_option_all'		=> ,
+			//'orderby'				=> 'name',
+			//'order'				=> 'ASC',
+			'show_last_update'		=> 0,
+			'style'					=> 'list',
+			'show_count'			=> isset( $instance['see_number_products'] ) ? $instance['see_number_products'] : false,
+			'hide_empty'			=> isset( $instance['hide_empty_taxonomies'] ) ? $instance['hide_empty_taxonomies'] : false,
+			'use_desc_for_title'	=> isset( $instance['use_desc_for_title'] ) ? $instance['use_desc_for_title'] : false,
+			'child_of'				=> 0,
+			//'feed'				=> ,
+			//'feed_type'			=> ,
+			//'feed_image'			=> ,
+			//'exclude'				=> ,
+			//'exclude_tree'		=> ,
+			//'include'				=> ,
+			'current_category'		=> 0,
+			'hierarchical'			=> true,
+			'title_li'				=> '', //$options['txt_title_li'],
+			'number'				=> NULL,
+			'echo'					=> 0,
+			'depth'					=> 0,
+			'taxonomy'				=> isset( $instance['taxonomy'] ) ? $instance['taxonomy'] : TCP_PRODUCT_CATEGORY,
+			'dropdown'				=> isset( $instance['dropdown'] ) ? $instance['dropdown'] : false,
 		);
 		$excluded_taxonomies = isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : false;
 		if ( is_array( $excluded_taxonomies ) ) $args['exclude'] = implode( ",", $excluded_taxonomies );
@@ -106,6 +101,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$instance['see_number_products']	= $new_instance['see_number_products'];
 		$instance['hide_empty_taxonomies']	= isset( $new_instance['hide_empty_taxonomies'] );
 		$instance['use_desc_for_title']		= isset( $new_instance['use_desc_for_title'] );
+		$instance['dropdown']				= isset( $new_instance['dropdown'] );
 		$instance['included_taxonomies']	= isset( $new_instance['included_taxonomies'] ) ? $new_instance['included_taxonomies'] : false;
 		$instance['order_included']			= $new_instance['order_included'];
 		$instance['excluded_taxonomies']	= $new_instance['excluded_taxonomies'];
@@ -115,8 +111,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 	function form( $instance ) {
 		$defaults = array(
 			'title'					=> 'Navigation trees',
-			'post_type'				=> 'tcp_product',
-			'taxonomy'				=> 'tcp_product_category',
+			'post_type'				=> TCP_PRODUCT_POST_TYPE,
+			'taxonomy'				=> TCP_PRODUCT_CATEGORY,
 			'see_number_products'	=> true,
 			'hide_empty_taxonomies'	=> false,
 			'order_included'		=> '',
@@ -125,9 +121,9 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$see_number_products	= isset( $instance['see_number_products'] ) ? (bool)$instance['see_number_products'] : false;
 		$hide_empty_taxonomies	= isset( $instance['hide_empty_taxonomies'] ) ? (bool)$instance['hide_empty_taxonomies'] : false;
 		$use_desc_for_title		= isset( $instance['use_desc_for_title'] ) ? (bool)$instance['use_desc_for_title'] : false;
+		$dropdown				= isset( $instance['dropdown'] ) ? (bool)$instance['dropdown'] : false;
 		$included_taxonomies	= isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : array();
-		$excluded_taxonomies	= isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array();
-		?>
+		$excluded_taxonomies	= isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array(); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
@@ -135,11 +131,9 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
-				if ( $post_type != 'tcp_product_option' ) :
-					$obj_type = get_post_type_object( $post_type ); ?>
+				$obj_type = get_post_type_object( $post_type ); ?>
 				<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
-				<?php endif;
-			endforeach;?>
+			<?php endforeach;?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the list of taxonomies.', 'tcp' );?></span>
 		</p><p>
@@ -159,6 +153,9 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'use_desc_for_title' ); ?>" name="<?php echo $this->get_field_name( 'use_desc_for_title' ); ?>" <?php checked( $use_desc_for_title, true ); ?> />
 			<label for="<?php echo $this->get_field_id( 'use_desc_for_title' ); ?>"><?php _e( 'Use description for title', 'tcp' ); ?></label>
+		<br />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'dropdown' ); ?>" name="<?php echo $this->get_field_name( 'dropdown' ); ?>" <?php checked( $dropdown, true ); ?> />
+			<label for="<?php echo $this->get_field_id( 'dropdown' ); ?>"><?php _e( 'Display as dropdown', 'tcp' ); ?></label>
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>"><?php _e( 'Included and sorted', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'included_taxonomies' ); ?>[]" id="<?php echo $this->get_field_id( 'included_taxonomies' ); ?>" class="widefat" multiple size="8" style="height: auto">

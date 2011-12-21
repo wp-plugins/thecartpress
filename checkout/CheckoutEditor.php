@@ -2,23 +2,23 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
+require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
 
-$initial_path = dirname( dirname( dirname( __FILE__ ) ) );
+$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
 
 if ( isset( $_REQUEST['tcp_save_fields'] ) ) {
 	$partial_path = $_REQUEST['tcp_box_path'];
@@ -129,7 +129,6 @@ if ( $number_of_items > 0 ) :
 </ul>
 
 <?php $order_steps = TCPCheckoutManager::get_steps();
-
 foreach( $order_steps as $class_name ) {
 	if ( isset( $tcp_checkout_boxes[$class_name] ) ) unset( $tcp_checkout_boxes[$class_name] );
 }

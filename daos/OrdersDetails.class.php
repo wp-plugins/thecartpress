@@ -50,7 +50,9 @@ class OrdersDetails {
 
 	static function getDetails( $order_id ) {
 		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		$sql = $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id );
+		$sql = apply_filters( 'get_details_sql', $sql, $order_id );
+		return $wpdb->get_results( $sql );
 	}
 
 	static function getTotal( $order_id, $total = 0) {

@@ -16,14 +16,12 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
+require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
+require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-
-$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : '';
-$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
-$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : '';
+$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : '';
+$status		= isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
+$paged		= isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : '';
 
 if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders' ) ) {
 	Orders::edit( $order_id, $_REQUEST['new_status'], $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
@@ -37,18 +35,16 @@ if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders'
 	<div id="message" class="updated"><p>
 		<?php _e( 'Order deleted', 'tcp' );?>
 	</p></div>
-	<p><a href="<?php echo $admin_path;?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
+	<p><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
 	<?php
 	return;
 }
 $order = Orders::get( $order_id );
 
 if ( isset( $_REQUEST['send_email'] ) ) {
-	if ( $_REQUEST['send_email'] == 'billing' )
-		$to = $order->billing_email;
-	else
-		$to = $order->shipping_email;
-	$from = isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
+	if ( $_REQUEST['send_email'] == 'billing' ) $to = $order->billing_email;
+	else $to = $order->shipping_email;
+	$from	= isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 	//$headers .= 'To: ' . $to . "\r\n";
@@ -72,7 +68,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 
 <h2><?php _e( 'Order', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
 <?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
 	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() );?>"><?php _e( 'send email to billing email', 'tcp' );?></a></li>
@@ -186,7 +182,7 @@ if ( $order ) :?>
 	</tr>
 	<?php do_action( 'tcp_admin_order_after_editor', $order_id );?>
 	</tbody></table>
-	<p class="submit">
+	<div class="submit">
 		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
 	<?php //if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) : ?>
 	<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
@@ -198,7 +194,7 @@ if ( $order ) :?>
 			<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
 		</div>
 		<?php endif;?>
-	</p>
+	</div>
 </form>
 <?php endif;?>
 </div><!-- wrap -->

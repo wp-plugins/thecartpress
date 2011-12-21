@@ -16,9 +16,10 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+
+require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class TCPCheckoutManager {
 
@@ -140,31 +141,31 @@ class TCPCheckoutManager {
 		global $thecartpress;
 		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
-		ob_start();?>
+		ob_start(); ?>
 		<div class="checkout" id="checkout">
 		<?php $this->show_header( $box, $step );
 		if ( $step == count( $this->steps ) ) : //last step, no return
 			echo $this->create_order(); //create the order, show payment form and empty shoppingcart 
 		else :
-			if ( $box->is_form_encapsulated() ) :?><form method="post"><?php endif;?>
-		<div class="<?php echo $box->get_class();?> active" id="<?php echo $box->get_class();?>">
-			<h3><?php echo $step + 1;?>. <?php echo $box->get_title();?></h3>
+			if ( $box->is_form_encapsulated() ) :?><form method="post"><?php endif; ?>
+		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
+			<h3><?php echo $step + 1; ?>. <?php echo $box->get_title(); ?></h3>
 			<?php $see_continue_button = $box->show();
 			$html = '';
 			if ( ! $box->is_form_encapsulated() ) $html .= '<form method="post">';
-			if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" />';
+			if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" class="tcp_checkout_button" />';
 			if ( $see_continue_button && $step < count( $this->steps ) ) {
-				$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" />';
+				$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
 			}
 			$html .= '<input type="hidden" name="step" value="' . $step . '" />';
 			if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
 			if ( strlen( $html ) > 0 ) :?>
-			<span class="tcp_back_continue"><?php echo $html;?></span>
+			<span class="tcp_back_continue"><?php echo $html; ?></span>
 			<?php endif;
-			$this->show_footer( $box, $step );?>
-		</div><!-- <?php echo $box->get_class();?> -->
+			$this->show_footer( $box, $step ); ?>
+		</div><!-- <?php echo $box->get_class(); ?> -->
 		<?php if ( $box->is_form_encapsulated() ) :?></form><?php endif;
-		endif;?>
+		endif; ?>
 		</div><!-- checkout --><?php
 		return ob_get_clean();
 	}
@@ -176,11 +177,11 @@ class TCPCheckoutManager {
 			<?php foreach( $this->steps as $s => $value ) {
 				if ( $s < $step ) {
 					$b = $this->get_box( $s );
-					$url = add_query_arg( 'step', $s, get_permalink() );?>
-				<li class="tcp_ckeckout_step"><a href="<?php echo $url;?>"><?php echo $b->get_title();?></a></li>
+					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
+				<li class="tcp_ckeckout_step"><a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a></li>
 				<?php } else {
-					$b = $this->get_box( $s );?>
-				<li class="<?php if ( $s == $step ) : ?>tcp_ckeckout_active_step<?php else : ?>tcp_ckeckout_step<?php endif;?>"><span><?php echo $b->get_title();?></span></li>
+					$b = $this->get_box( $s ); ?>
+				<li class="<?php if ( $s == $step ) : ?>tcp_ckeckout_active_step<?php else : ?>tcp_ckeckout_step<?php endif; ?>"><span><?php echo $b->get_title(); ?></span></li>
 				<?php }
 			}?>
 			</ul>
@@ -188,9 +189,9 @@ class TCPCheckoutManager {
 			foreach( $this->steps as $s => $value ) {
 				if ( $s < $step ) {
 					$b = $this->get_box( $s );
-					$url = add_query_arg( 'step', $s, get_permalink() );?>
-					<div class="<?php echo $b->get_class();?>" id="<?php echo $b->get_class();?>">
-					<h3 class="tcp_ckeckout_step"><a href="<?php echo $url;?>"><?php echo $s + 1;?>. <?php echo $b->get_title();?></a></h3>
+					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
+					<div class="<?php echo $b->get_class(); ?>" id="<?php echo $b->get_class(); ?>">
+					<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>"><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></a></h3>
 					</div>
 				<?php }
 			}
@@ -202,8 +203,8 @@ class TCPCheckoutManager {
 		} elseif ( $this->checkout_type == TCPCheckoutManager::$ACCORDION ) {
 			foreach( $this->steps as $s => $value ) {
 				if ( $s > $step ) {
-				$b = $this->get_box( $s );?>
-					<h3 class="tcp_ckeckout_step"><span><?php echo $s + 1;?>. <?php echo $b->get_title();?></span></h3>
+				$b = $this->get_box( $s ); ?>
+					<h3 class="tcp_ckeckout_step"><span><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></span></h3>
 				<?php }
 			}
 		}
@@ -215,7 +216,7 @@ class TCPCheckoutManager {
 			$checkout_box = isset( $this->steps[$step] ) ? $this->steps[$step] : false;
 			if ( $checkout_box ) {
 				global $tcp_checkout_boxes;
-				$initial_path = dirname( dirname( dirname( __FILE__ ) ) );
+				$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
 				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box] );
 				return new $checkout_box();
 			} else {
@@ -363,7 +364,7 @@ class TCPCheckoutManager {
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
 			$order['shipping_amount'] = 0;
 			//$order['shipping_method'] = $class;
-			$order['shipping_method'] = $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) . ' [' . $class . ']';
+			$order['shipping_method'] = $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );// . ' [' . $class . ']';
 		} else {
 			$order['shipping_amount'] = 0;
 			$order['shipping_method'] = '';
@@ -379,7 +380,7 @@ class TCPCheckoutManager {
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $payment_amount, __( 'Payment cost', 'tcp' ) );
 			$order['payment_method'] = $class;
 			//$order['payment_name']   = $payment_method->getName();
-			$order['payment_name']   = $payment_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) . ' [' . $payment_method->getName() . ']';
+			$order['payment_name']   = $payment_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );// . ' [' . $payment_method->getName() . ']';
 		} else {
 			$order['payment_amount'] = 0;
 			$order['payment_method'] = '';
@@ -425,7 +426,7 @@ class TCPCheckoutManager {
 			$ordersDetails['weight']			= $item->getWeight();
 			$ordersDetails['is_downloadable']	= $item->isDownloadable() ? 'Y' : '';
 			$ordersDetails['sku']				= $sku;
-			$ordersDetails['name']				= $post->post_title;
+			$ordersDetails['name']				= tcp_get_the_title( $post->ID );
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
 			//$ordersDetails['price']				= $item->getUnitPrice();
@@ -493,14 +494,14 @@ class TCPCheckoutManager {
 			do_action( 'tcp_checkout_calculate_other_costs' );
 			$html .= '<div class="tcp_pay_form">';
 			ob_start();
-			$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id );
-			$html .= ob_get_clean();
+			$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
+			<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
+			<?php $html .= ob_get_clean();
 			$html .= '</div>';
 		}
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;
 		$html .= $order_page;
-
 		$html .= '<br />';
 		$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 		$html .= '</div><!-- tcp_payment_area-->' . "\n";

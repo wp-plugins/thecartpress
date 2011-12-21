@@ -154,9 +154,7 @@ $allowed_ext = array(
 );
 
 if ( isset( $_REQUEST['order_detail_id'] ) ) {
-	$order_detail_id = $_REQUEST['order_detail_id'];
-
-	define('WP_INSTALLING', true);
+/*	define('WP_INSTALLING', true);
 	$root = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) ;
 	//Loading wordpress enviorenment (+ plugins)
 	require_once( $root . '/wp-load.php' );
@@ -173,8 +171,12 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 		}
 		unset( $plugin );
 	}
-	unset( $current_plugins );
+	unset( $current_plugins );*/
+	$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) . '/';
+	include_once( $wordpress_path . 'wp-config.php' );
+	include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
+	$order_detail_id = $_REQUEST['order_detail_id'];
 	global $wpdb;
 	global $current_user;
 	get_currentuserinfo();

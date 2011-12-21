@@ -196,7 +196,9 @@ class Orders {
 		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where 1=1';
 		if ( $status != '' ) $sql .= ' and status=%s';
 		if ( $customer_id > -1 ) $sql .= ' and customer_id = %d';
-		return $wpdb->get_var( $wpdb->prepare( $sql, $status, $customer_id ) );
+		$sql = $wpdb->prepare( $sql, $status, $customer_id );
+		$sql = apply_filters( 'get_count_orders_by_status_sql', $sql, $status , $customer_id );
+		return $wpdb->get_var( $sql );
 	}
 
 	/**
@@ -210,17 +212,9 @@ class Orders {
 				payment_method, payment_amount, transaction_id, order_currency_code,
 				code_tracking, is_downloadable, max_downloads, expires_at, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
-				$wpdb->prefix . 'tcp_orders_details od
-				on o.order_id = od.order_id';
-		if ( strlen( $status ) > 0 ) {
-			if ( $customer_id > -1 ) {
-				$sql = $wpdb->prepare( $sql . ' where status = %s and customer_id = %d', $status, $customer_id );
-			} else {
-				$sql = $wpdb->prepare( $sql . ' where status = %s', $status );
-			}
-		} elseif ( $customer_id > -1 ) {
-			$sql = $wpdb->prepare( $sql . ' where customer_id = %d', $customer_id );
-		}
+				$wpdb->prefix . 'tcp_orders_details od on o.order_id = od.order_id where 1=1';
+		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
+		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );		
 		$sql .= ' order by created_at desc';
 		return $wpdb->get_results( $sql );
 	}
@@ -231,21 +225,11 @@ class Orders {
 				status, shipping_method, shipping_amount, discount_amount, payment_name,
 				payment_method, payment_amount, transaction_id, order_currency_code,
 				code_tracking, billing_email
-				from ' . $wpdb->prefix . 'tcp_orders ';
-				//o left join ' .
-				//$wpdb->prefix . 'tcp_orders_details od
-				//on o.order_id = od.order_id';
-		if ( strlen( $status ) > 0 ) {
-			if ( $customer_id > -1 ) {
-				$sql = $wpdb->prepare( $sql . ' where status = %s and customer_id = %d', $status, $customer_id );
-			} else {
-				$sql = $wpdb->prepare( $sql . ' where status = %s', $status );
-			}
-		} elseif ( $customer_id > -1 ) {
-			$sql = $wpdb->prepare( $sql . ' where customer_id = %d', $customer_id );
-		}
-		$sql .= ' order by created_at desc';
-		$sql = $wpdb->prepare( $sql . ' limit %d, %d', ($paged-1) * $per_page, $per_page );
+				from ' . $wpdb->prefix . 'tcp_orders where 1=1';
+		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
+		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
+		$sql .= ' order by created_at desc' . $wpdb->prepare( ' limit %d, %d', ($paged-1) * $per_page, $per_page );
+		$sql = apply_filters( 'get_orders_ex_sql', $sql, $paged, $per_page, $status, $customer_id );
 		return $wpdb->get_results( $sql );
 	}
 
@@ -375,22 +359,15 @@ class Orders {
 		global $wpdb;
 		$sql = 'select order_id, billing_firstname,
 				billing_lastname, created_at, customer_id, status, billing_email, billing_country
-				from ' . $wpdb->prefix . 'tcp_orders';
-		if ( strlen( $status ) > 0 ) {
-			if ( $customer_id > -1 ) {
-				$sql = $sql . $wpdb->prepare( ' where status = %s and customer_id = %d', $status, $customer_id );
-			} else {
-				$sql = $sql . $wpdb->prepare( ' where status = %s', $status );
-			}
-		} elseif ( $customer_id > -1 ) {
-			$sql = $sql . $wpdb->prepare( ' where customer_id = %d', $customer_id );
-		}
-		$sql = $sql . $wpdb->prepare(' order by created_at desc limit 0, %d', $limit );
+				from ' . $wpdb->prefix . 'tcp_orders where 1=1 ';
+		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
+		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );		
+		$sql .= $wpdb->prepare(' order by created_at desc limit 0, %d', $limit );
 		return $wpdb->get_results( $sql );
 	}
 
 	/**
-	 * Author: Joy Reynolds and TheCartPress team
+	 * @author: Joy Reynolds and TheCartPress team
 	 */
 	static function getCounts( $status = '', $days_prev = 7, $customer_id = -1 ) {
 		global $wpdb;
@@ -401,12 +378,13 @@ class Orders {
 		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' AND customer_id = %d', $customer_id );
 		$sql .= ' GROUP BY DATE(created_at)';
 		$sql = $wpdb->prepare( $sql, $days_prev );
+		$sql = apply_filters( 'get_counts_sql', $sql, $status, $days_prev, $customer_id );
 		return $wpdb->get_results( $sql );
 	}
 
 	static function getAmountByDay( $date, $status = '' ) {
 		global $wpdb;
-		
+
 		$tomorrow = date( 'Y-m-d', strtotime( $date . ' +1 day' ) );
 		$sql = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'tcp_orders where created_at > %s and created_at < %s', $date, $tomorrow );
 		if ( $status != '' ) $sql .= $wpdb->prepare( ' AND status = %s', $status );

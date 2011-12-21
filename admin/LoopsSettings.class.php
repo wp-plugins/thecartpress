@@ -16,26 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TCP_LoopsSettings {
+class TCPLoopsSettings {
 
-	function __construct() {
-		$settings = get_option( 'tcp_settings' );
-		if ( is_admin() ) {
-			if ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
-				add_action( 'admin_init', array( $this, 'admin_init' ) );
-				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			}
-		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] == 'yes' ) {
-			add_filter( 'template_include', array( $this, 'template_include' ) );
-		}
-	}
-
-	function contextual_help( $contextual_help, $screen_id, $screen ) {
+	/*function contextual_help( $contextual_help, $screen_id, $screen ) {
 		if ( $screen_id == 'thecartpress_page_tcp_loopssettings_page' ) {
 			$contextual_help = 'This is where I would provide help to the user on how everything in my admin panel works. Formatted HTML works fine in here too.';
 		}
 		return $contextual_help;
-	}
+	}*/
 
 	function admin_init() {
 		register_setting( 'twentytencart_options', 'ttc_settings', array( $this, 'validate' ) );
@@ -256,7 +244,6 @@ class TCP_LoopsSettings {
 
 	function template_include( $template ) {
 		global $wp_query;
-
 		if ( isset( $wp_query->tax_query ) ) {
 			foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
@@ -267,5 +254,19 @@ class TCP_LoopsSettings {
 		}
 		return $template;
 	}
+	
+	function __construct() {
+		$settings = get_option( 'tcp_settings' );
+		if ( is_admin() ) {
+			if ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
+				add_action( 'admin_init', array( $this, 'admin_init' ) );
+				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			}
+		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] == 'yes' ) {
+			add_filter( 'template_include', array( $this, 'template_include' ) );
+		}
+	}
 }
+
+new TCPLoopsSettings();
 ?>

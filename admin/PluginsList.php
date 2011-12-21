@@ -2,21 +2,20 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This progam is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 $plugin_type = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'payment'; ?>
 
 <div class="wrap">
@@ -80,8 +79,8 @@ foreach( $plugins as $id => $plugin ) :
 		$out = __( 'Not in use', 'tcp' );
 	}?>
 	<tr <?php echo $tr_class;?>>
-		<td><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>" title="<?php _e( 'Edit', 'tcp' );?>"><?php echo $plugin->getTitle();?></a>
-		<div class="tcp_plugins_edit" style="display: none;"><a href="<?php echo $admin_path;?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>"><?php _e( 'edit', 'tcp' );?></a></div></td>
+		<td><a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>" title="<?php _e( 'Edit', 'tcp' );?>"><?php echo $plugin->getTitle();?></a>
+		<div class="tcp_plugins_edit" style="display: none;"><a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $plugin_type;?>"><?php _e( 'edit', 'tcp' );?></a></div></td>
 		<td><?php echo $plugin->getDescription();?></td>
 		<td><?php echo $out;?></td>
 	</tr>

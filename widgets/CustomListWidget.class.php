@@ -33,6 +33,7 @@ class CustomListWidget extends WP_Widget {
 
 	function widget( $args, $loop_args, $instance ) {
 		extract( $args );
+		
 		query_posts( $loop_args );
 		if ( ! have_posts() ) {
 			wp_reset_query();
@@ -65,7 +66,7 @@ class CustomListWidget extends WP_Widget {
 				$title_tag = '';
 				$title_end_tag = '';
 			} ?>
-			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+			<div id="post-<?php the_ID(); ?>" class="<?php post_class(); ?>">
 				<?php do_action( 'tcp_before_custom_list_widget_item', get_the_ID() );?>
 				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">

@@ -19,7 +19,7 @@
 class ProductOptionsForTheCartPress {
 	function admin_init() {
 		add_filter( 'tcp_product_row_actions', array( $this, 'productRowActions' ) );
-		$tcp_settings_page = dirname( dirname ( __FILE__ ) ) . '/admin/TCP_Settings.class.php';
+		$tcp_settings_page = TCP_ADMIN_FOLDER . 'Settings.class.php';
 		add_settings_field( 'options_type', __( 'Options type', 'tcp' ), array( $this, 'show_options_type' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 	}
 
@@ -44,10 +44,9 @@ class ProductOptionsForTheCartPress {
 	function productRowActions( $actions ) {
 		global $post;
 		if ( $post->post_type == 'tcp_product' && tcp_get_the_product_type( $post->ID ) == 'SIMPLE' ) {
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
 			$count = RelEntities::count( $post->ID, 'OPTIONS' );
 			$count = ( $count > 0 ) ? ' (' . $count . ')' : '';
-			$actions['tcp_options'] = '<a href="' . $admin_path . 'OptionsList.php&post_id=' . $post->ID . '" title="' . esc_attr( __( 'options', 'tcp_op' ) ) . '">' . __( 'options', 'tcp_op' ) . $count . '</a>';
+			$actions['tcp_options'] = '<a href="' . TCP_ADMIN_PATH . 'OptionsList.php&post_id=' . $post->ID . '" title="' . esc_attr( __( 'options', 'tcp_op' ) ) . '">' . __( 'options', 'tcp_op' ) . $count . '</a>';
 		}
 		return $actions;
 	}
@@ -57,8 +56,7 @@ class ProductOptionsForTheCartPress {
 			echo '<li>|</li>';
 			$count = RelEntities::count( $post_id, 'OPTIONS' );
 			$count = $count > 0 ? ' (' . $count . ')' : '';
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__  ) ) ) . '/admin/';
-			echo '<li><a href="', $admin_path, 'OptionsList.php&post_id=', $post_id, '">', __( 'options', 'tcp_op' ), $count, '</a></li>';
+			echo '<li><a href="', TCP_ADMIN_PATH, 'OptionsList.php&post_id=', $post_id, '">', __( 'options', 'tcp_op' ), $count, '</a></li>';
 		}
 	}
 
@@ -66,16 +64,14 @@ class ProductOptionsForTheCartPress {
 		if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {
 			$count = RelEntities::count( $post_id, 'OPTIONS' );
 			$count = $count > 0 ? ' (' . $count . ')' : '';
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__  ) ) ) . '/admin/';
-			echo '<li><a href="', $admin_path, 'OptionsList.php&post_id=', $post_id, '">', __( 'Manage options', 'tcp_op' ), $count, '</a></li>';
+			echo '<li><a href="', TCP_ADMIN_PATH, 'OptionsList.php&post_id=', $post_id, '">', __( 'Manage options', 'tcp_op' ), $count, '</a></li>';
 		}
 	}
 	function tcp_assigned_products_product_toolbar( $parent_id, $post_id ) {
 		if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) {
 			$count = RelEntities::count( $post_id, 'OPTIONS' );
 			$count = $count > 0 ? ' (' . $count . ')' : '';
-			$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-			echo '&nbsp;|&nbsp;<a href="', $admin_path, 'OptionsList.php&post_id=', $post_id, '">', __( 'options', 'tcp_op' ), $count, '</a>';
+			echo '&nbsp;|&nbsp;<a href="', TCP_ADMIN_PATH, 'OptionsList.php&post_id=', $post_id, '">', __( 'options', 'tcp_op' ), $count, '</a>';
 		}
 	}
 
@@ -87,7 +83,7 @@ class ProductOptionsForTheCartPress {
 		} elseif ( $options_type == 'single' ) {//one combo
 			$product_price = tcp_get_the_price_to_show( $post_id );
 			$script = ' var id = jQuery(this).val(); id = id.split(\'-\'); if (id.length > 1) id = id[1]; if (jQuery(\'.tcp_thumbnail_option_\' + id).length) {jQuery(\'.tcp_thumbnail_' . $post_id .'\').hide();jQuery(\'.tcp_thumbnail_option_\' + id).show();}';
-			$out = '<select name="tcp_option_id[]" id="tcp_option_id" onchange="' . $script . '">' . "\n";
+			$out = '<select name="tcp_option_id[]" id="tcp_option_id_' . $post_id . '" onchange="' . $script . '">' . "\n";
 			//$price = tcp_get_the_price( $post_id );
 			$options = RelEntitiesOptions::getOptionsTree( tcp_get_default_id( $post_id, get_post_type( $post_id ) ) );
 			foreach( $options as $option_id => $option ) {
@@ -589,9 +585,8 @@ class ProductOptionsForTheCartPress {
 	// end Custom fields hooks
 	//
 	function init() {
-		require_once( dirname( dirname( __FILE__ ) ) . '/customposttypes/OptionCustomPostType.class.php' );
-		new OptionCustomPostType();
-		require_once( dirname( dirname( __FILE__ ) ) . '/daos/RelEntitiesOptions.class.php' );
+		require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'OptionCustomPostType.class.php' );
+		require_once( TCP_DAOS_FOLDER . 'RelEntitiesOptions.class.php' );
 	}
 
 	function __construct() {
@@ -602,11 +597,7 @@ class ProductOptionsForTheCartPress {
 			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
 			add_action( 'tcp_relations_metabox_options_toolbar', array( $this, 'tcp_relations_metabox_options_toolbar' ) );
 			add_action( 'tcp_assigned_products_product_toolbar', array( $this, 'tcp_assigned_products_product_toolbar' ), 10, 2 );
-			require_once( dirname( dirname( __FILE__ ) ) . '/metaboxes/OptionCustomFieldsMetabox.class.php' );
-			$optionCustomFieldsMetabox = new OptionCustomFieldsMetabox();
-			add_action( 'admin_menu', array( $optionCustomFieldsMetabox, 'registerMetaBox' ) );
-			add_action( 'save_post', array( $optionCustomFieldsMetabox, 'saveCustomFields' ), 1, 2 );
-			add_action( 'delete_post', array( $optionCustomFieldsMetabox, 'deleteCustomFields' ) );
+			require_once( TCP_METABOXES_FOLDER . 'OptionCustomFieldsMetabox.class.php' );
 
 			add_action( 'tcp_update_price_search_controls', array( $this, 'tcp_update_price_search_controls' ) );
 			add_action( 'tcp_update_price', array( $this, 'tcp_update_price' ) );
@@ -629,4 +620,6 @@ class ProductOptionsForTheCartPress {
 		}
 	}
 }
+
+new ProductOptionsForTheCartPress();
 ?>

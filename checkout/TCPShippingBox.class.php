@@ -144,7 +144,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				$default_address = Addresses::getCustomerDefaultShippingAddress( $current_user->ID );
 				$default_address_id = $default_address ? $default_address->address_id : 0;
 			}?>
-			<div id="selected_shipping_area" class="clearfix" <?php if ( $selected_shipping_address != 'Y' ) : ?>style="display:none"<?php endif;?>>
+			<div id="selected_shipping_area" class="checkout_info clearfix" <?php if ( $selected_shipping_address != 'Y' ) : ?>style="display:none"<?php endif;?>>
 				<label for="selected_shipping_id"> <?php _e( 'Select shipping address:', 'tcp' );?></label>
 				<br />
 				<select id="selected_shipping_id" name="selected_shipping_id">
@@ -323,7 +323,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 					<?php $regions = apply_filters( 'tcp_load_regions_for_shipping', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 					<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-					<?php foreach( $regions as $id => $region ) : ?>
+					<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
 						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
 					<?php endforeach;?>
 					</select>

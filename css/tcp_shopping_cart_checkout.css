@@ -1,6 +1,3 @@
-@charset "utf-8";
-/* CSS Document */
-
 /* SHOPPING CART THE WORDPRESS CART
 -------------------------------------------------------------- */
 table#tcp_shopping_cart_table {
@@ -378,13 +375,13 @@ p.login-lostpassword {
 }
 
 /* Checkout resume */
-div#shipping_info {
+div#shipping_info, div#billing_info {
 	width: inherit;
 	float: left;
+	padding: 0 1em 1em;
+	font-size:.8em;
 }
 div#billing_info {
-	width: inherit;
-	float: left;
 	margin-left: 40px;
 }
 div#shipping_info h3,
@@ -392,6 +389,7 @@ div#billing_info h3{
 	margin-bottom:6px;
 	padding-right: 10px;
 	font-weight: bold;
+	font-size:.95em;
 }
 #tcp_status {
 	clear: both;
@@ -424,3 +422,44 @@ ul.tcp_checkout_bar li {display: inline; padding-right: 2em;}
 li.tcp_checkout_active_step span{font-weight:bold;}
 
 .tcp_item_discount {padding-left: 1em;}
+
+
+
+
+#tcp_order_id, #tcp_status {
+	padding:1em 0;
+}
+#tcp_status {
+}
+#tcp_order_id span, #tcp_status span {
+	font-weight:bold;
+}
+#tcp_order_id span span, #tcp_status span span{
+	font-weight:normal;
+}
+#tcp_status span span.tcp_status{
+	font-weight:bold;
+	color:#C00;
+}
+
+.tcp-button-endcheckout {
+    background: url("http://haiku-futon.com/wp-content/plugins/thecartpress-ceca/images/black_button.png") no-repeat scroll 0 0 transparent;
+    border: 0 none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font: bold 18px/45px Arial,Helvetica,sans-serif;
+    height: 45px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    width: 263px;
+}
+
+
+
+
+
+
+
+
+
+

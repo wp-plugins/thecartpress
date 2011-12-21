@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
-require_once( dirname(dirname( __FILE__ ) ) . '/daos/Taxes.class.php' );
-
-		
+require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
+	
 class ProductCustomFieldsMetabox {
 
-	function registerMetaBox() {
+	function register_metabox() {
 		$saleable_post_types = tcp_get_saleable_post_types();
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
@@ -53,57 +52,35 @@ class ProductCustomFieldsMetabox {
 			if ( $post_id > 0 )
 				$tcp_product_parent_id = RelEntities::getParent( $post_id );
 		}
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-		?>
+		if ( $post->post_type == TCP_PRODUCT_POST_TYPE ) : ?>
 		<ul class="subsubsub">
 			<?php $count = RelEntities::count( $post_id, 'PROD-PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=tcp_product&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=tcp_product&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&post_type_to=post&rel_type=PROD-POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'PROD-CAT_POST' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of posts', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'PROD-CAT_PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=PROD-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
 			<!--<li>|</li>
-			<li><a href="<?php echo $admin_path;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>CopyProduct.php&post_id=<?php echo $post_id;?>"><?php _e( 'copy product', 'tcp' );?></a></li>
 			-->
 		</ul>
 		<div class="clear"></div>
-		<ul class="subsubsub">
-		<?php
-		$product_type = tcp_get_the_product_type( $post_id );
-		if ( 'SIMPLE' == $product_type ) :
-			$parents = RelEntities::getParents( $post_id );
-			if ( is_array( $parents ) && count( $parents ) > 0 ) :
-				$parent = $parents[0]->id_from; ?>
-				<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $parent;?>&rel_type=GROUPED"><?php _e( 'parent\'s assigned products', 'tcp' );?></a></li>
-			<?php endif;
-		elseif ( 'GROUPED' == $product_type ) :
-			$count = RelEntities::count( $post_id );
-			if ( $count > 0 ) $count = ' (' . $count . ')';
-			else $count = ''; ?>
-			<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'grouped products', 'tcp' );?><?php echo $count;?></a></li>
-			<li>|</li>
-			<li><a href="post-new.php?post_type=<?php echo ProductCustomPostType::$PRODUCT;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=<?php echo $tcp_rel_type; ?>"><?php _e( 'create new grouped product', 'tcp' );?></a></li>
 		<?php endif; ?>
+		<ul class="subsubsub">
 		<?php do_action( 'tcp_product_metabox_toolbar', $post_id );?>
-		<?php if ( tcp_is_downloadable( $post_id ) ) :?>
-			<li>|</li>
-			<li><a href="<?php echo $admin_path;?>UploadFiles.php&post_id=<?php echo $post_id;?>"><?php echo __( 'file upload', 'tcp' ), $count;?></a></li>
-			<!--<li>|</li>
-			<li><a href="<?php echo $admin_path;?>FilesList.php&post_id=<?php echo $post_id;?>"><?php echo __( 'files', 'tcp' ), $count;?></a></li>-->
-		<?php endif;?>
 		</ul>
 		<?php if ( $create_grouped_relation ): ?>
 			<input type="hidden" name="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id; ?>" />
@@ -114,7 +91,7 @@ class ProductCustomFieldsMetabox {
 			<table class="form-table"><tbody>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_type"><?php _e( 'Type', 'tcp' );?>:</label></th>
-				<td><?php tcp_html_select( 'tcp_type', tcp_get_product_types(), $product_type ); ?></td>
+				<td><?php tcp_html_select( 'tcp_type', tcp_get_product_types(), tcp_get_the_product_type( $post_id ) ); ?></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' );?>:</label></th>
@@ -177,34 +154,6 @@ class ProductCustomFieldsMetabox {
 				<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' );?>:</label></th>
 				<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_sku', true ) );?>" class="regular-text" type="text" style="width:12em"></td>
 			</tr>
-
-			<tr valign="top">
-				<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
-				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ):?>checked <?php endif;?> 
-				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
-				<?php if ( tcp_is_downloadable( $post_id ) ) : ?>
-					<span class="description"><?php _e( 'File','tcp' );?>:<?php echo tcp_get_the_file( $post_id );?></span>
-				<?php endif;?>
-				</td>
-			</tr>
-			<?php
-			if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) )
-				$style = '';
-			else
-				$style = 'style="display:none;"';
-			?>
-			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
-				<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
-				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
-				<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
-				</td>
-			</tr>
-			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
-				<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
-				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
-				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
-				</td>
-			</tr>
 			<?php do_action( 'tcp_product_metabox_custom_fields', $post_id );?>
 			</tbody></table>
 		</div> <!-- form-wrap -->
@@ -223,12 +172,12 @@ class ProductCustomFieldsMetabox {
 			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id, $rel_type ) ) 
 				RelEntities::insert( $tcp_product_parent_id, $post_id, $rel_type );
 			$args = array( 'fields' => 'ids' );
-			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$PRODUCT_CATEGORY, array( 'fields' => 'ids' ) );
-			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$PRODUCT_CATEGORY );
-			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$PRODUCT_TAG, array( 'fields' => 'names' ) );
-			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$PRODUCT_TAG );
-			$terms = wp_get_post_terms( $tcp_product_parent_id, ProductCustomPostType::$SUPPLIER_TAG, array( 'fields' => 'ids' ) );
-			wp_set_post_terms( $post_id, $terms, ProductCustomPostType::$SUPPLIER_TAG );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_PRODUCT_CATEGORY, array( 'fields' => 'ids' ) );
+			wp_set_post_terms( $post_id, $terms, TCP_PRODUCT_CATEGORY );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_PRODUCT_TAG, array( 'fields' => 'names' ) );
+			wp_set_post_terms( $post_id, $terms, TCP_PRODUCT_TAG );
+			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_SUPPLIER_TAG, array( 'fields' => 'ids' ) );
+			wp_set_post_terms( $post_id, $terms, TCP_SUPPLIER_TAG );
 		}
 		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
 		if ( $tax_id > 0 ) {
@@ -239,9 +188,6 @@ class ProductCustomFieldsMetabox {
 		}
 		update_post_meta( $post_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
 		update_post_meta( $post_id, 'tcp_exclude_range', isset( $_POST['tcp_exclude_range'] ) );
-		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] ) ? $_POST['tcp_is_downloadable'] == 'yes' : false );
-		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] ) ? (int)$_POST['tcp_max_downloads'] : 0 );
-		update_post_meta( $post_id, 'tcp_days_to_expire', isset( $_POST['tcp_days_to_expire'] ) ? (int)$_POST['tcp_days_to_expire'] : 0 );
 		if ( isset( $_POST['tcp_type'] ) ) {
 			$type = $_POST['tcp_type'];
 			$is_visible = isset( $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : false;
@@ -290,9 +236,6 @@ class ProductCustomFieldsMetabox {
 		delete_post_meta( $post_id, 'tcp_type' );
 		delete_post_meta( $post_id, 'tcp_is_visible' );
 		delete_post_meta( $post_id, 'tcp_hide_buy_button' );
-		delete_post_meta( $post_id, 'tcp_is_downloadable' );
-		delete_post_meta( $post_id, 'tcp_max_downloads' );
-		delete_post_meta( $post_id, 'tcp_days_to_expire' );
 		delete_post_meta( $post_id, 'tcp_weight' );
 		delete_post_meta( $post_id, 'tcp_sku' );
 		delete_post_meta( $post_id, 'tcp_order' );
@@ -324,5 +267,11 @@ class ProductCustomFieldsMetabox {
 			TheCartPressSearchEngine::refresh();
 		}
 	}
+	
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+	}
 }
+
+new ProductCustomFieldsMetabox();
 ?>

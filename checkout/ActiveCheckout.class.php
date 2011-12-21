@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+
 class ActiveCheckout {//shortcode
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
@@ -45,7 +47,7 @@ class ActiveCheckout {//shortcode
 			//if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
 			$html .= '<br>';
 			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
-			unset( $_SESSION['order_page'] );
+			//unset( $_SESSION['order_page'] );
 			$html .= '<br />';
 			$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 			do_action( 'tcp_checkout_end', $order_id );
@@ -76,19 +78,19 @@ class ActiveCheckout {//shortcode
 			);
 			$param = apply_filters( 'tcp_checkout_validate_before_enter', $param );
 			if ( ! $param['validate'] ) {
-				require_once( dirname( dirname( __FILE__ ) ) . '/shortcodes/ShoppingCartPage.class.php' );
-				$shoppingCartPage = new TCP_ShoppingCartPage();
-				echo $shoppingCartPage->show( $param['msg'] );
-				return;
+				require_once( TCP_SHORTCODES_FOLDER .'ShoppingCartPage.class.php' );
+				$shoppingCartPage = new TCPShoppingCartPage();
+				return $shoppingCartPage->show( $param['msg'] );
+			} else {
+				require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
+				$checkoutManager = new TCPCheckoutManager();
+				return $checkoutManager->show();
 			}
-			require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
-			$checkoutManager = new TCPCheckoutManager();
-			return $checkoutManager->show();
 		}
 	}
 
 	static function sendMails( $order_id, $additional_msg = '', $only_for_customers = false ) {
-		require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
+		require_once( TCP_CLASSES_FOLDER .'OrderPage.class.php' );
 		global $thecartpress;
 		$order = Orders::get( $order_id );
 		if ( $order ) {
@@ -100,7 +102,9 @@ class ActiveCheckout {//shortcode
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to_customer . "\r\n";
-			$headers .= 'From: ' . $from . "\r\n";
+			//$name = substr( $from, 0, strpos( $from, '@' ) );
+			$name = get_bloginfo( 'name' );
+			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
 			$message = '';
@@ -116,7 +120,8 @@ class ActiveCheckout {//shortcode
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 					//$headers .= 'To: ' . $to . "\r\n";
-					$headers .= 'From: ' . $from . "\r\n";
+					$name = substr( $from, 0, strpos( $from, '@' ) );
+					$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
 					wp_mail( $to, $subject, $message_to_merchant, $headers );
 				}
@@ -124,4 +129,6 @@ class ActiveCheckout {//shortcode
 		}
 	}
 }
+
+add_shortcode( 'tcp_checkout', array( new ActiveCheckout(), 'show' ) );
 ?>

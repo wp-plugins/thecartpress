@@ -54,7 +54,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		} elseif ( $selected_shipping_address == 'Y' ) {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}?>
-		<div id="cart_layer_info" class="cart_layer_info checkout_info clearfix">
+		<div id="cart_layer_info" class="checkout_info clearfix">
 		 	<?php do_action( 'tcp_checkout_cart_before' );
 			$this->showOrderCart( $shipping_country );
 		 	do_action( 'tcp_checkout_cart_after' );

@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class ShoppingCartSummaryWidget extends WP_Widget {
@@ -33,11 +33,11 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$hide_if_empty = isset( $instance['hide_if_empty'] ) ? $instance['hide_if_empty'] : false;
 		if ( $hide_if_empty && $shoppingCart->isEmpty() ) return;
-
 		extract( $args );
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : ' ' );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
+		$instance['widget_id'] = $widget_id;
 		tcp_get_shopping_cart_summary( $instance );
 		echo $after_widget;
 	}

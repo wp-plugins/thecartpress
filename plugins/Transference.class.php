@@ -26,7 +26,7 @@ class Transference extends TCP_Plugin {
 		return 'Transference payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data ) { ?>
 		<tr valign="top">
 		<th scope="row">
 			<label for="notice"><?php _e( 'Notice', 'tcp' ); ?>:</label>

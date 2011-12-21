@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname(dirname( __FILE__ ) ) . '/daos/RelEntities.class.php' );
+require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
 class RelationsMetabox {
-	function registerMetaBox() {
+	function register_metabox() {
 		$saleable_post_types = tcp_get_saleable_post_types();
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
@@ -39,10 +39,11 @@ class RelationsMetabox {
 	function show_grouped( $post_id ) {
 		$count = RelEntities::count( $post_id );
 		if ( $count > 0 ) $count = ' (' . $count . ')';
-		else $count = '';
-		$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/'; ?>
+		else $count = ''; ?>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'Manage grouped products', 'tcp' );?><?php echo $count;?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'Manage grouped products', 'tcp' );?><?php echo $count;?></a></li>
+	<li>|</li>
+	<li><a href="post-new.php?post_type=<?php echo TCP_PRODUCT_POST_TYPE;?>&tcp_product_parent_id=<?php echo $post_id;?>&rel_type=GROUPED"><?php _e( 'Create new grouped product', 'tcp' );?></a></li>
 	<?php do_action( 'tcp_relations_metabox_grouped_toolbar', $post_id ); ?>
 </ul>
 <div class="form-wrap">
@@ -157,5 +158,11 @@ if ( is_array( $options ) && count( $options ) > 0 ) :
 </table>
 </div><?php
 	}
+	
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+	}
 }
+
+new RelationsMetabox();
 ?>

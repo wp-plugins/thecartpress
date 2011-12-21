@@ -54,7 +54,7 @@ require($wordpress_path . 'wp-blog-header.php');
     }
 	.tcp_shopping_cart_table .tcp_cart_name {
 		text-align: left;
-		background-color: #f0f0f0;
+		bbackground-color: #f0f0f0;
 	    width: inherit;
 	    font-size: 12px;
 	}

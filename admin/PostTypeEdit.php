@@ -1,19 +1,19 @@
 <?php
 /**
- * This file is part of wp-posttype-engine.
+ * This file is part of TheCartPtess.
  * 
- * wp-posttype-engine is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * wp-posttype-engine is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with wp-posttype-engine.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 if ( !function_exists( 'ad_selected_multiple' ) ) {
@@ -28,9 +28,8 @@ if ( !function_exists( 'ad_selected_multiple' ) ) {
 	}
 }
 
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-$load_from_request = false;
-$posttype_id = isset( $_REQUEST['posttype_id'] ) ? $_REQUEST['posttype_id'] : -1;
+$load_from_request	= false;
+$posttype_id		= isset( $_REQUEST['posttype_id'] ) ? $_REQUEST['posttype_id'] : -1;
 
 if ( isset( $_REQUEST['save_posttype'] ) ) {
 	$_REQUEST['name_id'] = str_replace( ' ' , '-', $_REQUEST['name_id'] );
@@ -143,7 +142,7 @@ if ( $load_from_request ) {
 <div class="wrap">
 <h2><?php _e( 'Post type', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path;?>PostTypeList.php"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PostTypeList.php"><?php _e( 'return to the list', 'tcp' );?></a></li>
 </ul>
 <div class="clear"></div>
 

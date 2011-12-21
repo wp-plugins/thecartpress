@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
+require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
 $rel_type = isset( $_REQUEST['rel_type'] ) ? $_REQUEST['rel_type'] : 'CAT_POST-CAT_PROD';
 
@@ -34,10 +34,7 @@ if ( isset( $_REQUEST['tcp_save_related_categories'] ) ) {
 					</p></div><?php
 				}
 	}
-}
-$admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/admin/';
-?>
-
+} ?>
 <div class="wrap">
 <form method="post">
 	<input type="hidden" name="rel_type" value="<?php echo $rel_type;?>" />
@@ -46,25 +43,25 @@ $admin_path = 'admin.php?page=' . plugin_basename( dirname( dirname( __FILE__ ) 
 	<?php if ( $rel_type == 'CAT_POST-CAT_PROD' ) : ?>
 		<li class="current"><strong><?php _e( 'Cat. of Posts &raquo; Cat. of Products', 'tcp' );?></strong></li>
 	<?php else : ?>
-		<li><a href="<?php echo $admin_path;?>RelatedCats.php&rel_type=CAT_POST-CAT_PROD"><?php _e( 'Cat. of Posts &raquo; Cat. of Products', 'tcp' );?></a></li>
+		<li><a href="<?php echo TCP_ADMIN_PATH;?>RelatedCats.php&rel_type=CAT_POST-CAT_PROD"><?php _e( 'Cat. of Posts &raquo; Cat. of Products', 'tcp' );?></a></li>
 	<?php endif;?>
 		<li>|</li>
 	<?php if ( $rel_type == 'CAT_POST-CAT_POST' ) : ?>
 		<li class="current"><strong><?php _e( 'Cat. of Posts &raquo; Cat. of Posts', 'tcp' );?></strong></li>
 	<?php else : ?>
-		<li><a href="<?php echo $admin_path;?>RelatedCats.php&rel_type=CAT_POST-CAT_POST"><?php _e( 'Cat. of Posts &raquo; Cat. of Posts', 'tcp' );?></a></li>
+		<li><a href="<?php echo TCP_ADMIN_PATH;?>RelatedCats.php&rel_type=CAT_POST-CAT_POST"><?php _e( 'Cat. of Posts &raquo; Cat. of Posts', 'tcp' );?></a></li>
 	<?php endif;?>
 		<li>|</li>
 	<?php if ( $rel_type == 'CAT_PROD-CAT_POST' ) : ?>
 		<li class="current"><strong><?php _e( 'Cat. of Products &raquo; Cat. of Posts', 'tcp' );?></strong></li>
 	<?php else : ?>
-		<li><a href="<?php echo $admin_path;?>RelatedCats.php&rel_type=CAT_PROD-CAT_POST"><?php _e( 'Cat. of Products &raquo; Cat. of Posts', 'tcp' );?></a></li>
+		<li><a href="<?php echo TCP_ADMIN_PATH;?>RelatedCats.php&rel_type=CAT_PROD-CAT_POST"><?php _e( 'Cat. of Products &raquo; Cat. of Posts', 'tcp' );?></a></li>
 	<?php endif;?>
 		<li>|</li>
 	<?php if ( $rel_type == 'CAT_PROD-CAT_PROD' ) : ?>
 		<li class="current"><strong><?php _e( 'Cat. of Products &raquo; Cat. of Products', 'tcp' );?></strong></li>
 	<?php else : ?>
-		<li><a href="<?php echo $admin_path;?>RelatedCats.php&rel_type=CAT_PROD-CAT_PROD"><?php _e( 'Cat. of Products &raquo; Cat. of Products', 'tcp' );?></a></li>
+		<li><a href="<?php echo TCP_ADMIN_PATH;?>RelatedCats.php&rel_type=CAT_PROD-CAT_PROD"><?php _e( 'Cat. of Products &raquo; Cat. of Products', 'tcp' );?></a></li>
 	<?php endif;?>
 	</ul>
 	<div class="clear"></div>

@@ -16,11 +16,11 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersDetails.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/OrdersCosts.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
+require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
 
-require_once( dirname( dirname( __FILE__ ) ) . '/classes/ICartSource.interface.php' );
+require_once( TCP_CLASSES_FOLDER . 'ICartSource.interface.php' );
 
 class TCP_CartSourceDB implements TCP_ICartSource {
 
@@ -39,7 +39,6 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 		$this->order			= Orders::get( $order_id );
 		$this->orders_details	= OrdersDetails::getDetails( $order_id );
 		$this->orders_costs		= OrdersCosts::getCosts( $order_id );
-
 		$this->see_address		= $see_address;
 		$this->see_full			= $see_full;
 		$this->see_tax_summary	= $see_tax_summary;

@@ -153,7 +153,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 	}
 
 	function show_config_settings() {
-		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$settings			= get_option( 'tcp_' . get_class( $this ), array() );
 		$see_company		= isset( $settings['see_company'] ) ? $settings['see_company'] : true;
 		$req_company		= isset( $settings['req_company'] ) ? $settings['req_company'] : false;
 		$see_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
@@ -250,7 +250,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 	}
 
 	function show() {
-		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$settings			= get_option( 'tcp_' . get_class( $this ), array() );
 		$see_company		= isset( $settings['see_company'] ) ? $settings['see_company'] : true;
 		$req_company		= isset( $settings['req_company'] ) ? $settings['req_company'] : false;
 		$see_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
@@ -271,7 +271,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		} else {
 			$selected_billing_address = 'Y';
 		}?>
-		<div class="billing_layer_info checkout_info clearfix" id="billing_layer_info">
+		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php if ( $use_as_shipping ) :?>
 			<span class="tcp_use_as_shipping"><?php _e( 'This data will be used also as Shipping.', 'tcp' );?></span><br/>
 		<?php endif;?>
@@ -467,7 +467,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 							<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-						<?php foreach( $regions as $id => $region ) : ?>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
 							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
 						<?php endforeach;?>
 						</select>

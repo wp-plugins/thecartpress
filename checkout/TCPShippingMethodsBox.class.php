@@ -53,6 +53,72 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 		}
 	}
 
+function show_config_settings() { ?>
+		<style>
+		#tcp_shipping_list {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 60%;
+		}
+		#tcp_shipping_list li { 
+			margin: 0 3px 3px 3px;
+			padding: 0.4em;
+			padding-left: 1.5em;
+			font-size: 1.1em;
+			height: 18px;
+			border: 1px solid #BBBBBB;
+			padding: 2px;
+			background: url("../images/white-grad.png") repeat-x scroll left top #F2F2F2;
+		    text-shadow: 0 1px 0 #FFFFFF;
+		    -moz-box-sizing: content-box;
+		    border-radius: 5px 0px 0px 0px;
+			cursor: move;
+		}
+		</style>
+		<script>
+		jQuery(document).ready(function() {
+			jQuery('#tcp_shipping_list').sortable();
+			jQuery('#tcp_shipping_list').disableSelection();
+			
+			jQuery('#tcp_save_TCPShippingMethodsBox').click(function(e) {
+				var vals = '';
+				jQuery('li.tcp_shipping_item').each(function(index) {
+					vals += jQuery(this).attr('id') + ',';
+				});
+				vals = vals.slice(0, -1);
+				jQuery('#tcp_shipping_sorting').val(vals);
+			});
+		});
+		</script>
+		<p><?php _e( 'Drag the Shippings plugins to sort them', 'tcp' ); ?></p>
+		<?php $settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$shipping_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : false; ?>
+		<input type="hidden" name="tcp_shipping_sorting" id="tcp_shipping_sorting" value="" />
+		<ul id="tcp_shipping_list">
+		<?php global $tcp_shipping_plugins;
+		if ( is_array( $shipping_sorting ) && count( $shipping_sorting ) > 1)
+			foreach( $shipping_sorting as $id ) 
+				if ( isset( $tcp_shipping_plugins[$id] ) ) :
+				$tcp_shipping_plugin = $tcp_shipping_plugins[$id]; ?>
+				<li class="tcp_shipping_item" id="<?php echo $id; ?>"><?php echo $tcp_shipping_plugin->getName(); ?></li>
+			<?php endif;
+		else
+			foreach( $tcp_shipping_plugins as $id => $tcp_shipping_plugin ) : ?>
+				<li class="tcp_shipping_item" id="<?php echo $id; ?>"><?php echo $tcp_shipping_plugin->getName(); ?></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php return true;
+	}
+
+	function save_config_settings() {
+		$settings = array(
+			'sorting'	=> isset( $_REQUEST['tcp_shipping_sorting'] ) ? explode( ',', $_REQUEST['tcp_shipping_sorting'] ) : '',
+		);
+		update_option( 'tcp_' . get_class( $this ), $settings );
+		return true;
+	}
+
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$selected_shipping_address = isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : false;
@@ -68,8 +134,18 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}
 		if ( ! $shipping_country ) $shipping_country = '';
-		$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart ); ?>
-		<div class="sending_layer_info checkout_info clearfix" id="sending_layer_info"><?php
+		$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart );
+		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$shipping_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+		if ( is_array( $shipping_sorting ) && count( $shipping_sorting ) > 0 ) {
+			$plugins = array();
+			foreach( $shipping_sorting as $id )
+				foreach( $applicable_sending_plugins as $ap => $applicable_plugin )
+					if ( $applicable_plugin['id'] == $id )
+						$plugins[] = $applicable_plugin;
+			$applicable_sending_plugins = $plugins;
+		} ?>
+		<div class="checkout_info clearfix" id="sending_layer_info"><?php
 		if ( is_array( $applicable_sending_plugins ) && count( $applicable_sending_plugins ) > 0 ) : ?>
 			<ul><?php
 			$shipping_method_id = isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ? $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] : false;
@@ -92,8 +168,9 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 				$plugin_value = $plugin_name . '#' . $instance;
 				if ( ! $shipping_method_id ) $shipping_method_id = $plugin_value; ?>
 				<li>
-				<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
-				<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
+					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
+					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
+					<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template_excerpt( 'tcp_shipping_plugins_' . $plugin_name ); ?></div>
 				</li>
 			<?php endforeach;?>
 			</ul>
