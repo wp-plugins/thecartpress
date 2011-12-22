@@ -1,114 +1,190 @@
-/*///////  TCP LOOP  ///////////////////////////////*/
+/* CSS Document */
 
-/*For themes with div id content*/
+/* tcp-loop
+-----------------------*/
+table.tcp_products_list {
+	border-collapse: separate;
+	border-spacing: 2px 2px;
+	margin: 0 0 1em;
+}
+table.tcp_products_list,
+table.tcp_products_list tr,
+table.tcp_products_list tr td,
+table.tcp_products_list tr th {
+	border:0;
+	padding:0;
+	margin: 0;
+}
+
+/*tcp-loop
+-----------------------*/
 div.tcp_order_panel {
 	text-align: right;
-    font-size: .85em;
+    font-size: .75em;
+	margin: 0 0 .625em;
+	padding:.365em 1em;
 }
-#content .tcp_order_panel form, #content .tcp_order_panel select, #content .tcp_order_panel input {
+div.tcp_order_panel input, div.tcp_order_panel select {
+    font-size: 1em;
 }
 
-#content .tcp_products_list  {
-	border-collapse: separate;
-	border-spacing: 6px 6px;
+.tcp_products_list  {
 	border: 0px;
 	width: 100%;
-	margin-bottom: 10px;
+	margin: 0 0 1em;
     font-size: 12px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+table.tcp_products_list tr td {
+	border: 1px solid #ccc;
+	padding: 8px;
+	line-height:1.625em;
+	text-decoration: none;
+	-moz-border-radius: 0px;
+	-khtml-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+table.tcp_products_list tr td.tcp_td_empty {
+	border: 0px;
+	background-image:url();
+	background-color:transparent;
+}
+table.tcp_products_list tr td:hover {
+}
+table.tcp_products_list tr td.tcp_8_cols {
+	width: 12%;
+	padding: 4px;
+	}
+table.tcp_products_list tr td.tcp_7_cols {
+	width: 14%;
+	padding: 4px;
+	}
+table.tcp_products_list tr td.tcp_6_cols {
+	width: 16%;
+	padding: 4px;
+	}
+table.tcp_products_list tr td.tcp_5_cols {
+	width: 20%;
+	padding: 4px;
+	}
+table.tcp_products_list tr td.tcp_4_cols {
+	padding: 6px;
+	width: 25%;
+	}
+table.tcp_products_list tr td.tcp_3_cols {
+	width: 33%;
+	}
+table.tcp_products_list tr td.tcp_2_cols {
+	width: 50%;
+	}
+
+#content .tcp_products_list .entry-title {
+	font-weight: bold;
+	line-height: 1.5em;
+	padding: .375em 0 .375em;
+	font-size: 1em;
+}
+table.tcp_products_list .entry-post-thumbnail img {
+    height: auto;
+    width: 100%;
+}
+.widget .tcp_products_list img {
+    height: auto;
+    max-width: 100%;
+}
+.entry-price {
+	font-weight: bold;
+    line-height: 1.5em;
+	font-size:.9em;
+	opacity:0.9;
+	filter:alpha(opacity=90); /* For IE8 and earlier */
+	color:#999;
+	
+}
+.entry-price.free {
+	color:#7DB72F;
+	text-transform:uppercase;
+	
+}
+.tcp_products_list .entry-summary {
+	padding:0;
+	margin: .5em 0 0; 
 }
 
-#content .tcp_products_list .entry-title{
-	font-size:14px;
-	line-height: 1.2em;
-	margin: 0px;
-	padding: 0px;
-}
-.tcp_products_list .entry-title a:link, .tcp_products_list .entry-title a:visited {
-    color: #000000;
-    text-decoration: none;
-}
-.tcp_products_list .entry-title a:active, .tcp_products_list .entry-title a:hover {
-    color: #FF4B33;
-}
-.tcp_products_list .entry-meta {
-    color: #888888;
-    font-size: .9em;
-}
-.tcp_products_list .entry-meta a, .tcp_products_list .entry-utility a {
-	text-decoration: none;
-	font-weight: normal;
-}
-#content .tcp_products_list .entry-price {
-    color: #CC9999;
-    font-size: .85em;
-    font-weight: bold;
-    line-height: 18px;
-    margin-left: 1px;
-    text-transform: lowercase;
-}
-#content .tcp_products_list .entry-post-thumbnail {
-}
-#content .tcp_products_list .entry-taxonomies, #content .tcp_products_list .entry-utilities  {
-}
-#content .tcp_products_list .entry-summary {
-	padding: 0px 0 0 0;
-	width: auto;
-	margin-top: 0;
-	margin-bottom: 0px;
-	}
-	
-#content .tcp_products_list .entry-summary p {
-    margin-bottom: 0px !important;
+.tcp_products_list .entry-summary p {
+    margin-bottom: 0px;
 }
 #content .tcp_products_list .hentry {
     margin: 0 0 0;
     padding: 0 0 0;
 }
-#content table.tcp_products_list tr td {
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-	background-position: 0px top;
-	text-decoration: none;
-	border-bottom: 1px solid #888;
-	border-right: 1px solid #888;
-	border-top: 1px solid #ccc;
-	border-left: 1px solid #ccc;
-	padding: 10px 10px 10px 10px !important;
-	background-color: #fff;
+.entry-taxonomies  {
+	margin: .5em 0 0; 
+	font-size: .85em;
 }
-#content table.tcp_products_list td {
-	}
-#content table.tcp_products_list tr td:hover {
-	background-position: 0px bottom;
-	background-image:url(/wp-content/plugins/thecartpress/css/box-tcp-list-td.jpg);
-	background-color: #f9f9f9;
+.tcp_products_list .entry-utilities a{
+	font-weight: bold;
+	font-size: .9em;
 }
-#content table.tcp_products_list tr td.tcp_8_cols {
-	width: 12%;
+
+.entry-taxonomies span {
+	clear: left;
+	display: block;
+	line-height: 1.8em;
+}
+.tcp_products_list .entry-meta  {
+	line-height: 1.1em;
+	font-size: .85em;
+}
+.tcp_products_list .entry-meta  {
+	opacity:0.7;
+	filter:alpha(opacity=70); /* For IE8 and earlier */
+    line-height: .9em;
+}
+.entry-meta span.tcp_posted_on,
+.entry-meta span.tcp_by_author {
+	clear: right;
+	display: block;
+
+}
+.entry-meta span.tcp_posted_on {
+	margin: .375em 0 0;
+}
+.entry-meta span.tcp_by_author {
+	margin: .375em 0 .625em 1px;
+}
+
+
+
+table.tcp_products_list .hentry {
+    padding: 0 0 0 !important;
+	border: 0;
+}
+
+
+
+
+
+
+
+/* End gral / default loop*/
+
+@media (max-width: 650px) {
+	#content {
+		background-color:#999;
 	}
-#content table.tcp_products_list tr td.tcp_7_cols {
-	width: 14%;
-	}
-#content table.tcp_products_list tr td.tcp_6_cols {
-	width: 16%;
-	}
-#content table.tcp_products_list tr td.tcp_5_cols {
-	width: 20%;
-	}
-#content table.tcp_products_list tr td.tcp_4_cols {
-	width: 25%;
-	}
-#content table.tcp_products_list tr td.tcp_3_cols {
-	width: 33%;
-	}
-#content table.tcp_products_list tr td.tcp_2_cols {
-	width: 50%;
-	}
-ul.tcp_paging { list-style: none; padding: 0; font-weight: bold; }
-ul.tcp_paging li { display:inline; margin: 0 6px 6px 0; }
-ul.tcp_paging li a,
-ul.tcp_paging li.tcp_active { padding: 3px 6px; background-color: #f5f5f5; border: 1px solid #ccc; }
-ul.tcp_paging li.tcp_active { background-color: #000; border-color: #000; color: #fff; }
+	
+table.tcp_products_list tr td,
+table.tcp_products_list tr td.tcp_4_cols,
+table.tcp_products_list tr td.tcp_5_cols,
+table.tcp_products_list tr td.tcp_6_cols,
+table.tcp_products_list tr td.tcp_7_cols,
+table.tcp_products_list tr td.tcp_8_cols {
+    padding: 1px !important;
+	border:0px;
+	background-image: url();
+}
+table.tcp_products_list {
+	font-size:.85em;
+}
+}
