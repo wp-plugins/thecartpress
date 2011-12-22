@@ -5,11 +5,13 @@ Requires at least: 3.1
 Tested up to: 3.3
 Stable Tag: 1.1.6
 
-Native eCommerce integration & interaction with WordPress. Flexibility & Scalability. Ideal for theme constructors! 
+Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
+
+Ideal for merchants, themes constructors and developers. Use it as shopping cart, catalog or framework.
 
 == Description ==
 
-The Professional WordPress eCommerce Plugin
+The Professional WordPress eCommerce Plugin.
 
 TheCartPress is a WordPress e-commerce plugin natively integrated into WordPress. Therefore you can extend its functionality with plugins and themes to customize your store exactly in same way that you do with WordPress.
 
@@ -17,14 +19,11 @@ It is compatible with many existing plugins in the WordPress repository.
 
 100% WordPress, naturaly flexible & Scalable. Powerful backend tools to make your Store Easy and Useful
 
-Ideal for merchants, themes constructors and developers. Use it as shopping cart, catalog or framework.
-Extend the eCommerce functionality with plugins and themes exactly in same way that you do with WordPress.
-
 * [TheCartPress Demo](http://demo.thecartpress.com)
 * [TheCartPress Site](http://thecartpress.com)
 * [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
 
-= 100% WordPress, naturaly flexible & Scalable =
+= eCommerce 100% WordPress, naturaly flexible & Scalable =
 
 * Native integration with WordPress since conception of TheCartPress.
 * New WordPress user roles: Customer and Merchant.
@@ -33,7 +32,7 @@ Extend the eCommerce functionality with plugins and themes exactly in same way t
 * Use it as a complete ecommerce solution, as a catalog or as a framework.
 * WordPress dashboard adapted to an eCommerce use.
 
-International Sales
+= International Sales =
 
 * Multicurrency, flexible and custom price formats.
 * International weight units.
@@ -44,7 +43,7 @@ International Sales
 * Multilanguage eCommerce.
 * TheCartPress is compatible with all major multilanguage plugins. We have tested successfully with WPML (WordPress multilingual plugin) and qTranslate.
 
-Physical and downloadable products
+= Physical and downloadable products =
 
 * New WordPress custom post type for products: tcp_product.
 * Create as many saleable post type as you need to structure different types of stores and take advance of WordPress template hierarchy to customize the design/layout. Custom saleable post types are  ideal for stores with very different products in nature (megastores, etc.).
@@ -285,8 +284,10 @@ This plugin is released under a GPL license.
 * http://thecartpress.com/wp-content/uploads/2011/10/order_summary.png
 
 == Changelog ==
+= 1.1.7 =
+
 = 1.1.6 =
-* Redesign of the core: to make it smaller, to better support  future improvements
+* Redesign of the core: to make it smaller, to better support for future improvements
 * Shortcodes: now, they allow pagination, make your showcases in seconds
 * Dynamic Options: no-limits in levels of options, no-limits in catalogues
 * Checkout editor - Payment methods: allows to sort the different Payment methods
