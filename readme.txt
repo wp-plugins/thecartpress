@@ -12,9 +12,9 @@ Ideal for merchants, themes constructors and developers.
 
 The Professional WordPress eCommerce Plugin. Use it as shopping cart, catalog or framework.
 
-TheCartPress is a WordPress e-commerce plugin natively integrated into WordPress. Therefore you can extend its functionality with plugins and themes to customize your store exactly in same way that you do with WordPress. It is compatible with many existing plugins in the WordPress repository.
+You can extend its functionality with plugins and themes to customize your store exactly in same way that you do with WordPress. It is compatible with many existing plugins in the WordPress repository.
 
-100% WordPress, naturaly flexible & Scalable. Powerful backend tools to make your Store Easy and Useful
+100% WordPress, eCommerce naturally flexible & Scalable. Powerful backend tools to make your site, store or shop Easyly and Useful
 
 * [TheCartPress Demo](http://demo.thecartpress.com)
 * [TheCartPress Site](http://thecartpress.com)
