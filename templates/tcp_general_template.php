@@ -67,17 +67,15 @@ function tcp_get_the_continue_url() {
  */
 function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $after = '' ) {
 	do_action( 'tcp_get_taxonomy_tree' );
-	if ( $args )
-		$args = array(
+	wp_parse_args( $args, array(
 			'style'			=> 'list',
 			'show_count'	=> true,
 			'hide_empty'	=> true,
 			'taxonomy'		=> 'tcp_product_category',
 			'title_li'		=> '',
 			'echo'			=> false,
-		);
-	if ( isset( $args['dropdown'] ) && $args['dropdown'] ) {
-	//if ( true ) { //TODO
+	) );
+	if ( isset( $args['dropdown'] ) && $args['dropdown'] ) { //TODO
 		$args['show_option_none']	= sprintf ( __( 'Select %s', 'tcp' ), $args['taxonomy']);
 		$args['name']				= $args['taxonomy'];
 		$args['walker']				= new TCPWalker_CategoryDropdown();
@@ -93,7 +91,6 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	dropdown.onchange = on_<?php echo $args['name']; ?>_change;
 // ]]>
 </script>
-
 		<?php $tree = ob_get_clean();
 	} else {
 		$tree = '<ul>' . wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ) . '</ul>';
