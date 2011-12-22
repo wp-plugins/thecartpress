@@ -189,11 +189,11 @@ class TCPPayPal extends TCP_Plugin {
 					$price = $item->getUnits() * $item->getUnitPrice();
 					if ( $price > $discount) {
 						$p->add_field( "discount_amount_$i", $discount );
-						$discount_amount = 0;
+						$discount = 0;//TODO
 					} else {
 						$price -= 0.1;
 						$p->add_field( "discount_amount_$i", $price );
-						$discount_amount -= $price;
+						$discount -= $price;
 					}
 				}
 				$i++;

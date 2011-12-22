@@ -21,6 +21,7 @@ require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
 
 class TCPPaymentMethodsBox extends TCPCheckoutBox {
 	private $errors = array();
+	private $payment_sorting = array();
 
 	function get_title() {
 		return __( 'Payment methods', 'tcp' );
@@ -130,14 +131,9 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		}
 		$applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );
-		$payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
-		if ( is_array( $payment_sorting ) && count( $payment_sorting ) > 0 ) {
-			$plugins = array();
-			foreach( $payment_sorting as $id )
-				foreach( $applicable_plugins as $ap => $applicable_plugin )
-					if ( $applicable_plugin['id'] == $id )
-						$plugins[] = $applicable_plugin;
-			$applicable_plugins = $plugins;
+		$this->payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+		if ( is_array( $this->payment_sorting ) && count( $this->payment_sorting ) > 0 ) {
+			usort( $applicable_plugins, array( $this, 'sort_plugins' ) );
 		} ?>
 		<div class="checkout_info clearfix" id="payment_layer_info">
 		<?php if ( is_array( $applicable_plugins ) && count( $applicable_plugins ) > 0 ) : ?>
@@ -164,6 +160,18 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		<?php do_action( 'tcp_checkout_payments' );?>
 		</div><!-- payment_layer_info --><?php
 		return true;
+	}
+
+	function sort_plugins( $a, $b ) {
+		$k_a = $a['id'];
+		$k_b = $b['id'];
+		$pos_a = array_search( $k_a, $this->payment_sorting );
+		$pos_b = array_search( $k_b, $this->payment_sorting );
+		if ( $pos_a === false ) return 1;
+		elseif ( $pos_b === false ) return -1;
+		elseif ( $pos_a < $pos_b ) return -1;
+		elseif ( $pos_a == $pos_b ) return 0;
+		else return 1;
 	}
 }
 ?>

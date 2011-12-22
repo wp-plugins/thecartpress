@@ -101,7 +101,7 @@ class Transference extends TCP_Plugin {
 		);
 		ob_start(); ?>
 		<p><?php echo $data['notice']; ?></p>
-		<table>
+		<table class="tcp-bank-account">
 		<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
 		<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>
 		<tr><th scope="row"><?php _e( 'Account', 'tcp' ); ?>: </th><td><?php echo $data['account']; ?></td></tr>

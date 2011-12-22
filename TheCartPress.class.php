@@ -38,6 +38,7 @@ define( 'TCP_SHORTCODES_FOLDER'			, TCP_FOLDER . 'shortcodes/' );
 define( 'TCP_PLUGINS_FOLDER'			, TCP_FOLDER . 'plugins/' );
 define( 'TCP_CHECKOUT_FOLDER'			, TCP_FOLDER . 'checkout/' );
 define( 'TCP_CUSTOM_POST_TYPE_FOLDER'	, TCP_FOLDER . 'customposttypes/' );
+define( 'TCP_THEMES_TEMPLATES_FOLDER'	, TCP_FOLDER . 'themes-templates/' );
 
 define( 'TCP_ADMIN_PATH'				, 'admin.php?page=' . plugin_basename( TCP_FOLDER ) . '/admin/' );
 

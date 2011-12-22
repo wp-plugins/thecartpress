@@ -186,8 +186,8 @@ class paypal_class {
          $post_string .= $field.'='.urlencode(stripslashes($value)).'&'; 
       }
       $post_string.="cmd=_notify-validate"; // append ipn command
-update_option( 'tcp_pay_pal_ipn_1', $post_string );//TODO
-update_option( 'tcp_pay_pal_ipn_url', $url_parsed );//TODO
+//update_option( 'tcp_pay_pal_ipn_1', $post_string );//TODO
+//update_option( 'tcp_pay_pal_ipn_url', $url_parsed );//TODO
       // open the connection to paypal
 //      $fp = fsockopen( $url_parsed['host'], 80, $err_num, $err_str, 30); 
       $fp = fsockopen( 'ssl:' . $url_parsed['host'], 443, $err_num, $err_str, 30); 
@@ -213,7 +213,7 @@ update_option( 'tcp_pay_pal_ipn_url', $url_parsed );//TODO
             $this->ipn_response .= fgets($fp, 1024); 
          } 
          fclose($fp); // close connection
-update_option( 'tcp_pay_pal_ipn_2', $this->ipn_response );//TODO
+//update_option( 'tcp_pay_pal_ipn_2', $this->ipn_response );//TODO
       }
       
       if (eregi("VERIFIED",$this->ipn_response)) {
@@ -221,14 +221,14 @@ update_option( 'tcp_pay_pal_ipn_2', $this->ipn_response );//TODO
          // Valid IPN transaction.
          $this->log_ipn_results(true);
          return true;       
-update_option( 'tcp_pay_pal_ipn_3', "OK\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO         
+//update_option( 'tcp_pay_pal_ipn_3', "OK\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO         
       } else {
   
          // Invalid IPN transaction.  Check the log for details.
          $this->last_error = 'IPN Validation Failed.';
          $this->log_ipn_results(false);   
          return false;
-update_option( 'tcp_pay_pal_ipn_3', "KO\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO
+//update_option( 'tcp_pay_pal_ipn_3', "KO\nIPN Response from Paypal Server:\n ".$this->ipn_response );//TODO
       }
       
    }
