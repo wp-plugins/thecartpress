@@ -83,7 +83,7 @@ class TCPRemboursement extends TCP_Plugin {
 			'tcp_checkout'	=> 'ok',
 			'order_id'		=> $order_id,
 		);?>
-		<h2><?php printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );?></h2>
+		<?php printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );?>
 		<?php if ( strlen( trim( $data['notice'] ) ) > 0 ) : ?><p><?php echo $data['notice'];?></p><?php endif; ?>
 		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/></p><?php
 		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
