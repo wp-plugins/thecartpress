@@ -253,16 +253,18 @@ class TheCartPress {
 						}
 					}
 				}
-				if ( $wp_query->is_archive() ) {
+				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) && $wp_query->query_vars['post_type'] == TCP_PRODUCT_POST_TYPE ) {
 					$apply_filters = true;
 				}
 			}
-			if ( $apply_filters ) {
+			if ( $apply_filters || isset( $wp_query->query_vars['post_type'] ) && $wp_query->query_vars['post_type'] == TCP_PRODUCT_POST_TYPE ) {
 				$query['meta_query'][] = array(
 					'key'		=> 'tcp_is_visible',
 					'value'		=> 1,
 					'compare'	=> '='
 				);
+			}
+			if ( $apply_filters ) {
 				$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
 				$filter = new TCPFilterNavigation();						
 				if ( $filter->is_filter_by_layered() ) {
