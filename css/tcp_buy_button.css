@@ -24,6 +24,7 @@ table.tcp_buy_button {
 .tcp_buy_button_price .tcp_unit_price,
 .tcp_buy_button .tcp_price {
 	font-weight:bold;
+	margin-left:2px;
 }
 .tcp_buy_button  {
 	margin-top: 10px;
@@ -36,11 +37,20 @@ table.tcp_buy_button tr th {
 	display: none;
 }
 table.tcp_buy_button tr td {
-	vertical-align:midle;
-	padding:10px !important;
+	vertical-align:baseline;
+	padding:6px !important;
 	width:auto;
+	/*	background-color:#F1F4FB;
+	color:#373737;
+*/	background-image:url();
+}
+
+table.tcp_buy_button tr td.tcp_buy_button_thumbnail {
+	vertical-align:middle;
+}
+.single table.tcp_buy_button tr td {
 	background-color:#F1F4FB;
-	background-image:url();
+	color:#373737;
 }
 
 /*buy button in loop
@@ -56,11 +66,19 @@ table.tcp_products_list .tcp_add_selected_to_shopping_cart {
 	padding: .5em 2em .55em;
 	
 }
+table.tcp_products_list .tcp_buy_button select,
+table.tcp_products_list .tcp_buy_button input {
+    margin: 1px 2px 1px;
+	font-size:12px;
+}
+table.tcp_products_list table.tcp_buy_button {
+    margin: 0;
+}
 /* end buy butoon in loop */
 
 .tcp_buy_button select,
 .tcp_buy_button input {
-    margin: 1px 1px 1px;
+    margin: 1px 4px 1px;
 	font-size:12px;
 }
 .tcp_added_product_title {
