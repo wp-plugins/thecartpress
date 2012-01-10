@@ -19,6 +19,7 @@ You can extend its functionality with plugins and themes to customize your store
 * [TheCartPress Demo](http://demo.thecartpress.com)
 * [TheCartPress Site](http://thecartpress.com)
 * [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
+* [TheCartPress Extend](http://extend.thecartpress.com): plugins, themes and custom development
 
 = eCommerce 100% WordPress, naturaly flexible & Scalable =
 
