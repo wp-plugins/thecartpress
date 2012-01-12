@@ -118,7 +118,7 @@ class TCPCartTable {
 				</td>
 				<td class="tcp_cart_units">
 				<?php if ( ! $source->is_editing_units() ) :
-					tcp_number_format( $order_detail->get_qty_ordered(), 0 );
+					echo tcp_number_format( $order_detail->get_qty_ordered(), 0 );
 				else : ?>
 					<form method="post">
 					<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
