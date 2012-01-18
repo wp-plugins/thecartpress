@@ -2,22 +2,30 @@
 
 /* tcp-loop
 -----------------------*/
-table.tcp_products_list {
+table.tcp_products_list,
+#content table.tcp_products_list {
+    font-size: 12px;
+	font-family:Arial, Helvetica, sans-serif;
 	border-collapse: separate;
 	border-spacing: 2px 2px;
 	margin: 0 0 1em;
+	border:0;
+	padding:0;
+	width: 100%;
 }
-table.tcp_products_list,
 table.tcp_products_list tr,
 table.tcp_products_list tr td,
-table.tcp_products_list tr th {
+table.tcp_products_list tr th,
+#content table.tcp_products_list tr,
+#content table.tcp_products_list tr td,
+#content table.tcp_products_list tr th {
 	border:0;
 	padding:0;
 	margin: 0;
 }
 
-/*tcp-loop
------------------------*/
+
+
 div.tcp_order_panel {
 	text-align: right;
     font-size: .75em;
@@ -28,14 +36,8 @@ div.tcp_order_panel input, div.tcp_order_panel select {
     font-size: 1em;
 }
 
-.tcp_products_list  {
-	border: 0px;
-	width: 100%;
-	margin: 0 0 1em;
-    font-size: 12px;
-	font-family:Arial, Helvetica, sans-serif;
-}
-table.tcp_products_list tr td {
+table.tcp_products_list tr td,
+#content table.tcp_products_list tr td {
 	border: 1px solid #ccc;
 	padding: 8px;
 	line-height:1.625em;
@@ -44,7 +46,8 @@ table.tcp_products_list tr td {
 	-khtml-border-radius: 0px;
 	-webkit-border-radius: 0px;
 }
-table.tcp_products_list tr td.tcp_td_empty {
+table.tcp_products_list tr td.tcp_td_empty,
+#content table.tcp_products_list tr td.tcp_td_empty {
 	border: 0px;
 	background-image:url();
 	background-color:transparent;
@@ -84,11 +87,13 @@ table.tcp_products_list .entry-title {
 	padding: .375em 0 .375em;
 	font-size: 1em;
 }
-table.tcp_products_list .entry-post-thumbnail img {
+table.tcp_products_list .entry-post-thumbnail img,
+#content table.tcp_products_list .entry-post-thumbnail img {
     height: auto;
-    width: auto;
+    width: 100%;
 	max-width:100%;
 }
+
 .entry-price {
 	font-weight: bold;
     line-height: 1.5em;
@@ -161,14 +166,10 @@ table.tcp_products_list .hentry {
 
 
 
-
-
-
 /* End gral / default loop*/
 
 @media (max-width: 650px) {
 	#content {
-		background-color:#999;
 	}
 	
 table.tcp_products_list tr td,
