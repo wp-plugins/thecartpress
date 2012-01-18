@@ -279,7 +279,7 @@ This plugin is released under a GPL license.
 
 == Screenshots ==
 
-1. eCommerce example site [TheCartPress Extend](http://extend.thecartpress.com): plugins, themes and custom development
+1. eCommerce example site
 2. Shopping cart
 3. Checkout
 4. Product list
