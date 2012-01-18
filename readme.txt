@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
 Tested up to: 3.3
-Stable Tag: 1.1.6
+Stable Tag: 1.1.7
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -279,10 +279,24 @@ This plugin is released under a GPL license.
 
 == Screenshots ==
 
-* http://thecartpress.com/wp-content/uploads/2011/10/order_summary.png
+1. eCommerce example site [TheCartPress Extend](http://extend.thecartpress.com): plugins, themes and custom development
+2. Shopping cart
+3. Checkout
+4. Product list
+5. Back-end: Product list
+6. Back-end: Product fields
+7. Back-end: Settings
+8. Back-end: Dashboard
 
 == Changelog ==
 = 1.1.7 =
+* One Loop for all: shortcodes, widgets, template tags, all of them use the same loop, tcp-loop-grid.php.
+* Pagination support: All the loops generated into TheCartPress support pagination, including WP-PageNavi plugin
+* Security updates
+* New styles: More compatibles (for clear or dark themes)
+* Last Visited: Support for saleables post type
+* Custom post type/taxonomy API
+* Local pick-up shipping method
 
 = 1.1.6 =
 * Redesign of the core: to make it smaller, to better support for future improvements
