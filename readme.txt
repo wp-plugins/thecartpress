@@ -1,4 +1,4 @@
-=== TheCartPress, eCommerce Shopping Cart ===
+=== TheCartPress eCommerce Shopping Cart ===
 Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
