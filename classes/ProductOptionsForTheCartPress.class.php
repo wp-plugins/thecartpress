@@ -43,7 +43,7 @@ class ProductOptionsForTheCartPress {
 
 	function productRowActions( $actions ) {
 		global $post;
-		if ( $post->post_type == 'tcp_product' && tcp_get_the_product_type( $post->ID ) == 'SIMPLE' ) {
+		if ( $post->post_type == 'tcp_product' && tcp_get_the_product_type( $post->ID ) == 'SIMPLE' && current_user_can( 'tcp_edit_products' ) ) {
 			$count = RelEntities::count( $post->ID, 'OPTIONS' );
 			$count = ( $count > 0 ) ? ' (' . $count . ')' : '';
 			$actions['tcp_options'] = '<a href="' . TCP_ADMIN_PATH . 'OptionsList.php&post_id=' . $post->ID . '" title="' . esc_attr( __( 'options', 'tcp_op' ) ) . '">' . __( 'options', 'tcp_op' ) . $count . '</a>';

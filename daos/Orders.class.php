@@ -87,7 +87,6 @@ class Orders {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders where order_id = %d', $order_id ) );
 	}
 
-
 	static function getTotal( $order_id ) {
 		$order = Orders::get( $order_id );
 		if ( $order ) {

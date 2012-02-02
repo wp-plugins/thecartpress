@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of TheCartPtess.
+ * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,15 +28,12 @@ if ( !function_exists( 'ad_selected_multiple' ) ) {
 	}
 }
 
-$load_from_request	= false;
-$posttype_id		= isset( $_REQUEST['posttype_id'] ) ? $_REQUEST['posttype_id'] : -1;
+$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : '';
 
-if ( isset( $_REQUEST['save_posttype'] ) ) {
-	$_REQUEST['name_id'] = str_replace( ' ' , '-', $_REQUEST['name_id'] );
-	$_REQUEST['name_id'] = str_replace( '_' , '-', $_REQUEST['name_id'] );
-	$posttype = array(
+if ( isset( $_REQUEST['save_post_type'] ) ) {
+	$post_type = str_replace( ' ' , '_', $post_type );
+	$post_type_def = array(
 		'name'				=> isset( $_REQUEST['name'] ) ? $_REQUEST['name'] : __( 'Post type Name', 'tcp' ),
-		'name_id'			=> isset( $_REQUEST['name_id'] ) ? $_REQUEST['name_id'] : __( 'posttype-name', 'tcp' ),
 		'desc'				=> isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '',
 		'activate'			=> isset( $_REQUEST['activate'] ),
 		'singular_name'		=> isset( $_REQUEST['singular_name'] ) ? $_REQUEST['singular_name'] : __( 'Singular name', 'tcp' ),
@@ -55,6 +52,7 @@ if ( isset( $_REQUEST['save_posttype'] ) ) {
 		'can_export'		=> isset( $_REQUEST['can_export'] ),
 		'show_in_nav_menus'	=> isset( $_REQUEST['show_in_nav_menus'] ),
 //		'capability_type'	=> 'post',
+		'query_var'			=> isset( $_REQUEST['query_var'] ),
 		'supports'			=> isset( $_REQUEST['supports'] ) ? $_REQUEST['supports'] : array( 'title', 'excerpt', 'editor', ),
 		'rewrite'			=> isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false,
 		'has_archive'		=> isset( $_REQUEST['has_archive'] ) ? isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false : false,
@@ -62,58 +60,47 @@ if ( isset( $_REQUEST['save_posttype'] ) ) {
 		//TheCartPress support
 		'is_saleable'		=> isset( $_REQUEST['is_saleable'] ),
 	);
-	$posttypes = get_option( 'tcp-posttypes-generator' );
-	if ( ! $posttypes ) $posttypes = array();
-	if ( $posttype_id > -1 )
-		$posttypes[$posttype_id] = $posttype;
-	else {
-		$posttypes[] = $posttype;
-		$posttype_id = end( array_keys( $posttypes ) );
-	}
-	update_option( 'tcp-posttypes-generator', $posttypes );
+	//if ( isset( $_REQUEST['edit'] ) )
+	$post_types = tcp_get_custom_post_types();
+	tcp_update_custom_post_type( $post_type, $post_type_def );
 	update_option( 'tcp_rewrite_rules', true ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Post type saved', 'tcp' );?> 
 	</p></div><?php
-	$load_from_request = true;
-} elseif ( $posttype_id > -1 ) {
-	$posttypes = get_option( 'tcp-posttypes-generator' );
-	if ( is_array( $posttypes ) && count( $posttypes ) > 0 ) {
-		$posttype = $posttypes[$posttype_id];
-		$name				= isset( $posttype['name'] ) ? $posttype['name'] : __( 'Post type Name', 'tcp' );
-		$name_id			= isset( $posttype['name_id'] ) ? $posttype['name_id'] : __( 'posttype-name', 'tcp' );
-		$desc				= isset( $posttype['desc'] ) ? $posttype['desc'] : '';
-		$activate			= isset( $posttype['activate'] ) ? $posttype['activate'] : false;
-		$singular_name		= isset( $posttype['singular_name'] ) ? $posttype['singular_name'] : __( 'Singular name', 'tcp' );
-		$add_new			= isset( $posttype['add_new'] ) ? $posttype['add_new'] : __( 'Add New', 'tcp' );
-		$add_new_item		= isset( $posttype['add_new_item'] ) ? $posttype['add_new_item'] : __( 'Add New', 'tcp' );
-		$edit_item			= isset( $posttype['edit_item'] ) ? $posttype['edit_item'] : __( 'Edit', 'tcp' );
-		$new_item			= isset( $posttype['new_item'] ) ? $posttype['new_item'] : __( 'Add New', 'tcp' );
-		$view_item			= isset( $posttype['view_item'] ) ? $posttype['view_item'] : __( 'View', 'tcp' );
-		$search_items		= isset( $posttype['search_items'] ) ? $posttype['search_items'] : __( 'Search', 'tcp' );
-		$not_found			= isset( $posttype['not_found'] ) ? $posttype['not_found'] : __( 'Not found', 'tcp' );
-		$not_found_in_trash = isset( $posttype['not_found_in_trash'] ) ? $posttype['not_found_in_trash'] : __( 'Not found in Trash:', 'tcp' );
-//		$parent_item_colon	= isset( $posttype['parent_item_colon'] ) ? $posttype['parent_item_colon'] : __( 'Parent Category:', 'tcp' );
-		$public				= isset( $posttype['public'] ) ? $posttype['public'] : false;
-		$show_ui			= isset( $posttype['show_ui'] ) ? $posttype['show_ui'] : false;
-		$show_in_menu		= isset( $posttype['show_in_menu'] ) ? $posttype['show_in_menu'] : true;
-		$can_export			= isset( $posttype['can_export'] ) ? $posttype['can_export'] : true;
-		$show_in_nav_menus	= isset( $posttype['show_in_nav_menus'] ) ? $posttype['show_in_nav_menus'] : true;
+	unset( $post_type_def );
+} elseif ( strlen( $post_type ) > 0 ) {
+	$post_type_def = tcp_get_custom_post_type( $post_type );
+	if ( $post_type_def !== false ) {
+		$name				= isset( $post_type_def['name'] ) ? $post_type_def['name'] : __( 'Post type Name', 'tcp' );
+		$desc				= isset( $post_type_def['desc'] ) ? $post_type_def['desc'] : '';
+		$activate			= isset( $post_type_def['activate'] ) ? $post_type_def['activate'] : false;
+		$singular_name		= isset( $post_type_def['singular_name'] ) ? $post_type_def['singular_name'] : __( 'Singular name', 'tcp' );
+		$add_new			= isset( $post_type_def['add_new'] ) ? $post_type_def['add_new'] : __( 'Add New', 'tcp' );
+		$add_new_item		= isset( $post_type_def['add_new_item'] ) ? $post_type_def['add_new_item'] : __( 'Add New', 'tcp' );
+		$edit_item			= isset( $post_type_def['edit_item'] ) ? $post_type_def['edit_item'] : __( 'Edit', 'tcp' );
+		$new_item			= isset( $post_type_def['new_item'] ) ? $post_type_def['new_item'] : __( 'Add New', 'tcp' );
+		$view_item			= isset( $post_type_def['view_item'] ) ? $post_type_def['view_item'] : __( 'View', 'tcp' );
+		$search_items		= isset( $post_type_def['search_items'] ) ? $post_type_def['search_items'] : __( 'Search', 'tcp' );
+		$not_found			= isset( $post_type_def['not_found'] ) ? $post_type_def['not_found'] : __( 'Not found', 'tcp' );
+		$not_found_in_trash = isset( $post_type_def['not_found_in_trash'] ) ? $post_type_def['not_found_in_trash'] : __( 'Not found in Trash:', 'tcp' );
+//		$parent_item_colon	= isset( $post_type_def['parent_item_colon'] ) ? $post_type_def['parent_item_colon'] : __( 'Parent Category:', 'tcp' );
+		$public				= isset( $post_type_def['public'] ) ? $post_type_def['public'] : false;
+		$show_ui			= isset( $post_type_def['show_ui'] ) ? $post_type_def['show_ui'] : false;
+		$show_in_menu		= isset( $post_type_def['show_in_menu'] ) ? $post_type_def['show_in_menu'] : true;
+		$can_export			= isset( $post_type_def['can_export'] ) ? $post_type_def['can_export'] : true;
+		$show_in_nav_menus	= isset( $post_type_def['show_in_nav_menus'] ) ? $post_type_def['show_in_nav_menus'] : true;
 //		$capability_type'	= 'post',
-		$supports			= isset( $posttype['supports'] ) ? $posttype['supports'] : array( 'title', 'editor', );
-		$rewrite			= isset( $posttype['rewrite'] ) && strlen( $posttype['rewrite'] ) > 0 ? $posttype['rewrite'] : false;
-		$has_archive		= isset( $posttype['has_archive'] ) ? isset( $posttype['rewrite'] ) && strlen( $posttype['rewrite'] ) > 0 ? $posttype['rewrite'] : false : false;
-//		$has_archive		= isset( $posttype['has_archive'] ) && strlen( $posttype['has_archive'] ) > 0 ? $posttype['has_archive'] : false;
-		$is_saleable			= isset( $posttype['is_saleable'] ) ? $posttype['is_saleable'] : false;
-	} else {
-		$load_from_request = true;
+		$query_var			= isset( $post_type_def['query_var'] );
+		$supports			= isset( $post_type_def['supports'] ) ? $post_type_def['supports'] : array( 'title', 'editor', );
+		$rewrite			= isset( $post_type_def['rewrite'] ) && strlen( $post_type_def['rewrite'] ) > 0 ? $post_type_def['rewrite'] : false;
+		$has_archive		= isset( $post_type_def['has_archive'] ) ? isset( $post_type_def['rewrite'] ) && strlen( $post_type_def['rewrite'] ) > 0 ? $post_type_def['rewrite'] : false : false;
+//		$has_archive		= isset( $post_type_def['has_archive'] ) && strlen( $post_type_def['has_archive'] ) > 0 ? $post_type_def['has_archive'] : false;
+		$is_saleable		= isset( $post_type_def['is_saleable'] );
 	}
-} else
-	$load_from_request = true;
+}
 
-if ( $load_from_request ) {
+if ( ! isset( $post_type_def ) ) {
 	$name				= isset( $_REQUEST['name'] ) ? $_REQUEST['name'] : __( 'Post type Name', 'tcp' );
-	$name_id			= isset( $_REQUEST['name_id'] ) ? $_REQUEST['name_id'] : __( 'posttype-name', 'tcp' );
 	$activate			= isset( $_REQUEST['activate'] );
 	$desc				= isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '';
 	$singular_name		= isset( $_REQUEST['singular_name'] ) ? $_REQUEST['singular_name'] : __( 'Singular name', 'tcp' );
@@ -132,11 +119,12 @@ if ( $load_from_request ) {
 	$can_export			= isset( $_REQUEST['can_export'] );
 	$show_in_nav_menus	= isset( $_REQUEST['show_in_nav_menus'] );
 //	$capability_type'	= 'post',
+	$query_var			= isset( $_REQUEST['query_var'] );
 	$supports			= isset( $_REQUEST['supports'] ) ? $_REQUEST['supports'] : array( 'title', 'excerpt', 'editor', );
 	$rewrite			= isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false;
 	$has_archive		= isset( $_REQUEST['has_archive'] ) ? isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false : false;
 	//$has_archive		= isset( $_REQUEST['has_archive'] ) && strlen( $_REQUEST['has_archive'] ) > 0 ? $_REQUEST['has_archive'] : false;
-	$is_saleable			= isset( $_REQUEST['is_saleable'] );
+	$is_saleable		= isset( $_REQUEST['is_saleable'] );
 }
 ?>
 <div class="wrap">
@@ -147,8 +135,10 @@ if ( $load_from_request ) {
 <div class="clear"></div>
 
 <form method="post">
-	<input type="hidden" name="posttype_id" value="<?php echo $posttype_id;?>" />
-	
+	<?php if ( strlen( $post_type ) > 0 ) : ?>
+	<input type="hidden" name="edit" value="yes" />
+	<?php endif; ?>
+
 	<table class="form-table">
 	<tr valign="top">
 		<th scope="row">
@@ -161,12 +151,13 @@ if ( $load_from_request ) {
 	</tr>
 	<tr valign="top">
 		<th scope="row">
-			<label for="name_id"><?php _e( 'Name Id', 'tcp' );?>:<span class="compulsory">(*)</span>
+			<label for="post_type"><?php _e( 'Post type Id', 'tcp' );?>:<span class="compulsory">(*)</span>
 			<br /><span class="description"><?php _e( 'No blank spaces', 'tcp' );?></span></label>
 		</th>
 		<td>
-			<input type="text" id="name_id" name="name_id" value="<?php echo $name_id;?>" size="20" maxlength="50" />
-			<?php //tcp_show_error_msg( $error_taxo, 'name' );?>
+			<input type="text" id="post_type" name="post_type" value="<?php echo $post_type;?>" size="20" maxlength="50"
+			<?php if ( strlen( $post_type ) > 0 ) : ?> readonly="true" <?php endif; ?>
+			 />
 		</td>
 	</tr>
 	<tr valign="top">
@@ -301,6 +292,14 @@ if ( $load_from_request ) {
 	</tr>
 	<tr valign="top">
 		<th scope="row">
+			<label for="query_var"><?php _e( 'Query var', 'tcp' );?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" id="query_var" name="query_var" value="yes" <?php checked( $query_var != false );?> />
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row">
 			<label for="supports"><?php _e( 'Support', 'tcp' );?>:</label>
 		</th>
 		<td>
@@ -331,12 +330,13 @@ if ( $load_from_request ) {
 			<label for="has_archive"><?php _e( 'Has archive', 'tcp' );?>:</label>
 		</th>
 		<td>
-			<input type="checkbox" id="has_archive" name="has_archive" value="yes" <?php checked( $has_archive != false );?> />
+			<input type="checkbox" id="has_archive" name="has_archive" value="yes" <?php checked( $has_archive !== false );?> />
 			<!--<input type="text" id="has_archive" name="has_archive" value="<?php echo $has_archive;?>" size="20" maxlength="50" />-->
 		</td>
 	</tr>
 	<?php global $thecartpress;
-	$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;
+	$disable_ecommerce = $thecartpress->get_setting( 'disable_ecommerce', false );
+	//$disable_ecommerce = isset( $thecartpress->settings['disable_ecommerce'] ) ? $thecartpress->settings['disable_ecommerce'] : false;
 	if ( ! $disable_ecommerce ) : ?>
 	<tr valign="top">
 		<th scope="row">
@@ -350,6 +350,6 @@ if ( $load_from_request ) {
 	</table>
 
 	<p class="submit">
-		<input type="submit" name="save_posttype" id="save_posttype" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" />
+		<input type="submit" name="save_post_type" id="save_post_type" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" />
 	</p>
 </form>

@@ -118,7 +118,7 @@ class TCPCartTable {
 				</td>
 				<td class="tcp_cart_units">
 				<?php if ( ! $source->is_editing_units() ) :
-					tcp_number_format( $order_detail->get_qty_ordered(), 0 );
+					echo tcp_number_format( $order_detail->get_qty_ordered(), 0 );
 				else : ?>
 					<form method="post">
 					<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
@@ -154,9 +154,9 @@ class TCPCartTable {
 		</tr>
 		<?php $discount = $source->get_discount();
 		if ( $discount > 0 ) : ?>
-			<tr id="discount" class="tcp_cart_discount_row'<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif; ?>">
+			<tr class="tcp_cart_discount_row<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif; ?>">
 			<td colspan="<?php echo $colspan; ?>" class="tcp_cart_discount_title"><?php _e( 'Discount', 'tcp' ); ?></td>
-			<td class="tcp_cart_discount"><?php echo tcp_format_the_price( $discount ); ?></td>
+			<td class="tcp_cart_discount">-<?php echo tcp_format_the_price( $discount ); ?></td>
 			</tr>
 			<?php $total = $total - $discount; ?>
 		<?php endif;

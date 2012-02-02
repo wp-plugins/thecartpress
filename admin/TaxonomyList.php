@@ -20,16 +20,40 @@
 <div class="wrap">
 <h2><?php _e( 'Taxonomies', 'tcp' ); ?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php"><?php _e( 'create new taxonomy', 'tcp' ); ?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php"><?php _e( 'Add new taxonomy', 'tcp' ); ?></a></li>
 </ul>
 <div class="clear"></div>
+
+<?php if ( isset( $_REQUEST['tcp_delete_taxonomy'] ) && isset( $_REQUEST['taxonomy'] )  && tcp_exist_custom_taxonomy( $_REQUEST['taxonomy'] ) ) :
+	tcp_delete_custom_taxonomy( $_REQUEST['taxonomy'] );
+	update_option( 'tcp_rewrite_rules', true ); ?>
+	<div id="message" class="updated"><p><?php _e( 'Taxonomy deleted', 'tcp' );?></p></div>
+<?php endif; ?>
+<script>
+jQuery(document).ready(function() {
+	jQuery('.tcp_show_delete_area').click(function() {
+		var id = jQuery(this).attr('id');
+		jQuery('.tcp_delete_taxonomy_area').hide();
+		jQuery('#tcp_delete_area_' + id).show();
+		return false;
+	});
+	jQuery('.tcp_no_delete').click(function() {
+		jQuery('.tcp_delete_taxonomy_area').hide();
+		return false;
+	});
+	jQuery('.tcp_delete_taxonomy').click(function() {
+		jQuery(this).parent('form').submit();
+		return false;
+	});
+});
+</script>
 
 <table class="widefat fixed" cellspacing="0">
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Post type', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' ); ?></th>
-	<th scope="col" class="manage-column"><?php _e( 'Name Id', 'tcp' ); ?></th>
+	<th scope="col" class="manage-column"><?php _e( 'Id', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Activate', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
@@ -39,43 +63,39 @@
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Post type', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' ); ?></th>
-	<th scope="col" class="manage-column"><?php _e( 'Name Id', 'tcp' ); ?></th>
+	<th scope="col" class="manage-column"><?php _e( 'Id', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Activate', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th></tr>
 </tfoot>
 <tbody>
-<?php
-//$taxonomies = get_option( 'tcp-taxonomies-generator' );
-$taxonomies = tcp_get_custom_taxonomies();
-if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) :
-	if ( isset( $_REQUEST['tcp_delete_taxonomy'] ) && isset( $_REQUEST['taxonomy_id'] )  && isset( $taxonomies[$_REQUEST['taxonomy_id']] ) ) {
-		unset( $taxonomies[$_REQUEST['taxonomy_id']] );
-		update_option( 'tcp-taxonomies-generator', $taxonomies );
-	}
-	foreach( $taxonomies as $taxonomy_id => $taxonomy ) : ?>
+<?php $taxonomy_defs = tcp_get_custom_taxonomies();
+if ( is_array( $taxonomy_defs ) && count( $taxonomy_defs ) > 0 ) :
+	foreach( $taxonomy_defs as $taxonomy => $taxonomy_def ) : ?>
 <tr>
-	<td><?php echo get_post_type_object( $taxonomy['post_type'] )->labels->name; ?></td>
-	<td><?php echo $taxonomy['name']; ?></td>
-	<td><?php echo $taxonomy['name_id']; ?></td>
-	<td><?php echo $taxonomy['desc']; ?>&nbsp;</td>
-	<td><?php $taxonomy['activate'] ? _e( 'Activated', 'tcp' ) : _e( 'No Activated', 'tcp' ); ?></td>
-	<td><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php&taxonomy_id=<?php echo $taxonomy_id; ?>"><?php _e( 'edit', 'tcp' ); ?></a>
-	 | <a href="#" onclick="jQuery('.delete_taxonomy').hide();jQuery('#delete_<?php echo $taxonomy_id; ?>').show();" class="delete"><?php _e( 'delete', 'tcp' ); ?></a></div>
-		<div id="delete_<?php echo $taxonomy_id; ?>" class="delete_taxonomy" style="display:none; border: 1px dotted orange; padding: 2px">
-			<form method="post" name="frm_delete_<?php echo $taxonomy_id; ?>">
-			<input type="hidden" name="taxonomy_id" value="<?php echo $taxonomy_id; ?>" />
+	<td><?php $object = get_post_type_object( $taxonomy_def['post_type'] );
+		if ( $object ) echo $object->labels->name;
+		else _e( 'No post type', 'tcp' );?></td>
+	<td><?php echo $taxonomy_def['name']; ?></td>
+	<td><?php echo $taxonomy; ?></td>
+	<td><?php echo $taxonomy_def['desc']; ?>&nbsp;</td>
+	<td><?php $taxonomy_def['activate'] ? _e( 'Activated', 'tcp' ) : _e( 'No Activated', 'tcp' ); ?></td>
+	<td><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php&taxonomy=<?php echo $taxonomy; ?>"><?php _e( 'Edit', 'tcp' ); ?></a>
+	| <a href="" class="tcp_show_delete_area" id="<?php echo $taxonomy; ?>"><?php _e( 'delete', 'tcp' ); ?></a></div>
+		<div id="tcp_delete_area_<?php echo $taxonomy; ?>" class="tcp_delete_taxonomy_area" style="display:none; border: 1px dotted orange; padding: 2px">
+			<form method="post">
+			<input type="hidden" name="taxonomy" value="<?php echo $taxonomy; ?>" />
 			<input type="hidden" name="tcp_delete_taxonomy" value="y" />
 			<p><?php _e( 'Do you really want to delete this taxonomy?', 'tcp' ); ?></p>
-			<a href="javascript:document.frm_delete_<?php echo $taxonomy_id; ?>.submit();" class="delete"><?php _e( 'Yes' , 'tcp' ); ?></a> |
-			<a href="#" onclick="jQuery('#delete_<?php echo $taxonomy_id; ?>').hide();"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+			<a href="" class="tcp_delete_taxonomy"><?php _e( 'Yes' , 'tcp' ); ?></a> |
+			<a href="" class="tcp_no_delete"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
 			</form>
 	</td>
 </tr>
 	<?php endforeach; ?>
 <?php else : ?>
 <tr>
-	<td colspan="3"><?php _e( 'The list is empty', 'tcp' ); ?></td>
+	<td colspan="5"><?php _e( 'The list is empty', 'tcp' ); ?></td>
 </tr>
 <?php endif; ?>
 </tbody>

@@ -44,7 +44,7 @@ class TCPAddressesList {
 
 <?php if ( is_admin() ) : ?><h2><?php _e( 'List of addresses', 'tcp' ); ?></h2><?php endif; ?>
 <ul class="subsubsub">
-	<li><a href="<?php echo $admin_path; ?>"><?php _e( 'create new address', 'tcp' ); ?></a></li>
+	<li><a href="<?php echo $admin_path; ?>"><?php _e( 'Create new address', 'tcp' ); ?></a></li>
 </ul>
 <div class="clear"></div>
 

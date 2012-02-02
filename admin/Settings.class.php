@@ -21,13 +21,6 @@ require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 
 class TCPSettings {
 
-	function contextual_help( $contextual_help, $screen_id, $screen ) {
-		if ( $screen_id == 'thecartpress_page_tcp_settings_page' ) {
-			$contextual_help = 'This is where I would provide help to the user on how everything in my admin panel works. Formatted HTML works fine in here too.';
-		}
-		return $contextual_help;
-	}
-
 	function admin_init() {
 		$tcp_settings_page = __FILE__;
 		register_setting( 'thecartpress_options', 'tcp_settings', array( $this, 'validate' ) );
@@ -74,11 +67,11 @@ class TCPSettings {
 		add_settings_field( 'legal_notice', __( 'Checkout notice', 'tcp' ), array( $this, 'show_legal_notice' ), $tcp_settings_page , 'tcp_checkout_section' );
 		add_settings_field( 'checkout_successfully_message', __( 'Checkout successfully message', 'tcp' ), array( $this, 'show_checkout_successfully_message' ), $tcp_settings_page , 'tcp_checkout_section' );
 
-		add_settings_section( 'tcp_permalinks_section', __( 'Permalinks', 'tcp' ) , array( $this, 'show_permalink_section' ), $tcp_settings_page );
+		/*add_settings_section( 'tcp_permalinks_section', __( 'Permalinks', 'tcp' ) , array( $this, 'show_permalink_section' ), $tcp_settings_page );
 		add_settings_field( 'product_rewrite', __( 'Product base', 'tcp' ), array( $this, 'show_product_rewrite' ), $tcp_settings_page , 'tcp_permalinks_section' );
 		add_settings_field( 'category_rewrite', __( 'Category base', 'tcp' ), array( $this, 'show_category_rewrite' ), $tcp_settings_page , 'tcp_permalinks_section' );
 		add_settings_field( 'tag_rewrite', __( 'Tag base', 'tcp' ), array( $this, 'show_tag_rewrite' ), $tcp_settings_page , 'tcp_permalinks_section' );
-		add_settings_field( 'supplier_rewrite', __( 'Supplier base', 'tcp' ), array( $this, 'show_supplier_rewrite' ), $tcp_settings_page , 'tcp_permalinks_section' );
+		add_settings_field( 'supplier_rewrite', __( 'Supplier base', 'tcp' ), array( $this, 'show_supplier_rewrite' ), $tcp_settings_page , 'tcp_permalinks_section' );*/
 
 		add_settings_section( 'tcp_theme_compatibility_section', __( 'Theme compatibility', 'tcp' ) , array( $this, 'show_theme_compatibility_section' ), $tcp_settings_page );
 		add_settings_field( 'use_default_loop', __( 'Theme templates', 'tcp' ), array( $this, 'show_use_default_loop' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );	
@@ -86,6 +79,8 @@ class TCPSettings {
 		add_settings_field( 'load_default_shopping_cart_checkout_style', __( 'Load default shopping cart & checkout style', 'tcp' ), array( $this, 'show_load_default_shopping_cart_checkout_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'load_default_loop_style', __( 'Load default loop style', 'tcp' ), array( $this, 'show_load_default_loop_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'products_per_page', __( 'Product pages show at most', 'tcp' ), array( $this, 'show_products_per_page' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'see_pagination', __( 'See pagination', 'tcp' ), array( $this, 'show_see_pagination' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
+
 		add_settings_field( 'see_buy_button_in_content', __( 'See buy button in content', 'tcp' ), array( $this, 'show_see_buy_button_in_content' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'align_buy_button_in_content', __( 'Align of buy button in content', 'tcp' ), array( $this, 'show_align_buy_button_in_content' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_price_in_content', __( 'See price in content', 'tcp' ), array( $this, 'show_see_price_in_content' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
@@ -138,12 +133,12 @@ class TCPSettings {
 	function show_main_section() { ?>
 <script>
 <?php global $thecartpress;
-	$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'none' );
-	if ( $use_default_loop != 'none' ) : ?>
-		jQuery(document).ready( function() {
-			hide_excerpt();
-		});
-	<?php endif; ?>
+$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'none' );
+if ( $use_default_loop != 'none' ) : ?>
+	jQuery(document).ready( function() {
+		hide_excerpt();
+	});
+<?php endif; ?>
 
 	function hide_excerpt() {
 		jQuery('#see_buy_button_in_excerpt').parent().parent().hide();
@@ -154,6 +149,7 @@ class TCPSettings {
 		jQuery('#image_align_excerpt').parent().parent().hide();
 		jQuery('#image_link_excerpt').parent().parent().hide();
 	}
+
 	function show_excerpt() {
 		jQuery('#see_buy_button_in_excerpt').parent().parent().show();
 		jQuery('#align_buy_button_in_excerpt').parent().parent().show();
@@ -519,7 +515,7 @@ class TCPSettings {
 		<p class="description"><?php _e( 'If this messages is blank, the Checkout page will try to use the Notice class called "tcp_checkout_end"', 'tcp' ); ?></p><?php
 	}
 
-	function show_permalink_section() {
+	/*function show_permalink_section() {
 	}
 
 	function show_product_rewrite() {
@@ -546,7 +542,7 @@ class TCPSettings {
 		global $thecartpress;
 		$supplier_rewrite = $thecartpress->get_setting( 'supplier_rewrite', 'product_supplier' ); ?>
 		<input type="text" id="supplier_rewrite" name="tcp_settings[supplier_rewrite]" value="<?php echo $supplier_rewrite; ?>" size="50" maxlength="255" /><?php
-	}
+	}*/
 
 	function show_theme_compatibility_section() {
 	}
@@ -562,9 +558,13 @@ class TCPSettings {
 		<p class="description"><?php _e( 'You must configure the grid using the Loop settings menu.', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'Total flexibility for developers and theme constructors.', 'tcp' ); ?></p>
 		<input type="radio" id="use_default_loop" name="tcp_settings[use_default_loop]" value="yes" <?php checked( 'yes', $use_default_loop ); ?>
-		onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates', 'tcp' ); ?></strong></label>
+		onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyeleven based)', 'tcp' ); ?></strong></label>
+		<br/>
+		<input type="radio" id="use_default_loop" name="tcp_settings[use_default_loop]" value="yes_2010" <?php checked( 'yes_2010', $use_default_loop ); ?>
+		onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyten based)', 'tcp' ); ?></strong></label>
 		<p class="description"><?php _e( 'To show the product pages with the default/basic template provides by TheCartPress.', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'If this setting is activated you must configure the grid using the Loop settings menu.', 'tcp' ); ?></p>
+		<p class="description"><?php _e( 'TheCartPress provides two version of the default template, one for twentyeleven based themes and the other for twentyten based themes.', 'tcp' ); ?></p>
 		<input type="radio" id="use_default_loop_none" name="tcp_settings[use_default_loop]" value="none" <?php checked( 'none', $use_default_loop ); ?> 
 		onclick="show_excerpt();"/> <label for="use_default_loop_none"><strong><?php _e( 'None', 'tcp' ); ?></strong></label>
 		<p class="description"><?php _e( 'Use your own templates. Total flexibility for developers and theme constructors.', 'tcp' ); ?></p><?php
@@ -595,6 +595,12 @@ class TCPSettings {
 		_e( 'products', 'tcp');
 	}
 
+	function show_see_pagination() {
+		global $thecartpress;
+		$see_pagination = $thecartpress->get_setting( 'see_pagination', false ); ?>
+		<input type="checkbox" id="see_pagination" name="tcp_settings[see_pagination]" value="yes" <?php checked( true, $see_pagination ); ?> /><?php
+	}
+
 	function show_see_buy_button_in_content() {
 		global $thecartpress;
 		$see_buy_button_in_content = $thecartpress->get_setting( 'see_buy_button_in_content', true ); ?>
@@ -606,7 +612,7 @@ class TCPSettings {
 	function show_align_buy_button_in_content() {
 		global $thecartpress;
 		$align_buy_button_in_content = $thecartpress->get_setting( 'align_buy_button_in_content', 'north' ); ?>
-		<select id="see_buy_button_in_content" name="tcp_settings[align_buy_button_in_content]">
+		<select id="align_buy_button_in_content" name="tcp_settings[align_buy_button_in_content]">
 			<option value="north" <?php selected( 'north', $align_buy_button_in_content ); ?>><?php _e( 'North', 'tcp' ); ?></option>
 			<option value="south" <?php selected( 'south', $align_buy_button_in_content ); ?>><?php _e( 'South', 'tcp' ); ?></option>
 		</select><?php
@@ -772,7 +778,7 @@ class TCPSettings {
 
 		if ( isset( $input['all_shipping_isos'] ) && $input['all_shipping_isos'] == 'yes' ) $input['shipping_isos'] = array();
 		if ( isset( $input['all_billing_isos'] ) && $input['all_billing_isos'] == 'yes' ) $input['billing_isos'] = array();
-		
+
 		$input['prices_include_tax']		= isset( $input['prices_include_tax'] ) ? $input['prices_include_tax'] == 'yes' : false;
 		$input['shipping_cost_include_tax']	= isset( $input['shipping_cost_include_tax'] ) ? $input['shipping_cost_include_tax'] == 'yes' : false;
 		$input['apply_tax_after_discount']	= isset( $input['apply_tax_after_discount'] ) ? $input['apply_tax_after_discount'] == 'yes' : false;
@@ -785,6 +791,7 @@ class TCPSettings {
 		$input['display_zero_tax_subtotal']	= isset( $input['display_zero_tax_subtotal'] ) ? $input['display_zero_tax_subtotal'] == 'yes' : false;
 
 		$input['products_per_page']			= isset( $input['products_per_page'] ) ? (int)$input['products_per_page'] : 10;
+		$input['see_pagination']			= isset( $input['see_pagination'] ) ? $input['see_pagination'] == 'yes' : false;
 		$input['see_buy_button_in_content']	= isset( $input['see_buy_button_in_content'] ) ? $input['see_buy_button_in_content'] == 'yes' : false;
 		$input['see_buy_button_in_excerpt']	= isset( $input['see_buy_button_in_excerpt'] ) ? $input['see_buy_button_in_excerpt'] == 'yes' : false;
 		$input['align_buy_button_in_excerpt'] = isset( $input['align_buy_button_in_excerpt'] ) ? $input['align_buy_button_in_excerpt']: 'thumbnail';
@@ -794,10 +801,11 @@ class TCPSettings {
 		$input['see_image_in_excerpt']		= isset( $input['see_image_in_excerpt'] ) ? $input['see_image_in_excerpt'] == 'yes' : false;
 		$input['downloadable_path']			= wp_filter_nohtml_kses( isset( $input['downloadable_path'] ) ? $input['downloadable_path'] : '' );
 		$input['continue_url']				= wp_filter_nohtml_kses( isset( $input['continue_url'] ) ? $input['continue_url'] : '' );
-		$input['product_rewrite']			= wp_filter_nohtml_kses( isset( $input['product_rewrite'] ) ? $input['product_rewrite'] : '' );
+		/*$input['product_rewrite']			= wp_filter_nohtml_kses( isset( $input['product_rewrite'] ) ? $input['product_rewrite'] : '' );
 		$input['category_rewrite']			= wp_filter_nohtml_kses( isset( $input['category_rewrite'] ) ? $input['category_rewrite'] : '' );
 		$input['tag_rewrite']				= wp_filter_nohtml_kses( isset( $input['tag_rewrite'] ) ? $input['tag_rewrite'] : '' );
 		$input['supplier_rewrite']			= wp_filter_nohtml_kses( isset( $input['supplier_rewrite'] ) ? $input['supplier_rewrite'] : '' );
+		*/
 		//$input['use_tcp_loop']				= isset( $input['use_tcp_loop'] ) ? $input['use_tcp_loop'] == 'yes' : false;
 		$input['use_default_loop']			= isset( $input['use_default_loop'] ) ? $input['use_default_loop'] : 'only_settings';
 		$input['checkout_successfully_message']				= wp_filter_nohtml_kses( isset( $input['checkout_successfully_message'] ) ? $input['checkout_successfully_message'] : '' );
@@ -827,64 +835,10 @@ class TCPSettings {
 		return $input;
 	}
 
-	/**
-	*
-	* Improves the user experience in the settings page
-	*/
-	function tcp_show_settings() { ?>
-		<script>
-		jQuery(document).ready(function() {
-			jQuery('.form-table').hide();
-			jQuery('div.wrap h3').hide();
-			var sections = jQuery('<ul class="tabs_section"></ul>');
-			sections.insertAfter('div.wrap h2');
-			var first_li = true;
-			jQuery('div.wrap h3').each( function() {
-				var next = jQuery(this).nextAll('.form-table');
-				if (next) next = next[0];
-				if (next) {
-					var a = jQuery('<a href="javascript: void(0);" class="section_a">' + jQuery(this).text() + '</a>');
-					a.click(function() {
-						jQuery('.form-table').hide();
-						jQuery(next).toggle();
-						jQuery('ul.tabs_section li.section_active').removeClass('section_active');
-						jQuery(this).parent().addClass('section_active');
-					});
-					var li = jQuery('<li></li>');
-					if (first_li) {
-						first_li = false;
-						li.addClass('section_active');
-					}
-					li.append(a);
-					sections.append(li);
-				}
-			});
-			var first_section = jQuery('div.wrap h3');
-			if (first_section) first_section = first_section[0];
-			var next = jQuery(first_section).nextAll('.form-table');
-			if (next) next = next[0];
-			jQuery(next).toggle();
-/*			jQuery('input').mouseover(function() {
-				jQuery(this).next('div.description').find('.description').each( function() {
-					jQuery(this).addClass('active_description');
-				});
-			});
-			jQuery('input').mouseout(function() {
-				jQuery(this).next('div.description').find('.description').each( function() {
-					jQuery(this).removeClass('active_description');
-				});
-			});*/
-			//var btn = jQuery('.form-table').before('<input type="button" class="button-secondary" onclick="jQuery(this).next().toggle();" value="<?php _e( 'show/hide', 'tcp');?>"/>');
-		});
-		</script><?php
-	}
-
 	function __construct( $register = true ) {
 		if ( $register && is_admin() ) {
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'tcp_show_settings', array( $this, 'tcp_show_settings' ) );
-			//add_filter( 'contextual_help', array( $this, 'contextual_help' ) , 10, 3);
 		}
 	}
 }

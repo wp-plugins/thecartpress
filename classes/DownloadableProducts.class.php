@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_CLASSES_FOLDER . 'MP3Player.class.php' );
-
 class TCPDownloadableProducts {
 
 	function tcp_the_add_to_cart_unit_field( $out, $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) {
-			$out = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false );
+			//require_once( TCP_CLASSES_FOLDER . 'MP3Player.class.php' );
+			//$out = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false ); //DEPRECATED
+			global $tcp_jplayer;
+			$out = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
 			$out .= '<input type="hidden" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" />';
 		}
 		return $out;
@@ -103,6 +104,45 @@ class TCPDownloadableProducts {
 		delete_post_meta( $post_id, 'tcp_days_to_expire' );
 	}
 
+	function tcp_send_order_mail_to_customer( $message, $order_id ) {
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+		$order = Orders::get( $order_id );
+		if ( $order && $order->customer_id == 0 && $order->status == tcp_get_completed_order_status() ) {
+			require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
+			$exists_downloadables = false;
+			$details = OrdersDetails::getDetails( $order_id );
+			$url = get_bloginfo('url') . '/wp-content/plugins/thecartpress/admin/VirtualProductDownloader.php';
+			ob_start(); ?>
+			<ul>
+			<?php foreach( $details as $detail ) : ?>
+				<?php if ( tcp_is_downloadable( $detail->post_id ) ) :
+					$exists_downloadables = true;
+					$uuid = tcp_get_download_uuid( $detail->order_detail_id );
+					$link = add_query_arg( 'uuid', $uuid, $url );
+					$link = add_query_arg( 'did', $detail->order_detail_id, $link );
+					$post = get_post( $detail->post_id ); ?>
+					<li><a href="<?php echo $link; ?>" target="_blank"><?php echo esc_html( $post->post_title ); ?></a></li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			</ul>
+			<?php $html = ob_get_clean();
+			if ( $exists_downloadables ) {
+				$message .= '<p><h2>' . __( 'Downloadable files', 'tcp' ) . '</h2>' . $html . '</p>';
+				return $message;
+			}
+		}
+		return $message;
+	}
+
+	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id ) {
+		if ( tcp_is_downloadable( $post_id ) ) {
+			$current_user = wp_get_current_user();
+			if ( 0 == $current_user->ID ) {
+				tcp_create_download_uuid( $orders_details_id );
+			}
+		}
+	}
+
 	function __construct() {
 		if ( is_admin() ) {
 			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar') );
@@ -114,8 +154,21 @@ class TCPDownloadableProducts {
 			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
 			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
 		}
+		add_filter( 'tcp_send_order_mail_to_customer', array( $this, 'tcp_send_order_mail_to_customer' ), 10, 2 );
+		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 3 );
 	}
 }
 
 new TCPDownloadableProducts();
+
+function tcp_create_download_uuid( $order_detail_id ) {
+	require_once( TCP_CLASSES_FOLDER . 'UUID.class.php' );
+	$uuid = TCPUUID::v4();
+	update_order_detail_meta( $order_detail_id, 'tcp_download_uuid', $uuid );
+	return $uuid;
+}
+
+function tcp_get_download_uuid( $order_detail_id ) {
+	return get_order_detail_meta( $order_detail_id, 'tcp_download_uuid', true );
+}
 ?>

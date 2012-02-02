@@ -124,7 +124,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 				</ul>
 				<!--<p><input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" /></p>-->
 			<?php else : ?>
-				 <p><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' ); ?></strong></p>
+				 <p style="clear: both;"><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' ); ?></strong></p>
 			<?php endif; ?>
 			</div><!-- login_guess -->
 		<?php endif; ?>

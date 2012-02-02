@@ -105,7 +105,7 @@ class FlatRateShipping extends TCP_Plugin {
 				$total = $data['fixed_cost'] * $shoppingCart->getCount();
 			}
 		} else if ( $data['calculate_by'] == 'per' ) {
-			$total = $shoppingCart->getTotalForShipping() - $shoppingCart->getDiscount();
+			$total = $shoppingCart->getTotalForShipping() - $shoppingCart->getCartDiscountsTotal();
 			$total = $total * $data['percentage'] / 100;
 		} else {
 			$total = 0;

@@ -47,6 +47,7 @@ class TCPLoopsSettings {
 		add_settings_field( 'see_posted_on', __( 'See posted on:', 'tcp' ), array( $this, 'see_posted_on' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'see_taxonomies', __( 'See taxonomies:', 'tcp' ), array( $this, 'see_taxonomies' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'see_meta_utilities', __( 'See meta utilities:', 'tcp' ), array( $this, 'see_meta_utilities' ), __FILE__ , 'ttc_main_section' );
+		add_settings_field( 'see_pagination', __( 'See pagination:', 'tcp' ), array( $this, 'see_pagination' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'see_first_custom_area', __( 'See first custom area', 'tcp' ), array( $this, 'see_first_custom_area' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'see_second_custom_area', __( 'See second custom area', 'tcp' ), array( $this, 'see_second_custom_area' ), __FILE__ , 'ttc_main_section' );
 		add_settings_field( 'see_third_custom_area', __( 'See third custom area', 'tcp' ), array( $this, 'see_third_custom_area' ), __FILE__ , 'ttc_main_section' );
@@ -204,6 +205,12 @@ class TCPLoopsSettings {
 		<input id="columns" name="ttc_settings[columns]" value="<?php echo $columns;?>" size="2" maxlength="2" type="text" /><?php
 	}
 
+	function see_pagination() {
+		$settings = get_option( 'ttc_settings' );
+		$see_pagination = isset( $settings['see_pagination'] ) ? $settings['see_pagination'] : false;?>
+		<input type="checkbox" name="ttc_settings[see_pagination]" id="see_paginationsee_pagination" value="yes" <?php checked( $see_pagination, true );?> /><?php
+	}
+
 	function see_first_custom_area() {
 		$settings = get_option( 'ttc_settings' );
 		$see_first_custom_area = isset( $settings['see_first_custom_area'] ) ? $settings['see_first_custom_area'] : false;?>
@@ -236,6 +243,7 @@ class TCPLoopsSettings {
 		$input['order_desc']			= isset( $input['order_desc'] ) ? 'desc' : 'asc';
 		$input['see_sorting_panel']		= isset( $input['see_sorting_panel'] ) ? $input['see_sorting_panel'] == 'yes' : false;
 		$input['columns']				= (int)$input['columns'];
+		$input['see_pagination']		= isset( $input['see_pagination'] ) ? $input['see_pagination']  == 'yes' : false;
 		$input['see_first_custom_area']	= isset( $input['see_first_custom_area'] ) ? $input['see_first_custom_area']  == 'yes' : false;
 		$input['see_second_custom_area']= isset( $input['see_second_custom_area'] ) ? $input['see_second_custom_area']  == 'yes' : false;
 		$input['see_third_custom_area']	= isset( $input['see_third_custom_area'] ) ? $input['see_third_custom_area']  == 'yes' : false;
@@ -243,27 +251,43 @@ class TCPLoopsSettings {
 	}
 
 	function template_include( $template ) {
+//var_dump($template);
 		global $wp_query;
 		if ( isset( $wp_query->tax_query ) ) {
 			foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
-					$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/taxonomy-tcp.php';
-					break;
+					$settings = get_option( 'tcp_settings' );
+					if ( $settings['use_default_loop'] == 'yes' ) {
+						$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php';
+						break;
+					} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+						$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/taxonomy.php';
+						break;
+					}
 				}
 			}
 		}
 		return $template;
 	}
-	
+
 	function __construct() {
 		$settings = get_option( 'tcp_settings' );
-		if ( is_admin() ) {
+		/*if ( is_admin() ) {
 			if ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] != 'none' ) {
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			}
 		} elseif ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] == 'yes' ) {
 			add_filter( 'template_include', array( $this, 'template_include' ) );
+		}*/
+		
+		if ( isset( $settings['use_default_loop'] ) ) {
+			if ( is_admin() && $settings['use_default_loop'] != 'none' ) {
+				add_action( 'admin_init', array( $this, 'admin_init' ) );
+				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+			} elseif ( $settings['use_default_loop'] == 'yes' || $settings['use_default_loop'] == 'yes_2010' ) {
+				add_filter( 'template_include', array( $this, 'template_include' ) );
+			}
 		}
 	}
 }

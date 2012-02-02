@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.6
+Version: 1.1.7
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -53,6 +53,7 @@ class TheCartPress {
 
 	function wp_head() { //Shopping Cart actions
 		if ( isset( $_REQUEST['tcp_add_to_shopping_cart'] ) ) {
+			unset( $_REQUEST['tcp_add_to_shopping_cart'] );
 			$shoppingCart	= TheCartPress::getShoppingCart();
 			$post_id		= isset( $_REQUEST['tcp_post_id'] ) ? $_REQUEST['tcp_post_id'] : 0;
 			do_action( 'tcp_before_add_shopping_cart', $post_id );
@@ -215,6 +216,9 @@ class TheCartPress {
 		$page_id = get_option( 'tcp_checkout_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) )
 			$warnings[] = __( 'The <strong>Checkout page</strong> has been deleted.', 'tcp' );
+		$page_id = get_option( 'tcp_checkout_page_id' );
+		//if ( ! $page_id || ! get_page( $page_id ) )
+		//	$warnings[] = __( 'The <strong>Catalog page</strong> has been deleted.', 'tcp' );
 		$warnings = apply_filters( 'tcp_check_the_plugin', $warnings );
 		if ( count( $warnings ) > 0 ) : 
 			$checking_path = TCP_ADMIN_PATH . 'Checking.php'; ?>
@@ -229,7 +233,7 @@ class TheCartPress {
 	}
 
 	function request( $query ) {
-		if ( ! is_admin()) {
+		if ( ! is_admin() ) {
 			$wp_query = new WP_Query();
 			$wp_query->parse_query( $query );
 			$apply_filters = false;
@@ -253,16 +257,18 @@ class TheCartPress {
 						}
 					}
 				}
-				if ( $wp_query->is_archive() ) {
+				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 					$apply_filters = true;
 				}
 			}
-			if ( $apply_filters ) {
+			if ( $apply_filters || isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 				$query['meta_query'][] = array(
 					'key'		=> 'tcp_is_visible',
 					'value'		=> 1,
 					'compare'	=> '='
 				);
+			}
+			if ( $apply_filters ) {
 				$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
 				$filter = new TCPFilterNavigation();						
 				if ( $filter->is_filter_by_layered() ) {
@@ -309,13 +315,13 @@ class TheCartPress {
 	}
 
 	function postsJoinNext( $join ) {
-		global $wpdb;
-		$join .= " LEFT JOIN {$wpdb->postmeta} tcp_postmeta_is_visible ON (p.ID = tcp_postmeta_is_visible.post_id AND tcp_postmeta_is_visible.meta_key='tcp_is_visible' )";
+//		global $wpdb;
+//		$join .= " LEFT JOIN {$wpdb->postmeta} tcp_postmeta_is_visible ON (p.ID = tcp_postmeta_is_visible.post_id AND tcp_postmeta_is_visible.meta_key='tcp_is_visible' )";
 		return $join;
 	}
 
 	function postsWhereNext( $where ) {
-		$where .= " AND (tcp_postmeta_is_visible.meta_value='1' OR tcp_postmeta_is_visible.meta_value IS NULL)";
+//		$where .= " AND (tcp_postmeta_is_visible.meta_value='1' OR tcp_postmeta_is_visible.meta_value IS NULL)";
 		return $where;
 	}
 
@@ -339,61 +345,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	function shortCodePrice( $atts ) {
 		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
 		return tcp_get_the_price_label( $post_id );
-	}
-
-	function admin_bar_menu() {
-		global $wp_admin_bar;
-		//if ( is_admin_bar_showing() && current_user_can( 'tcp_read_orders' ) ) {
-		if ( current_user_can( 'tcp_read_orders' ) ) {
-			$wp_admin_bar->add_menu(
-				array(
-					'id'	=> 'the_cart_press',
-					'title'	=> __( 'Shopping', 'tcp' ),
-					'href'	=> admin_url( 'admin.php' ) . '?page=thecartpress/admin/OrdersListTable.php',
-				)
-			);
-			$wp_admin_bar->add_menu(
-				array(
-					'parent'	=> 'the_cart_press',
-					'id'		=> 'orders_list',
-					'title'		=>__( 'Orders', 'tcp' ),
-					'href'		=> admin_url( 'admin.php' ) . '?page=thecartpress/admin/OrdersListTable.php',
-				)
-			);
-			if ( current_user_can( 'tcp_downloadable_products' ) ) {
-				$wp_admin_bar->add_menu(
-					array(
-						'parent'	=> 'the_cart_press',
-						'id'		=> 'download_area',
-						'title'		=> __( 'Download area', 'tcp' ),
-						'href'		=> admin_url( 'admin.php' ) . "?page=thecartpress/admin/DownloadableList.php",
-					)
-				);
-			}
-		}
-	}
-
-	function wp_before_admin_bar_render() {
-		global $wp_admin_bar;
-		$tcp_admin_bar_hidden_items = get_option( 'tcp_admin_bar_hidden_items', array() );
-		if ( isset( $wp_admin_bar->menu ) ) {
-			$menu_bar = $wp_admin_bar->menu;
-			foreach( $menu_bar as $id => $menu ) {
-				if ( isset( $tcp_admin_bar_hidden_items[$id] ) ) {
-					unset( $wp_admin_bar->menu->$id );
-				} else {
-					foreach( $menu as $id_menu => $menu_item ) {
-						if ( $id_menu == 'children' ) {
-							foreach( $menu_item as $id_item => $item ) {
-								if ( isset( $tcp_admin_bar_hidden_items[$id_item] ) ) {
-									unset( $menu_item->$id_item );
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -432,7 +383,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		return $base;
 	}
 
-	function admin_menu() {	
+	function admin_menu() {
 		$base = $this->get_base();
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
@@ -493,29 +444,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			} elseif ( $see_price_in_content ) {
 				$html = '<p id="tcp_price_post-' . $post->ID . '">' . tcp_get_the_price_label( $post->ID ) . '</p>';
 			}
-
 			if ( $see_image_in_content ) {
-				/*$image = '';
-			 	if ( has_post_thumbnail( $post->ID ) ) {
-					$image_size			= $this->get_setting( 'image_size_content', 'thumbnail' );
-					$image_align		= $this->get_setting( 'image_align_content', '' );
-					$image_link			= $this->get_setting( 'image_link_content', '' );
-					$thumbnail_id		= get_post_thumbnail_id( $post->ID );
-					$attr				= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_thumbnail_' . $post->ID );
-					//$image_attributes = array{0 => url, 1 => width, 2 => height};
-					$image_attributes	= wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
-					if ( strlen( $image_link ) > 0 ) {
-						if ( $image_link == 'file' ) {
-							$href = $image_attributes[0];
-						} else {
-							$href = get_permalink( $thumbnail_id );
-						}
-						$image	= '<a href="' . $href . '">' . get_the_post_thumbnail( $post->ID, $image_size, $attr ) . '</a>';
-					} else {
-						$image = get_the_post_thumbnail( $post->ID, $image_size, $attr );
-					}
-				}*/
-
 				$image_align = $this->get_setting( 'image_align_content', '' );
 				$args = array(
 					'size'	=> $this->get_setting( 'image_size_content', 'thumbnail' ),
@@ -532,7 +461,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				}
 				$content = $image . $content;
 			}
-			
 			$html = apply_filters( 'tcp_filter_content', $html, $post->ID );
 			if ( $align_buy_button_in_content == 'north' ) {
 				return $html . do_shortcode( $content );
@@ -618,6 +546,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		tcp_register_shipping_plugin( 'FlatRateShipping' );
 		require_once( TCP_PLUGINS_FOLDER .'ShippingCost.class.php' );
 		tcp_register_shipping_plugin( 'ShippingCost' );
+		require_once( TCP_PLUGINS_FOLDER .'LocalPickUp.class.php' );
+		tcp_register_shipping_plugin( 'TCPLocalPickUp' );
 		//payment methods
 		require_once( TCP_PLUGINS_FOLDER .'PayPal/TCPPayPal.php' );
 		tcp_register_payment_plugin( 'TCPPayPal' );
@@ -655,6 +585,14 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		} else {
 			wp_publish_post( (int)$page_id );
 		}
+		//Page Catalogue
+		$page_id = get_option( 'tcp_catalogue_page_id' );
+		if ( ! $page_id || ! get_page( $page_id ) ) {
+			TheCartPress::createCataloguePage();
+		} else {
+			wp_publish_post( (int)$page_id );
+		}
+		ProductCustomPostType::create_default_custom_post_type_and_taxonomies();
 		//initial shipping and payment method
 		add_option( 'tcp_plugins_data_shi_FreeTrans', array(
 				array(
@@ -691,6 +629,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				'taxonomy'				=> 'tcp_product_category',
 				'included'				=> array(),
 				'term'					=> '', //'tables',
+				'pagination'			=> true,
 				'loop'					=> '',
 				'columns'				=> 2,
 				'see_title'				=> true,
@@ -728,17 +667,13 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				'decimal_point'				=> '.',
 				'thousands_separator'		=> ',',
 				'unit_weight'				=> 'gr',
-				'product_rewrite'			=> 'product',
-				'category_rewrite'			=> 'product_category',
-				'tag_rewrite'				=> 'product_tag',
-				'supplier_rewrite'			=> 'product_supplier',
 				'hide_visibles'				=> false,//hide_invisibles!!
 			);
 			add_option( 'tcp_settings', $this->settings );
 		}
-		//TheCartPress::createExampleData();
+		TheCartPress::createExampleData();
 		//feed: http://<site>/?feed=tcp-products
-		add_feed( 'tcp-products', array( $this, 'create_products_feed' ) );
+		//add_feed( 'tcp-products', array( $this, 'create_products_feed' ) );
 /*		global $wp_rewrite;
 		add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
 		$wp_rewrite->flush_rules();*/
@@ -771,6 +706,19 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		return $checkout_page_id;
 	}
 
+	static function createCataloguePage() {
+		$post = array(
+			'comment_status'	=> 'closed',
+			'post_content'		=> '[tcp_list id="all_products"]',
+			'post_status'		=> 'publish',
+			'post_title'		=> __( 'Catalogue', 'tcp' ),
+			'post_type'			=> 'page',
+		);
+		$catalogue_page_id = wp_insert_post( $post );
+		update_option( 'tcp_catalogue_page_id', $catalogue_page_id );
+		return $catalogue_page_id;
+	}
+
 	static function createExampleData() {
 		$products = wp_count_posts( 'tcp_product' );
 		if ( $products->publish + $products->draft == 0 ) {
@@ -787,17 +735,16 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			);
 			$post_id = wp_insert_post( $post );
 			add_post_meta( $post_id, 'tcp_tax_id',  0 );
-			add_post_meta( $post_id, 'tcp_tax',  0 );
-			add_post_meta( $post_id, 'tcp_tax_label', '' );
 			add_post_meta( $post_id, 'tcp_is_visible', true );
 			add_post_meta( $post_id, 'tcp_is_downloadable', false );
 			add_post_meta( $post_id, 'tcp_type', 'SIMPLE' );
+			add_post_meta( $post_id, 'tcp_hide_buy_button', false );
 			add_post_meta( $post_id, 'tcp_price', 100 );
 			add_post_meta( $post_id, 'tcp_weight', 12 );
 			add_post_meta( $post_id, 'tcp_order', 10 );
 			add_post_meta( $post_id, 'tcp_sku', 'SKU_ONE' );
 			add_post_meta( $post_id, 'tcp_stock', -1 ); //No stock
-			//$category_id = wp_insert_category( $args );
+			$category_id = wp_insert_category( $args );
 			$category_id = term_exists( 'Category One', 'tcp_product_category' );
 			if ( ! $category_id ) {
 				$category_id = wp_insert_term( 'Category One', 'tcp_product_category', $args );
@@ -811,6 +758,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		$id = get_option( 'tcp_shopping_cart_page_id' );
 		wp_delete_post( $id );
 		$id = get_option( 'tcp_checkout_page_id' );
+		wp_delete_post( $id );
+		$id = get_option( 'tcp_catalogue_page_id' );
 		wp_delete_post( $id );
 		//remove roles
 		remove_role( 'customer' );
@@ -841,6 +790,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
 		wp_enqueue_script( 'tcp_scripts' );
 		$this->load_custom_post_types_and_custom_taxonomies();
+		if ( is_admin() ) wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
 			$load_default_buy_button_style				= $this->get_setting( 'load_default_buy_button_style', true );
@@ -849,7 +799,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			if ( $load_default_buy_button_style ) wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
 			if ( $load_default_shopping_cart_checkout_style ) wp_enqueue_style( 'tcp_shopping_cart_checkout_style', plugins_url( 'thecartpress/css/tcp_shopping_cart_checkout.css' ) );
 			if ( $load_default_loop_style ) wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
-			if ( is_admin() ) wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 			new TemplateCustomPostType();
 			$this->loading_default_checkout_boxes();
 			$this->loading_default_checkout_plugins();
@@ -859,39 +808,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$wp_rewrite->flush_rules();
 		}
 		$version = (int)get_option( 'tcp_version' );
-		if ( $version < 107 ) {
-			//
-			//TODO Deprecated 1.2
-			//
-			$this->settings['decimal_point']		= '.';
-			$this->settings['thousands_separator']	= ',';
-			update_option( 'tcp_settings', $this->settings );
-			global $wpdb;
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders`
-				MODIFY COLUMN `shipping_city_id`	char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `shipping_region_id`	char(2)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `billing_city_id`		char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `billing_region_id`	char(2)  NOT NULL DEFAULT \'\';';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_addresses`
-				MODIFY COLUMN `city_id`		char(4)  NOT NULL DEFAULT \'\',
-				MODIFY COLUMN `region_id`	char(2)  NOT NULL DEFAULT \'\';';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_orders` MODIFY COLUMN `payment_name` VARCHAR(255) NOT NULL;';
-			$wpdb->query( $sql );
-			require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
-			OrdersCosts::createTable();
-			//
-			//TODO Deprecated 1.2
-			//
-		}
-		if ( $version < 108 ) {
-			if ( strlen( $this->settings['downloadable_path'] ) == 0 ) $this->settings['downloadable_path'] = WP_PLUGIN_DIR . '/thecartpress/uploads';
-			update_option( 'tcp_settings', $this->settings );
-			//
-			//TODO Deprecated 1.2
-			//
-		}
 		if ( $version < 109 ) {
 			global $wpdb;
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_taxes WHERE field = \'tax\'';
@@ -975,18 +891,68 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		}
 		if ( $version < 113 ) {
 			$administrator = get_role( 'administrator' );
-			$administrator->add_cap( 'tcp_edit_wish_list' );
+			if ( $administrator ) $administrator->add_cap( 'tcp_edit_wish_list' );
 			$merchant = get_role( 'merchant' );
-			$merchant->add_cap( 'tcp_edit_wish_list' );
+			if ( $merchant ) $merchant->add_cap( 'tcp_edit_wish_list' );
 			$customer = get_role( 'customer' );
-			$customer->add_cap( 'tcp_edit_wish_list' );
+			if ( $customer ) $customer->add_cap( 'tcp_edit_wish_list' );
 			$this->settings['use_default_loop']	= 'only_settings';
 			update_option( 'tcp_settings', $this->settings );
 			//
 			//TODO Deprecated 1.2
 			//
 		}
-		//update_option( 'tcp_version', 116 ); //TODO
+		if ( $version < 117 ) {
+			require_once( TCP_DAOS_FOLDER . 'OrdersDetailsMeta.class.php' );
+			OrdersDetailsMeta::createTable();
+			$new_post_types = array();
+			$post_types = tcp_get_custom_post_types();
+			foreach( $post_types as $id => $post_type ) {
+				if ( isset( $post_type['name_id'] ) ) {
+					$id = $post_type['name_id'];
+					unset( $post_type['name_id'] );
+				}
+				$new_post_types[$id] = $post_type;
+			}
+			tcp_set_custom_post_types($new_post_types);
+
+			$new_taxonomies = array();
+			$taxonomies = tcp_get_custom_taxonomies();
+			foreach( $taxonomies as $id => $taxonomy ) {
+				if ( isset( $taxonomy['name_id'] ) ) {
+					$id = $taxonomy['name_id'];
+					unset( $taxonomy['name_id'] );
+				}
+				$new_taxonomies[$id] = $taxonomy;
+			}
+			tcp_set_custom_taxonomies( $new_taxonomies );
+
+			$post_type_defs = tcp_get_custom_post_types();
+			if ( isset( $post_type_defs[TCP_PRODUCT_POST_TYPE] ) ) {
+				$rewrite = $this->get_setting( 'product_rewrite', '' );
+				if ( strlen( $rewrite ) > 0 ) $post_type_defs[TCP_PRODUCT_POST_TYPE]['rewrite'] = $rewrite;
+			}
+			tcp_set_custom_post_types( $post_type_defs );
+
+			$taxonomy_defs = tcp_get_custom_taxonomies();
+			if ( isset( $taxonomy_defs[TCP_PRODUCT_CATEGORY] ) ) {
+				$rewrite = $this->get_setting( 'category_rewrite', '' );
+				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_PRODUCT_CATEGORY]['rewrite'] = array( 'slug' => $rewrite );
+			}
+			if ( isset( $taxonomy_defs[TCP_PRODUCT_TAG] ) ) {
+				$rewrite = $this->get_setting( 'tag_rewrite', '' );
+				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_PRODUCT_TAG]['rewrite'] = array( 'slug' => $rewrite );
+			}
+			if ( isset( $taxonomy_defs[TCP_SUPPLIER_TAG] ) ) {
+				$rewrite = $this->get_setting( 'supplier_rewrite', '' );
+				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_SUPPLIER_TAG]['rewrite'] = array( 'slug' => $rewrite );
+			}
+			tcp_set_custom_taxonomies( $taxonomy_defs );
+			update_option( 'tcp_version', 117 );			
+			//
+			//TODO Deprecated 1.2
+			//
+		}
 	}
 
 	/**
@@ -1006,12 +972,9 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function load_custom_post_types_and_custom_taxonomies() {
-		require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
-		require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
-		$post_types = get_option( 'tcp-posttypes-generator' );
-		$taxonomies = get_option( 'tcp-taxonomies-generator' );
+		$post_types = tcp_get_custom_post_types();
 		if ( is_array( $post_types ) && count( $post_types ) > 0 ) {
-			foreach( $post_types as $post_type ) {
+			foreach( $post_types as $id => $post_type ) {
 				if ( $post_type['activate'] ) {
 					$register = array (
 						'labels'			=> $post_type,
@@ -1024,30 +987,39 @@ echo '<br>RES=', count( $res ), '<br>';*/
 						'_edit_link'		=> 'post.php?post=%d',
 						'capability_type'	=> 'post',
 						'hierarchical'		=> false,
-						'query_var'			=> true,
-						'supports'			=> isset( $post_type['supports'] ) ? $post_type['supports'] : true,
-						'taxonomies'		=> $this->tcp_get_custom_taxonomies_by_post_type( $post_type['name_id'], $taxonomies ),
+						'query_var'			=> isset( $post_type['query_var'] ) ? $post_type['query_var'] : true,
+						'supports'			=> isset( $post_type['supports'] ) ? $post_type['supports'] : array(),
+						//'taxonomies'		=> tcp_get_custom_taxonomies( $id ),
 						'rewrite'			=> strlen( $post_type['rewrite'] ) > 0 ? array( 'slug' => $post_type['rewrite'] ) : false,
 						'has_archive'		=> strlen( $post_type['has_archive'] ) > 0 ? $post_type['has_archive'] : false,
 					);
-					register_post_type( $post_type['name_id'], $register );
+					register_post_type( $id, $register );
 					$is_saleable = isset( $post_type['is_saleable'] ) ? $post_type['is_saleable'] : false;
-					//if ( $is_saleable ) $this->saleable_post_types[] = $post_type['name_id'];
-					if ( $is_saleable ) $this->register_saleable_post_type( $post_type['name_id'] );
-					if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $post_type['name_id'], $register['has_archive'] );
+					if ( $is_saleable ) {
+						$this->register_saleable_post_type( $id );
+						//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $id, $register['has_archive'] );
+						global $productcustomposttype;
+						add_filter( 'manage_edit-' . $id . '_columns', array( $productcustomposttype, 'custom_columns_definition' ) );
+					}
 				}
 			}
 		}
+		$taxonomies = get_option( 'tcp-taxonomies-generator' );
 		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
-			foreach( $taxonomies as $taxonomy ) {
+			foreach( $taxonomies as $id => $taxonomy ) {
+
 				if ( $taxonomy['activate'] ) {
 					$register = array (
 						'labels'		=> $taxonomy,
 						'hierarchical'	=> $taxonomy['hierarchical'],
-						'query_var'		=> $taxonomy['name_id'],
-						'rewrite'		=> strlen( $taxonomy['rewrite'] ) > 0 ? $taxonomy['rewrite'] : false,
+						'query_var'		=> $id,
+						'rewrite'		=> is_array( $taxonomy['rewrite'] ) && isset( $taxonomy['rewrite']['slug'] ) ? $taxonomy['rewrite']['slug'] : false,
 					);
-					register_taxonomy( $taxonomy['name_id'], $taxonomy['post_type'], $register );
+					$post_types = $taxonomy['post_type'];
+					if ( ! is_array( $post_types ) ) $post_types = array( $post_types );
+					foreach( $post_types as $post_type ) {
+						register_taxonomy( $id, $post_type, $register );
+					}
 				}
 			}
 		}
@@ -1070,18 +1042,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		return array_merge( $saleable_post_types, $this->saleable_post_types );
 	}
 
-	function tcp_get_custom_taxonomies_by_post_type( $post_type, $taxonomies ) {
-		$result = array();
-		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
-			foreach( $taxonomies as $taxonomy ) {
-				if ( $taxonomy['activate'] && $taxonomy['post_type'] == $post_type ) {
-					$result[] = $taxonomy['name_id'];
-				}
-			}
-		}
-		return $result;
-	}
-
 	function __construct() {
 		$this->load_settings();
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_template.php' );
@@ -1094,7 +1054,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		require_once( TCP_CLASSES_FOLDER	. 'ShoppingCart.class.php' );
 		require_once( TCP_CLASSES_FOLDER	. 'TCP_Plugin.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER	. 'tcp_checkout_template.php' );
-
 		add_action( 'init', array( $this, 'init' ) );
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
@@ -1105,6 +1064,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) ); //to check the plugin
 				add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
+
 				require_once( TCP_METABOXES_FOLDER . 'ProductCustomFieldsMetabox.class.php' );
 				require_once( TCP_METABOXES_FOLDER . 'RelationsMetabox.class.php' );
 				require_once( TCP_METABOXES_FOLDER . 'PostMetabox.class.php' );
@@ -1124,12 +1084,10 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				add_filter( 'login_form_bottom', array( $this, 'loginFormBottom' ) );
 				add_shortcode( 'tcp_buy_button', array( $this, 'shortCodeBuyButton' ) );
 				add_shortcode( 'tcp_price', array( $this, 'shortCodePrice' ) );
-				require_once( TCP_SHORTCODES_FOLDER . '/ShoppingCartPage.class.php' );
-				require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
+				require_once( TCP_SHORTCODES_FOLDER	. '/ShoppingCartPage.class.php' );
+				require_once( TCP_CHECKOUT_FOLDER	. 'ActiveCheckout.class.php' );
 			}
 			add_filter( 'tcp_get_saleable_post_types', array( $this, 'tcp_get_saleable_post_types' ) );
-			add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 65 );
-			add_action( 'wp_before_admin_bar_render', array( $this, 'wp_before_admin_bar_render' ) );
 		}
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
@@ -1142,6 +1100,9 @@ echo '<br>RES=', count( $res ), '<br>';*/
 }
 
 $thecartpress = new TheCartPress();
+
+require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
+require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
 
 require_once( TCP_CLASSES_FOLDER . 'ProductOptionsForTheCartPress.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomFields.class.php' );

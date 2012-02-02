@@ -384,6 +384,7 @@ class ShoppingCart {
 	
 	function setFreeShipping( $freeShipping = true ) {
 		$this->freeShipping = (bool)$freeShipping;
+		if ( $freeShipping ) $this->deleteOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID );
 	}
 
 	function isFreeShipping() {
