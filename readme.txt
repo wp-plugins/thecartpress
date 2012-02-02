@@ -285,8 +285,9 @@ This plugin is released under a GPL license.
 4. Product list
 5. Back-end: Product list
 6. Back-end: Product fields
-7. Back-end: Settings
-8. Back-end: Dashboard
+7. Back-end: Media player skins
+8. Back-end: Settings
+9. Back-end: Dashboard
 
 == Changelog ==
 = 1.1.7 =

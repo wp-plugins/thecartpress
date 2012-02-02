@@ -80,7 +80,7 @@ class TCPAddressEdit {
 		}
 		if ( is_admin() ) $admin_path = TCP_ADMIN_PATH . 'AddressesList.php';
 		else $admin_path = get_permalink( get_option( 'tcp_addresses_list_page_id' ) ); ?>
-		<div class="wrap">
+		<div class="wrap tcp_frontend_address">
 		<?php if ( is_admin() ) : ?><h2><?php _e( 'Address', 'tcp' ); ?></h2><?php endif; ?>
 		<ul class="subsubsub">
 			<li><a href="<?php echo $admin_path; ?>"><?php _e( 'Return to the list', 'tcp' ); ?></a></li>
@@ -169,7 +169,7 @@ class TCPAddressEdit {
 			<?php //$this->tcp_show_error_msg( $error_address, 'region_id' ); ?>
 			<input type="text" id="region" name="region" value="<?php $this->tcp_get_value( 'region' ); ?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
 			<?php $this->tcp_show_error_msg( $error_address, 'region' ); ?>
-			<td>
+			</td>
 			</tr>
 			<tr valign="top">
 			<th scope="row"><label for="city"><?php _e( 'City', 'tcp' ); ?>:<span class="compulsory">(*)</span></label></th>
