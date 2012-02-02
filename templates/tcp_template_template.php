@@ -52,6 +52,7 @@ function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 	);
 	$query = new WP_Query( $args );
 	$html = '';
+	remove_filter( 'get_the_excerpt', 'twentyeleven_custom_excerpt_more' );
 	while ( $query->have_posts() ) {
 		$query->the_post();
 		$post_id = tcp_get_current_id( get_the_ID(), TemplateCustomPostType::$TEMPLATE );

@@ -14,7 +14,7 @@ table#tcp_shopping_cart_table tr th {
 	border:0;
 	padding:0;
 	margin: 0;
-	line-height:1em;
+	line-height:1.325em;
 }
 
 
@@ -47,6 +47,9 @@ table#tcp_shopping_cart_table thead th {
 	margin: 0px 0px 0px 0px !important;
 	font-weight: bold;
 	text-transform:uppercase;
+	background-color: transparent;
+
+	
 }
 
 table#tcp_shopping_cart_table tr td {
@@ -68,9 +71,13 @@ table#tcp_shopping_cart_table .tcp_cart_thumbnail{
 }
 table#tcp_shopping_cart_table .tcp_cart_thumbnail img{
 	/*background-color: #f7f7f7;*/
-	width: 40px;
-	height:auto;
+    height: auto;
+    max-width: 45px;
+    vertical-align: top;
+	margin:0;
+	padding:0;
 }
+
 
 table#tcp_shopping_cart_table .tcp_cart_unit_price,
 table#tcp_shopping_cart_table .tcp_cart_price,
@@ -105,19 +112,18 @@ table#tcp_shopping_cart_table td.tcp_cart_total {
 	font-weight: bold;
 }
 table#tcp_shopping_cart_table .tcp_cart_total_row  td,
-table#tcp_shopping_cart_table .tcp_cart_subtotal_row td,
-table#tcp_shopping_cart_table .tcp_cart_discount_row td,
-table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
-table#tcp_shopping_cart_table .tcp_cart_tax_row td {
+table#tcp_shopping_cart_table .tcp_cart_subtotal_row td{
 	font-weight: bold;
 	text-transform: uppercase;
 	border-top: 1px solid;
-	/*background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-repeat: repeat-x;
-	background-position: 1px 0px;
-	border: 1px solid #ccc*/;
 }
-
+table#tcp_shopping_cart_table .tcp_cart_discount_row td,
+table#tcp_shopping_cart_table .tcp_cart_other_costs_row td,
+table#tcp_shopping_cart_table .tcp_cart_tax_row td {
+	font-weight: normal;
+	text-transform: uppercase;
+	border-top: 1px dotted;
+}
 table#tcp_shopping_cart_table .tcp_cart_total_row  td.tcp_cart_total_title,
 table#tcp_shopping_cart_table .tcp_cart_subtotal_row td.tcp_cart_subtotal_title,
 table#tcp_shopping_cart_table .tcp_cart_discount_row td.tcp_cart_discount_title,

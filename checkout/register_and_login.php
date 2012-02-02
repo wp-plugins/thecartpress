@@ -24,6 +24,8 @@ $redirect_to	= $_REQUEST['tcp_redirect_to'];
 $user_email		= $_REQUEST['tcp_new_user_email'];
 if ( $user_pass != $user_pass_2 ) {
 	$tcp_register_error = __( 'Password incorrect', 'tcp' );
+} elseif ( ! is_email( $user_email ) ) {
+	$tcp_register_error = __( 'Invalid email', 'tcp' );
 } else {
 	$sanitized_user_login = sanitize_user( $user_name );
 	$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );

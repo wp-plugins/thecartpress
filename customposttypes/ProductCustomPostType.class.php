@@ -26,10 +26,25 @@ define( 'TCP_SUPPLIER_TAG'		, 'tcp_product_supplier' );
  * @author sensei
  */
 class ProductCustomPostType {
+
 	function __construct() {
+		if ( is_admin() ) {
+			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
+			add_filter( 'manage_edit-' . TCP_PRODUCT_POST_TYPE . '_columns', array( $this, 'custom_columns_definition' ) );
+			add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ) );
+			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
+			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
+			//for quick edit
+			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
+		}
+	}
+
+	static function create_default_custom_post_type_and_taxonomies() {
 		global $thecartpress;
-		$labels = array(
+		$def = array(
 			'name'					=> _x( 'Products', 'post type general name', 'tcp' ),
+			'desc'					=> __( 'Default post type for TheCartPress'),
+			'activate'				=> true,
 			'singular_name'			=> _x( 'Product', 'post type singular name', 'tcp' ),
 			'add_new'				=> _x( 'Add New', 'product', 'tcp' ),
 			'add_new_item'			=> __( 'Add New', 'tcp' ),
@@ -39,36 +54,24 @@ class ProductCustomPostType {
 			'search_items'			=> __( 'Search Products', 'tcp' ),
 			'not_found'				=> __( 'No products found', 'tcp' ),
 			'not_found_in_trash'	=> __( 'No products found in Trash', 'tcp' ),
-			'parent_item_colon'		=> '',
+			'public'				=> true,
+			'show_ui'				=> true,
+			'show_in_menu'			=> true,
+			'can_export'			=> true,
+			'show_in_nav_menus'		=> true,
+			'query_var'				=> true,
+			'supports'				=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments' ),
+			'rewrite'				=> 'product',
+			'has_archive'			=> 'product',
+			'is_saleable'			=> true,
 		);
-		$register = array (
-			'label'				=> __( 'Products', 'tcp' ),
-			'singular_label'	=> __( 'Product', 'tcp' ),
-			'labels'			=> $labels,
-			'public'			=> true,
-			'show_ui'			=> true,
-			'can_export'		=> true,
-			'_builtin'			=> false, // It's a custom post type, not built in! (http://kovshenin.com/archives/extending-custom-post-types-in-wordpress-3-0/)
-			'_edit_link'		=> 'post.php?post=%d',
-			'capability_type'	=> 'post',
-			'hierarchical'		=> false, //allways false
-			'query_var'			=> true,
-			'supports'			=> array( 'title', 'excerpt', 'editor', 'thumbnail', 'comments' ),
-			'taxonomies'		=> array( TCP_PRODUCT_CATEGORY ), // Permalinks format
-			'rewrite'			=> array( 'slug' => isset( $thecartpress->settings['product_rewrite'] ) ? $thecartpress->settings['product_rewrite'] : 'products' ),
-			'has_archive'		=> isset( $thecartpress->settings['product_rewrite'] ) && $thecartpress->settings['product_rewrite'] != '' ? $thecartpress->settings['product_rewrite'] : 'products',
-		);
-		register_post_type( TCP_PRODUCT_POST_TYPE, $register );
-		if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( TCP_PRODUCT_POST_TYPE, $register['has_archive'] );
-		if ( is_admin() ) {
-			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
-			$post_types = tcp_get_saleable_post_types();
-			foreach( $post_types as $post_type ) {
-				add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'custom_columns_definition' ) );
-			}
-		}
-		$labels = array(
+		tcp_create_custom_post_type( TCP_PRODUCT_POST_TYPE, $def );
+
+		$taxonomy_def = array(
+			'post_type'			=> TCP_PRODUCT_POST_TYPE,
 			'name'				=> _x( 'Categories', 'taxonomy general name', 'tcp' ),
+			'desc'				=> __( 'Categories for products', 'tcp' ),
+			'activate'			=> true,
 			'singular_name'		=> _x( 'Category', 'taxonomy singular name', 'tcp' ),
 			'search_items'		=> __( 'Search Categories', 'tcp' ),
 			'all_items'			=> __( 'All Categories', 'tcp' ),
@@ -78,47 +81,52 @@ class ProductCustomPostType {
 			'update_item'		=> __( 'Update Category', 'tcp' ),
 			'add_new_item'		=> __( 'Add New Category', 'tcp' ),
 			'new_item_name'		=> __( 'New Category Name', 'tcp' ),
-		); 	
-		$register = array (
-			'labels'		=> $labels,
-			'hierarchical'	=> true,
-			'query_var'		=> true, //'cat_prods',
-			'label'			=> __( 'Category', 'tcp' ),
-			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['category_rewrite'] ) ? $thecartpress->settings['category_rewrite'] : 'product_category' ), //false
+			'hierarchical'		=> true,
+			'query_var'			=> true, //'cat_prods',
+			'label'				=> __( 'Category', 'tcp' ),
+			'rewrite'			=> 'product_category',
 		);
-		register_taxonomy( TCP_PRODUCT_CATEGORY, TCP_PRODUCT_POST_TYPE, $register );
-		register_taxonomy( TCP_PRODUCT_TAG, TCP_PRODUCT_POST_TYPE, array(
-			'public'		=> true,
-			'hierarchical'	=> false,
-			'query_var'		=> true,
-			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['tag_rewrite'] ) ? $thecartpress->settings['tag_rewrite'] : 'product_tag' ), //false
-			'label'			=> __( 'Products Tags', 'tcp' ),
-		) );
-		register_taxonomy( TCP_SUPPLIER_TAG, TCP_PRODUCT_POST_TYPE, array(
+		tcp_create_custom_taxonomy( TCP_PRODUCT_CATEGORY, $taxonomy_def, array( TCP_PRODUCT_POST_TYPE ) );
+
+		$taxonomy_def = array(
+			'post_type'			=> TCP_PRODUCT_POST_TYPE,
+			'name'				=> __( 'Products Tags', 'tcp' ),
+			'desc'				=> __( 'Tags for products', 'tcp'),
+			'activate'			=> true,
+			'singular_name'		=> __( 'Products', 'tcp' ),
+			'search_items'		=> __( 'Search Tags', 'tcp' ),
+			'all_items'			=> __( 'All Tags', 'tcp' ),
+			'parent_item'		=> __( 'Parent Tag', 'tcp' ),
+			'parent_item_colon'	=> __( 'Parent Tag:', 'tcp' ),
+			'edit_item'			=> __( 'Edit Tag', 'tcp' ), 
+			'update_item'		=> __( 'Update Tag', 'tcp' ),
+			'add_new_item'		=> __( 'Add New Tag', 'tcp' ),
+			'new_item_name'		=> __( 'New Tag Name', 'tcp' ),
+			'hierarchical'		=> false,
+			'query_var'			=> true,
+			'label'				=> __( 'Tag', 'tcp' ),
+			'rewrite'			=> 'product_tag',
+		);
+		tcp_create_custom_taxonomy( TCP_PRODUCT_TAG, $taxonomy_def );
+
+		$taxonomy_def = array(
+			'post_type'		=> TCP_PRODUCT_POST_TYPE,
+			'name'			=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
+			'desc'			=> __( 'Suppliers for products', 'tcp'),
+			'activate'			=> true,
+			'singular_name'	=> _x( 'Supplier', 'taxonomy singular name', 'tcp' ),
+			'search_items'	=> __( 'Search Suppliers', 'tcp' ),
+			'all_items'		=> __( 'All Suppliers', 'tcp' ),
+			'edit_item'		=> __( 'Edit Suppliers', 'tcp' ), 
+			'update_item'	=> __( 'Update Suppliers', 'tcp' ),
+			'add_new_item'	=> __( 'Add New Suppliers', 'tcp' ),
+			'new_item_name'	=> __( 'New Suppliers Name', 'tcp' ),
 			'hierarchical'	=> true,
 			'query_var'		=> true,
-			'rewrite'		=> array( 'slug' => isset( $thecartpress->settings['supplier_rewrite'] ) ? $thecartpress->settings['supplier_rewrite'] : 'product_supplier' ), //false
-			'labels'		=> array(
-				'name'				=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
-				'singular_name'		=> _x( 'Supplier', 'taxonomy singular name', 'tcp' ),
-				'search_items'		=> __( 'Search Suppliers', 'tcp' ),
-				'all_items'			=> __( 'All Suppliers', 'tcp' ),
-				'edit_item'			=> __( 'Edit Suppliers', 'tcp' ), 
-				'update_item'		=> __( 'Update Suppliers', 'tcp' ),
-				'add_new_item'		=> __( 'Add New Suppliers', 'tcp' ),
-				'new_item_name'		=> __( 'New Suppliers Name', 'tcp' ),
-			),
-		) );
-
-		if ( is_admin() ) {
-			add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ) );
-			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
-			add_filter( 'parse_query', array( $this, 'parseQuery' ) ); //TODO 3.1
-			//for quick edit
-			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
-		}
+			'rewrite'		=> 'product_supplier',
+		);
+		tcp_create_custom_taxonomy( TCP_SUPPLIER_TAG, $taxonomy_def );
 	}
-
 
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
 	static function register_post_type_archives( $post_type, $base_path = '' ) {
@@ -188,10 +196,9 @@ class ProductCustomPostType {
 		if ( tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( 'ID' == $column_name ) {
 				echo $post->ID;
-			} 
-			elseif ( 'thumbnail' == $column_name ) {
+			} elseif ( 'thumbnail' == $column_name ) {
 				$image = tcp_get_the_thumbnail( $post->ID, 0, 0, array( '50', '50' )  );
-				echo $image;
+				echo '&nbsp;', $image;
 			} elseif ( 'sku' == $column_name ) {
 				$sku = tcp_get_the_sku( $post->ID );
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
@@ -276,5 +283,5 @@ class ProductCustomPostType {
 	}
 }
 
-new ProductCustomPostType();
+$productcustomposttype = new ProductCustomPostType();
 ?>

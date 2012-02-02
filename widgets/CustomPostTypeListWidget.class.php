@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-class CustomPostTypeListWidget extends WP_Widget {
+require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
+ 
+class CustomPostTypeListWidget extends CustomListWidget {
 
 	function CustomPostTypeListWidget() {
 		$widget_settings = array(
@@ -32,29 +34,33 @@ class CustomPostTypeListWidget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
 		global $wp_query;
-		$paged	= isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
-		$args = array(
+		$paged = isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
+
+		$loop_args = array(
 			'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE,
 			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 		);
+
+		$see_pagination = isset( $instance['pagination'] ) ? $instance['pagination'] : false;
+		if ( $see_pagination ) {
+			$loop_args['paged'] = $paged;
+		}
+
 		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
 			if ( strlen( $taxonomy ) > 0 ) {
-				$args[$taxonomy] = $instance['term'];
+				$loop_args[$taxonomy] = $instance['term'];
 			}
 		} else {
 			if ( isset( $instance['included'] ) && count( $instance['included'] ) > 0 && strlen( $instance['included'][0] ) > 0 ) {
-				$args['post__in'] = $instance['included'];
+				$loop_args['post__in'] = $instance['included'];
 			}
 		}
-		$see_pagination = isset( $instance['pagination'] ) ? $instance['pagination'] : false;
-		if ( $see_pagination ) {
-			$args['paged'] = $paged;
-		}		
-		$args = apply_filters( 'tcp_custom_post_type_list_widget', $args, $instance );
-		query_posts( $args );
+		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance );
+		parent::widget( $args, $loop_args, $instance );
+
+		/*query_posts( $args );
 		if ( ! have_posts() ) return;
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
 		$order_desc = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
@@ -79,10 +85,10 @@ class CustomPostTypeListWidget extends WP_Widget {
 		}
 		wp_reset_postdata();
 		wp_reset_query();
-		echo $after_widget;
+		echo $after_widget;*/
 	}
 
-	function show_list( $instance ) {
+	/*function show_list( $instance ) {
 		if ( have_posts() ) while ( have_posts() ) : the_post();
 			if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 				$title_tag = '<' . $instance['title_tag'] . '>';
@@ -152,7 +158,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<?php endwhile;
 	}
 
-	function show_grid( $instance ) { 
+	/*function show_grid( $instance ) { 
 		$see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
 		$title_tag				= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
 		$see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;
@@ -289,7 +295,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 		<?php endfor; ?>
 		</tr>
 		</table><?php
-	}
+	}*/
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
@@ -588,7 +594,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>"><?php _e( 'Show first custom area', 'tcp' ); ?></label>
 		</p>
 		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_first_custom_area' ); ?>" value="yes" <?php checked( $see_second_custom_area ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_second_custom_area' ); ?>" value="yes" <?php checked( $see_second_custom_area ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>"><?php _e( 'Show second custom area', 'tcp' ); ?></label>
 		</p>
 		<p>
@@ -599,7 +605,7 @@ class CustomPostTypeListWidget extends WP_Widget {
 	<?php
 	}
 
-	private function sort_query( $order_type, $order_desc ) {
+	/*private function sort_query( $order_type, $order_desc ) {
 		global $wp_query;
 		switch ( $order_type ) {
 			case 'order':
@@ -732,6 +738,6 @@ class CustomPostTypeListWidget extends WP_Widget {
 		$d2 = (int)$s2->comment_count;
 		$v  = $d1 > $d2 ? -1 : ($d1 < $d2 ? 1 : 0);
 		return $v;
-	}
+	}*/
 }
 ?>

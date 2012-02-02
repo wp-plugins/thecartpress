@@ -161,13 +161,16 @@ function tcp_get_default_currency() {
 }
 
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
-	$html = apply_filters( 'tcp_the_buy_button', '', $post_id );
-	if ( strlen( $html ) > 0 ) {
-		if ( $echo ) echo $html;
-		else return $html;
-	} else {
-		require_once( TCP_CLASSES_FOLDER . 'BuyButton.class.php' );	
-		return BuyButton::show( $post_id, $echo );
+	global $thecartpress;
+	if ( isset( $thecartpress ) ) {
+		$html = apply_filters( 'tcp_the_buy_button', '', $post_id );
+		if ( strlen( $html ) > 0 ) {
+			if ( $echo ) echo $html;
+			else return $html;
+		} else {
+			require_once( TCP_CLASSES_FOLDER . 'BuyButton.class.php' );	
+			return BuyButton::show( $post_id, $echo );
+		}
 	}
 }
 
@@ -219,14 +222,14 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_display_prices_with_taxes() ) {
-		if ( tcp_is_prices_include_tax() ) {
+		if ( tcp_is_price_include_tax() ) {
 			return $price;
 		} else { //add tax from price
 			$tax = tcp_get_the_tax( $post_id );
 			$amount = $price * $tax / 100;
 			return $price + $amount;
 		}
-	} elseif ( ! tcp_is_prices_include_tax() ) {
+	} elseif ( ! tcp_is_price_include_tax() ) {
 		return $price;
 	} else { //remove tax from price
 		$tax = tcp_get_the_tax( $post_id );
@@ -244,14 +247,14 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 */
 function tcp_get_price_and_tax( $price, $tax ) {
 	if ( tcp_is_display_prices_with_taxes() ) {
-		if ( tcp_is_prices_include_tax() ) {
+		if ( tcp_is_price_include_tax() ) {
 			$new_price = $price / ( 1 + $tax / 100 );
 			return array( $new_price, $price - $new_price );
 		} else {
 			$amount = $price * $tax / 100;
 			return array( $price, $amount );
 		}
-	} elseif ( ! tcp_is_prices_include_tax() ) {
+	} elseif ( ! tcp_is_price_include_tax() ) {
 		$amount = $price * $tax / 100;
 		return array( $price, $amount );
 	} else { //remove tax from price
@@ -350,14 +353,30 @@ function tcp_get_max_price( $post_id = 0 ) {
  * Returns the price without tax
  * since 1.0.9
  */
-function tcp_get_the_price_without_tax( $post_id, $price = false ) {
+function tcp_get_the_price_without_tax( $post_id = 0, $price = false ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
-	if ( tcp_is_prices_include_tax() ) {
+	if ( tcp_is_price_include_tax() ) {
 		$tax = tcp_get_the_tax( $post_id );
 		$price_without_tax = $price / (1 + $tax / 100 );
 		return $price_without_tax;
 	} else {
 		return $price;
+	}
+}
+
+/**
+ * Returns the price with tax
+ * since 1.1.7
+ */
+function tcp_get_the_price_with_tax( $post_id = 0, $price = false ) {
+	if ( $price === false ) $price = tcp_get_the_price( $post_id );
+	if ( tcp_is_price_include_tax() ) {
+		return $price;
+	} else {
+		$tax = tcp_get_the_tax( $post_id );
+		$price_with_tax = $price * (1 + $tax / 100 );
+		return $price_with_tax;
 	}
 }
 
@@ -370,7 +389,7 @@ function tcp_get_the_tax( $post_id = 0 ) {
 	if ( $tax_id == 0 ) return 0;
 	$country_iso = tcp_get_tax_country();
 	$region_iso = tcp_get_tax_region();
-	require_once( dirname( dirname ( __FILE__ ) ) . '/daos/TaxRates.class.php' );
+	require_once( TCP_DAOS_FOLDER . 'TaxRates.class.php' );
 	$tax = TaxRates::find( $country_iso, $region_iso, 'all', $tax_id );
 	$tax = apply_filters( 'tcp_get_the_tax', $tax, $post_id );
 	if ( $tax ) return $tax->rate; //$tax->label
@@ -606,7 +625,7 @@ function tcp_is_display_shipping_cost_with_taxes() {
 /**
  * Returns true if the prices include the taxes
  */
-function tcp_is_prices_include_tax() {
+function tcp_is_price_include_tax() {
 	global $thecartpress;
 	return isset( $thecartpress->settings['prices_include_tax'] ) ? $thecartpress->settings['prices_include_tax'] : false;
 }
@@ -679,23 +698,23 @@ function tcp_get_the_order( $post_id = 0 ) {
 
 function tcp_the_sku( $before = '', $after = '', $echo = true ) {
 	$sku = tcp_the_meta( 'tcp_sku', $before, $after, false );
-	if ( $echo )
-		echo $sku;
-	else
-		return $sku;
+	if ( $echo ) echo $sku;
+	else return $sku;
 }
 
 function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	if ( $option_2_id > 0) {
 		$sku = tcp_get_the_meta( 'tcp_sku', $option_2_id );
-		if ( strlen( $sku ) == 0 )
+		if ( strlen( $sku ) == 0 ) {
 			return tcp_get_the_sku( $post_id, $option_1_id );
+		}
 	} elseif ( $option_1_id > 0) {
 		$sku = tcp_get_the_meta( 'tcp_sku', $option_1_id );
 		if ( strlen( $sku ) == 0 )
 			return tcp_get_the_sku( $post_id );
-	} else
+	} else {
 		$sku = tcp_get_the_meta( 'tcp_sku', $post_id );
+	}
 	$sku = apply_filters( 'tcp_get_the_sku', $sku, $post_id, $option_1_id, $option_2_id );
 	return $sku;
 }
@@ -819,9 +838,10 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 //
 //Saleable_post_type
 //
-function tcp_get_saleable_post_types() {
+function tcp_get_saleable_post_types( $one_more = false) {
 	$saleable_post_types = array( TCP_PRODUCT_POST_TYPE );
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
+	if ( $one_more !== false ) $saleable_post_types[] = $one_more;
 	return $saleable_post_types;
 }
 
@@ -859,6 +879,7 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 //Order status template functions
 //
 function tcp_get_order_status() {
+	require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 	$status_list = array(
 		Orders::$ORDER_PENDING		=> array(
 			'name'	=> Orders::$ORDER_PENDING,

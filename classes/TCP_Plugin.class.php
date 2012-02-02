@@ -18,8 +18,15 @@
 
 /**
  * All the checkout plugins must implement this class
- */ 
+ */
+require_once( WP_PLUGIN_DIR . '/thecartpress/templates/tcp_template_template.php' );
+
 class TCP_Plugin {
+
+	function isForOtherPayments() {
+		return false;
+	}
+
 	/**
 	 * Returns the title of the plugin.
 	 * It's used to display the name of the plugin in the admin pages

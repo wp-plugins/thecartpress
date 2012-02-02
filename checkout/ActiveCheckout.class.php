@@ -23,8 +23,7 @@ class ActiveCheckout {//shortcode
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
-			//We have to check if the order wasn't cancelled
-			$order_status = Orders::getStatus( $order_id );
+			$order_status = Orders::getStatus( $order_id );//We have to check if the order wasn't cancelled
 			$cancelled = tcp_get_cancelled_order_status();
 			if ( $order_status == $cancelled ) $_REQUEST['tcp_checkout'] = 'ko';
 		}
@@ -32,7 +31,8 @@ class ActiveCheckout {//shortcode
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			if ( strlen( $html ) == 0 ) {
 				$html .= '<div class="tcp_payment_area">' . "\n" . '<div class="tcp_order_successfully">';
-				$checkout_successfully_message = isset( $thecartpress->settings['checkout_successfully_message'] ) ? $thecartpress->settings['checkout_successfully_message'] : '';
+				global $thecartpress;
+				$checkout_successfully_message = $thecartpress->get_setting( 'checkout_successfully_message', '' );
 				if ( strlen( $checkout_successfully_message ) > 0 ) {
 					$html .= '<p>' . str_replace ( "\n" , '<p></p>', $checkout_successfully_message ) . '</p>';
 				} else {
@@ -44,7 +44,6 @@ class ActiveCheckout {//shortcode
 				$html .= '</div>' . "\n" . '</div>';
 			}
 			TheCartPress::removeShoppingCart();
-			//if ( $order_id > 0 ) ActiveCheckout::sendMails( $order_id );
 			$html .= '<br>';
 			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
 			//unset( $_SESSION['order_page'] );
@@ -67,7 +66,7 @@ class ActiveCheckout {//shortcode
 				$html .= '<br/>' . sprintf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() );
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			//ActiveCheckout::sendMails( $order_id, $html );
+			do_action( 'tcp_checkout_end', $order_id );
 			return $html;
 		} elseif ( $shoppingCart->isEmpty() ) {
 			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
@@ -107,13 +106,12 @@ class ActiveCheckout {//shortcode
 			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
-			$message = '';
 			$subject = sprintf( __( 'Order from %s', 'tcp' ), get_bloginfo( 'name' ) );
 			$message = $additional_msg . "\n";
 			$message .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
-			wp_mail( $to_customer, $subject, $message_to_customer, $headers );
+			wp_mail( $to_customer, $subject, $message_to_customer , $headers );
 			if ( ! $only_for_customers ) {
 				$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';
 				if ( strlen( $to ) ) {

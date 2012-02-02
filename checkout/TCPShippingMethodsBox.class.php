@@ -2,24 +2,25 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( dirname( __FILE__ ) . '/TCPCheckoutBox.class.php' );
 
 class TCPShippingMethodsBox extends TCPCheckoutBox {
 	private $errors = array();
+	private $shipping_sorting = array();
 
 	function get_title() {
 		return __( 'Sending methods', 'tcp' );
@@ -136,14 +137,9 @@ function show_config_settings() { ?>
 		if ( ! $shipping_country ) $shipping_country = '';
 		$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart );
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );
-		$shipping_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
-		if ( is_array( $shipping_sorting ) && count( $shipping_sorting ) > 0 ) {
-			$plugins = array();
-			foreach( $shipping_sorting as $id )
-				foreach( $applicable_sending_plugins as $ap => $applicable_plugin )
-					if ( $applicable_plugin['id'] == $id )
-						$plugins[] = $applicable_plugin;
-			$applicable_sending_plugins = $plugins;
+		$this->shipping_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+		if ( is_array( $this->shipping_sorting ) && count( $this->shipping_sorting ) > 0 ) {
+			usort( $applicable_sending_plugins, array( $this, 'sort_plugins' ) );
 		} ?>
 		<div class="checkout_info clearfix" id="sending_layer_info"><?php
 		if ( is_array( $applicable_sending_plugins ) && count( $applicable_sending_plugins ) > 0 ) : ?>
@@ -169,8 +165,8 @@ function show_config_settings() { ?>
 				if ( ! $shipping_method_id ) $shipping_method_id = $plugin_value; ?>
 				<li>
 					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
-					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></label>
-					<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template_excerpt( 'tcp_shipping_plugins_' . $plugin_name ); ?></div>
+					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><span class="tcp_shipping_title_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></span></label>
+					<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_shipping_plugins_' . $plugin_name ); ?></div>
 				</li>
 			<?php endforeach;?>
 			</ul>
@@ -181,6 +177,18 @@ function show_config_settings() { ?>
 		do_action( 'tcp_checkout_sending' );?>
 		</div><!-- sending_layer_info --><?php
 		return true;
+	}
+
+	function sort_plugins( $a, $b ) {
+		$k_a = $a['id'];
+		$k_b = $b['id'];
+		$pos_a = array_search( $k_a, $this->shipping_sorting );
+		$pos_b = array_search( $k_b, $this->shipping_sorting );
+		if ( $pos_a === false ) return 1;
+		elseif ( $pos_b === false ) return -1;
+		elseif ( $pos_a < $pos_b ) return -1;
+		elseif ( $pos_a == $pos_b ) return 0;
+		else return 1;
 	}
 }
 ?>

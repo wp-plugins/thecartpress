@@ -55,8 +55,9 @@ class TCPCartBox extends TCPCheckoutBox {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}?>
 		<div id="cart_layer_info" class="checkout_info clearfix">
-		 	<?php do_action( 'tcp_checkout_cart_before' );
-			$this->showOrderCart( $shipping_country );
+			<?php $settings = get_option( 'tcp_' . get_class( $this ), array() ); ?>
+		 	<?php do_action( 'tcp_checkout_cart_before', $settings );
+			$this->showOrderCart( $shipping_country, $settings );
 		 	do_action( 'tcp_checkout_cart_after' );
 		 	if ( isset( $_REQUEST['comment'] ) ) {
 				$comment = $_REQUEST['comment'];
@@ -72,8 +73,28 @@ class TCPCartBox extends TCPCheckoutBox {
 		return true;
 	}
 
-	private function showOrderCart( $shipping_country ) {
-		do_action( 'tcp_checkout_create_order_cart' );
+	function show_config_settings() {
+		$settings	= get_option( 'tcp_' . get_class( $this ), array() );
+		$see_weight	= isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
+		?><tr valign="top">
+			<th scope="row"><label for="see_weight"><?php _e( 'Display weight column', 'tcp' );?>:</label></th>
+			<td><input type="checkbox" name="see_weight" id="see_weight" value="yes" <?php checked( $see_weight );?>/></td>
+		</tr><?php
+		do_action( 'tcp_checkout_show_config_settings', $settings );
+		return true;
+	}
+
+	function save_config_settings() {
+		$settings = array(
+			'see_weight'	=> isset( $_REQUEST['see_weight'] ) ? $_REQUEST['see_weight'] == 'yes' : false,
+		);
+		$settings = apply_filters( 'tcp_cart_box_config_settings', $settings );
+		update_option( 'tcp_' . get_class( $this ), $settings );
+		return true;
+	}
+
+	private function showOrderCart( $shipping_country, $args = array() ) {
+		do_action( 'tcp_checkout_create_order_cart', $args );
 		$shoppingCart = TheCartPress::getShoppingCart(); ?>
 		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
 		<thead>
@@ -81,8 +102,9 @@ class TCPCartBox extends TCPCheckoutBox {
 		<th class="tcp_cart_name"><?php _e( 'Name', 'tcp' ); ?></th>
 		<th class="tcp_cart_unit_price"><?php _e( 'Price', 'tcp' ); ?></th>
 		<th class="tcp_cart_units"><?php _e( 'Units', 'tcp' ); ?></th>
-		<?php //TODO remove weight if...?>
+		<?php if ( ! isset( $args['see_weight'] ) || ( isset( $args['see_weight'] ) && $args['see_weight'] ) ) : ?>
 		<th class="tcp_cart_weight"><?php _e( 'Weight', 'tcp' ); ?></th>
+		<?php endif; ?>
 		<th class="tcp_cart_price"><?php _e( 'Total', 'tcp' ); ?></th>
 		</tr>
 		</thead>
@@ -105,8 +127,9 @@ class TCPCartBox extends TCPCheckoutBox {
 				<td class="tcp_cart_name"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?></td>
 				<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $unit_price_without_tax ); ?></td>
 				<td class="tcp_cart_units"><?php echo tcp_number_format( $item->getCount(), 0 ); ?></td>
-				<?php //TODO remove weight if...?>
+				<?php if ( ! isset( $args['see_weight'] ) || ( isset( $args['see_weight'] ) && $args['see_weight'] ) ) : ?>
 				<td class="tcp_cart_weight"><?php echo tcp_number_format( $item->getWeight(), 0 ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
+				<?php endif; ?>
 				<td><?php echo tcp_format_the_price( $line_price_without_tax ); ?></td>
 			</tr>
 		<?php endforeach;
@@ -114,7 +137,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		if ( $discount > 0 ) : ?>
 			<tr id="discount" class="tcp_cart_discount_row<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif; ?>">
 			<td colspan="4" style="text-align:right"><?php _e( 'Discounts', 'tcp' ); ?></td>
-			<td><?php echo tcp_format_the_price( $discount ); ?></td>
+			<td>-<?php echo tcp_format_the_price( $discount ); ?></td>
 			</tr><?php
 		endif;
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
@@ -124,7 +147,8 @@ class TCPCartBox extends TCPCheckoutBox {
 			$instance = $smi[1];
 			$shipping_method = new $class();
 			$shipping_cost = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
-			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_cost, __( 'Shipping cost', 'tcp' ) );
+			if ( ! $shoppingCart->isFreeShipping() )
+				$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_cost, __( 'Shipping cost', 'tcp' ) );
 		} else {
 			$shoppingCart->deleteOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID );
 		}
@@ -140,6 +164,14 @@ class TCPCartBox extends TCPCheckoutBox {
 			$shoppingCart->deleteOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID );
 		}
 		do_action( 'tcp_checkout_calculate_other_costs' );
+		if ( ! isset( $args['see_weight'] ) || ( isset( $args['see_weight'] ) && $args['see_weight'] ) ) $colspan = 4;
+		else $colspan = 3;
+		if ( $shoppingCart->isFreeShipping() ) : ?>
+			<tr class="tcp_cart_free_shipping<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
+			<td colspan="<?php echo $colspan; ?>" class="tcp_cost_tcp_free_shipping" style="text-align:right"><?php _e( 'Free shipping', 'tcp' ); ?></td>
+			<td>&nbsp;</td>
+			</tr>
+		<?php endif;
 		$costs = $shoppingCart->getOtherCosts();
 		asort( $costs, SORT_STRING );
 		foreach( $costs as $cost_id => $cost ) :
@@ -151,8 +183,8 @@ class TCPCartBox extends TCPCheckoutBox {
 			$table_amount_with_tax += $cost_with_tax;
 			$table_amount_without_tax += $cost_without_tax;
 			?>
-			<tr id="other_costs" class="tcp_cart_other_costs_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
-			<td colspan="4" class="tcp_cost_' . $cost_id . '" style="text-align:right"><?php echo $cost->getDesc(); ?></td>
+			<tr class="tcp_cart_other_costs_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
+			<td colspan="<?php echo $colspan; ?>" class="tcp_cost_' . $cost_id . '" style="text-align:right"><?php echo $cost->getDesc(); ?></td>
 			<td><?php echo tcp_format_the_price( $cost_without_tax ); ?></td>
 			</tr>
 		<?php endforeach;
@@ -164,21 +196,19 @@ class TCPCartBox extends TCPCheckoutBox {
 		}
 		if ( $show_tax_summary ) : ?>
 			<tr id="subtotal" class="tcp_cart_subtotal_row <?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
-				<td colspan="4" class="tcp_cart_subtotal_title"><?php _e( 'Taxes', 'tcp'); ?></td>
+				<td colspan="<?php echo $colspan; ?>" class="tcp_cart_subtotal_title"><?php _e( 'Taxes', 'tcp'); ?></td>
 				<td class="tcp_cart_subtotal"><span id="subtotal"><?php echo tcp_format_the_price( $table_amount_with_tax - $table_amount_without_tax ); ?></span></td>
 			</tr>
 		<?php endif;
-
 		$table_amount_with_tax -= $discount;
 		$total = apply_filters( 'tcp_checkout_set_total', $table_amount_with_tax );
-		do_action( 'tcp_checkout_before_total' ); ?>
+		do_action( 'tcp_checkout_before_total', $args ); ?>
 		<tr id="total" class="tcp_cart_total_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
-		<td colspan="4" class="tcp_cart_total_title"><?php _e( 'Total', 'tcp'); ?></td>
+		<td colspan="<?php echo $colspan; ?>" class="tcp_cart_total_title"><?php _e( 'Total', 'tcp'); ?></td>
 		<td class="tcp_cart_total"><span id="total"><?php echo tcp_format_the_price( $total ); ?></span></td>
 		</tr>
-		
 		</tbody></table><?php
-		do_action( 'tcp_checkout_after_order_cart' );
+		do_action( 'tcp_checkout_after_order_cart', $args );
 	}
 }
 ?>

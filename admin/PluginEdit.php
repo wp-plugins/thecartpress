@@ -69,7 +69,7 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 <div class="wrap">
 <h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle();?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PluginsList.php&plugin_type=<?php echo $plugin_type?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PluginsList.php&plugin_type=<?php echo $plugin_type?>"><?php _e( 'Return to the list', 'tcp' );?></a></li>
 </ul><!-- subsubsub -->
 <div class="clear"></div>
 
@@ -139,7 +139,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $new_status );?>><?php echo $order_status['label']; ?></option>		
 		<?php endforeach; ?>
 		</select>
-		<span class="description"><?php _e( 'If the payment is right, the order status will be the selected one.', 'tcp' );?></span>
+		<p class="description"><?php _e( 'If the payment is right, the order status will be the selected one.', 'tcp' );?></p>
 	</td>
 	</tr>
 <?php endif; ?>

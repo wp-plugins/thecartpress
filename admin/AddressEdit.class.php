@@ -40,23 +40,23 @@ class TCPAddressEdit {
 		ob_start();
 		if ( isset( $_REQUEST['tcp_save_address'] ) ) {
 			if ( strlen( $_REQUEST['address_name'] ) == 0 )
-				$error_address['address_name'][] = __( 'The Address name field must be completed!!!!', 'tcp' );
+				$error_address['address_name'][] = __( 'Address name field must be completed', 'tcp' );
 			if ( strlen( $_REQUEST['firstname'] ) == 0 )
-				$error_address['firstname'][] = __( 'The Firstname field must be completed', 'tcp' );
+				$error_address['firstname'][] = __( 'Firstname field must be completed', 'tcp' );
 			if ( strlen( $_REQUEST['lastname'] ) == 0 )
-				$error_address['lastname'][] = __( 'The Lastname field must be completed', 'tcp' );
+				$error_address['lastname'][] = __( 'Lastname field must be completed', 'tcp' );
 			if ( strlen( $_REQUEST['street'] ) == 0 )
-				$error_address['street'][] = __( 'The Street field must be completed', 'tcp' );
+				$error_address['street'][] = __( 'Street field must be completed', 'tcp' );
 			if ( strlen( $_REQUEST['city'] ) == 0 ) { // && strlen( $_REQUEST['city_id'] ) == 0 ) {
-				$error_address['city'][] = __( 'The City field must be completed', 'tcp' );
-				$error_address['city_id'][] = __( 'The City field must be completed', 'tcp' );
+				$error_address['city'][] = __( 'City field must be completed', 'tcp' );
+				$error_address['city_id'][] = __( 'City field must be completed', 'tcp' );
 			}
 			if ( strlen( $_REQUEST['region'] ) == 0 && strlen( $_REQUEST['region_id'] ) == 0  )
-				$error_address['region'][] = __( 'The Region field must be completed', 'tcp' );
+				$error_address['region'][] = __( 'Region field must be completed', 'tcp' );
 			if ( ! isset( $_REQUEST['postcode'] ) || strlen( $_REQUEST['postcode'] ) == 0 )
-				$error_address['postcode'][] = __( 'The Postcode field must be completed', 'tcp' );
+				$error_address['postcode'][] = __( 'Postcode field must be completed', 'tcp' );
 			if ( ! isset( $_REQUEST['email'] ) || strlen( $_REQUEST['email'] ) == 0 )
-				$error_address['email'][] = __( 'The eMail field must be completed', 'tcp' );
+				$error_address['email'][] = __( 'eMail field must be completed', 'tcp' );
 			$has_validation_error = count( $error_address ) > 0;
 			if ( ! $has_validation_error ) {
 				$_REQUEST['customer_id'] = $customer_id;
@@ -72,7 +72,7 @@ class TCPAddressEdit {
 				</p></div><?php
 			} else { ?>
 				<div id="message" class="error"><p>
-					<?php _e( 'Validation errors. The Address has not been saved', 'tcp' ); ?>
+					<?php _e( 'Validation errors. Address has not been saved', 'tcp' ); ?>
 				</p></div><?php
 			}
 		} elseif ( $address_id > 0 ) {
@@ -83,7 +83,7 @@ class TCPAddressEdit {
 		<div class="wrap">
 		<?php if ( is_admin() ) : ?><h2><?php _e( 'Address', 'tcp' ); ?></h2><?php endif; ?>
 		<ul class="subsubsub">
-			<li><a href="<?php echo $admin_path; ?>"><?php _e( 'return to the list', 'tcp' ); ?></a></li>
+			<li><a href="<?php echo $admin_path; ?>"><?php _e( 'Return to the list', 'tcp' ); ?></a></li>
 		</ul>
 		<div class="clear"></div>
 
@@ -222,7 +222,7 @@ class TCPAddressEdit {
 			<tr valign="top">
 			<th scope="row"><label for="email"><?php _e( 'eMail', 'tcp' ); ?>:<span class="compulsory">(*)</span></label></th>
 			<td>
-				<input type="text" id="email" name="email" value="<?php $this->tcp_get_value( 'email' ); ?>" size="15" maxlength="50" />
+				<input type="text" id="email" name="email" value="<?php $this->tcp_get_value( 'email' ); ?>" size="35" maxlength="50" />
 				<?php $this->tcp_show_error_msg( $error_address, 'email' ); ?></td>
 			</tr>
 			<tr valign="top">
@@ -248,7 +248,7 @@ class TCPAddressEdit {
 	}
 
 	function tcp_show_error_msg( $error_array, $id ) {
-		if ( isset( $error_array[$id][0] ) ) echo '<span class="description">', $error_array[$id][0], '</span>';
+		if ( isset( $error_array[$id][0] ) ) echo '<span class="tcp_error">', $error_array[$id][0], '</span>';
 	}
 
 	function tcp_get_value( $id, $echo = true ) {

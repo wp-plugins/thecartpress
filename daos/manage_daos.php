@@ -45,6 +45,9 @@ OrdersCosts::createTable();
 require_once( TCP_DAOS_FOLDER . 'OrdersMeta.class.php' );
 OrdersMeta::createTable();
 
+require_once( TCP_DAOS_FOLDER . 'OrdersDetailsMeta.class.php' );
+OrdersDetailsMeta::createTable();
+
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 Currencies::createTable();
 Currencies::initData();

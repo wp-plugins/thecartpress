@@ -87,7 +87,6 @@ if ( $number_of_items > 0 ) :
 		<li style="border-bottom: 1px solid grey;">
 		<h4>
 		<form method="post">
-			<span style="padding-right:5em;"><?php echo $class_name;?></span>
 			<?php if ( $first_item ) :
 				$first_item = false;
 			else :?>
@@ -98,6 +97,7 @@ if ( $number_of_items > 0 ) :
 			<?php endif;?>
 			<input type="submit" name="tcp_deactivate" value="<?php _e( 'Deactivate', 'tcp' );?>" class="button-secondary" />
 			<input type="hidden" name="tcp_box_name" value="<?php echo $class_name;?>" />
+			<span style="padding-left:5em;"><?php echo $class_name;?></span>
 		</form>
 		</h4>
 		<input type="button" id="tcp_edit_button_<?php echo $class_name;?>" value="<?php _e( 'Show/Hide edit fields', 'tcp' );?>" class="button-secondary" onclick="jQuery('#tcp_edit_<?php echo $class_name;?>').toggle();"/>

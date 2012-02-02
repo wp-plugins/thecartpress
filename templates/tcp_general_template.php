@@ -472,8 +472,9 @@ function tcp_login_form( $args ) {
 	</form>
 <?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
 	<p class="error">
-	<strong><?php _e( 'ERROR', 'tcp' ); ?></strong>: <?php _e( 'Invalid username.', 'tcp' ); ?> <a title="<?php _e( 'Password Lost and Found', 'tcp' ); ?>" href="<?php site_url( 'wp-login.php?action=lostpassword' ); ?>"><?php _e( 'Lost your password', 'tcp' ); ?></a>?
+	<strong><?php _e( 'ERROR', 'tcp' ); ?></strong>: <?php echo $_REQUEST['tcp_register_error']; ?>
 	</p>
+<?php //<a title="<?php _e( 'Password Lost and Found', 'tcp' ); ? >" href="<?php site_url( 'wp-login.php?action=lostpassword' ); ? >"><?php _e( 'Lost your password', 'tcp' ); ? ></a>? ?>
 <?php endif;
 	$out = ob_get_clean();
 	if ( $args['echo'] ) echo $out;
@@ -483,15 +484,16 @@ function tcp_login_form( $args ) {
 /**
  * Allows to paginate a 
  * @since 1.1.6
+ * @DEPRECATED
+ * @see tcp_get_the_pagination
  */
-function tcp_pagination_bar( $query = false, $base_url = false, $echo = false ) {
+/*function tcp_pagination_bar( $query = false, $base_url = false, $echo = false ) {
 	if ( ! $query ) {
 		global $wp_query;
 		$query = $wp_query;
 	}
 	if ( ! $base_url ) $base_url = get_permalink();
 	$page = isset( $query->query_vars['paged'] ) ? $query->query_vars['paged'] > 0 ? $query->query_vars['paged'] : 1 : 1;
-
 	$qs = isset( $_SERVER['QUERY_STRING'] ) ? '?' . $_SERVER['QUERY_STRING'] : '';
 	if ( $query->found_posts > $query->query_vars['posts_per_page'] ) : 
 		ob_start(); ?>
@@ -516,7 +518,7 @@ function tcp_pagination_bar( $query = false, $base_url = false, $echo = false ) 
 		if ( $echo ) echo $out;
 		else return $out;
 	endif;
-}
+}*/
 
 /**
  * Displays/returns the total of the cart
@@ -529,5 +531,27 @@ function tcp_the_total( $echo = true ) {
         $out = tcp_format_the_price( $shoppingCart->getTotalToShow( false ) );
     if ( $echo ) echo $out;
     else return $out;
+}
+
+/**
+ * Since 1.1.7
+ */
+function tcp_get_the_pagination( $echo = true) {
+	ob_start();
+	if ( function_exists( 'wp_pagenavi' ) ) {
+		wp_pagenavi();
+	} else {
+		global $wp_query;
+		$big = 999999999; // need an unlikely integer
+		echo paginate_links( array(
+			'base'		=> str_replace( $big, '%#%', get_pagenum_link( $big ) ),
+			'format'	=> '?paged=%#%',
+			'current'	=> max( 1, get_query_var('paged') ),
+			'total'		=> $wp_query->max_num_pages
+		) );
+	}
+	$out = ob_get_clean();
+	if ( $echo ) echo $out;
+	else return $out;
 }
 ?>

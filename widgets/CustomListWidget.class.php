@@ -33,7 +33,27 @@ class CustomListWidget extends WP_Widget {
 
 	function widget( $args, $loop_args, $instance ) {
 		extract( $args );
-		
+		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
+		$order_desc = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
+		if ( $order_type == 'price' ) {
+			$loop_args['orderby']	= 'meta_value_num';
+			$loop_args['meta_key']	= 'tcp_price';
+		} elseif ( $order_type == 'order' ) {
+			$loop_args['orderby']	= 'meta_value_num';
+			$loop_args['meta_key']	= 'tcp_order';
+		} else {
+			$loop_args['orderby']	= $order_type;
+		}
+		$loop_args['order'] = $order_desc;
+		$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
+
+		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) { // == TCP_PRODUCT_POST_TYPE ) {
+			$loop_args['meta_query'][] = array(
+				'key'		=> 'tcp_is_visible',
+				'value'		=> 1,
+				'compare'	=> '='
+			);
+		}
 		query_posts( $loop_args );
 		if ( ! have_posts() ) {
 			wp_reset_query();
@@ -58,6 +78,7 @@ class CustomListWidget extends WP_Widget {
 	}
 
 	function show_list( $instance ) {
+		if ( $instance['pagination'] ) echo tcp_pagination_bar();
 		if ( have_posts() ) while ( have_posts() ) : the_post();
 			if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 				$title_tag = '<' . $instance['title_tag'] . '>';
@@ -122,16 +143,19 @@ class CustomListWidget extends WP_Widget {
 				<?php endif; ?>
 				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'tcp' ), __( '1 Comment', 'tcp' ), __( '% Comments', 'tcp' ) ); ?></span>
 				<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-				<?php do_action( 'tcp_after_custom_list_widget_item', get_the_ID() );?>
+				<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() );?>
 				</div>
-				<?php do_action( 'tcp_after_custom_list_widget' );?>
+				<?php do_action( 'tcp_after_loop_tcp_grid' );?>
 				<?php endif;?>
 			</div>
 		<?php endwhile;
 	}
 
-	function show_grid( $instance ) { 
-		$see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
+	function show_grid( $instance ) {
+		if ( isset( $instance['pagination'] ) && $instance['pagination'] )
+			$instance['see_pagination'] = $instance['pagination'];
+		include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
+/*		$see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
 		$title_tag				= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
 		$see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;
 		$image_size				= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
@@ -261,7 +285,7 @@ class CustomListWidget extends WP_Widget {
 					</div><!-- .entry-utility -->
 				<?php endif; ?>
 			</div>
-			<?php do_action( 'tcp_after_custom_list_widget_item', get_the_ID() );?>
+			<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() );?>
 		</td>
 		<?php endwhile;
 		for(; $column > 0; $column-- ) :?>
@@ -269,8 +293,8 @@ class CustomListWidget extends WP_Widget {
 		<?php endfor;?>
 		</tr>
 		</table>
-		<?php do_action( 'tcp_after_custom_list_widget' );?>
-		<?php
+		<?php do_action( 'tcp_after_loop_tcp_grid' );?>
+		<?php*/
 	}
 
 	function update( $new_instance, $old_instance ) {

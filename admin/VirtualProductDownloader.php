@@ -2,19 +2,20 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 $allowed_ext = array(
 	'ez'	=> 'application/andrew-inset',
 	'hqx'	=> 'application/mac-binhex40',
@@ -152,40 +153,26 @@ $allowed_ext = array(
 	'movie'	=> 'video/x-sgi-movie',
 	'ice'	=> 'x-conference-xcooltalk'
 );
+$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) . '/';
+include_once( $wordpress_path . 'wp-config.php' );
+include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
-if ( isset( $_REQUEST['order_detail_id'] ) ) {
-/*	define('WP_INSTALLING', true);
-	$root = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) ;
-	//Loading wordpress enviorenment (+ plugins)
-	require_once( $root . '/wp-load.php' );
-	require_once( $root . '/wp-config.php' );
-	require_once( $root . '/wp-includes/wp-db.php' );
-	require_once( $root . '/wp-includes/plugin.php' );
-	require_once( $root . '/wp-admin/includes/plugin.php' );
-	$current_plugins = get_option( 'active_plugins' );
-	if ( is_array( $current_plugins ) ) {
-		foreach ( $current_plugins as $plugin ) {
-			if ( ! validate_file( $plugin ) && '.php' == substr( $plugin, -4 ) && file_exists( WP_PLUGIN_DIR . '/' . $plugin ) ) {
-				include_once( WP_PLUGIN_DIR . '/' . $plugin );
-			}
-		}
-		unset( $plugin );
-	}
-	unset( $current_plugins );*/
-	$wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) . '/';
-	include_once( $wordpress_path . 'wp-config.php' );
-	include_once( $wordpress_path . 'wp-includes/wp-db.php' );
-
-	$order_detail_id = $_REQUEST['order_detail_id'];
+if ( isset( $_REQUEST['order_detail_id'] ) || ( isset( $_REQUEST['uuid'] ) && isset( $_REQUEST['did'] ) ) ) {
+	$order_detail_id = isset( $_REQUEST['order_detail_id'] ) ? $_REQUEST['order_detail_id'] : $_REQUEST['did'];
 	global $wpdb;
 	global $current_user;
 	get_currentuserinfo();
 	$customer_id = $current_user->ID;
-
 	require_once( dirname( dirname( __FILE__ ) ) . '/templates/tcp_template.php' );
 	require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
-
 	if ( Orders::isProductDownloadable( $customer_id, $order_detail_id ) ) {
+		if ( $customer_id == 0 ) {
+			$uuid = isset( $_REQUEST['uuid'] ) ? $_REQUEST['uuid'] : '';
+			require_once( dirname( dirname( __FILE__ ) ) . '/classes/DownloadableProducts.class.php' );
+			if ( $uuid != tcp_get_download_uuid( $order_detail_id ) ) {
+				wp_die( __( 'You do not have sufficient permissions to access this page.', 'tcp' ) );
+			}
+		}
 		$order_detail = OrdersDetails::get( $order_detail_id );
 		$post_id = $order_detail->post_id;
 		$file_path = tcp_get_the_file( $post_id );
@@ -211,7 +198,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 		else $mime_type = 'application/force-download';
 		$file_name = get_the_title( $post_id ) . '.' . $file_ext . '';
 		$file_name = str_replace( ' ', '_', $file_name );
-
+		//$file_name = esc_html( $file_name );
 		// set headers
 		header( 'Pragma: public' );
 		header( 'Expires: 0' );
@@ -244,5 +231,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) ) {
 	} else {
 		wp_die( __( 'You do not have sufficient permissions to access this page.', 'tcp' ) );
 	}
+} else {
+	wp_die( __( 'You do not have sufficient permissions to access this page.', 'tcp' ) );
 }
 ?>

@@ -453,6 +453,9 @@ class TCPCheckoutManager {
 			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId() ); //, $item->getOption1Id(), $item->getOption2Id() );
 		}
 		foreach( $shoppingCart->getOtherCosts() as $id => $cost ) {
+			if ( $id == ShoppingCart::$OTHER_COST_SHIPPING_ID && $shoppingCart->isFreeShipping() ) {
+				continue;
+			} else {
 			//if ( $id != ShoppingCart::$OTHER_COST_SHIPPING_ID && $id != ShoppingCart::$OTHER_COST_PAYMENT_ID ) {
 				$ordersCosts = array();
 				$ordersCosts['order_id']	= $order_id;
@@ -462,7 +465,7 @@ class TCPCheckoutManager {
 				$ordersCosts['cost_order']	= $cost->getOrder();
 				$orders_cost_id = OrdersCosts::insert( $ordersCosts );
 				do_action( 'tcp_checkout_create_order_insert_cost', $orders_cost_id );
-			//}
+			}
 		}
 		if ( $create_shipping_address )
 			$this->createNewShippingAddress( $order );

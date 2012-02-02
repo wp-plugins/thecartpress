@@ -95,7 +95,7 @@ if ( $post_id ) {
 		<div class="wrap">
 			<h2><?php echo __( 'Upload file for', 'tcp' );?>&nbsp;<i><?php echo $post->post_title;?></i></h2>
 			<ul class="subsubsub">
-				<li><a href="post.php?action=edit&post=<?php echo $post_id;?>"><?php _e( 'return to the product', 'tcp' );?></a></li>
+				<li><a href="post.php?action=edit&post=<?php echo $post_id;?>"><?php _e( 'Return to the product', 'tcp' );?></a></li>
 			</ul><!-- subsubsub -->
 			<div class="clear"></div>
 
@@ -121,7 +121,7 @@ if ( $post_id ) {
 				</tbody>
 				</table>
 				<p>
-					<input type="submit" id="tcp_upload_virtual_file" name="tcp_upload_virtual_file" value="<?php _e( 'upload file', 'tcp' );?>" class="button-primary" />
+					<input type="submit" id="tcp_upload_virtual_file" name="tcp_upload_virtual_file" value="<?php _e( 'Upload file', 'tcp' );?>" class="button-primary" />
 				</p>
 			<?php endif;?>
 			</form>

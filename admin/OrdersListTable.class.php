@@ -17,17 +17,24 @@ class OrdersListTable extends WP_List_Table {
 		return false;
 	}
 
+	function no_items() {
+		_e( 'No Orders found.', 'tcp' );
+	}
+
 	function prepare_items() {
 		if ( ! is_user_logged_in() ) return;
 		$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
+		$search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
 		$per_page = apply_filters( 'tcp_orders_per_page', 15 );
 		$paged = $this->get_pagenum();
 		if ( current_user_can( 'tcp_edit_orders' ) ) {				
+			//$search_by //TODO
 			$this->items = Orders::getOrdersEx( $paged, $per_page, $status );
-			$total_items = Orders::getCountOrdersByStatus( $status );
+			$total_items = Orders::getCountOrdersByStatus( $status, $search_by );
 		} else {
 			global $current_user;
 			get_currentuserinfo();
+			//$search_by //TODO
 			$this->items = Orders::getOrdersEx( $paged, $per_page, $status, $current_user->ID );
 			$total_items = Orders::getCountOrdersByStatus( $status, $current_user->ID );
 		}
@@ -89,7 +96,7 @@ class OrdersListTable extends WP_List_Table {
 		$href = TCP_ADMIN_PATH . 'OrderEdit.php&order_id= ' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
 		if ( current_user_can( 'tcp_edit_orders' ) )
 			$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit', 'tcp' ) . '</a>';
-		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'Edit this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
+		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'View this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
 		echo $this->row_actions( $actions );
 		$this->get_inline_data( $item->order_id );
 	}
@@ -109,6 +116,8 @@ class OrdersListTable extends WP_List_Table {
 			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $status );?>><?php echo $order_status['label']; ?></option>		
 		<?php endforeach; ?>
 		</select>
+		<?php $search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : ''; ?>
+		<label><?php _e( 'Search by', 'tcp' ); ?>:<input type="text" name="search_by" value="<?php echo $search_by; ?>"/></label>
 		<?php do_action( 'tcp_restrict_manage_orders' );
 		submit_button( __( 'Filter' ), 'secondary', false, false, array( 'id' => 'order-query-submit' ) );
 	}
@@ -131,11 +140,13 @@ class TCPOrdersList {
 <div class="wrap">
 	<h2><?php _e( 'Orders', 'tcp' );?></h2>
 	<div class="clear"></div>
-<?php $ordersListTable->display(); ?>
+	<?php $ordersListTable->search_box( __( 'Search Orders' ), 'order' ); ?>
+	<?php $ordersListTable->display(); ?>
 </div>
 </form>
 		<?php $out = ob_get_clean();
 		if ( $echo ) echo $out;
-		return $out; }
+		return $out;
+	}
 }
 ?>

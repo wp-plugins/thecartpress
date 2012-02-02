@@ -35,7 +35,7 @@ if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders'
 	<div id="message" class="updated"><p>
 		<?php _e( 'Order deleted', 'tcp' );?>
 	</p></div>
-	<p><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.class.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
+	<p><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></p>
 	<?php
 	return;
 }
@@ -44,6 +44,10 @@ $order = Orders::get( $order_id );
 if ( isset( $_REQUEST['send_email'] ) ) {
 	if ( $_REQUEST['send_email'] == 'billing' ) $to = $order->billing_email;
 	else $to = $order->shipping_email;
+
+	require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
+	ActiveCheckout::sendMails( $order_id, '', true );
+	/*
 	$from	= isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
@@ -52,7 +56,8 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	$subject = 'Order from '.get_bloginfo( 'name' );
 	$message = OrderPage::show( $order_id, true, false );
 	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
-	wp_mail( $to, $subject, $message_to_customer, $headers );?>
+	wp_mail( $to, $subject, $message_to_customer, $headers );*/
+	?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Mail sent', 'tcp' );?>
 	</p></div><?php
@@ -68,18 +73,18 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 
 <h2><?php _e( 'Order', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status?>&paged=<?php echo $paged?>"><?php _e( 'Return to the list', 'tcp' );?></a></li>
 <?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() );?>"><?php _e( 'send email to billing email', 'tcp' );?></a></li>
+	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() );?>"><?php _e( 'Send email to billing email', 'tcp' );?></a></li>
 <?php endif;?>
 <?php if ( $order && strlen( $order->shipping_email ) > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() );?>"><?php _e( 'send email to shipping email', 'tcp' );?></a></li>
+	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() );?>"><?php _e( 'Send email to shipping email', 'tcp' );?></a></li>
 <?php endif;?>
 <?php if ( $order_id > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' );?>" target="_blank"><?php _e( 'print', 'tcp' );?></a></li>
+	<li><a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' );?>" target="_blank"><?php _e( 'Print', 'tcp' );?></a></li>
 <?php endif;?>
 </ul><!-- subsubsub -->
 

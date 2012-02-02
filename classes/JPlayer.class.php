@@ -37,13 +37,18 @@ class TCPJPlayer {
 			'echo'	=> true,
 		);
 		$args = wp_parse_args( $args, $defaults );
-		$attachments = get_children( 'post_type=attachment&post_mime_type=audio/mpeg&post_parent=' . $post_id );
-		if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
-			foreach( $attachments as $attachment ) {
-				$uri	= $attachment->guid;
-				//$title	= $attachment->post_title;
-				break;
+
+		$out = apply_filters( 'tcp_media_player', '', $post_id, $args );
+		if ( strlen( $out ) > 0 ) {
+			if ( $args['echo'] ) {
+				echo $out;
+				return;
+			} else {
+				return $out;
 			}
+		}
+		$uri = $this->get_url( $post_id );
+		if ( strlen( $uri ) > 0 ) {
 			ob_start(); ?>
 			<div id="tcp_jplayer" class="jp-jplayer"></div>
 			<script>
@@ -97,6 +102,20 @@ jQuery(document).ready(function() {
 		}
 	}
 
+	function get_url( $post_id ) {
+		$url = '';
+		$attachments = get_children( 'post_type=attachment&post_mime_type=audio/mpeg&post_parent=' . $post_id );
+		if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
+			foreach( $attachments as $attachment ) {
+				$url = $attachment->guid;
+				if ( strlen( $url ) == 0 ) $uri = wp_get_attachment_url( $attachment->ID );
+				//$title	= $attachment->post_title;
+				break;
+			}
+		}
+		return apply_filters( 'tcp_jplayer_get_url', $url, $post_id );
+	}
+
 	function showItem( $titles ) { 
 		if ( ! is_array( $titles ) ) $titles = array( $titles );?>
 		<div class="tcp_super_player">
@@ -123,19 +142,32 @@ jQuery(document).ready(function() {
 							<div class="jp-current-time"></div>
 							<div class="jp-duration"></div>
 							<ul class="jp-toggles">
+								<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="<?php _e( 'full screen', 'tcp' ); ?>"><?php _e( 'full screen', 'tcp' ); ?></a></li>
+								<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="<?php _e( 'restore screen', 'tcp' ); ?>"><?php _e( 'restore screen', 'tcp' ); ?></a></li>
+
+								<li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="<?php _e( 'shuffle', 'tcp' ); ?>"><?php _e( 'shuffle', 'tcp' ); ?></a></li>
+								<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="<?php _e( 'shuffle off', 'tcp' ); ?>"><?php _e( 'shuffle off', 'tcp' ); ?></a></li>
+
 								<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="<?php _e( 'repeat', 'tcp' ); ?>"><?php _e( 'repeat', 'tcp' ); ?></a></li>
 								<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="<?php _e( 'repeat off', 'tcp' ); ?>"><?php _e( 'repeat off', 'tcp' ); ?></a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="jp-title">
-					<?php if ( count( $titles ) > 0 ) : ?>
+					<?php //if ( count( $titles ) > 0 ) : ?>
 						<ul>
-						<?php foreach( $titles as $title ) : ?>
-							<li><?php echo $title; ?></li>
-						<?php endforeach; ?>
+						<?php //foreach( $titles as $title ) : ?>
+							<li><?php //echo $title; ?></li>
+						<?php //endforeach; ?>
 						</ul>
-					<?php endif; ?>
+					<?php //endif; ?>
+					</div>
+					
+					<div class="jp-playlist">
+						<ul>
+							<!-- The method Playlist.displayPlaylist() uses this unordered list -->
+							<li></li>
+						</ul>
 					</div>
 					<div class="jp-no-solution">
 						<span><?php _e( 'Update Required', 'tcp' ); ?></span>
@@ -146,13 +178,47 @@ jQuery(document).ready(function() {
 		</div>
 	<?php }
 
+	function admin_init() {
+		$tcp_settings = TCP_ADMIN_FOLDER . 'Settings.class.php';
+		add_settings_section( 'tcp_jplayer_section', __( 'jPlayer skins', 'tcp-mp' ) , array( $this, 'show_jplayer_section' ), $tcp_settings );
+		add_settings_field( 'jplayer_skin', __( 'Select a skin', 'tcp-mp' ), array( $this, 'show_jplayer_skin' ), $tcp_settings , 'tcp_jplayer_section' );
+		//add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
+	}
+
+	function show_jplayer_section() {
+	}
+
+	function show_jplayer_skin() {
+		global $thecartpress;
+		$jplayer_skin = isset( $thecartpress->settings['jplayer_skin'] ) ? $thecartpress->settings['jplayer_skin'] : 'tcp.black';
+		if ( $handle = opendir( WP_PLUGIN_DIR . '/thecartpress/js/jQuery.jPlayer/skins/' ) ) {
+		    while ( false !== ( $entry = readdir( $handle ) ) ) : 
+		    	if ( $entry != '.' && $entry != '..' ) : ?>
+		    <div class="tcp_jplayer_skins">
+				<label class="tcp_jplayer_skin_title"><input type="radio" name="tcp_settings[jplayer_skin]" value="<?php echo $entry; ?>" <?php checked( $jplayer_skin, $entry ); ?>/> <?php echo $entry; ?></label>
+				<div class="tcp_jplayer_skin_detail">
+					<img src="<?php echo WP_PLUGIN_URL, '/thecartpress/js/jQuery.jPlayer/skins/', $entry; ?>/screenshot.png" />
+				</div>
+			</div>
+	    		<?php endif;
+    		endwhile;
+		    closedir( $handle );
+		}
+	}
+
 	function init() {
-//		wp_enqueue_style( 'tcp_jplayer_skin',  WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/skins/blue.monday/jplayer.blue.monday.css' );
-		wp_enqueue_style( 'tcp_jplayer_skin',  WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/skins/pink.flag/jplayer.pink.flag.css' );
+		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/jquery.jplayer.min.js' );
+		wp_enqueue_script( 'tcp_jplayer' );
+		global $thecartpress;
+		if ( $thecartpress ) {
+			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp-black' );
+			wp_enqueue_style( 'tcp_jplayer_skin',  WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/skins/' . $jplayer_skin . '/style.css' );
+		}
 	}
 
 	function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 }
 

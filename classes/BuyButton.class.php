@@ -69,7 +69,9 @@ class BuyButton {
 			}
 			if ( ! $disable_shopping_cart ) {
 				if ( tcp_is_downloadable( $post_id ) ) {
-					$htm = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false );
+					//$htm = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false );
+					global $tcp_jplayer;
+					$htm = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
 					$htm .= '<input type="hidden" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" />';
 					$html = apply_filters( 'tcp_buy_button_unit_text', $htm, $post_id );
 				} else {
@@ -192,7 +194,11 @@ class BuyButton {
 							'td_class'	=> 'tcp_buy_button_thumbnail'
 						);
 					}
-					if ( $is_downloadable )	$html = TCPMP3Player::showPlayer( $product->id_to, TCPMP3Player::$SMALL, false );
+					if ( $is_downloadable )	{
+						//$html = TCPMP3Player::showPlayer( $product->id_to, TCPMP3Player::$SMALL, false );
+						global $tcp_jplayer;
+						$htm = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
+					}
 					else $html = '';
 					$title = get_the_title( $product_id );
 					if ( tcp_is_visible( $product_id ) ) {
