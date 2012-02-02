@@ -32,13 +32,13 @@ class BrothersListWidget extends CustomListWidget {
 		global $post;
 		if ( $post ) {
 			$post_type = get_post_type_object( $post->post_type );
-			if ( count( $post_type->taxonomies ) == 0 ) return;
-			$terms = get_the_terms( $post->ID, $post_type->taxonomies[0] );
+			$taxonomies = get_object_taxonomies( $post->post_type );
+			if ( count( $taxonomies ) == 0 ) return;
+			$terms = get_the_terms( $post->ID, $taxonomies[0] );
 			$title = '';
 			$ids = array();
 			if ( is_array( $terms ) && count( $terms ) ) {
 				foreach( $terms as $term ) {
-
 					$ids[] = tcp_get_default_id( $term->term_id, $term->taxonomy );
 					if ( $title == '' ) $title = $term->name;
 					else $title .= ' - ' . $term->name;
@@ -46,12 +46,12 @@ class BrothersListWidget extends CustomListWidget {
 			}
 			$instance['title'] .= ': ' . $title;
 			$loop_args = array(
-				'post_type'			=> $post->post_type, //TCP_PRODUCT_POST_TYPE,
+				'post_type'			=> $post->post_type,
 				'posts_per_page'	=> $instance['limit'],
-				'exclude'			=> array( $post->ID, ),//TODO
+				'post__not_in'			=> array( $post->ID, ),
 				'tax_query'			=> array(
 					array(
-						'taxonomy'	=> $post_type->taxonomies[0],
+						'taxonomy'	=> $taxonomies[0],
 						'terms'		=> $ids,
 						'field'		=> 'id',
 					),
