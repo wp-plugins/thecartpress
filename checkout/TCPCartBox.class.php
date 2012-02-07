@@ -115,7 +115,8 @@ class TCPCartBox extends TCPCheckoutBox {
 		$table_amount_with_tax = 0;
 		foreach( $shoppingCart->getItems() as $item ) :
 			$tax = tcp_get_the_tax( $item->getPostId() );
-			$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
+			//$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
+			$res = array( $item->getUnitPrice(), $item->getUnitPrice() * $item->getTax() / 100 );
 			$unit_price_without_tax = round( $res[0], $decimals );
 			$tax_amount = round( $res[1] * $item->getUnits(), $decimals );
 			$line_price_without_tax = $unit_price_without_tax * $item->getUnits();
@@ -133,10 +134,12 @@ class TCPCartBox extends TCPCheckoutBox {
 				<td><?php echo tcp_format_the_price( $line_price_without_tax ); ?></td>
 			</tr>
 		<?php endforeach;
+		if ( ! isset( $args['see_weight'] ) || ( isset( $args['see_weight'] ) && $args['see_weight'] ) ) $colspan = 4;
+		else $colspan = 3;
 		$discount = $shoppingCart->getAllDiscounts();
 		if ( $discount > 0 ) : ?>
 			<tr id="discount" class="tcp_cart_discount_row<?php if ( $i++ & 1 == 1 ) : ?> tcp_par<?php endif; ?>">
-			<td colspan="4" style="text-align:right"><?php _e( 'Discounts', 'tcp' ); ?></td>
+			<td colspan="<?php echo $colspan; ?>" style="text-align:right"><?php _e( 'Discounts', 'tcp' ); ?></td>
 			<td>-<?php echo tcp_format_the_price( $discount ); ?></td>
 			</tr><?php
 		endif;
@@ -164,8 +167,6 @@ class TCPCartBox extends TCPCheckoutBox {
 			$shoppingCart->deleteOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID );
 		}
 		do_action( 'tcp_checkout_calculate_other_costs' );
-		if ( ! isset( $args['see_weight'] ) || ( isset( $args['see_weight'] ) && $args['see_weight'] ) ) $colspan = 4;
-		else $colspan = 3;
 		if ( $shoppingCart->isFreeShipping() ) : ?>
 			<tr class="tcp_cart_free_shipping<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 			<td colspan="<?php echo $colspan; ?>" class="tcp_cost_tcp_free_shipping" style="text-align:right"><?php _e( 'Free shipping', 'tcp' ); ?></td>

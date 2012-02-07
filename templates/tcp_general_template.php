@@ -331,6 +331,10 @@ function tcp_get_number_of_attachments( $post_id = 0 ) {
 function tcp_get_sorting_fields() {
 	$sorting_fields = array(
 		array(
+			'value'	=> '',
+			'title'	=> __( 'Default', 'tcp' ),
+		),
+		array(
 			'value'	=> 'order',
 			'title'	=> __( 'Suggested', 'tcp' ),
 		),
@@ -480,45 +484,6 @@ function tcp_login_form( $args ) {
 	if ( $args['echo'] ) echo $out;
 	else return $out;
 }
-
-/**
- * Allows to paginate a 
- * @since 1.1.6
- * @DEPRECATED
- * @see tcp_get_the_pagination
- */
-/*function tcp_pagination_bar( $query = false, $base_url = false, $echo = false ) {
-	if ( ! $query ) {
-		global $wp_query;
-		$query = $wp_query;
-	}
-	if ( ! $base_url ) $base_url = get_permalink();
-	$page = isset( $query->query_vars['paged'] ) ? $query->query_vars['paged'] > 0 ? $query->query_vars['paged'] : 1 : 1;
-	$qs = isset( $_SERVER['QUERY_STRING'] ) ? '?' . $_SERVER['QUERY_STRING'] : '';
-	if ( $query->found_posts > $query->query_vars['posts_per_page'] ) : 
-		ob_start(); ?>
-		<div class="tcp_pagination">
-		<ul class="tcp_paging">
-		<?php if ( $page > 1 ) : ?>
-			<li class="tcp_previous"><a href="<?php echo $base_url, 'page/', ( $page - 1 ), '/', $qs ; ?>"><?php _e( '&laquo; previous', 'tcp' ); ?></a></li>
-		<?php endif;
-		for ( $i = 1; $i <= $query->max_num_pages; $i++ ) :
-			if ( $i == $page ) : ?>
-				<li class="tcp_active"><?php echo $i; ?></li>
-			<?php else : ?>
-				<li><a href="<?php echo $base_url, 'page/', $i, '/', $qs; ?>"><?php echo $i; ?></a></li>
-			<?php endif;
-		endfor;
-		if ( $page < $query->max_num_pages ) : ?>
-			<li class="tcp_next"><a href="<?php echo $base_url, 'page/', ( $page + 1 ), '/', $qs; ?>"><?php _e( 'next &raquo;', 'tcp' ); ?></a></li>
-		<?php endif; ?>
-		</ul>
-		</div><!-- .tcp_pagination -->
-		<?php $out = ob_get_clean();
-		if ( $echo ) echo $out;
-		else return $out;
-	endif;
-}*/
 
 /**
  * Displays/returns the total of the cart
