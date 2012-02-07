@@ -50,19 +50,13 @@ function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 			)
 		)
 	);
-	$query = new WP_Query( $args );
+	$posts = get_posts( $args );
 	$html = '';
 	remove_filter( 'get_the_excerpt', 'twentyeleven_custom_excerpt_more' );
-	while ( $query->have_posts() ) {
-		$query->the_post();
-		$post_id = tcp_get_current_id( get_the_ID(), TemplateCustomPostType::$TEMPLATE );
-		$post = get_post( $post_id );
-		//$html .= apply_filters( 'the_content', get_the_content() );
-		if ( $excerpt ) $html .= get_the_excerpt();
+	foreach( $posts as $post ) {
+		if ( $excerpt ) $html .= apply_filters( 'the_excerpt', $post->post_excerpt ); //get_the_excerpt();
 		else $html .= apply_filters( 'the_content', $post->post_content );
 	}
-	wp_reset_postdata();
-	wp_reset_query();
 	if ( $echo )
 		echo $html;
 	else

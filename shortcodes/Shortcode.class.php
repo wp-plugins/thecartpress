@@ -42,5 +42,5 @@ class TCPShortcode {
 	}
 }
 
-new TCPShortcode();
+$tcpshortcode = new TCPShortcode();
 ?>

@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.7
+Version: 1.1.7.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -61,10 +61,10 @@ class TheCartPress {
 			for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 				$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
 				if ( $count > 0 ) {
-					$post_id		= isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
-					$post_id		= tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+					$post_id = isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
+					$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
 					//TODO Deprecated Options
-					$tcp_option_id	= isset( $_REQUEST['tcp_option_id'][$i] ) ? $_REQUEST['tcp_option_id'][$i] : 0;
+					$tcp_option_id = isset( $_REQUEST['tcp_option_id'][$i] ) ? $_REQUEST['tcp_option_id'][$i] : 0;
 					if ( $tcp_option_id > 0 ) {
 						$option_ids = explode( '-',  $tcp_option_id);
 						if ( count( $option_ids ) == 2 ) {
@@ -452,7 +452,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					'link'	=> $this->get_setting( 'image_link_content', 'permalink' ),
 				);
 				$image = tcp_get_the_thumbnail_with_permalink( $post->ID, $args, false );
-
 				$image = apply_filters( 'tcp_get_image_in_content', $image, $post->ID );
 				$thumbnail_post = get_post( $thumbnail_id );
 				if ( ! empty( $thumbnail_post->post_excerpt ) ) {
@@ -771,6 +770,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process.', 'tcp' ) );
 		tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right.', 'tcp' ) );
 		tcp_add_template_class( 'tcp_checkout_end_ko', __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
+		tcp_add_template_class( 'tcp_shopping_cart_empty', __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
 	}
 
 	function load_settings() {
@@ -781,16 +781,16 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		if ( ! session_id() ) session_start();
 		if ( function_exists( 'add_theme_support' ) ) add_theme_support( 'post-thumbnails' );
 		if ( function_exists( 'load_plugin_textdomain' ) ) load_plugin_textdomain( 'tcp', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
 		if ( is_admin() ) {
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'tcp_scripts' );
+			wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 		} else {
 			wp_enqueue_script( 'jquery' );
 		}
-		wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
-		wp_enqueue_script( 'tcp_scripts' );
 		$this->load_custom_post_types_and_custom_taxonomies();
-		if ( is_admin() ) wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
 			$load_default_buy_button_style				= $this->get_setting( 'load_default_buy_button_style', true );

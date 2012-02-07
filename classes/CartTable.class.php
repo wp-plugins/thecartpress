@@ -67,7 +67,7 @@ class TCPCartTable {
 			<span class="tcp_status_row"><?php _e( 'Status', 'tcp' ); ?>: <span class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo $source->get_status(); ?></span></span>
 			</div>
 		<?php endif; ?>
-		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
+		<table class="tcp_shopping_cart_table">
 		<thead>
 		<tr class="tcp_cart_title_row">
 		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_id"><?php _e( 'Id.', 'tcp' ); ?></th><?php endif; ?>
@@ -163,7 +163,7 @@ class TCPCartTable {
 		if ( $source->see_other_costs() ) {
 			if ( $source->has_orders_costs() ) {
 				foreach( $source->get_orders_costs() as $order_cost ) : ?>
-					<tr id="other_costs" class="tcp_cart_other_costs_row">
+					<tr class="tcp_cart_other_costs_row">
 					<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo $order_cost->get_description(); ?></td>
 					<td class="tcp_cart_other_costs"><?php echo tcp_format_the_price( $order_cost->get_cost() ); ?></td>
 					<?php $tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );

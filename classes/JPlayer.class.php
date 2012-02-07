@@ -203,6 +203,7 @@ jQuery(document).ready(function() {
 	    		<?php endif;
     		endwhile;
 		    closedir( $handle );
+		    do_action( 'tcp_jplayer_skins', $jplayer_skin );
 		}
 	}
 
@@ -212,7 +213,9 @@ jQuery(document).ready(function() {
 		global $thecartpress;
 		if ( $thecartpress ) {
 			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp-black' );
-			wp_enqueue_style( 'tcp_jplayer_skin',  WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/skins/' . $jplayer_skin . '/style.css' );
+			$url = WP_PLUGIN_URL . '/thecartpress/js/jQuery.jPlayer/skins/' . $jplayer_skin . '/style.css';
+			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
+			wp_enqueue_style( 'tcp_jplayer_skin', $url );
 		}
 	}
 

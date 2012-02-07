@@ -221,7 +221,7 @@ class ProductCustomPostType {
 	function restrictManagePosts() {
 		global $typenow;
 		if ( $typenow == TCP_PRODUCT_POST_TYPE ) {
-		//if ( tcp_is_saleable_post_type( $post->post_type ) )
+		//if ( tcp_is_saleable_post_type( $typenow ) )
 			global $wp_query;
 			wp_dropdown_categories( array(
 				'show_option_all'	=> __( 'View all categories', 'tcp' ),
@@ -237,6 +237,10 @@ class ProductCustomPostType {
 			<label for="tcp_product_type"><?php _e( 'type:', 'tcp' );?></label>
 			<?php $product_types = tcp_get_product_types( true, __( 'all', 'tcp' ) );
 			tcp_html_select( 'tcp_product_type', $product_types, isset( $_REQUEST['tcp_product_type'] ) ? $_REQUEST['tcp_product_type'] : '' );
+		}
+		if ( tcp_is_saleable_post_type( $typenow ) ) { ?>
+			<label for="tcp_SKU"><?php _e( 'SKU:', 'tcp' );?></label>
+			<input type="text" size="10" name="tcp_sku" value="<?php echo isset( $_REQUEST['tcp_sku'] ) ? $_REQUEST['tcp_sku'] : ''; ?>" /><?php
 		}
 	}
 
@@ -263,7 +267,16 @@ class ProductCustomPostType {
 				),
 			);
 		}
-		
+		if ( isset( $_REQUEST['tcp_sku'] ) && $_REQUEST['tcp_sku'] != '' ) {
+			$query->query_vars['meta_query'] = array(
+				array(
+					'key' => 'tcp_sku',
+					'value' => $_REQUEST['tcp_sku'],
+					'compare' => '=',
+					'type' => 'string',
+				),
+			);
+		}
 		if ( isset( $query->query_vars['post_type'] ) && $query->query_vars['post_type'] == TCP_PRODUCT_POST_TYPE ) {
 			global $pagenow;
 			if ( $pagenow == 'edit.php' ) {

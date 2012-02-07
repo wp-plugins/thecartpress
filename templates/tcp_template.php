@@ -249,6 +249,7 @@ function tcp_get_price_and_tax( $price, $tax ) {
 	if ( tcp_is_display_prices_with_taxes() ) {
 		if ( tcp_is_price_include_tax() ) {
 			$new_price = $price / ( 1 + $tax / 100 );
+echo $new_price, ', ', $price - $new_price, ' (', $price, ')';
 			return array( $new_price, $price - $new_price );
 		} else {
 			$amount = $price * $tax / 100;

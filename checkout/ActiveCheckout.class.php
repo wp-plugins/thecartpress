@@ -69,7 +69,11 @@ class ActiveCheckout {//shortcode
 			do_action( 'tcp_checkout_end', $order_id );
 			return $html;
 		} elseif ( $shoppingCart->isEmpty() ) {
-			return '<span class="tcp_shopping_cart_empty">' . __( 'The cart is empty', 'tcp' ) . '</span>';
+			ob_start(); ?>
+			<span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' ); ?></span>
+			<?php tcp_do_template( 'tcp_shopping_cart_empty' ); ?>
+			<?php do_action( 'tcp_shopping_cart_empty' ); ?>
+			<?php return ob_get_clean();
 		} else {
 			$param = array(
 				'validate'	=> true,

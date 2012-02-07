@@ -429,8 +429,8 @@ class TCPCheckoutManager {
 			$ordersDetails['name']				= tcp_get_the_title( $post->ID );
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-			//$ordersDetails['price']				= $item->getUnitPrice();
-			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
+			$ordersDetails['price']				= $item->getUnitPrice();
+			//$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 			$ordersDetails['original_price']	= $item->getUnitPrice();
 			$ordersDetails['tax']				= $tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax();
 			$ordersDetails['qty_ordered']		= $item->getCount();
