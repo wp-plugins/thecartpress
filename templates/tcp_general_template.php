@@ -332,7 +332,7 @@ function tcp_get_sorting_fields() {
 	$sorting_fields = array(
 		array(
 			'value'	=> '',
-			'title'	=> __( 'Default', 'tcp' ),
+			'title'	=> __( 'Unordered', 'tcp' ),
 		),
 		array(
 			'value'	=> 'order',

@@ -51,6 +51,7 @@ if ( isset( $_REQUEST['save_post_type'] ) ) {
 		'show_in_menu'		=> isset( $_REQUEST['show_in_menu'] ),
 		'can_export'		=> isset( $_REQUEST['can_export'] ),
 		'show_in_nav_menus'	=> isset( $_REQUEST['show_in_nav_menus'] ),
+//		'hierarchical'		=>
 //		'capability_type'	=> 'post',
 		'query_var'			=> isset( $_REQUEST['query_var'] ),
 		'supports'			=> isset( $_REQUEST['supports'] ) ? $_REQUEST['supports'] : array( 'title', 'excerpt', 'editor', ),

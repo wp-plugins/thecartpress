@@ -54,16 +54,14 @@ class TheCartPress {
 	function wp_head() { //Shopping Cart actions
 		if ( isset( $_REQUEST['tcp_add_to_shopping_cart'] ) ) {
 			unset( $_REQUEST['tcp_add_to_shopping_cart'] );
-			$shoppingCart	= TheCartPress::getShoppingCart();
-			$post_id		= isset( $_REQUEST['tcp_post_id'] ) ? $_REQUEST['tcp_post_id'] : 0;
-			do_action( 'tcp_before_add_shopping_cart', $post_id );
-			if ( ! is_array( $post_id ) ) $post_id = array( $post_id );
+			if ( ! isset( $_REQUEST['tcp_post_id'] ) ) return;
+			$shoppingCart = TheCartPress::getShoppingCart();
+			do_action( 'tcp_before_add_shopping_cart', $_REQUEST['tcp_post_id'] );
 			for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 				$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
 				if ( $count > 0 ) {
 					$post_id = isset( $_REQUEST['tcp_post_id'][$i] ) ? $_REQUEST['tcp_post_id'][$i] : 0;
 					$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
-					//TODO Deprecated Options
 					$tcp_option_id = isset( $_REQUEST['tcp_option_id'][$i] ) ? $_REQUEST['tcp_option_id'][$i] : 0;
 					if ( $tcp_option_id > 0 ) {
 						$option_ids = explode( '-',  $tcp_option_id);
@@ -71,18 +69,18 @@ class TheCartPress {
 							$option_1_id		= $option_ids[0];
 							$price_1			= tcp_get_the_price( $option_1_id );
 							$price_to_show_1	= tcp_get_the_price_to_show( $post_id, $price_1 );
-							$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
+							//$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
 							$weight_1			= tcp_get_the_weight( $option_1_id );
 							$option_2_id		= $option_ids[1];
 							$price_2			= tcp_get_the_price( $option_2_id );
 							$price_to_show_2	= tcp_get_the_price_to_show( $post_id, $price_2 );
-							$price_2			= tcp_get_the_price_without_tax( $post_id, $price_2 );
+							//$price_2			= tcp_get_the_price_without_tax( $post_id, $price_2 );
 							$weight_2			= tcp_get_the_weight( $option_2_id );
 						} else {
 							$option_1_id		= $tcp_option_id;
 							$price_1			= tcp_get_the_price( $option_1_id );
 							$price_to_show_1	= tcp_get_the_price_to_show( $post_id, $price_1 );
-							$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
+							//$price_1			= tcp_get_the_price_without_tax( $post_id, $price_1 );
 							$weight_1			= tcp_get_the_weight( $option_1_id );
 							$option_2_id		= '0';
 							$price_2			= 0;
@@ -90,17 +88,17 @@ class TheCartPress {
 							$weight_2			= 0;
 						}
 					} else {
-						$option_1_id		= isset( $_REQUEST['tcp_option_1_id'][$i] ) ? $_REQUEST['tcp_option_1_id'][$i] : 0;
+						$option_1_id = isset( $_REQUEST['tcp_option_1_id'][$i] ) ? $_REQUEST['tcp_option_1_id'][$i] : 0;
 						if ( $option_1_id > 0 ) {
 							$price_1			= tcp_get_the_price( $option_1_id );
 							$price_to_show_1	= $option_1_id > 0 ? tcp_get_the_price_to_show( $post_id, $price_1 ) : 0;
-							$price_1			= $option_1_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_1 ) : 0;
+							//$price_1			= $option_1_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_1 ) : 0;
 							$weight_1			= tcp_get_the_weight( $option_1_id );
 							$option_2_id		= isset( $_REQUEST['tcp_option_2_id'][$i] ) ? $_REQUEST['tcp_option_2_id'][$i] : 0;
 							if ( $option_2_id > 0 ) {
 								$price_2			= tcp_get_the_price( $option_2_id );
 								$price_to_show_2	= $option_2_id > 0 ? tcp_get_the_price_to_show( $post_id, $price_2 ) : 0;
-								$price_2			= $option_2_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_2 ) : 0;
+								//$price_2			= $option_2_id > 0 ? tcp_get_the_price_without_tax( $post_id, $price_2 ) : 0;
 								$weight_2			= tcp_get_the_weight( $option_2_id );
 							} else {
 								$price_2 = 0;
@@ -120,9 +118,9 @@ class TheCartPress {
 					$price_to_show	= tcp_get_the_price_to_show( $post_id );
 					$price_to_show	+= $price_to_show_1 + $price_to_show_2;
 					$unit_price		= tcp_get_the_price( $post_id );
-					$unit_price		= tcp_get_the_price_without_tax( $post_id, $unit_price );
+					//$unit_price		= tcp_get_the_price_without_tax( $post_id, $unit_price );
 					$unit_price		+= $price_1 + $price_2;
-					$unit_price		= apply_filters( 'tcp_price_to_add_to_shoppingcart', $unit_price );
+					$unit_price		= apply_filters( 'tcp_price_to_add_to_shoppingcart', $unit_price, $post_id );
 					$tax			= tcp_get_the_tax( $post_id );
 					if ( $weight_2 > 0 ) $unit_weight = $weight_2;
 					elseif ( $weight_1 > 0 ) $unit_weight = $weight_1;
@@ -133,8 +131,8 @@ class TheCartPress {
 					extract( $args );
 					$shoppingCart->add( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $tax, $unit_weight, $price_to_show );
 				}
-				do_action( 'tcp_add_shopping_cart', $post_id );
 			}
+			do_action( 'tcp_add_shopping_cart', $_REQUEST['tcp_post_id'] );
 		} elseif ( isset( $_REQUEST['tcp_delete_shopping_cart'] ) ) {
 			do_action( 'tcp_before_delete_shopping_cart' );
 			TheCartPress::removeShoppingCart();
@@ -257,7 +255,7 @@ class TheCartPress {
 						}
 					}
 				}
-				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
+				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) ) { //&& tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 					$apply_filters = true;
 				}
 			}
@@ -269,24 +267,26 @@ class TheCartPress {
 				);
 			}
 			if ( $apply_filters ) {
-				$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
-				$filter = new TCPFilterNavigation();						
-				if ( $filter->is_filter_by_layered() ) {
-					$layered = $filter->get_layered();
-					foreach( $layered as $tax => $layers ) {
-						$query[$tax] = '';
-						foreach( $layers as $layer ) {
-							$query[$tax] .= $layer . ',';
+				$filter = new TCPFilterNavigation();
+				if ( tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
+					$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
+					if ( $filter->is_filter_by_layered() ) {
+						$layered = $filter->get_layered();
+						foreach( $layered as $tax => $layers ) {
+							$query[$tax] = '';
+							foreach( $layers as $layer ) {
+								$query[$tax] .= $layer . ',';
+							}
 						}
 					}
-				}
-				if ( $filter->is_filter_by_price_range() ) {
-					$query['meta_query'][] = array(
-						'key'		=> 'tcp_price',
-						'value'		=> array( $filter->get_min_price(), $filter->get_max_price() ),
-						'type'		=> 'NUMERIC',
-						'compare'	=> 'BETWEEN'
-					);
+					if ( $filter->is_filter_by_price_range() ) {
+						$query['meta_query'][] = array(
+							'key'		=> 'tcp_price',
+							'value'		=> array( $filter->get_min_price(), $filter->get_max_price() ),
+							'type'		=> 'NUMERIC',
+							'compare'	=> 'BETWEEN'
+						);
+					}
 				}
 				if ( $filter->get_order_type() == 'price' ) {
 					$query['orderby']	= 'meta_value_num';

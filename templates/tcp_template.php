@@ -240,7 +240,7 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 /**
 * Returns the price without tax and the tax amount
 *
-* @param float $price to calculate
+* @param float $price to calculate (the price stored)
 * @param float $tax to apply
 * @return array( price without tax, tax amount )
 * @since 1.1.5
@@ -249,18 +249,17 @@ function tcp_get_price_and_tax( $price, $tax ) {
 	if ( tcp_is_display_prices_with_taxes() ) {
 		if ( tcp_is_price_include_tax() ) {
 			$new_price = $price / ( 1 + $tax / 100 );
-echo $new_price, ', ', $price - $new_price, ' (', $price, ')';
 			return array( $new_price, $price - $new_price );
 		} else {
 			$amount = $price * $tax / 100;
 			return array( $price, $amount );
 		}
-	} elseif ( ! tcp_is_price_include_tax() ) {
-		$amount = $price * $tax / 100;
-		return array( $price, $amount );
-	} else { //remove tax from price
+	} elseif ( tcp_is_price_include_tax() ) {
 		$new_price = $price / ( 1 + $tax / 100 );
 		return array( $new_price, $price - $new_price );
+	} else { //remove tax from price
+		$amount = $price * $tax / 100;
+		return array( $price, $amount );
 	}
 }
 

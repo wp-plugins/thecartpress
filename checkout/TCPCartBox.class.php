@@ -57,7 +57,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		<div id="cart_layer_info" class="checkout_info clearfix">
 			<?php $settings = get_option( 'tcp_' . get_class( $this ), array() ); ?>
 		 	<?php do_action( 'tcp_checkout_cart_before', $settings );
-			$this->showOrderCart( $shipping_country, $settings );
+			$this->show_order_cart( $shipping_country, $settings );
 		 	do_action( 'tcp_checkout_cart_after' );
 		 	if ( isset( $_REQUEST['comment'] ) ) {
 				$comment = $_REQUEST['comment'];
@@ -93,7 +93,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		return true;
 	}
 
-	private function showOrderCart( $shipping_country, $args = array() ) {
+	private function show_order_cart( $shipping_country, $args = array() ) {
 		do_action( 'tcp_checkout_create_order_cart', $args );
 		$shoppingCart = TheCartPress::getShoppingCart(); ?>
 		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
@@ -115,15 +115,13 @@ class TCPCartBox extends TCPCheckoutBox {
 		$table_amount_with_tax = 0;
 		foreach( $shoppingCart->getItems() as $item ) :
 			$tax = tcp_get_the_tax( $item->getPostId() );
-			//$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
-			$res = array( $item->getUnitPrice(), $item->getUnitPrice() * $item->getTax() / 100 );
+			$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
 			$unit_price_without_tax = round( $res[0], $decimals );
 			$tax_amount = round( $res[1] * $item->getUnits(), $decimals );
 			$line_price_without_tax = $unit_price_without_tax * $item->getUnits();
 			$line_price_with_tax = $line_price_without_tax + $tax_amount; 
 			$table_amount_without_tax += $line_price_without_tax;
-			$table_amount_with_tax += $line_price_with_tax;
-			?>
+			$table_amount_with_tax += $line_price_with_tax; ?>
 			<tr class="tcp_cart_product_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 				<td class="tcp_cart_name"><?php echo tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?></td>
 				<td class="tcp_cart_unit_price"><?php echo tcp_format_the_price( $unit_price_without_tax ); ?></td>
