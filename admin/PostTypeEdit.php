@@ -56,7 +56,7 @@ if ( isset( $_REQUEST['save_post_type'] ) ) {
 		'query_var'			=> isset( $_REQUEST['query_var'] ),
 		'supports'			=> isset( $_REQUEST['supports'] ) ? $_REQUEST['supports'] : array( 'title', 'excerpt', 'editor', ),
 		'rewrite'			=> isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false,
-		'has_archive'		=> isset( $_REQUEST['has_archive'] ) ? isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false : false,
+		'has_archive'		=> isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? true : false,
 //		'has_archive'		=> isset( $_REQUEST['has_archive'] ) && strlen( $_REQUEST['has_archive'] ) > 0 ? $_REQUEST['has_archive'] : false,
 		//TheCartPress support
 		'is_saleable'		=> isset( $_REQUEST['is_saleable'] ),
@@ -87,16 +87,16 @@ if ( isset( $_REQUEST['save_post_type'] ) ) {
 //		$parent_item_colon	= isset( $post_type_def['parent_item_colon'] ) ? $post_type_def['parent_item_colon'] : __( 'Parent Category:', 'tcp' );
 		$public				= isset( $post_type_def['public'] ) ? $post_type_def['public'] : false;
 		$show_ui			= isset( $post_type_def['show_ui'] ) ? $post_type_def['show_ui'] : false;
-		$show_in_menu		= isset( $post_type_def['show_in_menu'] ) ? $post_type_def['show_in_menu'] : true;
-		$can_export			= isset( $post_type_def['can_export'] ) ? $post_type_def['can_export'] : true;
-		$show_in_nav_menus	= isset( $post_type_def['show_in_nav_menus'] ) ? $post_type_def['show_in_nav_menus'] : true;
+		$show_in_menu		= isset( $post_type_def['show_in_menu'] ) ? $post_type_def['show_in_menu'] : false;
+		$can_export			= isset( $post_type_def['can_export'] ) ? $post_type_def['can_export'] : false;
+		$show_in_nav_menus	= isset( $post_type_def['show_in_nav_menus'] ) ? $post_type_def['show_in_nav_menus'] : false;
 //		$capability_type'	= 'post',
-		$query_var			= isset( $post_type_def['query_var'] );
+		$query_var			= isset( $post_type_def['query_var'] ) ? $post_type_def['query_var'] : false;
 		$supports			= isset( $post_type_def['supports'] ) ? $post_type_def['supports'] : array( 'title', 'editor', );
 		$rewrite			= isset( $post_type_def['rewrite'] ) && strlen( $post_type_def['rewrite'] ) > 0 ? $post_type_def['rewrite'] : false;
-		$has_archive		= isset( $post_type_def['has_archive'] ) ? isset( $post_type_def['rewrite'] ) && strlen( $post_type_def['rewrite'] ) > 0 ? $post_type_def['rewrite'] : false : false;
-//		$has_archive		= isset( $post_type_def['has_archive'] ) && strlen( $post_type_def['has_archive'] ) > 0 ? $post_type_def['has_archive'] : false;
-		$is_saleable		= isset( $post_type_def['is_saleable'] );
+		//$has_archive		= isset( $post_type_def['has_archive'] ) ? isset( $post_type_def['rewrite'] ) && strlen( $post_type_def['rewrite'] ) > 0 ? $post_type_def['rewrite'] : false : false;
+		$has_archive		= isset( $post_type_def['has_archive'] ) ? $post_type_def['has_archive'] : false;
+		$is_saleable		= isset( $post_type_def['is_saleable'] ) ? $post_type_def['is_saleable'] : false;
 	}
 }
 
@@ -131,7 +131,7 @@ if ( ! isset( $post_type_def ) ) {
 <div class="wrap">
 <h2><?php _e( 'Post type', 'tcp' );?></h2>
 <ul class="subsubsub">
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PostTypeList.php"><?php _e( 'return to the list', 'tcp' );?></a></li>
+	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PostTypeList.php"><?php _e( 'Return to the list', 'tcp' );?></a></li>
 </ul>
 <div class="clear"></div>
 

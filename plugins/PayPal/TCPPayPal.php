@@ -136,7 +136,7 @@ class TCPPayPal extends TCP_Plugin {
 		$logging = $data['logging'];
 		$merchant = get_bloginfo( 'name' );
 		$new_status = $data['new_status'];
-		$p = new paypal_class( $test_mode, $logging );
+		$p = new tcp_paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
 		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', get_permalink() ) );
@@ -250,7 +250,7 @@ class TCPPayPal extends TCP_Plugin {
 		}*/
 
 		/*if ( ! $error ) {
-			$p = new paypal_class( $test_mode );
+			$p = new tcp_paypal_class( $test_mode );
 			$p->add_field( 'charset', 'utf-8' );
 			$p->add_field( 'business', $business );
 			$p->add_field( 'return', $return_url );

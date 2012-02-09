@@ -268,7 +268,7 @@ class TheCartPress {
 			}
 			if ( $apply_filters ) {
 				$filter = new TCPFilterNavigation();
-				if ( tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
+				if ( isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 					$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
 					if ( $filter->is_filter_by_layered() ) {
 						$layered = $filter->get_layered();

@@ -90,7 +90,7 @@
  *******************************************************************************
 */
 
-class paypal_class {
+class tcp_paypal_class {
     
    var $last_error;                 // holds the last error encountered
    
