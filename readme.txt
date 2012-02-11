@@ -296,6 +296,7 @@ This plugin is released under a GPL license.
 * Sorting support: All the loops, generated into TheCartPress, support sorting
 * Security updates
 * New styles: More compatibles (for clear or dark themes) and for TwentyTen or Twentyeleven style themes
+* New templates: for TwentyTen or Twentyeleven based themes
 * Last Visited: Support for saleables post type
 * New API: Custom post type/taxonomy API
 * Shipping methods: New Local pick-up shipping method
