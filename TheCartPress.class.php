@@ -289,6 +289,7 @@ class TheCartPress {
 					}
 				//}
 			}
+			if ($apply_filters) {
 			if ( $filter->get_order_type() == 'price' ) {
 				$query['orderby']	= 'meta_value_num';
 				$query['meta_key']	= 'tcp_price';
@@ -299,6 +300,7 @@ class TheCartPress {
 				$query['orderby']	= $filter->get_order_type();
 			}
 			$query['order'] = $filter->get_order_desc();
+			}
 			$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
 			
 		}
