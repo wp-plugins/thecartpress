@@ -42,13 +42,13 @@ class CustomListWidget extends WP_Widget {
 			$loop_args['orderby']	= 'meta_value_num';
 			$loop_args['meta_key']	= 'tcp_order';
 		} else {
-			$loop_args['orderby']	= $order_type;
+			if ( strlen( $order_type ) > 0 ) $loop_args['orderby']	= $order_type;
 		}
-		$loop_args['order'] = $order_desc;
+		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
 		$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
 
 		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) { // == TCP_PRODUCT_POST_TYPE ) {
-			$loop_args['meta_query'][] = array(
+			$loop_args['meta_query'][] = array( // $loop_args['meta_query'] = array(
 				'key'		=> 'tcp_is_visible',
 				'value'		=> 1,
 				'compare'	=> '='
@@ -62,7 +62,7 @@ class CustomListWidget extends WP_Widget {
 		echo $before_widget;
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		if ( $title ) echo $before_title, $title, $after_title;
-		if ( strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
+		if ( isset( $instance['loop'] ) && strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
 			include( $instance['loop'] );
 		} else {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;

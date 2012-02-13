@@ -290,6 +290,9 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+= 1.1.7.2 =
+* Top Sellers widget
+
 = 1.1.7.1 =
 * Notice: "tcp_shopping_cart_empty" is a new template to display a message in the Shopping Cart and Checkout pages (Suggested in the community)
 * Edit Products (saleable post types): SKU search in the backend (Suggested in the community)
@@ -302,6 +305,7 @@ This plugin is released under a GPL license.
 * Sorting support: All the loops, generated into TheCartPress, support sorting
 * Security updates
 * New styles: More compatibles (for clear or dark themes) and for TwentyTen or Twentyeleven style themes
+* New templates: for TwentyTen or Twentyeleven based themes
 * Last Visited: Support for saleables post type
 * New API: Custom post type/taxonomy API
 * Shipping methods: New Local pick-up shipping method

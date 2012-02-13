@@ -38,7 +38,8 @@ if ( isset( $_REQUEST['save_taxonomy'] ) ) {
 		'desc'				=> isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '',
 		'query_var'			=> isset( $_REQUEST['query_var'] ),
 		'hierarchical'		=> isset( $_REQUEST['hierarchical'] ),
-		'rewrite'			=> isset( $_REQUEST['rewrite'] ) ? strlen( $_REQUEST['rewrite'] ) > 0 ? array( 'slug' => $_REQUEST['rewrite'] ) : false : false,
+		//'rewrite'			=> isset( $_REQUEST['rewrite'] ) ? strlen( $_REQUEST['rewrite'] ) > 0 ? array( 'slug' => $_REQUEST['rewrite'] ) : false : false,
+		'rewrite'			=> isset( $_REQUEST['rewrite'] ) && strlen( $_REQUEST['rewrite'] ) > 0 ? $_REQUEST['rewrite'] : false,
 	);
 	tcp_update_custom_taxonomy( $taxonomy, $taxonomy_def );
 	update_option( 'tcp_rewrite_rules', true ); ?>
@@ -87,7 +88,7 @@ if ( ! isset( $taxonomy_def ) ) {
 	$desc				= isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '';
 	$query_var			= isset( $_REQUEST['query_var'] );
 	$hierarchical		= isset( $_REQUEST['hierarchical'] );
-	$rewrite			= isset( $_REQUEST['rewrite'] ) ? array( 'slug' => $_REQUEST['rewrite'] ) : false;
+	$rewrite			= isset( $_REQUEST['rewrite'] ) ? $_REQUEST['rewrite'] : false;
 }
 ?>
 <div class="wrap">
@@ -264,7 +265,7 @@ if ( ! isset( $taxonomy_def ) ) {
 			<label for="rewrite"><?php _e( 'Rewrite', 'tcp' );?>:</label>
 		</th>
 		<td>
-			<input type="text" id="rewrite" name="rewrite" value="<?php if ( is_array( $rewrite ) ) echo $rewrite['slug'];?>" size="20" maxlength="50" />
+			<input type="text" id="rewrite" name="rewrite" value="<?php echo $rewrite; ?>" size="20" maxlength="50" />
 		</td>
 	</tr>
 	</table>

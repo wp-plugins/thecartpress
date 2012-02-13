@@ -266,9 +266,9 @@ class TheCartPress {
 					'compare'	=> '='
 				);
 			}
-			if ( $apply_filters ) {
-				$filter = new TCPFilterNavigation();
-				if ( isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
+			$filter = new TCPFilterNavigation();
+			if ( $apply_filters ) {	
+				//if ( isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 					$query['posts_per_page'] = (int)$this->get_setting( 'products_per_page', 10 );
 					if ( $filter->is_filter_by_layered() ) {
 						$layered = $filter->get_layered();
@@ -287,19 +287,20 @@ class TheCartPress {
 							'compare'	=> 'BETWEEN'
 						);
 					}
-				}
-				if ( $filter->get_order_type() == 'price' ) {
-					$query['orderby']	= 'meta_value_num';
-					$query['meta_key']	= 'tcp_price';
-				} elseif ( $filter->get_order_type() == 'order' ) {
-					$query['orderby']	= 'meta_value_num';
-					$query['meta_key']	= 'tcp_order';
-				} else {
-					$query['orderby']	= $filter->get_order_type();
-				}
-				$query['order'] = $filter->get_order_desc();
-				$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
+				//}
 			}
+			if ( $filter->get_order_type() == 'price' ) {
+				$query['orderby']	= 'meta_value_num';
+				$query['meta_key']	= 'tcp_price';
+			} elseif ( $filter->get_order_type() == 'order' ) {
+				$query['orderby']	= 'meta_value_num';
+				$query['meta_key']	= 'tcp_order';
+			} else {
+				$query['orderby']	= $filter->get_order_type();
+			}
+			$query['order'] = $filter->get_order_desc();
+			$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
+			
 		}
 		return $query;
 	}
@@ -660,6 +661,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				'load_default_buy_button_style'				=> true,
 				'load_default_shopping_cart_checkout_style'	=> true,
 				'load_default_loop_style'					=> true,
+				'responsive_featured_thumbnails'			=> true,
 				'search_engine_activated'	=> true,
 				'emails'					=> get_option('admin_email'),
 				'currency'					=> 'EUR',
@@ -793,12 +795,10 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		$this->load_custom_post_types_and_custom_taxonomies();
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
-			$load_default_buy_button_style				= $this->get_setting( 'load_default_buy_button_style', true );
-			$load_default_shopping_cart_checkout_style	= $this->get_setting( 'load_default_shopping_cart_checkout_style', true );
-			$load_default_loop_style					= $this->get_setting( 'load_default_loop_style', true );
-			if ( $load_default_buy_button_style ) wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
-			if ( $load_default_shopping_cart_checkout_style ) wp_enqueue_style( 'tcp_shopping_cart_checkout_style', plugins_url( 'thecartpress/css/tcp_shopping_cart_checkout.css' ) );
-			if ( $load_default_loop_style ) wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
+			if ( $this->get_setting( 'load_default_buy_button_style', true ) ) wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
+			if ( $this->get_setting( 'load_default_shopping_cart_checkout_style', true ) ) wp_enqueue_style( 'tcp_shopping_cart_checkout_style', plugins_url( 'thecartpress/css/tcp_shopping_cart_checkout.css' ) );
+			if ( $this->get_setting( 'load_default_loop_style', true ) ) wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
+			if ( $this->get_setting( 'responsive_featured_thumbnails', true ) ) wp_enqueue_style( 'tcp_responsive_style', plugins_url( 'thecartpress/css/tcp_responsive.css' ) );
 			new TemplateCustomPostType();
 			$this->loading_default_checkout_boxes();
 			$this->loading_default_checkout_plugins();
@@ -948,10 +948,25 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_SUPPLIER_TAG]['rewrite'] = array( 'slug' => $rewrite );
 			}
 			tcp_set_custom_taxonomies( $taxonomy_defs );
-			update_option( 'tcp_version', 117 );			
+			update_option( 'tcp_version', 117 );
 			//
 			//TODO Deprecated 1.2
 			//
+		}
+		if ( $version < 118 ) {
+			$taxonomies = tcp_get_custom_taxonomies();
+			if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
+				$save = false;
+				foreach( $taxonomies as $id => $taxonomy ) {
+					if ( is_array( $taxonomy['rewrite'] ) ) {
+						$taxonomies[$id]['rewrite'] = $taxonomy['rewrite']['slug'];
+						$save = true;
+echo '<br>holaaaa';
+					}
+				}
+				if ( $save ) tcp_set_custom_taxonomies( $taxonomies );
+			}
+			//update_option( 'tcp_version', 118 ); //TODO
 		}
 	}
 
@@ -1004,16 +1019,16 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				}
 			}
 		}
-		$taxonomies = get_option( 'tcp-taxonomies-generator' );
+		$taxonomies = tcp_get_custom_taxonomies();
 		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
 			foreach( $taxonomies as $id => $taxonomy ) {
-
 				if ( $taxonomy['activate'] ) {
 					$register = array (
 						'labels'		=> $taxonomy,
 						'hierarchical'	=> $taxonomy['hierarchical'],
 						'query_var'		=> $id,
-						'rewrite'		=> is_array( $taxonomy['rewrite'] ) && isset( $taxonomy['rewrite']['slug'] ) ? $taxonomy['rewrite']['slug'] : false,
+						//'rewrite'		=> is_array( $taxonomy['rewrite'] ) && isset( $taxonomy['rewrite']['slug'] ) ? $taxonomy['rewrite']['slug'] : false,
+						'rewrite'		=> strlen( $taxonomy['rewrite'] ) > 0 ? array( 'slug' => $taxonomy['rewrite'] ) : false,
 					);
 					$post_types = $taxonomy['post_type'];
 					if ( ! is_array( $post_types ) ) $post_types = array( $post_types );
@@ -1115,6 +1130,7 @@ require_once( TCP_CLASSES_FOLDER . 'GroupedProducts.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'UIImprovements.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomTemplates.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'JPlayer.class.php' );
+require_once( TCP_CLASSES_FOLDER . 'TopSellers.class.php' );
 
 require_once( TCP_ADMIN_FOLDER . 'LoopsSettings.class.php' );
 ?>

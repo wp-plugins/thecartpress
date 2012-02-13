@@ -455,7 +455,7 @@ class TCPCheckoutManager {
 				}
 			}
 			$orders_details_id = OrdersDetails::insert( $ordersDetails );
-			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId() ); //, $item->getOption1Id(), $item->getOption2Id() );
+			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId(), $ordersDetails ); //, $item->getOption1Id(), $item->getOption2Id() );
 		}
 		foreach( $shoppingCart->getOtherCosts() as $id => $cost ) {
 			if ( $id == ShoppingCart::$OTHER_COST_SHIPPING_ID && $shoppingCart->isFreeShipping() ) {

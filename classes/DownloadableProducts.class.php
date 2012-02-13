@@ -134,7 +134,7 @@ class TCPDownloadableProducts {
 		return $message;
 	}
 
-	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id ) {
+	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
 		if ( tcp_is_downloadable( $post_id ) ) {
 			$current_user = wp_get_current_user();
 			if ( 0 == $current_user->ID ) {
@@ -155,7 +155,7 @@ class TCPDownloadableProducts {
 			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
 		}
 		add_filter( 'tcp_send_order_mail_to_customer', array( $this, 'tcp_send_order_mail_to_customer' ), 10, 2 );
-		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 3 );
+		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 	}
 }
 
