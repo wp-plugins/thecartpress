@@ -78,6 +78,7 @@ class TCPSettings {
 		add_settings_field( 'load_default_buy_button_style', __( 'Load default buy button style', 'tcp' ), array( $this, 'show_load_default_buy_button_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'load_default_shopping_cart_checkout_style', __( 'Load default shopping cart & checkout style', 'tcp' ), array( $this, 'show_load_default_shopping_cart_checkout_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'load_default_loop_style', __( 'Load default loop style', 'tcp' ), array( $this, 'show_load_default_loop_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
+		add_settings_field( 'responsive_featured_thumbnails', __( 'Use responsive featured thumbnails', 'tcp' ), array( $this, 'show_responsive_featured_thumbnails' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'products_per_page', __( 'Product pages show at most', 'tcp' ), array( $this, 'show_products_per_page' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'see_pagination', __( 'See pagination', 'tcp' ), array( $this, 'show_see_pagination' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 
@@ -132,33 +133,42 @@ class TCPSettings {
 
 	function show_main_section() { ?>
 <script>
+jQuery(document).ready( function() {
 <?php global $thecartpress;
-$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'none' );
-if ( $use_default_loop != 'none' ) : ?>
-	jQuery(document).ready( function() {
-		hide_excerpt();
-	});
+if ( $thecartpress->get_setting( 'use_default_loop', 'none' ) != 'none' ) : ?>
+	hide_excerpt();
+<?php endif;
+if ( ! $thecartpress->get_setting( 'load_default_loop_style', true ) ) : ?>
+	jQuery('#responsive_featured_thumbnails').parent().parent().hide();
 <?php endif; ?>
+	jQuery('#load_default_loop_style').click( function() {
+		if ( jQuery(this).attr('checked') ) {
+			jQuery('#responsive_featured_thumbnails').parent().parent().show();
+		} else {
+			jQuery('#responsive_featured_thumbnails').parent().parent().hide();
+		}
+	});
+});
 
-	function hide_excerpt() {
-		jQuery('#see_buy_button_in_excerpt').parent().parent().hide();
-		jQuery('#align_buy_button_in_excerpt').parent().parent().hide();
-		jQuery('#see_price_in_excerpt').parent().parent().hide();
-		jQuery('#see_image_in_excerpt').parent().parent().hide();
-		jQuery('#image_size_excerpt').parent().parent().hide();
-		jQuery('#image_align_excerpt').parent().parent().hide();
-		jQuery('#image_link_excerpt').parent().parent().hide();
-	}
+function hide_excerpt() {
+	jQuery('#see_buy_button_in_excerpt').parent().parent().hide();
+	jQuery('#align_buy_button_in_excerpt').parent().parent().hide();
+	jQuery('#see_price_in_excerpt').parent().parent().hide();
+	jQuery('#see_image_in_excerpt').parent().parent().hide();
+	jQuery('#image_size_excerpt').parent().parent().hide();
+	jQuery('#image_align_excerpt').parent().parent().hide();
+	jQuery('#image_link_excerpt').parent().parent().hide();
+}
 
-	function show_excerpt() {
-		jQuery('#see_buy_button_in_excerpt').parent().parent().show();
-		jQuery('#align_buy_button_in_excerpt').parent().parent().show();
-		jQuery('#see_price_in_excerpt').parent().parent().show();
-		jQuery('#see_image_in_excerpt').parent().parent().show();
-		jQuery('#image_size_excerpt').parent().parent().show();
-		jQuery('#image_align_excerpt').parent().parent().show();
-		jQuery('#image_link_excerpt').parent().parent().show();
-	}
+function show_excerpt() {
+	jQuery('#see_buy_button_in_excerpt').parent().parent().show();
+	jQuery('#align_buy_button_in_excerpt').parent().parent().show();
+	jQuery('#see_price_in_excerpt').parent().parent().show();
+	jQuery('#see_image_in_excerpt').parent().parent().show();
+	jQuery('#image_size_excerpt').parent().parent().show();
+	jQuery('#image_align_excerpt').parent().parent().show();
+	jQuery('#image_link_excerpt').parent().parent().show();
+}
 </script><?php
 	}
 
@@ -588,6 +598,13 @@ if ( $use_default_loop != 'none' ) : ?>
 		<input type="checkbox" id="load_default_loop_style" name="tcp_settings[load_default_loop_style]" value="yes" <?php checked( true, $load_default_loop_style ); ?> /><?php
 	}
 
+	function show_responsive_featured_thumbnails() {
+		global $thecartpress;
+		$responsive_featured_thumbnails = $thecartpress->get_setting( 'responsive_featured_thumbnails', true ); ?>
+		<input type="checkbox" id="responsive_featured_thumbnails" name="tcp_settings[responsive_featured_thumbnails]" value="yes" <?php checked( true, $responsive_featured_thumbnails ); ?> />
+		<p class="description"><?php _e( 'If this option is not checked the original image size or styles defined in your theme will be loaded', 'tcp' ); ?></p><?php
+	}
+
 	function show_products_per_page() {
 		global $thecartpress;
 		$products_per_page = $thecartpress->get_setting( 'products_per_page', '10' ); ?>
@@ -804,14 +821,18 @@ if ( $use_default_loop != 'none' ) : ?>
 		/*$input['product_rewrite']			= wp_filter_nohtml_kses( isset( $input['product_rewrite'] ) ? $input['product_rewrite'] : '' );
 		$input['category_rewrite']			= wp_filter_nohtml_kses( isset( $input['category_rewrite'] ) ? $input['category_rewrite'] : '' );
 		$input['tag_rewrite']				= wp_filter_nohtml_kses( isset( $input['tag_rewrite'] ) ? $input['tag_rewrite'] : '' );
-		$input['supplier_rewrite']			= wp_filter_nohtml_kses( isset( $input['supplier_rewrite'] ) ? $input['supplier_rewrite'] : '' );
-		*/
+		$input['supplier_rewrite']			= wp_filter_nohtml_kses( isset( $input['supplier_rewrite'] ) ? $input['supplier_rewrite'] : '' );*/
 		//$input['use_tcp_loop']				= isset( $input['use_tcp_loop'] ) ? $input['use_tcp_loop'] == 'yes' : false;
 		$input['use_default_loop']			= isset( $input['use_default_loop'] ) ? $input['use_default_loop'] : 'only_settings';
-		$input['checkout_successfully_message']				= wp_filter_nohtml_kses( isset( $input['checkout_successfully_message'] ) ? $input['checkout_successfully_message'] : '' );
-		$input['load_default_buy_button_style']				= isset( $input['load_default_buy_button_style'] ) ? $input['load_default_buy_button_style'] == 'yes' : false;
+		$input['checkout_successfully_message']			= wp_filter_nohtml_kses( isset( $input['checkout_successfully_message'] ) ? $input['checkout_successfully_message'] : '' );
+		$input['load_default_buy_button_style']			= isset( $input['load_default_buy_button_style'] ) ? $input['load_default_buy_button_style'] == 'yes' : false;
 		$input['load_default_shopping_cart_checkout_style']	= isset( $input['load_default_shopping_cart_checkout_style'] ) ? $input['load_default_shopping_cart_checkout_style'] == 'yes' : false;
-		$input['load_default_loop_style']					= isset( $input['load_default_loop_style'] ) ? $input['load_default_loop_style'] == 'yes' : false;
+		$input['load_default_loop_style']				= isset( $input['load_default_loop_style'] ) ? $input['load_default_loop_style'] == 'yes' : false;
+		if ( $input['load_default_loop_style'] ) {
+			$input['responsive_featured_thumbnails']	= isset( $input['responsive_featured_thumbnails'] ) ? $input['responsive_featured_thumbnails'] == 'yes' : false;
+		} else {
+			$input['responsive_featured_thumbnails']	= false;
+		}
 		$input['hide_visibles']				= isset( $input['hide_visibles'] ) ? $input['hide_visibles'] == 'yes' : false;
 		$input['show_back_end_label']		= isset( $input['show_back_end_label'] ) ? $input['show_back_end_label'] == 'yes' : false;
 		$input['search_engine_activated']	= isset( $input['search_engine_activated'] ) ? $input['search_engine_activated'] == 'yes' : false;

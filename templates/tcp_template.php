@@ -110,7 +110,7 @@ function tcp_get_the_currency_iso() {
 
 function tcp_the_currency_layout( $echo = true ) {
 	global $thecartpress;
-	$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : _x( '%1$s%2$s (%3$s)', 'currency + price + (currency ISO)', 'tcp' );
+	$currency_layout = isset( $thecartpress->settings['currency_layout'] ) ? $thecartpress->settings['currency_layout'] : __( '%1$s%2$s (%3$s)', 'tcp' ); //'currency + price + (currency ISO)'
 	$currency_layout = apply_filters( 'tcp_the_currency_layout', $currency_layout );
 	if ( $echo )
 		echo $currency_layout;
@@ -163,6 +163,7 @@ function tcp_get_default_currency() {
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 	global $thecartpress;
 	if ( isset( $thecartpress ) ) {
+		if ( $post_id == 0 ) $post_id = get_the_ID();
 		$html = apply_filters( 'tcp_the_buy_button', '', $post_id );
 		if ( strlen( $html ) > 0 ) {
 			if ( $echo ) echo $html;
@@ -208,7 +209,7 @@ function tcp_get_the_price( $post_id = 0 ) {
 function tcp_format_the_price( $price, $currency = '') {
 	if ( $currency == '' ) $currency = tcp_get_the_currency();
 	$layout = tcp_get_the_currency_layout();
-	if ( strlen( $layout ) == 0 ) $layout = _x( '%1$s%2$s (%3$s)', 'currency + price + (currency ISO)', 'tcp' );
+	if ( strlen( $layout ) == 0 ) $layout = __( '%1$s%2$s (%3$s)', 'tcp' ); //'currency + price + (currency ISO)'
 	$label = sprintf( $layout, $currency, tcp_number_format( $price, tcp_get_decimal_currency() ), tcp_get_the_currency_iso() );
 	$label = apply_filters( 'tcp_format_the_price', $label );
 	return $label;
@@ -812,6 +813,58 @@ function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	}
 	$url = get_permalink( $post_id );
 	return apply_filters( 'tcp_get_permalink', $url, $post_id );
+}
+
+/**
+ * Returns the content of the given post
+ * since 1.1.8
+ */
+function tcp_the_content( $post_id ) {
+	tcp_get_the_content( $post_id, true );
+}
+
+/**
+ * Returns the content of the given post
+ * since 1.1.8
+ */
+function tcp_get_the_content( $post_id, $echo = false ) {
+	global $thecartpress;
+	remove_filter( 'the_content', array( $thecartpress, 'the_content' ) );
+	$post = get_post( $post_id );
+	$content = $post->post_content;
+	$content = apply_filters( 'the_content', $content );
+	add_filter( 'the_content', array( $thecartpress, 'the_content' ) );
+   	if ( $echo )
+		echo $content;
+	else
+		return $content;
+}
+
+/**
+ * Echoes the excerpt of the given post
+ * since 1.1.8
+ */
+function tcp_the_excerpt( $post_id ) {
+	tcp_get_the_excerpt( $post_id, true );
+}
+
+/**
+ * Returns the excerpt of the given post
+ * since 1.1.8
+ */
+function tcp_get_the_excerpt( $post_id, $echo = false ) {
+	global $thecartpress;
+	remove_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
+	remove_filter( 'the_content', array( $thecartpress, 'the_content' ) );
+	$post = get_post( $post_id ); echo '[ ', $post_id, ']';
+	$excerpt = $post->post_excerpt; //TODO
+	//$excerpt = apply_filters( 'get_the_excerpt', $excerpt );
+	add_filter( 'the_content', array( $thecartpress, 'the_content' ) );
+	add_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
+	if ( $echo )
+		echo $excerpt;
+	else
+		return $excerpt;
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {

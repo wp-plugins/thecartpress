@@ -652,9 +652,22 @@ div.jp-jplayer {
 
 /* @end */
 
+div.jp-playlist a.jp-playlist-item-remove {
+	float:right;
+	display:inline;
+	text-align:right;
+	margin-right:10px;
+	font-weight:bold;
+	color:#666;
+}
+div.jp-playlist a.jp-playlist-item-remove:hover {
+	color:#0d88c1;
+	text-decoration: none;
+}
+
 .jp-full-screen,
 .jp-restore-screen,
 .jp-shuffle,
 .jp-shuffle-off {
-	display: none !important;
+	ddisplay: none !important;
 }

@@ -447,6 +447,18 @@ div.jp-jplayer {
 	background-color: #000000;
 }
 
+div.jp-playlist a.jp-playlist-item-remove {
+	float:right;
+	display:inline;
+	text-align:right;
+	margin-right:10px;
+	font-weight:bold;
+	color:#666;
+}
+div.jp-playlist a.jp-playlist-item-remove:hover {
+	color:#0d88c1;
+	text-decoration: none;
+}
 .jp-toggles,
 .jp-title {
 	display: none;

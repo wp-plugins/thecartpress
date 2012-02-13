@@ -24,8 +24,6 @@ table.tcp_products_list tr th,
 	margin: 0;
 }
 
-
-
 div.tcp_order_panel {
 	text-align: right;
     font-size: .75em;
@@ -57,23 +55,23 @@ table.tcp_products_list tr td:hover {
 table.tcp_products_list tr td.tcp_8_cols {
 	width: 12%;
 	padding: 4px;
-	}
+}
 table.tcp_products_list tr td.tcp_7_cols {
 	width: 14%;
 	padding: 4px;
-	}
+}
 table.tcp_products_list tr td.tcp_6_cols {
 	width: 16%;
 	padding: 4px;
-	}
+}
 table.tcp_products_list tr td.tcp_5_cols {
 	width: 20%;
 	padding: 4px;
-	}
+}
 table.tcp_products_list tr td.tcp_4_cols {
 	padding: 6px;
 	width: 25%;
-	}
+}
 table.tcp_products_list tr td.tcp_3_cols {
 	width: 33%;
 	}
@@ -155,22 +153,17 @@ table.tcp_products_list .entry-post-thumbnail img,
 	margin: .375em 0 .625em 1px;
 }
 
-
-
 table.tcp_products_list .hentry {
     padding: 0 0 0 !important;
 	border: 0 !important;
 	margin:0;
 }
 
-
-
-
 /* End gral / default loop*/
 
 @media (max-width: 650px) {
-	#content {
-	}
+#content {
+}
 	
 table.tcp_products_list tr td,
 table.tcp_products_list tr td.tcp_4_cols,

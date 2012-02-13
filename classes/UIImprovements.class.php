@@ -53,7 +53,7 @@ class UIImprovements {
 		wp_add_dashboard_widget( 'tcp_rss_widget', __( 'TheCartPress blog', 'tcp' ), array( $this, 'theCartPressRSSDashboardWidget' ) );
 	}
 
-	function post_class( $classes, $class, $post_id ) {
+	function post_class( $classes, $class = '', $post_id = 0 ) {
 		//if ( tcp_is_saleable( $post_id ) ) $classes[] = 'tcp_hentry';
 		return $classes;
 	}
