@@ -40,7 +40,7 @@ class TopSellersWidget extends CustomListWidget {
 			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
 			'meta_key'			=> 'tcp_total_sales',
 			'orderby'			=> 'meta_value_num',
-			'order'				=> 'asc',
+			'order'				=> 'desc',
 		);
 		$see_pagination = isset( $instance['pagination'] ) ? $instance['pagination'] : false;
 		if ( $see_pagination ) {
