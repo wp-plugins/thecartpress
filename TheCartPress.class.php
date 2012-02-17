@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.7.2
+Version: 1.1.7.3
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -39,7 +39,6 @@ define( 'TCP_PLUGINS_FOLDER'			, TCP_FOLDER . 'plugins/' );
 define( 'TCP_CHECKOUT_FOLDER'			, TCP_FOLDER . 'checkout/' );
 define( 'TCP_CUSTOM_POST_TYPE_FOLDER'	, TCP_FOLDER . 'customposttypes/' );
 define( 'TCP_THEMES_TEMPLATES_FOLDER'	, TCP_FOLDER . 'themes-templates/' );
-
 define( 'TCP_ADMIN_PATH'				, 'admin.php?page=' . plugin_basename( TCP_FOLDER ) . '/admin/' );
 
 function __autoload( $class_name ) {
@@ -255,7 +254,7 @@ class TheCartPress {
 						}
 					}
 				}
-				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) ) { //&& tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
+				if ( $wp_query->is_archive() && isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
 					$apply_filters = true;
 				}
 			}
@@ -289,7 +288,6 @@ class TheCartPress {
 					}
 				//}
 			}
-			if ($apply_filters) {
 			if ( $filter->get_order_type() == 'price' ) {
 				$query['orderby']	= 'meta_value_num';
 				$query['meta_key']	= 'tcp_price';
@@ -300,7 +298,6 @@ class TheCartPress {
 				$query['orderby']	= $filter->get_order_type();
 			}
 			$query['order'] = $filter->get_order_desc();
-			}
 			$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
 			
 		}
@@ -770,11 +767,12 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function admin_init() { //default notices
-		tcp_add_template_class( 'tcp_checkout_email', __( 'This notice will be added in the email to the customer when the Checkout process ends.', 'tcp' )  );
-		tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process.', 'tcp' ) );
-		tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right.', 'tcp' ) );
+		tcp_add_template_class( 'tcp_checkout_email', __( 'This notice will be added in the email to the customer when the Checkout process ends', 'tcp' )  );
+		tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process', 'tcp' ) );
+		tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right', 'tcp' ) );
 		tcp_add_template_class( 'tcp_checkout_end_ko', __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
 		tcp_add_template_class( 'tcp_shopping_cart_empty', __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
+		tcp_add_template_class( 'tcp_checkout_order_cart', __( 'This notice will be showed at the Checkout Resume Cart', 'tcp' ) );
 	}
 
 	function load_settings() {
@@ -1063,6 +1061,7 @@ echo '<br>holaaaa';
 		$this->load_settings();
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_template.php' );
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_general_template.php' );
+		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_buybutton_template.php' );
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_calendar_template.php' );
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_template_template.php' );
 		require_once( TCP_TEMPLATES_FOLDER	. 'tcp_custom_taxonomies.php' );
@@ -1121,7 +1120,6 @@ $thecartpress = new TheCartPress();
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
 
-require_once( TCP_CLASSES_FOLDER . 'ProductOptionsForTheCartPress.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomFields.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'WPPluginsAdminPanel.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'WishList.class.php' );

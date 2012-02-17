@@ -16,20 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TaxonomyCloudsPostTypeWidget extends WP_Widget {
+require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
+
+class TaxonomyCloudsPostTypeWidget extends TCPParentWidget {
 	function TaxonomyCloudsPostTypeWidget() {
-		$widget = array(
-			'classname'		=> 'taxonomycloudsposttype',
-			'description'	=> __( 'Use this widget to add a taxonomy cloud for post types', 'tcp' ),
-		);
-		$control = array(
-			'width'		=> 300,
-			'id_base'	=> 'taxonomycloudsposttype-widget',
-		);
-		$this->WP_Widget( 'taxonomycloudsposttype-widget', 'TCP Navigation Cloud', $widget, $control );
+		parent::__construct( 'taxonomycloudsposttype', __( 'Use this widget to add a taxonomy cloud for post types', 'tcp' ), 'TCP Navigation Cloud' );
 	}
 
 	function widget( $args, $instance ) {
+		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
@@ -58,7 +53,7 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 	}
 
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
+		$instance = parent::update( $new_instance, $old_instance );
 		$instance['title']			= strip_tags( $new_instance['title'] );
 		$instance['min_size']		= (int)$new_instance['min_size'];
 		$instance['max_size']		= (int)$new_instance['max_size'];
@@ -72,8 +67,8 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 	}
 
 	function form( $instance ) {
+		$instance = parent::form( $instance, __( 'Navigation clouds', 'tcp') );
 		$defaults = array(
-			'title'			=> 'Navigation clouds',
 			'min_size'		=> 8,
 			'max_size'		=> 22,
 			'size_units'	=> 'pt',
@@ -83,11 +78,8 @@ class TaxonomyCloudsPostTypeWidget extends WP_Widget {
 			'post_type'		=> 'tcp_product',
 			'taxonomy'		=> 'tcp_product_tag',
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 

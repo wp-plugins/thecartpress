@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TCP_WishListTable extends WP_List_Table {
+class TCPWishListTable extends WP_List_Table {
 
 	function __construct() {
 		parent::__construct( array(
@@ -30,7 +30,6 @@ class TCP_WishListTable extends WP_List_Table {
 
 	function prepare_items() {
 		if ( ! is_user_logged_in() ) return;
-		
 		$items = array();
 		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			global $wpdb;
@@ -64,7 +63,7 @@ class TCP_WishListTable extends WP_List_Table {
 		} else {
 			$current_user = wp_get_current_user();
 			$current_user_data = get_userdata( $current_user->ID );
-			$wishList = (array)get_user_meta( $current_user->ID, 'tcp_wish_list', true );
+			$wish_list = (array)get_user_meta( $current_user->ID, 'tcp_wish_list', true );
 			$items[$current_user->ID] = array(
 				'user_id'	=> $current_user->ID,
 				'name'		=> $current_user_data->display_name,
@@ -117,7 +116,7 @@ class TCP_WishListTable extends WP_List_Table {
 		}
 	}
 }
-$wishListTable = new TCP_WishListTable();
+$wishListTable = new TCPWishListTable();
 $wishListTable->prepare_items();?>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />

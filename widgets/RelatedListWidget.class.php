@@ -135,23 +135,18 @@ class RelatedListWidget extends CustomListWidget {
 	}
 
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags( $new_instance['title'] );
 		$instance['rel_type'] = strip_tags( $new_instance['rel_type'] );
 		return parent::update( $new_instance, $instance );
 	}
 
 	function form( $instance ) {
+		parent::form( $instance, __( 'Related List', 'tcp' ) );
 		$defaults = array(
-			'title'			=> __( 'Related List', 'tcp' ),
 			'rel_type'		=> 'CAT_PROD-CAT_PROD',
 		);
 		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<div id="particular">
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p><p>
 			<label for="<?php echo $this->get_field_id( 'rel_type' ); ?>"><?php _e( 'Relation type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'rel_type' ); ?>" id="<?php echo $this->get_field_id( 'rel_type' ); ?>" class="widefat">
 				<option value="CAT_POST-CAT_POST" <?php selected( $instance['rel_type'], 'CAT_POST-CAT_POST' ); ?>><?php _e( 'Cat. Posts &raquo; Cat. Posts', 'tcp' );?></option>
@@ -167,9 +162,9 @@ class RelatedListWidget extends CustomListWidget {
 				<option value="PROD-CAT_PROD" <?php selected( $instance['rel_type'], 'PROD-CAT_PROD' ); ?>><?php _e( 'Product &raquo; Cat. Products', 'tcp' );?></option>
 			</select>
 		</p>
+		<?php parent::show_post_type_form( $instance ); ?>
 		</div>
 	<?php
-		parent::form( $instance );
 	}
 }
 ?>
