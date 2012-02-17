@@ -161,33 +161,23 @@ function tcp_get_default_currency() {
 }
 
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
-/*	global $thecartpress;
+	global $thecartpress;
 	if ( isset( $thecartpress ) ) {
 		if ( $post_id == 0 ) $post_id = get_the_ID();
 		$html = apply_filters( 'tcp_the_buy_button', '', $post_id );
 		if ( strlen( $html ) > 0 ) {
 			if ( $echo ) echo $html;
 			else return $html;
-		} else {*/
+		} else {
 			require_once( TCP_CLASSES_FOLDER . 'BuyButton.class.php' );	
-			return TCPBuyButton::show( $post_id, $echo );
-		/*}
-	}*/
+			return BuyButton::show( $post_id, $echo );
+		}
+	}
 }
 
 function tcp_get_the_buy_button( $post_id = 0 ) {
 	return tcp_the_buy_button( $post_id, false );
 }
-
-/**
- * Displays the wish
- * since 1.1.8
- */
-function tcp_the_add_wishlist_button( $post_id ) {
-	global $wish_list;
-	if ( isset( $wish_list ) ) echo $wish_list->tcp_the_add_to_cart_button( '', $post_id );
-}
-
 
 /**
  * Returns the price of the current product

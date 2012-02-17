@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
 Tested up to: 3.3
-Stable Tag: 1.1.7.3
+Stable Tag: 1.1.7.2
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -16,10 +16,10 @@ You can extend its functionality with plugins and themes to customize your store
 
 100% WordPress, eCommerce naturally flexible & Scalable. Powerful backend tools to make your site, store or shop Easyly and Useful
 
-* [TheCartPress Extend](http://extend.thecartpress.com): plugins, themes and custom development
 * [TheCartPress Demo](http://demo.thecartpress.com)
-* [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
 * [TheCartPress Site](http://thecartpress.com)
+* [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
+* [TheCartPress Extend](http://extend.thecartpress.com): plugins, themes and custom development
 
 = eCommerce 100% WordPress, naturaly flexible & Scalable =
 
@@ -290,11 +290,6 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
-= 1.1.8 =
-* tcp_checkout_order_cart notices
-* Private/public widgets
-* "Buy button" templates: hierarchical
-
 = 1.1.7.2 =
 * Top Sellers widget
 * Taxonomy rewrite bug (thanks to the community)

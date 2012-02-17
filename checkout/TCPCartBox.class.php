@@ -208,7 +208,6 @@ class TCPCartBox extends TCPCheckoutBox {
 		</tr>
 		</tbody></table><?php
 		do_action( 'tcp_checkout_after_order_cart', $args );
-		tcp_do_template( 'tcp_checkout_order_cart' );
 	}
 }
 ?>

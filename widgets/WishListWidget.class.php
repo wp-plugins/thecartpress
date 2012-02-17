@@ -65,7 +65,7 @@ class WishListWidget extends CustomListWidget {
 		$defaults = array(
 			'title'	=> __( 'Wish List', 'tcp' ),
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
 		<div id="particular">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
@@ -73,7 +73,6 @@ class WishListWidget extends CustomListWidget {
 		</p>
 		</div><?php
 		parent::form( $instance );
-		parent::show_post_type_form( $instance );
 	}
 }
 ?>

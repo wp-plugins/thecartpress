@@ -20,35 +20,18 @@ global $wpdb;
 $variable_name = 'tcp_orders' . 'meta';
 $wpdb->$variable_name = $wpdb->prefix . $variable_name;
 
-function tcp_add_order_meta( $order_id, $meta_key, $meta_value, $unique = true ) {
-	return add_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value, $unique );
-}
-
-function tcp_delete_order_meta( $order_id, $meta_key, $meta_value = '' ) {
-	return delete_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value );
-}
-
-function tcp_get_order_meta( $order_id, $meta_key, $single = true ) {
-	return get_metadata( 'tcp_orders', $order_id, $meta_key, $single );
-}
-
-function tcp_update_order_meta( $order_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value, $prev_value );
-}
-
-//Deprecated TODO
 function add_order_meta( $order_id, $meta_key, $meta_value, $unique = true ) {
 	return add_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value, $unique );
 }
-//Deprecated TODO
+
 function delete_order_meta( $order_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value );
 }
-//Deprecated TODO
+
 function get_order_meta( $order_id, $meta_key, $single = true ) {
 	return get_metadata( 'tcp_orders', $order_id, $meta_key, $single );
 }
-//Deprecated TODO
+
 function update_order_meta( $order_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'tcp_orders', $order_id, $meta_key, $meta_value, $prev_value );
 }
@@ -57,35 +40,18 @@ global $wpdb;
 $variable_name = 'tcp_orders_details' . 'meta';
 $wpdb->$variable_name = $wpdb->prefix . $variable_name;
 
-function tcp_add_order_detail_meta( $order_detail_id, $meta_key, $meta_value, $unique = true ) {
-	return add_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value, $unique );
-}
-
-function tcp_delete_order_detail_meta( $order_detail_id, $meta_key, $meta_value = '' ) {
-	return delete_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value );
-}
-
-function tcp_get_order_detail_meta( $order_detail_id, $meta_key, $single = true ) {
-	return get_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $single );
-}
-
-function tcp_update_order_detail_meta( $order_detail_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value, $prev_value );
-}
-
-//Deprecated TODO
 function add_order_detail_meta( $order_detail_id, $meta_key, $meta_value, $unique = true ) {
 	return add_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value, $unique );
 }
-//Deprecated TODO
+
 function delete_order_detail_meta( $order_detail_id, $meta_key, $meta_value = '' ) {
 	return delete_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value );
 }
-//Deprecated TODO
+
 function get_order_detail_meta( $order_detail_id, $meta_key, $single = true ) {
 	return get_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $single );
 }
-//Deprecated TODO
+
 function update_order_detail_meta( $order_detail_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'tcp_orders_details', $order_detail_id, $meta_key, $meta_value, $prev_value );
 }

@@ -171,7 +171,7 @@ while ( have_posts() ) : the_post();
 		<?php comments_template( '', true ); ?>
 </td>
 <?php endwhile; // End the loop ?>
-<?php $tcp_col = $column; for(; $column > 0; $column-- ) : 
+<?php for(; $column > 0; $column-- ) : 
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . ++$tcp_col );?>
 	<td class="tcp_col <?php echo implode( ' ', $class ); ?> tcp_td_empty">&nbsp;</td>
 <?php endfor; ?>

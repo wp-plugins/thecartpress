@@ -17,11 +17,18 @@
  */
  
 require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
-
+ 
 class TopSellersWidget extends CustomListWidget {
-
 	function TopSellersWidget() {
-		parent::__construct( 'topsellers', __( 'Allow to display Top Sellers', 'tcp' ), 'TCP Top Sellers' );
+		$widget_settings = array(
+			'classname'		=> 'topsellers',
+			'description'	=> __( 'Allow to display Top Sellers', 'tcp' ),
+		);
+		$control_settings = array(
+			'width'		=> 300,
+			'id_base'	=> 'topsellers-widget'
+		);
+		$this->WP_Widget( 'topsellers-widget', 'TCP Top Sellers', $widget_settings, $control_settings );
 	}
 
 	function widget( $args, $instance ) {
@@ -43,11 +50,6 @@ class TopSellersWidget extends CustomListWidget {
 		$instance['order_type'] = '';
 		$instance['order_desc'] = '';
 		parent::widget( $args, $loop_args, $instance );
-	}
-
-	function form( $instance, $title = '' ) {
-		parent::form( $instance, __( 'Top Seller!s', 'tcp') );
-		parent::show_post_type_form( $instance );
 	}
 }
 ?>

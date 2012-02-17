@@ -16,16 +16,22 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
-
-class CustomListWidget extends TCPParentWidget {
+//used by Last visited and RelatedList
+class CustomListWidget extends WP_Widget {
 
 	function CustomListWidget( $name, $description, $title, $width = 300 ) {
-		parent::__construct( $name, $description, $title, $width );
+		$widget_settings = array(
+			'classname'		=> $name,
+			'description'	=> $description,
+		);
+		$control_settings = array(
+			'width'		=> $width,
+			'id_base'	=> $name . '-widget'
+		);
+		$this->WP_Widget( $name . '-widget', $title, $widget_settings, $control_settings );
 	}
 
 	function widget( $args, $loop_args, $instance ) {
-		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
 		$order_desc = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
@@ -152,7 +158,7 @@ class CustomListWidget extends TCPParentWidget {
 	}
 
 	function update( $new_instance, $old_instance ) {
-		$instance = parent::update( $new_instance, $old_instance );
+		$instance = $old_instance;
 		$instance['limit']					= (int)$new_instance['limit'];
 		$instance['loop']					= $new_instance['loop'];
 		$instance['columns']				= (int)$new_instance['columns'];
@@ -172,11 +178,7 @@ class CustomListWidget extends TCPParentWidget {
 		return $instance;
 	}
 
-	function form( $instance, $title = '' ) {
-		$instance = parent::form( $instance, $title );
-	}
-
-	protected function show_post_type_form( $instance ) {
+	function form( $instance ) {
 		$defaults = array(
 			'limit'						=>  5,
 			'loop'						=> '',
@@ -203,13 +205,14 @@ class CustomListWidget extends TCPParentWidget {
 		$see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt']	: false;
 		$see_author				= isset( $instance['see_author'] ) ? $instance['see_author']	: false;
 		$see_meta_data			= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data']: false;
-		$see_meta_utilities	= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
 		$see_price				= isset( $instance['see_price'] ) ? $instance['see_price']	: false;
 		$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button']: false;
 		$use_taxonomy 			= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
 		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
 		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
-		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false; ?>
+		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
+		?>
+	<div id="default">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $instance['limit']; ?>" size="3" />
@@ -243,6 +246,7 @@ class CustomListWidget extends TCPParentWidget {
 				endif;?>
 			</select>
 		</p>
+		
 		<p>
 			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
 			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
@@ -309,10 +313,6 @@ class CustomListWidget extends TCPParentWidget {
 			<label for="<?php echo $this->get_field_id( 'see_buy_button' ); ?>"><?php _e( 'Show buy button', 'tcp' ); ?></label>
 		</p>
 		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_utilities' ); ?>" value="yes" <?php checked( $see_meta_utilities ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>"><?php _e( 'Show utilities', 'tcp' ); ?></label>
-		</p>
-		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_first_custom_area' ); ?>" value="yes" <?php checked( $see_first_custom_area ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>"><?php _e( 'Show first custom area', 'tcp' ); ?></label>
 		</p>
@@ -323,7 +323,9 @@ class CustomListWidget extends TCPParentWidget {
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_third_custom_area' ); ?>" value="yes" <?php checked( $see_third_custom_area ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>"><?php _e( 'Show third custom area', 'tcp' ); ?></label>
-		</p><?php
+		</p>
+	</div>
+	<?php
 	}
 }
 ?>

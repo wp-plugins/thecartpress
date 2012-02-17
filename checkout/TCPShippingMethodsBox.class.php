@@ -166,7 +166,7 @@ function show_config_settings() { ?>
 				<li>
 					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>" name="shipping_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $shipping_method_id );?> />
 					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>"><span class="tcp_shipping_title_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></span></label>
-					<div class="tcp_plugin_notice tcp_plugin_notice_<?php echo $plugin_name; ?>"><?php tcp_do_template( 'tcp_shipping_plugins_' . $plugin_name ); ?></div>
+					<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_shipping_plugins_' . $plugin_name ); ?></div>
 				</li>
 			<?php endforeach;?>
 			</ul>

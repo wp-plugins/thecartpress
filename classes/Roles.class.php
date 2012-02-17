@@ -17,11 +17,16 @@
 */
 
 /**
+ * 
  * Manages TheCartPress roles and capabilities
+ * 
+ * @author sensei
+ *
  */
 class TCPRoles {
 
 	/**
+	 * 
 	 * Adds the TheCartPress Roles structure:
 	 * 	Customer:
 	 * 		Susbcriber + tcp_read_orders + tcp_edit_addresses + tcp_downloadable_products

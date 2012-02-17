@@ -73,7 +73,7 @@ class TCPLoopsSettings {
 	}
 
 	function show_ttc_main_section() { ?>
-	<p class="description"><?php _e( 'This set of settings allows to manage the data to be displayed in the default grid provided by TheCartPress.', 'tcp' ); ?></p><?php
+	<p class="description"><?php _e( 'This set of settings allow to manage the data to be displayed in the default grid provided by TheCartPress.', 'tcp' ); ?></p><?php
 	}
 
 	function see_title() {
