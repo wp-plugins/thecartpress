@@ -103,7 +103,7 @@ class tcp_paypal_class {
    var $fields = array();           // array holds the fields to submit to paypal
 
    
-   function paypal_class( $test_mode = false, $logging = false ) {
+   function tcp_paypal_class( $test_mode = false, $logging = false ) {
        
       // initialization constructor.  Called when class is created.
       if ( $test_mode ) {
