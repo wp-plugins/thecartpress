@@ -85,12 +85,6 @@ table.tcp_products_list .entry-title {
 	padding: .375em 0 .375em;
 	font-size: 1em;
 }
-table.tcp_products_list .entry-post-thumbnail img,
-#content table.tcp_products_list .entry-post-thumbnail img {
-    height: auto;
-    width: 100%;
-	max-width:100%;
-}
 
 .entry-price {
 	font-weight: bold;
