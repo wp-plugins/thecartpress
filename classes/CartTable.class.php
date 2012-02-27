@@ -67,7 +67,7 @@ class TCPCartTable {
 			<span class="tcp_status_row"><?php _e( 'Status', 'tcp' ); ?>: <span class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo $source->get_status(); ?></span></span>
 			</div>
 		<?php endif; ?>
-		<table class="tcp_shopping_cart_table">
+		<table id="tcp_shopping_cart_table">
 		<thead>
 		<tr class="tcp_cart_title_row">
 		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_id"><?php _e( 'Id.', 'tcp' ); ?></th><?php endif; ?>
