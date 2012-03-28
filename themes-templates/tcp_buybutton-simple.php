@@ -25,8 +25,9 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 
 <?php /**** Start editing to customise your buy buttons! */ ?>
 
-<div class="tcp_buy_button_area">
+<div class="tcp_buy_button_area <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
 <form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
+
 <table class="tcp_buy_button">
 <thead>
 <tr>
@@ -46,13 +47,15 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 	<?php else : ?>
 
 		<span class="tcp_unit_price" id="tcp_unit_price_<?php echo $post_id; ?>">
+
 		<?php echo tcp_get_the_price_label( $post_id ); ?>
+
 		</span>
 
 	<?php endif; ?>
-	
-	<?php if ( function_exists( 'tcp_the_buy_button_dyamic_options' ) && tcp_has_dynamic_options( $post_id ) ) : ?>
-	
+
+	<?php if ( function_exists( 'tcp_has_dynamic_options' ) && tcp_has_dynamic_options( $post_id ) ) : ?>
+
 		<?php tcp_the_buy_button_dyamic_options( $post_id ); ?>
 
 	<?php endif; ?>
@@ -60,6 +63,7 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 </td>
 
 <td class="tcp_buy_button_count">
+
 	<?php if ( ! tcp_hide_buy_button( $post_id ) && ! $disable_shopping_cart ) : ?>
 
 		<?php tcp_the_add_to_cart_unit_field( $post_id ); ?>
@@ -71,6 +75,7 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 	<?php endif; ?>
 
 	<?php tcp_the_add_wishlist_button( $post_id ) ; ?>
+
 </td>
 
 </tr>

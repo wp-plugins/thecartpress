@@ -80,7 +80,7 @@ class TCPSettings {
 		add_settings_field( 'load_default_loop_style', __( 'Load default loop style', 'tcp' ), array( $this, 'show_load_default_loop_style' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'responsive_featured_thumbnails', __( 'Use responsive featured thumbnails', 'tcp' ), array( $this, 'show_responsive_featured_thumbnails' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'products_per_page', __( 'Product pages show at most', 'tcp' ), array( $this, 'show_products_per_page' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
-		add_settings_field( 'see_pagination', __( 'See pagination', 'tcp' ), array( $this, 'show_see_pagination' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
+//		add_settings_field( 'see_pagination', __( 'See pagination', 'tcp' ), array( $this, 'show_see_pagination' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 
 		add_settings_field( 'see_buy_button_in_content', __( 'See buy button in content', 'tcp' ), array( $this, 'show_see_buy_button_in_content' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
 		add_settings_field( 'align_buy_button_in_content', __( 'Align of buy button in content', 'tcp' ), array( $this, 'show_align_buy_button_in_content' ), $tcp_settings_page , 'tcp_theme_compatibility_section' );
@@ -612,11 +612,11 @@ function show_excerpt() {
 		_e( 'products', 'tcp');
 	}
 
-	function show_see_pagination() {
+/*	function show_see_pagination() {
 		global $thecartpress;
 		$see_pagination = $thecartpress->get_setting( 'see_pagination', false ); ?>
 		<input type="checkbox" id="see_pagination" name="tcp_settings[see_pagination]" value="yes" <?php checked( true, $see_pagination ); ?> /><?php
-	}
+	}*/
 
 	function show_see_buy_button_in_content() {
 		global $thecartpress;
@@ -808,7 +808,7 @@ function show_excerpt() {
 		$input['display_zero_tax_subtotal']	= isset( $input['display_zero_tax_subtotal'] ) ? $input['display_zero_tax_subtotal'] == 'yes' : false;
 
 		$input['products_per_page']			= isset( $input['products_per_page'] ) ? (int)$input['products_per_page'] : 10;
-		$input['see_pagination']			= isset( $input['see_pagination'] ) ? $input['see_pagination'] == 'yes' : false;
+//		$input['see_pagination']			= isset( $input['see_pagination'] ) ? $input['see_pagination'] == 'yes' : false;
 		$input['see_buy_button_in_content']	= isset( $input['see_buy_button_in_content'] ) ? $input['see_buy_button_in_content'] == 'yes' : false;
 		$input['see_buy_button_in_excerpt']	= isset( $input['see_buy_button_in_excerpt'] ) ? $input['see_buy_button_in_excerpt'] == 'yes' : false;
 		$input['align_buy_button_in_excerpt'] = isset( $input['align_buy_button_in_excerpt'] ) ? $input['align_buy_button_in_excerpt']: 'thumbnail';
@@ -850,8 +850,8 @@ function show_excerpt() {
 				$input['decimal_point'] = '.';
 			}
 		}
-		if ( get_option( 'category_base' ) == $input['category_rewrite'] ) $input['category_rewrite'] = 'tcp_' . $input['category_rewrite'];
-		if ( get_option( 'tag_base' ) == $input['tag_rewrite'] ) $input['tag_rewrite'] = 'tcp_' . $input['tag_rewrite'];
+//		if ( get_option( 'category_base' ) == $input['category_rewrite'] ) $input['category_rewrite'] = 'tcp_' . $input['category_rewrite'];
+//		if ( get_option( 'tag_base' ) == $input['tag_rewrite'] ) $input['tag_rewrite'] = 'tcp_' . $input['tag_rewrite'];
 		$input = apply_filters( 'tcp_validate_settings', $input );
 		return $input;
 	}

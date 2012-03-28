@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -49,35 +49,38 @@ class FeedForSearchEngine {
 				'post_type'		=> 'tcp_product', //tcp_get_saleable_post_types() TODO
 				'numberposts'	=> -1,
 				'post_status'	=> 'publish',
+				'fields'		=> 'ids',
 			); 
 			$products = get_posts( $args );
-			if ($products) {
+			if ( is_array( $products ) && count( $products ) > 0 ) {
 				echo '<prods>';
-				foreach ( $products as $product ) {
-					if ( $product->post_status == 'publish' ) {
-						echo '<prod>';
-						echo '<product_id>', $product->ID, '</product_id>';
-						echo '<name><![CDATA[', $product->post_title, ']]></name>';
-						echo '<url><![CDATA[', $product->guid, ']]></url>';
-						echo '<created>', $product->post_date, '</created>';
-						$image_id = get_post_thumbnail_id($product->ID);
-						$image_url = wp_get_attachment_image_src($image_id);
-						if ($image_url)
-						{
-							$image_url = $image_url[0];
-							if ($image_url) echo '<thumbnail>', $image_url, '</thumbnail>';
-						}
-						echo '<modified>', $product->post_modified, '</modified>';
-						//echo '<content><![CDATA[', $product->post_content, ']]></content>';
-						echo '<excerpt><![CDATA[', $product->post_excerpt, ']]></excerpt>';
-						echo '<type>', tcp_get_the_product_type( $product->ID ), '</type>';
-						echo '<price>', tcp_get_the_price( $product->ID ), '</price>';
-						echo '<tax>', tcp_get_the_tax( $product->ID ), '</tax>';
-						echo '<cats>', $this->getCategories( $product->ID ), '</cats>';
-						echo '<tags>', $this->getTags( $product->ID ), '</tags>';
-						echo '<supps>', $this->getSuppliers( $product->ID ), '</supps>';
-						echo '</prod>';
+				foreach ( $products as $id ) {
+					$product = get_post( $id );
+					echo '<prod>';
+					echo '<product_id>', $product->ID, '</product_id>';
+					echo '<name><![CDATA[', $product->post_title, ']]></name>';
+					echo '<url><![CDATA[', $product->guid, ']]></url>';
+					echo '<created>', $product->post_date, '</created>';
+					$image_id = get_post_thumbnail_id($product->ID);
+					$image_url = wp_get_attachment_image_src($image_id);
+					if ($image_url ) {
+						$image_url = $image_url[0];
+						if ($image_url) echo '<thumbnail>', $image_url, '</thumbnail>';
 					}
+					echo '<modified>', $product->post_modified, '</modified>';
+					//echo '<content><![CDATA[', $product->post_content, ']]></content>';
+					echo '<excerpt><![CDATA[', $product->post_excerpt, ']]></excerpt>';
+					echo '<type>', tcp_get_the_product_type( $product->ID ), '</type>';
+					echo '<price>', tcp_get_the_price( $product->ID ), '</price>';
+					echo '<tax>';
+					$taxes = tcp_get_the_taxes( $product->ID );
+					if ( is_array( $taxes ) && count( $taxes ) > 0 ) foreach( $taxes as $tax )
+						echo $tax->rate, '%';
+					echo '</tax>';
+					echo '<cats>', $this->getCategories( $product->ID ), '</cats>';
+					echo '<tags>', $this->getTags( $product->ID ), '</tags>';
+					echo '<supps>', $this->getSuppliers( $product->ID ), '</supps>';
+					echo '</prod>';
 				}
 				echo '</prods>';
 			}

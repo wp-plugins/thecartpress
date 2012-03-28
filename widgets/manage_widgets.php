@@ -28,12 +28,13 @@ if ( ! $disable_ecommerce ) {
 	require_once( 'LastVisitedWidget.class.php' );
 	require_once( 'RelatedListWidget.class.php' );
 	require_once( 'CheckoutWidget.class.php' );
+	require_once( 'SelectCountryWidget.class.php' );
 	register_widget( 'ShoppingCartSummaryWidget' );
 	register_widget( 'ShoppingCartWidget' );
 	register_widget( 'LastVisitedWidget' );
 	register_widget( 'RelatedListWidget' );
-
 	register_widget( 'CheckoutWidget' );//TODO At this moment, only for testing purpouse
+	register_widget( 'TCPSelectCountryWidget' );
 }
 require_once( 'CustomPostTypeListWidget.class.php' );
 require_once( 'TaxonomyCloudsPostTypeWidget.class.php' );

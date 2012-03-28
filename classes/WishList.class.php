@@ -58,11 +58,14 @@ class TCPWishList {
 
 	function admin_menu() {
 		global $thecartpress;
+		if ( ! $thecartpress->get_setting( 'enabled_wish_list', false ) ) return;
 		$base = $thecartpress->get_base();
 		add_submenu_page( $base, __( 'WishList', 'tcp' ), __( 'My wish List', 'tcp' ), 'tcp_edit_wish_list', TCP_ADMIN_FOLDER . 'WishList.php' );
 	}
 
 	function tcp_the_add_to_cart_button( $out, $post_id ) {
+		global $thecartpress;
+		if ( ! $thecartpress->get_setting( 'enabled_wish_list', false ) ) return $out;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( ! $shoppingCart->isInWishList( $post_id ) ) : 
 			ob_start(); ?>
@@ -87,14 +90,14 @@ class TCPWishList {
 			add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
 		}
 		global $thecartpress;
-		if ( ! empty( $thecartpress ) ) {
-			$enabled_wish_list = $thecartpress->get_setting( 'enabled_wish_list', '' );		
-			if ( ! is_admin() && $enabled_wish_list ) {
-				add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
-				add_action( 'wp_head', array( $this, 'wp_head' ) );
-			}
-			if ( $enabled_wish_list ) {
-				add_action( 'widgets_init', array( $this, 'widgets_init' ) );
+		if ( $thecartpress ) {
+			if ( $thecartpress->get_setting( 'enabled_wish_list', false ) ) {
+				if ( is_admin() ) {
+					add_action( 'widgets_init', array( $this, 'widgets_init' ) );
+				} else {
+					//add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
+					add_action( 'wp_head', array( $this, 'wp_head' ) );
+				}
 			}
 		}
 	}

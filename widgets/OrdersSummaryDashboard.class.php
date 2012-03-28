@@ -45,10 +45,10 @@ class OrdersSummaryDashboard {
 <h4><?php _e( 'Latest orders', 'tcp' ); ?></h4>
 	<?php
 	if ( current_user_can( 'tcp_edit_orders' ) ) {
-		$orders = Orders::getLastOrders( 10 );
+		$orders = Orders::getLastOrders( 5 );
 	} else {
 		$current_user = wp_get_current_user();
-		$orders = Orders::getLastOrders( 10, '', $current_user->ID );
+		$orders = Orders::getLastOrders( 5, '', $current_user->ID );
 	}
 	if ( is_array( $orders ) && count ( $orders ) > 0 ) : 
 		$all_status = tcp_get_order_status(); ?>

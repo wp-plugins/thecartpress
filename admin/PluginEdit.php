@@ -89,7 +89,9 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 			<a href="<?php echo $instance_href, $instance_id;?>"><?php echo $title;?></a>&nbsp;|&nbsp;
 		<?php endif;?>
 	<?php endforeach;?>
+	<?php if ( $plugin->isInstanceable() ) : ?>
 	<a href="<?php echo $instance_href, $instance_id + 1;?>"><?php _e( 'new instance', 'tcp' );?></a>
+	<?php endif; ?>
 <?php else :
 	$data = array();
 endif;

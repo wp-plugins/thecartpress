@@ -35,7 +35,13 @@ class TCPShoppingCartPage {
 	<?php do_action( 'tcp_shopping_cart_empty' ); ?>
 <?php else : ?>
 	<div class="entry-content" id="shopping_cart">
-	<?php if ( strlen( $notice ) > 0 ) : ?>
+	<?php if ( is_array( $notice ) && count( $notice ) > 0 ) : ?>
+	<p class="tcp_shopping_cart_notice">
+	<?php foreach( $notice as $not ) : ?>
+		<?php echo $not; ?><br/>
+	<?php endforeach; ?>
+	</p>
+	<?php elseif ( strlen( $notice ) > 0 ) : ?>
 		<p class="tcp_shopping_cart_notice"><?php echo $notice; ?></p>
 	<?php endif;
 	do_action( 'tcp_shopping_cart_before_cart' );

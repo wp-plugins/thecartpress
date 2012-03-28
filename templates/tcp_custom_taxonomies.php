@@ -82,6 +82,9 @@ function tcp_update_custom_taxonomy( $taxonomy_id, $taxonomy_def ) {
 function tcp_delete_custom_taxonomy( $taxonomy_id ) {
 	$taxonomy_defs = tcp_get_custom_taxonomies();
 	unset( $taxonomy_defs[$taxonomy_id] );
+	$terms = get_terms( $taxonomy_id, array( 'number' => -1, 'hide_empty' => false, 'fields' => 'ids' ) );
+	foreach( $terms as $term )
+		wp_delete_term( $term, $taxonomy_id );
 	tcp_set_custom_taxonomies( $taxonomy_defs );
 }
 

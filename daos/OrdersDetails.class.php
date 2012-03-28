@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class OrdersDetails {
@@ -29,9 +29,9 @@ class OrdersDetails {
 		  `weight`				int(11) unsigned	NOT NULL default 0,
 		  `is_downloadable`		char(1)				NOT NULL COMMENT \'Y->yes\',
 		  `sku`					varchar(50)			NOT NULL,
-		  `name`				varchar(100)		NOT NULL,
-		  `option_1_name`		varchar(100)		NOT NULL,
-  		  `option_2_name`		varchar(100)		NOT NULL,
+		  `name`				varchar(255)		NOT NULL,
+		  `option_1_name`		varchar(255)		NOT NULL,
+  		  `option_2_name`		varchar(255)		NOT NULL,
 		  `price`				decimal(13,2)		NOT NULL default 0,
 		  `original_price`		decimal(13,2)		NOT NULL default 0,
 		  `tax`					double				NOT NULL default 0,
@@ -58,7 +58,7 @@ class OrdersDetails {
 	static function getTotal( $order_id, $total = 0) {
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
-		$res =  $wpdb->get_results( $wpdb->prepare( 'select price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
 			if ( $row->tax == 0 ) {
 				$total += $row->price * $row->qty_ordered;

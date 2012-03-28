@@ -43,7 +43,7 @@
 
 <?php
 $currency = tcp_the_currency( false ); 
-if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );	
+if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
 $see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
 $title_tag				= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
 $see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;
@@ -58,7 +58,7 @@ $see_taxonomies			= isset( $instance['see_taxonomies'] ) ? $instance['see_taxono
 $see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
 $see_sorting_panel		= isset( $instance['see_sorting_panel'] ) ? $instance['see_sorting_panel'] : false;
 $number_of_columns		= isset( $instance['columns'] ) ? (int)$instance['columns'] : 2;
-//custom areas. Usefull to insert other template tag from WordPress or anothers plugins 
+//custom areas. Usefull to insert other template tag from WordPress or another plugins 
 $see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
 $see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
 $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
@@ -104,28 +104,28 @@ while ( have_posts() ) : the_post();
 				<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
 			<?php endif; ?>
 
-            <div class="wrapper-price">
-			  <?php if ( $see_price ) :?>
-              <div class="entry-price">
-                <?php tcp_the_price_label();?>
-              </div><!-- entry-price -->
-              <?php endif;?>
+			<div class="wrapper-price">
+			<?php if ( $see_price ) :?>
+				<div class="entry-price">
+				<?php tcp_the_price_label();?>
+				</div><!-- entry-price -->
+			<?php endif;?>
               
-              <?php if ( $see_image ) : ?>
-              <div class="entry-post-thumbnail">
-                <a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
-                </div><!-- .entry-post-thumbnail -->
-              <?php endif; ?>
+			<?php if ( $see_image ) : ?>
+				<div class="entry-post-thumbnail">
+					<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
+				</div><!-- .entry-post-thumbnail -->
+			<?php endif; ?>
             </div><!-- .wrapper-price -->
 
 			<?php if ( $see_excerpt ) : ?>
-		  <div class="entry-summary">
+			<div class="entry-summary">
 				<?php the_excerpt(); ?>
 			</div><!-- .entry-summary -->
 			<?php endif; ?>
 
 			<?php if ( $see_buy_button ) :?>
-			<div class="entry-buy-button">	
+			<div class="entry-buy-button">
 				<?php tcp_the_buy_button();?>
 			</div>
 			<?php endif;?>
@@ -155,7 +155,7 @@ while ( have_posts() ) : the_post();
 						<?php the_author_meta( 'description'); ?>
 						<div id="author-link">
 						<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
-						<?php printf( __( 'View all productss by %s <span class="meta-nav">&rarr;</span>', 'ecommerce-twentyeleven' ), get_the_author_meta() ); ?>
+						<?php printf( __( 'View all products by %s <span class="meta-nav">&rarr;</span>', 'ecommerce-twentyeleven' ), get_the_author_meta() ); ?>
 						</a>
 						</div><!-- #author-link	-->
 					</div><!-- #author-description -->

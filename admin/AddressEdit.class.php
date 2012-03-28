@@ -32,7 +32,7 @@ class TCPAddressEdit {
 		if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) )
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 
-		require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
+		require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 		//array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
 		$regions = array(); //apply_filters( 'tcp_address_editor_load_regions', false );
@@ -149,7 +149,7 @@ class TCPAddressEdit {
 					global $thecartpress;
 					$country_id = $thecartpress->settings['country'];
 				}
-				foreach($countries as $item) :?>
+				foreach( $countries as $item ) :?>
 					<option value="<?php echo $item->iso; ?>" <?php selected( $item->iso, $country_id )?>><?php echo $item->name; ?></option>
 				<?php endforeach; ?>
 				</select>

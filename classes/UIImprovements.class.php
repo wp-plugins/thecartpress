@@ -25,7 +25,7 @@ class UIImprovements {
 		elseif ( $currency == 'USD' || $currency == 'AUD' || $currency == 'CAD' || $currency == 'HKD' || $currency == 'SGD' ) return '$';
 		elseif ( $currency == 'JPY' ) return '&yen;';
 		elseif ( $currency == 'IRR' ) return 'ریال';
-		elseif ( $currency == 'RUB' ) return 'Ƹ';
+		elseif ( $currency == 'RUB' ) return 'руб';
 		elseif ( $currency == 'ZAR' ) return 'R';
 		elseif ( $currency == 'VEB' ) return 'BsF';
 		else return $currency;

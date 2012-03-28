@@ -104,7 +104,7 @@ class TCPDownloadableProducts {
 		delete_post_meta( $post_id, 'tcp_days_to_expire' );
 	}
 
-	function tcp_send_order_mail_to_customer( $message, $order_id ) {
+	function tcp_send_order_mail_to_customer_message( $message, $order_id ) {
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		$order = Orders::get( $order_id );
 		if ( $order && $order->customer_id == 0 && $order->status == tcp_get_completed_order_status() ) {
@@ -154,7 +154,7 @@ class TCPDownloadableProducts {
 			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
 			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
 		}
-		add_filter( 'tcp_send_order_mail_to_customer', array( $this, 'tcp_send_order_mail_to_customer' ), 10, 2 );
+		add_filter( 'tcp_send_order_mail_to_customer_message', array( $this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
 		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 	}
 }

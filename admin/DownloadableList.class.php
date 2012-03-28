@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
 class TCPDownloadableList {
 	function show( $echo = true ) {

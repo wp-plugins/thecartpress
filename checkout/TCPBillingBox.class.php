@@ -283,8 +283,8 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
 					<?php global $thecartpress;
-					$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
-					$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+					$country = $thecartpress->get_setting( 'country', '' );
+					$billing_isos = $thecartpress->get_setting( 'billing_isos', false );
 					if ( $billing_isos ) {
 						$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
 					} else {

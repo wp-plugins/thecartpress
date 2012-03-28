@@ -71,75 +71,6 @@ class TCPGroupedProducts {
 		<?php */endif;
 	 }
 
-	function tcp_buy_button_unknow_product_type( $post_id ) {
-		if ( tcp_get_the_product_type( $post_id ) != 'GROUPED' ) return;
-		global $thecartpress;
-		$disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart' );
-		$after_add_to_cart		= $thecartpress->get_setting( 'after_add_to_cart', '' );
-		$action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) ) : '';
-		$products 				= RelEntities::select( $post_id );
-		global $wish_list;
-		remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_cart_button' ), 10, 2 ); ?>
-		<script type="text/javascript">
-			function add_to_the_cart_<?php echo $post_id; ?>(id_to) {
-				var count = jQuery("#tcp_count_" + id_to).val();
-				if (count == 0) count = 1;
-				jQuery("#tcp_frm_<?php echo $post_id; ?> .tcp_count").each(function(i) {
-					jQuery(this).val(0);
-				});
-				jQuery("#tcp_count_" + id_to).val(count);
-				jQuery("#tcp_add_selected_to_shopping_cart_<?php echo $post_id; ?>").click();
-				//jQuery("#tcp_buy_button_form_<?php echo $post_id; ?>").submit();			
-			}
-		</script>
-		<div class="tcp_buy_button">
-		<form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
-		<table class="tcp_buy_button">
-		<tbody>
-		<?php foreach( $products as $product ) {
-			$meta_value	= unserialize( $product->meta_value );
-			$units		= isset( $meta_value['units'] ) ? (int)$meta_value['units'] : 0;
-			$product_id	= tcp_get_current_id( $product->id_to, get_post_type( $product->id_to ) ); 
-			if ( get_post_status( $product_id ) == 'publish' ) : ?>
-				<script type="text/javascript">
-					jQuery(document).ready(function() {
-						jQuery('#tcp_add_product_<?php echo $product_id; ?>').click(function() {
-							add_to_the_cart_<?php echo $post_id; ?>(<?php echo $product_id; ?>);
-						});
-					});
-				</script>
-				<tr>
-				<td class="tcp_buy_button_thumbnail"><?php $image = tcp_get_the_thumbnail_with_permalink( $product_id, false, false );
-				echo apply_filters( 'tcp_get_image_in_grouped_buy_button', $image, $product_id ); ?></td>
-				<td class="tcp_buy_button_name">
-				<?php if ( tcp_is_visible( $product_id ) ) :
-					?><a href="<?php echo get_permalink( $product_id ); ?>"><?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?></a><?php
-				else :
-					?><?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?><?php
-				endif; ?>
-				</td>
-				<td class="tcp_buy_button_price"><?php echo tcp_get_the_price_label( $product_id ); ?></td>
-				<td class="tcp_buy_button_count"><?php if ( ! $disable_shopping_cart ) :
-					tcp_the_add_to_cart_unit_field( $product_id, $units );
-				endif;
-				if ( ! tcp_hide_buy_button( $product_id ) ) :
-					tcp_the_add_to_cart_button( $product_id );
-					tcp_the_add_to_cart_items_in_the_cart( $product_id );
-				endif; ?></td>
-				</tr>
-			<?php endif;
-		} ?>
-		</tbody>
-		</table>
-		<p><?php add_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_cart_button' ), 10, 2 );
-		if ( ! tcp_hide_buy_button( $post_id ) ) :
-			tcp_the_add_to_cart_button( $post_id );
-			tcp_the_add_to_cart_items_in_the_cart( $post_id );
-		endif; ?></p>
-		</form>
-		</div>
-	<?php }
-
 	function tcp_get_the_price_label( $label, $post_id ) {
 		if ( tcp_get_the_product_type( $post_id ) == 'GROUPED' ) {
 			$min_max = tcp_get_min_max_price( $post_id );
@@ -166,7 +97,6 @@ class TCPGroupedProducts {
 			add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
 			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
 		} else {
-			add_action( 'tcp_buy_button_unknow_product_type', array( $this, 'tcp_buy_button_unknow_product_type' ) );
 			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ) , 10, 2 );
 		}
 	}

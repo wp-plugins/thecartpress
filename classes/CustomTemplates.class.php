@@ -50,8 +50,10 @@ class TCPCustomTemplates {
 	}
 
 	function archive_template( $archive_template ) {
-		global $post_type;
-		$template = tcp_get_custom_template_by_post_type( $post_type );
+		//global $post_type;
+		//$template = tcp_get_custom_template_by_post_type( $post_type );
+		global $post;
+		$template = tcp_get_custom_template_by_post_type( $post->post_type );
 		if ( $template ) {
 			return apply_filters( 'tcp_archive_template', $template );
 		}

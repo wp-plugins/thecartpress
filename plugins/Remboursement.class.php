@@ -59,7 +59,7 @@ class TCPRemboursement extends TCP_Plugin {
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
+		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
@@ -86,9 +86,9 @@ class TCPRemboursement extends TCP_Plugin {
 		<?php printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );?>
 		<?php if ( strlen( trim( $data['notice'] ) ) > 0 ) : ?><p><?php echo $data['notice'];?></p><?php endif; ?>
 		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/></p><?php
-		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
-		require_once( dirname( dirname( __FILE__ ) ) . '/checkout/ActiveCheckout.class.php' );
+		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );
 	}
 }

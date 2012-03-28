@@ -55,7 +55,9 @@ class TCPLoopsSettings {
 
 	function admin_menu() {
 		global $thecartpress;
-		$base = $thecartpress->get_base();
+		$disable_ecommerce = $thecartpress->get_setting( 'disable_ecommerce', false );
+		if ( $disable_ecommerce ) $base = $thecartpress->get_base_tools();
+		else $base = $thecartpress->get_base();
 		add_submenu_page( $base, __( 'TheCartPress Loop settings', 'tcp' ), __( 'Loop Settings', 'tcp' ), 'tcp_edit_settings', 'ttc_settings_page', array( $this, 'show_settings' ) );
 	}
 
@@ -73,7 +75,7 @@ class TCPLoopsSettings {
 	}
 
 	function show_ttc_main_section() { ?>
-	<p class="description"><?php _e( 'This set of settings allow to manage the data to be displayed in the default grid provided by TheCartPress.', 'tcp' ); ?></p><?php
+	<p class="description"><?php _e( 'This set of settings allows to manage the data to be displayed in the default grid provided by TheCartPress.', 'tcp' ); ?></p><?php
 	}
 
 	function see_title() {

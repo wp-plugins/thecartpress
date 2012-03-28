@@ -43,6 +43,40 @@ function tcp_get_billing_country() {
 	}
 }
 
+function tcp_get_billing_region() {
+	if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
+		if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+			$billing_region_id = $_SESSION['tcp_checkout']['billing']['billing_region_id'];
+		} else { //if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'Y' ) {
+			require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
+			$billing_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
+			$billing_region_id = $billing_address->region_id;
+		}
+		return $billing_region_id;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * @since 1.1.8
+ */
+function tcp_set_billing_country( $country_id ) {
+	//if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+	$_SESSION['tcp_checkout']['billing']['selected_billing_address'] = 'new';
+	$_SESSION['tcp_checkout']['billing']['billing_country_id'] = $country_id;
+}
+
+/**
+ * @since 1.1.8
+ */
+function tcp_set_billing_region( $region_id ) {
+	//if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+	$_SESSION['tcp_checkout']['billing']['selected_billing_address'] = 'new';
+	$_SESSION['tcp_checkout']['billing']['billing_region_id'] = $region_id;
+}
+
+
 function tcp_get_shipping_country() {
 	if ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ) {
 		if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'BIL' ) {
@@ -55,21 +89,6 @@ function tcp_get_shipping_country() {
 			$shipping_country_id = $shipping_address->country_id;
 		}
 		return $shipping_country_id;
-	} else {
-		return '';
-	}
-}
-
-function tcp_get_billing_region() {
-	if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
-		if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
-			$billing_region_id = $_SESSION['tcp_checkout']['billing']['billing_region_id'];
-		} else { //if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'Y' ) {
-			require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
-			$billing_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
-			$billing_region_id = $billing_address->region_id;
-		}
-		return $billing_region_id;
 	} else {
 		return '';
 	}
@@ -96,5 +115,30 @@ function tcp_get_shipping_region() {
 	} else {
 		return '';
 	}
+}
+
+/**
+ * @since 1.1.8
+ */
+function tcp_set_shipping_as_billing() {
+	$_SESSION['tcp_checkout']['shipping']['selected_shipping_address']	= 'BIL';
+}
+
+/**
+ * @since 1.1.8
+ */
+function tcp_set_shipping_country( $country_id ) {
+	//if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'new' ) {
+	$_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] = 'new';
+	$_SESSION['tcp_checkout']['shipping']['shipping_country_id'] = $country_id;
+}
+
+/**
+ * @since 1.1.8
+ */
+function tcp_set_shipping_region( $region_id ) {
+	//if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'new' ) {
+	$_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] = 'new';
+	$_SESSION['tcp_checkout']['shipping']['shipping_region_id'] = $region_id;
 }
 ?>

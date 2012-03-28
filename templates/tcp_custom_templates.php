@@ -61,7 +61,7 @@ function tcp_set_custom_template_by_post_type( $post_type, $template = '' ) {
 
 function tcp_get_custom_template_by_post_type( $post_type ) {
 	$templates = get_option( 'tcp_post_type_templates', false );
-	if ( $templates ) return isset( $templates[$post_type] ) ? $templates[$post_type] : false;
+	if ( $templates && is_array( $templates ) ) return isset( $templates[$post_type] ) ? $templates[$post_type] : false;
 }
 
 function tcp_set_custom_template_by_taxonomy( $taxonomy, $template = '' ) {

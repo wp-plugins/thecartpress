@@ -86,6 +86,12 @@ table.tcp_products_list .entry-title {
 	font-size: 1em;
 }
 
+table.tcp_products_list .entry-post-thumbnail img,
+#content table.tcp_products_list .entry-post-thumbnail img {
+    height: auto;
+	max-width:100%;
+}
+
 .entry-price {
 	font-weight: bold;
     line-height: 1.5em;

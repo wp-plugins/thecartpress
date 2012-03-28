@@ -16,7 +16,6 @@ div#tcp_sales_chart h3 {
 	font-weight:bold;
 }
 
-
 #tcp_rss_widget .inside ul,
 #tcp_orders_resume .table_content {
 	background-image:url(/wp-content/plugins/thecartpress/images/tcp_icon.png);
@@ -311,4 +310,22 @@ ul.tabs_section li a
 	padding: 0.2em;
 	background-color: #FFEBE8;
     border: 1px solid #CC0000;
+}
+
+.tcp_stock_1,
+.tcp_stock_2,
+.tcp_stock_3 {
+	color: red;
+}
+
+.tcp_stock_4,
+.tcp_stock_5,
+.tcp_stock_6 {
+	color: orange;
+}
+.tcp_stock_7,
+.tcp_stock_8,
+.tcp_stock_9,
+.tcp_stock_10 {
+	color: green;
 }

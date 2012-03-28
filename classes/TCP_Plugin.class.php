@@ -74,6 +74,14 @@ class TCP_Plugin {
 	}
 
 	/**
+	 * Returns if the plugin allows instances
+	 * @sincve 1.1.8
+	 */
+	function isInstanceable() {
+		return true;
+	}
+
+	/**
 	 * Returns the text label to show in the checkout.
 	 * Must be implemented
 	 */
@@ -236,11 +244,11 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 	return $applicable_plugins;
 }
 
-function tcp_get_shipping_plugin_data( $plugin_name, $instance ) {
+function tcp_get_shipping_plugin_data( $plugin_name, $instance = 0 ) {
 	return tcp_get_plugin_data( 'shi_' . $plugin_name, $instance );
 }
 
-function tcp_get_payment_plugin_data( $plugin_name, $instance ) {
+function tcp_get_payment_plugin_data( $plugin_name, $instance = 0 ) {
 	return tcp_get_plugin_data( 'pay_' . $plugin_name, $instance );
 }
 

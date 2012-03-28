@@ -102,25 +102,10 @@ if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
 	<td>
 		<select id="country_id" name="country_iso">
 			<option value="all" ><?php _e( 'all', 'tcp' );?></option><?php
-			/*$tax_based_on = tcp_get_tax_based_on();
-			if ( $tax_based_on == 'billing' ) {
-				$isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : array();
-			} elseif ( $tax_based_on == 'shipping' ) {
-				$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : array();
-			} elseif ( $tax_based_on == 'origin' ) {
-				$isos = array( tcp_get_default_tax_country() );
-			} else {
-				$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : array();
-				$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : array();
-				$isos = array_merge( $billing_isos, $shipping_isos );
-			}
-			if ( count( $isos ) > 0 )
-				$countries = Countries::getSome( $isos, tcp_get_admin_language_iso() );
-			else*/
 				$countries = Countries::getAll( $language_iso );
 			global $thecartpress;
 			$country_id = $thecartpress->settings['country'];
-			foreach( $countries as $item ) :?>
+			foreach( $countries as $item ) : ?>
 			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_id )?>><?php echo $item->name;?></option>
 			<?php endforeach;?>
 		</select>

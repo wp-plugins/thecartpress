@@ -55,7 +55,7 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	$headers .= 'From: ' . $from . "\r\n";
 	$subject = 'Order from '.get_bloginfo( 'name' );
 	$message = OrderPage::show( $order_id, true, false );
-	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
+	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
 	wp_mail( $to, $subject, $message_to_customer, $headers );*/
 	?>
 	<div id="message" class="updated"><p>

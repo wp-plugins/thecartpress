@@ -75,7 +75,7 @@ if ( $post_id ) :
 		return false;
 	}
 	</script>
-	<h2><?php _e( 'Assigned products/post for', 'tcp' ); ?>&nbsp;<i><?php echo $post->post_title; ?></i></h2>
+	<h2><?php printf( __( 'Assigned products/post for %s', 'tcp' ), '<i>' . $post->post_title . '</i>' ); ?></h2>
 	<ul class="subsubsub">
 		<li><a href="post.php?action=edit&post=<?php echo $post_id; ?>"><?php printf( __( 'return to %s', 'tcp' ), $post->post_title ); ?></a></li>
 		<li>&nbsp;|&nbsp;</li>
@@ -226,9 +226,10 @@ if ( $post_id ) :
 		foreach( $assigned_list as $assigned )
 				$ids[] = $assigned->id_to;
 		$args = array (
-			'post_type'				=> $post_type_to,
-			'post__not_in'			=> $ids,
-			'posts_per_page'		=> -1,
+			'post_type'			=> $post_type_to,
+			'post__not_in'		=> $ids,
+			'posts_per_page'	=> -1,
+			'fields'			=> 'ids',
 		);
 		if ( tcp_is_saleable_post_type( $post_type_to ) ) {
 			$args['meta_key'] = 'tcp_type';
@@ -239,7 +240,7 @@ if ( $post_id ) :
 		}
 		$posts = get_posts( $args );
 		if ( is_array( $posts ) && count( $posts ) > 0 ) :
-			foreach( $posts as $post ) : ?>
+			foreach( $posts as $id ) : $post = get_post( $id ); ?>
 				<tr>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID; ?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo get_the_post_thumbnail( $post->ID, array( '50', '50' ) ); ?></a></td>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID; ?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo $post->post_title; ?></a></td>

@@ -45,7 +45,7 @@ class ActiveCheckout {//shortcode
 			}
 			TheCartPress::removeShoppingCart();
 			$html .= '<br>';
-			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';
+			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';//TODO to change!!!!
 			//unset( $_SESSION['order_page'] );
 			$html .= '<br />';
 			$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
@@ -101,7 +101,7 @@ class ActiveCheckout {//shortcode
 			if ( strlen( $order->shipping_email ) > 0 ) $customer_email[] = $order->shipping_email;
 			if ( strlen( $order->billing_email ) > 0 && $order->shipping_email != $order->billing_email ) $customer_email[] = $order->billing_email;
 			$to_customer = implode( ',', $customer_email );
-			$from = isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
+			$from = $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to_customer . "\r\n";
@@ -114,18 +114,20 @@ class ActiveCheckout {//shortcode
 			$message = $additional_msg . "\n";
 			$message .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
-			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer', $message, $order_id );
+			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
 			wp_mail( $to_customer, $subject, $message_to_customer , $headers );
+			do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
 			if ( ! $only_for_customers ) {
-				$to = isset( $thecartpress->settings['emails'] ) ? $thecartpress->settings['emails'] : '';
+				$to = $thecartpress->get_setting( 'emails', '' );
 				if ( strlen( $to ) ) {
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 					//$headers .= 'To: ' . $to . "\r\n";
 					$name = substr( $from, 0, strpos( $from, '@' ) );
 					$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
-					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant', $message, $order_id );
+					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant_message', $message, $order_id );
 					wp_mail( $to, $subject, $message_to_merchant, $headers );
+					do_action( 'tcp_send_order_mail_to_merchant', $to, $subject, $message_to_merchant, $headers, $order_id );
 				}
 			}
 		}
