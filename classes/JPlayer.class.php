@@ -213,8 +213,8 @@ jQuery(document).ready(function() {
 
 	function admin_init() {
 		$tcp_settings = TCP_ADMIN_FOLDER . 'Settings.class.php';
-		add_settings_section( 'tcp_jplayer_section', __( 'jPlayer skins', 'tcp-mp' ) , array( $this, 'show_jplayer_section' ), $tcp_settings );
-		add_settings_field( 'jplayer_skin', __( 'Select a skin', 'tcp-mp' ), array( $this, 'show_jplayer_skin' ), $tcp_settings , 'tcp_jplayer_section' );
+		add_settings_section( 'tcp_jplayer_section', __( 'jPlayer skins', 'tcp' ) , array( $this, 'show_jplayer_section' ), $tcp_settings );
+		add_settings_field( 'jplayer_skin', __( 'Select a skin', 'tcp' ), array( $this, 'show_jplayer_skin' ), $tcp_settings , 'tcp_jplayer_section' );
 		//add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
 	}
 

@@ -45,7 +45,7 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		return __( 'No payment!!, for test purpose.', 'tcp' );
+		return __( 'No payment!!, for test purpose.', 'tcp' ) . ': ' . $shoppingCart->getTotal();
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {

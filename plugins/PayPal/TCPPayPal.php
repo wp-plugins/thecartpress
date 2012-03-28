@@ -58,10 +58,19 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="no_shipping"><?php _e( 'PayPal prompt for an address, and require one', 'tcp' );?></label><br />
 			<span class="description"><?php _e( 'Be sure to match this in the Checkout Editor', 'tcp' );?></span>
 		</td></tr>
+
 		<tr valign="top">
-		<th scope="row">&nbsp;
+		<th scope="row">
+			<?php _e( 'Payment type', 'tcp' );?>:
 		</th><td>
+			<select name="paymentaction">
+				<option value="sale"><?php _e( 'Sale', 'tcp' ); ?></option>
+				<option value="authorization"><?php _e( 'Authorization', 'tcp' ); ?></option>
+				<option value="order"><?php _e( 'Order', 'tcp' ); ?></option>
+			</select>
+			<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
 		</td></tr>
+
 <!--		<tr valign="top">
 		<th scope="row">
 			<label for="profile_shipping"><?php _e( 'Use PayPal profile shipping', 'tcp' );?>:</label>
@@ -77,7 +86,7 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="profile_taxes"><?php _e( 'Use PayPal profile taxes', 'tcp' );?>:</label>
 		</th><td>
 			<input type="checkbox" id="profile_taxes" name="profile_taxes" value="yes" <?php checked( true , isset( $data['profile_taxes'] ) ? $data['profile_taxes'] : false );?> />
-		</td></tr>-->
+		</td></tr>
 		<tr valign="top">
 		<th scope="row">
 			<?php _e( 'PayPal is sent', 'tcp' );?>:
@@ -86,7 +95,7 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="send_detail"><?php _e( 'one total amount', 'tcp' );?></label><br />
 			<input type="radio" id="send_detail" name="send_detail" value="1" <?php checked( 1 , isset( $data['send_detail'] ) ? $data['send_detail'] : 0 );?> />
 			<label for="send_detail"><?php _e( 'item detail, each with amount', 'tcp' );?></label><br />
-		</td></tr>
+		</td></tr>-->
 		<tr valign="top">
 		<th scope="row">&nbsp;
 		</th><td>
@@ -118,7 +127,8 @@ class TCPPayPal extends TCP_Plugin {
 		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] );
 		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] );
 		$data['no_shipping']			= isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
-		$data['send_detail']			= isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
+		$data['paymentaction']			= isset( $_REQUEST['paymentaction'] ) ? $_REQUEST['paymentaction'] : 'sale';
+		$data['send_detail']			= 0;//isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
 		$data['logging']				= isset( $_REQUEST['logging'] );
 		$data['cpp_cart_border_color']	= isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
 		$data['test_mode']				= isset( $_REQUEST['test_mode'] );
@@ -127,15 +137,16 @@ class TCPPayPal extends TCP_Plugin {
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$business = $data['business'];
-		$test_mode = $data['test_mode'];
-		$profile_shipping = $data['profile_shipping'];
-		$profile_taxes = $data['profile_taxes'];
-		$no_shipping = isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
-		$send_detail = isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
-		$logging = $data['logging'];
-		$merchant = get_bloginfo( 'name' );
-		$new_status = $data['new_status'];
+		$business			= $data['business'];
+		$test_mode			= $data['test_mode'];
+		$profile_shipping	= $data['profile_shipping'];
+		$profile_taxes		= $data['profile_taxes'];
+		$paymentaction		= isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale';
+		$no_shipping		= isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
+		$send_detail		= 0; //isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
+		$logging			= $data['logging'];
+		$merchant			= get_bloginfo( 'name' );
+		$new_status			= $data['new_status'];
 		$p = new tcp_paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
@@ -154,26 +165,32 @@ class TCPPayPal extends TCP_Plugin {
 			$decimals = tcp_get_decimal_currency();
 			foreach( $shoppingCart->getItems() as $item ) {
 				$tax = tcp_get_the_tax( $item->getPostId() );
-				$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
-				$unit_price_without_tax = round( $res[0], $decimals );
-				$tax_amount = round( $res[1], $decimals );
+				if ( ! tcp_is_display_prices_with_taxes() ) $discount = $item->getDiscount() / $item->getUnits();
+				else $discount = 0;
+				$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
+				$tax_amount = $unit_price_without_tax * $tax / 100;
+				$tax_amount = round( $tax_amount * $item->getUnits(), $decimals );
 				$amount += $unit_price_without_tax * $item->getUnits();
-				$taxes += $tax_amount * $item->getUnits();
+				$taxes += $tax_amount;
 			}
 			foreach( $shoppingCart->getOtherCosts() as $cost_id => $cost ) {
+				$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
 				$tax = tcp_get_the_shipping_tax();
-				$res = tcp_get_shipping_cost_and_tax( $cost->getCost(), $tax );
-				$cost_without_tax = $res[0];
-				$cost_with_tax = $cost_without_tax + $res[1];
+				$tax_amount = $cost_without_tax * $tax / 100;
+				$tax_amount = round( $tax_amount, $decimals );
+
 				$amount += $cost_without_tax;
-				$taxes += $cost_with_tax - $cost_without_tax;
+				$taxes += $tax_amount; //$cost_with_tax - $cost_without_tax;
 			}
-			$amount -= $shoppingCart->getAllDiscounts();
+			if ( tcp_is_display_prices_with_taxes() ) $amount -= $shoppingCart->getAllDiscounts();
+			else $amount -= $shoppingCart->getCartDiscountsTotal();
 			$p->add_field( 'amount', number_format( $amount, 2 ) );
 			if ( $taxes > 0 ) $p->add_field( 'tax', number_format( $taxes, 2 ) );
-			$discount = $shoppingCart->getAllDiscounts();
+			if ( tcp_is_display_prices_with_taxes() ) $discount = $shoppingCart->getAllDiscounts();
+			else $discount = $shoppingCart->getCartDiscountsTotal();
+			//$discount = $shoppingCart->getAllDiscounts();
 			if ( $discount > 0 ) $p->add_field( 'discount_amount_cart', number_format( $discount, 2, '.', '' ) );
-		} else { //Item by item
+		} else { //Item by item NOT IN USE
 			$p->add_field( 'cmd', '_cart' );
 			$p->add_field( 'upload', '1' );
 			$discount = $shoppingCart->getAllDiscounts();
@@ -207,7 +224,8 @@ class TCPPayPal extends TCP_Plugin {
 				$i++;
 			}
 		}
-		require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/daos/Orders.class.php' );
+		$p->add_field( 'paymentaction', $paymentaction );
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		$order = Orders::get( $order_id );
 		$p->add_field( 'first_name', $order->billing_firstname ); //utf8_decode
 		$p->add_field( 'last_name', $order->billing_lastname );

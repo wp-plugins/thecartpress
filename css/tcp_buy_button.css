@@ -107,9 +107,6 @@ table.tcp_products_list .tcp_buy_button input {
 .tcp_buy_button_count {
 	white-space:nowrap;
 }
-.tcp_products_list .tcp_buy_button_count {
-	white-space:normal;
-}
 
 /* Add buttons
 -------------------------------------*/

@@ -47,7 +47,7 @@ class TCPCartTable {
 			<?php if ( strlen( $source->get_shipping_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_shipping_fax(); ?><br/><?php endif; ?>
 			<?php if ( strlen( $source->get_shipping_email() ) > 0 ) : echo $source->get_shipping_email(); ?><br/><?php endif; ?>
 			</div><!-- #shipping_info-->
-			
+
 			<div id="billing_info">
 			<h3><?php _e( 'Billing address', 'tcp' ); ?></h3>
 			<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?><br/>
@@ -67,7 +67,7 @@ class TCPCartTable {
 			<span class="tcp_status_row"><?php _e( 'Status', 'tcp' ); ?>: <span class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo $source->get_status(); ?></span></span>
 			</div>
 		<?php endif; ?>
-		<table id="tcp_shopping_cart_table">
+		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
 		<thead>
 		<tr class="tcp_cart_title_row">
 		<?php if ( $source->see_full() ) : ?><th class="tcp_cart_id"><?php _e( 'Id.', 'tcp' ); ?></th><?php endif; ?>
@@ -83,10 +83,10 @@ class TCPCartTable {
 		<tbody>
 		<?php if ( $source->has_order_details() ) {
 			global $thecartpress;
-			$stock_management	= isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
-			$total = 0;
-			$total_tax = 0;
+			$stock_management	= $thecartpress->get_setting('stock_management',  false );
 			$i = 0;
+			$total_tax = 0;
+			$total = 0;
 			foreach( $source->get_orders_details() as $order_detail ) : ?>
 				<tr class="tcp_cart_product_row <?php if ( $i++ & 1 == 1 ) : ?> par<?php endif; ?>">
 				<?php if ( $source->see_full() ) : ?><td class="tcp_cart_id"><?php echo $order_detail->get_post_id(); ?></td><?php endif; ?>
@@ -99,21 +99,13 @@ class TCPCartTable {
 				<td class="tcp_cart_name">
 				<?php $name = $order_detail->get_name();
 				if ( $source->see_product_link() ) {
-				//} elseif ( tcp_is_visible( $order_detail->get_post_id() ) ) {
 					$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ). '">' . $name . '</a>';
-				//} else {
-				//	$post_id = tcp_get_the_parent( $order_detail->get_post_id() );
-				//	if ( $post_id > 0 ) {
-				//		$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $post_id, get_post_type( $post_id ) ) ) . '">' . $name . '</a>';
-				//	} else {
-				//		$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ) . '">' . $name . '</a>';
-				//	}
 				}
 				echo apply_filters( 'tcp_cart_table_title_order_detail', $name, $order_detail->get_post_id() ); ?>
 				</td>
 				<td class="tcp_cart_price"><?php echo tcp_format_the_price( $order_detail->get_price() ); ?>
 				<?php if ( $order_detail->get_discount() > 0 ) : ?>
-					&nbsp;<span class="tcp_cart_discount"><?php  printf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() ) ); ?></span>
+					&nbsp;<span class="tcp_cart_discount"><?php  printf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() / $order_detail->get_qty_ordered() ) ); ?></span>
 				<?php endif; ?>
 				</td>
 				<td class="tcp_cart_units">

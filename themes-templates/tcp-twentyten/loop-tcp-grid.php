@@ -2,26 +2,26 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
  * The loop that displays products in configurable GRID mode.
  *
- * @package WordPress
- * @subpackage Twenty_Ten_Ecommerce
- * @since Twenty Ten Ecommerce 1.0
+ * @package TheCartPRess
+ * @subpackage 
+ * @since 1.1.6
  */
 ?>
 
@@ -40,6 +40,7 @@
 <?php /* Start the Loop.*/ ?>
 
 <table class="tcp_products_list">
+<tr class="tcp_first-row">
 <?php
 $currency = tcp_the_currency( false ); 
 if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );	
@@ -62,21 +63,16 @@ $see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance
 $see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
 $see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
 $see_pagination			= isset( $instance['see_pagination'] ) ? $instance['see_pagination'] : false;
-$column = 0;
+$column = $number_of_columns;
 
 while ( have_posts() ) : the_post();
-?>
-<?php
-	if ($column == 0)
-	{
-		echo '<tr>';
-		$column = $number_of_columns;
-	}
-?>
-<td id="td-post-<?php the_ID(); ?>" <?php post_class(); ?>>
-<?php
-	$column--;
-?>
+if ( $column == 0 ) : $column = $number_of_columns ?>
+	</tr><tr>
+	<?php endif;
+	$tcp_col = $number_of_columns - $column + 1;
+	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col ); ?>
+	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
+	<?php $column--; ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 		<?php if ( $see_title ) : ?>
 			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
@@ -119,9 +115,7 @@ while ( have_posts() ) : the_post();
         <?php endif;?>
         <?php if ( $see_third_custom_area ) :?>
         <?php endif;?>
-    
-    
-    
+
         <?php if ( $see_author ) :?>
             <?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
                 <div id="entry-author-info">
@@ -161,10 +155,10 @@ while ( have_posts() ) : the_post();
 			<?php endif; ?> 
 
 			<?php if ( $see_meta_utilities ) : ?>
-                    <span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
-                    <?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
+	                <span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
+	                <?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
 			<?php endif; ?> 
-                    
+	                
 			</div><!-- .entry-utility -->
 
 		</div><!-- #post-## -->

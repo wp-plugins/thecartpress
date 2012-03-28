@@ -194,7 +194,7 @@ class Orders {
 		global $wpdb;
 		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where 1=1';
 		if ( $status != '' ) $sql .= ' and status=%s';
-		if ( $customer_id > -1 ) $sql .= ' and customer_id = %d';
+		if ( ! empty( $customer_id ) && ( $customer_id > -1 ) ) $sql .= ' and customer_id = %d';
 		$sql = $wpdb->prepare( $sql, $status, $customer_id );
 		$sql = apply_filters( 'get_count_orders_by_status_sql', $sql, $status , $customer_id );
 		return $wpdb->get_var( $sql );
@@ -213,7 +213,7 @@ class Orders {
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
 				$wpdb->prefix . 'tcp_orders_details od on o.order_id = od.order_id where 1=1';
 		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
-		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );		
+		if ( ! empty( $customer_id ) && ( $customer_id > -1 ) ) $wpdb->prepare( ' and customer_id = %d', $customer_id );
 		$sql .= ' order by created_at desc';
 		return $wpdb->get_results( $sql );
 	}

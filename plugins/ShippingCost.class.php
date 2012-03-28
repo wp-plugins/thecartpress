@@ -31,7 +31,7 @@ class ShippingCost extends TCP_Plugin {
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$cost = $this->getCost( $instance, $shippingCountry, $shoppingCart );
+		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 

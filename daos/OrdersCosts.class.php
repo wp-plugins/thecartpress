@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class OrdersCosts {
@@ -45,7 +45,7 @@ class OrdersCosts {
 	static function getTotalCost( $order_id, $total = 0 ) {
 		global $wpdb;
 		//return $wpdb->get_var( $wpdb->prepare( 'select sum(cost) from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d', $order_id ) );
-		$res = $wpdb->get_results( $wpdb->prepare( 'select cost, tax from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d', $order_id ) );
+		$res = $wpdb->get_results( $wpdb->prepare( 'select order_cost_id, cost, tax from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
 			if ( $row->tax > 0 ) {
 				$total += $row->cost + $row->cost * $row->tax / 100;
@@ -55,6 +55,7 @@ class OrdersCosts {
 		}
 		return $total;
 	}
+
 	static function insert( $ordersCosts ) {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_orders_costs', array (

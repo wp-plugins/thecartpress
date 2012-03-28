@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
@@ -21,7 +21,7 @@ require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
 class WishListWidget extends CustomListWidget {
 
 	function WishListWidget() {
-		parent::CustomListWidget( 'tcpwishlist', __( 'Allow to create a Wish List', 'tcp' ), 'TCP Wish List' );
+		parent::CustomListWidget( 'tcpwishlist', __( 'Allow to display Wish List', 'tcp' ), 'TCP Wish List' );
 	}
 
 	function widget( $args, $instance ) {
@@ -65,7 +65,7 @@ class WishListWidget extends CustomListWidget {
 		$defaults = array(
 			'title'	=> __( 'Wish List', 'tcp' ),
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );?>
+		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<div id="particular">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
@@ -73,6 +73,7 @@ class WishListWidget extends CustomListWidget {
 		</p>
 		</div><?php
 		parent::form( $instance );
+		parent::show_post_type_form( $instance );
 	}
 }
 ?>

@@ -59,7 +59,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			if ( isset( $_REQUEST['shipping_region'] ) && strlen( $_REQUEST['shipping_region'] ) == 0 && $_REQUEST['shipping_region_id'] == '' )
 				$this->errors['shipping_region'] = __( 'The shipping Region field must be completed', 'tcp' );
 			global $thecartpress;
-			$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+			$shipping_isos = $thecartpress->get_setting( 'shipping_isos', false );
 			if ( $shipping_isos ) {
 				if ( ! in_array( $_REQUEST['shipping_country_id'], $shipping_isos ) ) {
 					$this->errors['shipping_country_id'] = __( 'The shipping Country is not allowed', 'tcp' );
@@ -73,7 +73,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				$this->errors['shipping_email'] = __( 'The shipping eMail field must be a valid email', 'tcp' );
 		} elseif ( $selected_shipping_address == 'Y' ) { // && is_user_logged_in() ) {
 			global $thecartpress;
-			$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+			$shipping_isos = $thecartpress->get_setting( 'shipping_isos', false );
 			if ( $shipping_isos ) {
 				$shipping_country_id = Addresses::getCountryId( $_REQUEST['selected_shipping_id'] );
 				if ( ! in_array( $shipping_country_id, $shipping_isos ) ) {

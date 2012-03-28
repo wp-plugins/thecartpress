@@ -16,7 +16,6 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class TCPCardOffLine extends TCP_Plugin {
 
 	function getTitle() {
@@ -171,11 +170,97 @@ class TCPCardOffLine extends TCP_Plugin {
 		</form>
 		<?php
 	}
+	
+	function tcp_admin_order_before_editor( $order_id ) {
+		global $wpdb;
+		if ( isset( $_REQUEST['tcp_delete_card_data'] ) ) {
+			//$sql = $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_offlines where order_id = %d', $order_id );
+			//$wpdb->query( $sql );
+			tcp_delete_order_meta( $order_id, 'tcp_card_offlines' );
+			?><tr valign="top">
+			<th scope="row" colspan="2">
+				<strong><?php _e( 'The data from the customer\'s credit card has been permanently removed', 'tcp' );?></strong>
+			</th>
+			</tr><?php
+		} else {
+			//$offline = $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_offlines where order_id = %d', $order_id ) );
+			$offline = tcp_get_order_meta( $order_id, 'tcp_card_offlines' );
+			if ( $offline ) { ?>
+			<tr valign="top">
+			<th scope="row">
+				<label for="card_holder"><?php _e( 'Credit Card Holder', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" name="card_holder" id="card_holder" size="40" maxlength="150" value="<?php echo $offline['card_holder'];?>" readonly />
+			</td>
+			</tr>
+			<th scope="row">
+				<label for="card_number"><?php _e( 'Card number', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" name="card_number_1" id="card_number_1" size="4" maxlength="4" value="<?php echo substr( $offline['card_number'], 0, 4 );?>" readonly />
+				<input type="text" name="card_number_2" id="card_number_2" size="4" maxlength="4" value="<?php echo substr( $offline['card_number'], 4, 4 );?>" readonly />
+				<input type="text" name="card_number_3" id="card_number_3" size="4" maxlength="4" value="<?php echo substr( $offline['card_number'], 8, 4 );?>" readonly />
+				<input type="text" name="card_number_4" id="card_number_4" size="4" maxlength="4" value="<?php echo substr( $offline['card_number'], 12 );?>" readonly />
+				<label><?php _e( 'cvc', 'tcp' );?>: </label><input type="text" id="cvc" name="cvc" size="4" maxlength="4" value="<?php echo $offline['cvc'];?>" readonly />
+			</td>
+			</tr>
+			<tr valign="top">
+			<th scope="row">
+				<label for="expiration_month"><?php _e( 'Expiration date', 'tcp' );?>:</label>:
+			</th>
+			<td>
+				<input type="text" name="expiration_month" id="expiration_month" size="2" maxlength="2" value="<?php echo $offline['expiration_month'];?>" readonly />
+				/
+				<input type="text" name="expiration_year" id="expiration_year" size="2" maxlength="2" value="<?php echo $offline['expiration_year'];?>" readonly />
+			</td>
+			</tr>
+			<tr valign="top">
+			<th scope="row">
+				<label for="card_type"><?php _e( 'Credit Card Type', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" name="card_type" id="card_type" size="20" maxlength="20" value="<?php echo $offline['card_type'];?>" readonly="true" />
+				<a href="javascript:return false;" onclick="jQuery('#delete_card_data').show();" class="delete"><?php _e( 'Delete card data', 'tcp' );?></a>
+				<div id="delete_card_data" class="delete_card_data" style="display:none; border: 1px dotted orange; padding: 2px">
+					<p><?php _e( 'Do you really want to delete this address?', 'tcp' );?></p>
+					<input type="submit" name="tcp_delete_card_data" value="<?php _e( 'Yes' , 'tcp' );?>" class="delete" />
+					|
+					<a href="javascript:return false;" onclick="jQuery('#delete_card_data').hide();"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
+				</div>
+			</td>
+			</tr><?php
+			}
+		}
+	}
 
 	function __construct() {
 		if ( is_admin() ) {
 			add_action( 'tcp_admin_order_before_editor', array( $this, 'tcp_admin_order_before_editor' ) );
 			global $wpdb;
+			$sql = 'SHOW TABLES LIKE \'' . $wpdb->prefix . 'tcp_offlines\'';
+			$res = (array)$wpdb->get_row( $sql );
+			if ( count( $res ) > 0 ) {
+				$sql = 'SELECT * FROM `' . $wpdb->prefix . 'tcp_offlines`';
+				$res = $wpdb->get_results( $sql );
+				foreach( $res  as $row ) {
+					tcp_update_order_meta( $row->order_id, 'tcp_card_offlines', array(
+						'order_id'				=> $row->order_id,
+						'card_holder'			=> $row->card_holder,
+						'card_number'			=> $row->card_number,
+						'cvc'					=> $row->cvc,
+						'expiration_month'		=> $row->expiration_month,
+						'expiration_year'		=> $row->expiration_year,
+						'card_type'				=> $row->card_type,
+						'created_at'			=> $row->created_at,
+					) );
+				}
+				$sql = 'DELETE FROM `' . $wpdb->prefix . 'tcp_offlines`';
+				$res = $wpdb->query( $sql );
+				$sql = 'DROP TABLE `' . $wpdb->prefix . 'tcp_offlines`';
+				$res = $wpdb->query( $sql );
+			}
+			/*global $wpdb;
 			$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_offlines` (
 			  `order_id`			bigint(20)	unsigned NOT NULL,
 			  `card_number`			varchar(20)		NOT NULL,
@@ -188,7 +273,7 @@ class TCPCardOffLine extends TCP_Plugin {
 			  PRIMARY KEY (`order_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
 			$wpdb->query( $sql );
-			//TODO Deprecated 1.1
+			//TODO Deprecated
 			$columns = $wpdb->query( 'show columns from ' . $wpdb->prefix . 'tcp_offlines' );
 			if ( $columns == 5 ) {
 				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `cvc` VARCHAR(4)  NOT NULL AFTER `card_number`;';
@@ -202,69 +287,7 @@ class TCPCardOffLine extends TCP_Plugin {
 				$wpdb->query( $sql );
 				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `card_holder` VARCHAR(150)  NOT NULL AFTER `expiration_year`;';
 				$wpdb->query( $sql );
-			}
-		}
-	}
-	
-	function tcp_admin_order_before_editor( $order_id ) {
-		global $wpdb;
-		if ( isset( $_REQUEST['tcp_delete_card_data'] ) ) {
-			$sql = $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_offlines where order_id = %d', $order_id );
-			$wpdb->query( $sql );?>
-			<tr valign="top">
-			<th scope="row" colspan="2">
-				<strong><?php _e( 'The data from the customer\'s credit card has been permanently removed', 'tcp' );?></strong>
-			</th>
-			</tr>
-			<?php
-		} else {
-			$offline = $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_offlines where order_id = %d', $order_id ) );
-			if ( $offline ) {?>
-			<tr valign="top">
-			<th scope="row">
-				<label for="card_holder"><?php _e( 'Credit Card Holder', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" name="card_holder" id="card_holder" size="40" maxlength="150" value="<?php echo $offline->card_holder;?>" readonly />
-			</td>
-			</tr>
-			<th scope="row">
-				<label for="card_number"><?php _e( 'Card number', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" name="card_number_1" id="card_number_1" size="4" maxlength="4" value="<?php echo substr( $offline->card_number, 0, 4 );?>" readonly />
-				<input type="text" name="card_number_2" id="card_number_2" size="4" maxlength="4" value="<?php echo substr( $offline->card_number, 4, 4 );?>" readonly />
-				<input type="text" name="card_number_3" id="card_number_3" size="4" maxlength="4" value="<?php echo substr( $offline->card_number, 8, 4 );?>" readonly />
-				<input type="text" name="card_number_4" id="card_number_4" size="4" maxlength="4" value="<?php echo substr( $offline->card_number, 12 );?>" readonly />
-				<label><?php _e( 'cvc', 'tcp' );?>: </label><input type="text" id="cvc" name="cvc" size="4" maxlength="4" value="<?php echo $offline->cvc;?>" readonly />
-			</td>
-			</tr>
-			<tr valign="top">
-			<th scope="row">
-				<label for="expiration_month"><?php _e( 'Expiration date', 'tcp' );?>:</label>:
-			</th>
-			<td>
-				<input type="text" name="expiration_month" id="expiration_month" size="2" maxlength="2" value="<?php echo $offline->expiration_month;?>" readonly />
-				/
-				<input type="text" name="expiration_year" id="expiration_year" size="2" maxlength="2" value="<?php echo $offline->expiration_year;?>" readonly />
-			</td>
-			</tr>
-			<tr valign="top">
-			<th scope="row">
-				<label for="card_type"><?php _e( 'Credit Card Type', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" name="card_type" id="card_type" size="20" maxlength="20" value="<?php echo $offline->card_type;?>" readonly="true" />
-				<a href="javascript:return false;" onclick="jQuery('#delete_card_data').show();" class="delete"><?php _e( 'Delete card data', 'tcp' );?></a>
-				<div id="delete_card_data" class="delete_card_data" style="display:none; border: 1px dotted orange; padding: 2px">
-					<p><?php _e( 'Do you really want to delete this address?', 'tcp' );?></p>
-					<input type="submit" name="tcp_delete_card_data" value="<?php _e( 'Yes' , 'tcp' );?>" class="delete" />
-					|
-					<a href="javascript:return false;" onclick="jQuery('#delete_card_data').hide();"><?php _e( 'No, I don\'t' , 'tcp' );?></a>
-				</div>
-			</td>
-			</tr><?php
-			}
+			}*/
 		}
 	}
 }

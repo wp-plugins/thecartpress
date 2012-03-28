@@ -55,7 +55,7 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'included'				=> isset( $_REQUEST['included'] ) ? $_REQUEST['included'] : array(),
 			'term'					=> isset( $_REQUEST['term'] ) ? $_REQUEST['term'] : '',
 			'limit'					=> isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : '10',
-			'pagination'			=> isset( $_REQUEST['pagination'] ),
+			'see_pagination'		=> isset( $_REQUEST['see_pagination'] ),
 			'loop'					=> isset( $_REQUEST['loop'] ) ? $_REQUEST['loop'] : 'default',
 			'order_type'			=> isset( $_REQUEST['order_type'] ) ? $_REQUEST['order_type'] : 'date',
 			'order_desc'			=> isset( $_REQUEST['order_desc'] ) ? 'desc' : 'asc',
@@ -137,7 +137,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 	$included				= isset( $shortcode_data['included'] ) ? $shortcode_data['included'] : array();
 	$term					= isset( $shortcode_data['term'] ) ? $shortcode_data['term'] : '';
 	$limit					= isset( $shortcode_data['limit'] ) ? $shortcode_data['limit'] : 10;
-	$pagination				= isset( $shortcode_data['pagination'] ) ? $shortcode_data['pagination'] : false;
+	$see_pagination			= isset( $shortcode_data['see_pagination'] ) ? $shortcode_data['see_pagination'] : false;
 	$loop					= isset( $shortcode_data['loop'] ) ? $shortcode_data['loop'] : '';
 	$columns				= isset( $shortcode_data['columns'] ) ? $shortcode_data['columns'] : 2;
 	$order_type				= isset( $shortcode_data['order_type'] ) ? $shortcode_data['order_type'] : 'date';
@@ -229,7 +229,8 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 				<?php if ( strlen( $post_type ) > 0 ) : ?>
 				<select name="taxonomy" id="taxonomy">
 				<option value="" <?php selected( $taxonomy, '' );?>><?php _e( 'all', 'tcp' );?></option>
-				<?php foreach( get_object_taxonomies( $post_type ) as $taxonomy_item ) : $tax = get_taxonomy( $taxonomy_item );?>
+				<?php $taxonomies = get_object_taxonomies( $post_type );
+				if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) foreach( $taxonomies as $taxonomy_item ) : $tax = get_taxonomy( $taxonomy_item );?>
 					<option value="<?php echo esc_attr( $taxonomy_item );?>"<?php selected( $taxonomy, $taxonomy_item );?>><?php echo esc_attr( $tax->labels->name );?></option>
 				<?php endforeach;?>
 				</select>
@@ -237,6 +238,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 				<?php endif;?>
 			</td>
 		</tr>
+
 		<tr valign="top" class="tcp_taxonomy_controls" style="<?php echo $use_taxonomy_style;?>">
 			<th scope="row">
 				<label for="term"><?php _e( 'Term', 'tcp' )?>:</label>
@@ -260,23 +262,25 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 				<label for="included"><?php _e( 'Included', 'tcp' )?>:</label>
 			</th>
 			<td>
+				<?php $args = array(
+					'post_type'			=> $post_type,
+					'posts_per_page'	=> -1,
+					'post_status'		=> 'publish',
+					'fields'			=> 'ids',
+				);
+				if ( tcp_is_saleable_post_type( $post_type ) ) {
+					$args['meta_query'][] = array(
+						'key'		=> 'tcp_is_visible',
+						'value'		=> 1,
+						'compare'	=> '='
+					);
+				}
+				$ids = get_posts( $args ); ?>
 				<select name="included[]" id="included" multiple="true" size="8" style="height: auto">
 					<option value="" <?php selected( $included, '' ); ?>><?php _e( 'all', 'tcp' );?></option>
-				<?php
-				$args = array(
-					'post_type'	=> $post_type,
-					'posts_per_page' => -1,
-				);
-				//if ( $post_type == 'tcp_product' ) {
-				if ( tcp_is_saleable_post_type( $post_type ) ) {
-					$args['meta_key'] = 'tcp_is_visible';
-					$args['meta_value'] = true;
-				}
-				$query = new WP_query( $args );
-				if ( $query->have_posts() ) while ( $query->have_posts() ): $query->the_post();?>
-					<option value="<?php the_ID();?>"<?php tcp_selected_multiple( $included, get_the_ID() ); ?>><?php the_title();?></option>
-				<?php endwhile;
-				wp_reset_postdata(); wp_reset_query();?>
+				<?php if ( is_array( $ids ) && count( $ids ) > 0 ) foreach( $ids as $post_id ) : ?>
+					<option value="<?php echo $post_id;?>"<?php tcp_selected_multiple( $included, $post_id ); ?>><?php echo get_the_title( $post_id ); ?></option>
+				<?php endforeach;?>
 				</select>
 			</td>
 		</tr>
@@ -294,7 +298,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 				<label for="id"><?php _e( 'Pagination', 'tcp' );?>:</label>
 			</th>
 			<td>
-				<input type="checkbox" name="pagination" id="pagination" value="yes" <?php checked( $pagination ); ?>/>
+				<input type="checkbox" name="see_pagination" id="see_pagination" value="yes" <?php checked( $see_pagination ); ?>/>
 				<br/><span class="description"><?php _e( 'Allows to set pagination in the shortcode.', 'tcp' );?></span>
 			</td>
 		</tr>

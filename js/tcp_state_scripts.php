@@ -23,16 +23,6 @@ var countries = {
 	'CA': { //Canada
 		'AB' : 'Alberta', 'BC' : 'British Columbia', 'MA' : 'Manitoba', 'NB' : 'New Brunswick', 'NL' : 'Newfoundland and Labrador', 'NT' : 'Northwest Territories', 'NS' : 'Nova Scotia', 'NU' : 'Nunavut', 'ON' : 'Ontario', 'PE' : 'Prince Edward Island', 'QU' : 'Québec', 'SA' : 'Saskatchewan', 'YU' : 'Yukon'
 	},
-	'ES' : { //Spain
-			'C' : 'La Coruña', 'VI' : 'Álava', 'AB' : 'Albacete', 'A' : 'Alicante', 'AL' : 'Almería', 'O' : 'Asturias',
-			'AV' : 'Ávila', 'BA' : 'Badajoz', 'PM' : 'Islas Baleares', 'B' : 'Barcelona', 'BU' : 'Burgos', 'CC' : 'Cáceres',
-			'CA' : 'Cádiz', 'S' : 'Cantabria', 'CS' : 'Castellón', 'CE' : 'Ceuta', 'CR' : 'Ciudad Real', 'CO' : 'Córdoba',
-			'CU' : 'Cuenca', 'GI' : 'Gerona', 'GR' : 'Granada', 'GU' : 'Guadalajara', 'SS' : 'Guipúzcoa', 'H' : 'Huelva',
-			'HU' : 'Huesca', 'J' : 'Jaén', 'LO' : 'La Rioja', 'GC' : 'Las Palmas', 'LE' : 'León', 'L' : 'Lérida', 'LU' : 'Lugo',
-			'M' : 'Madrid', 'MA' : 'Málaga', 'ML' : 'Melilla', 'MU' : 'Murcia', 'NA' : 'Navarra', 'OR' : 'Orense', 'P' : 'Palencia',
-			'PO' : 'Pontevedra', 'SA' : 'Salamanca', 'TF' : 'Santa Cruz de Tenerife', 'SG' : 'Segovia', 'SE' : 'Sevilla', 'SO' : 'Soria',
-			'T' : 'Tarragona', 'TE' : 'Teruel', 'TO' : 'Toledo', 'V' : 'Valencia', 'VA' : 'Valladolid', 'BI' : 'Vizcaya', 'ZA' : 'Zamora', 'Z' : 'Zaragoza'
-		},
 	'US' : { //USA
 		'AL' : 'Alabama', 'AK' : 'Alaska', 'AZ' : 'Arizona', 'AR' : 'Arkansas', 'CA' : 'California', 'CO' : 'Colorado', 'CT' : 'Connecticut', 'DE' : 'Delaware', 
 		'DC' : 'District of Columbia', 'FL' : 'Florida', 'GA' : 'Georgia', 'HI' : 'Hawaii', 'ID' : 'Idaho', 'IL' : 'Illinois', 'IN' : 'Indiana',

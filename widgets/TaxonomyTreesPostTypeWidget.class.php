@@ -16,22 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TaxonomyTreesPostTypeWidget extends WP_Widget {
+require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
+
+class TaxonomyTreesPostTypeWidget extends TCPParentWidget {
 	function TaxonomyTreesPostTypeWidget() {
-		$widget = array(
-			'classname'		=> 'taxonomytreesposttype',
-			'description'	=> __( 'Use this widget to add trees of different taxonomis', 'tcp' ),
-		);
-		$control = array(
-			'width'		=> 400,
-			'id_base'	=> 'taxonomytreesposttype-widget',
-		);
-		$this->WP_Widget( 'taxonomytreesposttype-widget', 'TCP Navigation Tree', $widget, $control );
-		
-		//add_filter( 'get_terms', array( $this, 'get_terms' ), 9, 3 );
+		parent::__construct( 'taxonomytreesposttype', __( 'Use this widget to add trees of different taxonomies', 'tcp' ), 'TCP Navigation Tree' );
 	}
 	
 	function widget( $args, $instance ) {
+		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $before_widget;
@@ -94,8 +87,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 	}
 	
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title']					= strip_tags( $new_instance['title'] );
+		$instance = parent::update( $new_instance, $old_instance );
 		$instance['post_type']				= $new_instance['post_type'];
 		$instance['taxonomy']				= $new_instance['taxonomy'];
 		$instance['see_number_products']	= $new_instance['see_number_products'];
@@ -109,8 +101,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 	}
 
 	function form( $instance ) {
+		parent::form( $instance, __( 'Navigation trees', 'tcp') );
 		$defaults = array(
-			'title'					=> 'Navigation trees',
 			'post_type'				=> TCP_PRODUCT_POST_TYPE,
 			'taxonomy'				=> TCP_PRODUCT_CATEGORY,
 			'see_number_products'	=> true,
@@ -125,9 +117,6 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		$included_taxonomies	= isset( $instance['included_taxonomies'] ) ? $instance['included_taxonomies'] : array();
 		$excluded_taxonomies	= isset( $instance['excluded_taxonomies'] ) ? $instance['excluded_taxonomies'] : array(); ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p><p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
 			<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
@@ -139,7 +128,8 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 		</p><p>
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'tcp' )?>:</label>
 			<select name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" class="widefat">
-			<?php foreach( get_object_taxonomies( $instance['post_type'] ) as $taxonomy ) : $tax = get_taxonomy( $taxonomy ); ?>
+			<?php $taxonomies = get_object_taxonomies( $instance['post_type'] );
+			if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) foreach( $taxonomies as $taxonomy ) : $tax = get_taxonomy( $taxonomy ); ?>
 				<option value="<?php echo esc_attr( $taxonomy );?>"<?php selected( $instance['taxonomy'], $taxonomy ); ?>><?php echo $tax->labels->name;?></option>
 			<?php endforeach;?>
 			</select>
@@ -167,7 +157,7 @@ class TaxonomyTreesPostTypeWidget extends WP_Widget {
 			$categories = get_categories( $args );
 			$this->orderIncluded = explode( '#', $instance['order_included'] );
 			usort( $categories, array( $this, 'compare' ) );
-			foreach( $categories as $cat ) : ?>
+			if ( is_array( $categories ) && count( $categories ) > 0 ) foreach( $categories as $cat ) : ?>
 				<option value="<?php echo esc_attr( $cat->term_id );?>"<?php tcp_selected_multiple( $included_taxonomies, $cat->term_id ); ?>><?php echo $cat->cat_name;?></option>
 			<?php endforeach;?>
 			</select>

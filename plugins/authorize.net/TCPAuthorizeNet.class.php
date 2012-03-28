@@ -92,11 +92,11 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		$new_status			= $data['new_status'];
 		$test_mode			= isset( $data['test_mode'] ) ? $data['test_mode'] : true;
 		//$md5_hash			= isset( $data['md5_hash'] ) ? $data['md5_hash'] : true;
-		$paymentAmount		= $shoppingCart->getTotal( true );
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+		$paymentAmount		= Orders::getTotal( $order_id );
 		$amount				= number_format( $paymentAmount, 2, '.', '' );
 		$notify_url			= plugins_url( 'thecartpress/plugins/authorize.net/notify.php' );//?orderid=' . $order_id . '&status=' . $new_status );
-		require_once( dirname( dirname( dirname( __FILE__ ) ) ) .'/daos/Orders.class.php' );
-		$order = Orders::get( $order_id );
+		$order				= Orders::get( $order_id );
 		require_once dirname( __FILE__ ) . '/anet_php_sdk/AuthorizeNet.php'; // Include the SDK you downloaded in Step 2
 		$fp_timestamp	= time();
 		$fp_sequence	= $order_id . time(); // Enter an invoice or other unique number.

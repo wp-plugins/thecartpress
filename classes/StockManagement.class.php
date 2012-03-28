@@ -17,6 +17,57 @@
 */
 
 class TCPStockManagement {
+	private $no_stock_enough = false;
+
+	function send_emails_for_low_stock( $order_id ) {
+		global $thecartpress;
+		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 );
+		require_once( TCP_DAOS_FOLDER . '/OrdersDetails.class.php' );
+		$details = OrdersDetails::getDetails( $order_id );
+		$low_stock = array();
+		foreach( $details as $detail ) {
+			$stock = tcp_get_the_stock( $detail->post_id, $detail->option_1_id, $detail->option_2_id );
+			if ( $stock < $stock_limit ) {
+				$low_stocks[] = array(
+					'post_id'		=> $detail->post_id,
+					'option_1_id'	=> $detail->option_1_id,
+					'option_2_id'	=> $detail->option_2_id,
+					'title'			=> $detail->name . ' ' . $detail->option_1_name . ' ' . $detail->option_2_name,
+					'stock'			=> $stock,
+				);
+			}
+		}
+		if ( is_array( $low_stocks ) & count( $low_stocks ) > 0 ) {
+			ob_start(); ?>
+			<h1><?php _e(' Low Stock', 'tcp' ); ?></h1>
+			<table>
+				<tbody>
+					<tr>
+						<th><?php _e( 'Name', 'tcp' ); ?></th>
+						<th><?php _e( 'Stock', 'tcp' ); ?></th>
+					</tr>
+					<?php foreach( $low_stocks as $low_stock ) :
+						$href = get_admin_url() . '/post.php?action=edit&post=' . $low_stock['post_id']; ?>
+					<tr>
+						<td><a href="<?php echo $href; ?>"><?php echo $low_stock['title']; ?></a></td>
+						<td><a href="<?php echo $href; ?>"><?php echo $low_stock['stock']; ?></a></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<?php $html = ob_get_clean();
+			global $thecartpress;
+			$to	= $thecartpress->get_setting( 'emails', '' );
+			if ( strlen( $to ) ) {
+				$name = get_bloginfo( 'name' );
+				$from	= $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
+				$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+				$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
+				wp_mail( $to, __( 'Low Stock Notice', 'tcp' ), $html, $headers );
+			}
+		}
+	}
 
 	function admin_menu() {
 		global $thecartpress;
@@ -26,10 +77,11 @@ class TCPStockManagement {
 			add_submenu_page( $base, __( 'Update Stock', 'tcp' ), __( 'Update Stock', 'tcp' ), 'tcp_update_stock', TCP_ADMIN_FOLDER . 'StockUpdate.php' );
 		}	
 	}
-	
+
 	function admin_init() {
 		$tcp_settings_page = TCP_ADMIN_FOLDER . 'Settings.class.php';
 		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), $tcp_settings_page , 'tcp_main_section' );
+		add_settings_field( 'stock_limit', __( 'Stock limit', 'tcp' ), array( $this, 'show_stock_limit' ), $tcp_settings_page , 'tcp_main_section' );
 	}
 
 	function show_stock_management() {
@@ -37,9 +89,16 @@ class TCPStockManagement {
 		$stock_management = $thecartpress->get_setting( 'stock_management' ); ?>
 		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management ); ?> /><?php
 	}
-	
+
+	function show_stock_limit() {
+		global $thecartpress;
+		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 ); ?>
+		<input type="checkbox" id="stock_limit" name="tcp_settings[stock_limit]" value="yes" <?php checked( true, $stock_limit ); ?> /><?php
+	}
+
 	function tcp_validate_settings( $input ) {
 		$input['stock_management'] = isset( $input['stock_management'] ) ? $input['stock_management'] == 'yes' : false;
+		$input['stock_limit'] = isset( $input['stock_limit'] ) ? (int)$input['stock_limit'] : 10;
 		return $input;
 	}
 
@@ -128,6 +187,36 @@ class TCPStockManagement {
 		}
 	}
 
+	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
+		global $thecartpress;
+		$stock_management = $thecartpress->get_setting('stock_management', false );
+		if ( $stock_management ) {
+			$stock = tcp_get_the_stock( $ordersDetails['post_id'], $ordersDetails['option_1_id'], $ordersDetails['option_2_id'] );
+			$stock = apply_filters( 'tcp_checkout_stock', $stock );
+			if ( $stock == -1 ) {
+				$this->no_stock_enough = false;
+			} elseif ( $stock >= $ordersDetails['qty_ordered'] ) {
+				tcp_set_the_stock( $ordersDetails['post_id'], $ordersDetails['option_1_id'], $ordersDetails['option_2_id'], $stock - $ordersDetails['qty_ordered'] );
+				$this->no_stock_enough = false;
+			} else {
+				$this->no_stock_enough = true;//the next hook is "tcp_checkout_ok"
+			}
+		}
+	}
+
+	function tcp_checkout_ok( $order_id ) {
+		if ( $this->no_stock_enough ) {
+			Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
+			$message = tcp_do_template( 'tcp_error_stock_when_pay', false );
+			if ( strlen( $message ) == 0 ) : ?>
+				<p><?php _e( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ); ?></p>
+			<?php else :
+				echo $message;
+			endif;
+		}
+		$this->send_emails_for_low_stock( $order_id );
+	}
+
 	//ProductCustomPostType
 	function tcp_custom_columns_definition( $columns ) {
 		$columns['stock'] = __( 'Stock', 'tcp' );
@@ -137,6 +226,8 @@ class TCPStockManagement {
 	function tcp_manage_posts_custom_column( $column_name, $post ) {
 		if ( 'stock' == $column_name ) {
 			$stock = tcp_get_the_stock( $post->ID );
+			global $thecartpress;
+			$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 );
 			if ( $stock == -1 ) {
 				$options_1 = RelEntities::select( $post->ID, 'OPTIONS' );
 				if ( is_array( $options_1 ) && count( $options_1 ) > 0 ) {
@@ -162,7 +253,7 @@ class TCPStockManagement {
 				} else {
 					$stock = __( 'N/A', 'tcp' );
 				}
-			} else if ( $stock < 10 ) {
+			} else if ( $stock < $stock_limit ) {
 				$stock = sprintf( '<span class="tcp_low_stock" style="color: red">%s</span>', $stock );
 			}
 			echo $stock;
@@ -216,11 +307,9 @@ class TCPStockManagement {
 			add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
 			add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
 
-			//deprecated 1.2
 			add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
 			add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
 			add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
-			//deprecated 1.2
 
 			add_action( 'tcp_dynamic_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
 			add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
@@ -241,7 +330,9 @@ class TCPStockManagement {
 				add_filter( 'tcp_custom_columns_definition', array( $this, 'tcp_custom_columns_definition' ) );
 				add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
 
-				add_filter ( 'tcp_checkout_manager', array( $this, 'tcp_checkout_manager' ) );
+				add_filter( 'tcp_checkout_manager', array( $this, 'tcp_checkout_manager' ) );
+				add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+				add_action( 'tcp_checkout_ok', array( $this, 'tcp_checkout_ok' ) );
 				add_action( 'tcp_create_option', array( $this, 'tcp_create_option' ), 10, 2 );
 
 				add_action( 'tcp_shopping_cart_summary_widget_form', array( $this, 'tcp_shopping_cart_summary_widget_form' ), 10, 2 );
@@ -256,6 +347,8 @@ class TCPStockManagement {
 }
 
 $stock_management = new TCPStockManagement();
+
+require_once( TCP_WIDGETS_FOLDER . 'StockSummaryDashboard.class.php' );
 
 function tcp_the_stock( $before = '', $after = '', $echo = true ) {
 	$stock = tcp_the_meta( 'tcp_stock', $before, $after, false );

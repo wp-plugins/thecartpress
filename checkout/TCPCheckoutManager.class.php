@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
@@ -145,7 +145,7 @@ class TCPCheckoutManager {
 		<div class="checkout" id="checkout">
 		<?php $this->show_header( $box, $step );
 		if ( $step == count( $this->steps ) ) : //last step, no return
-			echo $this->create_order(); //create the order, show payment form and empty shoppingcart 
+			echo $this->create_order(); //create the order, show payment form
 		else :
 			if ( $box->is_form_encapsulated() ) :?><form method="post"><?php endif; ?>
 		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
@@ -387,7 +387,8 @@ class TCPCheckoutManager {
 			$order['payment_name']   = '';
 		}
 		do_action( 'tcp_checkout_calculate_other_costs' );
-		$order['discount_amount'] = $shoppingCart->getAllDiscounts();
+		if ( tcp_is_display_prices_with_taxes() ) $order['discount_amount'] = $shoppingCart->getAllDiscounts();
+		else $order['discount_amount'] = $shoppingCart->getCartDiscountsTotal();
 		$order['weight'] = $shoppingCart->getWeight();
 		$order['comment_internal'] = '';
 		$order['code_tracking'] = '';
@@ -429,31 +430,14 @@ class TCPCheckoutManager {
 			$ordersDetails['name']				= tcp_get_the_title( $post->ID );
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
-			
-			//$tax = tcp_get_the_tax( $item->getPostId() );
-			//$res = tcp_get_price_and_tax( $item->getUnitPrice(), $tax );
-			//$unit_price_without_tax = round( $res[0], $decimals );
-			
-			//$ordersDetails['price']				= $item->getUnitPrice();
-			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
+			if ( ! tcp_is_display_prices_with_taxes() ) $discount = $item->getDiscount() / $item->getUnits();
+			else $discount = 0;
+			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
 			$ordersDetails['original_price']	= $item->getUnitPrice();
 			$ordersDetails['tax']				= tcp_get_the_tax( $item->getPostId() );
 			$ordersDetails['qty_ordered']		= $item->getCount();
 			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
-			global $thecartpress;
-			$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
-			if ( $stock_management ) {
-				$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-				$stock = apply_filters( 'tcp_checkout_stock', $stock );
-				if ( $stock == -1 ) {
-					//nothing to do 
-				} elseif ( $stock >= $item->getCount() ) {
-					tcp_set_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $stock - $item->getCount() );
-				} else {
-					$no_stock_enough = true;
-				}
-			}
 			$orders_details_id = OrdersDetails::insert( $ordersDetails );
 			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId(), $ordersDetails ); //, $item->getOption1Id(), $item->getOption2Id() );
 		}
@@ -466,56 +450,42 @@ class TCPCheckoutManager {
 				$ordersCosts['order_id']	= $order_id;
 				$ordersCosts['description']	= $cost->getDesc();
 				$ordersCosts['cost']		= tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
-				$ordersCosts['tax']			= tcp_get_the_shipping_tax();//tcp_calculate_tax_for_shipping( $cost->getCost() );
+				$ordersCosts['tax']			= tcp_get_the_shipping_tax();
 				$ordersCosts['cost_order']	= $cost->getOrder();
 				$orders_cost_id = OrdersCosts::insert( $ordersCosts );
 				do_action( 'tcp_checkout_create_order_insert_cost', $orders_cost_id );
 			}
 		}
-		if ( $create_shipping_address )
-			$this->createNewShippingAddress( $order );
-		if ( $create_billing_address )
-			$this->createNewBillingAddress( $order );
-		//if ( $order['customer_id'] > 0 ) {//for downloadable products the customer must be registered
-			//$virtualProductsDAO = new VirtualProductsDAO();
-			//$virtualProductsDAO->createVirtualProducts($productsCart, $order->customer_id, $order_id);
-		//}
+		if ( $create_shipping_address ) $this->createNewShippingAddress( $order );
+		if ( $create_billing_address ) $this->createNewBillingAddress( $order );
 		//
 		// shows Payment Area
 		//
-		do_action( 'tcp_checkout_ok', $order_id );
-		$html = '<div class="tcp_payment_area">' . "\n";
-		if ( $no_stock_enough ) {
-			Orders::editStatus( $order_id, Orders::$ORDER_PENDING, __( 'Not enough stock in order at check-out', 'tcp' ) );
-			$message = tcp_do_template( 'tcp_error_stock_when_pay', false );
-			if ( strlen( $message ) == 0 ) $html .= '<p>' . __( 'There was an error when creating the order. Please contact with the seller.', 'tcp' ) . '</p>';
-			else $html .= $message;
-		}
-		
-		$html .= '<p>' . __( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ) . '</p>';
-		if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
+		ob_start(); ?>
+		<div class="tcp_payment_area">
+		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
+		<p><?php _e( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ); ?></p>
+		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
 			$class = $pmi[0];
 			$instance = $pmi[1];
 			$payment_method = new $class();
-			do_action( 'tcp_checkout_calculate_other_costs' );
-			$html .= '<div class="tcp_pay_form">';
-			ob_start();
-			$payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
+			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
+			<div class="tcp_pay_form">
+			<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
 			<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
-			<?php $html .= ob_get_clean();
-			$html .= '</div>';
-		}
+			</div>
+		<?php }
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;
-		$html .= $order_page;
-		$html .= '<br />';
-		$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
-		$html .= '</div><!-- tcp_payment_area-->' . "\n";
+		echo $order_page; ?>
+		<br />
+		<a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+		</div><!-- tcp_payment_area--><?php
 		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		//$shoppingCart->deleteAll();//remove since 1.1.0
-		return $html;
+		return ob_get_clean();
 	}
 
 	private function get_shipping_country() {

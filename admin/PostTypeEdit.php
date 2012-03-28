@@ -61,12 +61,11 @@ if ( isset( $_REQUEST['save_post_type'] ) ) {
 		//TheCartPress support
 		'is_saleable'		=> isset( $_REQUEST['is_saleable'] ),
 	);
-	//if ( isset( $_REQUEST['edit'] ) )
-	$post_types = tcp_get_custom_post_types();
+	//$post_types = tcp_get_custom_post_types();
 	tcp_update_custom_post_type( $post_type, $post_type_def );
 	update_option( 'tcp_rewrite_rules', true ); ?>
 	<div id="message" class="updated"><p>
-		<?php _e( 'Post type saved', 'tcp' );?> 
+		<?php printf( __( 'Post type saved. See <a href="edit.php?post_type=%s">%s</a>', 'tcp' ), $post_type, $post_type_def['name'] );?>
 	</p></div><?php
 	unset( $post_type_def );
 } elseif ( strlen( $post_type ) > 0 ) {

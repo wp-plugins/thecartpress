@@ -119,7 +119,7 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	</tbody>
 	</table>
 	<p class="submit">
-		<input type="submit" id="tcp_search" name="tcp_search" class="button-secondary" value="<?php _e('Search') ?>" />
+		<input type="submit" id="tcp_search" name="tcp_search" class="button-secondary" value="<?php _e( 'Search', 'tcp' ) ?>" />
 	</p>
 	<?php if ( isset( $_REQUEST['tcp_search'] ) && strlen( $cat_slug ) > 0 ) :
 		$args = array(

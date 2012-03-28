@@ -36,10 +36,11 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		//jQuery("#tcp_buy_button_form_<?php echo $post_id; ?>").submit();			
 	}
 </script>
-<div class="tcp_buy_button">
-<form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
 
 <?php /**** Start editing to customise your buy buttons! */ ?>
+
+<div class="tcp_buy_button_area <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
+<form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
 
 <table class="tcp_buy_button">
 <tbody>
@@ -57,12 +58,17 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		</script>
 		<tr>
 		<td class="tcp_buy_button_thumbnail">
+
 			<?php $image = tcp_get_the_thumbnail_with_permalink( $product_id, false, false ); ?>
 			<?php echo apply_filters( 'tcp_get_image_in_grouped_buy_button', $image, $product_id ); ?>
+
 		</td>
 		<td class="tcp_buy_button_name">
+
 		<?php if ( tcp_is_visible( $product_id ) ) : ?>
+
 			<a href="<?php echo get_permalink( $product_id ); ?>"><?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?></a>
+
 		<?php else : ?>
 
 			<?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?>
@@ -75,7 +81,11 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		</td>
 		<td class="tcp_buy_button_price">
 
-			<?php if ( function_exists( 'tcp_the_buy_button_options' ) ) echo tcp_the_buy_button_options( $product_id, $post_id ); ?>
+			<?php if ( function_exists( 'tcp_the_buy_button_options' ) ) : ?>
+			
+				<?php echo tcp_the_buy_button_options( $product_id, $post_id ); ?>
+				
+			<?php endif; ?>
 
 			<?php if ( ! ( function_exists( 'tcp_has_options' ) && tcp_has_options( $product_id ) ) ) : ?>
 
@@ -105,7 +115,9 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 			<?php endif; ?></td>
 
 		</tr>
+
 	<?php endif; ?>
+
 <?php endforeach; ?>
 </tbody>
 </table>

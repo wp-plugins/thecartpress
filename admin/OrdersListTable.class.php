@@ -140,7 +140,7 @@ class TCPOrdersList {
 <div class="wrap">
 	<h2><?php _e( 'Orders', 'tcp' );?></h2>
 	<div class="clear"></div>
-	<?php $ordersListTable->search_box( __( 'Search Orders' ), 'order' ); ?>
+	<?php $ordersListTable->search_box( __( 'Search Orders', 'tcp' ), 'order' ); ?>
 	<?php $ordersListTable->display(); ?>
 </div>
 </form>

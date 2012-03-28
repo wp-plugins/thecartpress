@@ -1,9 +1,26 @@
 <?php
-//error_reporting( E_ALL );
-//ini_set( 'display_errors', 1 );
+/**
+ * This file is part of TheCartPress.
+ * 
+ * TheCartPress is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TheCartPress is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 if ( isset( $_REQUEST['order_id'] ) ) {
-	$order_id			= (int)$_REQUEST['order_id'];
+	$wordpress_path = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/';
+	include_once( $wordpress_path.'wp-config.php' );
+	include_once( $wordpress_path.'wp-includes/wp-db.php' );
+	$order_id			= $_REQUEST['order_id'];
 	$card_number_1		= isset( $_REQUEST['card_number_1'] ) ? $_REQUEST['card_number_1'] : '';
 	$card_number_2		= isset( $_REQUEST['card_number_2'] ) ? $_REQUEST['card_number_2'] : '';
 	$card_number_3		= isset( $_REQUEST['card_number_3'] ) ? $_REQUEST['card_number_3'] : '';
@@ -18,10 +35,17 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 	$created_at			= date( 'Y-m-d' );
 	$url				= isset( $_REQUEST['return_url'] ) ? $_REQUEST['return_url'] : '';
 	if ( CCValidator::validateCC( $card_number ) ) {
-		$wordpress_path = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/';
-		include_once( $wordpress_path.'wp-config.php' );
-		include_once( $wordpress_path.'wp-includes/wp-db.php' );
-		global $wpdb;
+		tcp_update_order_meta( $order_id, 'tcp_card_offlines', array(
+			'order_id'				=> $order_id,
+			'card_holder'			=> $card_holder,
+			'card_number'			=> $card_number,
+			'cvc'					=> $cvc,
+			'expiration_month'		=> $expiration_month,
+			'expiration_year'		=> $expiration_year,
+			'card_type'				=> $card_type,
+			'created_at'			=> $created_at,
+		) );
+		/*global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_offlines',
 			array(
 				'order_id'				=> $order_id,
@@ -34,21 +58,21 @@ if ( isset( $_REQUEST['order_id'] ) ) {
 				'created_at'			=> $created_at,
 			),
 			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
-		);
-		$wpdb->update( $wpdb->prefix . 'tcp_orders',
-			array(
-				'status'	=> $new_status,
-			),
-			array(
-				'order_id'	=> $order_id,
-			), 
-			array( '%s' ), array( '%d' ) );
-		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
+		);*/
+		$thecartpress_path = dirname( dirname( dirname( __FILE__ ) ) ) . '/';
+		require_once( $thecartpress_path . 'daos/Orders.class.php');
+		require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
+		Orders::editStatus( $order_id, $new_status );
 		ActiveCheckout::sendMails( $order_id );
 		header( 'Location: ' . $url );
 		exit;
 	} else {
-		die( 'Wrong data card' );
+		$cancelled_status = tcp_get_cancelled_order_status();
+		$thecartpress_path = dirname( dirname( dirname( __FILE__ ) ) ) . '/';
+		require_once( $thecartpress_path . 'daos/Orders.class.php');
+		Orders::editStatus( $order_id, $cancelled_status );
+		header( 'Location: ' . add_query_arg( 'tcp_checkout', 'ko', tcp_get_the_checkout_url() ) );
+		exit;
 	}
 }
 
