@@ -28,6 +28,7 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 <div class="tcp_buy_button_area <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
 <form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
 
+<?php if ( function_exists( 'tcp_the_tier_price' ) ) tcp_the_tier_price(); ?>
 <table class="tcp_buy_button">
 <thead>
 <tr>

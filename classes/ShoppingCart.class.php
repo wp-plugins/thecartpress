@@ -32,33 +32,17 @@ class ShoppingCart {
 	private $discounts = array();
 	private $order_id = 0;
 
-	//function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0, $price_to_show = 0 ) {
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
-		$is_downloadable = tcp_is_downloadable( $post_id );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
-			if ( ! $is_downloadable ) {
-				$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $unit_weight );
-				$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
-				if ( $sci ) {
-					$sci = $this->shopping_cart_items[$shopping_cart_id];
-					$sci->add( $count );
-				}
-			}
+			$sci = $this->shopping_cart_items[$shopping_cart_id];
+			$sci->add( $count );
 		} else {
 			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $unit_weight );
-			$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
-			if ( $sci ) {
-				if ( $is_downloadable ) {
-					$sci->setDownloadable( true );
-					$sci->setCount( 1 );
-				} else {
-					$sci->setDownloadable( false );
-				}
-				$this->shopping_cart_items[$shopping_cart_id] = $sci;
-			}
 		}
+		$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
+		if ( $sci ) $this->shopping_cart_items[$shopping_cart_id] = $sci;
 		$this->removeOrderId();
 	}
 
@@ -67,11 +51,10 @@ class ShoppingCart {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			if ($count > 0) {
-				if ( ! tcp_is_downloadable( $post_id ) ) {
-					$this->shopping_cart_items[$shopping_cart_id]->setCount( $count );
-				} else {
-					$this->shopping_cart_items[$shopping_cart_id]->setCount( 1 );
-				}
+				$sci = $this->shopping_cart_items[$shopping_cart_id];
+				$sci->setUnits( $count );
+				$sci = apply_filters( 'tcp_modify_to_shopping_cart', $sci );
+				if ( $sci ) $this->shopping_cart_items[$shopping_cart_id] = $sci;
 			} else {
 				$this->delete( $post_id, $option_1_id , $option_2_id );
 			}
@@ -189,7 +172,6 @@ class ShoppingCart {
 				$weight += $item->getWeight();
 		return $weight;
 	}
-
 
 	/**
 	 * Returns true if the cart is empty
@@ -524,8 +506,12 @@ class ShoppingCartItem {
 		return $this->getCount();
 	}
 
-	function setCount($count) {
+	function setCount( $count ) {
 		$this->count = $count;
+	}
+
+	function setUnits( $count ) {
+		$this->setCount( $count );
 	}
 
 	function getUnitPrice() {

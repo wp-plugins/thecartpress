@@ -68,18 +68,17 @@ function tcp_get_the_continue_url() {
 function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $after = '' ) {
 	do_action( 'tcp_get_taxonomy_tree' );
 	wp_parse_args( $args, array(
-			'style'			=> 'list',
-			'show_count'	=> true,
-			'hide_empty'	=> true,
-			'taxonomy'		=> 'tcp_product_category',
-			'title_li'		=> '',
-			'echo'			=> false,
+		'style'			=> 'list',
+		'show_count'	=> true,
+		'hide_empty'	=> true,
+		'taxonomy'		=> 'tcp_product_category',
+		'title_li'		=> '',
 	) );
+	ob_start();
 	if ( isset( $args['dropdown'] ) && $args['dropdown'] ) { //TODO
 		$args['show_option_none']	= sprintf ( __( 'Select %s', 'tcp' ), $args['taxonomy']);
 		$args['name']				= $args['taxonomy'];
-		$args['walker']				= new TCPWalker_CategoryDropdown();
-		ob_start(); ?>
+		$args['walker']				= new TCPWalker_CategoryDropdown(); ?>
 		<?php echo wp_dropdown_categories( apply_filters( 'tcp_widget_taxonomy_tree_dropdown_args', $args ) ); ?>
 <script type='text/javascript'>
 // <![CDATA[
@@ -91,10 +90,21 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	dropdown.onchange = on_<?php echo $args['name']; ?>_change;
 // ]]>
 </script>
-		<?php $tree = ob_get_clean();
-	} else {
-		$tree = '<ul>' . wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ) . '</ul>';
-	}
+	<?php } else { ?>
+		<ul><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
+<script>
+/*jQuery('ul.children').hide();
+<?php $term = get_queried_object();
+if ( isset( $term->term_id ) ) : ?>
+	jQuery('li.cat-item-<?php echo $term->term_id; ?> ul').show();
+	jQuery('li.cat-item-<?php echo $term->term_id; ?> ul').parents(function() {
+		jQuery(this).show();
+	});
+<?php endif; ?>*/
+</script>
+
+	<?php }
+	$tree = ob_get_clean();
 	$tree = apply_filters( 'tcp_get_taxonomy_tree', $tree );
 	if ( $echo )
 		echo $before, $tree, $after;

@@ -79,7 +79,7 @@ class TCPParentWidget extends WP_Widget {
 				<option value="<?php echo $role; ?>" <?php tcp_selected_multiple( $roles, $role ); ?>><?php echo $name; ?></option>
 				<?php endforeach; ?>
 			</select>
-			<p class="description"><?php _e( 'Notice: The roles are not hierarchical', 'tcp' ); ?></p>
+			<p class="description"><?php _e( 'Notice: Roles are not hierarchical', 'tcp' ); ?></p>
 		</p>
 		<?php do_action( 'tcp_parent_widget_form', $this );
 	}

@@ -91,7 +91,7 @@ class TCPDownloadableProducts {
 				</td>
 			</tr>
 	<?php }	
-		
+
 	function tcp_product_metabox_save_custom_fields( $post_id ) {
 		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] ) ? $_POST['tcp_is_downloadable'] == 'yes' : false );
 		update_post_meta( $post_id, 'tcp_max_downloads', isset( $_POST['tcp_max_downloads'] ) ? (int)$_POST['tcp_max_downloads'] : 0 );
@@ -102,6 +102,16 @@ class TCPDownloadableProducts {
 		delete_post_meta( $post_id, 'tcp_is_downloadable' );
 		delete_post_meta( $post_id, 'tcp_max_downloads' );
 		delete_post_meta( $post_id, 'tcp_days_to_expire' );
+	}
+
+	function tcp_add_to_shopping_cart( $sci ) {
+		if ( tcp_is_downloadable( $sci->getPostId() ) ) {
+			$sci->setDownloadable( true );
+			$sci->setCount( 1 );
+		} else {
+			$sci->setDownloadable( false );
+		}
+		return $sci;
 	}
 
 	function tcp_send_order_mail_to_customer_message( $message, $order_id ) {
@@ -153,6 +163,8 @@ class TCPDownloadableProducts {
 			add_filter( 'tcp_the_add_to_cart_unit_field', array( $this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
 			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
 			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
+			add_filter( 'tcp_add_to_shopping_cart', array( $this, 'tcp_add_to_shopping_cart' ) );
+			add_filter( 'tcp_modify_to_shopping_cart', array( $this, 'tcp_add_to_shopping_cart' ) );
 		}
 		add_filter( 'tcp_send_order_mail_to_customer_message', array( $this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
 		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
@@ -164,11 +176,11 @@ new TCPDownloadableProducts();
 function tcp_create_download_uuid( $order_detail_id ) {
 	require_once( TCP_CLASSES_FOLDER . 'UUID.class.php' );
 	$uuid = TCPUUID::v4();
-	update_order_detail_meta( $order_detail_id, 'tcp_download_uuid', $uuid );
+	tcp_update_order_detail_meta( $order_detail_id, 'tcp_download_uuid', $uuid );
 	return $uuid;
 }
 
 function tcp_get_download_uuid( $order_detail_id ) {
-	return get_order_detail_meta( $order_detail_id, 'tcp_download_uuid', true );
+	return tcp_get_order_detail_meta( $order_detail_id, 'tcp_download_uuid', true );
 }
 ?>
