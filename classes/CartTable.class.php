@@ -117,12 +117,12 @@ class TCPCartTable {
 					<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
 					<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />
 					<?php if ( ! tcp_is_downloadable( $order_detail->get_post_id() ) ) : ?>
-						<input name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" type="text" class="tcp_count"/>
-						<input name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" type="submit" />
+						<input type="text" name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count"/>
+						<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" />
 					<?php else : ?>
 						1&nbsp;
 					<?php endif; ?>
-					<input name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" type="submit" />
+					<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" />
 					<?php do_action( 'tcp_cart_units', $order_detail ); ?>
 					</form>
 				<?php endif; ?>

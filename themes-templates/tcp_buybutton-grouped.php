@@ -60,6 +60,7 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		<td class="tcp_buy_button_thumbnail">
 
 			<?php $image = tcp_get_the_thumbnail_with_permalink( $product_id, false, false ); ?>
+
 			<?php echo apply_filters( 'tcp_get_image_in_grouped_buy_button', $image, $product_id ); ?>
 
 		</td>
@@ -88,6 +89,11 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 			<?php endif; ?>
 
 			<?php if ( ! ( function_exists( 'tcp_has_options' ) && tcp_has_options( $product_id ) ) ) : ?>
+
+				<?php if ( function_exists( 'tcp_the_tier_price' ) ) :
+					tcp_the_tier_price( $product_id ); ?>
+					<a href="#" class="tcp_view_tier_price" product_id="<?php echo $product_id; ?>" title="<?php _e( 'View/hide tier price', 'tcp' ); ?>"><?php _e( 'View/hide tier price', 'tcp' ); ?></a>
+				<?php endif; ?>
 
 				<span class="tcp_unit_price" id="tcp_unit_price_<?php echo $product_id; ?>">
 				<?php echo tcp_get_the_price_label( $product_id ); ?>
@@ -134,3 +140,21 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 </p>
 </form>
 </div>
+<?php if ( function_exists( 'tcp_the_tier_price' ) ) : ?>
+<script>
+jQuery(document).ready(function() {
+	jQuery('.tcp_tier_price').hide();
+	jQuery('.tcp_view_tier_price').click(function() {
+		var product_id = jQuery(this).attr('product_id');
+		var cl = '.tcp_tier_price_' + product_id;
+		if (jQuery(cl).is(":visible")) {
+			jQuery(cl).hide();
+		} else {
+			jQuery('.tcp_tier_price').hide();
+			jQuery(cl).show();
+		}
+		return false;
+	});
+});
+</script>
+<?php endif; ?>

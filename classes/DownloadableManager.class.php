@@ -53,8 +53,8 @@ class TCPDownloadableManager implements IDownloadableManager {
 	}
 
 	public function delete_file( $post_id, $version, $file_path ) {
-echo "$post_id, $version, $file_path<br>";
-return false;
+		//echo "$post_id, $version, $file_path<br>";
+		return false;
 	}
 	
 	public function delete_version( $post_id, $version ) {
