@@ -395,5 +395,19 @@ class Orders {
 		return $amount;
 	}
 
+	static function getAmountByMonth( $first_day, $status = '' ) {
+		global $wpdb;
+
+		$last_day = strtotime( '+1 month', strtotime( $first_day ) );
+		$last_day = date( 'Y-m-d', strtotime( '-1 day', $last_day ) );
+		$sql = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'tcp_orders where created_at > %s and created_at < %s', $first_day, $last_day );
+		if ( $status != '' ) $sql .= $wpdb->prepare( ' AND status = %s', $status );
+		$orders = $wpdb->get_results( $sql );
+		$amount = 0;
+		foreach( $orders as $order ) {
+			$amount += Orders::getTotal( $order->order_id );
+		}
+		return array( $amount, count( $orders ) );
+	}
 }
 ?>

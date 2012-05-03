@@ -27,7 +27,7 @@ class TCPStockManagement {
 		$low_stock = array();
 		foreach( $details as $detail ) {
 			$stock = tcp_get_the_stock( $detail->post_id, $detail->option_1_id, $detail->option_2_id );
-			if ( $stock < $stock_limit ) {
+			if ( $stock > -1 && $stock < $stock_limit ) {
 				$low_stocks[] = array(
 					'post_id'		=> $detail->post_id,
 					'option_1_id'	=> $detail->option_1_id,
@@ -82,23 +82,34 @@ class TCPStockManagement {
 		$tcp_settings_page = TCP_ADMIN_FOLDER . 'Settings.class.php';
 		add_settings_field( 'stock_management', __( 'Stock management', 'tcp' ), array( $this, 'show_stock_management' ), $tcp_settings_page , 'tcp_main_section' );
 		add_settings_field( 'stock_limit', __( 'Stock limit', 'tcp' ), array( $this, 'show_stock_limit' ), $tcp_settings_page , 'tcp_main_section' );
+		add_settings_field( 'hide_out_of_stock', __( 'Hide out of stock products', 'tcp' ), array( $this, 'show_hide_out_of_stock' ), $tcp_settings_page , 'tcp_main_section' );
 	}
 
 	function show_stock_management() {
 		global $thecartpress;
 		$stock_management = $thecartpress->get_setting( 'stock_management' ); ?>
-		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management ); ?> /><?php
+		<input type="checkbox" id="stock_management" name="tcp_settings[stock_management]" value="yes" <?php checked( true, $stock_management ); ?> />
+		<span class="description"><?php _e( 'Activates the stock management tools', 'tcp' ); ?></span><?php
 	}
 
 	function show_stock_limit() {
 		global $thecartpress;
 		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 ); ?>
-		<input type="checkbox" id="stock_limit" name="tcp_settings[stock_limit]" value="yes" <?php checked( true, $stock_limit ); ?> /><?php
+		<input type="number" id="stock_limit" name="tcp_settings[stock_limit]" value="<?php echo $stock_limit; ?>" size="4" maxlength="4"/>
+		<span class="description"><?php _e( 'Sets the upper limit to send emails for low stock', 'tcp' ); ?></span><?php
+	}
+
+	function show_hide_out_of_stock() {
+		global $thecartpress;
+		$hide_out_of_stock = $thecartpress->get_setting( 'hide_out_of_stock' ); ?>
+		<input type="checkbox" id="hide_out_of_stock" name="tcp_settings[hide_out_of_stock]" value="yes" <?php checked( true, $hide_out_of_stock ); ?> />
+		<span class="description"><?php _e( 'Allows to hide out of Stock products', 'tcp' ); ?></span><?php
 	}
 
 	function tcp_validate_settings( $input ) {
 		$input['stock_management'] = isset( $input['stock_management'] ) ? $input['stock_management'] == 'yes' : false;
 		$input['stock_limit'] = isset( $input['stock_limit'] ) ? (int)$input['stock_limit'] : 10;
+		$input['hide_out_of_stock'] = isset( $input['hide_out_of_stock'] ) ? $input['hide_out_of_stock'] == 'yes' : false;
 		return $input;
 	}
 
@@ -298,27 +309,49 @@ class TCPStockManagement {
 		return $out;
 	}
 
+	function tcp_apply_filters_for_saleables( $query, $wp_query ) {
+		global $thecartpress;
+		if ( $thecartpress->get_setting( 'hide_out_of_stock' ) )
+			$query['meta_query'][] = array(
+				'key'		=> 'tcp_stock',
+				'value'		=> 0,
+				'type'		=> 'NUMERIC',
+				'compare'	=> '!='
+			);
+		return $query;
+	}
+
 	function __construct() {
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
 			add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
-
-			add_action( 'tcp_product_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
-
-			add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
-
-			add_action( 'tcp_dynamic_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_dynamic_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
 		}
 		global $thecartpress;
 		if ( ! empty( $thecartpress ) ) {
-			$stock_management = $thecartpress->get_setting( 'stock_management' );
+			$stock_management = $thecartpress->get_setting( 'stock_management', false );
 			if ( $stock_management ) {
+				if ( is_admin() ) {
+					add_action( 'tcp_product_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+
+					add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+
+					add_action( 'tcp_dynamic_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_dynamic_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+
+					add_filter( 'tcp_the_add_to_cart_unit_field', array( $this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
+					add_filter( 'tcp_apply_filters_for_saleables', array( $this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
+					
+					add_filter( 'tcp_checkout_manager', array( $this, 'tcp_checkout_manager' ) );
+					add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+					add_action( 'tcp_checkout_ok', array( $this, 'tcp_checkout_ok' ) );
+					add_action( 'tcp_create_option', array( $this, 'tcp_create_option' ), 10, 2 );
+				}
+
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 				add_action( 'admin_init', array( $this, 'add_template_class' ) );
 
@@ -330,17 +363,10 @@ class TCPStockManagement {
 				add_filter( 'tcp_custom_columns_definition', array( $this, 'tcp_custom_columns_definition' ) );
 				add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
 
-				add_filter( 'tcp_checkout_manager', array( $this, 'tcp_checkout_manager' ) );
-				add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
-				add_action( 'tcp_checkout_ok', array( $this, 'tcp_checkout_ok' ) );
-				add_action( 'tcp_create_option', array( $this, 'tcp_create_option' ), 10, 2 );
-
 				add_action( 'tcp_shopping_cart_summary_widget_form', array( $this, 'tcp_shopping_cart_summary_widget_form' ), 10, 2 );
 				add_filter( 'tcp_shopping_cart_summary_widget_update', array( $this, 'tcp_shopping_cart_summary_widget_update' ) , 10, 2 );
 				add_filter( 'tcp_get_shopping_cart_summary', array( $this, 'tcp_get_shopping_cart_summary' ), 10, 2 );
 				add_action( 'tcp_show_shopping_cart_summary_widget_params', array( $this, 'tcp_show_shopping_cart_summary_widget_params' ) );
-			
-				add_filter( 'tcp_the_add_to_cart_unit_field', array( $this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
 			}
 		}
 	}

@@ -196,8 +196,8 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	<?php $plugin->showEditFields( $data );?>
 	</tbody></table>
 	<p class="submit">
-		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
-		<input name="tcp_plugin_delete" value="<?php _e( 'delete', 'tcp' );?>" type="submit" class="button-secondary" />
+		<input name="tcp_plugin_save" value="<?php _e( 'Save', 'tcp' );?>" type="submit" class="button-primary" />
+		<input name="tcp_plugin_delete" value="<?php _e( 'Delete', 'tcp' );?>" type="submit" class="button-secondary" />
 	</p>
 </form>
 </div><!-- wrap -->

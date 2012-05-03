@@ -161,18 +161,7 @@ function tcp_get_default_currency() {
 }
 
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
-/*	global $thecartpress;
-	if ( isset( $thecartpress ) ) {
-		if ( $post_id == 0 ) $post_id = get_the_ID();
-		$html = apply_filters( 'tcp_the_buy_button', '', $post_id );
-		if ( strlen( $html ) > 0 ) {
-			if ( $echo ) echo $html;
-			else return $html;
-		} else {*/
-			require_once( TCP_CLASSES_FOLDER . 'BuyButton.class.php' );	
-			return TCPBuyButton::show( $post_id, $echo );
-		/*}
-	}*/
+	return TCPBuyButton::show( $post_id, $echo );
 }
 
 function tcp_get_the_buy_button( $post_id = 0 ) {
@@ -525,7 +514,7 @@ function tcp_get_tax_region() {
 function tcp_get_the_shipping_cost_to_show( $cost ) {
 	if ( tcp_is_display_shipping_cost_with_taxes() ) {
 		if ( tcp_is_shipping_cost_include_tax() ) {
-			$cost_wo_tax = tcp_get_the_shipping_cost_without_tax( $costs );
+			$cost_wo_tax = tcp_get_the_shipping_cost_without_tax( $cost );
 			$tax = tcp_get_the_shipping_tax();
 			return $cost_wo_tax * ( 1 + $tax / 100 );
 		} else { //add tax to the cost
@@ -797,48 +786,33 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 	return RelEntities::getParents( $post_id, $rel_type );
 }
 
-function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
-	$image = '';
-	if ( $option_2_id > 0 ) {
-		$image = get_the_post_thumbnail( $option_2_id, $size );
-		if ( strlen( $image ) == 0 ) {
-			$option_2_id = tcp_get_default_id( $option_2_id, get_post_type( $option_2_id ) );
-			$image = get_the_post_thumbnail( $option_2_id, $size );
-		}
+
+function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
+	if ( has_post_thumbnail( $post_id ) ) {
+		$image_size		= isset( $args['size'] ) ? $args['size'] : 'thumbnail';
+		$image_align	= isset( $args['align'] ) ? $args['align'] : '';
+		$thumbnail_id	= get_post_thumbnail_id( $post_id );
+		$attr			= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
+		if ( is_numeric( $image_size ) ) $image_size = array( $image_size, $image_size );
+		if ( function_exists( 'get_the_post_thumbnail' ) ) $image = get_the_post_thumbnail( $post_id, $image_size, $attr );
+		return $image;
 	}
-	if ( strlen( $image ) == 0 && $option_1_id > 0 ) {
-		$image = get_the_post_thumbnail( $option_1_id, $size );
-		if ( strlen( $image ) == 0 ) {
-			$option_1_id = tcp_get_default_id( $option_1_id, get_post_type( $option_1_id ) );
-			$image = get_the_post_thumbnail( $option_1_id, $size );
-		}
-	}
-	if ( strlen( $image ) == 0 && $post_id > 0 ) {
-		$image = get_the_post_thumbnail( $post_id, $size );
-		if ( strlen( $image ) == 0 ) {
-			$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
-			$image = get_the_post_thumbnail( $post_id, $size );
-		}
-	}
-	return apply_filters( 'tcp_get_the_thumbnail', $image, $post_id, $size );
 }
 
 function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $echo = true ) {
-	$image = '';
- 	if ( has_post_thumbnail( $post_id ) ) {
-		$image_size			= isset( $args['size'] ) ? $args['size'] : 'thumbnail';
-		$image_align		= isset( $args['align'] ) ? $args['align'] : '';
-		$image_link			= isset( $args['link'] ) ? $args['link'] : 'permalink';
-		$thumbnail_id		= get_post_thumbnail_id( $post_id );
-		$attr				= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_thumbnail_' . $post_id );
-		//$image_attributes = array{ 0 => url, 1 => width, 2 => height };
-		$image_attributes	= wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
-		if ( function_exists( 'get_the_post_thumbnail' ) ) 	$image = get_the_post_thumbnail( $post_id, $image_size, $attr );
+	$image = tcp_get_the_thumbnail_image( $post_id, $args );
+ 	if ( strlen( $image ) > 0 ) {
+		$image_link = isset( $args['link'] ) ? $args['link'] : 'permalink';
 		if ( strlen( $image_link ) > 0 ) {
-			$href	= $image_link == 'file' ? $image_attributes[0] : get_permalink( $thumbnail_id );
+			if ( $image_link == 'file' ) {
+				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );			
+			 	$href = $image_attributes[0];
+			} else {
+				$thumbnail_id = get_post_thumbnail_id( $post_id );
+			 	$href = get_permalink( $thumbnail_id );
+			}
 			$image	= '<a href="' . $href . '">' . $image . '</a>';
 		}
-		$thumbnail_post = get_post( $thumbnail_id );
 	}
 	if ( $echo ) echo $image;
 	else return $image;
@@ -854,11 +828,41 @@ function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	return apply_filters( 'tcp_get_permalink', $url, $post_id );
 }
 
+function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
+	$image = '';
+	$args = array( 'size' => $size );
+	if ( $option_2_id > 0 ) {
+		$image = tcp_get_the_thumbnail_image( $option_2_id, $args );
+		if ( strlen( $image ) == 0 ) {
+			$option_2_id = tcp_get_default_id( $option_2_id, get_post_type( $option_2_id ) );
+			//$image = get_the_post_thumbnail( $option_2_id, $size );
+			$image = tcp_get_the_thumbnail_image( $option_2_id, $args );
+		}
+	}
+	if ( strlen( $image ) == 0 && $option_1_id > 0 ) {
+		$image = tcp_get_the_thumbnail_image( $option_1_id, $args );
+		if ( strlen( $image ) == 0 ) {
+			$option_1_id = tcp_get_default_id( $option_1_id, get_post_type( $option_1_id ) );
+			//$image = get_the_post_thumbnail( $option_1_id, $size );
+			$image = tcp_get_the_thumbnail_image( $option_1_id, $args );
+		}
+	}
+	if ( strlen( $image ) == 0 && $post_id > 0 ) {
+		$image = tcp_get_the_thumbnail_image( $post_id, $args );
+		if ( has_post_thumbnail( $post_id ) ) {
+			$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+			//$image = get_the_post_thumbnail( $post_id, $size );
+			$image = tcp_get_the_thumbnail_image( $post_id, $args );
+		}
+	}
+	return apply_filters( 'tcp_get_the_thumbnail', $image, $post_id, $size );
+}
+
 /**
  * Returns the content of the given post
  * @since 1.1.8
  */
-function tcp_the_content( $post_id ) {
+function tcp_the_content( $post_id = 0 ) {
 	tcp_get_the_content( $post_id, true );
 }
 
@@ -866,7 +870,7 @@ function tcp_the_content( $post_id ) {
  * Returns the content of the given post
  * @since 1.1.8
  */
-function tcp_get_the_content( $post_id, $echo = false ) {
+function tcp_get_the_content( $post_id = 0, $echo = false ) {
 	global $thecartpress;
 	remove_filter( 'the_content', array( $thecartpress, 'the_content' ) );
 	$post = get_post( $post_id );
@@ -883,7 +887,7 @@ function tcp_get_the_content( $post_id, $echo = false ) {
  * Echoes the excerpt of the given post
  * @since 1.1.8
  */
-function tcp_the_excerpt( $post_id ) {
+function tcp_the_excerpt( $post_id = 0 ) {
 	tcp_get_the_excerpt( $post_id, true );
 }
 
@@ -891,11 +895,11 @@ function tcp_the_excerpt( $post_id ) {
  * Returns the excerpt of the given post
  * @since 1.1.8
  */
-function tcp_get_the_excerpt( $post_id, $echo = false ) {
+function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
 	global $thecartpress;
 	remove_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
 	remove_filter( 'the_content', array( $thecartpress, 'the_content' ) );
-	$post = get_post( $post_id ); echo '[ ', $post_id, ']';
+	$post = get_post( $post_id );
 	$excerpt = $post->post_excerpt; //TODO
 	//$excerpt = apply_filters( 'get_the_excerpt', $excerpt );
 	add_filter( 'the_content', array( $thecartpress, 'the_content' ) );
@@ -1038,6 +1042,22 @@ function tcp_get_completed_order_status() {
 		if ( isset( $status['is_completed'] ) && $status['is_completed'] )
 			return $status['name'];
 	return 'COMPLETED';
+}
+
+function tcp_get_pending_order_status() {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $status )
+		if ( isset( $status['is_pending'] ) && $status['is_pending'] )
+			return $status['name'];
+	return 'PENDING';
+}
+
+function tcp_get_processing_order_status() {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $status )
+		if ( isset( $status['is_processing'] ) && $status['is_processing'] )
+			return $status['name'];
+	return 'PROCESSING';
 }
 //
 // End Order status functions templates

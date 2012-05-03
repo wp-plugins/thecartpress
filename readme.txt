@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
 Tested up to: 3.3
-Stable Tag: 1.1.8.1
+Stable Tag: 1.1.9
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -243,7 +243,7 @@ You can create your themes for TheCartPress exactly in same way you create the t
 
 = Extending TheCartPress =
 
-* Improve your store with standar WordPress plugins.
+* Improve your store with standard WordPress plugins.
 * Take a look at TheCartPress plugin repository.
 * Creating TheCartPress plugins easily.
 
@@ -292,6 +292,19 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+=1.1.9 =
+* UI improvements: Product setup hides/displays fields depending the product type
+* Stock: fixed low stock mails issue and other minor bugs (thanks to the community)
+* Stock: setting for hidden out of stock products (thanks to the community)
+* Grouped: Image size and button to add to the cart fixed (thanks to the community)
+* Buy button: New filter to add more templates for the buy button. Useful for theme designers
+* Buy button: New Field in the Product Setup panel to set the buy button template to use
+* Buy button: New Setup panel to assign buy button temaple for Custom post type and product type
+* Languages: Portuguese translation (thanks to Ana)
+* Print Order template: customize your order prints and emails
+* Session: Session issue with other plugins
+* Dashboard, Sales chart: More options, Sales chart by month/day, by amount/n.orders
+
 =1.1.8.1 =
 * minor bugs (thanks to the community)
 

@@ -406,7 +406,6 @@ class TCPCheckoutManager {
 		}
 		$order_id = Orders::insert( $order );
 		do_action( 'tcp_checkout_create_order_insert', $order_id );
-		$no_stock_enough = false;
 		foreach( $shoppingCart->getItems() as $item ) {
 			$post = get_post( $item->getPostId() );
 			$sku = tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
@@ -439,6 +438,7 @@ class TCPCheckoutManager {
 			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
 			$orders_details_id = OrdersDetails::insert( $ordersDetails );
+			if ( $item->hasAttributes() ) tcp_update_order_detail_meta( $orders_details_id, 'tcp_attributes', $item->getAttributes() );
 			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId(), $ordersDetails ); //, $item->getOption1Id(), $item->getOption2Id() );
 		}
 		foreach( $shoppingCart->getOtherCosts() as $id => $cost ) {
@@ -474,14 +474,12 @@ class TCPCheckoutManager {
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
 			<div class="tcp_pay_form">
 			<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
-			<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
+			<div class="tcp_plugin_notice"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
 			</div>
 		<?php }
-		$order_page = OrderPage::show( $order_id, true, false );
-		$_SESSION['order_page'] = $order_page;
-		echo $order_page; ?>
+		OrderPage::show( $order_id, true ); ?>
 		<br />
-		<a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+		<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 		</div><!-- tcp_payment_area--><?php
 		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		//$shoppingCart->deleteAll();//remove since 1.1.0
