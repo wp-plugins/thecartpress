@@ -155,10 +155,14 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 
 </div> <!--end tcp_buy_button-->
 
-	<div>
+<div>
 	<?php if ( ! tcp_hide_buy_button( $post_id ) ) : ?>
 
+	<span class="tcp_add_selected_to_cart">
+
 		<?php tcp_the_add_to_cart_button( $post_id ); ?>
+
+	</span>
 
 		<?php tcp_the_add_to_cart_items_in_the_cart( $post_id ); ?>
 
@@ -168,7 +172,7 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		<?php tcp_the_add_wishlist_button( $post_id ) ; ?>
 	</div>
 
-	</div>
+</div>
 	
 <?php do_action( 'tcp_buy_button_bottom', $post_id ); ?>
 	

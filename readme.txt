@@ -299,7 +299,7 @@ This plugin is released under a GPL license.
 * Grouped: Image size and button to add to the cart fixed (thanks to the community)
 * Buy button: New filter to add more templates for the buy button. Useful for theme designers
 * Buy button: New Field in the Product Setup panel to set the buy button template to use
-* Buy button: New Setup panel to assign buy button temaple for Custom post type and product type
+* Buy button: New Setup panel to assign buy button template for Custom post type and product type
 * Languages: Portuguese translation (thanks to Ana)
 * Print Order template: customize your order prints and emails
 * Session: Session issue with other plugins
