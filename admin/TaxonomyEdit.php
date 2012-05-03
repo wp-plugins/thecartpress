@@ -98,6 +98,8 @@ if ( ! isset( $taxonomy_def ) ) {
 	<?php if ( strlen( $taxonomy ) > 0 ) : ?>
 	<li> | </li>
 	<li><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php"><?php _e( 'Add new taxonomy', 'tcp' ); ?></a></li>
+	<li>|</li>
+	<li><a href="edit-tags.php?taxonomy=<?php echo $taxonomy; ?>&post_type=<?php echo TCP_DYNAMIC_OPTIONS_POST_TYPE; ?>" title="<?php _e( 'add terms', 'tcp' ); ?>"><?php _e( 'Terms', 'tcp' ); ?></a></li>
 	<?php endif; ?>
 </ul>
 <div class="clear"></div>

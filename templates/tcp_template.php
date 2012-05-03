@@ -811,7 +811,11 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 				$thumbnail_id = get_post_thumbnail_id( $post_id );
 			 	$href = get_permalink( $thumbnail_id );
 			}
-			$image	= '<a href="' . $href . '">' . $image . '</a>';
+
+			$html = '<a href="' . $href . '"';
+			if ( isset( $args['class'] ) ) $html .= ' class="' . $args['class'] . '"';
+			$html .= '>' . $image . '</a>';
+			$image = $html;
 		}
 	}
 	if ( $echo ) echo $image;
