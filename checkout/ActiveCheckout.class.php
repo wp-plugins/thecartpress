@@ -16,12 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
+require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 
 class ActiveCheckout {//shortcode
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
+		if ( isset( $_REQUEST['order_id'] ) ) {
+			$order_id = $_REQUEST['order_id'];
+		} else {
+			global $thecartpress;
+			$shoppingCart = TheCartPress::getShoppingCart();
+			$order_id = $shoppingCart->getOrderId();
+		}
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
 			$order_status = Orders::getStatus( $order_id );//We have to check if the order wasn't cancelled
 			$cancelled = tcp_get_cancelled_order_status();
@@ -44,11 +52,10 @@ class ActiveCheckout {//shortcode
 				$html .= '</div>' . "\n" . '</div>';
 			}
 			TheCartPress::removeShoppingCart();
-			$html .= '<br>';
-			$html .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : '';//TODO to change!!!!
-			//unset( $_SESSION['order_page'] );
-			$html .= '<br />';
-			$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
+			$html .= '<br/>';
+			$html .= OrderPage::show( $order_id, true, false );
+			$html .= '<br/>';
+			$html .= '<a href="' . add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 			do_action( 'tcp_checkout_end', $order_id );
 			return $html;
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
@@ -112,7 +119,12 @@ class ActiveCheckout {//shortcode
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
 			$subject = sprintf( __( 'Order from %s', 'tcp' ), get_bloginfo( 'name' ) );
 			$message = $additional_msg . "\n";
-			$message .= isset( $_SESSION['order_page'] ) ? $_SESSION['order_page'] : OrderPage::show( $order_id, true, false );
+
+			ob_start();
+			$_REQUEST['order_id'] = $order_id;
+			include( TCP_ADMIN_FOLDER . 'PrintOrder.php' );
+			$message .= ob_get_clean();
+
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
 			wp_mail( $to_customer, $subject, $message_to_customer , $headers );

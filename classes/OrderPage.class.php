@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
-require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
 
 /**
  * Shows an Order

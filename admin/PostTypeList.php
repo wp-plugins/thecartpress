@@ -63,7 +63,8 @@ jQuery(document).ready(function() {
 	<th scope="col" class="manage-column"><?php _e( 'Id', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Activate', 'tcp' ); ?></th>
-	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th></tr>
+	<th scope="col" class="manage-column" style="width: 20%;">&nbsp;</th>
+</tr>
 </tfoot>
 <tbody>
 <?php $post_type_defs = tcp_get_custom_post_types();

@@ -46,23 +46,11 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 	else $to = $order->shipping_email;
 
 	require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
-	ActiveCheckout::sendMails( $order_id, '', true );
-	/*
-	$from	= isset( $thecartpress->settings['from_email'] ) && strlen( $thecartpress->settings['from_email'] ) > 0 ? $thecartpress->settings['from_email'] : 'no-response@thecartpress.com';
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-	//$headers .= 'To: ' . $to . "\r\n";
-	$headers .= 'From: ' . $from . "\r\n";
-	$subject = 'Order from '.get_bloginfo( 'name' );
-	$message = OrderPage::show( $order_id, true, false );
-	$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
-	wp_mail( $to, $subject, $message_to_customer, $headers );*/
-	?>
+	ActiveCheckout::sendMails( $order_id, '', true ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Mail sent', 'tcp' );?>
 	</p></div><?php
-}
-?>
+} ?>
 <style>
 #shipping_info {
 	width: 50%;
@@ -84,14 +72,13 @@ if ( isset( $_REQUEST['send_email'] ) ) {
 <?php endif;?>
 <?php if ( $order_id > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' );?>" target="_blank"><?php _e( 'Print', 'tcp' );?></a></li>
+	<li><a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' );?></a></li>
 <?php endif;?>
 </ul><!-- subsubsub -->
 
 <div class="clear"></div>
 <?php 
 $orderpage = OrderPage::show( $order_id, true, false, true, true );
-$_SESSION['order_page'] = $orderpage;
 $orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
 echo $orderpage;
 
@@ -188,10 +175,10 @@ if ( $order ) :?>
 	<?php do_action( 'tcp_admin_order_after_editor', $order_id );?>
 	</tbody></table>
 	<div class="submit">
-		<input name="tcp_order_edit" value="<?php _e( 'save', 'tcp' );?>" type="submit" class="button-primary" />
+		<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' );?>" type="submit" class="button-primary" />
 	<?php //if ( $order->status == Orders::$ORDER_SUSPENDED || $order->status == Orders::$ORDER_CANCELLED ) : ?>
 	<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
-		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'delete', 'tcp' );?></a>
+		<a href="" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' );?></a>
 		<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
 			<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
 			<p><?php _e( 'Do you really want to delete this order?', 'tcp' );?></p>

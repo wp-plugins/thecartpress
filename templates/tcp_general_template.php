@@ -167,7 +167,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	<?php
 	$shoppingCart = TheCartPress::getShoppingCart();
 	foreach( $shoppingCart->getItems() as $item ) : ?>
-		<li><form method="post">
+		<li class="tcp_widget_cart_detail_item_<?php echo $item->getPostId(); ?>"><form method="post">
 			<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
 			<input type="hidden" name="tcp_option_1_id" value="<?php echo $item->getOption1Id(); ?>" />
 			<input type="hidden" name="tcp_option_2_id" value="<?php echo $item->getOption2Id(); ?>" />
@@ -183,7 +183,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				<?php endif; ?>
 				<li><span class="tcp_unit_price"><?php _e( 'Price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span></li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-				<li><?php if ( $see_modify_item ) :?>
+				<li><?php if ( $see_modify_item ) : ?>
 						<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
 						<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
 					<?php else : ?>
@@ -197,7 +197,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				<?php endif; ?>
 				<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span></li>
 			<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-				<?php if ( $see_weight && $item->getWeight() > 0 ) :?>
+				<?php if ( $see_weight && $item->getWeight() > 0 ) : ?>
 					<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() ); ?>&nbsp;<?php tcp_the_unit_weight(); ?></li>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -217,10 +217,10 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	<?php if ( $see_shopping_cart ) :?>
 		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'shopping cart', 'tcp' ); ?></a></li>
 	<?php endif; ?>
-	<?php if ( $see_checkout ) :?>
+	<?php if ( $see_checkout ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php tcp_the_checkout_url(); ?>"><?php _e( 'checkout', 'tcp' ); ?></a></li>
 	<?php endif; ?>
-	<?php if ( $see_delete_all ) :?>
+	<?php if ( $see_delete_all ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'delete', 'tcp' ); ?>"/></form></li>
 	<?php endif; ?>
 	<?php do_action( 'tcp_get_shopping_cart_widget', $args ); ?>
@@ -381,7 +381,7 @@ function tcp_the_sort_panel() {
 	$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
 	$sorting_fields = tcp_get_sorting_fields(); ?>
 <div class="tcp_order_panel">
-	<form method="post">
+	<form action="" method="post">
 	<span class="tcp_order_type">
 	<label for="tcp_order_type">
 		<?php _e( 'Order by', 'tcp' ); ?>:&nbsp;
@@ -447,7 +447,7 @@ function tcp_attribute_list( $taxonomies = false ) {
  * 'value_username'	=> '',
  * 'value_remember'	=> false
  */
-function tcp_login_form( $args ) {
+function tcp_login_form( $args = array() ) {
 	$defaults = array(
 		'echo'				=> true,
 		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
@@ -469,10 +469,10 @@ function tcp_login_form( $args ) {
 	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo plugins_url( 'checkout/login.php' , dirname( __FILE__ ) ); ?>" name="<?php echo $args['form_id']; ?>">
 		<?php echo apply_filters( 'login_form_top', '', $args ); ?>
 		<p class="login-username">
-		<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label><input id="<?php echo $args['id_username']; ?>" class="input" type="text" size="20" value="" name="tcp_log" />
+		<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label>: <input id="<?php echo $args['id_username']; ?>" class="input" type="text" size="20" value="" name="tcp_log" />
 		</p>
 		<p class="login-password">
-		<label for="<?php echo esc_attr( $args['id_password'] ); ?>"><?php echo esc_html( $args['label_password'] ); ?></label><input id="<?php echo $args['id_password']; ?>" class="input" type="password" size="20" value="" name="tcp_pwd" />
+		<label for="<?php echo esc_attr( $args['id_password'] ); ?>"><?php echo esc_html( $args['label_password'] ); ?></label>: <input id="<?php echo $args['id_password']; ?>" class="input" type="password" size="20" value="" name="tcp_pwd" />
 		</p>
 		<?php apply_filters( 'login_form_middle', '', $args ); ?>
 		<p class="login-remember">
@@ -521,7 +521,7 @@ function tcp_get_the_pagination( $echo = true) {
 		$big = 999999999; // need an unlikely integer
 		echo paginate_links( array(
 			'base'		=> str_replace( $big, '%#%', get_pagenum_link( $big ) ),
-			'format'	=> '?paged=%#%',
+			//'format'	=> '?paged=%#%',
 			'current'	=> max( 1, get_query_var('paged') ),
 			'total'		=> $wp_query->max_num_pages
 		) );

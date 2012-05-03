@@ -21,15 +21,13 @@
  * @since 1.1.8
  */
 function tcp_the_add_to_cart_button( $post_id, $echo = true ) {
-	ob_start();
-	if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) : ?>
-		<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
-		<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart" id="tcp_add_product_<?php echo $post_id; ?>" value="<?php _e( 'Add to cart', 'tcp' ); ?>"/>
-	<?php endif;
-	$out = ob_get_clean();
+	ob_start(); ?>
+	<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
+	<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" id="tcp_add_product_<?php echo $post_id; ?>" value="<?php _e( 'Add to cart', 'tcp' ); ?>"/>
+	<?php $out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_button', $out, $post_id );
 	if ( $echo ) echo $out;
-	else return $echo;
+	else return $out;
 }
 
 /**
@@ -44,7 +42,7 @@ function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $echo = true ) {
 	$out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_unit_field', $out, $post_id );
 	if ( $echo ) echo $out;
-	else return $echo;
+	else return $out;
 }
 
 /**
@@ -62,6 +60,6 @@ function tcp_the_add_to_cart_items_in_the_cart( $post_id, $echo = true ) {
 	$out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_items_in_the_cart', $out, $post_id );
 	if ( $echo ) echo $out;
-	else return $echo;
+	else return $out;
 }
 ?>
