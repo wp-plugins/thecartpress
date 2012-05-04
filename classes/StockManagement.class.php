@@ -331,42 +331,44 @@ class TCPStockManagement {
 			$stock_management = $thecartpress->get_setting( 'stock_management', false );
 			if ( $stock_management ) {
 				if ( is_admin() ) {
-					add_action( 'tcp_product_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-					add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-					add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+					add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );
 
-					add_action( 'tcp_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-					add_action( 'tcp_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-					add_action( 'tcp_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+					add_action( 'tcp_options_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_options_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_options_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );
 
-					add_action( 'tcp_dynamic_options_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-					add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-					add_action( 'tcp_dynamic_options_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );
+					add_action( 'tcp_dynamic_options_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+					add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+					add_action( 'tcp_dynamic_options_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );
 
-					add_filter( 'tcp_the_add_to_cart_unit_field', array( $this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
-					add_filter( 'tcp_apply_filters_for_saleables', array( $this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
-					
-					add_filter( 'tcp_checkout_manager', array( $this, 'tcp_checkout_manager' ) );
-					add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
-					add_action( 'tcp_checkout_ok', array( $this, 'tcp_checkout_ok' ) );
-					add_action( 'tcp_create_option', array( $this, 'tcp_create_option' ), 10, 2 );
+					add_filter( 'tcp_custom_columns_definition', array( &$this, 'tcp_custom_columns_definition' ) );
+					add_action( 'tcp_manage_posts_custom_column', array( &$this, 'tcp_manage_posts_custom_column' ), 10, 2 );
+
+					add_action( 'tcp_create_option', array( &$this, 'tcp_create_option' ), 10, 2 );
 				}
+				add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+				add_action( 'admin_init', array( &$this, 'add_template_class' ) );
 
-				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-				add_action( 'admin_init', array( $this, 'add_template_class' ) );
+				add_action( 'tcp_shopping_cart_widget_form', array( &$this, 'tcp_shopping_cart_widget_form'), 10, 2 );
+				add_filter( 'tcp_shopping_cart_widget_update', array( &$this, 'tcp_shopping_cart_widget_update') , 10, 2 );
+				add_action( 'tcp_shopping_cart_widget_units', array( &$this, 'tcp_shopping_cart_widget_units' ), 10, 2 );
 
-				add_action( 'tcp_shopping_cart_widget_form', array( $this, 'tcp_shopping_cart_widget_form'), 10, 2 );
-				add_filter( 'tcp_shopping_cart_widget_update', array( $this, 'tcp_shopping_cart_widget_update') , 10, 2 );
-				add_action( 'tcp_shopping_cart_widget_units', array( $this, 'tcp_shopping_cart_widget_units' ), 10, 2 );
+				add_filter( 'tcp_cart_units', array( &$this, 'tcp_cart_units' ), 10, 2 );
 
-				add_filter( 'tcp_cart_units', array( $this, 'tcp_cart_units' ), 10, 2 );
-				add_filter( 'tcp_custom_columns_definition', array( $this, 'tcp_custom_columns_definition' ) );
-				add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
-
-				add_action( 'tcp_shopping_cart_summary_widget_form', array( $this, 'tcp_shopping_cart_summary_widget_form' ), 10, 2 );
-				add_filter( 'tcp_shopping_cart_summary_widget_update', array( $this, 'tcp_shopping_cart_summary_widget_update' ) , 10, 2 );
-				add_filter( 'tcp_get_shopping_cart_summary', array( $this, 'tcp_get_shopping_cart_summary' ), 10, 2 );
-				add_action( 'tcp_show_shopping_cart_summary_widget_params', array( $this, 'tcp_show_shopping_cart_summary_widget_params' ) );
+				add_action( 'tcp_shopping_cart_summary_widget_form', array( &$this, 'tcp_shopping_cart_summary_widget_form' ), 10, 2 );
+				add_filter( 'tcp_shopping_cart_summary_widget_update', array( &$this, 'tcp_shopping_cart_summary_widget_update' ) , 10, 2 );
+				add_filter( 'tcp_get_shopping_cart_summary', array( &$this, 'tcp_get_shopping_cart_summary' ), 10, 2 );
+				add_action( 'tcp_show_shopping_cart_summary_widget_params', array( &$this, 'tcp_show_shopping_cart_summary_widget_params' ) );
+				
+				add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
+				add_filter( 'tcp_apply_filters_for_saleables', array( &$this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
+				add_filter( 'tcp_custom_post_type_list_widget', array( &$this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
+										
+				add_filter( 'tcp_checkout_manager', array( &$this, 'tcp_checkout_manager' ) );
+				add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+				add_action( 'tcp_checkout_ok', array( &$this, 'tcp_checkout_ok' ) );
 			}
 		}
 	}
