@@ -292,6 +292,9 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+=1.1.9.1 =
+* Stock: not activated ssetting for hidden out of stock products (thanks to the community)
+
 =1.1.9 =
 * UI improvements: Product setup hides/displays fields depending the product type
 * Stock: fixed low stock mails issue and other minor bugs (thanks to the community)
