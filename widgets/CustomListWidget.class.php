@@ -72,7 +72,7 @@ class CustomListWidget extends TCPParentWidget {
 	}
 
 	function show_list( $instance ) {
-		if ( $instance['pagination'] ) echo tcp_pagination_bar();
+		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) echo tcp_pagination_bar();
 		if ( have_posts() ) while ( have_posts() ) : the_post();
 			if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 				$title_tag = '<' . $instance['title_tag'] . '>';

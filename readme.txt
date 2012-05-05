@@ -294,6 +294,7 @@ This plugin is released under a GPL license.
 == Changelog ==
 =1.1.9.1 =
 * Stock: not activated ssetting for hidden out of stock products (thanks to the community)
+* Top Sellers Dashboard widget
 
 =1.1.9 =
 * UI improvements: Product setup hides/displays fields depending the product type

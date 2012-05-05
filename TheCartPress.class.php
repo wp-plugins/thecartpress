@@ -1054,6 +1054,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				require_once( TCP_METABOXES_FOLDER . 'RelationsMetabox.class.php' );
 				require_once( TCP_METABOXES_FOLDER . 'PostMetabox.class.php' );
 				require_once( TCP_METABOXES_FOLDER . 'TemplateMetabox.class.php' );
+				require_once( TCP_WIDGETS_FOLDER . 'TopSellersDashboard.class.php' );
 			} else {
 				add_filter( 'the_content', array( $this, 'the_content' ) );
 				add_filter( 'the_excerpt', array( $this, 'the_excerpt' ) );
