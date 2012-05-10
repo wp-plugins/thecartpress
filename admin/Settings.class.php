@@ -356,7 +356,7 @@ function show_excerpt() {
 		global $thecartpress;
 		$shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		<p><?php _e( 'All countries', 'tcp' ); ?>:&nbsp;<input type="checkbox" name="all_shipping_isos" id="all_shipping_isos" <?php checked( count( $shipping_isos ), 0 ); ?> value="yes"
-		onclick="if (this.checked) { jQuery('.sel_shipping_isos').hide(); jQuery('#shipping_isos option').attr('selected', false);  } else { jQuery('.sel_shipping_isos').show(); }"/>
+		onclick="if (this.checked) { jQuery('.sel_shipping_isos').hide(); tcp_select_none('shipping_isos'); } else { jQuery('.sel_shipping_isos').show(); }"/>
 		</p>
 		<div class="sel_shipping_isos" <?php if ( ! $shipping_isos ) echo 'style="display:none;"'; ?>>
 			<select id="shipping_isos" name="tcp_settings[shipping_isos][]" style="height:auto" size="8" multiple>
@@ -374,7 +374,12 @@ function show_excerpt() {
 			<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('shipping_isos');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('shipping_isos');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('shipping_isos');" class="button-secondary"/>
 			</p>
+			<script>
+			jQuery('#shipping_isos').tcp_convert_multiselect();
+			</script>
+
 		</div>
 	<?php
 	}
@@ -383,7 +388,7 @@ function show_excerpt() {
 		global $thecartpress;
 		$billing_isos = $thecartpress->get_setting( 'billing_isos', array() ); ?>
 		<p><?php _e( 'All countries', 'tcp' ); ?>:&nbsp;<input type="checkbox" name="all_billing_isos" id="all_billing_isos" <?php checked( count( $billing_isos ), 0 ); ?> value="yes"
-		onclick="if (this.checked) { jQuery('.sel_billing_isos').hide(); jQuery('#billing_isos option').attr('selected', false);  } else { jQuery('.sel_billing_isos').show(); }"/></p>
+		onclick="if (this.checked) { jQuery('.sel_billing_isos').hide(); tcp_select_none('billing_isos'); } else { jQuery('.sel_billing_isos').show(); }"/></p>
 		<div class="sel_billing_isos" <?php if ( ! $billing_isos ) echo 'style="display:none;"'; ?> >
 			<select id="billing_isos" name="tcp_settings[billing_isos][]" style="height:auto" size="8" multiple>
 			<?php $countries = Countries::getAll();
@@ -400,7 +405,11 @@ function show_excerpt() {
 			<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('billing_isos');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('billing_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('billing_isos');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('billing_isos');" class="button-secondary"/>
 			</p>
+			<script>
+			jQuery('#billing_isos').tcp_convert_multiselect();
+			</script>
 		</div>
 	<?php
 	}

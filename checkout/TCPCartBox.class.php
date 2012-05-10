@@ -75,13 +75,17 @@ class TCPCartBox extends TCPCheckoutBox {
 
 	function show_config_settings() {
 		$settings	= get_option( 'tcp_' . get_class( $this ), array() );
-		$see_weight	= isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
-		?><tr valign="top">
+		$see_weight	= isset( $settings['see_weight'] ) ? $settings['see_weight'] : true; ?>
+		<table class="form-table">
+		<tbody>
+		<tr valign="top">
 			<th scope="row"><label for="see_weight"><?php _e( 'Display weight column', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="see_weight" id="see_weight" value="yes" <?php checked( $see_weight );?>/></td>
 		</tr><?php
-		do_action( 'tcp_checkout_show_config_settings', $settings );
-		return true;
+		do_action( 'tcp_checkout_show_config_settings', $settings ); ?>
+		</tbody>
+		</table>
+		<?php return true;
 	}
 
 	function save_config_settings() {

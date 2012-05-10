@@ -27,7 +27,7 @@ class TCPCartTable {
 			<div id="tcp_order_id">
 			<span class="tcp_order_id_row"><?php _e( 'Order ID', 'tcp' ); ?>: <span class="tcp_order_id_value tcp_order_id"><?php echo $source->get_order_id(); ?></span></span>
 			<br/>
-			<span class="tcp_order_id_row"><?php _e( 'Create at', 'tcp' ); ?>: <span class="tcp_order_id_value tcp_created_at"><?php echo $source->get_created_at(); ?></span></span>
+			<span class="tcp_order_id_row"><?php _e( 'Created at', 'tcp' ); ?>: <span class="tcp_order_id_value tcp_created_at"><?php echo $source->get_created_at(); ?></span></span>
 			</div>
 			<?php if ( $source->get_shipping_firstname() == "" ) {
 				$style = 'style="display:none"';

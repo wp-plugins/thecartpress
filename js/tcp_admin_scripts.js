@@ -139,23 +139,31 @@ function tcp_select_asean(select_id) {
 }
 
 function tcp_select_values(select_id, values) {
-	jQuery('#' + select_id + ' option').each(
-		function() {
-			if ( jQuery.inArray(this.value, values) > -1 ) {
-				this.selected = true;
-			} else {
-				this.selected = false;
-			}
+	jQuery('#' + select_id + ' option').each(function() {
+		this.selected = jQuery.inArray(this.value, values) > -1;
+	});
+	//improvement since 1.2.0, for lists of checkboxes
+	jQuery('#' + select_id + ' input:checkbox').each(function() {
+		var chk = jQuery(this);
+		if (jQuery.inArray(this.value, values) > -1) {
+			chk.attr('checked', 'true');
+			chk.parent().addClass('tcp-multiselect-on');
+		} else {
+			chk.removeAttr('checked');
+			chk.parent().removeClass('tcp-multiselect-on');
 		}
-	);
+	});
 }
 
 function tcp_select_none(select_id) {
-	jQuery('#' + select_id + ' option').each(
-		function() {
-			this.selected = false;
-		}
-	);	
+	jQuery('#' + select_id + ' option').each(function() {
+		this.selected = false;
+	});
+	jQuery('#' + select_id + ' input:checkbox').each(function() {
+		var chk = jQuery(this);
+		chk.removeAttr('checked');
+		chk.parent().removeClass('tcp-multiselect-on');
+	});
 }
 
 function add_url_param(url, key, value) {
@@ -182,3 +190,34 @@ function tcp_show_order_view( order_id ) {
 	jQuery('body').prepend(dest);
 	dest.html('<div class="popup_close" onclick="jQuery(\'.popup\').remove();">X</div>' + src.html());
 }
+
+/**
+ * Converts a multiple select to a list of checkboxes, into a scrollable div
+ * @since 1.2.0
+ */
+jQuery.fn.tcp_convert_multiselect = function(n_selected_title) {
+	var select = jQuery(this);
+	var div = jQuery('<div class="tcp-multiselect"></div>');
+	div.attr('id', select.attr('id'));
+	var name = select.attr('name');
+	select.find('option').each(function() {
+		var option = jQuery(this);
+		var chk = jQuery('<input type="checkbox" name="' + name + '" value="' + option.val() + '" />');
+		var label = jQuery('<label></label>');
+		chk.click(function() {
+			if (chk.attr("checked")) label.addClass("tcp-multiselect-on");
+			else label.removeClass("tcp-multiselect-on");
+		});
+		if (option.attr('selected')) {
+			chk.attr('checked', 'true');
+			label.addClass("tcp-multiselect-on");
+		}		
+		label.append(chk);
+		label.append('&nbsp;');
+		label.append(option.html());
+		div.append(label)
+	});
+	select.after(div);
+	select.remove();
+};
+

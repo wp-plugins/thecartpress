@@ -45,7 +45,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		}
 	}
 
-	function show_config_settings() { ?>
+	function show_config_settings() {?>
 		<style>
 		#tcp_payment_list {
 			list-style-type: none;
@@ -62,9 +62,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 			border: 1px solid #BBBBBB;
 			padding: 2px;
 			background: url("../images/white-grad.png") repeat-x scroll left top #F2F2F2;
-		    text-shadow: 0 1px 0 #FFFFFF;
-		    -moz-box-sizing: content-box;
-		    border-radius: 5px 0px 0px 0px;
+	    	text-shadow: 0 1px 0 #FFFFFF;
 			cursor: move;
 		}
 		</style>

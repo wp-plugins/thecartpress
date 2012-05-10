@@ -21,9 +21,8 @@ global $thecartpress;
 $disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart' );
 $after_add_to_cart		= $thecartpress->get_setting( 'after_add_to_cart', '' );
 $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) ) : '';
-?>
 
-<?php /**** Start editing to customise your buy buttons! */ ?>
+/**** Start editing to customise your buy buttons! */ ?>
 
 <div class="tcp_buy_button_area cf <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
 <form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">

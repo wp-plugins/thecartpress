@@ -1,20 +1,20 @@
 <?php
 /**
-* This file is part of TheCartPress.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of TheCartPress.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class TCPStockManagement {
 	private $no_stock_enough = false;
@@ -24,7 +24,7 @@ class TCPStockManagement {
 		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 );
 		require_once( TCP_DAOS_FOLDER . '/OrdersDetails.class.php' );
 		$details = OrdersDetails::getDetails( $order_id );
-		$low_stock = array();
+		$low_stocks = array();
 		foreach( $details as $detail ) {
 			$stock = tcp_get_the_stock( $detail->post_id, $detail->option_1_id, $detail->option_2_id );
 			if ( $stock > -1 && $stock < $stock_limit ) {
@@ -321,6 +321,21 @@ class TCPStockManagement {
 		return $query;
 	}
 
+	function stock_column_sortable_column( $columns ) {
+		$columns['stock'] = 'tcp_stock';
+		return $columns;
+	}
+
+	function stock_column_orderby( $vars ) {
+		if ( isset( $vars['orderby'] ) && 'tcp_stock' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'orderby' => 'meta_value_num',
+				'meta_key' => 'tcp_stock',
+			) );
+		}
+		return $vars;
+	}
+
 	function __construct() {
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
@@ -347,6 +362,11 @@ class TCPStockManagement {
 					add_action( 'tcp_manage_posts_custom_column', array( &$this, 'tcp_manage_posts_custom_column' ), 10, 2 );
 
 					add_action( 'tcp_create_option', array( &$this, 'tcp_create_option' ), 10, 2 );
+
+					$saleable_post_types = tcp_get_saleable_post_types();
+					foreach( $saleable_post_types  as $post_type )
+						add_filter( 'manage_edit-' . $post_type . '_sortable_columns', array( &$this, 'stock_column_sortable_column' ) );
+					add_filter( 'request', array( &$this, 'stock_column_orderby' ) );
 				}
 				add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 				add_action( 'admin_init', array( &$this, 'add_template_class' ) );
