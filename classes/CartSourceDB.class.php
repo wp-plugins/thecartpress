@@ -333,6 +333,12 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 		if ( $this->detail ) return $this->detail->weight;
 		else return false;
 	}
+	
+	public function get_attribute( $id ) {
+		$attributes = tcp_get_order_detail_meta( $this->detail->order_detail_id, 'tcp_attributes' );
+		if ( isset( $attributes[$id] ) && ! empty( $attributes[$id] ) ) return $attributes[$id];
+		else return false;
+	}
 }
 
 class TCP_CostSourceDB {

@@ -801,8 +801,8 @@ function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
 
 function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $echo = true ) {
 	$image = tcp_get_the_thumbnail_image( $post_id, $args );
- 	if ( strlen( $image ) > 0 ) {
-		$image_link = isset( $args['link'] ) ? $args['link'] : 'permalink';
+	if ( strlen( $image ) > 0 ) {
+		$image_link = isset( $args['link'] ) && strlen( $args['link'] ) > 0 ? $args['link'] : 'permalink';
 		if ( strlen( $image_link ) > 0 ) {
 			if ( $image_link == 'file' ) {
 				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );			
@@ -814,8 +814,7 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 
 			$html = '<a href="' . $href . '"';
 			if ( isset( $args['class'] ) ) $html .= ' class="' . $args['class'] . '"';
-			$html .= '>' . $image . '</a>';
-			$image = $html;
+			$image = $html . '>' . $image . '</a>';
 		}
 	}
 	if ( $echo ) echo $image;

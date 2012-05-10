@@ -3,7 +3,7 @@ Contributors: thecartpress
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
 Tested up to: 3.3
-Stable Tag: 1.1.9
+Stable Tag: 1.1.9.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,8 +293,10 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 =1.1.9.1 =
-* Stock: not activated ssetting for hidden out of stock products (thanks to the community)
-* Top Sellers Dashboard widget
+* Stock: not activated setting for hidden out of stock products (thanks to the community)
+* Stock: Sort products by stock, in the Back-end
+* Price: Sort products by price, in the Back-end
+* UI Improvements: Checkout editor, Countries selecion (payment and shipping methods, and settings)
 
 =1.1.9 =
 * UI improvements: Product setup hides/displays fields depending the product type

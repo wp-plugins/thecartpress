@@ -315,6 +315,11 @@ class TCP_DetailSourceSession implements TCP_IDetailSource {
 		if ( $this->item ) return $this->item->getUnitWeight();
 		else return false;
 	}
+	
+	public function get_attribute( $id ) {
+		if ( $this->item ) return $this->item->getAttribute( $id );
+		else return false;
+	}
 }
 
 class TCP_CostSourceSession {

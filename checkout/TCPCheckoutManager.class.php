@@ -203,7 +203,7 @@ class TCPCheckoutManager {
 		} elseif ( $this->checkout_type == TCPCheckoutManager::$ACCORDION ) {
 			foreach( $this->steps as $s => $value ) {
 				if ( $s > $step ) {
-				$b = $this->get_box( $s ); ?>
+					$b = $this->get_box( $s ); ?>
 					<h3 class="tcp_ckeckout_step"><span><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></span></h3>
 				<?php }
 			}
@@ -214,8 +214,8 @@ class TCPCheckoutManager {
 	private function get_box( $step = 0 ) {
 		if ( isset( $this->steps[$step] ) ) {
 			$checkout_box = isset( $this->steps[$step] ) ? $this->steps[$step] : false;
-			if ( $checkout_box ) {
-				global $tcp_checkout_boxes;
+			global $tcp_checkout_boxes;
+			if ( $checkout_box && isset( $tcp_checkout_boxes[$checkout_box] ) ) {
 				$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
 				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box] );
 				return new $checkout_box();

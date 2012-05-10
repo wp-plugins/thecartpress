@@ -29,6 +29,8 @@ class LastVisitedWidget extends CustomListWidget {
 		$visitedPosts = $shoppingCart->getVisitedPosts();
 		$ids = array_keys( $visitedPosts );
 		if ( count( $ids ) == 0 ) return;
+		$id_to_remove = array_search( get_the_ID(), $ids );
+		if ( $id_to_remove ) unset( $ids[$id_to_remove] );
 		$loop_args = array(
 			'post__in'			=> $ids,
 			'post_type'			=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,

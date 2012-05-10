@@ -167,7 +167,10 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		$see_fax			= isset( $settings['see_fax'] ) ? $settings['see_fax'] : true;
 		$req_fax			= isset( $settings['req_fax'] ) ? $settings['req_fax'] : false;
 		$use_as_shipping	= isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
-		?><tr valign="top">
+		?>
+		<table class="form-table">
+		<tbody>
+		<tr valign="top">
 			<th scope="row"><label for="see_company"><?php _e( 'Display billing company', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="see_company" id="see_company" value="yes" <?php checked( $see_company );?>/></td>
 		</tr>
@@ -219,7 +222,9 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			<th scope="row"><label for="use_as_shipping"><?php _e( 'Use as shipping', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="use_as_shipping" id="use_as_shipping" value="yes" <?php checked( $use_as_shipping );?>/>
 			<span class="description"><?php _e( 'This option only must be activated if the shipping box is not used', 'tcp' );?></span></td>
-		</tr><?php
+		</tr>
+		</tbody>
+		</table><?php
 		return true;
 	}
 

@@ -154,10 +154,8 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		onclick="if (this.checked) jQuery('.sel_countries').hide(); else jQuery('.sel_countries').show();"/>
 	</td>
 	</tr>
-	<tr valign="top" class="sel_countries" <?php
-		$all = isset( $data['all_countries'] ) ? $data['all_countries'] : '';
-		if ( $all == 'yes' ) echo 'style="display:none;"';
-		?>>
+	<tr valign="top" class="sel_countries" <?php $all = isset( $data['all_countries'] ) ? $data['all_countries'] : '';
+		if ( $all == 'yes' ) echo 'style="display:none;"'; ?>>
 	<th scope="row">
 		<label for="countries"><?php _e( 'Apply the plugin only to selected ones', 'tcp' );?>:</label>
 	</th>
@@ -165,8 +163,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<?php $selected_countries = isset( $data['countries'] ) ? $data['countries'] : array();?>
 		<div style="float:left">
 			<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
-				<?php //$countries = Countries::getAll();
-				global $thecartpress;
+				<?php global $thecartpress;
 				if ( $plugin_type == 'shipping' )
 					$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
 				else //billing
@@ -180,6 +177,9 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 				<?php endforeach;?>
 			</select>
 		</div>
+		<script>
+			jQuery('#countries').tcp_convert_multiselect();
+		</script>
 		<div>
 			<input type="button" value="<?php _e( 'EU', 'tcp');?>" title="<?php _e( 'To select countries from the European Union', 'tcp' );?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'NAFTA', 'tcp');?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' );?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
@@ -189,6 +189,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<input type="button" value="<?php _e( 'AU', 'tcp');?>" title="<?php _e( 'To select countries from African Union', 'tcp' );?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp');?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' );?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp');?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' );?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('countries');" class="button-secondary"/>
 		</div>
 	</td>
 	</tr>

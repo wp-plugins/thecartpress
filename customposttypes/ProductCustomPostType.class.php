@@ -29,11 +29,10 @@ class ProductCustomPostType {
 
 	function __construct() {
 		if ( is_admin() ) {
-			add_filter( 'post_row_actions', array( $this, 'postRowActions' ) );
-			add_filter( 'manage_edit-' . TCP_PRODUCT_POST_TYPE . '_columns', array( $this, 'custom_columns_definition' ) );
-			add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ) );
-			add_action( 'restrict_manage_posts', array( $this, 'restrictManagePosts' ) );
-			add_filter( 'parse_query', array( $this, 'parseQuery' ) );
+			add_filter( 'post_row_actions', array( &$this, 'postRowActions' ) );
+			add_action( 'manage_posts_custom_column', array( &$this, 'manage_posts_custom_column' ) );
+			add_action( 'restrict_manage_posts', array( &$this, 'restrictManagePosts' ) );
+			add_filter( 'parse_query', array( &$this, 'parseQuery' ) );
 			//for quick edit
 			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
 		}
@@ -293,6 +292,21 @@ class ProductCustomPostType {
 			}
 		}
 		return $query;
+	}
+	
+	function sortable_columns( $columns ) {
+		$columns['price'] = 'tcp_price';
+		return $columns;
+	}
+
+	function price_column_orderby( $vars ) {
+		if ( isset( $vars['orderby'] ) && 'tcp_price' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'orderby' => 'meta_value_num',
+				'meta_key' => 'tcp_price',
+			) );
+		}
+		return $vars;
 	}
 }
 

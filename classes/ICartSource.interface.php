@@ -77,6 +77,7 @@ interface TCP_IDetailSource {
 	public function get_discount();
 	public function get_sku();
 	public function get_weight();
+	public function get_attribute( $id );
 }
 
 interface TCP_ICostsSource {

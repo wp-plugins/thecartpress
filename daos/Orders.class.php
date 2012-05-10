@@ -252,14 +252,14 @@ class Orders {
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
-	static function edit( $order_id, $new_status, $new_code_tracking, $comment, $comment_internal ) {
+	static function edit( $order_id, $new_status, $new_code_tracking, $comment, $internal_comment ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
 				'status'			=> $new_status,
 				'code_tracking'		=> $new_code_tracking,
 				'comment'			=> $comment,
-				'comment_internal'	=> $comment_internal,
+				'comment_internal'	=> $internal_comment,
 			),
 			array(
 				'order_id'		=> $order_id,
@@ -268,13 +268,13 @@ class Orders {
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
-	static function editStatus( $order_id, $new_status, $transaction_id = '', $comment_internal = '' ) {
+	static function editStatus( $order_id, $new_status, $transaction_id = '', $internal_comment = '' ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
 				'status'			=> $new_status,
 				'transaction_id'	=> $transaction_id,
-				'comment_internal'	=> $comment_internal,
+				'comment_internal'	=> $internal_comment,
 			),
 			array(
 				'order_id'		=> $order_id,
