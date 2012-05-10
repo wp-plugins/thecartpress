@@ -18,7 +18,7 @@
 
 class StockSummaryDashboard {
 
-function show() { ?>
+	function show() { ?>
 <div class="table table_content">
 	<table style="width:100%" id="table_stock_summary">
 	<tbody>
