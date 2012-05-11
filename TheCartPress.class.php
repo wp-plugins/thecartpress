@@ -184,6 +184,7 @@ class TheCartPress {
 	 */
 	public function get_setting( $setting_name, $default_value = false ) {
 		$value = isset( $this->settings[$setting_name] ) ? $this->settings[$setting_name ] : $default_value;
+		if ( strlen( $value ) == 0 && $default_value ) $value = $default_value;
 		$value = apply_filters( 'tcp_get_setting', $value, $setting_name, $default_value );
 		return $value;
 	}

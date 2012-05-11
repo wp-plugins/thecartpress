@@ -803,12 +803,12 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 	$image = tcp_get_the_thumbnail_image( $post_id, $args );
 	if ( strlen( $image ) > 0 ) {
 		$image_link = isset( $args['link'] ) && strlen( $args['link'] ) > 0 ? $args['link'] : 'permalink';
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
 		if ( strlen( $image_link ) > 0 ) {
 			if ( $image_link == 'file' ) {
-				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );			
+				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
 			 	$href = $image_attributes[0];
 			} else {
-				$thumbnail_id = get_post_thumbnail_id( $post_id );
 			 	$href = get_permalink( $thumbnail_id );
 			}
 
