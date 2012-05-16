@@ -259,14 +259,12 @@ class ShippingCost extends TCP_Plugin {
 				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'All', 'tcp'); ?>" title="<?php _e( 'Select all', 'tcp' ); ?>" onclick="tcp_select_all('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<br/>
 			<?php //endif; ?>
 				<?php if ( $stored_data && count( $zones ) > 1) : ?>
 				<input type="submit" name="tcp_delete_def_zone-<?php echo $z; ?>" id="tcp_delete_def_zone" value="<?php _e( 'delete zone', 'tcp'); ?>" title="<?php _e( 'To delete a defined zone', 'tcp' ); ?>" class="button-<?php if ( count( $data['countries'] ) == 1 ):?>primary<?php else:; ?>secondary<?php endif; ?>"/>
 				<?php endif; ?>
-				<script>
-					jQuery('#zones_isos_<?php echo $z; ?>').tcp_convert_multiselect();
-				</script>
 			</td>
 		<?php endforeach; ?>
 <?php if ( isset( $data['countries'] ) && count( $data['countries'] ) == 1 ) :
@@ -299,6 +297,13 @@ foreach( $zones_states as $i => $states ) {
 });
 </script>
 <?php endif; ?>
+<script>
+jQuery(document).ready(function() {
+	<?php foreach( $zones as $z => $isos ) : ?>
+	jQuery('#zones_isos_<?php echo $z; ?>').tcp_convert_multiselect();
+	<?php endforeach; ?>
+});
+</script>
 		</tr>
 		<?php if ( $stored_data ) : ?>
 		<tr>

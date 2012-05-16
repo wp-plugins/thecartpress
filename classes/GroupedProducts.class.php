@@ -82,7 +82,7 @@ class TCPGroupedProducts {
 	}
 
 	function tcp_get_the_price_label( $label, $post_id ) {
-		if ( tcp_get_the_product_type( $post_id ) == 'GROUPED' ) {
+		if ( 'GROUPED' == tcp_get_the_product_type( $post_id ) ) {
 			$min_max = tcp_get_min_max_price( $post_id );
 			if ( is_array( $min_max ) ) {
 				$min = $min_max[0];
@@ -99,6 +99,17 @@ class TCPGroupedProducts {
 		return $label;
 	}
 
+	function tcp_the_add_to_cart_button( $out, $post_id ) {
+		if ( 'GROUPED' == tcp_get_the_product_type( $post_id ) ) {
+			ob_start(); ?>
+			<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
+			<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" id="tcp_add_product_<?php echo $post_id; ?>" value="<?php _e( 'Add selected to cart', 'tcp' ); ?>"/>
+			<?php return ob_get_clean();
+		} else {
+			return $out;
+		}
+	}
+
 	function __construct() {
 		if ( is_admin() ) {
 			add_filter( 'tcp_get_product_types', array( $this, 'tcp_get_product_types' ) );
@@ -109,6 +120,7 @@ class TCPGroupedProducts {
 			add_action( 'tcp_hide_product_fields', array( $this, 'tcp_hide_product_fields' ) );
 		} else {
 			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ) , 10, 2 );
+			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
 		}
 	}
 }
