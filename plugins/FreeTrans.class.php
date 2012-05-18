@@ -43,7 +43,7 @@ class FreeTrans extends TCP_Plugin {
 
 	function isApplicable( $shippingCountry, $shoppingCart, $data ) {
 		$minimun_amount = $data['minimun'];
-		return $shoppingCart->getTotal() > $minimun_amount;
+		return $shoppingCart->getTotal() >= $minimun_amount;
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {

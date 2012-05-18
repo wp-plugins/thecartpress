@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.9.1
+Version: 1.1.9.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -45,6 +45,7 @@ class TheCartPress {
 
 	public $settings = array();
 	private $saleable_post_types = array();
+	static $tcp_shoppingCart = false;
 
 	function wp_head() { //Shopping Cart actions
 		if ( isset( $_REQUEST['tcp_add_to_shopping_cart'] ) ) {
@@ -151,18 +152,17 @@ class TheCartPress {
 
 	static function getShoppingCart() {
 		if ( ! session_id() ) session_start();
-		global $tcp_shoppingCart;
-		if ( $tcp_shoppingCart ) return $tcp_shoppingCart;
+		if ( TheCartPress::$tcp_shoppingCart !== false ) return TheCartPress::$tcp_shoppingCart;
 		
 		if ( isset( $_SESSION['tcp_session'] ) ) {
-			if ( is_string( $_SESSION['tcp_session'] ) ) $tcp_shoppingCart = unserialize( $_SESSION['tcp_session'] );
-			else $tcp_shoppingCart = $_SESSION['tcp_session'];
+			if ( is_string( $_SESSION['tcp_session'] ) ) TheCartPress::$tcp_shoppingCart = unserialize( $_SESSION['tcp_session'] );
+			else TheCartPress::$tcp_shoppingCart = $_SESSION['tcp_session'];
 		}
-		if ( ! $tcp_shoppingCart ) {
-			$tcp_shoppingCart = new ShoppingCart();
-			$_SESSION['tcp_session'] = serialize( $tcp_shoppingCart );
+		if ( TheCartPress::$tcp_shoppingCart === false ) {
+			TheCartPress::$tcp_shoppingCart = new ShoppingCart();
+			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
 		}
-		return $tcp_shoppingCart;
+		return TheCartPress::$tcp_shoppingCart;
 	}
 
 	static function removeShoppingCart() {
@@ -171,8 +171,8 @@ class TheCartPress {
 	}
 
 	static function saveShoppingCart() {
-		global $tcp_shoppingCart;
-		$_SESSION['tcp_session'] = serialize( $tcp_shoppingCart );
+		if ( TheCartPress::$tcp_shoppingCart !== false )
+			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
 	}
 
 	/**
@@ -184,6 +184,7 @@ class TheCartPress {
 	 */
 	public function get_setting( $setting_name, $default_value = false ) {
 		$value = isset( $this->settings[$setting_name] ) ? $this->settings[$setting_name ] : $default_value;
+//		if ( is_string( $value ) && strlen( $value ) == 0 && $default_value ) $value = $default_value;
 		$value = apply_filters( 'tcp_get_setting', $value, $setting_name, $default_value );
 		return $value;
 	}
@@ -553,6 +554,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function activate_plugin() {
+		if ( ! session_id() ) session_start();
 		unset( $_SESSION['tcp_session'] );
 		update_option( 'tcp_rewrite_rules', true );
 		global $wp_version;
@@ -663,11 +665,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_option( 'tcp_settings', $this->settings );
 		}
 		TheCartPress::createExampleData();
-		//feed: http://<site>/?feed=tcp-products
-		//add_feed( 'tcp-products', array( $this, 'create_products_feed' ) );
-/*		global $wp_rewrite;
-		add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
-		$wp_rewrite->flush_rules();*/
 	}
 
 	static function createShoppingCartPage() {
@@ -789,9 +786,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$this->loading_default_checkout_boxes();
 			$this->loading_default_checkout_plugins();
 			//feed: http://<site>/?feed=tcp-products
-			global $wp_rewrite;
-			add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
-			$wp_rewrite->flush_rules();
 		}
 		$version = (int)get_option( 'tcp_version' );
 		if ( $version < 110 ) {
@@ -928,9 +922,14 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			}
 			require_once( TCP_DAOS_FOLDER . 'OrdersCostsMeta.class.php' );
 			OrdersCostsMeta::createTable();
-			update_option( 'tcp_version', 118 ); //TODO
+			update_option( 'tcp_version', 118 );
 		}
-		update_option( 'tcp_version', 119 );
+		if ( $version < 120 ) {
+			global $wpdb;
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses MODIFY COLUMN `postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+			$wpdb->query( $sql );
+		}
+		update_option( 'tcp_version', 119 );//TODO
 	}
 
 	function after_setup_theme() {
@@ -944,13 +943,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		require_once( TCP_CLASSES_FOLDER . 'FeedForSearchEngine.class.php' );
 		$feedForSearchEngine = new FeedForSearchEngine();
 		$feedForSearchEngine->generateXML();
-	}
-
-	function rewrite_rules_feed( $wp_rewrite ) {
-		$new_rules = array(
-			'feed/(.+)' => 'index.php?feed=' . $wp_rewrite->preg_index( 1 )
-		);
-		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 	}
 
 	function load_custom_post_types_and_custom_taxonomies() {
@@ -980,10 +972,12 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					if ( $is_saleable ) {
 						$this->register_saleable_post_type( $id );
 						//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $id, $register['has_archive'] );
-						global $productcustomposttype;
-						add_filter( 'manage_edit-' . $id . '_columns', array( &$productcustomposttype, 'custom_columns_definition' ) );
-						add_filter( 'manage_edit-' . $id . '_sortable_columns', array( &$productcustomposttype, 'sortable_columns' ) );
-						add_filter( 'request', array( &$productcustomposttype, 'price_column_orderby' ) );
+						if ( is_admin() ) {
+							global $productcustomposttype;
+							add_filter( 'manage_edit-' . $id . '_columns', array( &$productcustomposttype, 'custom_columns_definition' ) );
+							add_filter( 'manage_edit-' . $id . '_sortable_columns', array( &$productcustomposttype, 'sortable_columns' ) );
+							add_filter( 'request', array( &$productcustomposttype, 'price_column_orderby' ) );
+						}
 					}
 				}
 			}
@@ -1096,7 +1090,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 }
 
 $thecartpress = new TheCartPress();
-$tcp_shoppingCart = false;
 
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );

@@ -37,7 +37,7 @@ class Addresses {
 			`city_id`			char(4)			NOT NULL,
 			`region`			varchar(100)	NOT NULL,
 			`region_id`			char(2)			NOT NULL,
-			`postcode`			char(6)			NOT NULL,
+			`postcode`			char(10)		NOT NULL,
 			`country_id`		char(2)			NOT NULL,
 			`telephone_1`		varchar(50)		NOT NULL,
 			`telephone_2`		varchar(50)		NOT NULL,

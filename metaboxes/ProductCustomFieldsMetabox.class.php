@@ -26,7 +26,7 @@ class ProductCustomFieldsMetabox {
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
 				add_meta_box( 'tcp-product-custom-fields', __( 'Product setup', 'tcp' ), array( $this, 'show' ), $post_type, 'normal', 'high' );
-		add_action( 'save_post', array( $this, 'save' ), 1, 2 );
+		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'delete' ) );
 	}
 
@@ -197,9 +197,9 @@ class ProductCustomFieldsMetabox {
 		}
 		update_post_meta( $post_id, 'tcp_type', $type );
 		update_post_meta( $post_id, 'tcp_is_visible', $is_visible );
-		if ( $type == 'GROUPED' )
+		if ( 'GROUPED' == $type) {
 			$price = 0;
-		else {
+		} else {
 			$price = isset( $_POST['tcp_price'] ) ? $_POST['tcp_price'] : 0;
 			$price = tcp_input_number( $price );
 		}
@@ -214,7 +214,7 @@ class ProductCustomFieldsMetabox {
 		if ( is_array( $translations ) && count( $translations ) > 0 )
 			foreach( $translations as $translation )
 				if ( $translation->element_id != $post_id ) {
-					update_post_meta( $translation->element_id, 'tcp_is_visible', isset( $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : false );
+					update_post_meta( $translation->element_id, 'tcp_is_visible', $is_visible );// $_POST['tcp_is_visible'] ) ? $_POST['tcp_is_visible'] == 'yes' : false );
 					update_post_meta( $translation->element_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
 					update_post_meta( $translation->element_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
 					update_post_meta( $translation->element_id, 'tcp_price', isset( $_POST['tcp_price'] ) ? (float)$_POST['tcp_price'] : 0 );

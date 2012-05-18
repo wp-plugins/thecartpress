@@ -803,12 +803,12 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 	$image = tcp_get_the_thumbnail_image( $post_id, $args );
 	if ( strlen( $image ) > 0 ) {
 		$image_link = isset( $args['link'] ) && strlen( $args['link'] ) > 0 ? $args['link'] : 'permalink';
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
 		if ( strlen( $image_link ) > 0 ) {
 			if ( $image_link == 'file' ) {
-				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );			
+				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
 			 	$href = $image_attributes[0];
 			} else {
-				$thumbnail_id = get_post_thumbnail_id( $post_id );
 			 	$href = get_permalink( $thumbnail_id );
 			}
 
@@ -1114,7 +1114,7 @@ function tcp_checked_multiple( $values, $value, $echo = true ) {
  */
 function tcp_number_format( $number, $decimals = 2 ) {
 	global $thecartpress;
-	return number_format( $number, $decimals, $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
+	return number_format( $number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
 }
 
 /**
@@ -1124,8 +1124,8 @@ function tcp_number_format( $number, $decimals = 2 ) {
 function tcp_input_number( $input ) {
 	global $thecartpress;
 
-	$aux = str_replace( $thecartpress->settings['thousands_separator'], '', $input );
-	$aux = str_replace( $thecartpress->settings['decimal_point'], '.', $aux );
+	$aux = str_replace( $thecartpress->get_setting( 'thousands_separator', ',' ), '', $input );
+	$aux = str_replace( $thecartpress->get_setting( 'decimal_point', '.' ), '.', $aux );
 	return (float)$aux;
 }
 
