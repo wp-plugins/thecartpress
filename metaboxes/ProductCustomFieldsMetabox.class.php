@@ -197,7 +197,7 @@ class ProductCustomFieldsMetabox {
 		}
 		update_post_meta( $post_id, 'tcp_type', $type );
 		update_post_meta( $post_id, 'tcp_is_visible', $is_visible );
-		if ( $type == 'GROUPED' ) {
+		if ( 'GROUPED' == $type) {
 			$price = 0;
 		} else {
 			$price = isset( $_POST['tcp_price'] ) ? $_POST['tcp_price'] : 0;

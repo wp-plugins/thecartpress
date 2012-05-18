@@ -1114,7 +1114,7 @@ function tcp_checked_multiple( $values, $value, $echo = true ) {
  */
 function tcp_number_format( $number, $decimals = 2 ) {
 	global $thecartpress;
-	return number_format( $number, $decimals, $thecartpress->settings['decimal_point'], $thecartpress->settings['thousands_separator'] );
+	return number_format( $number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
 }
 
 /**
@@ -1124,8 +1124,8 @@ function tcp_number_format( $number, $decimals = 2 ) {
 function tcp_input_number( $input ) {
 	global $thecartpress;
 
-	$aux = str_replace( $thecartpress->settings['thousands_separator'], '', $input );
-	$aux = str_replace( $thecartpress->settings['decimal_point'], '.', $aux );
+	$aux = str_replace( $thecartpress->get_setting( 'thousands_separator', ',' ), '', $input );
+	$aux = str_replace( $thecartpress->get_setting( 'decimal_point', '.' ), '.', $aux );
 	return (float)$aux;
 }
 

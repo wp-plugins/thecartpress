@@ -76,7 +76,6 @@ function tcp_set_billing_region( $region_id ) {
 	$_SESSION['tcp_checkout']['billing']['billing_region_id'] = $region_id;
 }
 
-
 function tcp_get_shipping_country() {
 	if ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ) {
 		if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'BIL' ) {

@@ -30,13 +30,32 @@ function tcp_register_checkout_box( $path, $class_name ) {
 	unset( $tcp_checkout_boxes[$class_name] );
 }*/
 
+
+/**
+ * @since 1.2.0
+ */
+function tcp_get_billing_postcode() {
+	if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
+		if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+			$billing_postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];
+		} else { //if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'Y' ) {
+			require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
+			$billing_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
+			$billing_postcode = $billing_address->postcode;
+		}
+		return $billing_postcode;
+	} else {
+		return '';
+	}
+}
+
 function tcp_get_shipping_postcode() {
 	if ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ) {
 		if ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'new' ) {
 			$shipping_postcode = $_SESSION['tcp_checkout']['shipping']['shipping_postcode'];
 		} elseif ( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] == 'BIL' ) {
-			if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) == 'new' ) {
-				$shipping_postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];;
+			if ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) && $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
+				$shipping_postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];
 			} else {
 				require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
 				$shipping_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );

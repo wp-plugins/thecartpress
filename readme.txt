@@ -292,6 +292,10 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+=1.1.9.2 =
+* Empty Shopping cart bug (thanks to the community)
+* Minor bugs
+
 =1.1.9.1 =
 * Stock: not activated setting for hidden out of stock products (thanks to the community)
 * Stock: Sort products by stock, in the Back-end

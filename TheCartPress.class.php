@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.1.9.1
+Version: 1.1.9.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -45,6 +45,7 @@ class TheCartPress {
 
 	public $settings = array();
 	private $saleable_post_types = array();
+	static $tcp_shoppingCart = false;
 
 	function wp_head() { //Shopping Cart actions
 		if ( isset( $_REQUEST['tcp_add_to_shopping_cart'] ) ) {
@@ -151,18 +152,17 @@ class TheCartPress {
 
 	static function getShoppingCart() {
 		if ( ! session_id() ) session_start();
-		global $tcp_shoppingCart;
-		if ( $tcp_shoppingCart ) return $tcp_shoppingCart;
+		if ( TheCartPress::$tcp_shoppingCart !== false ) return TheCartPress::$tcp_shoppingCart;
 		
 		if ( isset( $_SESSION['tcp_session'] ) ) {
-			if ( is_string( $_SESSION['tcp_session'] ) ) $tcp_shoppingCart = unserialize( $_SESSION['tcp_session'] );
-			else $tcp_shoppingCart = $_SESSION['tcp_session'];
+			if ( is_string( $_SESSION['tcp_session'] ) ) TheCartPress::$tcp_shoppingCart = unserialize( $_SESSION['tcp_session'] );
+			else TheCartPress::$tcp_shoppingCart = $_SESSION['tcp_session'];
 		}
-		if ( ! $tcp_shoppingCart ) {
-			$tcp_shoppingCart = new ShoppingCart();
-			$_SESSION['tcp_session'] = serialize( $tcp_shoppingCart );
+		if ( TheCartPress::$tcp_shoppingCart === false ) {
+			TheCartPress::$tcp_shoppingCart = new ShoppingCart();
+			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
 		}
-		return $tcp_shoppingCart;
+		return TheCartPress::$tcp_shoppingCart;
 	}
 
 	static function removeShoppingCart() {
@@ -171,8 +171,8 @@ class TheCartPress {
 	}
 
 	static function saveShoppingCart() {
-		global $tcp_shoppingCart;
-		$_SESSION['tcp_session'] = serialize( $tcp_shoppingCart );
+		if ( TheCartPress::$tcp_shoppingCart !== false )
+			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
 	}
 
 	/**
@@ -259,7 +259,6 @@ class TheCartPress {
 			);
 			$query = apply_filters( 'tcp_apply_filters_for_saleables', $query, $wp_query );
 		}
-		require_once( TCP_CLASSES_FOLDER . 'FilterNavigation.class.php' );
 		$filter = new TCPFilterNavigation();
 		if ( $apply_filters && $apply_filters_for_saleables ) {	
 			//if ( isset( $wp_query->query_vars['post_type'] ) && tcp_is_saleable_post_type( $wp_query->query_vars['post_type'] ) ) {
@@ -787,9 +786,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$this->loading_default_checkout_boxes();
 			$this->loading_default_checkout_plugins();
 			//feed: http://<site>/?feed=tcp-products
-			global $wp_rewrite;
-			add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
-			$wp_rewrite->flush_rules();
 		}
 		$version = (int)get_option( 'tcp_version' );
 		if ( $version < 110 ) {
@@ -926,9 +922,14 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			}
 			require_once( TCP_DAOS_FOLDER . 'OrdersCostsMeta.class.php' );
 			OrdersCostsMeta::createTable();
-			update_option( 'tcp_version', 118 ); //TODO
+			update_option( 'tcp_version', 118 );
 		}
-		update_option( 'tcp_version', 119 );
+		if ( $version < 120 ) {
+			global $wpdb;
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses MODIFY COLUMN `postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+			$wpdb->query( $sql );
+		}
+		update_option( 'tcp_version', 119 );//TODO
 	}
 
 	function after_setup_theme() {
@@ -942,13 +943,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		require_once( TCP_CLASSES_FOLDER . 'FeedForSearchEngine.class.php' );
 		$feedForSearchEngine = new FeedForSearchEngine();
 		$feedForSearchEngine->generateXML();
-	}
-
-	function rewrite_rules_feed( $wp_rewrite ) {
-		$new_rules = array(
-			'feed/(.+)' => 'index.php?feed=' . $wp_rewrite->preg_index( 1 )
-		);
-		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 	}
 
 	function load_custom_post_types_and_custom_taxonomies() {
@@ -1096,7 +1090,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 }
 
 $thecartpress = new TheCartPress();
-$tcp_shoppingCart = false;
 
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
@@ -1106,6 +1099,7 @@ require_once( TCP_CLASSES_FOLDER . 'WPPluginsAdminPanel.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'WishList.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'StockManagement.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'DownloadableProducts.class.php' );
+require_once( TCP_CLASSES_FOLDER . 'FilterNavigation.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'GroupedProducts.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'UIImprovements.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomTemplates.class.php' );
