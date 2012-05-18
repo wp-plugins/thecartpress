@@ -12,15 +12,15 @@ table.tcp_buy_button,
 table.tcp_buy_button tr,
 table.tcp_buy_button tr td,
 table.tcp_buy_button tr th {
-	border:0;
-	padding:0;
+	border: 0;
+	padding: 0;
 	margin: 0;
-	line-height:1.2em;
+	line-height: 1.2em;
 }
 #content table.tcp_buy_button ,
 table.tcp_buy_button {
-	font-family:Arial, Helvetica, sans-serif;
-	border-collapse:separate;
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: separate;
 	border-spacing: 0 1px;
 	margin: 1em 0 1em;
 	clear: both;
@@ -32,14 +32,15 @@ table.tcp_buy_button tr th {
 }
 #content table.tcp_buy_button tr td,
 table.tcp_buy_button tr td {
-	vertical-align:top;
-	padding:6px;
-	background-image:url();
+	vertical-align: top;
+	padding: 6px;
+	background-image: url();
 }
 table.tcp_buy_button .tcp_buy_button_price .tcp_unit_price,
 table.tcp_buy_button .tcp_buy_button .tcp_price {
-	font-weight:bold;
-	margin-left:2px;
+	font-weight: bold;
+	margin-left: 2px;
+	margin-top: 6px;
 }
 
 table.tcp_buy_button tr td.tcp_buy_button_thumbnail {
