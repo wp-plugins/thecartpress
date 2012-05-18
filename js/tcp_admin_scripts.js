@@ -166,6 +166,16 @@ function tcp_select_none(select_id) {
 	});
 }
 
+function tcp_select_all(select_id) {
+	jQuery('#' + select_id + ' option').each(function() {
+		this.selected = true;
+	});
+	jQuery('#' + select_id + ' input:checkbox').each(function() {
+		var chk = jQuery(this);
+		chk.attr('checked', true);
+		chk.parent().addClass('tcp-multiselect-on');
+	});
+}
 function add_url_param(url, key, value) {
     key = escape(key);
     value = escape(value);

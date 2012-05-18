@@ -665,11 +665,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_option( 'tcp_settings', $this->settings );
 		}
 		TheCartPress::createExampleData();
-		//feed: http://<site>/?feed=tcp-products
-		//add_feed( 'tcp-products', array( $this, 'create_products_feed' ) );
-/*		global $wp_rewrite;
-		add_action( 'generate_rewrite_rules', array( $this, 'rewrite_rules_feed' ) );
-		$wp_rewrite->flush_rules();*/
 	}
 
 	static function createShoppingCartPage() {
@@ -982,10 +977,12 @@ echo '<br>RES=', count( $res ), '<br>';*/
 					if ( $is_saleable ) {
 						$this->register_saleable_post_type( $id );
 						//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $id, $register['has_archive'] );
-						global $productcustomposttype;
-						add_filter( 'manage_edit-' . $id . '_columns', array( &$productcustomposttype, 'custom_columns_definition' ) );
-						add_filter( 'manage_edit-' . $id . '_sortable_columns', array( &$productcustomposttype, 'sortable_columns' ) );
-						add_filter( 'request', array( &$productcustomposttype, 'price_column_orderby' ) );
+						if ( is_admin() ) {
+							global $productcustomposttype;
+							add_filter( 'manage_edit-' . $id . '_columns', array( &$productcustomposttype, 'custom_columns_definition' ) );
+							add_filter( 'manage_edit-' . $id . '_sortable_columns', array( &$productcustomposttype, 'sortable_columns' ) );
+							add_filter( 'request', array( &$productcustomposttype, 'price_column_orderby' ) );
+						}
 					}
 				}
 			}

@@ -34,11 +34,11 @@ jQuery(document).ready(function() {
 	jQuery('.tcp_show_delete_area').click(function() {
 		var id = jQuery(this).attr('id');
 		jQuery('.tcp_delete_taxonomy_area').hide();
-		jQuery('#tcp_delete_area_' + id).show();
+		jQuery('#tcp_delete_area_' + id).show(200);
 		return false;
 	});
 	jQuery('.tcp_no_delete').click(function() {
-		jQuery('.tcp_delete_taxonomy_area').hide();
+		jQuery('.tcp_delete_taxonomy_area').hide(100);
 		return false;
 	});
 	jQuery('.tcp_delete_taxonomy').click(function() {
@@ -81,7 +81,7 @@ if ( is_array( $taxonomy_defs ) && count( $taxonomy_defs ) > 0 ) :
 	<td><?php echo $taxonomy_def['desc']; ?>&nbsp;</td>
 	<td><?php $taxonomy_def['activate'] ? _e( 'Activated', 'tcp' ) : _e( 'No Activated', 'tcp' ); ?></td>
 	<td><a href="<?php echo TCP_ADMIN_PATH; ?>TaxonomyEdit.php&taxonomy=<?php echo $taxonomy; ?>"><?php _e( 'Edit', 'tcp' ); ?></a>
-	| <a href="" class="tcp_show_delete_area" id="<?php echo $taxonomy; ?>"><?php _e( 'delete', 'tcp' ); ?></a></div>
+	| <a href="#" class="tcp_show_delete_area" id="<?php echo $taxonomy; ?>"><?php _e( 'delete', 'tcp' ); ?></a></div>
 		<div id="tcp_delete_area_<?php echo $taxonomy; ?>" class="tcp_delete_taxonomy_area" style="display:none; border: 1px dotted orange; padding: 2px">
 			<form method="post">
 			<input type="hidden" name="taxonomy" value="<?php echo $taxonomy; ?>" />
