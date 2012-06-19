@@ -499,13 +499,13 @@ class TCPCheckoutManager {
 			<?php $html .= ob_get_clean();
 			$html .= '</div>';
 		}
+		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;
 		$html .= $order_page;
 		$html .= '<br />';
 		$html .= '<a href="' . plugins_url( 'thecartpress/admin/PrintOrder.php' ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
 		$html .= '</div><!-- tcp_payment_area-->' . "\n";
-		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		//$shoppingCart->deleteAll();//remove since 1.1.0
 		return $html;
 	}
