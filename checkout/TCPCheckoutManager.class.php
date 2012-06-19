@@ -477,13 +477,13 @@ class TCPCheckoutManager {
 			<div class="tcp_plugin_notice $plugin_name"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
 			</div>
 		<?php }
+		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		$order_page = OrderPage::show( $order_id, true, false );
 		$_SESSION['order_page'] = $order_page;
 		echo $order_page; ?>
 		<br />
 		<a href="<?php echo plugins_url( 'thecartpress/admin/PrintOrder.php' ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 		</div><!-- tcp_payment_area--><?php
-		$shoppingCart->setOrderId( $order_id );//since 1.1.0
 		//$shoppingCart->deleteAll();//remove since 1.1.0
 		return ob_get_clean();
 	}
