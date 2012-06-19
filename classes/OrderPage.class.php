@@ -23,6 +23,15 @@
 class OrderPage {
 
 	static function show( $order_id, $see_comment = true, $echo = true, $see_address = true, $see_full = false ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+			$current_user = wp_get_current_user();
+			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) return;
+			if ( $current_user->ID == 0 ) {
+				global $thecartpress;
+				if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) return;
+			}
+		}
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceDB.class.php' );
 		$cart_table = new TCPCartTable( );
