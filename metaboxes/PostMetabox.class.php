@@ -42,17 +42,17 @@ class PostMetabox {
 			<?php $count = RelEntities::count( $post_id, 'POST-PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = '';?>
-			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-PROD"><?php _e( 'related products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-PROD&post_type_to=tcp_product"><?php _e( 'Related Products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'POST-POST' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = '';?>
 			<li>|</li>
-			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-POST&post_type_to=post"><?php _e( 'related posts', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedProductsList.php&post_id=<?php echo $post_id;?>&rel_type=POST-POST&post_type_to=post"><?php _e( 'Related Posts', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php $count = RelEntities::count( $post_id, 'POST-CAT_PROD' );
 			if ( $count > 0 ) $count = ' (' . $count . ')';
 			else $count = ''; ?>
 			<li>|</li>
-			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=POST-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' );?> <?php echo $count;?></a></li>
+			<li><a href="<?php echo TCP_ADMIN_PATH;?>AssignedCategoriesList.php&post_id=<?php echo $post_id;?>&rel_type=POST-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'Related Cat. of Products', 'tcp' );?> <?php echo $count;?></a></li>
 			<?php do_action( 'tcp_template_metabox_show', $post );?>
 		</ul>
 		<div class="clear"></div>
