@@ -220,7 +220,7 @@ class TheCartPress {
 		if ( is_admin() || ( is_array( $query ) && count( $query ) == 0 ) ) return $query;
 		$wp_query = new WP_Query();
 		$wp_query->parse_query( $query );
-		if ( $wp_query->is_category() || $wp_query->is_tag() ) return $query;
+		if ( $wp_query->is_category() || $wp_query->is_tag() || $wp_query->is_feed() ) return $query;
 		
 		$apply_filters = false;
 		$apply_filters_for_saleables = false;
