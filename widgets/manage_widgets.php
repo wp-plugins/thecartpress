@@ -44,6 +44,7 @@ require_once( 'CommentsCustomPostTypeWidget.class.php' );
 require_once( 'BrothersListWidget.class.php' );
 require_once( 'ArchivesWidget.class.php' );
 require_once( 'AttributesListWidget.class.php' );
+require_once( 'WishListWidget.class.php' );
 register_widget( 'CustomPostTypeListWidget' );
 register_widget( 'TaxonomyCloudsPostTypeWidget' );
 register_widget( 'TaxonomyTreesPostTypeWidget' );
@@ -52,5 +53,6 @@ register_widget( 'CommentsCustomPostTypeWidget' );
 register_widget( 'BrothersListWidget' );
 register_widget( 'TCPArchivesWidget' );
 register_widget( 'AttributesListWidget' );
+register_widget( 'WishListWidget' );
 //register_widget( 'TCPCalendar' );
 ?>
