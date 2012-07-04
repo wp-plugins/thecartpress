@@ -47,7 +47,7 @@ class TCPBuyButton {
 		$disable_ecommerce = $thecartpress->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
 			$base = $thecartpress->get_base_tools();
-			add_submenu_page( $base, __( 'Buy buttons', 'tcp' ), __( 'Buy buttons', 'tcp' ), 'tcp_read_orders', TCP_ADMIN_FOLDER . 'BuyButtonList.class.php' );
+			add_submenu_page( $base, __( 'Buy buttons', 'tcp' ), __( 'Buy buttons', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'BuyButtonList.class.php' );
 		}
 	}
 

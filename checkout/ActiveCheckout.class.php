@@ -51,11 +51,11 @@ class ActiveCheckout {//shortcode
 				}
 				$html .= '</div>' . "\n" . '</div>';
 			}
-			TheCartPress::removeShoppingCart();
 			$html .= '<br/>';
 			$html .= OrderPage::show( $order_id, true, false );
 			$html .= '<br/>';
 			$html .= '<a href="' . add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ) . '" target="_blank">' . __( 'Print', 'tcp' ) . '</a>';
+			TheCartPress::removeShoppingCart();
 			do_action( 'tcp_checkout_end', $order_id );
 			return $html;
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
