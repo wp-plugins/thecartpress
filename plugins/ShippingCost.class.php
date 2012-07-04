@@ -29,9 +29,9 @@ class ShippingCost extends TCP_Plugin {
 	}
 	
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
+		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$title	= isset( $data['title'] ) ? $data['title'] : '';
+		$cost	= tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
@@ -61,15 +61,15 @@ class ShippingCost extends TCP_Plugin {
 //echo '<br><br>costs: ';var_dump( $costs );
 //echo '<br><br>ranges: ';var_dump( $ranges );
 		if ( isset( $_REQUEST['tcp_copy_from_instance'] ) ) {
-			$plugin_data = get_option( 'tcp_plugins_data_shi_' . get_class( $this ) );
-			$data = reset( $plugin_data );
-			$ranges = $data['ranges'];
-			$zones = $data['zones'];
-			$costs = $data['costs']; ?>
+			$plugin_data	= get_option( 'tcp_plugins_data_shi_' . get_class( $this ) );
+			$data			= reset( $plugin_data );
+			$ranges			= $data['ranges'];
+			$zones			= $data['zones'];
+			$costs			= $data['costs']; ?>
 			<div id="message" class="updated"><p>
 				<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?>
-			</p></div><?php
-			$stored_data = false;
+			</p></div>
+			<?php $stored_data = false;
 		} elseif ( isset( $_REQUEST['tcp_insert_range'] ) && isset( $_REQUEST['tcp_insert_range_value'] ) ) {
 			$new_range = (int)$_REQUEST['tcp_insert_range_value'];
 			foreach( $zones as $z => $zone )
@@ -100,22 +100,21 @@ class ShippingCost extends TCP_Plugin {
 			$costs = $new_costs; ?>
 			<div id="message" class="updated"><p>
 				<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?>
-			</p></div><?php
-			$stored_data = false;
+			</p></div>
+			<?php $stored_data = false;
 		} elseif ( isset( $_REQUEST['tcp_add_zone'] ) ) {
 			$zones[] = array();
 			foreach( $ranges as $range )
 				$costs[$range][] = 0;
-			$stored_data = false;
-			?><div id="message" class="updated"><p>
-				<?php _e( 'Remember to <strong>save</strong> to add the new zone', 'tcp' ); ?>
-			</p></div><?php
+			$stored_data = false; ?>
+			<div id="message" class="updated">
+				<p><?php _e( 'Remember to <strong>save</strong> to add the new zone', 'tcp' ); ?></p>
+			</div><?php
 		} else {
 			foreach( $_REQUEST as $index => $value ) {
 				if ( $this->startsWith( $index, 'tcp_delete_range-' ) ) {
 					$names = explode( '-', $index );
 					$range_to_delete = $names[1];
-					
 					$new_ranges = array();
 					$new_costs = array();
 					foreach( $ranges as $r => $range ) {
@@ -124,28 +123,28 @@ class ShippingCost extends TCP_Plugin {
 					}
 					$ranges = $new_ranges;
 					$costs = $new_costs; ?>
-					<div id="message" class="updated"><p>
-						<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?>
-					</p></div><?php
-					$stored_data = false;
+					<div id="message" class="updated">
+						<p><?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?></p>
+					</div>
+					<?php $stored_data = false;
 					break;
 				} elseif ( $this->startsWith( $index, 'tcp_delete_zone-' ) ) {
 					$names = explode( '-', $index );
 					$zone = $names[1];
-					unset( $zones[$zone] );
-					?><div id="message" class="updated"><p>
-						<?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?>
-					</p></div><?php
-					$stored_data = false;
+					unset( $zones[$zone] ); ?>
+					<div id="message" class="updated">
+						<p><?php _e( 'Remember to <strong>save</strong> before deleting other rows or columns', 'tcp' ); ?></p>
+					</div>
+					<?php $stored_data = false;
 					break;
 				} elseif ( $this->startsWith( $index, 'tcp_delete_def_zone-' ) ) {
 					$names = explode( '-', $index );
 					$zone_id = $names[1];
-					unset( $zones[$zone_id] );
-					?><div id="message" class="updated"><p>
+					unset( $zones[$zone_id] ); ?>
+					<div id="message" class="updated"><p>
 						<?php _e( 'Remember to <strong>save</strong> before deleting other zones', 'tcp' ); ?>
-					</p></div><?php
-					$stored_data = false;
+					</p></div>
+					<?php $stored_data = false;
 				}
 			}
 		}
@@ -207,7 +206,8 @@ class ShippingCost extends TCP_Plugin {
 			</td>
 		</tr>
 		<?php endif; ?>
-		</tbody></table>
+		</tbody>
+		</table>
 
 		<p class="submit">
 		<input name="tcp_plugin_save" value="<?php _e( 'save', 'tcp' ); ?>" type="submit" class="button-primary" />
@@ -331,18 +331,18 @@ jQuery(document).ready(function() {
 				$new_zones[$z++] = $_REQUEST['zones_isos_' . $zone];
 			else
 				$new_zones[$z++] = array();
-		$data['zones'] = $new_zones;
-		$data['ranges'] = $ranges;
-		$data['costs'] = $costs;
+		$data['zones']	= $new_zones;
+		$data['ranges']	= $ranges;
+		$data['costs']	= $costs;
 		return $data;
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart ) {
 		$total_weight = $shoppingCart->getWeightForShipping();
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$zones = $data['zones'];
-		$ranges = $data['ranges'];
-		$costs = $data['costs'];
+		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$zones	= $data['zones'];
+		$ranges	= $data['ranges'];
+		$costs	= $data['costs'];
 		foreach( $ranges as $r => $range ) {
 			if ( $range >= $total_weight ) {
 				$selected_range = $r;

@@ -205,7 +205,8 @@ function show_excerpt() {
 		$after_add_to_cart = $thecartpress->get_setting( 'after_add_to_cart', '' ); ?>
 		<select id="after_add_to_cart" name="tcp_settings[after_add_to_cart]">
 			<option value="" <?php selected( $after_add_to_cart, '' ); ?>><?php _e( 'Nothing', 'tcp' ); ?></option>
-			<option value="ssc" <?php selected( $after_add_to_cart, 'ssc' ); ?>><?php _e( 'Show the Shopping Cart', 'tcp' ); ?></option>
+			<option value="ssc" <?php selected( $after_add_to_cart, 'ssc' ); ?>><?php _e( 'Show Shopping Cart', 'tcp' ); ?></option>
+			<option value="sco" <?php selected( $after_add_to_cart, 'sco' ); ?>><?php _e( 'Show Checkout', 'tcp' ); ?></option>
 		</select><?php
 	}
 
@@ -379,7 +380,6 @@ function show_excerpt() {
 			<script>
 			jQuery('#shipping_isos').tcp_convert_multiselect();
 			</script>
-
 		</div>
 	<?php
 	}
@@ -420,8 +420,7 @@ function show_excerpt() {
 	function show_default_tax_country() {
 		global $thecartpress;
 		$default_tax_country = $thecartpress->get_setting( 'default_tax_country', '' );
-		if ( $default_tax_country == '' )
-			$$default_tax_country = $thecartpress->get_setting( 'country', '' );
+		if ( $default_tax_country == '' ) $default_tax_country = $thecartpress->get_setting( 'country', '' );
 		$billing_isos	= $thecartpress->get_setting( 'billing_isos', array() );
 		$shipping_isos	= $thecartpress->get_setting( 'shipping_isos', array() );
 		$isos			= array_merge( $billing_isos, $shipping_isos ); ?>

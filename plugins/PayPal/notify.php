@@ -38,8 +38,6 @@ require_once( $thecartpress_path . 'daos/Orders.class.php');
 require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
 
 $cancelled_status = tcp_get_cancelled_order_status();
-$completed_status = tcp_get_completed_order_status();
-
 if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 	Orders::editStatus( $order_id, $cancelled_status, $transaction_id, __( 'Customer cancel at PayPal', 'tcp' ) );
 	$redirect = add_query_arg( 'tcp_checkout', 'ko', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
@@ -53,19 +51,18 @@ window.location="<?php echo $redirect;?>";
 </head>
 <body><noscript><meta http-equiv="refresh" content="1;url=<?php echo $redirect;?>"></noscript>
 <p>Canceling your order. Please wait...</p>
-</body></html>
-<?php
-} else {
-	$data = tcp_get_payment_plugin_data( $classname, $instance );
+</body>
+</html>
 
+<?php } else {
+	$data = tcp_get_payment_plugin_data( $classname, $instance );
 	include( 'ipnlistener.class.php' );
 	$listener = new IpnListener();
-	$listener->use_sandbox = $test_mode == 1;
+	$listener->use_sandbox = $test_mode;
 	//To post over standard HTTP connection, use:
 	//$listener->use_ssl = false;
 	//To post using the fsockopen() function rather than cURL, use:
 	$listener->use_curl = false;
-
 	try {
 		$listener->requirePostMethod();
 		$verified = $listener->processIpn();
@@ -74,6 +71,7 @@ window.location="<?php echo $redirect;?>";
 		Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, 'No validation. Error in connection.' );
 		exit(0);
 	}
+
 	if ( $verified ) {
 //  	Once you have a verified IPN you need to do a few more checks on the POST
 //		fields--typically against data you stored in your database during when the
@@ -88,7 +86,7 @@ window.location="<?php echo $redirect;?>";
 //		example and just send an email using the getTextReport() method to get all
 //		of the details about the IPN.
 		if ( $_POST['receiver_email'] == $data['business'] ) {
-			$order_row = Orders::getOrderByTransactionId( $classname, $transaction_id );
+			//$order_row = Orders::getOrderByTransactionId( $classname, $transaction_id );
 			$additional = "\npayment_status=" . $_POST['payment_status'];
 			switch ( $_POST['payment_status'] ) {
 				case 'Completed':
@@ -96,12 +94,9 @@ window.location="<?php echo $redirect;?>";
 				case 'Processed': //should check price, but with profile options, we can't know it, could check currency
 					$comment = "\nmc_gross=" . $_POST['mc_gross'] . ' ' . $_POST['mc_currency'];
 					$comment .= "\nmc_shipping=" . $_POST['mc_shipping'] . ', tax=' . $_POST['tax'];
-					if ( $_POST['receipt_id'] ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
-					if ( $_POST['memo'] ) $additional .= "\nCustomer comment: " . $_POST['memo'];
-					//if ( Orders::isDownloadable( $order_id ) )
-					//	Orders::editStatus( $order_id, $completed_status, $transaction_id, $comment . $additional );
-					//else
-						Orders::editStatus( $order_id, $new_status, $transaction_id, $comment . $additional );
+					if ( isset( $_POST['receipt_id'] ) ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
+					if ( isset( $_POST['memo'] ) ) $additional .= "\nCustomer comment: " . $_POST['memo'];
+					Orders::editStatus( $order_id, $new_status, $transaction_id, $comment . $additional );
 					break;
 				case 'Refunded':
 				case 'Reversed':
@@ -127,12 +122,13 @@ window.location="<?php echo $redirect;?>";
 					break;
 			}
 			ActiveCheckout::sendMails( $order_id, $additional );
-			//mail( debug_email, 'Verified IPN', $listener->getTextReport() );
 		} else {
 			$additional = $_POST['payment_status']. ': receiver_email is wrong (' . $_POST['receiver_email'] . ')';
 			Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $additional );
+			ActiveCheckout::sendMails( $order_id, $additional );
 		}
 	} else {
+		ActiveCheckout::sendMails( $order_id, 'Invalid IPN' );
 		//An Invalid IPN *may* be caused by a fraudulent transaction attempt. It's
 		//a good idea to have a developer or sys admin manually investigate any
 		//invalid IPN.

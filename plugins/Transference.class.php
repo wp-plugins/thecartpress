@@ -94,24 +94,21 @@ class Transference extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+		$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
+		$url = add_query_arg( 'order_id', $order_id, $url );
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$params = array(
-			'tcp_checkout'	=> 'ok',
-			'order_id'		=> $order_id,
-		);
 		ob_start(); ?>
 		<p><?php echo $data['notice']; ?></p>
 		<table class="tcp-bank-account">
-		<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
-		<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>
-		<tr><th scope="row"><?php _e( 'Account', 'tcp' ); ?>: </th><td><?php echo $data['account']; ?></td></tr>
-		<tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr>
-		<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr>
+			<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
+			<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>
+			<tr><th scope="row"><?php _e( 'Account', 'tcp' ); ?>: </th><td><?php echo $data['account']; ?></td></tr>
+			<tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr>
+			<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr>
 		</table>
 		<p>
-		<?php $additional = ob_get_clean();
-		echo $additional; ?>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() ); ?>';"/>
+		<?php $additional = ob_get_clean(); echo $additional; ?>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href = '<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
 		</p><?php
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );

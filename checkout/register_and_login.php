@@ -17,6 +17,7 @@
  */
 
 require( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) . '/wp-load.php' );
+
 $user_name		= $_REQUEST['tcp_new_user_name'];
 $user_pass		= $_REQUEST['tcp_new_user_pass'];
 $user_pass_2	= $_REQUEST['tcp_repeat_user_pass'];

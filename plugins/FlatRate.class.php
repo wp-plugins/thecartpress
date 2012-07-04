@@ -27,9 +27,9 @@ class FlatRateShipping extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
+		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$title	= isset( $data['title'] ) ? $data['title'] : '';
+		$cost	= tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
@@ -59,21 +59,24 @@ class FlatRateShipping extends TCP_Plugin {
 				<option value="<?php echo $key; ?>" <?php selected( $key, $calculate_by );?>><?php echo $value; ?></option>
 			<?php endforeach; ?>
 			</select>
-		</td></tr>
+		</td>
+		</tr>
 
 		<tr valign="top" class="tcp_fixed_cost" <?php if ( $calculate_by != 'fix' ) : ?>style="display: none;"<?php endif; ?> >
 		<th scope="row">
 			<label for="fixed_cost"><?php _e( 'Fixed cost', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="fixed_cost" name="fixed_cost" value="<?php echo isset( $data['fixed_cost'] ) ? $data['fixed_cost'] : 0;?>" size="8" maxlength="13"/><?php tcp_the_currency();?>
-		</td></tr>
+		</td>
+		</tr>
 
 		<tr valign="top" class="tcp_percentage" <?php if ( $calculate_by != 'per' ) : ?>style="display: none;"<?php endif; ?>>
 		<th scope="row">
 			<label for="percentage"><?php _e( 'Percentage', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="percentage" name="percentage" value="<?php echo isset( $data['percentage'] ) ? $data['percentage'] : 0;?>" size="3" maxlength="5"/>%
-		</td></tr>
+		</td>
+		</tr>
 
 		<tr valign="top" class="tcp_type" <?php if ( $calculate_by != 'fix' ) : ?>style="display: none;"<?php endif; ?>>
 		<th scope="row">
@@ -83,7 +86,8 @@ class FlatRateShipping extends TCP_Plugin {
 				<option value="by_order" <?php selected( 'by_order', isset( $data['calculate_type'] ) ? $data['calculate_type'] : '' );?>><?php _e( 'By order', 'tcp' );?></option>
 				<option value="by_article" <?php selected( 'by_article', isset( $data['calculate_type'] ) ? $data['calculate_type'] : '' );?>><?php _e( 'By article', 'tcp' );?></option>
 			</select>
-		</td></tr>
+		</td>
+		</tr>
 		<?php do_action( 'tcp_shipping_flat_rate_edit_fields', $calculate_by );
 	}
 

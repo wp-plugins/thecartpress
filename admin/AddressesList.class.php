@@ -23,29 +23,34 @@ class TCPAddressesList {
 	function show( $echo = true ) {
 		if ( is_admin() ) $admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
 		else $admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
-		if ( is_user_logged_in() ) {
-			global $current_user;
-			get_currentuserinfo();
-			if ( isset( $_REQUEST['tcp_delete_address'] ) ) {
-				$address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : 0;
-				if ( $address_id > 0 &&	Addresses::isOwner( $address_id, $current_user->ID ) ) {
-					Addresses::delete( $address_id ); ?>
-				<div id="message" class="updated"><p>
-					<?php _e( 'Address deleted', 'tcp' ); ?>
-				</p></div><?php
-				}
+		if ( ! is_user_logged_in() ) : ?>
+
+			<p><?php _e( 'You need to login to see your address.', 'tcp-fe' ); ?></p>
+			<?php tcp_login_form( array( 'echo' => true ) ); ?>
+
+		<?php return; endif;
+		global $current_user;
+		get_currentuserinfo();
+		if ( isset( $_REQUEST['tcp_delete_address'] ) ) {
+			$address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : 0;
+			if ( $address_id > 0 &&	Addresses::isOwner( $address_id, $current_user->ID ) ) {
+				Addresses::delete( $address_id ); ?>
+			<div id="message" class="updated"><p>
+				<?php _e( 'Address deleted', 'tcp' ); ?>
+			</p></div><?php
 			}
-			$addresses = Addresses::getCustomerAddresses( $current_user->ID );
-		} else {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-		} 
+		}
+		$addresses = Addresses::getCustomerAddresses( $current_user->ID );
 		ob_start(); ?>
+
 <div class="wrap">
 
 <?php if ( is_admin() ) : ?><h2><?php _e( 'List of addresses', 'tcp' ); ?></h2><?php endif; ?>
+
 <ul class="subsubsub">
 	<li><a href="<?php echo $admin_path; ?>"><?php _e( 'Create new address', 'tcp' ); ?></a></li>
 </ul>
+
 <div class="clear"></div>
 
 <table class="widefat fixed">

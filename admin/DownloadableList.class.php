@@ -37,6 +37,14 @@ function tcp_reload() {
 	<h2><?php echo __( 'Downloadable products', 'tcp' );?></h2>
 	<div class="clear"></div>
 <?php endif;
+
+if ( ! is_user_logged_in() ) : ?>
+
+	<p><?php _e( 'You need to login to see your downloads.', 'tcp-fe' ); ?></p>
+	<?php tcp_login_form( array( 'echo' => true ) ); ?>
+
+<?php return; endif;
+
 global $current_user;
 get_currentuserinfo();
 $orders = Orders::getProductsDownloadables( $current_user->ID );

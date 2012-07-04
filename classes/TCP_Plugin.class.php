@@ -36,6 +36,15 @@ class TCP_Plugin {
 	}
 
 	/**
+	 * Returns the url to the icon, false if not icon
+	 * It's used to display the icon of the plugin in the admin pages
+	 * @since 1.2
+	 */
+	function getIcon() {
+		return false;
+	}
+
+	/**
 	 * Returns the name of the plugin.
 	 * It's used by the orders
 	 */
@@ -129,6 +138,9 @@ function tcp_register_payment_plugin( $class_name ) {
 	$obj = new $class_name();
 	$tcp_payment_plugins['pay_' . $class_name] = $obj;
 	tcp_add_template_class( 'tcp_payment_plugins_' . $class_name, sprintf( __( 'This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s', 'tcp' ), $obj->getName() ) );
+	global $tcp_miranda;
+	//if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'payments', $obj->getTitle(), $obj->getDescription(), array( $class_name ), $obj->getIcon() );
+	if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'payments', $obj->getTitle(), $obj->getDescription(), 'http://google.com', $obj->getIcon() );
 }
 
 /**
@@ -254,9 +266,7 @@ function tcp_get_payment_plugin_data( $plugin_name, $instance = 0 ) {
 
 function tcp_get_plugin_data( $plugin_id, $instance = -1 ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
-	if ( $instance == -1 )
-		return $plugin_data;
-	else
-		return $plugin_data[$instance];
+	if ( $instance == -1 ) return $plugin_data;
+	else return $plugin_data[$instance];
 }
 ?>

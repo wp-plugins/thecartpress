@@ -115,5 +115,17 @@ class OrdersDetails {
 			where order_id = %d and is_downloadable != \'Y \'', $order_id ) );
 		return $count == 0;
 	}
+
+	static function getCrossSelling( $post_id ) {
+		global $wpdb;
+		$sql =  'select odd.post_id as id, sum(odd.qty_ordered) as count from (' . $wpdb->prefix . 'tcp_orders_details od';
+		$sql .= ' inner join ' . $wpdb->prefix . 'tcp_orders o';
+		$sql .= ' on od.order_id = o.order_id ) inner join ' . $wpdb->prefix . 'tcp_orders_details odd';
+		$sql .= ' on o.order_id = odd.order_id';
+		$sql .= $wpdb->prepare( ' where od.post_id = %d', $post_id );
+		$sql .= $wpdb->prepare( ' and o.status = %s', tcp_get_completed_order_status() );
+		$sql .= ' group by odd.post_id order by count';
+		return $wpdb->get_results( $sql );
+	}
 }
 ?>

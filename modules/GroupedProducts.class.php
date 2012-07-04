@@ -1,27 +1,44 @@
 <?php
 /**
-* This file is part of TheCartPress.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of TheCartPress.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
 class TCPGroupedProducts {
 
+	function __construct() {
+		if ( is_admin() ) {
+			add_filter( 'tcp_get_product_types', array( $this, 'tcp_get_product_types' ) );
+			add_filter( 'tcp_product_row_actions', array( $this, 'tcp_product_row_actions' ), 10, 2 );
+			add_filter( 'tcp_custom_columns_definition', array( $this, 'tcp_custom_columns_definition' ) );
+			add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
+			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
+			add_action( 'tcp_hide_product_fields', array( $this, 'tcp_hide_product_fields' ) );
+		} else {
+			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ) , 10, 2 );
+			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
+			add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 4 );
+		}
+	}
+
 	function tcp_get_product_types( $types ) {
-		$types['GROUPED'] = __( 'Grouped', 'tcp' );
+		$types['GROUPED'] = array( 
+			'label'	=> __( 'Grouped', 'tcp' )
+		);
 		return $types;
 	}
 
@@ -75,8 +92,10 @@ class TCPGroupedProducts {
 		if ('GROUPED' == product_type) {
 			jQuery('#tcp_price').parent().parent().fadeOut(speed);
 			jQuery('#tcp_tax_id').parent().parent().fadeOut(speed);
+			jQuery('#tcp_initial_units').parent().parent().fadeOut(speed);
 			jQuery('#tcp_weight').parent().parent().fadeOut(speed);
 			jQuery('#tcp_exclude_range').parent().parent().fadeOut(speed);
+			jQuery('#tcp_attribute_sets').parent().parent().fadeOut(speed);
 			jQuery('#tcp_is_downloadable').parent().parent().fadeOut(speed);
 		}<?php
 	}
@@ -102,7 +121,7 @@ class TCPGroupedProducts {
 	function tcp_the_add_to_cart_button( $out, $post_id ) {
 		if ( 'GROUPED' == tcp_get_the_product_type( $post_id ) ) {
 			ob_start(); ?>
-			<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
+			<!--<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />-->
 			<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" id="tcp_add_product_<?php echo $post_id; ?>" value="<?php _e( 'Add selected to cart', 'tcp' ); ?>"/>
 			<?php return ob_get_clean();
 		} else {
@@ -110,18 +129,13 @@ class TCPGroupedProducts {
 		}
 	}
 
-	function __construct() {
-		if ( is_admin() ) {
-			add_filter( 'tcp_get_product_types', array( $this, 'tcp_get_product_types' ) );
-			add_filter( 'tcp_product_row_actions', array( $this, 'tcp_product_row_actions' ), 10, 2 );
-			add_filter( 'tcp_custom_columns_definition', array( $this, 'tcp_custom_columns_definition' ) );
-			add_action( 'tcp_manage_posts_custom_column', array( $this, 'tcp_manage_posts_custom_column' ), 10, 2 );
-			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar' ) );
-			add_action( 'tcp_hide_product_fields', array( $this, 'tcp_hide_product_fields' ) );
-		} else {
-			add_filter( 'tcp_get_the_price_label', array( $this, 'tcp_get_the_price_label' ) , 10, 2 );
-			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
+	//if a non visible product is displayed, its link will go to the parent
+	function post_type_link( $post_link, $post, $leavename, $sample ) {
+		if ( ! tcp_is_visible( $post->ID ) ) {
+			$parent_id = tcp_get_the_parent( $post->ID );
+			if ( $parent_id > 0 ) return get_permalink( $parent_id );
 		}
+		return $post_link;
 	}
 }
 

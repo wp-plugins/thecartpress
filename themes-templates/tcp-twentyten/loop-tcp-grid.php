@@ -42,27 +42,29 @@
 <table class="tcp_products_list">
 <tr class="tcp_first-row">
 <?php
-$currency = tcp_the_currency( false ); 
-if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );	
-$see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] : true;
-$title_tag				= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
-$see_image				= isset( $instance['see_image'] ) ? $instance['see_image'] : true;
-$image_size				= isset( $instance['image_size'] ) ? $instance['image_size'] : 'thumbnail';
-$see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt'] : true;
-$see_content			= isset( $instance['see_content'] ) ? $instance['see_content'] : false;
-$see_price				= isset( $instance['see_price'] ) ? $instance['see_price'] : true;
-$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button'] : false;
-$see_author				= isset( $instance['see_author'] ) ? $instance['see_author'] : false;
-$see_posted_on			= isset( $instance['see_posted_on'] ) ? $instance['see_posted_on'] : false;
-$see_taxonomies			= isset( $instance['see_taxonomies'] ) ? $instance['see_taxonomies'] : false;
-$see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
-$see_sorting_panel		= isset( $instance['see_sorting_panel'] ) ? $instance['see_sorting_panel'] : false;
-$number_of_columns		= isset( $instance['columns'] ) ? (int)$instance['columns'] : 2;
+if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
+$suffix = '-' . get_post_type( get_the_ID() );
+if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
+	
+$see_title				= isset( $instance['see_title' . $suffix] ) ? $instance['see_title' . $suffix] : true;
+$title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag' . $suffix] : '';
+$see_image				= isset( $instance['see_image' . $suffix] ) ? $instance['see_image' . $suffix] : true;
+$image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'thumbnail';
+$see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : true;
+$see_content			= isset( $instance['see_content' . $suffix] ) ? $instance['see_content' . $suffix] : false;
+$see_price				= isset( $instance['see_price' . $suffix] ) ? $instance['see_price' . $suffix] : true;
+$see_buy_button			= isset( $instance['see_buy_button' . $suffix] ) ? $instance['see_buy_button' . $suffix] : false;
+$see_author				= isset( $instance['see_author' . $suffix] ) ? $instance['see_author' . $suffix] : false;
+$see_posted_on			= isset( $instance['see_posted_on' . $suffix] ) ? $instance['see_posted_on' . $suffix] : false;
+$see_taxonomies			= isset( $instance['see_taxonomies' . $suffix] ) ? $instance['see_taxonomies' . $suffix] : false;
+$see_meta_utilities		= isset( $instance['see_meta_utilities' . $suffix] ) ? $instance['see_meta_utilities' . $suffix] : false;
+$see_sorting_panel		= isset( $instance['see_sorting_panel' . $suffix] ) ? $instance['see_sorting_panel' . $suffix] : false;
+$number_of_columns		= isset( $instance['columns' . $suffix] ) ? (int)$instance['columns' . $suffix] : 2;
 //custom areas. Usefull to insert other template tag from WordPress or anothers plugins 
-$see_first_custom_area	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
-$see_second_custom_area	= isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
-$see_third_custom_area	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false;
-$see_pagination			= isset( $instance['see_pagination'] ) ? $instance['see_pagination'] : false;
+$see_first_custom_area	= isset( $instance['see_first_custom_area' . $suffix] ) ? $instance['see_first_custom_area' . $suffix] : false;
+$see_second_custom_area	= isset( $instance['see_second_custom_area' . $suffix] ) ? $instance['see_second_custom_area' . $suffix] : false;
+$see_third_custom_area	= isset( $instance['see_third_custom_area' . $suffix] ) ? $instance['see_third_custom_area' . $suffix] : false;
+$see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : false;
 $column = $number_of_columns;
 
 while ( have_posts() ) : the_post();

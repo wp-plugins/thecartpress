@@ -55,23 +55,7 @@ class WishListWidget extends CustomListWidget {
 		</form><?php
 	}
 
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		return parent::update( $new_instance, $instance );
-	}
-
 	function form( $instance ) {
-		$defaults = array(
-			'title'	=> __( 'Wish List', 'tcp' ),
-		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
-		<div id="particular">
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p>
-		</div><?php
 		parent::form( $instance );
 		parent::show_post_type_form( $instance );
 	}

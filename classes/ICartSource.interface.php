@@ -18,8 +18,9 @@
 
 interface TCP_ICartSource {
 	public function see_address();
-	public function see_full();
-	public function see_tax_summary();
+	public function see_sku();
+	public function see_weight();
+	public function see_tax();
 	public function is_editing_units();
 	public function see_other_costs();
 	public function see_product_link();
@@ -48,6 +49,7 @@ interface TCP_ICartSource {
 	public function get_billing_firstname();//stripslashes
 	public function get_billing_lastname(); 
 	public function get_billing_company();
+	public function get_billing_tax_id_number();
 	public function get_billing_street();
 	public function get_billing_postcode();
 	public function get_billing_city();
@@ -57,10 +59,10 @@ interface TCP_ICartSource {
 	public function get_billing_telephone_2();
 	public function get_billing_fax();
 	public function get_billing_email();
-	
+
 	public function has_order_details();
 	public function get_orders_details();//Returns an array of TCP_IDetailSource
-	
+
 	public function get_discount();
 	//public function get_discounts();//TODO
 	public function get_comment();
@@ -77,6 +79,8 @@ interface TCP_IDetailSource {
 	public function get_discount();
 	public function get_sku();
 	public function get_weight();
+	public function has_attributes();
+	public function get_attributes();
 	public function get_attribute( $id );
 }
 

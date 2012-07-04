@@ -1,9 +1,10 @@
 === TheCartPress eCommerce Shopping Cart ===
 Contributors: thecartpress
+Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.1
-Tested up to: 3.4
-Stable Tag: 1.1.9.3
+Tested up to: 3.3
+Stable Tag: 1.1.9.9
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -292,9 +293,23 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
-=1.1.9.3 =
-* Bug in Related Posts - Products
-* Security issue
+=1.2.0=
+* Ajax eCommerce
+* Drag&Drop eCommerce
+* Settings: New design, Self-commented
+* Loop Settings: Create different configuration for each Post Type
+* Theme Compatibility: New design
+* Theme Compatibility: Create different configuration for each Post Type
+* Loop Settings: Create different configuration for each Post Type
+* Cross Settings list widget
+* Initial Stock: New Product field
+* PayPal for non supported currencies. Manually conversion or using Google API (refresh every 6 hours)
+* Last login: Monitorizing last login. New template tag "tcp_the_last_login"
+* Login form: New version for tcp_login_form
+* Order email: New format
+* Initial quantity: New Product field, allows to configure the units to display next to Buy button
+* Checkout Cart box: New setting to display or not the tax column
+* Custom Field: help info
 
 =1.1.9.2 =
 * Empty Shopping cart bug (thanks to the community)
@@ -444,7 +459,7 @@ This plugin is released under a GPL license.
 * Settings: Position of Buy button (north, south)
 * First time setup
 * Address table: Company tax id in address table (plus custom id and company id) (Suggested in the community)
-* New loop_tcp_grid: more easyier yo use, no-dependent theme
+* New loop_tcp_grid: easyier to use, no-dependent theme
 * Credit card: store part of the credit card number (Suggested in the community)
 * New CSS styles
 

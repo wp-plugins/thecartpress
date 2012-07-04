@@ -26,7 +26,7 @@ class TaxonomyTreesPostTypeWidget extends TCPParentWidget {
 	function widget( $args, $instance ) {
 		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '' );
 		echo $before_widget;
 		if ( $title ) echo $before_title, $title, $after_title;
 		$args = array(

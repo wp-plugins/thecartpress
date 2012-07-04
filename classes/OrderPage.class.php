@@ -22,7 +22,12 @@
  */
 class OrderPage {
 
-	static function show( $order_id, $see_comment = true, $echo = true, $see_address = true, $see_full = false ) {
+	/**
+	 * Prints an order
+	 * @param order_id
+	 * @param args array(see_comment => true/false, see_address => true/false, see_tax => true/false, see_weight => true/false)
+	 */
+	static function show( $order_id, $args = array(), $echo = true ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			$current_user = wp_get_current_user();
@@ -34,8 +39,8 @@ class OrderPage {
 		}
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceDB.class.php' );
-		$cart_table = new TCPCartTable( );
-		return $cart_table->show( new TCP_CartSourceDB( $order_id, $see_address, $see_full, true, $see_comment ), $echo );
+		$cart_table = new TCPCartTable();
+		return $cart_table->show( new TCP_CartSourceDB( $order_id ), $echo );
 	}
 }
 ?>

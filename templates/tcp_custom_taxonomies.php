@@ -175,27 +175,30 @@ function tcp_delete_custom_post_type( $post_type ) {
 /**
  * Creates a custom post type definition
  * @param post_type_def is an array with the next keys:
- *		name				=> 'Post type Name'
- *		desc				=> string
- *		activate			=> true/false
- *		singular_name		=> 'Singular name'
- *		add_new				=> 'Add New'
- *		add_new_item		=> 'Add New'
- *		edit_item			=> 'Edit'
- *		new_item			=> 'Add New'
- *		view_item			=> 'View'
- *		search_items		=> 'Search'
- *		not_found			=> 'Not found'
- *		not_found_in_trash	=> 'Not found in Trash:'
- *		public				=> true/false
- *		show_ui				=> true/false
- *		show_in_menu		=> true/false
- *		can_export			=> true/false
- *		show_in_nav_menus	=> true/false
- *		supports			=> array( 'title', 'excerpt', 'editor', ... ),
- *		rewrite				=> string
- *		has_archive			=> string/false
- *		is_saleable			=> true/false
+ *		'name'				=> 'Post type Name',
+ *		'desc'				=> string,
+ *		'activate'			=> true/false,
+ *		'singular_name'		=> 'Singular name',
+ *		'add_new'			=> 'Add New',
+ *		'add_new_item'		=> 'Add New',
+ *		'edit_item'			=> 'Edit',
+ *		'new_item'			=> 'Add New',
+ *		'view_item'			=> 'View',
+ *		'search_items'		=> 'Search',
+ *		'not_found'			=> 'Not found',
+ *		'not_found_in_trash'=> 'Not found in Trash:',
+ *		'public'			=> true/false,
+ *		'show_ui'			=> true/false,
+ *		'publicly_queryable'=> true/false,
+ *		'exclude_from_search'=> true/false,
+ *		'show_in_menu'		=> true/false,
+ *		'can_export'		=> true/false,
+ *		'show_in_nav_menus'	=> true/false,
+ *		'query_var'			=> true/false,
+ *		'supports'			=> array( 'title', 'excerpt', 'editor', ... ),
+ *		'rewrite'			=> string,
+ *		'has_archive'		=> string/true/false,
+ *		'is_saleable'		=> true/false,
  * @since 1.1.7
  */
 function tcp_create_custom_post_type( $post_type, $post_type_def = array() ) {

@@ -62,11 +62,11 @@ if ( is_array( $post_type_defs ) && count( $post_type_defs ) > 0 ) :
 </tr>
 		<?php foreach( $product_types as $product_type ) : ?>
 <tr>
-	<td style="padding-left: 2em;"><?php echo $product_type; ?></td>
+	<td style="padding-left: 2em;"><?php echo $product_type['label']; ?></td>
 	<td>
 		<label><?php _e( 'Templates', 'tcp' ); ?>: <br>		
-		<?php $selected_buy_button = get_option( 'tcp_buy_button_template-' .  $post_type . '-' . $product_type, '' ); ?>
-		<select name="tcp_buy_button_templates_<?php echo $product_type; ?>[]">
+		<?php $selected_buy_button = get_option( 'tcp_buy_button_template-' .  $post_type . '-' . $product_type['label'], '' ); ?>
+		<select name="tcp_buy_button_templates_<?php echo $product_type['label']; ?>[]">
 			<option value="" <?php selected( '', $selected_buy_button ); ?>><?php _e( 'Default', 'tcp' ); ?></option>
 			<?php foreach( $buy_buttons as $buy_button ) : ?>
 			<option value="<?php echo $buy_button['path']; ?>" <?php selected( $buy_button['path'], $selected_buy_button ); ?>>

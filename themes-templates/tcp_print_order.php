@@ -19,7 +19,11 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title><?php _e( 'Order', 'tcp' );?></title>
+<title>
+
+<?php wp_title( '|', true, 'right' ); bloginfo( 'name' ); ?>
+
+</title>
 <style>
 	.tcp_order_page_name {
 		text-align: left;
@@ -84,15 +88,19 @@
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 <body>
-	<?php if ( isset( $_REQUEST['order_id'] ) ) {
-		require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
-		$order_id = $_REQUEST['order_id'];
-		OrderPage::show( $order_id, true );
-	}?>
-	<p>
-		<a href="javascript:print();"><?php _e( 'print', 'tcp' );?></a>
-		&nbsp;|&nbsp;
-		<a href="javascript:close();"><?php _e( 'close', 'tcp' );?></a>
-	</p>
+<h1 id="site-title"><?php bloginfo( 'name' ); ?></h1>
+<h2 id="site-description"><?php bloginfo( 'description' ); ?></h2>
+
+<?php if ( isset( $_REQUEST['order_id'] ) ) {
+	require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
+	$order_id = $_REQUEST['order_id'];
+	OrderPage::show( $order_id );
+}?>
+<p>
+	<a href="javascript:print();"><?php _e( 'print', 'tcp' );?></a>
+	&nbsp;|&nbsp;
+	<a href="javascript:close();"><?php _e( 'close', 'tcp' );?></a>
+</p>
+
 </body>
 </html>

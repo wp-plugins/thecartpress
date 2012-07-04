@@ -284,11 +284,11 @@ class IpnListener {
 	}
 	
 	/**
-* Require Post Method
-*
-* Throws an exception and sets a HTTP 405 response header if the request
-* method was not POST.
-*/
+	 * Require Post Method
+	 *
+	 * Throws an exception and sets a HTTP 405 response header if the request
+	 * method was not POST.
+	 */
 	public function requirePostMethod() {
 		// require POST requests
 		if ($_SERVER['REQUEST_METHOD'] && $_SERVER['REQUEST_METHOD'] != 'POST') {

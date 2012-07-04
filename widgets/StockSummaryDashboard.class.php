@@ -68,17 +68,11 @@ class StockSummaryDashboard {
 			$customer_id = $current_user->ID;
 		} 
 		$args = array(
-			'post_type'		=> TCP_PRODUCT_POST_TYPE,
+			'post_type'		=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
 			'numberposts'	=> 5,
 			'post_status'	=> 'publish',
 			'fields'		=> 'ids',
 			'meta_query'	=> array(
-				// array(
-				// 	'key'		=>'tcp_stock',
-				// 	'type'		=> 'NUMERIC',
-				// 	'compare'	=> '<=',
-				// 	'value'		=> 5,
-				// ),
 				array(
 					'key'		=>'tcp_stock',
 					'type'		=> 'NUMERIC',
@@ -86,7 +80,7 @@ class StockSummaryDashboard {
 					'value'		=> -1,
 				),
 			),
-			'orderby'		=> 'meta_value',
+			'orderby'		=> 'meta_value_num',
 			'meta_key'		=> 'tcp_stock',
 			'order'			=> 'asc',
 		);

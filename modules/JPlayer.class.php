@@ -24,6 +24,87 @@
 
 class TCPJPlayer {
 
+	function __construct() {
+		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+	}
+
+	function admin_menu() {
+		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
+		global $thecartpress;
+		$base = $thecartpress->get_base_appearance();
+		$page = add_submenu_page( $base, __( 'JPlayer Settings', 'tcp' ), __( 'JPlayer', 'tcp' ), 'tcp_edit_settings', 'jplayer_settings', array( &$this, 'admin_page' ) );
+		add_action( "load-$page", array( &$this, 'admin_load' ) );
+		add_action( "load-$page", array( &$this, 'admin_action' ) );
+	}
+
+	function admin_load() {
+		get_current_screen()->add_help_tab( array(
+		    'id'      => 'overview',
+		    'title'   => __( 'Overview' ),
+		    'content' =>
+	            '<p>' . __( 'You can customize The default TheCartPress player (JPlayer).', 'tcp' ) . '</p>'
+		) );
+
+		get_current_screen()->set_help_sidebar(
+			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
+			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
+			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>' .
+			'<p>' . __( '<a href="http://extend.thecartpress.com/" target="_blank">Extend site</a>', 'tcp' ) . '</p>'
+		);
+		//wp_enqueue_script('custom-background');
+		//wp_enqueue_style('farbtastic');
+	}
+
+function admin_page() { ?>
+<div class="wrap">
+	<?php screen_icon(); ?><h2><?php _e( 'JPlayer Settings', 'tcp' ); ?></h2>
+
+<?php if ( !empty( $this->updated ) ) : ?>
+	<div id="message" class="updated">
+	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
+	</div>
+<?php endif; ?>
+
+<?php global $thecartpress;
+$jplayer_skin = isset( $thecartpress->settings['jplayer_skin'] ) ? $thecartpress->settings['jplayer_skin'] : 'tcp.black'; ?>
+
+<form method="post" action="">
+<?php if ( $handle = opendir( WP_PLUGIN_DIR . '/thecartpress/js/jquery.jplayer/skins/' ) ) : ?>
+	<?php while ( false !== ( $entry = readdir( $handle ) ) ) : ?>
+		<?php if ( $entry != '.' && $entry != '..' ) : ?>
+    <div class="tcp_jplayer_skins">
+
+		<label class="tcp_jplayer_skin_title"><input type="radio" name="jplayer_skin" value="<?php echo $entry; ?>" <?php checked( $jplayer_skin, $entry ); ?>/> <?php echo $entry; ?></label>
+		<div class="tcp_jplayer_skin_detail">
+			<img src="<?php echo WP_PLUGIN_URL, '/thecartpress/js/jquery.jplayer/skins/', $entry; ?>/screenshot.png" />
+		</div>
+
+	</div>
+		<?php endif; ?>
+	<?php endwhile; ?>
+	<?php closedir( $handle ); ?>
+	<?php do_action( 'tcp_jplayer_skins', $jplayer_skin ); ?>
+<?php endif; ?>
+
+<?php wp_nonce_field( 'tcp_jplayer_settings' ); ?>
+<?php submit_button( null, 'primary', 'save-jplayer-settings' ); ?>
+</form>
+</div>
+<?php
+	}
+
+	function admin_action() {
+		if ( empty( $_POST ) ) return;
+		check_admin_referer( 'tcp_jplayer_settings' );
+		$settings = get_option( 'tcp_settings' );
+		$settings['jplayer_skin'] = isset( $_POST['jplayer_skin'] ) ? $_POST['jplayer_skin'] : false;
+		update_option( 'tcp_settings', $settings );
+		$this->updated = true;
+		global $thecartpress;
+		$thecartpress->load_settings();
+	}
+
 	function show( $post_id = 0, $args = null ) {
 		if ( $post_id == 0 ) {
 			global $post;
@@ -211,35 +292,6 @@ jQuery(document).ready(function() {
 		</div>
 	<?php }
 
-	function admin_init() {
-		$tcp_settings = TCP_ADMIN_FOLDER . 'Settings.class.php';
-		add_settings_section( 'tcp_jplayer_section', __( 'jPlayer skins', 'tcp' ) , array( $this, 'show_jplayer_section' ), $tcp_settings );
-		add_settings_field( 'jplayer_skin', __( 'Select a skin', 'tcp' ), array( $this, 'show_jplayer_skin' ), $tcp_settings , 'tcp_jplayer_section' );
-		//add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
-	}
-
-	function show_jplayer_section() {
-	}
-
-	function show_jplayer_skin() {
-		global $thecartpress;
-		$jplayer_skin = isset( $thecartpress->settings['jplayer_skin'] ) ? $thecartpress->settings['jplayer_skin'] : 'tcp.black';
-		if ( $handle = opendir( WP_PLUGIN_DIR . '/thecartpress/js/jquery.jplayer/skins/' ) ) {
-		    while ( false !== ( $entry = readdir( $handle ) ) ) : 
-		    	if ( $entry != '.' && $entry != '..' ) : ?>
-		    <div class="tcp_jplayer_skins">
-				<label class="tcp_jplayer_skin_title"><input type="radio" name="tcp_settings[jplayer_skin]" value="<?php echo $entry; ?>" <?php checked( $jplayer_skin, $entry ); ?>/> <?php echo $entry; ?></label>
-				<div class="tcp_jplayer_skin_detail">
-					<img src="<?php echo WP_PLUGIN_URL, '/thecartpress/js/jquery.jplayer/skins/', $entry; ?>/screenshot.png" />
-				</div>
-			</div>
-	    		<?php endif;
-    		endwhile;
-		    closedir( $handle );
-		    do_action( 'tcp_jplayer_skins', $jplayer_skin );
-		}
-	}
-
 	function init() {
 		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js' );
 		wp_enqueue_script( 'tcp_jplayer' );
@@ -252,11 +304,6 @@ jQuery(document).ready(function() {
 			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
 			wp_enqueue_style( 'tcp_jplayer_skin', $url );
 		}
-	}
-
-	function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 }
 

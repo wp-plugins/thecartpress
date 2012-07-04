@@ -133,9 +133,10 @@ class TCPShippingBox extends TCPCheckoutBox {
 		<div class="shipping_layer_info checkout_info clearfix" id="shipping_layer_info">
 		<?php global $current_user;
 		get_currentuserinfo();
-		$addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		if ( $current_user->ID > 0 ) $addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		else $addresses = false;
 		$default_address = false;
-		if ( count( $addresses ) > 0 ) {
+		if ( is_array( $addresses ) && count( $addresses ) > 0 ) {
 			if ( isset( $_REQUEST['selected_shipping_id'] ) ) {
 				$default_address_id = $_REQUEST['selected_shipping_id'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] ) ) {
@@ -166,7 +167,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			<br/>
 			</span>
 
-			<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
+			<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || ( count( $addresses ) == 0 && $selected_shipping_address != 'BIL' ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
 			<label for="new_shipping_address"><?php _e( 'New shipping address', 'tcp' );?></label>
 			<div id="new_shipping_area" <?php if ( $selected_shipping_address != 'new' ) : ?>style="display:none"<?php endif;?>><?php
 			if ( isset( $_REQUEST['shipping_firstname'] ) ) {

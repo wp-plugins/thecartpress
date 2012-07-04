@@ -25,18 +25,37 @@ class TCPCartSourceSession implements TCP_ICartSource {
 	private $orders_costs;
 
 	private $is_editing_units;
-	private $see_other_costs;
 	private $see_address;
-	private $see_full;
+	private $see_sku;
+	private $see_weight;
+	private $see_tax;
+	private $see_comment;	
+	private $see_other_costs;
 	private $see_thumbnail;
-	private $see_tax_summary;
 
-	function __construct( $is_editing_units = true, $see_other_costs = false, $see_address = false, $see_full = false, $see_tax_summary = false, $see_thumbnail = true ) {
+	/**
+	 * @param $args, array ($see_address => true/false, $see_full => true/false, $see_tax_summary => true/false, $see_comment => true/false, $see_thumbnail => true/false(default))
+	 */
+	function __construct( $args = array() ) {
+		$defaults = array(
+			'is_editing_units'	=> true,
+			'see_address'		=> false,
+			'see_sku'			=> false,
+			'see_weight'		=> true,
+			'see_tax'			=> true,
+			'see_comment'		=> false,
+			'see_other_costs'	=> false,
+			'see_thumbnail'		=> true
+		);
+		$args = wp_parse_args( $args, $defaults );
+		extract( $args );
 		$this->is_editing_units	= $is_editing_units;
-		$this->see_other_costs	= $see_other_costs;
 		$this->see_address		= $see_address;
-		$this->see_full			= $see_full;
-		$this->see_tax_summary	= $see_tax_summary;
+		$this->see_sku			= $see_sku;
+		$this->see_weight		= $see_weight;
+		$this->see_tax			= $see_tax;
+		$this->set_commect		= $see_comment;
+		$this->see_other_costs	= $see_other_costs;
 		$this->see_thumbnail	= $see_thumbnail;
 	}
 
@@ -60,28 +79,32 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		return false;
 	}
 
-	public function see_other_costs() {
-		return $this->see_other_costs;
-	}
-
 	public function see_address() {
 		return $this->see_address;
-	}
-
-	public function see_full() {
-		return $this->see_full;
 	}
 
 	public function see_thumbnail() {
 		return $this->see_thumbnail;
 	}
 
-	public function see_tax_summary() {
-		return $this->see_tax_summary;
+	public function see_sku() {
+		return $this->see_sku;
+	}
+
+	public function see_weight() {
+		return $this->see_weight;
+	}
+
+	public function see_tax() {
+		return $this->see_tax;
 	}
 
 	public function is_editing_units() {
 		return $this->is_editing_units;
+	}
+
+	public function see_other_costs() {
+		return $this->see_other_costs;
 	}
 
 	public function see_product_link() {
@@ -89,7 +112,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 	}
 	
 	public function see_comment() {
-		return false;
+		return $this->see_comment;
 	}
 
 	public function get_shipping_firstname() {
@@ -166,6 +189,12 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_company'];
 		else return false;
 	}
+	
+	public function get_billing_tax_id_number() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'];
+		else return false;
+	}
+
 
 	public function get_billing_street() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_street'];
@@ -315,9 +344,19 @@ class TCP_DetailSourceSession implements TCP_IDetailSource {
 		if ( $this->item ) return $this->item->getUnitWeight();
 		else return false;
 	}
-	
+
+	public function has_attributes() {
+		if ( $this->item ) return $this->item->has_attributes();
+		else return false;
+	}
+
+	public function get_attributes() {
+		if ( $this->item ) return $this->item->get_attributes();
+		else return false;
+	}
+
 	public function get_attribute( $id ) {
-		if ( $this->item ) return $this->item->getAttribute( $id );
+		if ( $this->item ) return $this->item->get_attribute( $id );
 		else return false;
 	}
 }

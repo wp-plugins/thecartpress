@@ -18,6 +18,23 @@
 
 class TCPDownloadableProducts {
 
+	function __construct() {
+		if ( is_admin() ) {
+			add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
+			add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+			add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+			add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
+		}
+		add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
+		add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
+		add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 1, 2 );
+		add_filter( 'tcp_add_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
+		add_filter( 'tcp_modify_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
+		add_filter( 'tcp_shopping_cart_page_units', array( &$this, 'tcp_shopping_cart_page_units' ), 10, 2 );
+		add_filter( 'tcp_send_order_mail_to_customer_message', array( &$this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
+		add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+	}
+
 	function tcp_the_add_to_cart_unit_field( $out, $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) {
 			//require_once( TCP_CLASSES_FOLDER . 'MP3Player.class.php' );
@@ -46,9 +63,7 @@ class TCPDownloadableProducts {
 	function tcp_the_add_to_cart_button( $out, $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) {
 			$shopingCart = TheCartPress::getShoppingCart();
-			if ( $shopingCart->exists( $post_id ) ) {
-				return '';				
-			}
+			if ( $shopingCart->exists( $post_id ) ) return '';
 		}
 		return $out;
 	}
@@ -105,6 +120,7 @@ class TCPDownloadableProducts {
 	}
 
 	function tcp_add_to_shopping_cart( $sci ) {
+		if ( is_wp_error( $sci ) ) return $sci;
 		if ( tcp_is_downloadable( $sci->getPostId() ) ) {
 			$sci->setDownloadable( true );
 			$sci->setCount( 1 );
@@ -112,6 +128,11 @@ class TCPDownloadableProducts {
 			$sci->setDownloadable( false );
 		}
 		return $sci;
+	}
+
+	function tcp_shopping_cart_page_units( $html, $order_detail ) {
+		if ( tcp_is_downloadable( $order_detail->get_post_id() ) ) return '1&nbsp;';
+		return $html;
 	}
 
 	function tcp_send_order_mail_to_customer_message( $message, $order_id ) {
@@ -151,23 +172,6 @@ class TCPDownloadableProducts {
 				tcp_create_download_uuid( $orders_details_id );
 			}
 		}
-	}
-
-	function __construct() {
-		if ( is_admin() ) {
-			add_action( 'tcp_product_metabox_toolbar', array( $this, 'tcp_product_metabox_toolbar') );
-			add_action( 'tcp_product_metabox_custom_fields', array( $this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_product_metabox_save_custom_fields', array( $this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_product_metabox_delete_custom_fields', array( $this, 'tcp_product_metabox_delete_custom_fields' ) );			
-		} else {
-			add_filter( 'tcp_the_add_to_cart_unit_field', array( $this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
-			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
-			add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
-			add_filter( 'tcp_add_to_shopping_cart', array( $this, 'tcp_add_to_shopping_cart' ) );
-			add_filter( 'tcp_modify_to_shopping_cart', array( $this, 'tcp_add_to_shopping_cart' ) );
-		}
-		add_filter( 'tcp_send_order_mail_to_customer_message', array( $this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
-		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 	}
 }
 

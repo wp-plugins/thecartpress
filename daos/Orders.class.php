@@ -65,6 +65,7 @@ class Orders {
 		  `billing_firstname`		varchar(50)			NOT NULL,
 		  `billing_lastname`		varchar(100)		NOT NULL,
 		  `billing_company`			varchar(50)			NOT NULL,
+		  `billing_tax_id_number`	varchar(15)			NOT NULL,
 		  `billing_street`			varchar(100)		NOT NULL,
 		  `billing_city`			varchar(100)		NOT NULL default 0,
 		  `billing_city_id`			char(4)				NOT NULL DEFAULT \'\',
@@ -150,6 +151,7 @@ class Orders {
 			'billing_firstname'		=> $order['billing_firstname'],
 			'billing_lastname'		=> $order['billing_lastname'],
 			'billing_company'		=> $order['billing_company'],
+			'billing_tax_id_number'	=> $order['billing_tax_id_number'],
 			'billing_street'		=> $order['billing_street'],
 			'billing_city'			=> $order['billing_city'],
 			'billing_city_id'		=> $order['billing_city_id'],
@@ -165,30 +167,10 @@ class Orders {
 		), array('%s', '%d', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s')
+				 '%s', '%s', '%s', '%s', '%s' )
 		);
 		return $wpdb->insert_id;
 	}
-
-/*	static function getCountPendingOrders( $customer_id = -1 ) {
-		return Orders::getCountOrdersByStatus( Orders::$ORDER_PENDING, $customer_id );
-	}
-
-	static function getCountProcessingOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( Orders::$ORDER_PROCESSING, $customer_id );
-	}
-
-	static function getCountCompletedOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( Orders::$ORDER_COMPLETED, $customer_id );
-	}
-
-	static function getCountCancelledOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( Orders::$ORDER_CANCELLED, $customer_id );
-	}
-
-	static function getCountSuspendedOrders( $customer_id = -1) {
-		return Orders::getCountOrdersByStatus( Orders::$ORDER_SUSPENDED, $customer_id );
-	}*/
 
 	static function getCountOrdersByStatus( $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;

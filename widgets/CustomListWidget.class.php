@@ -54,7 +54,7 @@ class CustomListWidget extends TCPParentWidget {
 			return;
 		}
 		echo $before_widget;
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
 		if ( $title ) echo $before_title, $title, $after_title;
 		if ( isset( $instance['loop'] ) && strlen( $instance['loop'] ) > 0 && file_exists( $instance['loop'] ) ) {
 			include( $instance['loop'] );
@@ -81,7 +81,7 @@ class CustomListWidget extends TCPParentWidget {
 				$title_tag = '';
 				$title_end_tag = '';
 			} ?>
-			<div id="post-<?php the_ID(); ?>" class="<?php post_class(); ?>">
+			<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php do_action( 'tcp_before_custom_list_widget_item', get_the_ID() );?>
 				<?php if ( isset( $instance['see_title'] ) && $instance['see_title'] ) : ?>
 				<div class="entry-title">
@@ -106,7 +106,7 @@ class CustomListWidget extends TCPParentWidget {
 				<?php endif;?>
 				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
-					<p class="entry_tcp_price"><?php echo __( 'price', 'tcp' );?>:&nbsp;<?php tcp_the_price_label();?></p>
+					<p class="entry_tcp_price"><span class="entry_tcp_price_label"><?php echo __( 'price', 'tcp' );?>:&nbsp;</span><?php tcp_the_price_label();?></p>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_buy_button'] ) && $instance['see_buy_button'] ) : ?>
@@ -163,7 +163,7 @@ class CustomListWidget extends TCPParentWidget {
 		$instance['see_content']			= $new_instance['see_content'] == 'yes';
 		$instance['see_excerpt']			= $new_instance['see_excerpt'] == 'yes';
 		$instance['see_author']				= $new_instance['see_author'] == 'yes';
-		$instance['see_meta_data']			= $new_instance['see_meta_data'] == 'yes';
+		$instance['see_posted_on']			= $new_instance['see_posted_on'] == 'yes';
 		$instance['see_price']				= $new_instance['see_price'] == 'yes';
 		$instance['see_buy_button']			= $new_instance['see_buy_button'] == 'yes';
 		$instance['see_first_custom_area']	= $new_instance['see_first_custom_area'] == 'yes';
@@ -187,7 +187,7 @@ class CustomListWidget extends TCPParentWidget {
 			'image_size'				=> 'thumbnail',
 			'see_content'				=> false,
 			'see_excerpt'				=> false,
-			'see_meta_data'				=> false,
+			'see_posted_on'				=> false,
 			'see_price'					=> true,
 			'see_buy_button'			=> false,
 			'see_first_custom_area'		=> false,
@@ -202,8 +202,9 @@ class CustomListWidget extends TCPParentWidget {
 		$see_content			= isset( $instance['see_content'] ) ? $instance['see_content']	: false;
 		$see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt']	: false;
 		$see_author				= isset( $instance['see_author'] ) ? $instance['see_author']	: false;
-		$see_meta_data			= isset( $instance['see_meta_data'] ) ? $instance['see_meta_data']: false;
+		$see_posted_on			= isset( $instance['see_posted_on'] ) ? $instance['see_posted_on']: false;
 		$see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
+		$columns				= isset( $instance['columns'] ) ? $instance['columns'] : 2;
 		$see_price				= isset( $instance['see_price'] ) ? $instance['see_price']	: false;
 		$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button']: false;
 		$use_taxonomy 			= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
@@ -251,7 +252,7 @@ class CustomListWidget extends TCPParentWidget {
 	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
-			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
+			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $columns; ?>" size="3" />
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_title' ); ?>" name="<?php echo $this->get_field_name( 'see_title' ); ?>" value="yes" <?php checked( $see_title ); ?> />
@@ -297,8 +298,8 @@ class CustomListWidget extends TCPParentWidget {
 			<label for="<?php echo $this->get_field_id( 'see_author' ); ?>"><?php _e( 'Show author', 'tcp' ); ?></label>
 		</p>
 		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_data' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_data' ); ?>" value="yes" <?php checked( $see_meta_data ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_meta_data' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_posted_on' ); ?>" name="<?php echo $this->get_field_name( 'see_posted_on' ); ?>" value="yes" <?php checked( $see_posted_on ); ?> />
+			<label for="<?php echo $this->get_field_id( 'see_posted_on' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_price' ); ?>" name="<?php echo $this->get_field_name( 'see_price' ); ?>" value="yes" <?php checked( $see_price ); ?> />

@@ -17,7 +17,17 @@
 */
 
 class TCPWPPluginsAdminPanel {
-	
+
+	function __construct() {
+		if ( is_admin() ) {
+			add_filter( 'extra_plugin_headers', array( $this, 'extra_plugin_headers' ) );
+			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ) , 10, 4 );
+			add_filter( 'views_plugins', array( $this, 'views_plugins' ) );
+			add_filter( 'all_plugins', array( $this, 'all_plugins' ) );
+			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
+		}
+	}
+
 	//Plugin screen
 	function extra_plugin_headers( $headers ) {
 		$headers['parent'] = 'Parent';
@@ -47,9 +57,10 @@ class TCPWPPluginsAdminPanel {
 	
 	function plugin_action_links( $links, $file ) {
 		if ( $file == 'thecartpress/TheCartPress.class.php' && function_exists( 'admin_url' ) ) {
-			$first_link = '<a href="' . admin_url( 'admin.php?page=thecartpress/admin/FirstTimeSetUp.php' ). '">' . __( 'First time setup', 'tcp' ) . '</a>';
-			$settings_link = '<a href="' . admin_url( 'admin.php?page=tcp_settings_page' ). '">' . __( 'Settings', 'tcp' ) . '</a>';
-			array_unshift( $links, $first_link, $settings_link );
+			//$first_link = '<a href="' . admin_url( 'admin.php?page=thecartpress/admin/FirstTimeSetUp.php' ). '">' . __( 'First time setup', 'tcp' ) . '</a>';
+			$settings_link = '<a href="' . admin_url( 'admin.php?page=thecartpress/TheCartPress.class.php' ). '">' . __( 'Settings', 'tcp' ) . '</a>';
+			//array_unshift( $links, $first_link, $settings_link );
+			array_unshift( $links, $settings_link );
 		}
 		return $links;
 	}
@@ -62,16 +73,6 @@ class TCPWPPluginsAdminPanel {
 				elseif( strtolower( $plugin_data['Parent'] ) != 'thecartpress' )
 					unset( $plugins[$id] );
 		return $plugins;
-	}
-	
-	function __construct() {
-		if ( is_admin() ) {
-			add_filter( 'extra_plugin_headers', array( $this, 'extra_plugin_headers' ) );
-			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ) , 10, 4 );
-			add_filter( 'views_plugins', array( $this, 'views_plugins' ) );
-			add_filter( 'all_plugins', array( $this, 'all_plugins' ) );
-			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
-		}
 	}
 }
 

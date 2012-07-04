@@ -18,6 +18,25 @@
 
 class TCPWishList {
 
+	function __construct() {
+		add_action( 'init', array( &$this, 'init' ) );
+	}
+
+	function init() {
+		if ( is_admin() ) {
+			add_action( 'tcp_main_settings_page', array( $this, 'tcp_main_settings_page' ) );
+			add_filter( 'tcp_main_settings_action', array( $this, 'tcp_main_settings_action' ) );
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		}
+		global $thecartpress;
+		if ( $thecartpress ) {
+			if ( $thecartpress->get_setting( 'enabled_wish_list', false ) ) {
+				if ( is_admin() ) add_action( 'widgets_init', array( $this, 'widgets_init' ) );
+				else add_action( 'wp_head', array( $this, 'wp_head' ) );
+			}
+		}
+	}
+
 	function wp_head() {
 		if ( isset( $_REQUEST['tcp_add_to_wish_list'] ) ) {
 			$tcp_new_wish_list_item = isset( $_REQUEST['tcp_new_wish_list_item'] ) ? $_REQUEST['tcp_new_wish_list_item'] : 0;
@@ -40,20 +59,23 @@ class TCPWishList {
 		}
 	}
 
-	function admin_init() {
-		$tcp_settings_page = TCP_ADMIN_FOLDER . 'Settings.class.php';
-		add_settings_field( 'enabled_wish_list', __( 'Enabled Wish list', 'tcp' ), array( $this, 'show_enabled_wish_list' ), $tcp_settings_page , 'tcp_main_section' );
+	function tcp_main_settings_page() {
+		global $thecartpress;
+		$enabled_wish_list = $thecartpress->get_setting( 'enabled_wish_list', false ); ?>
+	
+	<tr valign="top">
+		<th scope="row">
+		<label for="enabled_wish_list"><?php _e( 'Enabled Wish List', 'tcp' ); ?></label>
+		</th>
+		<td>
+		<input type="checkbox" id="enabled_wish_list" name="enabled_wish_list" value="yes" <?php checked( true, $enabled_wish_list ); ?> />
+		</td>
+	</tr><?php
 	}
 	
-	function show_enabled_wish_list() {
-		global $thecartpress;
-		$enabled_wish_list = $thecartpress->get_setting( 'enabled_wish_list' ); ?>
-		<input type="checkbox" id="enabled_wish_list" name="tcp_settings[enabled_wish_list]" value="yes" <?php checked( true, $enabled_wish_list ); ?> /><?php
-	}
-
-	function tcp_validate_settings( $input ) {
-		$input['enabled_wish_list'] = isset( $input['enabled_wish_list'] ) ? $input['enabled_wish_list'] == 'yes' : false;
-		return $input;
+	function tcp_main_settings_action( $settings ) {
+		$settings['enabled_wish_list'] = isset( $_POST['enabled_wish_list'] ) ? $_POST['enabled_wish_list'] == 'yes' : false;
+		return $settings;
 	}
 
 	function admin_menu() {
@@ -81,25 +103,6 @@ class TCPWishList {
 	function widgets_init() {
 		require_once( TCP_WIDGETS_FOLDER . 'WishListWidget.class.php' );
 		register_widget( 'WishListWidget' );
-	}
-
-	function __construct() {
-		if ( is_admin() ) {
-			add_action( 'admin_init', array( $this, 'admin_init' ) );
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_filter( 'tcp_validate_settings', array( $this, 'tcp_validate_settings' ) );
-		}
-		global $thecartpress;
-		if ( $thecartpress ) {
-			if ( $thecartpress->get_setting( 'enabled_wish_list', false ) ) {
-				if ( is_admin() ) {
-					add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-				} else {
-					//add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
-					add_action( 'wp_head', array( $this, 'wp_head' ) );
-				}
-			}
-		}
 	}
 }
 

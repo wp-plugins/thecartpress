@@ -20,7 +20,9 @@
 global $thecartpress;
 $disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart' );
 $after_add_to_cart		= $thecartpress->get_setting( 'after_add_to_cart', '' );
-$action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) ) : '';
+if ( $after_add_to_cart == 'ssc' ) $action = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', '' ), 'page' ) );
+elseif ( $after_add_to_cart == 'sco' ) $action = get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id', '' ), 'page' ) );
+else $action = '';
 ?>
 
 <?php /**** Start editing to customise your buy buttons! */ ?>
@@ -70,7 +72,7 @@ $action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( g
 
 	<?php if ( ! tcp_hide_buy_button( $post_id ) && ! $disable_shopping_cart ) : ?>
 
-		<?php tcp_the_add_to_cart_unit_field( $post_id ); ?>
+		<?php tcp_the_add_to_cart_unit_field( $post_id, tcp_get_the_initial_units( $post_id ) ); ?>
 
 		<?php tcp_the_add_to_cart_button( $post_id ); ?>
 

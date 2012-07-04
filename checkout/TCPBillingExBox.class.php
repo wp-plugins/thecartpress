@@ -282,9 +282,10 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		<?php endif;?>
 		<?php global $current_user;
 		get_currentuserinfo();
-		$addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		if ( $current_user->ID > 0 ) $addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		else $addresses = false;
 		$default_address = false;
-		if ( count( $addresses ) > 0 ) :
+		if ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
 				$default_address_id = $_REQUEST['selected_billing_id'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] ) ) {
@@ -311,7 +312,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
 			<div id="new_billing_area" class="clearfix" <?php
 				if ( $selected_billing_address == 'new' ) :
-				?><?php elseif ( count( $addresses ) > 0 ) :
+				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 					?>style="display:none"<?php
 				endif;?>><?php
 			if ( isset( $_REQUEST['billing_firstname'] ) ) {

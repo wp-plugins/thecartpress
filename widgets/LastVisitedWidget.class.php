@@ -22,6 +22,7 @@ class LastVisitedWidget extends CustomListWidget {
 
 	function LastVisitedWidget() {
 		parent::CustomListWidget( 'tcplastvisited', __( 'Allow to create a Last Visited List', 'tcp' ), 'TCP Last visited List' );
+		add_action( 'wp_footer', array( $this, 'annotate_last_visited' ) );
 	}
 
 	function widget( $args, $instance ) {
@@ -34,7 +35,7 @@ class LastVisitedWidget extends CustomListWidget {
 		$loop_args = array(
 			'post__in'			=> $ids,
 			'post_type'			=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
-			'posts_per_page'	=> $instance['limit'],
+			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit']: -1,
 		);
 		parent::widget( $args, $loop_args, $instance );
 	}
@@ -42,6 +43,18 @@ class LastVisitedWidget extends CustomListWidget {
 	function form( $instance ) {
 		parent::form( $instance, __( 'Last Visited', 'tcp' ) );
 		parent::show_post_type_form( $instance );
+	}
+
+	function annotate_last_visited() {
+		if ( is_single() && ! is_page() ) {
+			global $post;
+			if ( tcp_is_saleable_post_type( $post->post_type ) ) {
+				do_action( 'tcp_visited_product', $post );
+				$shoppingCart = TheCartPress::getShoppingCart();
+				$shoppingCart->addVisitedPost( $post->ID );
+				//$shoppingCart->deleteVisitedPost();
+			}
+		}
 	}
 }
 ?>

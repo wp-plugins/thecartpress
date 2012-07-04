@@ -45,14 +45,20 @@ class TCPParentWidget extends WP_Widget {
 				if ( ! $user_car ) return false;
 			}
 		}
+		if ( false && WP_DEBUG ) {
+			var_dump($args);
+			echo "\n\n<br><br>";
+			var_dump($instance);
+		}
 		return apply_filters( 'tcp_private_widget', true, $args, $instance );
 	}
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title']		= strip_tags( $new_instance['title'] );
-		$instance['private']	= $new_instance['private'] == 'yes';
-		if ( in_array( '', $new_instance['roles'] ) ) $instance['roles'] = array();
+		$instance['private']	= isset( $new_instance['private'] ) ? $new_instance['private'] == 'yes' : false;
+		if ( ! isset( $new_instance['roles'] ) ) $instance['roles'] = array();
+		elseif ( in_array( '', $new_instance['roles'] ) ) $instance['roles'] = array();
 		else $instance['roles']	= $new_instance['roles'];
 		return apply_filters( 'tcp_parent_widget_update', $instance, $new_instance );
 	}

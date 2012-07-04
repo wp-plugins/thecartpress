@@ -32,8 +32,8 @@ class FreeTrans extends TCP_Plugin {
 			<label for="minimun"><?php _e( 'Minimun amount', 'tcp' );?>:</label>
 		</th><td>
 			<input type="text" id="minimun" name="minimun" value="<?php echo isset( $data['minimun'] ) ? $data['minimun'] : 0;?>" size="13" maxlength="13"/>
-		</td></tr>
-		<?php
+		</td>
+		</tr><?php
 	}
 
 	function saveEditFields( $data ) {

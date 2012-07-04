@@ -30,20 +30,35 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	private $orders_costs;//costs from OrdersCosts table
 
 	private $see_address;
-	private $see_full;
-	private $see_thumbnail;
-	private $see_tax_summary;
+	private $see_sku;
+	private $see_weight;
+	private $see_tax;
 	private $see_comment;
+	private $see_other_costs;
+	private $see_thumbnail;
 
-	function __construct( $order_id, $see_address = true, $see_full = true, $see_tax_summary = true, $see_comment = true, $see_thumbnail = false ) {
+	function __construct( $order_id, $args = array() ) {
+		$defaults = array(
+			'see_address'		=> true,
+			'see_sku'			=> false,
+			'see_weight'		=> true,
+			'see_tax'			=> true,
+			'see_comment'		=> true,
+			'see_other_costs'	=> true,
+			'see_thumbnail'		=> false
+		);
+		$args = wp_parse_args( $args, $defaults );
+		extract( $args );
 		$this->order			= Orders::get( $order_id );
 		$this->orders_details	= OrdersDetails::getDetails( $order_id );
 		$this->orders_costs		= OrdersCosts::getCosts( $order_id );
 		$this->see_address		= $see_address;
-		$this->see_full			= $see_full;
-		$this->see_tax_summary	= $see_tax_summary;
+		$this->see_sku			= $see_sku;
+		$this->see_weight		= $see_weight;
+		$this->see_tax			= $see_tax;
 		$this->see_comment		= $see_comment;
 		$this->see_thumbnail	= $see_thumbnail;
+		$this->see_other_costs	= $see_other_costs;
 	}
 
 	public function get_order_id() {
@@ -72,23 +87,27 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	}
 	
 	public function see_other_costs() {
-		return true;
+		return $this->see_other_costs;
 	}
 
 	public function see_address() {
 		return $this->see_address;
 	}
 
-	public function see_full() {
-		return $this->see_full;
-	}
-	
 	public function see_thumbnail() {
 		return $this->see_thumbnail;
 	}
 
-	public function see_tax_summary() {
-		return $this->see_tax_summary;
+	public function see_sku() {
+		return $this->see_sku;
+	}
+
+	public function see_weight() {
+		return $this->see_weight;
+	}
+
+	public function see_tax() {
+		return $this->see_tax;
 	}
 
 	public function is_editing_units() {
@@ -175,6 +194,11 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 
 	public function get_billing_company() {
 		if ( $this->order ) return stripslashes( $this->order->billing_company );
+		else return false;
+	}
+	
+	public function get_billing_tax_id_number() {
+		if ( $this->order ) return stripslashes( $this->order->billing_tax_id_number );
 		else return false;
 	}
 
@@ -287,8 +311,13 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 			if ( strlen( $this->detail->option_2_name ) > 0 ) $name .= '-' . $this->detail->option_2_name;
 			$name = stripslashes( $name );
 			$attributes = tcp_get_order_detail_meta( $this->detail->order_detail_id, 'tcp_attributes' );
-			if ( $attributes ) foreach( $attributes as $id => $value )
-				$name .= '<br/>' . $id . ' = ' . $value;
+			if ( $attributes ) {
+				$name .= '<div class="tcp_cart_table_attributes">';
+				foreach( $attributes as $id => $value ) {
+					$name .= '<br/>' . $id . ' = ' . $value;
+				}
+				$name .= '</div>';
+			}
 			return $name;
 		} else {
 			return false;
@@ -334,9 +363,21 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 		else return false;
 	}
 	
-	public function get_attribute( $id ) {
+	public function has_attributes() {
+		$attributes = $this->get_attributes();
+		if ( $attributes && is_array( $attributes ) ) return count( $attributes ) > 0;
+		else return false;
+	}
+
+	public function get_attributes() {
 		$attributes = tcp_get_order_detail_meta( $this->detail->order_detail_id, 'tcp_attributes' );
-		if ( isset( $attributes[$id] ) && ! empty( $attributes[$id] ) ) return $attributes[$id];
+		if ( is_array( $attributes ) && count( $attributes ) > 0 ) return $attributes;
+		else return false;
+	}
+
+	public function get_attribute( $id ) {
+		$attributes = $this->get_attributes();
+		if ( $attributes && isset( $attributes[$id] ) && ! empty( $attributes[$id] ) ) return $attributes[$id];
 		else return false;
 	}
 }

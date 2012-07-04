@@ -20,7 +20,9 @@
 global $thecartpress;
 $disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart' );
 $after_add_to_cart		= $thecartpress->get_setting( 'after_add_to_cart', '' );
-$action					= $after_add_to_cart == 'ssc' ? get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', 0 ), 'page' ) ) : '';
+if ( $after_add_to_cart == 'ssc' ) $action = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id', '' ), 'page' ) );
+elseif ( $after_add_to_cart == 'sco' ) $action = get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id', '' ), 'page' ) );
+else $action = '';
 $products 				= RelEntities::select( $post_id );
 global $wish_list;
 remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_cart_button' ), 10, 2 ); ?>
@@ -51,13 +53,7 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 	$units		= isset( $meta_value['units'] ) ? (int)$meta_value['units'] : 0;
 	$product_id	= tcp_get_current_id( $product->id_to, get_post_type( $product->id_to ) ); 
 	if ( get_post_status( $product_id ) == 'publish' ) : ?>
-		<script type="text/javascript">
-			jQuery(document).ready(function() {
-				jQuery('#tcp_add_product_<?php echo $product_id; ?>').click(function() {
-					add_to_the_cart_<?php echo $post_id; ?>(<?php echo $product_id; ?>);
-				});
-			});
-		</script>
+
 		<tr>
 		<td class="tcp_buy_button_thumbnail">
 
@@ -120,6 +116,13 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 			<?php if ( ! tcp_hide_buy_button( $product_id ) ) : ?>
 
 				<?php tcp_the_add_to_cart_button( $product_id ); ?>
+				
+				<script type="text/javascript">
+					jQuery('#tcp_add_product_<?php echo $product_id; ?>').click(function() {
+						add_to_the_cart_<?php echo $post_id; ?>(<?php echo $product_id; ?>);
+						return false;
+					});
+				</script>
 
 				<?php tcp_the_add_to_cart_items_in_the_cart( $product_id ); ?>
 

@@ -35,6 +35,7 @@ class ShoppingCart {
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			$sci = $this->shopping_cart_items[$shopping_cart_id];
 			$sci->add( $count );
@@ -42,15 +43,18 @@ class ShoppingCart {
 			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $unit_weight );
 		}
 		$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
-		if ( $sci ) $this->shopping_cart_items[$shopping_cart_id] = $sci;
+		if ( is_wp_error( $sci ) ) return $sci;
+		else $this->shopping_cart_items[$shopping_cart_id] = $sci;
 		$this->removeOrderId();
+		return $sci;
 	}
 
 	function modify( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 0 ) {
 		$count = (int)$count;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
-			if ($count > 0) {
+			if ( $count > 0 ) {
 				$sci = $this->shopping_cart_items[$shopping_cart_id];
 				$sci->setUnits( $count );
 				$sci = apply_filters( 'tcp_modify_to_shopping_cart', $sci );
@@ -64,6 +68,7 @@ class ShoppingCart {
 
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
 			unset( $this->shopping_cart_items[$shopping_cart_id] );
 		$this->removeOrderId();
@@ -75,7 +80,7 @@ class ShoppingCart {
 		unset( $this->other_costs );
 		$this->other_costs = array();
 		$this->deleteAllDiscounts();
-		$this->removeOrderId();
+		//$this->removeOrderId();
 	}
 
 	function getItemsId() {
@@ -586,38 +591,73 @@ class ShoppingCartItem {
 		return $this->free_shipping;
 	}
 
+	/*//DEPRECATED
 	function setAttributes( $attributes ) {
-		$this->attributes = $attributes;
+		$this->set_attributes( $attributes );
 	}
 
 	function getAttributes() {
-		return $this->attributes;
+		return $this->get_attributes();
 	}
 
 	function hasAttributes() {
-		return count( $this->attributes ) > 0;
+		return $this->has_attributes();
+	}
+	
+	function removeAttributes() {
+		$this->remove_attributes();
 	}
 
-	function removeAttributes() {
+	function addAttribute( $id, $value ) {
+		$this->add_attributes( $id, $value );
+	}
+
+	function getAttribute( $id ) {
+		return $this->get_attribute( $id );
+	}
+
+	function setAttribute( $id, $value ) {
+		$this->set_attribute( $id, $value );
+	}
+
+	function removeAttribute( $id ) {
+		$this->remove_attributes( $id );
+	}
+	//DEPRECATED*/
+
+	function set_attributes( $attributes ) {
+		$this->attributes = $attributes;
+	}
+
+	function get_attributes() {
+		return $this->attributes;
+	}
+
+	function has_attributes() {
+		return count( $this->attributes ) > 0;
+	}
+	
+	function remove_attributes() {
 		unset( $this->attributes );
 		$this->attributes = array();
 	}
 
-	function addAttribute( $id, $value ) {
+	function add_attribute( $id, $value ) {
 		$this->attributes[$id] = $value;
 	}
 
-	function getAttribute( $id ) {
+	function get_attribute( $id ) {
 		return isset( $this->attributes[$id] ) ? $this->attributes[$id] : false;
 	}
 
-	function setAttribute( $id, $value ) {
+	function set_attribute( $id, $value ) {
 		$this->attributes[$id] = $value;
 	}
 
-	function removeAttribute( $id ) {
+	function remove_attribute( $id ) {
 		if ( isset( $this->attributes[$id] ) ) unset( $this->attributes[$id] );
 	}
+
 }
 
 class ShoppingCartOtherCost {

@@ -37,7 +37,7 @@ class TCPCheckoutManager {
 		'TCPCartBox',
 		'TCPNoticeBox',
 	);
-	
+
 	private $steps = array();
 
 	function __construct( $checkout_type = 'ACCORDION' ) { //ACCORDION, TOP_BAR
@@ -46,7 +46,7 @@ class TCPCheckoutManager {
 		if ( ! session_id() ) session_start();
 		if ( ! isset( $_SESSION['tcp_checkout'] ) ) $_SESSION['tcp_checkout'] = array();
 	}
-	
+
 	function show() {
 		$html = apply_filters( 'tcp_checkout_manager', '' );
 		if ( strlen( $html ) > 0 ) return $html;
@@ -142,59 +142,108 @@ class TCPCheckoutManager {
 		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
-		<div class="checkout" id="checkout">
+
+<div class="checkout" id="checkout">
+
 		<?php $this->show_header( $box, $step );
-		if ( $step == count( $this->steps ) ) : //last step, no return
-			echo $this->create_order(); //create the order, show payment form
-		else :
-			if ( $box->is_form_encapsulated() ) :?><form method="post"><?php endif; ?>
-		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
-			<h3><?php echo $step + 1; ?>. <?php echo $box->get_title(); ?></h3>
-			<?php $see_continue_button = $box->show();
-			$html = '';
-			if ( ! $box->is_form_encapsulated() ) $html .= '<form method="post">';
-			if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" class="tcp_checkout_button" />';
-			if ( $see_continue_button && $step < count( $this->steps ) ) {
-				$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
-			}
-			$html .= '<input type="hidden" name="step" value="' . $step . '" />';
-			if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
-			if ( strlen( $html ) > 0 ) :?>
+		if ( $step == count( $this->steps ) ) : //last step, no return ?>
+
+			<?php echo $this->create_order(); //create the order, show payment form ?>
+
+		<?php else : ?>
+
+			<?php if ( $box->is_form_encapsulated() ) : ?>
+	<form method="post">
+			<?php endif; ?>
+
+	<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
+
+		<h3>
+			<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
+		</h3>
+
+		<?php $see_continue_button = $box->show();
+
+		if ( ! $box->is_form_encapsulated() ) $html = '<form method="post">';
+		else $html = '';
+
+		if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" class="tcp_checkout_button" />';
+
+		if ( $see_continue_button && $step < count( $this->steps ) ) {
+			$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
+		}
+		$html .= '<input type="hidden" name="step" value="' . $step . '" />';
+
+		$html = apply_filters( 'tcp_show_box_back_continue', $html, $step );
+
+		if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
+
+		if ( strlen( $html ) > 0 ) : ?>
 			<span class="tcp_back_continue"><?php echo $html; ?></span>
-			<?php endif;
-			$this->show_footer( $box, $step ); ?>
-		</div><!-- <?php echo $box->get_class(); ?> -->
-		<?php if ( $box->is_form_encapsulated() ) :?></form><?php endif;
-		endif; ?>
-		</div><!-- checkout --><?php
+		<?php endif; ?>
+
+		<?php $this->show_footer( $box, $step ); ?>
+
+	</div><!-- <?php echo $box->get_class(); ?> -->
+
+			<?php if ( $box->is_form_encapsulated() ) : ?>
+	</form>
+			<?php endif; ?>
+
+		<?php endif; ?>
+
+		<?php do_action( 'tcp_show_box', $step ); ?>
+
+</div><!-- checkout --><?php
 		return ob_get_clean();
 	}
 
 	private function show_header( $box, $step = 0 ) {
 		if ( $step == count( $this->steps ) ) { //last step, no return
 		} elseif ( $this->checkout_type == TCPCheckoutManager::$TOP_BAR ) { ?>
+
 			<ul class="tcp_checkout_bar">
-			<?php foreach( $this->steps as $s => $value ) {
-				if ( $s < $step ) {
+
+			<?php foreach( $this->steps as $s => $value ) : ?>
+
+				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
 					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
-				<li class="tcp_ckeckout_step"><a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a></li>
-				<?php } else {
-					$b = $this->get_box( $s ); ?>
-				<li class="<?php if ( $s == $step ) : ?>tcp_ckeckout_active_step<?php else : ?>tcp_ckeckout_step<?php endif; ?>"><span><?php echo $b->get_title(); ?></span></li>
-				<?php }
-			}?>
+
+				<li class="tcp_ckeckout_step">
+
+					<a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a>
+
+				</li>
+
+				<?php else : $b = $this->get_box( $s ); ?>
+
+				<li class="<?php if ( $s == $step ) : ?>tcp_ckeckout_active_step<?php else : ?>tcp_ckeckout_step<?php endif; ?>">
+
+					<span><?php echo $b->get_title(); ?></span>
+					
+					<?php do_action( 'tcp_ckeckout_header', $step ); ?>
+
+				</li>
+
+				<?php endif; ?>
+			<?php endforeach;?>
+
 			</ul>
+
 		<?php } else { //TCPCheckoutManager::$ACCORDION
-			foreach( $this->steps as $s => $value ) {
-				if ( $s < $step ) {
+			foreach( $this->steps as $s => $value ) : ?>
+				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
 					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
+
 					<div class="<?php echo $b->get_class(); ?>" id="<?php echo $b->get_class(); ?>">
-					<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>"><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></a></h3>
+					
+						<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>" tcp_step="<?php echo $s; ?>"><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></a></h3>
+
 					</div>
-				<?php }
-			}
+				<?php endif; ?>
+			<?php endforeach;
 		}
 	}
 
@@ -234,7 +283,7 @@ class TCPCheckoutManager {
 		$selected_shipping_address	= isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : 'N';
 		do_action( 'tcp_checkout_create_order_start' );
 		$order = array();
-		$order['created_at']			= date( 'Y-m-d H:i:s' );
+		$order['created_at']			= current_time( 'mysql' ); //date( 'Y-m-d H:i:s' );
 		$order['ip']					= tcp_get_remote_ip();
 		$order['status']				= Orders::$ORDER_PENDING;
 		$order['comment']				= isset( $_SESSION['tcp_checkout']['cart']['comment'] ) ? $_SESSION['tcp_checkout']['cart']['comment'] : '';
@@ -244,6 +293,7 @@ class TCPCheckoutManager {
 			$order['billing_firstname']		= $address->firstname;
 			$order['billing_lastname']		= $address->lastname;
 			$order['billing_company']		= $address->company;
+			$order['billing_tax_id_number']	= $address->tax_id_number;
 			$order['billing_street']		= $address->street;
 			$order['billing_city']			= $address->city;
 			$order['billing_city_id']		= $address->city_id;
@@ -261,6 +311,7 @@ class TCPCheckoutManager {
 			$order['billing_firstname']		= $_SESSION['tcp_checkout']['billing']['billing_firstname'];
 			$order['billing_lastname']		= $_SESSION['tcp_checkout']['billing']['billing_lastname'];
 			$order['billing_company']		= $_SESSION['tcp_checkout']['billing']['billing_company'];
+			$order['billing_tax_id_number']	= $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'];
 			$order['billing_street']		= $_SESSION['tcp_checkout']['billing']['billing_street'];
 			$order['billing_city']			= $_SESSION['tcp_checkout']['billing']['billing_city'];
 			$order['billing_city_id']		= isset( $_SESSION['tcp_checkout']['billing']['billing_city_id'] ) ? $_SESSION['tcp_checkout']['billing']['billing_city_id'] : '';
@@ -439,7 +490,7 @@ class TCPCheckoutManager {
 			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
 			$orders_details_id = OrdersDetails::insert( $ordersDetails );
-			if ( $item->hasAttributes() ) tcp_update_order_detail_meta( $orders_details_id, 'tcp_attributes', $item->getAttributes() );
+			if ( $item->has_attributes() ) tcp_update_order_detail_meta( $orders_details_id, 'tcp_attributes', $item->get_attributes() );
 			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId(), $ordersDetails ); //, $item->getOption1Id(), $item->getOption2Id() );
 		}
 		foreach( $shoppingCart->getOtherCosts() as $id => $cost ) {
@@ -463,25 +514,39 @@ class TCPCheckoutManager {
 		// shows Payment Area
 		//
 		ob_start(); ?>
+
 		<div class="tcp_payment_area">
+
 		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
+
 		<p><?php _e( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ); ?></p>
-		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
+
+		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) :
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
 			$class = $pmi[0];
 			$instance = $pmi[1];
 			$payment_method = new $class();
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
+
 			<div class="tcp_pay_form">
-			<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
-			<div class="tcp_plugin_notice"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
+
+				<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
+
+				<div class="tcp_plugin_notice"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
+
 			</div>
-		<?php }
-		OrderPage::show( $order_id, true ); ?>
+
+		<?php endif; ?>
+
+		<?php OrderPage::show( $order_id, true ); ?>
+
 		<br />
+
 		<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+
 		</div><!-- tcp_payment_area--><?php
+
 		//$shoppingCart->deleteAll();//remove since 1.1.0
 		return ob_get_clean();
 	}
@@ -512,25 +577,26 @@ class TCPCheckoutManager {
 	private function createNewBillingAddress( $order ) {
 		if ( $order['customer_id'] > 0 ) {
 			$address = array();
-			$address['customer_id'] = $order['customer_id'];
-			$address['default_shipping'] = 'N';
-			$address['default_billing'] = 'Y';
-			$address['name'] = __( 'billing address', 'tcp' );//title
-			$address['firstname'] = $order['billing_firstname'];
-			$address['lastname'] = $order['billing_lastname'];
-			$address['company'] = $order['billing_company'];
-			$address['street'] = $order['billing_street'];
-			$address['city'] = $order['billing_city'];
-			$address['city_id'] = $order['billing_city_id'];
-			$address['region_id'] = $order['billing_region_id'];
-			$address['region'] = $order['billing_region'];
-			$address['postcode'] = $order['billing_postcode'];
-			$address['country'] = $order['billing_country'];
-			$address['country_id'] = $order['billing_country_id'];
-			$address['telephone_1'] = $order['billing_telephone_1'];
-			$address['telephone_2'] = $order['billing_telephone_2'];
-			$address['fax'] = $order['billing_fax'];
-			$address['email'] = $order['billing_email'];
+			$address['customer_id']	= $order['customer_id'];
+			$address['default_shipping']	= 'N';
+			$address['default_billing']		= 'Y';
+			$address['name']		= __( 'billing address', 'tcp' );//title
+			$address['firstname']	= $order['billing_firstname'];
+			$address['lastname']	= $order['billing_lastname'];
+			$address['company']		= $order['billing_company'];
+			$address['tax_id_number']	= $order['billing_tax_id_number'];
+			$address['street']		= $order['billing_street'];
+			$address['city']		= $order['billing_city'];
+			$address['city_id']		= $order['billing_city_id'];
+			$address['region_id']	= $order['billing_region_id'];
+			$address['region']		= $order['billing_region'];
+			$address['postcode']	= $order['billing_postcode'];
+			$address['country']		= $order['billing_country'];
+			$address['country_id']	= $order['billing_country_id'];
+			$address['telephone_1']	= $order['billing_telephone_1'];
+			$address['telephone_2']	= $order['billing_telephone_2'];
+			$address['fax']			= $order['billing_fax'];
+			$address['email']		= $order['billing_email'];
 			Addresses::save($address);
 		}
 	}

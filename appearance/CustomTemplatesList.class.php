@@ -16,37 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if ( isset( $_REQUEST['tcp_save_templates'] ) ) {
-	$post_types = $_REQUEST['tcp_custom_post_type_template_id'];
-	$templates = $_REQUEST['tcp_custom_post_type_template'];
-	foreach( $post_types as $id => $post_type )
-		tcp_set_custom_template_by_post_type( $post_type, $templates[$id] );
-//		echo 'Save Post type=', $post_type, ' template=', $templates[$id], '<br>';
-echo '<br>';
-	$taxonomies = $_REQUEST['tcp_custom_taxonomy_template_id'];
-	$templates = $_REQUEST['tcp_custom_taxonomy_template'];
-	foreach( $taxonomies as $id => $taxonomy )
-		tcp_set_custom_template_by_taxonomy( $taxonomy, $templates[$id] );
-//		echo 'Save taxonomy=', $taxonomy, ' template=', $templates[$id], '<br>';
-echo '<br>';
-	$terms = $_REQUEST['tcp_custom_term_template_id'];
-	$templates = $_REQUEST['tcp_custom_term_template'];
-	foreach( $terms as $id => $term_id )
-		tcp_set_custom_template_by_term( $term_id, $templates[$id] );
-//		echo 'Save term_id=', $term_id, ' template=', $templates[$id], '<br>';
-?><div id="message" class="updated"><p>
-	<?php _e( 'Custom templates updated', 'tcp' ); ?>
-</p></div><?php
-}
-?>
+class TCPCustomTemplatesList {
 
+	function __construct() {
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+	}
+
+	function admin_menu() {
+		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
+		global $thecartpress;
+		$base = $thecartpress->get_base_appearance();
+		$page = add_submenu_page( $base, __( 'Custom Templates Settings', 'tcp' ), __( 'Custom Templates', 'tcp' ), 'tcp_edit_settings', 'custom_templates_settings', array( &$this, 'admin_page' ) );
+		add_action( "load-$page", array( &$this, 'admin_load' ) );
+		add_action( "load-$page", array( &$this, 'admin_action' ) );
+	}
+
+	function admin_load() {
+		get_current_screen()->add_help_tab( array(
+		    'id'      => 'overview',
+		    'title'   => __( 'Overview' ),
+		    'content' =>
+	            '<p>' . __( 'You can customize The default Custom Templates.', 'tcp' ) . '</p>'
+		) );
+
+		get_current_screen()->set_help_sidebar(
+			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
+			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
+			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>' .
+			'<p>' . __( '<a href="http://extend.thecartpress.com/" target="_blank">Extend site</a>', 'tcp' ) . '</p>'
+		);
+	}
+
+	function admin_page() { ?>
 <div class="wrap">
+	<?php screen_icon(); ?><h2><?php _e( 'Custom Templates', 'tcp' ); ?></h2>
 
-<h2><?php _e( 'List of Custom templates', 'tcp' ); ?></h2>
+<?php if ( !empty( $this->updated ) ) : ?>
+	<div id="message" class="updated">
+	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
+	</div>
+<?php endif; ?>
+
 <div class="clear"></div>
 
 <form method="post">
-<p class="submit"><input type="submit" name="tcp_save_templates" value="<?php _e( 'Update templates', 'tcp' ); ?>" class="button-primary"/></p>
+<?php submit_button( null, 'primary', 'save-custom_templates-settings' ); ?>
 <table class="widefat fixed" cellspacing="0">
 <thead>
 <tr>
@@ -132,5 +146,34 @@ foreach( $post_types as $post_type ) : ?>
 endforeach; ?>
 </tbody>
 </table>
-<p class="submit"><input type="submit" name="tcp_save_templates" value="<?php _e( 'Update templates', 'tcp' ); ?>" class="button-primary"/></p>
+<?php wp_nonce_field( 'tcp_custom_templates_settings' ); ?>
+<?php submit_button( null, 'primary', 'save-custom_templates-settings' ); ?>
 </form>
+</div>
+<?php
+	}
+
+	function admin_action() {
+		if ( empty( $_POST ) ) return;
+		check_admin_referer( 'tcp_custom_templates_settings' );	
+
+		if ( isset( $_REQUEST['save-custom_templates-settings'] ) ) {
+			$post_types = $_REQUEST['tcp_custom_post_type_template_id'];
+			$templates = $_REQUEST['tcp_custom_post_type_template'];
+			foreach( $post_types as $id => $post_type )
+				tcp_set_custom_template_by_post_type( $post_type, $templates[$id] );
+			$taxonomies = $_REQUEST['tcp_custom_taxonomy_template_id'];
+			$templates = $_REQUEST['tcp_custom_taxonomy_template'];
+			foreach( $taxonomies as $id => $taxonomy )
+				tcp_set_custom_template_by_taxonomy( $taxonomy, $templates[$id] );
+			$terms = $_REQUEST['tcp_custom_term_template_id'];
+			$templates = $_REQUEST['tcp_custom_term_template'];
+			foreach( $terms as $id => $term_id )
+				tcp_set_custom_template_by_term( $term_id, $templates[$id] );
+			$this->updated = true;
+		}
+	}
+}
+
+new TCPCustomTemplatesList();
+?>

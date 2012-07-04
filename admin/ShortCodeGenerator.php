@@ -214,10 +214,11 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		</tr>
 		<tr>
 			<th scope="row">
-				<label for="use_taxonomy"><?php _e( 'Use Taxonomy', 'tcp' ); ?></label>
+				<label for="use_taxonomy"><?php _e( 'Use Taxonomy', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<input type="checkbox" class="checkbox" onclick="tcp_show_taxonomy(this.checked);" id="use_taxonomy" name="use_taxonomy" value="yes" <?php checked( $use_taxonomy, true ); ?> />
+				<p class="description"><?php _e( 'If checked, you can select which Taxonomy (category) you want to display. If not checked you can select as many product as you want to show.', 'tcp' ); ?></p>
 			</td>
 		</p>
 		</tr>

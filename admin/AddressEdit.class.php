@@ -25,17 +25,23 @@ class TCPAddressEdit {
 	function show( $echo = true ) {
 		if ( is_admin() ) add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 		else tcp_states_footer_scripts();
+		if ( ! is_user_logged_in() ) : ?>
+
+			<p><?php _e( 'You need to login to see your address.', 'tcp-fe' ); ?></p>
+			<?php tcp_login_form( array( 'echo' => true ) ); ?>
+
+		<?php return; endif;
 		$address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : '0';
 		global $current_user;
 		get_currentuserinfo();
+		if ( $current_user->ID == 0 ) return false;
 		$customer_id = $current_user->ID;
-		if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) )
+		if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-
+		}
 		require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
-
 		//array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
-		$regions = array(); //apply_filters( 'tcp_address_editor_load_regions', false );
+		$regions = array();
 		$error_address = array();
 		ob_start();
 		if ( isset( $_REQUEST['tcp_save_address'] ) ) {

@@ -19,15 +19,15 @@
 class TCPAuthorizeNet extends TCP_Plugin {
 
 	function getTitle() {
-		return '<img src="http://www.authorize.net/resources/images/authorizenet_logo.gif" height="32px" />';
+		return 'Authorized.net';
+	}
+
+	function getIcon() {
+		return 'http://www.authorize.net/resources/images/authorizenet_logo.gif';
 	}
 
 	function getDescription() {
 		return 'authorize.net payment method.<br>Author: <a href="http://thecartpress.com">TheCartPress team</a>';
-	}
-
-	function getName() {
-		return 'Authorize.net';
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {

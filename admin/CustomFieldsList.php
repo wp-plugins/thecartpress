@@ -84,40 +84,57 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 <div class="clear"></div>
 
 <p>
+
 <form method="post">
-<label><?php _e( 'Post type', 'tcp');?></label>: 
-<select name="post_type" id="post_type">
-<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $type ) : ?>
-	<option value="<?php echo $type->name;?>"<?php selected( $post_type, $type->name ); ?>><?php echo $type->labels->name; ?></option>
-<?php endforeach;?>
-</select>
-<input type="submit" id="tcp_filter" name="tcp_filter" value="<?php _e( 'filter', 'tcp' );?>" class="button-secondary"/>
+
+	<label><?php _e( 'Post type', 'tcp');?>: 
+
+	<select name="post_type" id="post_type">
+	<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $type ) : ?>
+		<option value="<?php echo $type->name;?>"<?php selected( $post_type, $type->name ); ?>><?php echo $type->labels->name; ?></option>
+	<?php endforeach;?>
+	</select>
+	
+	</label>
+
+	<input type="submit" id="tcp_filter" name="tcp_filter" value="<?php _e( 'filter', 'tcp' );?>" class="button-secondary"/>
+
+	<p class="description"><?php _e( 'This filter allows to create different Custom fields for different Post Types.', 'tcp' ); ?></p>
+
 </form>
+
 </p>
 
-<h3><?php $post_type_object = get_post_type_object( $post_type ); printf( __( 'New custom field definition for %s', 'tcp' ), $post_type_object->labels->name ) ;?></h3>
+<h3><?php $post_type_object = get_post_type_object( $post_type ); printf( __( 'New Custom Field definition for "%s"', 'tcp' ), $post_type_object->labels->name ) ;?></h3>
+
 <form method="post">
+
 <input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>
 
 <table class="form-table">
 <tr valign="top">
 <th scope="row">
 	<label for="label"><?php _e( 'Label', 'tcp' );?>: </label>
-</th><td>
+</th>
+<td>
 	<input type="text" name="label" id="label" size="20" />
 </td>
 </tr>
+
 <tr>
 <th>
 	<label for="type"><?php _e( 'Type', 'tcp' );?>: </label>
-</th><td>
-		<select id="type" name="type">
-			<option value="string"><?php _e( 'Text', 'tcp' );?></option>
-			<option value="number"><?php _e( 'Number', 'tcp' );?></option>
-			<option value="list"><?php _e( 'list', 'tcp' );?></option>
-		</select>
+</th>
+<td>
+	<select id="type" name="type">
+		<option value="string"><?php _e( 'Text', 'tcp' );?></option>
+		<option value="number"><?php _e( 'Number', 'tcp' );?></option>
+		<option value="list"><?php _e( 'list', 'tcp' );?></option>
+	</select>
 </td>
 </tr>
+
+<tr>
 <th>
 	<label for="values"><?php _e( 'Possible values', 'tcp' );?></label>:
 </th>
@@ -125,6 +142,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 	<input type="text" id="values" name="values" size="40"/><p class="description"><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></p>
 </td>
 </tr>
+
 <tr>
 <th>
 	<label for="desc"><?php _e( 'Description', 'tcp' );?></label>:
@@ -133,9 +151,14 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 	<input type="text" id="desc" name="desc" size="40"/>
 </td>
 </tr>
+
 </table>
+
 <p><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" /></p>
+
 </form>
+
+<h3><?php printf( __( 'Current Custom Fields defined for "%s"', 'tcp' ), $post_type_object->labels->name ) ;?></h3>
 
 <table class="widefat fixed" cellspacing="0">
 <thead>
@@ -160,9 +183,14 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 <?php
 $custom_fields = tcp_get_custom_fields_def( $post_type );
 if ( count( $custom_fields ) == 0 ) : ?>
-	<tr><td colspan="5"><?php printf( __( 'The list of Custom fields of %s is empty', 'tcp' ), $post_type );?></td></tr>
+
+	<tr>
+	<td colspan="5"><?php printf( __( 'List of Custom Fields defined for %s is empty', 'tcp' ), $post_type );?></td>
+	</tr>
+
 <?php else :
-	foreach( $custom_fields as $id => $field ) :?>
+	foreach( $custom_fields as $id => $field ) : ?>
+
 	<tr>
 		<td><?php echo $field['id'];?></td>
 		<td><?php echo $field['label'];?></td>
@@ -182,6 +210,7 @@ if ( count( $custom_fields ) == 0 ) : ?>
 		</div>
 		</td>
 	</tr>
+
 	<tr id="modify_<?php echo $id;?>" class="modify_custom_field" style="display: none;">
 		<td colspan="4">
 			<form method="post">
@@ -203,8 +232,10 @@ if ( count( $custom_fields ) == 0 ) : ?>
 			</form>
 		</td>
 	</tr>
+
 	<?php endforeach;
 endif;?>
+
 </tbody>
 </table>
 

@@ -2,7 +2,7 @@
 /**
  * This file is part of TheCartPress.
  * 
- * This program is free software: you can redistribute it and/or modify
+ * This progam is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$_REQUEST['plugin_type'] = isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : 'shipping';
+require_once( TCP_SETTINGS_FOLDER . 'PluginsList.class.php' );
 
-include_once( TCP_ADMIN_FOLDER . 'PluginsList.php' );
+new TCPPluginsList( 'shipping' );
 ?>

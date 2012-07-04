@@ -31,8 +31,8 @@ class NoCostPayment extends TCP_Plugin {
 			<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
 		</th><td>
 			<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : '';?></textarea>
-		</td></tr>
-	<?php
+		</td>
+		</tr><?php
 	}
 
 	function saveEditFields( $data ) {
@@ -49,17 +49,17 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$params = array(
-			'tcp_checkout'	=> 'ok',
-			'order_id'		=> $order_id,
-		);?>
+		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
+		$url	= add_query_arg( 'order_id', $order_id, $url ); ?>
+
 		<h2><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></h2>
+		
 		<p><?php echo $data['notice'];?></p>
-		<p>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo add_query_arg( $params, get_permalink() );?>';"/>
-		</p><?php
-		require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
+		
+		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
+
+		<?php require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
 		Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING );
 		require_once( dirname( dirname( __FILE__ ) ) . '/checkout/ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );

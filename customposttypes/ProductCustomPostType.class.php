@@ -208,7 +208,7 @@ class ProductCustomPostType {
 				echo '<br/>';
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
-				if ( isset( $types[$product_type] ) ) echo $types[$product_type];
+				if ( isset( $types[$product_type] ) ) echo $types[$product_type]['label'];
 			}
 			do_action( 'tcp_manage_posts_custom_column', $column_name, $post );
 		}

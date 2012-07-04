@@ -85,6 +85,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 					'billing_firstname'			=> isset( $_REQUEST['billing_firstname'] ) ? $_REQUEST['billing_firstname'] : '',
 					'billing_lastname'			=> isset( $_REQUEST['billing_lastname'] ) ? $_REQUEST['billing_lastname'] : '',
 					'billing_company'			=> isset( $_REQUEST['billing_company'] ) ? $_REQUEST['billing_company'] : '',
+					'billing_tax_id_number'		=> isset( $_REQUEST['billing_tax_id_number'] ) ? $_REQUEST['billing_tax_id_number'] : '',
 					'billing_country'			=> isset( $_REQUEST['billing_country'] ) ? $_REQUEST['billing_country'] : '',
 					'billing_country_id'		=> isset( $_REQUEST['billing_country_id'] ) ? $_REQUEST['billing_country_id'] : 0,
 					'billing_region'			=> isset( $_REQUEST['billing_region'] ) ? $_REQUEST['billing_region'] : '',
@@ -115,9 +116,10 @@ class TCPBillingBox extends TCPCheckoutBox {
 		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php global $current_user;
 		get_currentuserinfo();
-		$addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		if ( $current_user->ID > 0 ) $addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		else $addresses = false;
 		$default_address = false;
-		if ( count( $addresses ) > 0 ) :
+		if ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
 				$default_address_id = $_REQUEST['selected_billing_id'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] ) ) {
@@ -144,7 +146,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
 			<div id="new_billing_area" class="clearfix" <?php
 				if ( $selected_billing_address == 'new' ) :
-				?><?php elseif ( count( $addresses ) > 0 ) :
+				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 					?>style="display:none"<?php
 				endif;?>><?php
 			if ( isset( $_REQUEST['billing_firstname'] ) ) {

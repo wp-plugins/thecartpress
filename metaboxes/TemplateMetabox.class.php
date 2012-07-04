@@ -18,10 +18,21 @@
 
 class TCPTemplateMetabox {
 
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 50 );
+	}
+
 	function register_metabox() {
 		add_meta_box( 'tcp-template-template', __( 'Notice points', 'tcp' ), array( &$this, 'showTemplateMetabox' ), TemplateCustomPostType::$TEMPLATE, 'normal', 'high' );
-		add_action( 'save_post', array( $this, 'save' ), 1, 2 );
-		add_action( 'delete_post', array( $this, 'delete' ) );
+		add_action( 'save_post', array( &$this, 'save' ), 1, 2 );
+		add_action( 'delete_post', array( &$this, 'delete' ) );
+	}
+
+	function admin_menu() {
+		global $thecartpress;
+		$base = $thecartpress->get_base_appearance();
+		add_submenu_page( $base, __( 'Notices, eMails', 'tcp' ), __( 'Notices, eMails', 'tcp' ), 'tcp_edit_orders', 'edit.php?post_type=tcp_template' );
 	}
 
 	function showTemplateMetabox() {
@@ -81,10 +92,6 @@ class TCPTemplateMetabox {
 				if ( $translation->element_id != $post_id )
 					delete_post_meta( $translation->element_id, 'tcp_template_class' );*/
 		do_action( 'tcp_template_metabox_delete', $post );
-	}
-	
-	function __construct() {
-		add_action( 'admin_init', array( $this, 'register_metabox' ) );
 	}
 }
 

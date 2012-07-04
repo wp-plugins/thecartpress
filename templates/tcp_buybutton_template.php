@@ -20,10 +20,11 @@
  * Displays a buy button
  * @since 1.1.8
  */
-function tcp_the_add_to_cart_button( $post_id, $echo = true ) {
+function tcp_the_add_to_cart_button( $post_id, $title = '', $echo = true ) {
 	ob_start(); ?>
 	<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
-	<input type="submit" name="tcp_add_to_shopping_cart" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" id="tcp_add_product_<?php echo $post_id; ?>" value="<?php _e( 'Add to cart', 'tcp' ); ?>"/>
+	<?php if ( strlen( $title ) == 0 ) $title = __( 'Add to cart', 'tcp' ); ?>
+	<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" value="<?php echo $title; ?>" target="<?php echo $post_id; ?>"/>
 	<?php $out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_button', $out, $post_id );
 	if ( $echo ) echo $out;
@@ -34,12 +35,12 @@ function tcp_the_add_to_cart_button( $post_id, $echo = true ) {
  * Displays the unit field add to cart
  * @since 1.1.8
  */
-function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $echo = true ) {
-	ob_start();
-	if ( tcp_get_the_product_type( $post_id ) == 'SIMPLE' ) : ?>
-		<input type="number" min="0" step="1" name="tcp_count[]" id="tcp_count_<?php echo $post_id; ?>" value="<?php echo $units; ?>" class="tcp_count" size="3" />
-	<?php endif;
-	$out = ob_get_clean();
+function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $hidden = false, $echo = true ) {
+	ob_start(); 
+	if ( $units == 0 ) $units = 1;
+	$type = $hidden === true ? 'hidden' : 'number'; ?>
+	<input type="<?php echo $type; ?>" min="0" step="1" name="tcp_count[]" id="tcp_count_<?php echo $post_id; ?>" value="<?php echo $units; ?>" class="tcp_count" size="3" />
+	<?php $out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_unit_field', $out, $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
@@ -51,13 +52,21 @@ function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $echo = true ) {
  * @since 1.1.8
  */
 function tcp_the_add_to_cart_items_in_the_cart( $post_id, $echo = true ) {
-	ob_start();
 	$shoppingCart = TheCartPress::getShoppingCart();
 	$item = $shoppingCart->getItem( tcp_get_default_id( $post_id, get_post_type( $post_id ) ) );
-	if ( $item ) : ?>
-		<span class="tcp_added_product_title"><?php printf ( __( '%s unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), tcp_get_the_shopping_cart_url() ); ?></span>
-	<?php endif;
-	$out = ob_get_clean();
+	ob_start(); ?>
+
+	<span class="tcp_added_product_title tcp_added_product_title_<?php echo $post_id; ?>">
+
+	<?php if ( $item ) : ?>
+
+		<?php printf ( __( '<span class="tcp_units">%s</span> unit(s) <a href="%s">in your cart</a>', 'tcp' ), $item->getCount(), tcp_get_the_shopping_cart_url() ); ?>
+
+	<?php endif; ?>
+
+	</span>
+
+	<?php $out = ob_get_clean();
 	$out = apply_filters( 'tcp_the_add_to_cart_items_in_the_cart', $out, $post_id );
 	if ( $echo ) echo $out;
 	else return $out;

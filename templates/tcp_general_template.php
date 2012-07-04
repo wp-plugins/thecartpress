@@ -18,10 +18,8 @@
 
 function tcp_the_shopping_cart_url( $echo = true ) {
 	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) );
-	if ( $echo )
-		echo $url;
-	else
-		return $url;
+	if ( $echo ) echo $url;
+	else return $url;
 }
 
 function tcp_get_the_shopping_cart_url() {
@@ -30,10 +28,8 @@ function tcp_get_the_shopping_cart_url() {
 
 function tcp_the_checkout_url( $echo = true ) {
 	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );
-	if ( $echo )
-		echo $url;
-	else
-		return $url;
+	if ( $echo ) echo $url;
+	else return $url;
 }
 
 function tcp_get_the_checkout_url() {
@@ -51,7 +47,6 @@ function tcp_get_the_continue_url() {
 	return tcp_the_continue_url( false );
 }
 
-
 /**
  * Display Taxonomy Tree.
  *
@@ -67,7 +62,7 @@ function tcp_get_the_continue_url() {
  */
 function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $after = '' ) {
 	do_action( 'tcp_get_taxonomy_tree' );
-	wp_parse_args( $args, array(
+	$args = wp_parse_args( $args, array(
 		'style'			=> 'list',
 		'show_count'	=> true,
 		'hide_empty'	=> true,
@@ -75,41 +70,36 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 		'title_li'		=> '',
 	) );
 	ob_start();
-	if ( isset( $args['dropdown'] ) && $args['dropdown'] ) { //TODO
-		$args['show_option_none']	= sprintf ( __( 'Select %s', 'tcp' ), $args['taxonomy']);
-		$args['name']				= $args['taxonomy'];
-		$args['walker']				= new TCPWalker_CategoryDropdown(); ?>
+	if ( isset( $args['dropdown'] ) && $args['dropdown'] ) :
+		$args['show_option_none']	= sprintf ( __( 'Select %s', 'tcp' ), $args['taxonomy'] );
+		global $wp_query;
+		if ( isset( $wp_query->query_vars['taxonomy'] ) )
+			$args['selected']	= get_query_var( $wp_query->query_vars['taxonomy'] );
+		$args['name']		= $args['taxonomy'];
+		$args['walker']		= new TCPWalker_CategoryDropdown(); ?>
+
 		<?php echo wp_dropdown_categories( apply_filters( 'tcp_widget_taxonomy_tree_dropdown_args', $args ) ); ?>
+
 <script type='text/javascript'>
 // <![CDATA[
 	var dropdown = document.getElementById("<?php echo $args['name']; ?>");
 	function on_<?php echo $args['name']; ?>_change() {
-		if ( dropdown.options[dropdown.selectedIndex].value != -1 )
+		if ( dropdown.options[dropdown.selectedIndex].value != -1 ) {
 			location.href = dropdown.options[dropdown.selectedIndex].value;
+		}
 	}
 	dropdown.onchange = on_<?php echo $args['name']; ?>_change;
 // ]]>
 </script>
-	<?php } else { ?>
-		<ul><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
-<script>
-/*jQuery('ul.children').hide();
-<?php $term = get_queried_object();
-if ( isset( $term->term_id ) ) : ?>
-	jQuery('li.cat-item-<?php echo $term->term_id; ?> ul').show();
-	jQuery('li.cat-item-<?php echo $term->term_id; ?> ul').parents(function() {
-		jQuery(this).show();
-	});
-<?php endif; ?>*/
-</script>
+	<?php else : ?>
 
-	<?php }
+		<ul><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
+
+	<?php endif;
 	$tree = ob_get_clean();
 	$tree = apply_filters( 'tcp_get_taxonomy_tree', $tree );
-	if ( $echo )
-		echo $before, $tree, $after;
-	else
-		return $before . $tree . $after;
+	if ( $echo ) echo $before, $tree, $after;
+	else return $before . $tree . $after;
 }
 
 class TCPWalker_CategoryDropdown extends Walker {
@@ -118,28 +108,25 @@ class TCPWalker_CategoryDropdown extends Walker {
 	
 	function start_el( &$output, $category, $depth, $args ) {
 		$pad = str_repeat( '&nbsp;', $depth * 3 );
-
 		$cat_name = apply_filters( 'list_cats', $category->name, $category );
-		//$output .= "\t<option class=\"level-$depth\" value=\"" . $category->term_id . "\"";
-
-		$output .= "\t<option class=\"level-$depth\" value=\"" . get_term_link( $category->term_id, $category->taxonomy ) . "\"";
-
-		if ( $category->term_id == $args['selected'] )
-			$output .= ' selected="selected"';
-		$output .= '>';
-		$output .= $pad . $cat_name;
-		if ( $args['show_count'] )
-			$output .= '&nbsp;&nbsp;('. $category->count .')';
-		if ( $args['show_last_update'] ) {
-			$format = 'Y-m-d';
-			$output .= '&nbsp;&nbsp;' . gmdate( $format, $category->last_update_timestamp );
+		$link = get_term_link( (int)$category->term_id, $category->taxonomy );
+		if ( ! is_wp_error( $link ) ) {
+			$output .= "\t<option class=\"level-$depth\" value=\"" . $link . "\"";
+			if ( $category->slug == $args['selected'] ) $output .= ' selected="selected"';
+			$output .= '>';
+			$output .= $pad . $cat_name;
+			if ( $args['show_count'] ) $output .= '&nbsp;&nbsp;('. $category->count .')';
+			if ( $args['show_last_update'] ) {
+				$format = 'Y-m-d';
+				$output .= '&nbsp;&nbsp;' . gmdate( $format, $category->last_update_timestamp );
+			}
+			$output .= "</option>\n";
 		}
-		$output .= "</option>\n";
 	}
 }
+
 /**
- *
- * Display Shopping Cart Detail.
+ * Displays Shopping Cart Detail.
  *
  * This function is primarily used by themes which want to hardcode the Detailed
  * Shopping Cart into the sidebar and also by the ShoppingCart widget
@@ -153,7 +140,8 @@ class TCPWalker_CategoryDropdown extends Walker {
  * @param boolean $echo Default to echo and not return the form.
  */
 function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
-	do_action( 'tcp_get_shopping_cart_before', $args, $echo );
+	ob_start();
+	do_action( 'tcp_get_shopping_cart_before', $args );
 	$see_thumbnail		= isset( $args['see_thumbnail'] ) ? $args['see_thumbnail'] : false;
 	$thumbnail_size		= isset( $args['thumbnail_size'] ) ? $args['thumbnail_size'] : 'thumbnail';
 	if ( is_numeric( $thumbnail_size ) ) $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
@@ -162,73 +150,129 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	$see_delete_item	= isset( $args['see_delete_item'] ) ? $args['see_delete_item'] : true;
 	$see_delete_all		= isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : true;
 	$see_shopping_cart	= isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true;
-	$see_checkout		= isset( $args['see_checkout'] ) ? $args['see_checkout'] : true; ?>
+	$see_checkout		= isset( $args['see_checkout'] ) ? $args['see_checkout'] : true;
+	$widget_id			= isset( $args['widget_id'] ) ? 'tcp_' . str_replace( '-', '_', $args['widget_id'] ) : 'tcp_shopping_cart_detail'; ?>
+<div id="<?php echo $widget_id; ?>">
+
 	<ul class="tcp_shopping_cart">
-	<?php
-	$shoppingCart = TheCartPress::getShoppingCart();
+
+	<?php $shoppingCart = TheCartPress::getShoppingCart();
 	foreach( $shoppingCart->getItems() as $item ) : ?>
-		<li class="tcp_widget_cart_detail_item_<?php echo $item->getPostId(); ?>"><form method="post">
-			<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
-			<input type="hidden" name="tcp_option_1_id" value="<?php echo $item->getOption1Id(); ?>" />
-			<input type="hidden" name="tcp_option_2_id" value="<?php echo $item->getOption2Id(); ?>" />
-			<input type="hidden" name="tcp_unit_price" value="<?php echo $item->getUnitPrice(); ?>" />
-			<input type="hidden" name="tcp_tax" value="<?php echo $item->getTax(); ?>" />
-			<input type="hidden" name="tcp_unit_weight" value="<?php echo $item->getWeight(); ?>" />
-			<ul class="tcp_shopping_cart_widget">
-				<?php $title = tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-				$url = tcp_get_permalink( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?>
-				<li class="tcp_cart_widget_item"><span class="tcp_name"><a href="<?php echo $url; ?>"><?php echo $title; ?></a></span></li>
-				<?php if ( $see_thumbnail ) : ?>
-					<li class="tcp_cart_widget_thumbnail"><?php echo tcp_get_the_thumbnail( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $thumbnail_size ); ?></li>
-				<?php endif; ?>
-				<li><span class="tcp_unit_price"><?php _e( 'Price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span></li>
-				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-				<li><?php if ( $see_modify_item ) : ?>
-						<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
-						<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
-					<?php else : ?>
-						<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
-					<?php endif; ?>
-					<?php do_action( 'tcp_shopping_cart_widget_units', $item, $args ); ?>
-				</li>
-				<?php endif; ?>
-				<?php if ( $item->getDiscount() > 0 ) : ?>
-				<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getDiscount() ); ?></span></li>
-				<?php endif; ?>
-				<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span></li>
+
+		<li class="tcp_widget_cart_detail_item_<?php echo $item->getPostId(); ?>">
+		
+		<form method="post">
+
+		<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
+		<input type="hidden" name="tcp_option_1_id" value="<?php echo $item->getOption1Id(); ?>" />
+		<input type="hidden" name="tcp_option_2_id" value="<?php echo $item->getOption2Id(); ?>" />
+
+		<?php do_action( 'tcp_get_shopping_cart_detail_hidden_fields', $item ); ?>
+
+		<ul class="tcp_shopping_cart_widget">
+
+			<?php $title = tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
+			$title = apply_filters( 'tcp_get_shopping_cart_detail_title', $title, $item );
+			$url = tcp_get_permalink( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); ?>
+
+			<li class="tcp_cart_widget_item"><span class="tcp_name"><a href="<?php echo $url; ?>"><?php echo $title; ?></a></span></li>
+
+			<?php if ( $see_thumbnail ) : ?>
+
+			<li class="tcp_cart_widget_thumbnail"><?php echo tcp_get_the_thumbnail( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $thumbnail_size ); ?></li>
+
+			<?php endif; ?>
+
+			<li><span class="tcp_unit_price"><?php _e( 'Price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span></li>
+
 			<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-				<?php if ( $see_weight && $item->getWeight() > 0 ) : ?>
-					<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() ); ?>&nbsp;<?php tcp_the_unit_weight(); ?></li>
+
+			<li>
+				<?php if ( $see_modify_item ) : ?>
+
+				<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
+				<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
+
+				<?php else : ?>
+
+				<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
+
 				<?php endif; ?>
+
+				<?php do_action( 'tcp_shopping_cart_widget_units', $item, $args ); ?>
+
+			</li>
+
 			<?php endif; ?>
+
+			<?php if ( $item->getDiscount() > 0 ) : ?>
+
+			<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getDiscount() ); ?></span></li>
+
+			<?php endif; ?>
+
+			<li><span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span></li>
+
+			<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
+
+				<?php if ( $see_weight && $item->getWeight() > 0 ) : ?>
+
+			<li><span class="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</span>&nbsp;<?php echo tcp_number_format( $item->getWeight() ); ?>&nbsp;<?php tcp_the_unit_weight(); ?></li>
+
+				<?php endif; ?>
+
+			<?php endif; ?>
+
 			<?php do_action( 'tcp_shopping_cart_widget_item', $item ); ?>
-			<?php if ( $see_delete_item ) :?>
-				<li><input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' ); ?>"/></li>
+
+			<?php if ( $see_delete_item ) : ?>
+
+			<li><input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' ); ?>"/></li>
+
 			<?php endif; ?>
+
 			<?php do_action( 'tcp_get_shopping_cart_widget_item', $args, $item ); ?>
+
 			</ul>
-		</form></li>
+
+		</form>
+
+		</li>
+
 	<?php endforeach; ?>
+
 	<?php $discount = $shoppingCart->getCartDiscountsTotal(); //$shoppingCart->getAllDiscounts();
+
 	if ( $discount > 0 ) : ?>
 		<li><span class="tcp_discount"><?php _e( 'Discount', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $discount ); ?></span></li>
 	<?php endif; ?>
+
 		<li><span class="tcp_total"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $shoppingCart->getTotalToShow() ); ?></span></li>
+
 	<?php if ( $see_shopping_cart ) :?>
 		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'shopping cart', 'tcp' ); ?></a></li>
 	<?php endif; ?>
+
 	<?php if ( $see_checkout ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php tcp_the_checkout_url(); ?>"><?php _e( 'checkout', 'tcp' ); ?></a></li>
 	<?php endif; ?>
+
 	<?php if ( $see_delete_all ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'delete', 'tcp' ); ?>"/></form></li>
 	<?php endif; ?>
+
 	<?php do_action( 'tcp_get_shopping_cart_widget', $args ); ?>
-	</ul><?php 
+
+	</ul>
+
+</div><?php
+	$out = ob_get_clean();
+	if ( $echo ) echo $out;
+	return $out;
 }
 
 /**
- * Display Shopping Cart Summary.
+ * Displays Shopping Cart Summary.
  *
  * This function is primarily used by themes which want to hardcode the Resumen
  * Shopping Cart into the sidebar and also by the ShoppingCartSummary widget
@@ -242,9 +286,9 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
  * @param boolean $echo Default to echo and not return the form.
  */
 function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
-	$summary = apply_filters( 'tcp_get_shopping_cart_before_summary', '', $args );
-	if ( ! $args )
-		$args = array(
+	ob_start();
+	do_action( 'tcp_get_shopping_cart_before_summary', $args );
+	if ( ! $args ) $args = array(
 			'see_product_count' => false,
 			'see_weight'		=> true,
 			'see_delete_all'	=> false,
@@ -252,35 +296,51 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 			'see_checkout'		=> true,
 		);
 	global $thecartpress;
-	$unit_weight		= $thecartpress->get_setting( 'unit_weight', 'gr' );
-	$shoppingCart		= TheCartPress::getShoppingCart();
-	$summary .= '<ul class="tcp_shopping_cart_resume">';
-	$discount = $shoppingCart->getAllDiscounts();
-	if ( $discount > 0 )
-		$summary .= '<li><span class="tcp_resumen_discount">' . __( 'Discount', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $discount ) . '</li>';
-	$summary .= '<li><span class="tcp_resumen_subtotal">' . __( 'Total', 'tcp' ) . ':</span>&nbsp;' . tcp_format_the_price( $shoppingCart->getTotalToShow( false ) ) . '</li>';
+	$unit_weight	= $thecartpress->get_setting( 'unit_weight', 'gr' );
+	$shoppingCart	= TheCartPress::getShoppingCart();
+	$discount		= $shoppingCart->getAllDiscounts();
+	$subtotal		= tcp_format_the_price( $shoppingCart->getTotalToShow( false ) );
+	$count			= $shoppingCart->getCount();
+	$weight_value	= $shoppingCart->getWeight();
+	$weight			= tcp_number_format( $shoppingCart->getWeight() );
+	$widget_id		= isset( $args['widget_id'] ) ? str_replace( '-', '_', $args['widget_id'] ) : 'shopping_cart_summary';
+?>
+<div id="tcp_<?php echo $widget_id; ?>"> 
 
-	if ( isset( $args['see_product_count'] ) ? $args['see_product_count'] : false )
-		$summary .=	'<li><span class="tcp_resumen_count">' . __( 'N<sup>o</sup> products', 'tcp' ) . ':</span>&nbsp;' . $shoppingCart->getCount() . '</li>';
+	<ul class="tcp_shopping_cart_resume">
 
-	$see_weight = isset( $args['see_weight'] ) ? $args['see_weight'] : false;
-	if ( $see_weight && $shoppingCart->getWeight() > 0 ) 
-		$summary .= '<li><span class="tcp_resumen_weight">' . __( 'Weigth', 'tcp' ) . ':</span>&nbsp;' . tcp_number_format( $shoppingCart->getWeight() ) . '&nbsp;' . $unit_weight . '</li>';
-		
-	if ( isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true )
-		$summary .= '<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="' . tcp_get_the_shopping_cart_url() . '">' . __( 'Shopping cart', 'tcp' ) . '</a></li>';
+	<?php if ( $discount > 0 ) : ?>
+		<li><span class="tcp_resumen_discount"><?php _e( 'Discount', 'tcp' ); ?>:</span> <span class="tcp_resumen_discount_value"><?php echo $discount; ?></span></li>
+	<?php endif; ?>
 
-	if ( isset( $args['see_checkout'] ) ? $args['see_checkout'] : true )
-		$summary .= '<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="' . tcp_get_the_checkout_url() . '">' . __( 'Checkout', 'tcp' ) . '</a></li>';
+		<li><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' ); ?>:</span> <span class="tcp_resumen_subtotal_value"><?php echo $subtotal; ?></span></li>
 
-	if ( isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : false ) 
-		$summary .= '<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="' . __( 'Delete', 'tcp' ) . '"/></form></li>';
-	$summary = apply_filters( 'tcp_get_shopping_cart_summary', $summary, $args );
-	$summary .= '</ul>';
-	if ( $echo )
-		echo $summary;
-	else
-		return $summary;
+	<?php if ( isset( $args['see_product_count'] ) ? $args['see_product_count'] : false ) : ?>
+		<li><span class="tcp_resumen_count"><?php _e( 'N<sup>o</sup> products', 'tcp' ); ?>:</span><span class="tcp_resumen_count_value">&nbsp;<?php echo $count; ?></span></li>
+	<?php endif; ?>
+
+	<?php if ( isset( $args['see_weight'] ) ? $args['see_weight'] : false && $weight_value > 0 ) : ?>
+		<li><span class="tcp_resumen_weight"><?php _e( 'Weigth', 'tcp' ); ?>:</span> <span class="tcp_resumen_weight_value"><?php echo $weight; ?></span>&nbsp;<?php echo $unit_weight; ?></li>
+	<?php endif; ?>
+
+	<?php if ( isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true ) : ?>
+		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php echo tcp_get_the_shopping_cart_url(); ?>"><?php _e( 'Shopping cart', 'tcp' ); ?></a></li>
+	<?php endif; ?>
+
+	<?php if ( isset( $args['see_checkout'] ) ? $args['see_checkout'] : true ) : ?>
+		<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php echo tcp_get_the_checkout_url(); ?>"><?php _e( 'Checkout', 'tcp' ); ?></a></li>
+	<?php endif; ?>
+
+	<?php if ( isset( $args['see_delete_all'] ) ? $args['see_delete_all'] : false ) : ?>
+		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>"/></form></li>
+	<?php endif; ?>
+	</ul>
+
+</div>
+<?php $out = ob_get_clean();
+	$out = apply_filters( 'tcp_get_shopping_cart_summary', $out, $args );
+	if ( $echo ) echo $out;
+	else return $out;
 }
 
 function tcp_get_taxonomies_cloud( $args = false, $echo = true, $before = '', $after = '' ) {
@@ -450,7 +510,9 @@ function tcp_attribute_list( $taxonomies = false ) {
 function tcp_login_form( $args = array() ) {
 	$defaults = array(
 		'echo'				=> true,
-		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+//		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+//		'redirect'			=> 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
+		'redirect'			=> $_SERVER['REQUEST_URI'],
 		'form_id'			=> 'loginform',
 		'label_username'	=> __( 'Username' ),
 		'label_password'	=> __( 'Password' ),
@@ -465,31 +527,161 @@ function tcp_login_form( $args = array() ) {
 		'value_remember'	=> false, // Set this to true to default the "Remember me" checkbox to checked
 	);
 	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
-	ob_start(); ?>
+	ob_start();
+	if ( ! is_user_logged_in() ) : ?>
+
+<div id="tcp_login">
+
 	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo plugins_url( 'checkout/login.php' , dirname( __FILE__ ) ); ?>" name="<?php echo $args['form_id']; ?>">
+
 		<?php echo apply_filters( 'login_form_top', '', $args ); ?>
-		<p class="login-username">
-		<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label>: <input id="<?php echo $args['id_username']; ?>" class="input" type="text" size="20" value="" name="tcp_log" />
-		</p>
-		<p class="login-password">
-		<label for="<?php echo esc_attr( $args['id_password'] ); ?>"><?php echo esc_html( $args['label_password'] ); ?></label>: <input id="<?php echo $args['id_password']; ?>" class="input" type="password" size="20" value="" name="tcp_pwd" />
-		</p>
+
+		<div class="tcp_login_username_label">
+
+			<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label>
+			
+		</div>
+
+		<div class="tcp_login_username">
+			<input id="<?php echo $args['id_username']; ?>" class="input" type="text" size="20" value="" name="tcp_log" />
+
+		</div>
+
+		<div class="tcp_login_password_label">
+
+			<label for="<?php echo esc_attr( $args['id_password'] ); ?>"><?php echo esc_html( $args['label_password'] ); ?></label>
+
+		</div>
+
+		<div class="tcp_login_password">
+
+			<input id="<?php echo $args['id_password']; ?>" class="input" type="password" size="20" value="" name="tcp_pwd" />
+
+		</div>
+
 		<?php apply_filters( 'login_form_middle', '', $args ); ?>
-		<p class="login-remember">
-		<label><input id="<?php echo esc_attr( $args['id_remember'] ); ?>" type="checkbox" value="forever" name="tcp_rememberme" <?php echo $args['value_remember'] ? ' checked="checked"' : ''; ?>/> <?php echo esc_html( $args['label_remember'] ); ?></label>
-		</p>
-		<p class="login-submit">
-		<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary tcp_checkout_button" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
-		<input type="hidden" value="<?php echo esc_attr( $args['redirect'] ); ?>" name="tcp_redirect_to" />
-		</p>
+
+		<div class="tcp_login_remember">
+
+			<label><input id="<?php echo esc_attr( $args['id_remember'] ); ?>" type="checkbox" value="forever" name="tcp_rememberme" <?php echo $args['value_remember'] ? ' checked="checked"' : ''; ?>/> <?php echo esc_html( $args['label_remember'] ); ?></label>
+
+		</div>
+
+		<div class="tcp_login_submit">
+
+			<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary tcp_checkout_button" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
+			<input type="hidden" value="<?php echo esc_attr( $args['redirect'] ); ?>" name="tcp_redirect_to" />
+
+		</div>
+
+		<div>
+
+			<a id="tcp_lost_password" href="<?php echo site_url( 'wp-login.php?action=lostpassword', 'login' ); ?>" title="<?php _e( 'Password Lost and Found' ) ?>"><?php _e( 'Lost your password?' ); ?></a>
+
+                <?php if ( get_option('users_can_register') ) : ?>
+                
+				<br />
+				
+				<?php if ( function_exists( 'bp_get_signup_page' ) ) { //Buddypress
+					$register_link = bp_get_signup_page();
+				} elseif ( file_exists( ABSPATH . '/wp-signup.php' ) ) { //MU + WP3
+					$register_link = site_url( 'wp-signup.php', 'login');
+				} else {
+					$register_link = site_url( 'wp-login.php?action=register', 'login' );
+				} ?>
+
+				<a href="<?php echo $register_link ?>" id="tcp_link_register"><?php _e( 'Register' ); ?></a>
+
+				<?php endif; ?>
+
 		<?php echo apply_filters( 'login_form_bottom', '', $args ); ?>
+
 		<?php do_action( 'login_form' ); ?>
+
+		</div>
+
+		<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
+
+		<p class="error">
+
+		<strong><?php _e( 'Error', 'tcp' ); ?></strong>: <?php echo $_REQUEST['tcp_register_error']; ?>
+
+		</p>
+
+		<?php endif; ?>
+
 	</form>
-<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
-	<p class="error">
-	<strong><?php _e( 'ERROR', 'tcp' ); ?></strong>: <?php echo $_REQUEST['tcp_register_error']; ?>
-	</p>
-<?php //<a title="<?php _e( 'Password Lost and Found', 'tcp' ); ? >" href="<?php site_url( 'wp-login.php?action=lostpassword' ); ? >"><?php _e( 'Lost your password', 'tcp' ); ? ></a>? ?>
+
+</div><!-- .tcp_login -->
+
+<?php else : ?>
+
+<div class="tcp_profile">
+
+	<?php 
+		global $current_user;
+		global $user_level;
+		global $wpmu_version;
+		get_currentuserinfo();
+	?>
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+
+			<td class="avatar" id="tcp_avatar" style="vertical-align: top;">
+				<?php echo get_avatar( $current_user->ID, $size = '100' );  ?>
+			</td>
+
+			<td id="tcp_profile_info" style="vertical-align: top;">
+
+				<div class="tcp_profile_name">
+
+				<?php the_author_meta( 'user_nicename' ); ?>
+
+				</div>
+
+				<div class="tcp_last_login">
+
+				<?php printf( __( 'Last login: %s', 'tcp' ), tcp_get_the_last_login() ); ?>
+
+				</div>
+
+				<div class="tcp_profile_description">
+
+				<?php the_author_meta( 'description' ); ?>
+
+				</div>
+
+				<?php if ( $user_level > 8 ) : ?>
+
+					<?php if ( function_exists( 'bp_loggedin_user_link' ) ) : ?>
+
+						<a href="<?php bp_loggedin_user_link(); ?>"><?php echo strtolower( __( 'Profile' ) ); ?></a>
+
+					<?php else : ?>
+
+						<br/>
+						<a href="<?php bloginfo('wpurl') ?>/wp-admin/profile.php"><?php echo strtolower( __( 'Profile' ) ); ?></a>
+
+					<?php endif; ?>
+
+				<?php endif; ?>
+
+				<br />
+				<a id="wp-logout" href="<?php echo wp_logout_url() ?>"><?php echo strtolower( __( 'Log Out' ) ); ?></a>
+
+				<?php if ( ! empty( $wpmu_version ) || $user_level > 8 ) : ?>
+
+					<br />
+					<a href="<?php bloginfo( 'wpurl' ); ?>/wp-admin/"><?php _e( 'blog admin', 'tcp'); ?></a>
+
+				<?php endif; ?>
+			</td>
+
+		</tr>
+	</table>
+	
+</div><!-- .tcp_my_profile -->
+
 <?php endif;
 	$out = ob_get_clean();
 	if ( $args['echo'] ) echo $out;
@@ -501,12 +693,10 @@ function tcp_login_form( $args = array() ) {
  * @since 1.1.6
  */
 function tcp_the_total( $echo = true ) {
-    //global $shoppingCart;
-    $shoppingCart = TheCartPress::getShoppingCart();
-    //if ( ! $shoppingCart->isEmpty() )
-        $out = tcp_format_the_price( $shoppingCart->getTotalToShow( false ) );
-    if ( $echo ) echo $out;
-    else return $out;
+	$shoppingCart = TheCartPress::getShoppingCart();
+	$out = tcp_format_the_price( $shoppingCart->getTotalToShow( false ) );
+	if ( $echo ) echo $out;
+	else return $out;
 }
 
 /**
