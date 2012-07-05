@@ -190,11 +190,7 @@ function do_drop() {
 	jQuery('ul.tcp_activated_boxes li.tcp_checkout_step').each(function() {
 		lis.push(jQuery(this).attr('target'));
 	});
-	var li_string = '';
-	for(var i in lis) {
-		li_string += lis[i] + ',';
-	}
-	li_string = li_string.substring(0, li_string.length - 1);
+	var li_string = lis.join();
 	jQuery('.tcp_checkout_editor_feedback').show();
     jQuery.ajax({
     	async	: true,
