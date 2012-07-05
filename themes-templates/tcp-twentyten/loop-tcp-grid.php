@@ -91,7 +91,11 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 			<?php endif;?>
 			<?php if ( $see_image ) : ?>
 			<div class="entry-post-thumbnail">
-				<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>
+				<!--<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>-->
+				<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
+				$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
+				$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
+				echo $image; ?>
 			</div><!-- .entry-post-thumbnail -->
 			<?php endif; ?>	
 			<?php if ( $see_excerpt ) : ?>
