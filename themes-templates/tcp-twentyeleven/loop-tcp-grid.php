@@ -56,7 +56,7 @@ $see_title				= isset( $instance['see_title' . $suffix] ) ? $instance['see_title
 $title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag' . $suffix] : 'h2';
 $see_image				= isset( $instance['see_image' . $suffix] ) ? $instance['see_image' . $suffix] : true;
 
-$image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'post-thumbnail';
+$image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'thumbnail';
 $see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : true;
 $see_content			= isset( $instance['see_content' . $suffix] ) ? $instance['see_content' . $suffix] : false;
 $see_price				= isset( $instance['see_price' . $suffix] ) ? $instance['see_price' . $suffix] : false;
@@ -71,7 +71,7 @@ $number_of_columns		= isset( $instance['columns' . $suffix] ) ? (int)$instance['
 $see_first_custom_area	= isset( $instance['see_first_custom_area' . $suffix] ) ? $instance['see_first_custom_area' . $suffix] : false;
 $see_second_custom_area	= isset( $instance['see_second_custom_area' . $suffix] ) ? $instance['see_second_custom_area' . $suffix] : false;
 $see_third_custom_area	= isset( $instance['see_third_custom_area' . $suffix] ) ? $instance['see_third_custom_area' . $suffix] : false;
-$see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : true;
+$see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : false;
 $column = $number_of_columns;
 
 if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffix] != '' ) {

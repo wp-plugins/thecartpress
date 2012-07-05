@@ -89,7 +89,7 @@ if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_
 $see_title				= isset( $settings['see_title' . $suffix ] ) ? $settings['see_title' . $suffix ] : true;
 $title_tag				= isset( $settings['title_tag' . $suffix ] ) ? $settings['title_tag' . $suffix ] : 'h2';
 $see_image				= isset( $settings['see_image' . $suffix ] ) ? $settings['see_image' . $suffix ] : true;
-$image_size				= isset( $settings['image_size' . $suffix ] ) ? $settings['image_size' . $suffix ] : 'post-thumbnail';
+$image_size				= isset( $settings['image_size' . $suffix ] ) ? $settings['image_size' . $suffix ] : 'thumbnail';
 $see_excerpt			= isset( $settings['see_excerpt' . $suffix ] ) ? $settings['see_excerpt' . $suffix ] : true;
 $see_content			= isset( $settings['see_content' . $suffix ] ) ? $settings['see_content' . $suffix ] : false;
 $see_author				= isset( $settings['see_author' . $suffix ] ) ? $settings['see_author' . $suffix ] : false;

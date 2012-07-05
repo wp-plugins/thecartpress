@@ -709,7 +709,7 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 
 function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
 	if ( has_post_thumbnail( $post_id ) ) {
-		$image_size		= isset( $args['size'] ) ? $args['size'] : 'post-thumbnail';
+		$image_size		= isset( $args['size'] ) ? $args['size'] : 'thumbnail';
 		$image_align	= isset( $args['align'] ) ? $args['align'] : '';
 		$thumbnail_id	= get_post_thumbnail_id( $post_id );
 		$attr			= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
@@ -752,7 +752,7 @@ function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	return apply_filters( 'tcp_get_permalink', $url, $post_id );
 }
 
-function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'post-thumbnail' ) {
+function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
 	$image = '';
 	$args = array( 'size' => $size );
 	if ( $option_2_id > 0 ) {
