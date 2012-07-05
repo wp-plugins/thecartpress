@@ -22,8 +22,8 @@
 class TCPCartTable {
 
 	static function show( $source, $echo = true ) {
-		ob_start(); ?>
-<?php if ( $source->see_address() ) : ?>
+		ob_start();
+		if ( $source->see_address() ) : ?>
 
 <div id="tcp_order_id">
 
@@ -305,7 +305,7 @@ if ( $source->has_order_details() ) {
 			endif;
 		endif;
 
-		if ( $source->see_tax() && $total_tax > 0 ) : //$total += $total_tax; ?>
+		if ( $source->see_tax() && $total_tax > 0 ) : ?>
 
 			<tr class="tcp_cart_tax_row">
 
@@ -314,7 +314,10 @@ if ( $source->has_order_details() ) {
 
 			</tr>
 
+		<?php $total += $total_tax; ?>
+
 		<?php endif; ?>
+		
 
 		<tr class="tcp_cart_total_row">
 

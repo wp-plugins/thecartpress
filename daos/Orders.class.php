@@ -100,7 +100,7 @@ class Orders {
 
 	static function delete( $order_id ) {
 		global $wpdb;
-		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
+		return $wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
 	}
 
 	static function is_owner( $order_id, $customer_id ) {

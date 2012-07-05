@@ -127,5 +127,12 @@ class OrdersDetails {
 		$sql .= ' group by odd.post_id order by count';
 		return $wpdb->get_results( $sql );
 	}
+
+	static function delete_by_order_id( $order_id ) {
+		global $wpdb;
+		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders_details where ';
+		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
+		return $wpdb->query( $sql );
+	}
 }
 ?>

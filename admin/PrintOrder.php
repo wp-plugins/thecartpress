@@ -22,6 +22,7 @@ include_once( $wordpress_path . 'wp-config.php' );
 include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
 $order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
+
 if ( ! current_user_can( 'manage_options' ) ) {
 	$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
 	require_once( $thecartpress_path . 'daos/Orders.class.php');

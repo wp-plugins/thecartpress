@@ -25,7 +25,15 @@ class OrderPage {
 	/**
 	 * Prints an order
 	 * @param order_id
-	 * @param args array(see_comment => true/false, see_address => true/false, see_tax => true/false, see_weight => true/false)
+	 * @param args $defaults = array(
+	 *		'see_address'		=> true,
+	 *		'see_sku'			=> false,
+	 *		'see_weight'		=> true,
+	 *		'see_tax'			=> true,
+	 *		'see_comment'		=> true,
+	 *		'see_other_costs'	=> true,
+	 *		'see_thumbnail'		=> false
+	 *	);
 	 */
 	static function show( $order_id, $args = array(), $echo = true ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -40,7 +48,7 @@ class OrderPage {
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceDB.class.php' );
 		$cart_table = new TCPCartTable();
-		return $cart_table->show( new TCP_CartSourceDB( $order_id ), $echo );
+		return $cart_table->show( new TCP_CartSourceDB( $order_id, $args ), $echo );
 	}
 }
 ?>

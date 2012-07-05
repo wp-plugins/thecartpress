@@ -86,16 +86,21 @@
 		float: left;
 	}
 </style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+
 <body>
+
 <h1 id="site-title"><?php bloginfo( 'name' ); ?></h1>
+
 <h2 id="site-description"><?php bloginfo( 'description' ); ?></h2>
 
 <?php if ( isset( $_REQUEST['order_id'] ) ) {
 	require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 	$order_id = $_REQUEST['order_id'];
-	OrderPage::show( $order_id );
+	OrderPage::show( $order_id, array( 'see_sku' => true ) );
 }?>
+
 <p>
 	<a href="javascript:print();"><?php _e( 'print', 'tcp' );?></a>
 	&nbsp;|&nbsp;
