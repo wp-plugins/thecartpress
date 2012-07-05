@@ -92,13 +92,17 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 <tr class="tcp_first-row">
 <?php while ( have_posts() ) : the_post();
 	if ( $column == 0 ) : $column = $number_of_columns ?>
-	</tr><tr>
+
+	</tr>
+	<tr>
+
 	<?php endif;
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col );
 	//$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
 	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
 	<?php $column--;?>
+
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 			<?php if ( $see_posted_on ) : ?>
@@ -112,7 +116,9 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 			<?php endif; ?>
 
 			<?php if ( $see_title ) : ?>
+
 				<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
+
 			<?php endif; ?>
 
 			<div class="wrapper-price">
@@ -131,14 +137,18 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 
 				<div class="entry-post-thumbnail">
 
-					<?php //if ( function_exists( 'the_post_thumbnail' ) ) //the_post_thumbnail( $image_size ); ?>
-
-					<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
-					$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
-					$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
-					echo $image; ?>
-
-					<!--</a>-->
+					<?php if ( $see_buy_button ) : ?>
+	
+						<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
+						$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
+						$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
+						echo $image; ?>
+	
+					<?php else : ?>
+	
+						<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
+	
+					<?php endif; ?>
 
 				</div><!-- .entry-post-thumbnail -->
 

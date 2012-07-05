@@ -69,45 +69,87 @@ $column = $number_of_columns;
 
 while ( have_posts() ) : the_post();
 if ( $column == 0 ) : $column = $number_of_columns ?>
-	</tr><tr>
+
+	</tr>
+	<tr>
+
 	<?php endif;
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col ); ?>
+
 	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
+
 	<?php $column--; ?>
+
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
 		<?php if ( $see_title ) : ?>
+
 			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+
 		<?php endif; ?>
+
 		<?php if ( $see_posted_on ) : ?>
+
 			<div class="entry-meta">
+
 				<?php twentytencart_posted_on(); ?>
+
 			</div><!-- .entry-meta -->
+
 		<?php endif; ?>
+
 			<?php if ( $see_price ) :?>
+
 			<div class="entry-price">
+
 				<?php tcp_the_price_label();?>
+
 			</div>
+
 			<?php endif;?>
+
 			<?php if ( $see_image ) : ?>
+
 			<div class="entry-post-thumbnail">
-				<!--<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>-->
-				<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
-				$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
-				$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
-				echo $image; ?>
+
+				<?php if ( $see_buy_button ) : ?>
+	
+					<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
+					$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
+					$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
+					echo $image; ?>
+	
+				<?php else : ?>
+	
+					<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
+	
+				<?php endif; ?>
+	
 			</div><!-- .entry-post-thumbnail -->
+
 			<?php endif; ?>	
+
 			<?php if ( $see_excerpt ) : ?>
+
 			<div class="entry-summary">
+
 				<?php the_excerpt(); ?>
+
 			</div><!-- .entry-summary -->
+
 			<?php endif; ?>
-			<?php if ( $see_buy_button ) :?>
+
+			<?php if ( $see_buy_button ) : ?>
+
 			<div class="entry-buy-button">	
-				<?php tcp_the_buy_button();?>
+
+				<?php tcp_the_buy_button(); ?>
+
 			</div>
+
 			<?php endif;?>
+
 		<?php if ( $see_content ) : ?>
 			<div class="entry-content">
 				<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?>
