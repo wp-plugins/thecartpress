@@ -100,7 +100,9 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col );
 	//$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
-	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
+
+	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">2011
+
 	<?php $column--;?>
 
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

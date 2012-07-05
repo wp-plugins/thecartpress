@@ -148,7 +148,14 @@ class CustomListWidget extends TCPParentWidget {
 	function show_grid( $instance ) {
 		if ( isset( $instance['pagination'] ) && $instance['pagination'] )
 			$instance['see_pagination'] = $instance['pagination'];
-		include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
+		global $thecartpress;
+		$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
+
+		if ( $use_default_loop == 'yes' ) {
+			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
+		} else { //yes_2010
+			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyten/loop-tcp-grid.php' );
+		}
 	}
 
 	function update( $new_instance, $old_instance ) {

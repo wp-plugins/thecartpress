@@ -77,7 +77,7 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col ); ?>
 
-	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
+	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">2010
 
 	<?php $column--; ?>
 

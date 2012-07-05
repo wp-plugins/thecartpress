@@ -56,7 +56,9 @@ class TCPMainSettings {
 	}
 
 	function admin_page() { ?>
+
 <div class="wrap">
+
 	<?php screen_icon(); ?><h2><?php _e( 'Main Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
@@ -75,8 +77,10 @@ $downloadable_path		= $thecartpress->get_setting( 'downloadable_path', '' );
 $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 
 <form method="post" action="">
+
 <table class="form-table">
 <tbody>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="disable_ecommerce"><?php _e( 'Disable eCommerce', 'tcp' ); ?></label>
@@ -86,6 +90,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 	<span class="description"><?php _e( 'To use TheCartPress as a Framework, disabling all eCommerce functionalities.', 'tcp' ); ?></span>
 	</td>
 </tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="disable_shopping_cart"><?php _e( 'Disable Shopping cart', 'tcp' ); ?></label>
@@ -95,6 +100,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<span class="description"><?php _e( 'To use TheCartPress as a catalog, disabling the Shopping cart and the Checkout.', 'tcp' ); ?></span>
 	</td>
 </tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="continue_url"><?php _e( 'Continue Shopping in', 'tcp' ); ?></label>
@@ -117,6 +123,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		</select>
 	</td>
 </tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="continue_url"><?php _e( 'Hide downloadable menu', 'tcp' ); ?></label>
@@ -125,6 +132,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<input type="checkbox" id="hide_downloadable_menu" name="hide_downloadable_menu" value="yes" <?php checked( $hide_downloadable_menu, true ); ?> />
 	</td>
 </tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="continue_url"><?php _e( 'Downloadable path', 'tcp' ); ?></label>
@@ -135,6 +143,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<p class="description"><?php printf( __( 'For example, path for the current page in your server is: %s' , 'tcp' ), dirname( __FILE__ ) ); ?></p>
 	</td>
 </tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="hide_visibles"><?php _e( 'Hide visibles', 'tcp' ); ?></label>
@@ -144,14 +153,19 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<p class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></p>
 	</td>
 </tr>
+
 <?php do_action( 'tcp_main_settings_page' ); ?>
+
 </tbody>
 </table>
 
 <?php wp_nonce_field( 'tcp_main_settings' ); ?>
 <?php submit_button( null, 'primary', 'save-main-settings' ); ?>
+
 </form>
+
 </div>
+
 <?php
 	}
 
