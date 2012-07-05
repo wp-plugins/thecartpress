@@ -305,7 +305,7 @@ if ( $source->has_order_details() ) {
 			endif;
 		endif;
 
-		if ( $source->see_tax() && $total_tax > 0 ) : $total += $total_tax; ?>
+		if ( $source->see_tax() && $total_tax > 0 ) : //$total += $total_tax; ?>
 
 			<tr class="tcp_cart_tax_row">
 

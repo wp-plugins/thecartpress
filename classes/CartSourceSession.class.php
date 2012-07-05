@@ -42,7 +42,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 			'see_address'		=> false,
 			'see_sku'			=> false,
 			'see_weight'		=> true,
-			'see_tax'			=> true,
+			'see_tax'			=> false,
 			'see_comment'		=> false,
 			'see_other_costs'	=> false,
 			'see_thumbnail'		=> true

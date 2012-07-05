@@ -36,7 +36,7 @@ class TCPShortcode {
 			}
 		return sprintf( __( 'Mal formed shortcode: %s', 'tcp' ), $id );
 	}
-	
+
 	function __construct() {
 		add_shortcode( 'tcp_list', array( $this, 'show' ) );
 	}

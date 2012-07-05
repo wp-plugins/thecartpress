@@ -256,15 +256,25 @@ function show_hide_stock_management() {
 			$see_stock_notice = isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
 			if ( $see_stock_notice ) {
 				$stock = tcp_get_the_stock( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
-				if ( $stock != -1 && $stock < $item->getCount() ) {
-					echo '<span class="tcp_no_stock_enough">';
-					if ( $stock > 0 ) {
-						printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock );
-					} else {
-						_e( 'Out of stock.', 'tcp' );
-					}
-					echo '</span>';
-				}
+				ob_start();
+				if ( $stock != -1 && $stock < $item->getCount() ) : ?>
+
+					<span class="tcp_no_stock_enough">
+
+					<?php if ( $stock > 0 ) : ?>
+
+						<?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock ); ?>
+
+					<?php else : ?>
+
+						<?php _e( 'Out of stock.', 'tcp' ); ?>
+
+					<?php endif; ?>
+
+					</span>
+
+				<?php endif;
+				echo ob_get_clean();
 			}
 		}
 	}

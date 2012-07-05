@@ -71,7 +71,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 			'term'				=> TCP_PRODUCT_CATEGORY,
 			'included'			=> array(),
 		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );
+		$instance			= wp_parse_args( (array)$instance, $defaults );
 		$order_type			= isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
 		$order_desc			= isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
 		$use_taxonomy		= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : true;
