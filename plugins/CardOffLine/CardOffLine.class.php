@@ -194,6 +194,7 @@ class TCPCardOffLine extends TCP_Plugin {
 				<input type="text" name="card_holder" id="card_holder" size="40" maxlength="150" value="<?php echo $offline['card_holder'];?>" readonly />
 			</td>
 			</tr>
+			<tr valign="top">
 			<th scope="row">
 				<label for="card_number"><?php _e( 'Card number', 'tcp' );?>:</label>
 			</th>
@@ -260,34 +261,6 @@ class TCPCardOffLine extends TCP_Plugin {
 				$sql = 'DROP TABLE `' . $wpdb->prefix . 'tcp_offlines`';
 				$res = $wpdb->query( $sql );
 			}
-			/*global $wpdb;
-			$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_offlines` (
-			  `order_id`			bigint(20)	unsigned NOT NULL,
-			  `card_number`			varchar(20)		NOT NULL,
-  			  `card_holder`			varchar(150)	NOT NULL,
-			  `cvc`					VARCHAR(4)  	NOT NULL,
-			  `expiration_month`	integer			NOT NULL,
-			  `expiration_year`		integer			NOT NULL,
-			  `card_type`			VARCHAR(20)		NOT NULL,
-			  `created_at`			date			NOT NULL,
-			  PRIMARY KEY (`order_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
-			$wpdb->query( $sql );
-			//TODO Deprecated
-			$columns = $wpdb->query( 'show columns from ' . $wpdb->prefix . 'tcp_offlines' );
-			if ( $columns == 5 ) {
-				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `cvc` VARCHAR(4)  NOT NULL AFTER `card_number`;';
-				$wpdb->query( $sql );
-				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `card_type` VARCHAR(20)  NOT NULL AFTER `expiration_year`;';
-				$wpdb->query( $sql );
-				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `card_holder` VARCHAR(150)  NOT NULL AFTER `expiration_year`;';
-				$wpdb->query( $sql );
-			} elseif ( $columns == 6 ) {
-				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `card_type` VARCHAR(20)  NOT NULL AFTER `expiration_year`;';
-				$wpdb->query( $sql );
-				$sql = 'ALTER TABLE `' . $wpdb->prefix . 'tcp_offlines` ADD COLUMN `card_holder` VARCHAR(150)  NOT NULL AFTER `expiration_year`;';
-				$wpdb->query( $sql );
-			}*/
 		}
 	}
 }

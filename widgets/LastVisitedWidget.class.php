@@ -32,10 +32,13 @@ class LastVisitedWidget extends CustomListWidget {
 		if ( count( $ids ) == 0 ) return;
 		$id_to_remove = array_search( get_the_ID(), $ids );
 		if ( $id_to_remove ) unset( $ids[$id_to_remove] );
+		$ids = array_reverse( $ids );
+		$limit = isset( $instance['limit'] ) ? $instance['limit'] : -1;
+		if ( $limit > 0 && $limit < count( $ids ) ) $ids = array_slice( $ids, 0, $limit );
 		$loop_args = array(
 			'post__in'			=> $ids,
 			'post_type'			=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
-			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit']: -1,
+			'posts_per_page'	=> $limit
 		);
 		parent::widget( $args, $loop_args, $instance );
 	}

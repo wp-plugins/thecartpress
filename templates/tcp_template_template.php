@@ -41,7 +41,7 @@ function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 	$args = array(
 		'post_type'			=> TemplateCustomPostType::$TEMPLATE,
 		'posts_per_page'	=> -1,
-		'suppress_filters'	=> true,
+		//'suppress_filters'	=> false,
 		'meta_query'		=> array(
 			array(
 				'key'			=> 'tcp_template_class',

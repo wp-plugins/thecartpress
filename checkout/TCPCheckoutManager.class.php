@@ -539,7 +539,7 @@ class TCPCheckoutManager {
 
 		<?php endif; ?>
 
-		<?php OrderPage::show( $order_id, true ); ?>
+		<?php OrderPage::show( $order_id, array( 'see_sku' => true ) ); ?>
 
 		<br />
 

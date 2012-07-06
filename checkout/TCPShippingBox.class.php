@@ -386,7 +386,13 @@ class TCPShippingBox extends TCPCheckoutBox {
 		<?php endif;
 	}
 
-	//http://www.linuxjournal.com/article/9585
+	private function check_email_address( $email ) {
+		$pattern = "/^[\w-]+(\.[\w-]+)*@([0-9a-z][0-9a-z-]*[0-9a-z]\.)+([a-z]{2,4})$/i";
+		if ( ! preg_match( $pattern, $email ) ) return false;
+		return true;
+	}
+
+	/*//http://www.linuxjournal.com/article/9585
 	private function check_email_address( $email ) {
 		// First, we check that there's one @ symbol, 
 		// and that the lengths are right.
@@ -423,6 +429,6 @@ class TCPShippingBox extends TCPCheckoutBox {
 			}
 		}
 		return true;
-	}
+	}*/
 }
 ?>

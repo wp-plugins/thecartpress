@@ -195,7 +195,6 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		else return false;
 	}
 
-
 	public function get_billing_street() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_street'];
 		else return false;
