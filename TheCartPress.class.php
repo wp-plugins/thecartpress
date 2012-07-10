@@ -66,7 +66,7 @@ class TheCartPress {
 		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 11 );
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
-			add_action( 'user_register', array( $this, 'user_register' ) );
+			//add_action( 'user_register', array( $this, 'user_register' ) );
 			if ( is_admin() ) {
 				register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
 				register_deactivation_hook( __FILE__, array( $this, 'deactivate_plugin' ) );

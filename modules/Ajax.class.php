@@ -355,7 +355,8 @@ jQuery(document).ready(function () {
 	/**
 	 * Defines the tcpdispatcher for ajax access to ShoppingCart
 	 */
-	function wp_head() { ?>
+	function wp_head() { 
+		if ( is_feed() ) return; ?>
 <script>
 function TCPDispatcher() {
 	this.listeners = new Array();
@@ -520,7 +521,7 @@ if (typeof tcp_items_in_the_cart_<?php echo $post_id; ?> != 'function') {
 		case 'delete_item' :
 		case 'modify_item' :
 			global $thecartpress;
-			$thecartpress->wp_head();
+			$thecartpress->check_for_shopping_cart_actions();
 			TheCartPress::saveShoppingCart();
 			exit( 1 );
 		case 'get_summary' :

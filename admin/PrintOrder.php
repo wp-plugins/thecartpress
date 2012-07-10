@@ -38,13 +38,13 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 $file_name	= 'tcp_print_order.php';
-$template	= STYLESHEETPATH . '/' . $file_name;
+$template	= get_stylesheet_directory() . '/' . $file_name;
 $template	= apply_filters( 'tcp_get_print_order_template', $template, $order_id );
 if ( file_exists( $template ) ) {
 	include( $template );
 } else {
 	$template = get_template_directory() . '/' . $file_name;
-	if ( STYLESHEETPATH != get_template_directory() && file_exists( $template ) ) {
+	if ( get_stylesheet_directory() != get_template_directory() && file_exists( $template ) ) {
 		include( $template );
 	} else {
 		$template = TCP_THEMES_TEMPLATES_FOLDER . $file_name;

@@ -306,13 +306,13 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="loop"><?php _e( 'Loop', 'tcp' ); ?>:</label>
-				<br/>(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php echo get_template(); ?>)
+				<br/>(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php echo wp_get_theme(); ?>)
 			</th>
 			<td>
 				<select name="loop" id="loop">
 					<option value="" <?php selected( $loop, '' ); ?>"><?php _e( 'default', 'tcp' ); ?></option>
 				<?php $files = array();
-				$folder = STYLESHEETPATH;
+				$folder = get_stylesheet_directory();
 				if ( $handle = opendir( $folder ) ) :
 					while ( false !== ( $file = readdir( $handle ) ) ) :
 						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
