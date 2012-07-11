@@ -46,12 +46,12 @@ class TCPBuyButton {
 		$file_name_post_type = 'tcp_buybutton-' . $product_type . '-' . $post_type . '.php';
 		$file_name = 'tcp_buybutton-' . $product_type . '.php';
 		// Child theme folder
-		$template = STYLESHEETPATH . '/' . $file_name_post_type;
+		$template = get_stylesheet_directory() . '/' . $file_name_post_type;
 		if ( file_exists( $template ) ) return $template;
-		$template	= STYLESHEETPATH . '/' . $file_name;
+		$template	= get_stylesheet_directory() . '/' . $file_name;
 		if ( file_exists( $template ) ) return $template;
 		// Theme folder
-		if ( STYLESHEETPATH != get_template_directory() ) { 
+		if ( get_stylesheet_directory() != get_template_directory() ) { 
 			$template = get_template_directory() . '/' . $file_name_post_type;
 			if ( file_exists( $template ) ) return $template;
 			$template = get_template_directory() . '/' . $file_name;
@@ -79,9 +79,9 @@ class TCPBuyButton {
 		$paths = array();
 		$paths[] = array(
 			'label'	=> __( 'Theme' ),
-			'path'	=> STYLESHEETPATH . '/tcp_buybutton*.php',
+			'path'	=> get_stylesheet_directory() . '/tcp_buybutton*.php',
 		);
-		if ( STYLESHEETPATH != get_template_directory() ) $paths[] = array(
+		if ( get_stylesheet_directory() != get_template_directory() ) $paths[] = array(
 			'label'	=> __( 'Parent theme', 'tcp' ),
 			'path'	=> get_template_directory() . '/tcp_buybutton*.php',
 		);

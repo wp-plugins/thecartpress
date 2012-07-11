@@ -110,9 +110,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 
 <form method="post" action="">
 
-
-
-
 <table class="form-table">
 <tbody>
 

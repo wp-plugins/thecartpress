@@ -135,8 +135,13 @@ function tcp_get_custom_templates() {
 	if ( function_exists( 'wp_get_themes' ) ) {//WP 3.4+
 		$theme = wp_get_theme();
 		$templates = array_flip( $theme->get_page_templates() );
-		foreach( $templates as $id => $template )
-			$templates[$id] = $theme->get_template_directory() . '/' . $template;
+		foreach( $templates as $id => $template ) {
+			if ( is_file( $theme->get_template_directory() . '/' . $template ) ) {
+				$templates[$id] = $theme->get_template_directory() . '/' . $template;
+			} elseif ( is_file( $theme->get_stylesheet_directory() . '/' . $template ) ) {
+				$templates[$id] = $theme->get_stylesheet_directory() . '/' . $template;
+			}
+		}
 	} else {
 		$themes = get_themes();
 		$theme = get_current_theme();

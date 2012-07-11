@@ -173,7 +173,9 @@ class TCPPayPal extends TCP_Plugin {
 		$p = new tcp_paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
-		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', get_permalink() ) );
+		//$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', get_permalink() ) );
+		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) ) );
+
 		$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) ) );
 		$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
 		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status . '-' . get_class( $this ) . '-' . $instance);
