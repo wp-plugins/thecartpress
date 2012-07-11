@@ -130,9 +130,16 @@ class OrdersDetails {
 
 	static function delete_by_order_id( $order_id ) {
 		global $wpdb;
-		$sql = 'select count(*) from ' . $wpdb->prefix . 'tcp_orders_details where ';
+		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders_details where ';
 		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
 		return $wpdb->query( $sql );
+	}
+
+	static function get_orders_details_ids_by_order_id( $order_id ) {
+		global $wpdb;
+		$sql = 'select order_detail_id from ' . $wpdb->prefix . 'tcp_orders_details where ';
+		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
+		return $wpdb->get_results( $sql );
 	}
 }
 ?>

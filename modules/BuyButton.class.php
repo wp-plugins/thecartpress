@@ -93,7 +93,7 @@ class TCPBuyButton {
 		$buy_buttons = array();
 		foreach( $paths as $path ) {
 			$filenames = glob( $path['path'] );
-			foreach ( $filenames as $filename )
+			foreach( $filenames as $filename )
 				$buy_buttons[] = array(
 					'label'	=> $path['label'] . ': ' . basename( $filename, '.php' ),
 					'path'	=> $filename,
@@ -104,6 +104,7 @@ class TCPBuyButton {
 
 	function tcp_product_metabox_custom_fields( $post_id ) {
 		$selected_buy_button = get_post_meta( $post_id, 'tcp_selected_buybutton', true ); ?>
+		
 		<tr valign="top">
 		<th scope="row"><label for="tcp_selected_buybutton"><?php _e( 'Buy button', 'tcp' );?>:</label></th>
 		<td>

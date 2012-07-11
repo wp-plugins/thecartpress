@@ -21,9 +21,17 @@
  */
 class TCPCartTable {
 
-	static function show( $source, $echo = true ) {
+	static function show( $source, $echo = true, $default_template = false ) {
 		ob_start();
-		if ( $source->see_address() ) : ?>
+		if ( $default_template ) {
+			$located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
+		} else {
+			$located = locate_template( 'tcp_shopping_cart.php' );
+			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
+		}
+		require( $located );
+
+		/*if ( $source->see_address() ) : ?>
 
 <div id="tcp_order_id">
 
@@ -34,12 +42,6 @@ class TCPCartTable {
 </div>
 
 <?php if ( strlen( $source->get_shipping_firstname() ) > 0 && strlen( $source->get_shipping_lastname() ) > 0 ) : ?>
-
-<?php /*if ( $source->get_shipping_firstname() == "" ) {
-	$style = 'style="display:none"';
-} else {
-	$style = '';//'style="padding-bottom:1em;"';
-}*/ ?>
 
 <div id="shipping_info" <?php //echo $style; ?>>
 
@@ -337,7 +339,8 @@ if ( $source->has_order_details() ) {
 
 		<p><?php echo $source->get_comment(); ?></p>
 
-		<?php endif;
+		<?php endif;*/
+
 		$out = ob_get_clean();
 		if ( $echo ) echo $out;
 		else return $out;

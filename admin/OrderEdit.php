@@ -86,7 +86,7 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 
 <div class="clear"></div>
 
-<?php $orderpage = OrderPage::show( $order_id, array( 'see_sku' => true ), false );
+<?php $orderpage = OrderPage::show( $order_id, array( 'see_sku' => true ), false, true );
 $orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage ); ?>
 
 <?php echo $orderpage; ?>

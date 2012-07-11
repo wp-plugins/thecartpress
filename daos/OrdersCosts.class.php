@@ -59,15 +59,29 @@ class OrdersCosts {
 	static function insert( $ordersCosts ) {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix . 'tcp_orders_costs', array (
-				'order_id'			=> $ordersCosts['order_id'],
-				'description'		=> $ordersCosts['description'],
-				'cost'				=> $ordersCosts['cost'],
-				'tax'				=> $ordersCosts['tax'],
-				'cost_order'		=> $ordersCosts['cost_order'],
+				'order_id'		=> $ordersCosts['order_id'],
+				'description'	=> $ordersCosts['description'],
+				'cost'			=> $ordersCosts['cost'],
+				'tax'			=> $ordersCosts['tax'],
+				'cost_order'	=> $ordersCosts['cost_order'],
 			),
 			array( '%d', '%s', '%f', '%f', '%s' )
 		);
 		return $wpdb->insert_id;
+	}
+
+	static function delete_by_order_id( $order_id ) {
+		global $wpdb;
+		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders_costs where ';
+		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
+		return $wpdb->query( $sql );
+	}
+
+	static function get_orders_costs_ids_by_order_id( $order_id ) {
+		global $wpdb;
+		$sql = 'select order_cost_id from ' . $wpdb->prefix . 'tcp_orders_costs where ';
+		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
+		return $wpdb->get_results( $sql );
 	}
 }
 ?>

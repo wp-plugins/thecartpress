@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once( 'OrdersMeta.class.php' );
 require_once( 'OrdersDetails.class.php' );
+require_once( 'OrdersDetailsMeta.class.php' );
 require_once( 'OrdersCosts.class.php' );
+require_once( 'OrdersCostsMeta.class.php' );
 
 class Orders {
 
@@ -100,7 +103,14 @@ class Orders {
 
 	static function delete( $order_id ) {
 		global $wpdb;
-		return $wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
+		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders where ';
+		$sql .= $wpdb->prepare( 'order_id = %d' , $order_id );
+		$wpdb->query( $sql );
+		OrdersMeta::delete_by_order_id( $order_id );
+		OrdersDetails::delete_by_order_id( $order_id );
+		OrdersDetailsMeta::delete_by_order_id( $order_id );
+		OrdersCosts::delete_by_order_id( $order_id );
+		OrdersCostsMeta::delete_by_order_id( $order_id );
 	}
 
 	static function is_owner( $order_id, $customer_id ) {
