@@ -306,7 +306,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="loop"><?php _e( 'Loop', 'tcp' ); ?>:</label>
-				<br/>(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php echo wp_get_theme(); ?>)
+				<br/>(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php if ( function_exists('wp_get_theme') ) echo wp_get_theme(); else echo get_template(); ?>)
 			</th>
 			<td>
 				<select name="loop" id="loop">

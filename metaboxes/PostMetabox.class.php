@@ -20,9 +20,13 @@ require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 		
 class PostMetabox {
 
-	function register_metabox() {
-		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( $this, 'show' ), 'post', 'normal', 'high' );
-		add_action( 'delete_post', array( $this, 'delete' ) );
+	function __construct() {
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+	}
+
+	function admin_init() {
+		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( &$this, 'show' ), 'post', 'normal', 'high' );
+		add_action( 'delete_post', array( &$this, 'delete' ) );
 	}
 
 	function show() {
@@ -66,10 +70,6 @@ class PostMetabox {
 		RelEntities::deleteAll( $post_id, 'POST_PROD' );
 		do_action( 'tcp_template_metabox_delete', $post_id );
 		return $post_id;
-	}
-
-	function __construct() {
-		add_action( 'admin_init', array( $this, 'register_metabox' ) );
 	}
 }
 

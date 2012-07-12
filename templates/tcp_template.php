@@ -1051,8 +1051,8 @@ function tcp_input_number( $input ) {
  * Converts a typed date (format YYYY-MM-DD) into a PHP date
  * @since 1.1.8
  */
-function tcp_input_date( $input ) {
-	list( $y, $m, $d ) = explode( '-', $input);
+function tcp_input_date( $input, $separator = '-' ) {
+	list( $y, $m, $d ) = explode( $separator, $input);
 	return mktime( 0, 0, 0, $m, $d, $y );
 }
 
