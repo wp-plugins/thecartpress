@@ -35,12 +35,12 @@ if ( $source->see_address() ) : ?>
 
 		<table id="shipping_billing_info">
 			<tr>
-				<th class"shipping_info"><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></th>
+				<th class="shipping_info"><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></th>
 				<th class="billing_info"><h3><?php _e( 'Billing address', 'tcp' ); ?></h3></th>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php echo $source->get_shipping_firstname(); ?> <?php echo $source->get_shipping_lastname(); ?>
 				</td>
 				<td class="billing_info">
@@ -49,7 +49,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : echo $source->get_shipping_company(); ?><?php endif; ?>&nbsp;
 				</td>
 				<td class="billing_info">
@@ -61,7 +61,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php echo $source->get_shipping_street(); ?><br/>
 				</td>
 				<td class="billing_info">
@@ -70,7 +70,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php echo $source->get_shipping_postcode() . ', ' . $source->get_shipping_city(); ?><br/>
 				</td>
 				<td class="billing_info">
@@ -79,7 +79,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php echo $source->get_shipping_region() . ', ' . $source->get_shipping_country(); ?><br/>
 				</td>
 				<td class="billing_info">
@@ -88,7 +88,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php $telephone = $source->get_shipping_telephone_1();
 					if ( strlen( $source->get_shipping_telephone_2() ) > 0 ) $telephone .= ' - ' . $source->get_shipping_telephone_2(); ?>
 					<?php if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
@@ -101,7 +101,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_shipping_fax(); ?><?php endif; ?>
 				</td>
 				<td class="billing_info">
@@ -110,7 +110,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 
 			<tr>
-				<td class"shipping_info">
+				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_email() ) > 0 ) : echo $source->get_shipping_email(); ?><?php endif; ?>
 				</td>
 				<td class="billing_info">
@@ -123,7 +123,7 @@ if ( $source->see_address() ) : ?>
 
 		<table id="shipping_billing_info">
 			<tr>
-				<th class"billing_info"><h3><?php _e( 'Shipping and Billing address', 'tcp' ); ?></h3></th>
+				<th class="billing_info"><h3><?php _e( 'Shipping and Billing address', 'tcp' ); ?></h3></th>
 			</tr>
 
 			<tr>

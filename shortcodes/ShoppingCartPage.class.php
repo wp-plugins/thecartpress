@@ -24,8 +24,8 @@ class TCPShoppingCartPage {
 
 	function show( $notice = '' ) {
 		$shoppingCart = TheCartPress::getShoppingCart();
-		require_once( dirname( dirname( __FILE__ ) ) . '/classes/CartTable.class.php' );
-		require_once( dirname( dirname( __FILE__ ) ) . '/classes/CartSourceSession.class.php' );
+		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
+		require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
 		ob_start(); ?>
 
 <div class="tcp_shopping_cart_page">

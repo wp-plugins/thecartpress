@@ -90,7 +90,11 @@ class TCPCartBox extends TCPCheckoutBox {
 		<tr valign="top">
 			<th scope="row"><label for="see_tax"><?php _e( 'Display Tax column', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="see_tax" id="see_tax" value="yes" <?php checked( $see_tax );?>/></td>
+		</tr>
 
+		<tr valign="top">
+			<th scope="row"><label for="see_sku"><?php _e( 'Display SKU column', 'tcp' );?>:</label></th>
+			<td><input type="checkbox" name="see_sku" id="see_sku" value="yes" <?php checked( $see_sku );?>/></td>
 		</tr>
 		
 		<?php do_action( 'tcp_checkout_show_config_settings', $settings ); ?>
@@ -105,6 +109,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		$settings = array(
 			'see_weight'	=> isset( $_REQUEST['see_weight'] ) ? $_REQUEST['see_weight'] == 'yes' : false,
 			'see_tax'		=> isset( $_REQUEST['see_tax'] ) ? $_REQUEST['see_tax'] == 'yes' : false,
+			'see_sku'		=> isset( $_REQUEST['see_sku'] ) ? $_REQUEST['see_sku'] == 'yes' : false,
 		);
 		$settings = apply_filters( 'tcp_cart_box_config_settings', $settings );
 		update_option( 'tcp_' . get_class( $this ), $settings );
@@ -123,6 +128,9 @@ class TCPCartBox extends TCPCheckoutBox {
 		<tr class="tcp_cart_title_row">
 			<th class="tcp_cart_name"><?php _e( 'Name', 'tcp' ); ?></th>
 			<th class="tcp_cart_unit_price"><?php _e( 'Price', 'tcp' ); ?></th>
+		<?php if ( $see_sku ) : ?>
+			<th class="tcp_cart_sku"><?php _e( 'SKU', 'tcp' ); ?></th>
+		<?php endif; ?>
 		<?php if ( $see_tax ) : ?>
 			<th class="tcp_cart_tax"><?php _e( 'Tax', 'tcp' ); ?></th>
 		<?php endif; ?>
@@ -182,6 +190,16 @@ class TCPCartBox extends TCPCheckoutBox {
 				<?php endif; ?>
 
 				</td>
+
+				<?php if ( $see_sku ) : ?>
+
+				<td class="tcp_cart_sku">
+
+					<?php echo tcp_get_the_sku( $item->getPostId() ); ?>
+
+				</td>
+
+				<?php endif; ?>
 
 				<?php if ( $see_tax ) : ?>
 
@@ -301,13 +319,7 @@ class TCPCartBox extends TCPCheckoutBox {
 
 			<td><?php echo tcp_format_the_price( $tax_amount ); ?></td>
 
-			<td>&nbsp;</td>
-
-			<?php if ( $see_weight ) : ?>
-
-			<td>&nbsp;</td>
-
-			<?php endif; ?>
+			<td colspan="<?php echo $colspan; ?>">&nbsp;</td>
 
 			<td><?php echo tcp_format_the_price( $cost_with_tax ); ?></td>
 
@@ -336,6 +348,8 @@ class TCPCartBox extends TCPCheckoutBox {
 		<td class="tcp_cart_total_title"><?php _e( 'Total', 'tcp'); ?></td>
 
 		<td colspan="<?php echo $colspan; ?>">&nbsp;</td>
+
+		<td>&nbsp;</td>
 
 		<td class="tcp_cart_total"><span id="total"><?php echo tcp_format_the_price( $total ); ?></span></td>
 
