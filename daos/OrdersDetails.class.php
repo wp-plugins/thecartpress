@@ -55,7 +55,7 @@ class OrdersDetails {
 		return $wpdb->get_results( $sql );
 	}
 
-	static function getTotal( $order_id, $total = 0) {
+	static function getTotal( $order_id, $total = 0 ) {
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
 		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
@@ -69,6 +69,23 @@ class OrdersDetails {
 			}
 		}
 		return $total;
+	}
+
+	static function getTotalDetailed( $order_id ) {
+		$detailed = array(
+			'amount'	=> 0,
+			'tax'		=>0,
+		);
+		$decimals = tcp_get_decimal_currency();
+		global $wpdb;
+		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		foreach( $res as $row ) {
+			$detailed['amount'] += $row->price * $row->qty_ordered;
+			if ( $row->tax > 0 ) {
+				$detailed['tax'] += $detailed['amount'] * $row->tax / 100;
+			}
+		}
+		return $detailed;
 	}
 
 	static function insert( $ordersDetails ) {

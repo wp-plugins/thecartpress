@@ -21,6 +21,7 @@ interface TCP_ICartSource {
 	public function see_sku();
 	public function see_weight();
 	public function see_tax();
+	public function see_tax_summary();
 	public function is_editing_units();
 	public function see_other_costs();
 	public function see_product_link();

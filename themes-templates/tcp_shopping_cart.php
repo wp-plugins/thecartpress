@@ -237,12 +237,6 @@ if ( $source->has_order_details() ) :
 
 	<tr class="tcp_cart_product_row <?php if ( $i++ & 1 == 1 ) : ?> par<?php endif; ?>">
 
-		<?php //if ( $source->see_full() ) : ?>
-
-			<!--<td class="tcp_cart_id"><?php echo $order_detail->get_post_id(); ?></td>-->
-
-		<?php //endif; ?>
-
 		<?php if ( $source->see_thumbnail() ) : ?>
 
 			<td class="tcp_cart_thumbnail">
@@ -405,7 +399,6 @@ if ( $source->has_order_details() ) :
 	<?php $total += $total_tax; ?>
 
 	<?php endif; ?>
-	
 
 	<tr class="tcp_cart_total_row">
 

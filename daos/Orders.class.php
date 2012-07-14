@@ -101,6 +101,23 @@ class Orders {
 		}
 	}
 
+	/**
+	 * @returns array( amount, tax, shipping, discount )
+	 */
+	static function getTotalDetailed( $order_id ) {
+		$order = Orders::get( $order_id );
+		if ( $order ) {
+			$cost_detailed = OrdersCosts::getTotalDetailed( $order_id );
+			$detailed = OrdersDetails::getTotalDetailed( $order_id );
+			$detailed['shipping']	= $cost_detailed['amount'];
+			$detailed['tax']		+= $cost_detailed['tax'];
+			$detailed['discount']	= $order->discount_amount;
+			return $detailed;
+		} else {
+			return false;
+		}
+	}
+
 	static function delete( $order_id ) {
 		global $wpdb;
 		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders where ';

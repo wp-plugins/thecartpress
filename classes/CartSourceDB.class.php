@@ -33,6 +33,7 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	private $see_sku;
 	private $see_weight;
 	private $see_tax;
+	private $see_tax_summary;
 	private $see_comment;
 	private $see_other_costs;
 	private $see_thumbnail;
@@ -43,6 +44,7 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 			'see_sku'			=> false,
 			'see_weight'		=> true,
 			'see_tax'			=> true,
+			'see_tax_summary'	=> true,
 			'see_comment'		=> true,
 			'see_other_costs'	=> true,
 			'see_thumbnail'		=> false
@@ -56,6 +58,7 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 		$this->see_sku			= $see_sku;
 		$this->see_weight		= $see_weight;
 		$this->see_tax			= $see_tax;
+		$this->see_tax_summary	= $see_tax_summary;
 		$this->see_comment		= $see_comment;
 		$this->see_thumbnail	= $see_thumbnail;
 		$this->see_other_costs	= $see_other_costs;
@@ -108,6 +111,10 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 
 	public function see_tax() {
 		return $this->see_tax;
+	}
+
+	public function see_tax_summary() {
+		return $this->see_tax_summary;
 	}
 
 	public function is_editing_units() {
@@ -404,5 +411,4 @@ class TCP_CostSourceDB {
 		else return false;
 	}
 }
-
 ?>

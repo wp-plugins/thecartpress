@@ -53,9 +53,11 @@ class TCPCartBox extends TCPCheckoutBox {
 			}		
 		} elseif ( $selected_shipping_address == 'Y' ) {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
-		}?>
+		} ?>
 		<div id="cart_layer_info" class="checkout_info clearfix">
+
 			<?php $settings = get_option( 'tcp_' . get_class( $this ), array() ); ?>
+
 		 	<?php do_action( 'tcp_checkout_cart_before', $settings );
 			$this->show_order_cart( $shipping_country, $settings );
 		 	do_action( 'tcp_checkout_cart_after' );
@@ -66,11 +68,15 @@ class TCPCartBox extends TCPCheckoutBox {
 			} else {
 				$comment = '';
 			}?>
+
 		 	<div class="tcp_go_to_shopping_cart"><a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'Shopping Cart', 'tcp' ); ?></a></div><!-- .tcp_go_to_shopping_cart -->
 			<div class="tcp_comment"><label for="comment"><?php _e( 'Comments:', 'tcp' ); ?></label><br />
+
 			<textarea id="comment" name="comment" cols="40" rows="3" maxlength="255"><?php echo $comment; ?></textarea></div><!-- .tcp_comment -->
-		</div><!-- cart_layer_info --><?php
-		return true;
+
+		</div><!-- cart_layer_info -->
+
+		<?php return true;
 	}
 
 	function show_config_settings() {
@@ -121,6 +127,12 @@ class TCPCartBox extends TCPCheckoutBox {
 		$see_sku	= isset( $args['see_sku'] ) ? $args['see_sku'] : true;
 		$see_weight	= isset( $args['see_weight'] ) ? $args['see_weight'] : true;
 		$see_tax	= isset( $args['see_tax'] ) ? $args['see_tax'] : true;
+	//$see_tax_summary	= isset( $args['see_tax_summary'] ) ? $args['see_tax_summary'] : false;
+	//require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
+	//require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
+	//$cart_table = new TCPCartTable();
+	//$cart_table->show( new TCPCartSourceSession( array( 'see_tax' => $see_tax, 'see_tax_summary' => $see_tax_summary, 'see_weight' => $see_weight, 'see_sku' => $see_sku, 'is_editing_units' => false, 'see_other_costs' => true ) ) );
+
 		$shoppingCart = TheCartPress::getShoppingCart(); ?>
 	
 		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
@@ -297,6 +309,9 @@ class TCPCartBox extends TCPCheckoutBox {
 		<?php endif;
 		$costs = $shoppingCart->getOtherCosts();
 		asort( $costs, SORT_STRING );
+		$colspan_cost = $colspan;
+		if ( $see_sku ) $colspan_cost--;
+		if ( $see_tax ) $colspan_cost--;
 		foreach( $costs as $cost_id => $cost ) :
 			$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
 			$tax = tcp_get_the_shipping_tax();
@@ -317,9 +332,19 @@ class TCPCartBox extends TCPCheckoutBox {
 
 			<td><?php echo tcp_format_the_price( $cost_without_tax ); ?></td>
 
-			<td><?php echo tcp_format_the_price( $tax_amount ); ?></td>
+			<?php if ( $see_sku ) : ?>
 
-			<td colspan="<?php echo $colspan; ?>">&nbsp;</td>
+			<td>&nbsp;</td>
+
+			<?php endif; ?>
+
+			<?php if ( $see_tax ) : ?>
+			
+			<td><?php echo tcp_format_the_price( $tax_amount ); ?></td>
+			
+			<?php endif; ?>
+
+			<td colspan="<?php echo $colspan_cost; ?>">&nbsp;</td>
 
 			<td><?php echo tcp_format_the_price( $cost_with_tax ); ?></td>
 
