@@ -387,7 +387,7 @@ if ( $source->has_order_details() ) :
 		endif;
 	endif;
 
-	if ( $source->see_tax() && $total_tax > 0 ) : ?>
+	if ( $source->see_tax_summary() && $total_tax > 0 ) : ?>
 
 		<tr class="tcp_cart_tax_row">
 
