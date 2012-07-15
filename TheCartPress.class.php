@@ -873,6 +873,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				'thousands_separator'		=> ',',
 				'unit_weight'				=> 'gr',
 				'hide_visibles'				=> false,//hide_invisibles!!
+				'activate_ajax'				=> false,
 			);
 			add_option( 'tcp_settings', $this->settings );
 		}
