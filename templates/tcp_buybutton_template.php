@@ -16,6 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function tcp_the_buy_button( $post_id = 0, $echo = true ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	return TCPBuyButton::show( $post_id, $echo );
+}
+
+function tcp_get_the_buy_button( $post_id = 0 ) {
+	return tcp_the_buy_button( $post_id, false );
+}
+
 /**
  * Displays a buy button
  * @since 1.1.8

@@ -288,7 +288,7 @@ class TCPCartBox extends TCPCheckoutBox {
 
 			<td style="text-align:right"><?php _e( 'Discounts', 'tcp' ); ?></td>
 
-			<td colspan="<?php echo $colspan; ?>">&nbsp;</td>
+			<td colspan="<?php echo $colspan + 1; ?>">&nbsp;</td>
 
 			<td>-<?php echo tcp_format_the_price( $discount ); ?></td>
 

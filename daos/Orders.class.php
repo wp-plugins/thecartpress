@@ -342,7 +342,7 @@ class Orders {
 			on o.order_id = d.order_id
 			where customer_id = %d and order_detail_id = %d and d.is_downloadable = \'Y \' and status=%s
 			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
-				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
+				or ( d.expires_at = %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) ) )'
 			, $customer_id, $orders_details_id, $completed, $today, $max_date );
 		$count = $wpdb->get_var( $sql );
 		return $count > 0;

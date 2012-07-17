@@ -45,12 +45,12 @@ class TCPBuyButton {
 		$product_type = strtolower( tcp_get_the_product_type( $post_id ) );
 		$file_name_post_type = 'tcp_buybutton-' . $product_type . '-' . $post_type . '.php';
 		$file_name = 'tcp_buybutton-' . $product_type . '.php';
-		// Child theme folder
+		// child theme folder
 		$template = get_stylesheet_directory() . '/' . $file_name_post_type;
 		if ( file_exists( $template ) ) return $template;
 		$template	= get_stylesheet_directory() . '/' . $file_name;
 		if ( file_exists( $template ) ) return $template;
-		// Theme folder
+		// theme folder
 		if ( get_stylesheet_directory() != get_template_directory() ) { 
 			$template = get_template_directory() . '/' . $file_name_post_type;
 			if ( file_exists( $template ) ) return $template;

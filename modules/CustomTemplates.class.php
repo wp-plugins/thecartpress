@@ -15,13 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class TCPCustomTemplates {
 
 	function __construct() {
-		if ( is_admin() ) {
-			new TCPCustomTemplateMetabox();
-			//require_once( TCP_METABOXES_FOLDER . 'CustomTemplateMetabox.class.php' );
-		}
+		if ( is_admin() ) new TCPCustomTemplateMetabox();
 		add_filter( 'single_template', array( $this, 'single_template' ) );
 		add_filter( 'taxonomy_template', array( $this, 'taxonomy_template' ) );
 		add_filter( 'archive_template', array( $this, 'archive_template' ) );

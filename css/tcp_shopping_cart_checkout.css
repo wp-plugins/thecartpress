@@ -588,9 +588,7 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#575757', endColorstr='#888888');
 }
 
-
-
-
-
-
-
+.tcp_back_continue{
+	display: block;
+	text-align: right;
+}
