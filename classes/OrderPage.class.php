@@ -36,7 +36,7 @@ class OrderPage {
 	 *	);
 	 */
 	static function show( $order_id, $args = array(), $echo = true ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'tcp_edit_orders' ) ) {
 			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			$current_user = wp_get_current_user();
 			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) return;

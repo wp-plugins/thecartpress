@@ -299,7 +299,7 @@ jQuery(document).ready(function() {
 		wp_enqueue_script( 'tcp_jplayer_playlist' );
 		global $thecartpress;
 		if ( $thecartpress ) {
-			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp-black' );
+			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' );
 			$url = WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/skins/' . $jplayer_skin . '/style.css';
 			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
 			wp_enqueue_style( 'tcp_jplayer_skin', $url );

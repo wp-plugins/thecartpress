@@ -173,7 +173,7 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.3
 			//
 		}
-		update_option( 'tcp_version', 121 );
+		update_option( 'tcp_version', 122 );
 	}
 }
 ?>

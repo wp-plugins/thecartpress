@@ -23,7 +23,7 @@ include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
 $order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 
-if ( ! current_user_can( 'manage_options' ) ) {
+if ( ! current_user_can( 'tcp_edit_orders' ) ) {
 	$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
 	require_once( $thecartpress_path . 'daos/Orders.class.php');
 	$current_user = wp_get_current_user();

@@ -171,7 +171,8 @@ jQuery('h3.tcp_ckeckout_step a').click(function(event) {
 
 	function tcp_shopping_cart_after() { ?>
 <script>
-if (typeof tcp_listener_shopping_cart != 'function') {
+//if (typeof window.tcp_listener_shopping_cart != 'function') {
+if ( jQuery.isFunction( window.tcp_listener_shopping_cart ) ) {
 	tcpDispatcher.add('tcp_listener_shopping_cart', 0);
 
 	function tcp_listener_shopping_cart() {
@@ -199,7 +200,8 @@ if (typeof tcp_listener_shopping_cart != 'function') {
 
 <script>
 
-if (typeof tcp_listener_ecommerce_twentyeleven_header_total != 'function') {
+//if (typeof window.tcp_listener_ecommerce_twentyeleven_header_total != 'function') {
+if ( jQuery.isFunction( window.tcp_listener_ecommerce_twentyeleven_header_total ) ) {
 	tcpDispatcher.add('tcp_listener_ecommerce_twentyeleven_header_total', 0);
 
 	function tcp_listener_ecommerce_twentyeleven_header_total() {
@@ -233,7 +235,8 @@ if (typeof tcp_listener_ecommerce_twentyeleven_header_total != 'function') {
 
 <script>
 
-if (typeof tcp_listener_<?php echo $widget_id; ?> != 'function') {
+//if (typeof window.tcp_listener_<?php echo $widget_id; ?> != 'function') {
+if ( jQuery.isFunction( window.tcp_listener_<?php echo $widget_id; ?> ) ) {
 	tcpDispatcher.add('tcp_listener_<?php echo $widget_id; ?>', 0);
 
 	function tcp_listener_<?php echo $widget_id; ?>() {
@@ -362,7 +365,7 @@ function TCPDispatcher() {
 	this.listeners = new Array();
 
 	this.add = function(callback, post_id) {
-		var listener = Array(callback, post_id);
+		var listener = new Array(callback, post_id);
 		this.listeners.push(listener);
 	}
 	
@@ -489,8 +492,8 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 		ob_start(); ?>
 <script>
 
-if (typeof tcp_items_in_the_cart_<?php echo $post_id; ?> != 'function') {
-
+//if (typeof window.tcp_items_in_the_cart_<?php echo $post_id; ?> != 'function') {
+if ( jQuery.isFunction( window.tcp_items_in_the_cart_<?php echo $post_id; ?> ) ) {
 	tcpDispatcher.add('tcp_items_in_the_cart_<?php echo $post_id; ?>', <?php echo $post_id; ?>);
 
 	function tcp_items_in_the_cart_<?php echo $post_id; ?>(){

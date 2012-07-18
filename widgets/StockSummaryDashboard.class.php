@@ -60,7 +60,7 @@ class StockSummaryDashboard {
 	<?php }
 
 	function tcp_stock_summary_dashboard() {
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			$customer_id = -1;
 		} else {
 			global $current_user;

@@ -41,7 +41,7 @@
 
 <table class="tcp_products_list">
 <tr class="tcp_first-row">
-<?php
+<?php global $thecartpress;
 if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
 $suffix = '-' . get_post_type( get_the_ID() );
 if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
@@ -117,7 +117,12 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 	
 					<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
 					$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
-					$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
+					$args = array(
+						'size'	=> $image_size,
+						//'align'	=> $image_align,
+						'link'	=> $thecartpress->get_setting( 'image_link_content', 'permalink' ),
+					);
+					$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID(), $args );
 					echo $image; ?>
 	
 				<?php else : ?>
