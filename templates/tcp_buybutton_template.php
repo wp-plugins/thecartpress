@@ -16,17 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function tcp_the_buy_button( $post_id = 0, $echo = true ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	return TCPBuyButton::show( $post_id, $echo );
+}
+
+function tcp_get_the_buy_button( $post_id = 0 ) {
+	return tcp_the_buy_button( $post_id, false );
+}
+
 /**
  * Displays a buy button
  * @since 1.1.8
  */
 function tcp_the_add_to_cart_button( $post_id, $title = '', $echo = true ) {
 	ob_start(); ?>
+
 	<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
+
 	<?php if ( strlen( $title ) == 0 ) $title = __( 'Add to cart', 'tcp' ); ?>
+
 	<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" value="<?php echo $title; ?>" target="<?php echo $post_id; ?>"/>
-	<?php $out = ob_get_clean();
-	$out = apply_filters( 'tcp_the_add_to_cart_button', $out, $post_id );
+
+	<?php $out = apply_filters( 'tcp_the_add_to_cart_button', ob_get_clean(), $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
 }
@@ -39,9 +51,10 @@ function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $hidden = false, 
 	ob_start(); 
 	if ( $units == 0 ) $units = 1;
 	$type = $hidden === true ? 'hidden' : 'number'; ?>
+
 	<input type="<?php echo $type; ?>" min="0" step="1" name="tcp_count[]" id="tcp_count_<?php echo $post_id; ?>" value="<?php echo $units; ?>" class="tcp_count" size="3" />
-	<?php $out = ob_get_clean();
-	$out = apply_filters( 'tcp_the_add_to_cart_unit_field', $out, $post_id );
+
+	<?php $out = apply_filters( 'tcp_the_add_to_cart_unit_field', ob_get_clean(), $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
 }
@@ -66,8 +79,7 @@ function tcp_the_add_to_cart_items_in_the_cart( $post_id, $echo = true ) {
 
 	</span>
 
-	<?php $out = ob_get_clean();
-	$out = apply_filters( 'tcp_the_add_to_cart_items_in_the_cart', $out, $post_id );
+	<?php $out = apply_filters( 'tcp_the_add_to_cart_items_in_the_cart', ob_get_clean(), $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
 }

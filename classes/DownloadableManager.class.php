@@ -87,7 +87,7 @@ class TCPDownloadableManager implements IDownloadableManager {
 
 	private function tcp_get_downloadable_path() {
 		global $thecartpress;
-		return isset( $thecartpress->settings['downloadable_path'] ) ? trim( $thecartpress->settings['downloadable_path'] ) : false;
+		return $thecartpress->get_setting( 'downloadable_path', false );
 	}
 
 	private function load_folders( $folder, $name = '' ) {
@@ -118,6 +118,7 @@ class TCPDownloadableManager implements IDownloadableManager {
 		}
 		return $folders;
 	}
+
 	private function path_to_url( $file ) {
 		$downloadable_path = $this->tcp_get_downloadable_path();
 		if ( strpos( $file, $downloadable_path ) !== FALSE ) {

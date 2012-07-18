@@ -93,7 +93,7 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 
 			<div class="entry-meta">
 
-				<?php twentytencart_posted_on(); ?>
+				<?php tcp_posted_on(); ?>
 
 			</div><!-- .entry-meta -->
 

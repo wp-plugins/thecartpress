@@ -51,7 +51,7 @@ class TCPCustomTemplatesList {
 <div class="wrap">
 	<?php screen_icon(); ?><h2><?php _e( 'Custom Templates', 'tcp' ); ?></h2>
 
-<?php if ( !empty( $this->updated ) ) : ?>
+<?php if ( ! empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
 	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
 	</div>
@@ -136,8 +136,8 @@ foreach( $post_types as $post_type ) : ?>
 					<option value="<?php echo $template; ?>" <?php selected( $custom_template, $template ); ?>><?php echo $file_name; ?></option>
 					<?php endforeach; 
 					if ( $custom_template && ! array_key_exists( $custom_template, $templates ) ) : ?>
-				<option value="<?php echo $custom_template; ?>" selected="true"><?php printf( __( '"%s" is missing', 'tcp' ), basename( $custom_template ) ); ?></option>
-				<?php endif; ?>
+					<option value="<?php echo $custom_template; ?>" selected="true"><?php printf( __( '"%s" is missing', 'tcp' ), basename( $custom_template ) ); ?></option>
+					<?php endif; ?>
 				</select>
 			</td>
 		</tr><?php
@@ -160,16 +160,19 @@ endforeach; ?>
 		if ( isset( $_REQUEST['save-custom_templates-settings'] ) ) {
 			$post_types = $_REQUEST['tcp_custom_post_type_template_id'];
 			$templates = $_REQUEST['tcp_custom_post_type_template'];
-			foreach( $post_types as $id => $post_type )
+			foreach( $post_types as $id => $post_type ) {
 				tcp_set_custom_template_by_post_type( $post_type, $templates[$id] );
+			}
 			$taxonomies = $_REQUEST['tcp_custom_taxonomy_template_id'];
 			$templates = $_REQUEST['tcp_custom_taxonomy_template'];
-			foreach( $taxonomies as $id => $taxonomy )
+			foreach( $taxonomies as $id => $taxonomy ) {
 				tcp_set_custom_template_by_taxonomy( $taxonomy, $templates[$id] );
+			}
 			$terms = $_REQUEST['tcp_custom_term_template_id'];
 			$templates = $_REQUEST['tcp_custom_term_template'];
-			foreach( $terms as $id => $term_id )
+			foreach( $terms as $id => $term_id ) {
 				tcp_set_custom_template_by_term( $term_id, $templates[$id] );
+			}
 			$this->updated = true;
 		}
 	}
