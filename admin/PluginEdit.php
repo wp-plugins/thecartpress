@@ -102,14 +102,14 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 <?php else :
 	$data = array();
 endif;
-$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING;
-?>
+$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING; ?>
 </div>
 
 <form method="post">
 	<input type="hidden" name="plugin_id" value="<?php echo $plugin_id;?>" />
 	<input type="hidden" name="plugin_type" value="<?php echo $plugin_type;?>" />
 	<input type="hidden" name="instance" value="<?php echo $instance;?>" />
+
 	<table class="form-table">
 	<tbody>
 	<tr valign="top">
@@ -142,8 +142,8 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<label for="new_status"><?php _e( 'New status', 'tcp' ); ?>:</label>
 	</th>
 	<td>
-		<select class="postform" id="new_status" name="new_status"><?php 
-		$order_status_list = tcp_get_order_status();
+		<select class="postform" id="new_status" name="new_status">
+		<?php $order_status_list = tcp_get_order_status();
 		foreach ( $order_status_list as $order_status ) : ?>
 			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $new_status ); ?>><?php echo $order_status['label']; ?></option>		
 		<?php endforeach; ?>
@@ -171,14 +171,16 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 		<div style="float:left">
 			<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
 				<?php global $thecartpress;
-				if ( $plugin_type == 'shipping' )
+				if ( $plugin_type == 'shipping' ) {
 					$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
-				else //billing
+				} else {//billing
 					$isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
-				if ( $isos )
+				}
+				if ( $isos ) {
 					$countries = Countries::getSome( $isos );
-				else
+				} else {
 					$countries = Countries::getAll();
+				}
 				foreach( $countries as $country ) :?>
 				<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $selected_countries, $country->iso ); ?>><?php echo $country->name;?></option>
 				<?php endforeach;?>
