@@ -31,9 +31,10 @@ class TCPBuyButton {
 
 	static function show( $post_id = 0, $echo = true  ) {
 		$template = TCPBuyButton::get_template( $post_id );
-		$template = apply_filters( 'tcp_get_buybutton_template', $template, $post_id );
+		$custom_template = apply_filters( 'tcp_get_buybutton_template', $template, $post_id );
+		if ( file_exists( $custom_template ) )  $template = $custom_template;
 		ob_start();
-		include( $template );
+		if ( $template ) include( $template );
 		$out = ob_get_clean();
 		if ( $echo ) echo $out;
 		else return $out;

@@ -19,7 +19,7 @@
 class TCPAjax {
 	function __construct() {
 		add_action( 'init', array( &$this, 'init' ) );
-		add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
+		//add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 	}
 
 	function init() {
@@ -29,7 +29,8 @@ class TCPAjax {
 			add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
 		}
 		global $thecartpress;
-		if ( $thecartpress->get_setting( 'activate_ajax', true ) ) {
+		if ( $thecartpress && $thecartpress->get_setting( 'activate_ajax', true ) ) {
+			add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 			add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
 			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 99, 2 );
 			add_action( 'wp_head', array( &$this, 'wp_head' ) );
@@ -70,15 +71,15 @@ class TCPAjax {
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$activate_ajax = $thecartpress->get_setting( 'activate_ajax', true ); ?>
-	<tr valign="top">
-		<th scope="row">
-			<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>
-		</th>
-		<td>
-			<input type="checkbox" id="activate_ajax" name="activate_ajax" value="yes" <?php checked( true, $activate_ajax ); ?> />
-			<span class="description"><?php _e( 'Activate Ajax in the buy buttons, Shopping Cart and Checkout pages.', 'tcp' ); ?></span>
-		</td>
-	</tr><?php
+		<tr valign="top">
+			<th scope="row">
+				<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>
+			</th>
+			<td>
+				<input type="checkbox" id="activate_ajax" name="activate_ajax" value="yes" <?php checked( true, $activate_ajax ); ?> />
+				<span class="description"><?php _e( 'Activate Ajax in the buy buttons, Shopping Cart and Checkout pages.', 'tcp' ); ?></span>
+			</td>
+		</tr><?php
 	}
 
 	function tcp_main_settings_action( $settings ) {
@@ -89,7 +90,6 @@ class TCPAjax {
 	function admin_init() {
 		add_action( 'wp_ajax_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
 		add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
-
 		add_action( 'wp_ajax_tcp_checkout', array( $this, 'tcp_checkout' ) );
 		add_action( 'wp_ajax_nopriv_tcp_checkout', array( $this, 'tcp_checkout' ) );
 	}
@@ -171,8 +171,8 @@ jQuery('h3.tcp_ckeckout_step a').click(function(event) {
 
 	function tcp_shopping_cart_after() { ?>
 <script>
-//if (typeof window.tcp_listener_shopping_cart != 'function') {
-if ( jQuery.isFunction( window.tcp_listener_shopping_cart ) ) {
+
+//if ( ! jQuery.isFunction(window.tcp_listener_shopping_cart)) {
 	tcpDispatcher.add('tcp_listener_shopping_cart', 0);
 
 	function tcp_listener_shopping_cart() {
@@ -191,7 +191,7 @@ if ( jQuery.isFunction( window.tcp_listener_shopping_cart ) ) {
 			},
 		});
 	}
-}
+//}
 </script><?php
 	}
 
@@ -200,8 +200,7 @@ if ( jQuery.isFunction( window.tcp_listener_shopping_cart ) ) {
 
 <script>
 
-//if (typeof window.tcp_listener_ecommerce_twentyeleven_header_total != 'function') {
-if ( jQuery.isFunction( window.tcp_listener_ecommerce_twentyeleven_header_total ) ) {
+//if ( ! jQuery.isFunction(window.tcp_listener_ecommerce_twentyeleven_header_total)) {
 	tcpDispatcher.add('tcp_listener_ecommerce_twentyeleven_header_total', 0);
 
 	function tcp_listener_ecommerce_twentyeleven_header_total() {
@@ -225,7 +224,7 @@ if ( jQuery.isFunction( window.tcp_listener_ecommerce_twentyeleven_header_total 
 			},
 		});
 	}
-}
+//}
 </script><?php
 	}
 
@@ -235,8 +234,7 @@ if ( jQuery.isFunction( window.tcp_listener_ecommerce_twentyeleven_header_total 
 
 <script>
 
-//if (typeof window.tcp_listener_<?php echo $widget_id; ?> != 'function') {
-if ( jQuery.isFunction( window.tcp_listener_<?php echo $widget_id; ?> ) ) {
+//if ( ! jQuery.isFunction(window.tcp_listener_<?php echo $widget_id; ?>)) {
 	tcpDispatcher.add('tcp_listener_<?php echo $widget_id; ?>', 0);
 
 	function tcp_listener_<?php echo $widget_id; ?>() {
@@ -289,7 +287,7 @@ if ( jQuery.isFunction( window.tcp_listener_<?php echo $widget_id; ?> ) ) {
 			}
 		});
 	});
-}
+//}
 </script><?php
 	}
 
@@ -446,7 +444,7 @@ jQuery(document).on('click', '.tcp_delete_item_shopping_cart', function(event) {
 		data	: data,
 		success : function(response) {
 			feedback.hide();
-			tcpDispatcher.fire(0);//TODO
+			tcpDispatcher.fire(0);
 		},
 		error	: function(response) {
 			feedback.hide();
@@ -467,7 +465,7 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 		data	: data,
 		success : function(response) {
 			feedback.hide();
-			tcpDispatcher.fire(0);//TODO
+			tcpDispatcher.fire(0);
 		},
 		error	: function(response) {
 			feedback.hide();
@@ -492,8 +490,7 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 		ob_start(); ?>
 <script>
 
-//if (typeof window.tcp_items_in_the_cart_<?php echo $post_id; ?> != 'function') {
-if ( jQuery.isFunction( window.tcp_items_in_the_cart_<?php echo $post_id; ?> ) ) {
+//if ( ! jQuery.isFunction(window.tcp_items_in_the_cart_<?php echo $post_id; ?>)) {
 	tcpDispatcher.add('tcp_items_in_the_cart_<?php echo $post_id; ?>', <?php echo $post_id; ?>);
 
 	function tcp_items_in_the_cart_<?php echo $post_id; ?>(){
@@ -511,7 +508,7 @@ if ( jQuery.isFunction( window.tcp_items_in_the_cart_<?php echo $post_id; ?> ) )
 			}
 		});
 	}
-}
+//}
 </script>
 		<?php $out .= ob_get_clean();
 		return $out;
