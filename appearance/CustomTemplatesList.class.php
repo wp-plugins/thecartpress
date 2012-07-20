@@ -36,7 +36,7 @@ class TCPCustomTemplatesList {
 		    'id'      => 'overview',
 		    'title'   => __( 'Overview' ),
 		    'content' =>
-	            '<p>' . __( 'You can customize The default Custom Templates.', 'tcp' ) . '</p>'
+	            '<p>' . __( 'You can customize default Custom Templates.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

@@ -88,6 +88,10 @@ class Transference extends TCP_Plugin {
 		return $data;
 	}
 
+	function sendPurchaseMail() {
+		return false;
+	}
+
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_payment_plugin_data( 'Transference', $instance );
 		return isset( $data['title'] ) ? $data['title'] : $this->getTitle();
@@ -108,7 +112,7 @@ class Transference extends TCP_Plugin {
 		</table>
 		<p>
 		<?php $additional = ob_get_clean(); echo $additional; ?>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href = '<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
+		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
 		</p><?php
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );

@@ -91,6 +91,14 @@ class TCP_Plugin {
 	}
 
 	/**
+	 * Returns if the plugin alows to send the "purchase" email
+	 * @since 1.2.3
+	 */
+	function sendPurchaseMail() {
+		return true;
+	}
+
+	/**
 	 * Returns the text label to show in the checkout.
 	 * Must be implemented
 	 */

@@ -23,20 +23,19 @@ include_once( $wordpress_path . 'wp-includes/wp-db.php' );
 
 $order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 
-if ( ! current_user_can( 'tcp_edit_orders' ) ) {
+$current_user = wp_get_current_user();
+if ( $current_user->ID == 0 ) {
+	global $thecartpress;
+	if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) {
+		return;
+	}
+} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
 	$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
 	require_once( $thecartpress_path . 'daos/Orders.class.php');
-	$current_user = wp_get_current_user();
-	if ( $current_user->ID == 0 ) {
-		global $thecartpress;
-		if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) {
-			return;
-		}
-	} elseif ( ! Orders::is_owner( $order_id, $current_user->ID ) ) {
+	if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) {
 		return;
 	}
 }
-
 $file_name	= 'tcp_print_order.php';
 $template	= get_stylesheet_directory() . '/' . $file_name;
 $template	= apply_filters( 'tcp_get_print_order_template', $template, $order_id );

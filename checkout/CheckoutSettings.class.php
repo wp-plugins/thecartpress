@@ -67,6 +67,7 @@ class TCPCheckoutSettings {
 $user_registration	= $thecartpress->get_setting( 'user_registration' );
 $emails				= $thecartpress->get_setting( 'emails' );
 $from_email			= $thecartpress->get_setting( 'from_email' );
+$send_email			= $thecartpress->get_setting( 'send_email' );
 $legal_notice		= $thecartpress->get_setting( 'legal_notice' );
 $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfully_message', __( 'The order has been completed successfully', 'tcp' ) ); ?>
 
@@ -101,7 +102,15 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 		<p class="description"><?php _e( 'Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com', 'tcp' ); ?></p>		
 	</td>
 </tr>
-
+<tr valign="top">
+	<th scope="row">
+		<label for="send_email"><?php _e( 'Send Purchase eMail', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" id="send_email" name="send_email" value="yes" <?php checked( true, $send_email ); ?> />
+		<p class="description"><?php _e( 'Allows to send an email to Merchant when customers click on Purchase button.', 'tcp' ); ?></p>
+	</td>
+</tr>
 <tr valign="top">
 	<th scope="row">
 	<label for="legal_notice"><?php _e( 'Checkout notice', 'tcp' ); ?></label>
@@ -113,7 +122,6 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 		<p class="description"><?php _e( 'If the checkout notice is blank and no Notice class is assigned, then the Checkout page will not show the "Accept conditions" check.', 'tcp' ); ?></p>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for=""><?php _e( 'Checkout successfully message', 'tcp' ); ?></label>
@@ -124,10 +132,8 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 		<p class="description"><?php _e( 'If this messages is blank, the Checkout page will try to use the Notice class called "tcp_checkout_end"', 'tcp' ); ?></p>	
 	</td>
 </tr>
-
 </tbody>
 </table>
-
 <?php wp_nonce_field( 'tcp_checkout_settings' ); ?>
 <?php submit_button( null, 'primary', 'save-checkout-settings' ); ?>
 </form>
@@ -142,6 +148,7 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 		$settings['user_registration']	= isset( $_POST['user_registration'] ) ? $_POST['user_registration'] == 'yes' : false;
 		$settings['emails']			= $_POST['emails'];
 		$settings['from_email']		= $_POST['from_email'];
+		$settings['send_email']		= $_POST['send_email'] == 'yes';
 		$settings['legal_notice']	= $_POST['legal_notice'];
 		$settings['checkout_successfully_message']	= $_POST['checkout_successfully_message'];
 		update_option( 'tcp_settings', $settings );

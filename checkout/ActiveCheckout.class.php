@@ -138,21 +138,24 @@ class ActiveCheckout {//shortcode
 		}
 	}
 
+	//To support previous version
 	static function sendMails( $order_id, $additional_msg = '', $only_for_customers = false ) {
+		ActiveCheckout::sendOrderMails( $order_id, $additional_msg, true, ! $only_for_customers );
+	}
+
+	/**
+	 * @since 1.2.3
+	 */
+	static function sendOrderMails( $order_id, $additional_msg = '', $for_customer = true, $for_merchant = true ) {
 		require_once( TCP_CLASSES_FOLDER .'OrderPage.class.php' );
 		global $thecartpress;
 		$order = Orders::get( $order_id );
 		if ( $order ) {
-			$customer_email = array();
-			if ( strlen( $order->shipping_email ) > 0 ) $customer_email[] = $order->shipping_email;
-			if ( strlen( $order->billing_email ) > 0 && $order->shipping_email != $order->billing_email ) $customer_email[] = $order->billing_email;
-			$to_customer = implode( ',', $customer_email );
 			$from = $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to_customer . "\r\n";
-			//$name = substr( $from, 0, strpos( $from, '@' ) );
-			$name = get_bloginfo( 'name' );
+			$name = get_bloginfo( 'name' ); //$name = substr( $from, 0, strpos( $from, '@' ) );
 			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
@@ -166,10 +169,18 @@ class ActiveCheckout {//shortcode
 			$message = ob_get_clean();
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message .= $additional_msg . "\n";
-			$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
-			wp_mail( $to_customer, $subject, $message_to_customer , $headers );
-			do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
-			if ( ! $only_for_customers ) {
+
+			if ( $for_customer ) {
+				$customer_email = array();
+				if ( strlen( $order->shipping_email ) > 0 ) $customer_email[] = $order->shipping_email;
+				if ( strlen( $order->billing_email ) > 0 && $order->shipping_email != $order->billing_email ) $customer_email[] = $order->billing_email;
+				$to_customer = implode( ',', $customer_email );
+
+				$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
+				wp_mail( $to_customer, $subject, $message_to_customer , $headers );
+				do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
+			}
+			if ( $for_merchant ) {
 				$to = $thecartpress->get_setting( 'emails', '' );
 				if ( strlen( $to ) ) {
 					$headers  = 'MIME-Version: 1.0' . "\r\n";

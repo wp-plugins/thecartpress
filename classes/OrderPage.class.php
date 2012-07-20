@@ -36,13 +36,17 @@ class OrderPage {
 	 *	);
 	 */
 	static function show( $order_id, $args = array(), $echo = true ) {
-		if ( ! current_user_can( 'tcp_edit_orders' ) ) {
-			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-			$current_user = wp_get_current_user();
-			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) return;
-			if ( $current_user->ID == 0 ) {
-				global $thecartpress;
-				if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) return;
+		$current_user = wp_get_current_user();
+		if ( $current_user->ID == 0 ) {
+			global $thecartpress;
+			if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) {
+				return;
+			}
+		} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
+			$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
+			require_once( $thecartpress_path . 'daos/Orders.class.php');
+			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) {
+				return;
 			}
 		}
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );

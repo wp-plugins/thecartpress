@@ -277,7 +277,7 @@ jQuery('h3.tcp_ckeckout_step a').click(function(event) {
 							url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
 							data	: data,
 							success : function(response) {
-								tcpDispatcher.fire(ids);
+								tcpDispatcher.fire(0);
 							},
 						});
 						break;

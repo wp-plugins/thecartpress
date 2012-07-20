@@ -44,6 +44,10 @@ class NoCostPayment extends TCP_Plugin {
 		return $data;
 	}
 
+	function sendPurchaseMail() {
+		return false;
+	}
+
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );

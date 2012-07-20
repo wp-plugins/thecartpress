@@ -139,7 +139,7 @@ class TCPCheckoutManager {
 
 	private	function show_box( $box, $step = 0 ) {
 		global $thecartpress;
-		$user_registration = isset( $thecartpress->settings['user_registration'] ) ? $thecartpress->settings['user_registration'] : false;
+		$user_registration = $thecartpress->get_setting( 'user_registration', false );
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
 
@@ -532,6 +532,11 @@ class TCPCheckoutManager {
 			$class = $pmi[0];
 			$instance = $pmi[1];
 			$payment_method = new $class();
+			if ( $payment_method->sendPurchaseMail() ) {
+				global $thecartpress;
+				$send_email = $thecartpress->get_setting( 'send_email', true );
+				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id, '', false );
+			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
 
 			<div class="tcp_pay_form">

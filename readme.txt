@@ -2,9 +2,9 @@
 Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
-Requires at least: 3.1
+Requires at least: 3.3
 Tested up to: 3.4.1
-Stable Tag: 1.2.2
+Stable Tag: 1.2.3
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,11 +293,17 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+=1.2.3=
+* Ajax Chrome bug (thanks to the community)
+* Order eMail bug (thanks to the community)
+* Checkout setting: Send eMails to Merchant, when customers "click" in Purchase button
+
 =1.2.2=
 * Ajax Chrome bug (thanks to the community)
-* Merchant not adminstrator (thanks to the community)
+* Merchant not administrator (thanks to the community)
 * Order email (thanks to the community)
 * Checkout Editor: Checkout Cart with more settigns
+* Support New European eCommerce law (Agoust, 2012)
 
 =1.2.1=
 * Shopping Cart template

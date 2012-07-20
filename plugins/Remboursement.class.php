@@ -34,7 +34,6 @@ class TCPRemboursement extends TCP_Plugin {
 				<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : '';?></textarea>
 			</td>
 		</tr>
-
 		<tr valign="top">
 			<th scope="row">
 				<label for="percentage"><?php _e( 'Percentage', 'tcp' );?>:</label>
@@ -43,7 +42,6 @@ class TCPRemboursement extends TCP_Plugin {
 				<br /><span class="description"><?php _e( 'Leave this field to blank (or zero) to use the fix value', 'tcp' );?></span>
 			</td>
 		</tr>
-
 		<tr valign="top">
 			<th scope="row">
 				<label for="fix"><?php _e( 'Fix', 'tcp' );?>:</label>
@@ -58,6 +56,10 @@ class TCPRemboursement extends TCP_Plugin {
 		$data['percentage']	= isset( $_REQUEST['percentage'] ) ? (float)$_REQUEST['percentage'] : '0';
 		$data['fix']		= isset( $_REQUEST['fix'] ) ? (float)$_REQUEST['fix'] : '0';
 		return $data;
+	}
+
+	function sendPurchaseMail() {
+		return false;
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
@@ -92,7 +94,7 @@ class TCPRemboursement extends TCP_Plugin {
 			<p><?php echo $data['notice'];?></p>
 		<?php endif; ?>
 
-		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
+		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href='<?php echo $url; ?>';"/></p>
 
 		<?php require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
