@@ -87,36 +87,36 @@ window.location="<?php echo $redirect;?>";
 //		of the details about the IPN.
 		if ( $_POST['receiver_email'] == $data['business'] ) {
 			//$order_row = Orders::getOrderByTransactionId( $classname, $transaction_id );
-			$additional = "\npayment_status=" . $_POST['payment_status'];
+			$additional = "\npayment_status: " . $_POST['payment_status'];
 			switch ( $_POST['payment_status'] ) {
 				case 'Completed':
 				case 'Canceled_Reversal':
 				case 'Processed': //should check price, but with profile options, we can't know it, could check currency
-					$comment = "\nmc_gross=" . $_POST['mc_gross'] . ' ' . $_POST['mc_currency'];
-					$comment .= "\nmc_shipping=" . $_POST['mc_shipping'] . ', tax=' . $_POST['tax'];
+					$comment = "\nmc_gross: " . $_POST['mc_gross'] . ' ' . $_POST['mc_currency'];
+					$comment .= "\nmc_shipping: " . $_POST['mc_shipping'] . ', tax=' . $_POST['tax'];
 					if ( isset( $_POST['receipt_id'] ) ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
 					if ( isset( $_POST['memo'] ) ) $additional .= "\nCustomer comment: " . $_POST['memo'];
 					Orders::editStatus( $order_id, $new_status, $transaction_id, $comment . $additional );
 					break;
 				case 'Refunded':
 				case 'Reversed':
-					$additional = $_POST['payment_status']. ': ' . $_POST['reason_code'];
-					Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $comment . $additional );
+					$additional .= "\nreason code: " . $_POST['reason_code'];
+					Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $additional );
 					break;
 				case 'Expired':
 				case 'Failed':
-					Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $transaction_id, $_POST['payment_status'] );
+					Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $transaction_id, $additional );
 					require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
 					break;
 				case 'Pending':
 					$additional .= "\npending_reason=" . $_POST['pending_reason'];
-					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, $transaction_id, $comment . $additional );
+					Orders::editStatus( $order_id, Orders::$ORDER_PENDING, $transaction_id, $additional );
 					break;
 				case 'Expired':
 				case 'Failed':
 				case 'Denied':
 				case 'Voided':
-					Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $comment . $additional );
+					Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $additional );
 					break;
 				default :
 					break;

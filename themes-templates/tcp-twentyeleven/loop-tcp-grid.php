@@ -47,7 +47,7 @@
 	</article><!-- #post-0 -->
 <?php endif; ?>
 
-<?php
+<?php global $thecartpress;
 if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
 $suffix = '-' . get_post_type( get_the_ID() );
 if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
@@ -55,7 +55,6 @@ if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
 $see_title				= isset( $instance['see_title' . $suffix] ) ? $instance['see_title' . $suffix] : true;
 $title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag' . $suffix] : 'h2';
 $see_image				= isset( $instance['see_image' . $suffix] ) ? $instance['see_image' . $suffix] : true;
-
 $image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'thumbnail';
 $see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : true;
 $see_content			= isset( $instance['see_content' . $suffix] ) ? $instance['see_content' . $suffix] : false;
@@ -143,7 +142,12 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	
 						<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
 						$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
-						$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID() );
+						$args = array(
+							'size'	=> $image_size,
+							//'align'	=> $image_align,
+							'link'	=> $thecartpress->get_setting( 'image_link_content', 'permalink' ),
+						);
+						$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID(), $args );
 						echo $image; ?>
 	
 					<?php else : ?>
@@ -271,4 +275,3 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 
 <?php /* Display pagination */
 if ( $see_pagination ) tcp_get_the_pagination(); ?>
-

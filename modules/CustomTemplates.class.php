@@ -15,13 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class TCPCustomTemplates {
 
 	function __construct() {
-		if ( is_admin() ) {
-			new TCPCustomTemplateMetabox();
-			//require_once( TCP_METABOXES_FOLDER . 'CustomTemplateMetabox.class.php' );
-		}
+		if ( is_admin() ) new TCPCustomTemplateMetabox();
 		add_filter( 'single_template', array( $this, 'single_template' ) );
 		add_filter( 'taxonomy_template', array( $this, 'taxonomy_template' ) );
 		add_filter( 'archive_template', array( $this, 'archive_template' ) );
@@ -135,8 +133,13 @@ function tcp_get_custom_templates() {
 	if ( function_exists( 'wp_get_themes' ) ) {//WP 3.4+
 		$theme = wp_get_theme();
 		$templates = array_flip( $theme->get_page_templates() );
-		foreach( $templates as $id => $template )
-			$templates[$id] = $theme->get_template_directory() . '/' . $template;
+		foreach( $templates as $id => $template ) {
+			if ( is_file( $theme->get_template_directory() . '/' . $template ) ) {
+				$templates[$id] = $theme->get_template_directory() . '/' . $template;
+			} elseif ( is_file( $theme->get_stylesheet_directory() . '/' . $template ) ) {
+				$templates[$id] = $theme->get_stylesheet_directory() . '/' . $template;
+			}
+		}
 	} else {
 		$themes = get_themes();
 		$theme = get_current_theme();

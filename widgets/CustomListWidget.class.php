@@ -153,7 +153,7 @@ class CustomListWidget extends TCPParentWidget {
 
 		if ( $use_default_loop == 'yes' ) {
 			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
-		} else { //yes_2010
+		} else{ //if ( $use_default_loop == 'yes_2010' ) {
 			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyten/loop-tcp-grid.php' );
 		}
 	}
@@ -229,7 +229,7 @@ class CustomListWidget extends TCPParentWidget {
 				<option value="" <?php selected( $instance['loop'], "" ); ?>><?php _e( 'default', 'tcp' ); ?></option>
 			<?php
 			$files = array();
-			$folder = STYLESHEETPATH;
+			$folder = get_stylesheet_directory();
 			if ( $handle = opendir($folder ) ) :
 				while ( false !== ( $file = readdir( $handle ) ) ) :
 					if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 ) : ?>
@@ -240,7 +240,7 @@ class CustomListWidget extends TCPParentWidget {
 				closedir( $handle );
 			endif;
 			$folder = get_template_directory();
-			if ( STYLESHEETPATH != $folder )
+			if ( get_stylesheet_directory() != $folder )
 				if ( $handle = opendir($folder ) ) :
 					while ( false !== ( $file = readdir( $handle ) ) ) :
 						if ( $file != '.' && $file != '..' && strpos( $file, 'loop' ) === 0 && ! in_array( $file, $files ) ) : ?>

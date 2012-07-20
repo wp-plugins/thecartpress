@@ -21,7 +21,7 @@ require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 class OrdersSummaryDashboard {
 
 	function show() {
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			$customer_id = -1;
 		} else {
 			global $current_user;

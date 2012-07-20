@@ -26,7 +26,6 @@ get_header(); ?>
 
 				<?php //twentyeleven_content_nav( 'nav-above' ); ?>
 
-
 					<?php
 						/* Start the Loop */
 						/* Include the Post-Format-specific template for the content.
@@ -37,8 +36,6 @@ get_header(); ?>
 						require_once( dirname( __FILE__ ) . '/loop-tcp-grid.php' );
 					?>
 
-
-                
 					<?php if ( is_active_sidebar( 'sidebar-related' ) ) : ?>
                         <div id="cross-content">
                           <?php dynamic_sidebar( 'sidebar-related' ); ?>

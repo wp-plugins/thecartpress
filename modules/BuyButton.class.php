@@ -31,9 +31,10 @@ class TCPBuyButton {
 
 	static function show( $post_id = 0, $echo = true  ) {
 		$template = TCPBuyButton::get_template( $post_id );
-		$template = apply_filters( 'tcp_get_buybutton_template', $template, $post_id );
+		$custom_template = apply_filters( 'tcp_get_buybutton_template', $template, $post_id );
+		if ( file_exists( $custom_template ) )  $template = $custom_template;
 		ob_start();
-		include( $template );
+		if ( $template ) include( $template );
 		$out = ob_get_clean();
 		if ( $echo ) echo $out;
 		else return $out;
@@ -45,13 +46,13 @@ class TCPBuyButton {
 		$product_type = strtolower( tcp_get_the_product_type( $post_id ) );
 		$file_name_post_type = 'tcp_buybutton-' . $product_type . '-' . $post_type . '.php';
 		$file_name = 'tcp_buybutton-' . $product_type . '.php';
-		// Child theme folder
-		$template = STYLESHEETPATH . '/' . $file_name_post_type;
+		// child theme folder
+		$template = get_stylesheet_directory() . '/' . $file_name_post_type;
 		if ( file_exists( $template ) ) return $template;
-		$template	= STYLESHEETPATH . '/' . $file_name;
+		$template	= get_stylesheet_directory() . '/' . $file_name;
 		if ( file_exists( $template ) ) return $template;
-		// Theme folder
-		if ( STYLESHEETPATH != get_template_directory() ) { 
+		// theme folder
+		if ( get_stylesheet_directory() != get_template_directory() ) { 
 			$template = get_template_directory() . '/' . $file_name_post_type;
 			if ( file_exists( $template ) ) return $template;
 			$template = get_template_directory() . '/' . $file_name;
@@ -79,9 +80,9 @@ class TCPBuyButton {
 		$paths = array();
 		$paths[] = array(
 			'label'	=> __( 'Theme' ),
-			'path'	=> STYLESHEETPATH . '/tcp_buybutton*.php',
+			'path'	=> get_stylesheet_directory() . '/tcp_buybutton*.php',
 		);
-		if ( STYLESHEETPATH != get_template_directory() ) $paths[] = array(
+		if ( get_stylesheet_directory() != get_template_directory() ) $paths[] = array(
 			'label'	=> __( 'Parent theme', 'tcp' ),
 			'path'	=> get_template_directory() . '/tcp_buybutton*.php',
 		);
@@ -93,7 +94,7 @@ class TCPBuyButton {
 		$buy_buttons = array();
 		foreach( $paths as $path ) {
 			$filenames = glob( $path['path'] );
-			foreach ( $filenames as $filename )
+			foreach( $filenames as $filename )
 				$buy_buttons[] = array(
 					'label'	=> $path['label'] . ': ' . basename( $filename, '.php' ),
 					'path'	=> $filename,
@@ -104,6 +105,7 @@ class TCPBuyButton {
 
 	function tcp_product_metabox_custom_fields( $post_id ) {
 		$selected_buy_button = get_post_meta( $post_id, 'tcp_selected_buybutton', true ); ?>
+		
 		<tr valign="top">
 		<th scope="row"><label for="tcp_selected_buybutton"><?php _e( 'Buy button', 'tcp' );?>:</label></th>
 		<td>

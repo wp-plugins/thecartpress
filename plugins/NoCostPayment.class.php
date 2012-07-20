@@ -25,6 +25,10 @@ class NoCostPayment extends TCP_Plugin {
 		return 'No payment method. Only for test purpose.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+		return __( 'No payment!!, for test purpose', 'tcp' ) . ': ' . $shoppingCart->getTotal();
+	}
+
 	function showEditFields( $data ) {?>
 		<tr valign="top">
 		<th scope="row">
@@ -40,16 +44,8 @@ class NoCostPayment extends TCP_Plugin {
 		return $data;
 	}
 
-	function isApplicable( $shippingCountry, $shoppingCart ) {
-		return true;
-	}
-
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		return __( 'No payment!!, for test purpose.', 'tcp' ) . ': ' . $shoppingCart->getTotal();
-	}
-
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
 		$url	= add_query_arg( 'order_id', $order_id, $url ); ?>
 
@@ -59,9 +55,9 @@ class NoCostPayment extends TCP_Plugin {
 		
 		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
 
-		<?php require_once( dirname( dirname (__FILE__ ) ) . '/daos/Orders.class.php' );
-		Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING );
-		require_once( dirname( dirname( __FILE__ ) ) . '/checkout/ActiveCheckout.class.php' );
+		<?php require_once( TCP_DAOS_FOLDER . '/Orders.class.php' );
+		Orders::editStatus( $order_id, $data['new_status'] ); //Orders::$ORDER_PROCESSING );
+		require_once( TCP_CHECKOUT_FOLDER . '/ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );
 	}
 }

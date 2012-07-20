@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once( 'OrdersMeta.class.php' );
 require_once( 'OrdersDetails.class.php' );
+require_once( 'OrdersDetailsMeta.class.php' );
 require_once( 'OrdersCosts.class.php' );
+require_once( 'OrdersCostsMeta.class.php' );
 
 class Orders {
 
@@ -98,9 +101,33 @@ class Orders {
 		}
 	}
 
+	/**
+	 * @returns array( amount, tax, shipping, discount )
+	 */
+	static function getTotalDetailed( $order_id ) {
+		$order = Orders::get( $order_id );
+		if ( $order ) {
+			$cost_detailed = OrdersCosts::getTotalDetailed( $order_id );
+			$detailed = OrdersDetails::getTotalDetailed( $order_id );
+			$detailed['shipping']	= $cost_detailed['amount'];
+			$detailed['tax']		+= $cost_detailed['tax'];
+			$detailed['discount']	= $order->discount_amount;
+			return $detailed;
+		} else {
+			return false;
+		}
+	}
+
 	static function delete( $order_id ) {
 		global $wpdb;
-		return $wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_orders where order_id = %d' , $order_id ) );
+		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders where ';
+		$sql .= $wpdb->prepare( 'order_id = %d' , $order_id );
+		$wpdb->query( $sql );
+		OrdersMeta::delete_by_order_id( $order_id );
+		OrdersDetails::delete_by_order_id( $order_id );
+		OrdersDetailsMeta::delete_by_order_id( $order_id );
+		OrdersCosts::delete_by_order_id( $order_id );
+		OrdersCostsMeta::delete_by_order_id( $order_id );
 	}
 
 	static function is_owner( $order_id, $customer_id ) {
@@ -315,7 +342,7 @@ class Orders {
 			on o.order_id = d.order_id
 			where customer_id = %d and order_detail_id = %d and d.is_downloadable = \'Y \' and status=%s
 			and ( ( d.expires_at > %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) )
-				or ( d.expires_at = %s and ( d.max_downloads > 0 or d.max_downloads = -1 ) ) )'
+				or ( d.expires_at = %s and ( d.max_downloads = -1 or d.max_downloads > 0 ) ) )'
 			, $customer_id, $orders_details_id, $completed, $today, $max_date );
 		$count = $wpdb->get_var( $sql );
 		return $count > 0;

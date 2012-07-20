@@ -169,9 +169,14 @@ class TCPCheckoutManager {
 
 		if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" class="tcp_checkout_button" />';
 
-		if ( $see_continue_button && $step < count( $this->steps ) ) {
-			$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
+		if ( $see_continue_button ) {
+			if ( $step < count( $this->steps ) - 1 ) {
+				$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
+			} elseif ( $step == count( $this->steps ) - 1 ) {
+	   			$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Purchase', 'tcp' ) . '" class="tcp_checkout_button" />';
+			}
 		}
+
 		$html .= '<input type="hidden" name="step" value="' . $step . '" />';
 
 		$html = apply_filters( 'tcp_show_box_back_continue', $html, $step );

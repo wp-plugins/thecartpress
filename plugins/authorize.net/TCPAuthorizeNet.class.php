@@ -176,7 +176,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>"/>
 		<input type="hidden" name="new_status" value="<?php echo $new_status;?>"/>
 		<input type="hidden" name="instance" value="<?php echo $instance;?>"/>
-		<input type="submit" value="secure payment" />
+		<input type="submit" class="tcp_authorized_net" value="secure payment" />
 		</form><?php
 	}
 }

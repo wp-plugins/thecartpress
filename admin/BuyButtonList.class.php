@@ -21,8 +21,8 @@ if ( isset( $_REQUEST['tcp_save_templates'] ) ) {
 	$product_types = tcp_get_product_types();
 	if ( is_array( $product_types ) && count( $product_types ) > 0 ) {
 		foreach( $tcp_post_types as $i => $tcp_post_type ) {
-			foreach( $product_types as $product_type ) {
-				$tcp_buy_button_template = $_REQUEST['tcp_buy_button_templates_' . $product_type][$i];
+			foreach( $product_types as $product_type => $product_type_def ) {
+				$tcp_buy_button_template = $_REQUEST['tcp_buy_button_templates-' . $tcp_post_type . '-' . $product_type ][$i];
 				if ( $tcp_buy_button_template == '' ) delete_option( 'tcp_buy_button_template-' .  $tcp_post_type . '-' . $product_type );
 				else update_option( 'tcp_buy_button_template-' .  $tcp_post_type . '-' . $product_type, $tcp_buy_button_template );
 			}
@@ -34,8 +34,11 @@ if ( isset( $_REQUEST['tcp_save_templates'] ) ) {
 }
 ?>
 <div class="wrap">
+
 <h2><?php _e( 'Buy Button Selection', 'tcp' ); ?></h2>
+
 <form method="post">
+
 <table class="widefat fixed" cellspacing="0">
 <thead>
 <tr>
@@ -43,49 +46,66 @@ if ( isset( $_REQUEST['tcp_save_templates'] ) ) {
 	<th scope="col" class="manage-column"><?php _e( 'Templates', 'tcp' ); ?></th>
 </tr>
 </thead>
+
 <tfoot>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Name', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Templates', 'tcp' ); ?></th>
 </tr>
 </tfoot>
+
 <tbody>
+
 <?php $post_type_defs = tcp_get_custom_post_types();
 $product_types = tcp_get_product_types();
 $buy_buttons = TCPBuyButton::get_buy_buttons();
 if ( is_array( $post_type_defs ) && count( $post_type_defs ) > 0 ) :
 	foreach( $post_type_defs as $post_type => $post_type_def ) : 
 		if ( $post_type != 'tcp_dynamic_options' && $post_type_def['is_saleable'] ) : ?>
+
 <tr>
-	<td><?php echo $post_type_def['name']; ?> <?php //echo $post_type; ?> (<?php echo $post_type_def['desc']; ?>)<input type="hidden" name="tcp_post_types[]" value="<?php echo $post_type; ?>" /></td>
+	<td><?php echo $post_type_def['name']; ?><?php if ( strlen( $post_type_def['desc'] ) > 0 ) : ?> (<?php echo $post_type_def['desc']; ?>) <?php endif; ?><input type="hidden" name="tcp_post_types[]" value="<?php echo $post_type; ?>" /></td>
 	<td>&nbsp;</td>
 </tr>
-		<?php foreach( $product_types as $product_type ) : ?>
+			<?php foreach( $product_types as $product_type  => $product_type_def ) : ?>
 <tr>
-	<td style="padding-left: 2em;"><?php echo $product_type['label']; ?></td>
+	<td style="padding-left: 2em;"><?php echo $product_type_def['label']; ?></td>
 	<td>
 		<label><?php _e( 'Templates', 'tcp' ); ?>: <br>		
-		<?php $selected_buy_button = get_option( 'tcp_buy_button_template-' .  $post_type . '-' . $product_type['label'], '' ); ?>
-		<select name="tcp_buy_button_templates_<?php echo $product_type['label']; ?>[]">
+
+		<?php $selected_buy_button = get_option( 'tcp_buy_button_template-' .  $post_type . '-' . $product_type, '' ); ?>
+
+		<select name="tcp_buy_button_templates-<?php echo $post_type; ?>-<?php echo $product_type; ?>[]">
 			<option value="" <?php selected( '', $selected_buy_button ); ?>><?php _e( 'Default', 'tcp' ); ?></option>
+
 			<?php foreach( $buy_buttons as $buy_button ) : ?>
+
 			<option value="<?php echo $buy_button['path']; ?>" <?php selected( $buy_button['path'], $selected_buy_button ); ?>>
 				<?php echo $buy_button['label']; ?>
 			</option>
+
 			<?php endforeach; ?>
-		</select></label>
+
+		</select>
+		</label>
 	</td>
 </tr>
+
 			<?php endforeach; ?>
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else : ?>
+
 <tr>
 	<td colspan="3"><?php _e( 'The list is empty', 'tcp' ); ?></td>
 </tr>
+
 <?php endif; ?>
+
 </tbody>
 </table>
+
 <p><input name="tcp_save_templates" id="tcp_save_templates" value="<?php _e( 'Save', 'tcp' );?>" type="submit" class="button-primary" /></p>
+
 </form>
 </div>

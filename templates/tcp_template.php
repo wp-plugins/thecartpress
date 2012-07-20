@@ -158,15 +158,6 @@ function tcp_get_default_currency() {
 	return $thecartpress->get_setting( 'currency', '' );
 }
 
-function tcp_the_buy_button( $post_id = 0, $echo = true ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
-	return TCPBuyButton::show( $post_id, $echo );
-}
-
-function tcp_get_the_buy_button( $post_id = 0 ) {
-	return tcp_the_buy_button( $post_id, false );
-}
-
 /**
  * Displays the wish
  * @since 1.1.8
@@ -175,7 +166,6 @@ function tcp_the_add_wishlist_button( $post_id ) {
 	global $wish_list;
 	if ( isset( $wish_list ) ) echo $wish_list->tcp_the_add_to_cart_button( '', $post_id );
 }
-
 
 /**
  * Returns the price of the current product
@@ -1051,9 +1041,12 @@ function tcp_input_number( $input ) {
  * Converts a typed date (format YYYY-MM-DD) into a PHP date
  * @since 1.1.8
  */
-function tcp_input_date( $input ) {
-	list( $y, $m, $d ) = explode( '-', $input);
-	return mktime( 0, 0, 0, $m, $d, $y );
+function tcp_input_date( $input, $separator = '-' ) {
+	if ( $input ) {
+		list( $y, $m, $d ) = explode( $separator, $input);
+		return mktime( 0, 0, 0, $m, $d, $y );
+	}
+	return false;
 }
 
 /**

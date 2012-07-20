@@ -29,6 +29,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 	private $see_sku;
 	private $see_weight;
 	private $see_tax;
+	private $see_tax_summary;
 	private $see_comment;	
 	private $see_other_costs;
 	private $see_thumbnail;
@@ -43,6 +44,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 			'see_sku'			=> false,
 			'see_weight'		=> true,
 			'see_tax'			=> false,
+			'see_tax_summary'	=> false,
 			'see_comment'		=> false,
 			'see_other_costs'	=> false,
 			'see_thumbnail'		=> true
@@ -54,6 +56,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		$this->see_sku			= $see_sku;
 		$this->see_weight		= $see_weight;
 		$this->see_tax			= $see_tax;
+		$this->see_tax_summary	= $see_tax_summary;
 		$this->set_commect		= $see_comment;
 		$this->see_other_costs	= $see_other_costs;
 		$this->see_thumbnail	= $see_thumbnail;
@@ -97,6 +100,10 @@ class TCPCartSourceSession implements TCP_ICartSource {
 
 	public function see_tax() {
 		return $this->see_tax;
+	}
+
+	public function see_tax_summary() {
+		return $this->see_tax_summary;
 	}
 
 	public function is_editing_units() {
