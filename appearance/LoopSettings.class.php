@@ -274,7 +274,7 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 
 <tr valign="top">
 	<th scope="row">
-	<label for="see_sorting_panel"><?php _e( 'See See Sorting Panel', 'tcp' ); ?>:</label>
+	<label for="see_sorting_panel"><?php _e( 'See Sorting Panel', 'tcp' ); ?>:</label>
 	</th>
 	<td>
 	<input type="checkbox" name="see_sorting_panel" id="see_sorting_panel" value="yes" <?php checked( $see_sorting_panel, true ); ?> />

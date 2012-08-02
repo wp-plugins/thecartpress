@@ -43,8 +43,7 @@ class OrderPage {
 				return;
 			}
 		} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
-			$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
-			require_once( $thecartpress_path . 'daos/Orders.class.php');
+			require_once( TCP_DAOS_FOLDER . 'daos/Orders.class.php');
 			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) {
 				return;
 			}
