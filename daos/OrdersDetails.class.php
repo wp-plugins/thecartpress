@@ -64,7 +64,8 @@ class OrdersDetails {
 				$total += $row->price * $row->qty_ordered;
 			} else {
 				$t = $row->price * $row->tax / 100;
-				$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
+				//$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
+				$t = ( $row->price + $t ) * $row->qty_ordered;
 				$total += $t;
 			}
 		}

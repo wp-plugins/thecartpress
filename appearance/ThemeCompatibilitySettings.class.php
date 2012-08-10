@@ -56,7 +56,7 @@ class TCPThemeCompatibilitySettings {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Theme Compatibility Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-theme' ); ?><h2><?php _e( 'Theme Compatibility Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

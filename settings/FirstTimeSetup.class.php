@@ -68,7 +68,7 @@ class TCPFirstTimeSetup {
 
 <div class="wrap">
 
-	<?php screen_icon(); ?><h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-first' ); ?><h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
 
 <?php if ( ! empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

@@ -97,23 +97,29 @@ class TCPCartBox extends TCPCheckoutBox {
 	}
 
 	function show_config_settings() {
-		$settings	= get_option( 'tcp_' . get_class( $this ), array() );
-		$see_sku	= isset( $settings['see_sku'] ) ? $settings['see_sku'] : true;
-		$see_weight	= isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
-		$see_tax	= isset( $settings['see_tax'] ) ? $settings['see_tax'] : true;
-		$see_comment= isset( $settings['see_comment'] ) ? $settings['see_comment'] : true; ?>
+		$settings		= get_option( 'tcp_' . get_class( $this ), array() );
+		$see_sku		= isset( $settings['see_sku'] ) ? $settings['see_sku'] : true;
+		//$see_weight		= isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
+		$see_tax		= isset( $settings['see_tax'] ) ? $settings['see_tax'] : true;
+		$see_tax_detail	= isset( $settings['see_tax_detail'] ) ? $settings['see_tax_detail'] : true;
+		$see_comment	= isset( $settings['see_comment'] ) ? $settings['see_comment'] : true; ?>
 
 		<table class="form-table">
 		<tbody>
 
-		<tr valign="top">
+		<!--<tr valign="top">
 			<th scope="row"><label for="see_weight"><?php _e( 'Display Weight column', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="see_weight" id="see_weight" value="yes" <?php checked( $see_weight );?>/></td>
-		</tr>
+		</tr>-->
 
 		<tr valign="top">
 			<th scope="row"><label for="see_tax"><?php _e( 'Display Tax column', 'tcp' );?>:</label></th>
 			<td><input type="checkbox" name="see_tax" id="see_tax" value="yes" <?php checked( $see_tax );?>/></td>
+		</tr>
+
+		<tr valign="top">
+			<th scope="row"><label for="see_tax_detail"><?php _e( 'Display Tax detail', 'tcp' );?>:</label></th>
+			<td><input type="checkbox" name="see_tax_detail" id="see_tax_detail" value="yes" <?php checked( $see_tax_detail );?>/></td>
 		</tr>
 
 		<tr valign="top">
@@ -136,10 +142,11 @@ class TCPCartBox extends TCPCheckoutBox {
 
 	function save_config_settings() {
 		$settings = array(
-			'see_weight'	=> isset( $_REQUEST['see_weight'] ) ? $_REQUEST['see_weight'] == 'yes' : false,
-			'see_tax'		=> isset( $_REQUEST['see_tax'] ) ? $_REQUEST['see_tax'] == 'yes' : false,
-			'see_sku'		=> isset( $_REQUEST['see_sku'] ) ? $_REQUEST['see_sku'] == 'yes' : false,
-			'see_comment'	=> isset( $_REQUEST['see_comment'] ) ? $_REQUEST['see_comment'] == 'yes' : false,
+			//'see_weight'		=> isset( $_REQUEST['see_weight'] ) ? $_REQUEST['see_weight'] == 'yes' : false,
+			'see_tax'			=> isset( $_REQUEST['see_tax'] ) ? $_REQUEST['see_tax'] == 'yes' : false,
+			'see_tax_detail'	=> isset( $_REQUEST['see_tax_detail'] ) ? $_REQUEST['see_tax_detail'] == 'yes' : false,
+			'see_sku'			=> isset( $_REQUEST['see_sku'] ) ? $_REQUEST['see_sku'] == 'yes' : false,
+			'see_comment'		=> isset( $_REQUEST['see_comment'] ) ? $_REQUEST['see_comment'] == 'yes' : false,
 		);
 		$settings = apply_filters( 'tcp_cart_box_config_settings', $settings );
 		update_option( 'tcp_' . get_class( $this ), $settings );
@@ -149,14 +156,16 @@ class TCPCartBox extends TCPCheckoutBox {
 	private function show_order_cart( $shipping_country, $args = array() ) {
 		do_action( 'tcp_checkout_create_order_cart', $args );
 		$see_sku	= isset( $args['see_sku'] ) ? $args['see_sku'] : true;
-		$see_weight	= isset( $args['see_weight'] ) ? $args['see_weight'] : true;
-		$see_tax	= isset( $args['see_tax'] ) ? $args['see_tax'] : true;
-	//$see_tax_summary	= isset( $args['see_tax_summary'] ) ? $args['see_tax_summary'] : false;
-	//require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
-	//require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
-	//$cart_table = new TCPCartTable();
-	//$cart_table->show( new TCPCartSourceSession( array( 'see_tax' => $see_tax, 'see_tax_summary' => $see_tax_summary, 'see_weight' => $see_weight, 'see_sku' => $see_sku, 'is_editing_units' => false, 'see_other_costs' => true ) ) );
-
+		//$see_weight	= isset( $args['see_weight'] ) ? $args['see_weight'] : true;
+		global $thecartpress;
+		if ( $thecartpress ) $see_weight = $thecartpress->get_setting( 'use_weight', true );
+		$see_tax		= isset( $args['see_tax'] ) ? $args['see_tax'] : true;
+		$see_tax_detail	= isset( $args['see_tax_detail'] ) ? $args['see_tax_detail'] : true;
+//$see_tax_summary	= isset( $args['see_tax_summary'] ) ? $args['see_tax_summary'] : false;
+//require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
+//require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
+//$cart_table = new TCPCartTable();
+//$cart_table->show( new TCPCartSourceSession( array( 'see_tax' => $see_tax, 'see_tax_summary' => $see_tax_summary, 'see_weight' => $see_weight, 'see_sku' => $see_sku, 'is_editing_units' => false, 'see_other_costs' => true ) ) );
 		$shoppingCart = TheCartPress::getShoppingCart(); ?>
 	
 		<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
@@ -242,6 +251,7 @@ class TCPCartBox extends TCPCheckoutBox {
 				<td class="tcp_cart_tax">
 
 					<?php echo tcp_format_the_price( $tax_amount_per_unit ); ?>
+					<?php if ( $see_tax_detail ) : ?>&nbsp;(<?php echo tcp_number_format( $tax, 0 ); ?>%)<?php endif; ?>
 
 				</td>
 
@@ -325,7 +335,6 @@ class TCPCartBox extends TCPCheckoutBox {
 		<tr class="tcp_cart_free_shipping<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 
 			<td class="tcp_cost_tcp_free_shipping" style="text-align:right"><?php _e( 'Free shipping', 'tcp' ); ?></td>
-
 			<td colspan="<?php echo $colspan + 2; ?>">&nbsp;</td>
 
 		</tr>
@@ -341,7 +350,7 @@ class TCPCartBox extends TCPCheckoutBox {
 			$tax = tcp_get_the_shipping_tax();
 
 			$tax_amount = $cost_without_tax * $tax / 100;
-			$tax_amount = round( $tax_amount, $decimals ); //to avoid decimal issues
+			//$tax_amount = round( $tax_amount, $decimals ); //to avoid decimal issues
 
 			$cost_with_tax = $cost_without_tax + $tax_amount;
 			$cost_with_tax = round( $cost_with_tax, $decimals ); //to avoid decimal issues

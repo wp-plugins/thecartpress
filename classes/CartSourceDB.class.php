@@ -49,6 +49,8 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 			'see_other_costs'	=> true,
 			'see_thumbnail'		=> false
 		);
+		global $thecartpress;
+		if ( $thecartpress ) $defaults['see_weight'] = $thecartpress->get_setting( 'use_weight', true );
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 		$this->order			= Orders::get( $order_id );
