@@ -243,7 +243,7 @@ if ( $source->has_order_details() ) :
 		<?php $decimals	= tcp_get_decimal_currency();
 		$price = $order_detail->get_price() * $order_detail->get_qty_ordered() - $order_detail->get_discount();
 		$tax = ( $price / $order_detail->get_qty_ordered() ) * ( $order_detail->get_tax() / 100 ) * $order_detail->get_qty_ordered();
-		$tax = round( $tax, $decimals ); //to avoid decimal issues
+		//$tax = round( $tax, $decimals ); //to avoid decimal issues
 		$total_tax += $tax;
 		$price = round( $price, $decimals ); //to avoid decimal issues
 		$total += $price; ?>
@@ -263,7 +263,6 @@ if ( $source->has_order_details() ) :
 	if ( $source->see_tax() ) $colspan ++;
 	if ( $source->see_thumbnail() ) $colspan ++; ?>
 	<td colspan="<?php echo $colspan; ?>" class="tcp_cart_subtotal_title"><?php _e( 'Subtotal', 'tcp' ); ?></td>
-	<?php //$total = round( $total, tcp_get_decimal_currency() ); //to avoid decimal issues?>
 	<td class="tcp_cart_subtotal"><?php echo tcp_format_the_price( $total ); ?></td>
 	</tr>
 	<?php $discount = $source->get_discount();

@@ -186,7 +186,7 @@ if ( $post_id ) :
 
 					<label for="list_order"><?php echo _x( 'Position', 'to sort the list', 'tcp' ); ?>:&nbsp;</label><input type="text" min="0" name="list_order" id="list_order" size="2" maxlength="4" value="<?php echo $assigned->list_order; ?>" class="tcp_count"/>
 
-					<label for="units"><?php _e( 'DefaultUnits', 'tcp' ); ?>:&nbsp;</label><input type="text" min="0" name="units" id="units" size="2" maxlength="4" value="<?php echo $units; ?>" class="tcp_count"/>
+					<label for="units"><?php _e( 'Default Units', 'tcp' ); ?>:&nbsp;</label><input type="text" min="0" name="units" id="units" size="2" maxlength="4" value="<?php echo $units; ?>" class="tcp_count"/>
 
 					<?php do_action( 'tcp_create_assigned_relation_fields', $post_id, $assigned->id_to, $meta_value ); ?>
 
