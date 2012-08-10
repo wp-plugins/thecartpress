@@ -71,7 +71,7 @@ class TCPCheckoutEditor {
 	function admin_page() { ?>
 <div class="wrap">
 
-<h2><?php screen_icon(); ?><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
+<?php screen_icon( 'tcp-checkout' ); ?><h2><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
 
 <ul class="subsubsub"></ul>
 

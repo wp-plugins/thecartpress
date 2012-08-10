@@ -49,6 +49,8 @@ class TCPCartSourceSession implements TCP_ICartSource {
 			'see_other_costs'	=> false,
 			'see_thumbnail'		=> true
 		);
+		global $thecartpress;
+		if ( $thecartpress ) $defaults['see_weight'] = $thecartpress->get_setting( 'use_weight', true );
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 		$this->is_editing_units	= $is_editing_units;

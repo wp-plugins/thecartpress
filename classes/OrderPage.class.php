@@ -18,7 +18,7 @@
 
 /**
  * Shows an Order
- * It's used in the cart area (into the checkout), in the print page and in the email page
+ * It's used in the cart area (into checkout), in print pages and in email pages
  */
 class OrderPage {
 
@@ -43,8 +43,8 @@ class OrderPage {
 				return;
 			}
 		} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
-			$thecartpress_path = $wordpress_path . '/wp-content/plugins/thecartpress/';
-			require_once( $thecartpress_path . 'daos/Orders.class.php');
+			$thecartpress = dirname( dirname( __FILE__ ) );
+			require_once( $thecartpress . '/daos/Orders.class.php');
 			if ( ! Orders::is_owner( $order_id, $current_user->ID ) ) {
 				return;
 			}
