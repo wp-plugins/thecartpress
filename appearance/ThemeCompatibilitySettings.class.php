@@ -31,7 +31,7 @@ class TCPThemeCompatibilitySettings {
 		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
 		add_menu_page( '', __( 'TCP Look&Feel', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 42 );
-		$page = add_submenu_page( $base, __( 'Theme Compatibility Settings Settings', 'tcp' ), __( 'Theme Compatibility', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
+		$page = add_submenu_page( $base, __( 'Theme Compatibility Settings', 'tcp' ), __( 'Theme Compatibility', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );
 	}
@@ -56,7 +56,7 @@ class TCPThemeCompatibilitySettings {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Theme Compatibility Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-theme' ); ?><h2><?php _e( 'Theme Compatibility Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

@@ -4,7 +4,7 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
 Tested up to: 3.4.1
-Stable Tag: 1.2.3
+Stable Tag: 1.2.4
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,6 +293,12 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+=1.2.4=
+* Use Weight: Configure all the eCommerce to use or not the weight value
+* Checkout, See tax detail: Allows to display the tax detail in tax column: tax amount (Tax detail%)
+* Loop for twentyten based on themes improvements
+* Login/Profile template tag
+
 =1.2.3=
 * Ajax Chrome bug (thanks to the community)
 * Order eMail bug (thanks to the community)

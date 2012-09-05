@@ -43,8 +43,7 @@ class OrdersSummaryDashboard {
 </div>
 <div class="table_last_orders">
 <h4><?php _e( 'Latest orders', 'tcp' ); ?></h4>
-	<?php
-	if ( current_user_can( 'tcp_edit_orders' ) ) {
+	<?php if ( current_user_can( 'tcp_edit_orders' ) ) {
 		$orders = Orders::getLastOrders( 5 );
 	} else {
 		$current_user = wp_get_current_user();

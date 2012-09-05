@@ -191,16 +191,20 @@ class TCPPayPal extends TCP_Plugin {
 				if ( ! tcp_is_display_prices_with_taxes() ) $discount = $item->getDiscount() / $item->getUnits();
 				else $discount = 0;
 				$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
+				$unit_price_without_tax = round( $unit_price_without_tax, 2 );
 				$tax_amount = $unit_price_without_tax * $tax / 100;
-				$tax_amount = round( $tax_amount * $item->getUnits(), $decimals );
+				//$tax_amount = round( $tax_amount * $item->getUnits(), $decimals );
+				$tax_amount = $tax_amount * $item->getUnits();
 				$amount += $unit_price_without_tax * $item->getUnits();
 				$taxes += $tax_amount;
 			}
 			foreach( $shoppingCart->getOtherCosts() as $cost_id => $cost ) {
+				if ( ShoppingCart::$OTHER_COST_SHIPPING_ID == $cost_id && $shoppingCart->isFreeShipping() ) break;
 				$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
+				$cost_without_tax = round( $cost_without_tax, 2 );
 				$tax = tcp_get_the_shipping_tax();
 				$tax_amount = $cost_without_tax * $tax / 100;
-				$tax_amount = round( $tax_amount, $decimals );
+				//$tax_amount = round( $tax_amount, $decimals );
 				$amount += $cost_without_tax;
 				$taxes += $tax_amount;
 			}

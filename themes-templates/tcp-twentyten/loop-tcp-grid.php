@@ -67,6 +67,18 @@ $see_third_custom_area	= isset( $instance['see_third_custom_area' . $suffix] ) ?
 $see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : false;
 $column = $number_of_columns;
 
+if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffix] != '' ) {
+	$title_tag = '<' . $instance['title_tag' . $suffix] . ' class="entry-title">';
+	$title_end_tag = '</' . $instance['title_tag' . $suffix] . '>';
+} else {
+	$title_tag = '';
+	$title_end_tag = '';
+} ?>
+
+<?php if ( $see_sorting_panel ) {
+	tcp_the_sort_panel();
+}
+
 while ( have_posts() ) : the_post();
 if ( $column == 0 ) : $column = $number_of_columns ?>
 
@@ -85,7 +97,7 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 
 		<?php if ( $see_title ) : ?>
 
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+			<?php echo $title_tag; ?><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
 
 		<?php endif; ?>
 

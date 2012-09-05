@@ -35,9 +35,11 @@ class TCPAddressEdit {
 		global $current_user;
 		get_currentuserinfo();
 		if ( $current_user->ID == 0 ) return false;
-		$customer_id = $current_user->ID;
-		if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		if ( ! current_user_can( 'tcp_edit_orders' ) ) {
+			$customer_id = $current_user->ID;
+			if ( $address_id > 0 && $customer_id > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) ) {
+				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			}
 		}
 		require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 		//array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )

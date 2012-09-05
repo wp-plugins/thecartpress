@@ -443,8 +443,7 @@ function tcp_the_sort_panel() {
 <div class="tcp_order_panel">
 	<form action="" method="post">
 	<span class="tcp_order_type">
-	<label for="tcp_order_type">
-		<?php _e( 'Order by', 'tcp' ); ?>:&nbsp;
+	<label for="tcp_order_type"><?php _e( 'Order by', 'tcp' ); ?>:</label>&nbsp;
 		<select id="tcp_order_type" name="tcp_order_type">
 		<?php foreach( $sorting_fields as $sorting_field ) : 
 			if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
@@ -452,18 +451,13 @@ function tcp_the_sort_panel() {
 			<?php endif;
 		endforeach; ?>
 		</select>
-	</label>
 	</span><!-- .tcp_order_type -->
 	<span class="tcp_order_desc">
-	<label>
 		<input type="radio" name="tcp_order_desc" id="tcp_order_asc" value="asc" <?php checked( $order_desc, 'asc' );?>/>
-		<?php _e( 'Asc.', 'tcp' ); ?>
-	</label>
-	<label>
+		<label for="tcp_order_asc"><?php _e( 'Asc.', 'tcp' ); ?></label>
 		<input type="radio" name="tcp_order_desc" id="tcp_order_desc" value="desc" <?php checked( $order_desc, 'desc' );?>/>
-		<?php _e( 'Desc.', 'tcp' ); ?>
-	</label>
-	<span class="tcp_order_submit"><input type="submit" name="tcp_order_by" value="<?php _e( 'Sort', 'tcp' );?>" /></span>
+		<label for="tcp_order_desc"><?php _e( 'Desc.', 'tcp' ); ?></label>
+		<span class="tcp_order_submit"><input type="submit" name="tcp_order_by" value="<?php _e( 'Sort', 'tcp' );?>" /></span>
 	</span><!-- .tcp_order_desc -->
 	</form>
 </div><!-- .tcp_order_panel --><?php
@@ -505,7 +499,8 @@ function tcp_attribute_list( $taxonomies = false ) {
  * 'id_submit'		=> 'wp-submit',
  * 'remember'		=> true,
  * 'value_username'	=> '',
- * 'value_remember'	=> false
+ * 'value_remember'	=> false,
+ * 'see_register'	=> true,
  */
 function tcp_login_form( $args = array() ) {
 	$defaults = array(
@@ -525,6 +520,7 @@ function tcp_login_form( $args = array() ) {
 		'remember'			=> true,
 		'value_username'	=> '',
 		'value_remember'	=> false, // Set this to true to default the "Remember me" checkbox to checked
+		'see_register'		=> true,
 	);
 	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
 	ob_start();
@@ -578,7 +574,7 @@ function tcp_login_form( $args = array() ) {
 
 			<a id="tcp_lost_password" href="<?php echo site_url( 'wp-login.php?action=lostpassword', 'login' ); ?>" title="<?php _e( 'Password Lost and Found' ) ?>"><?php _e( 'Lost your password?' ); ?></a>
 
-                <?php if ( get_option('users_can_register') ) : ?>
+                <?php if ( $args['see_register'] && get_option('users_can_register') ) : ?>
                 
 				<br />
 				
@@ -635,7 +631,7 @@ function tcp_login_form( $args = array() ) {
 
 				<div class="tcp_profile_name">
 
-				<?php the_author_meta( 'user_nicename' ); ?>
+				<?php echo $current_user->user_nicename; ?>
 
 				</div>
 
@@ -647,7 +643,7 @@ function tcp_login_form( $args = array() ) {
 
 				<div class="tcp_profile_description">
 
-				<?php the_author_meta( 'description' ); ?>
+				<?php $current_user->description; ?>
 
 				</div>
 

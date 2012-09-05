@@ -66,7 +66,8 @@ class TCPSigninBox extends TCPCheckoutBox {
 					'id_submit'			=> 'wp-submit',
 					'remember'			=> true,
 					'value_username'	=> '',
-					'value_remember'	=> false
+					'value_remember'	=> false,
+					'see_register'		=> true,
 				);
 				//wp_login_form( $args );
 				tcp_login_form( $args ); ?>
@@ -82,6 +83,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 					<li><?php _e( 'Fast and easy checkout', 'tcp' ); ?></li>
 					<li><?php _e( 'Easy access to yours orders history and status', 'tcp' ); ?></li>
 					<?php //wp_register( '<li>', '</li>', true );?>
+					<?php //tcp_register_form( '<li>', '</li>', true );?>
 					<li><a href="javascript: void(0)" onclick="jQuery('li.tcp_login_and_register').toggle();"><?php _e( 'Register', 'tcp' ); ?></a></li>
 					<li class="tcp_login_and_register" style="display:none;"><div id="tcp_login_and_register">
 					<?php $url = plugins_url( 'thecartpress/checkout/register_and_login.php' ); ?>

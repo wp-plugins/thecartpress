@@ -336,3 +336,39 @@ div.tcp_checkout_box_edit {
 .tcp-multiselect-on {
     font-weight: bold;
 }
+
+div#icon-tcp-localize {
+	background: url('../images/miranda/localize_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-main {
+	background: url('../images/miranda/main_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-checkout {
+	background: url('../images/miranda/checkout_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-payment {
+	background: url('../images/miranda/payments_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-shipping {
+	background: url('../images/miranda/shippings_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-tax {
+	background: url('../images/miranda/tax_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-first {
+	background: url('../images/miranda/first_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-theme {
+	background: url('../images/miranda/theme_settings_32.png') no-repeat center;
+}
+
+div#icon-tcp-custom-styles {
+	background: url('../images/miranda/customstyles_settings_32.png') no-repeat center;
+}

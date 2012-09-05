@@ -55,7 +55,7 @@ class TCPCheckoutSettings {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Checkout Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-checkout' ); ?><h2><?php _e( 'Checkout Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

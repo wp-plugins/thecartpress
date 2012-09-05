@@ -59,7 +59,7 @@ class TCPMainSettings {
 
 <div class="wrap">
 
-	<?php screen_icon(); ?><h2><?php _e( 'Main Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-main' ); ?><h2><?php _e( 'Main Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

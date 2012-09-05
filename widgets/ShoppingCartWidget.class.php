@@ -100,10 +100,15 @@ class ShoppingCartWidget extends WP_Widget {
 				<option value="48" <?php selected( '48', $thumbnail_size ); ?>><?php _e( '48x48', 'tcp' ); ?></option>
 				<option value="32" <?php selected( '32', $thumbnail_size ); ?>><?php _e( '32x32', 'tcp' ); ?></option>
 			</select>
-		</p><p>
+		</p>
+	<?php global $thecartpress;
+	if ( $thecartpress && $thecartpress->get_setting( 'use_weight', true ) ) : ?>
+		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp' ); ?></label>
-		</p><p>
+		</p>
+	<?php endif; ?>
+		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_modify_item' ); ?>" name="<?php echo $this->get_field_name( 'see_modify_item' ); ?>"<?php checked( $see_modify_item ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_modify_item' ); ?>"><?php _e( 'See modify button', 'tcp' ); ?></label>			
 		</p><p>

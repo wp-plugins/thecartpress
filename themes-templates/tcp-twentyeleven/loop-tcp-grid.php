@@ -118,7 +118,7 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 
 			<?php if ( $see_title ) : ?>
 
-				<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
+				<?php echo $title_tag; ?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
 
 			<?php endif; ?>
 
