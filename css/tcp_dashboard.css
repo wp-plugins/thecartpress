@@ -368,3 +368,7 @@ div#icon-tcp-first {
 div#icon-tcp-theme {
 	background: url('../images/miranda/theme_settings_32.png') no-repeat center;
 }
+
+div#icon-tcp-custom-styles {
+	background: url('../images/miranda/customstyles_settings_32.png') no-repeat center;
+}
