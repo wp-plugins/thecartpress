@@ -4,7 +4,7 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable Tag: 1.2.5
+Stable Tag: 1.2.5.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -308,7 +308,7 @@ Last Visited: Available for thecartpress no eCommerce (Suggested in the communit
 Card off-line: Current month and year
 CSS improvements: Less styles, better look
 Less javascript, only when needed (Suggested in the community)
-Thumbnails: Image for items with no thumbnail
+Thumbnails: Image for items with no thumbnail in back-end panels
 
 = 1.2.4 =
 * Use Weight: Configure all the eCommerce to use or not weight values
