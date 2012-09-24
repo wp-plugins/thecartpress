@@ -308,7 +308,7 @@ Last Visited: Available for thecartpress no eCommerce (Suggested in the communit
 Card off-line: Current month and year
 CSS improvements: Less styles, better look
 Less javascript, only when needed (Suggested in the community)
-Thumbnails: Image for items with no thumbnail
+Thumbnails: Image for items with no thumbnail in back-end panels
 
 = 1.2.4 =
 * Use Weight: Configure all the eCommerce to use or not weight values
