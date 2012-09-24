@@ -255,7 +255,6 @@ class CustomListWidget extends TCPParentWidget {
 			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
 			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
 		</p>
-	</div>
 	<div id="<?php echo $advanced_id; ?>" style="display:none;">
 		<p>
 			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
@@ -331,7 +330,8 @@ class CustomListWidget extends TCPParentWidget {
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_third_custom_area' ); ?>" value="yes" <?php checked( $see_third_custom_area ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>"><?php _e( 'Show third custom area', 'tcp' ); ?></label>
-		</p><?php
+		</p>
+	</div><?php
 	}
 }
 ?>
