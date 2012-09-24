@@ -105,7 +105,7 @@ class TCPCardOffLine extends TCP_Plugin {
 				<select id="expiration_month" name="expiration_month" >
 					<?php $current_month = (int)date( 'm' );
 					for($i = 1; $i < 13; $i++) : ?>
-					<option value="<?php $i; ?>" <?php selected( $current_month, $i ); ?>><?php echo $i; ?></option>
+					<option value="<?php echo $i; ?>" <?php selected( $current_month, $i ); ?>><?php echo $i; ?></option>
 					<?php endfor; ?>
 				</select>&nbsp;
 				<label for="expiration_year"><?php _e( 'Year', 'tcp' );?>:</label>

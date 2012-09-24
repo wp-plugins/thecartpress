@@ -46,7 +46,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 			'see_tax'			=> false,
 			'see_tax_summary'	=> false,
 			'see_comment'		=> false,
-			'see_other_costs'	=> false,
+			'see_other_costs'	=> true,//TODO
 			'see_thumbnail'		=> true
 		);
 		global $thecartpress;

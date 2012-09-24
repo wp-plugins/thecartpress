@@ -216,10 +216,9 @@ class ProductCustomPostType {
 			} elseif ( 'price' == $column_name ) {
 				$price = tcp_get_the_price( $post->ID );
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
-				echo '<br/>';
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
-				if ( isset( $types[$product_type] ) ) echo $types[$product_type]['label'];
+				if ( isset( $types[$product_type] ) && $product_type != 'SIMPLE' ) echo '<br/>', $types[$product_type]['label'];
 			}
 			do_action( 'tcp_manage_posts_custom_column', $column_name, $post );
 		}
