@@ -24,7 +24,7 @@ table#tcp_shopping_cart_table, #content table#tcp_shopping_cart_table {
 	border-collapse: separate;
     border-spacing: 0;
 	margin-bottom:1em;
-	}
+}
 
 table#tcp_shopping_cart_table tr th,
 table#tcp_shopping_cart_table thead th {
@@ -41,8 +41,6 @@ table#tcp_shopping_cart_table thead th {
 	font-weight: bold;
 	text-transform:uppercase;
 	background-color: transparent;
-
-	
 }
 
 table#tcp_shopping_cart_table tr td {
@@ -58,11 +56,11 @@ table#tcp_shopping_cart_table tr.odd td {
 }
 
 table#tcp_shopping_cart_table .tcp_cart_name,
-table#tcp_shopping_cart_table .tcp_cart_thumbnail{
+table#tcp_shopping_cart_table .tcp_cart_thumbnail {
 	/*background-color: #f7f7f7;*/
 	width: auto;
 }
-table#tcp_shopping_cart_table .tcp_cart_thumbnail img{
+table#tcp_shopping_cart_table .tcp_cart_thumbnail img {
 	/*background-color: #f7f7f7;*/
     height: auto;
     max-width: 45px;
@@ -71,18 +69,22 @@ table#tcp_shopping_cart_table .tcp_cart_thumbnail img{
 	padding:0;
 }
 
-table#tcp_shopping_cart_table .tcp_cart_unit_price,
+table#tcp_shopping_cart_table .tcp_cart_price,
 table#tcp_shopping_cart_table .tcp_cart_total,
-table#tcp_shopping_cart_table .tcp_cart_weight{
+table#tcp_shopping_cart_table .tcp_cart_weight {
  	white-space:nowrap;
+}
+
+
+table#tcp_shopping_cart_table .tcp_cart_total {
  	text-align: right;
 }
+
 #shopping_cart input {
 	font-size: 12px;
-	margin-bottom: 0;
-	margin-top: 0;
+	margin: 0 2px 2px;
 }
-table#tcp_shopping_cart_table .tcp_cart_name a{
+table#tcp_shopping_cart_table .tcp_cart_name a {
 	text-decoration: none;
 }
 
@@ -126,17 +128,23 @@ table#tcp_shopping_cart_table .tcp_cart_other_costs_row td.tcp_cart_other_costs_
 table#tcp_shopping_cart_table .tcp_cart_tax_row td.tcp_cart_tax_title {
 	text-align: right; 
 }
-
 table#tcp_shopping_cart_table .tcp_cart_total_row .tcp_cart_total {
 	color: #c00;
 }
+.tcp_modify_item_shopping_cart, .tcp_delete_item_shopping_cart {
+	margin: 2px;
+}
+
+/*Checkout and Continue Buttons in Shopping Cart
+*/
 .tcp_sc_links {
 	list-style-type: none;
 	width:auto;
+	text-align: right;
+	margin: 1em 0 2em;
 }
-.tcp_sc_links li.tcp_sc_checkout a, .tcp_sc_links li.tcp_sc_continue a {
-	margin:0 0 1em 1em;
-	float: right;
+.tcp_sc_links li.tcp_sc_checkout, .tcp_sc_links li.tcp_sc_continue {
+	margin:0 1em 0 1em;
 	display: inline-block;
 	outline: none;
 	cursor: pointer;
@@ -151,10 +159,9 @@ table#tcp_shopping_cart_table .tcp_cart_total_row .tcp_cart_total {
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	
 }
 /*Orange*/
-.tcp_sc_links li.tcp_sc_checkout a {
+.tcp_sc_links li.tcp_sc_checkout {
 	color: #fef4e9;
 	border: solid 1px #da7c0c;
 	background: #f78d1d;
@@ -162,20 +169,29 @@ table#tcp_shopping_cart_table .tcp_cart_total_row .tcp_cart_total {
 	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
 }
-.tcp_sc_links li.tcp_sc_checkout a:hover {
+.tcp_sc_links li.tcp_sc_checkout:hover {
 	background: #f47c20;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
 	background: -moz-linear-gradient(top,  #f88e11,  #f06015);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
 }
-.tcp_sc_links li.tcp_sc_checkout a:active {
+.tcp_sc_links li.tcp_sc_checkout:active {
 	color: #fcd3a5;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
 	background: -moz-linear-gradient(top,  #f47a20,  #faa51a);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 }
+.tcp_sc_links li.tcp_sc_checkout a {
+	color: #fef4e9;
+	text-decoration: none;
+}
+.tcp_sc_links li.tcp_sc_checkout a:active {
+	color: #fcd3a5;
+}
+
+
 /*white*/
-.tcp_sc_links li.tcp_sc_continue a {
+.tcp_sc_links li.tcp_sc_continue {
 	color: #606060;
 	border: solid 1px #b7b7b7;
 	background: #fff;
@@ -183,36 +199,38 @@ table#tcp_shopping_cart_table .tcp_cart_total_row .tcp_cart_total {
 	background: -moz-linear-gradient(top,  #fff,  #ededed);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
 }
-.tcp_sc_links li.tcp_sc_continue a:hover {
+.tcp_sc_links li.tcp_sc_continue:hover {
 	background: #ededed;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
 	background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
 }
-.tcp_sc_links li.tcp_sc_continue a:active {
+.tcp_sc_links li.tcp_sc_continue:active {
 	color: #999;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
 	background: -moz-linear-gradient(top,  #ededed,  #fff);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
 }
+.tcp_sc_links li.tcp_sc_continue a {
+	color: #606060;
+	text-decoration: none;
+}
+.tcp_sc_links li.tcp_sc_continue a:active {
+	color: #999;
+}
+
 
 /* CHEKOUT THE WORDPRESS CART
 -------------------------------------------------------------- */
 #checkout  {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: 13px;
 }
 #checkout  p {
 	margin-bottom:6px;
-
 }
 #checkout h3 {
 	line-height: 24px !important;
-	/*color: #333 !important;
-	background-image:url(/wp-content/plugins/thecartpress/css/chekout_box_bg.jpg);
-	background-position: 1px 0px;
-	background-color: #f0f0f0;
-	background-repeat: repeat-x;*/
 	padding-left: 10px;
 	margin: 0px 0px 1px 0px !important;
 	font-size: 10px;
@@ -287,10 +305,11 @@ table#tcp_shopping_cart_table .tcp_cart_total_row .tcp_cart_total {
 
 .checkout_info span.description {
 	clear: left;
-	color: #C00;
 	display: block;
 	margin-bottom: 10px;
 	text-align: right;
+	font-style: italic;
+	font-size: .9em;
 }
 
 #login_form {
@@ -493,9 +512,6 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 
 .tcp_item_discount {padding-left: 1em;}
 
-
-
-
 #tcp_order_id, #tcp_status {
 	padding:1em 0;
 }
@@ -511,20 +527,6 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 	font-weight:bold;
 	color:#C00;
 }
-
-.tcp-button-endcheckout {
-    background: url("http://haiku-futon.com/wp-content/plugins/thecartpress-ceca/images/black_button.png") no-repeat scroll 0 0 transparent;
-    border: 0 none;
-    color: #FFFFFF;
-    cursor: pointer;
-    font: bold 18px/45px Arial,Helvetica,sans-serif;
-    height: 45px;
-    text-decoration: none;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    width: 263px;
-}
-
-
 
 #tcp_back,
 #tcp_continue {
@@ -549,11 +551,8 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	
-	
 }
 #tcp_continue {
-	
 	color: #fef4e9;
 	border: solid 1px #da7c0c;
 	background: #f78d1d;
@@ -572,7 +571,6 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 }
 #tcp_continue:hover{
 	text-decoration: none;
-
 	background: #f47c20;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
 	background: -moz-linear-gradient(top,  #f88e11,  #f06015);

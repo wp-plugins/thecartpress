@@ -25,7 +25,7 @@ class TCPCurrencyCountrySettings {
 	function __construct() {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		global $tcp_miranda;
-		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Localize', 'tcp' ), false, array( 'TCPCurrencyCountrySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/currency_settings_48.png' ) );
+		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Localize', 'tcp' ), false, array( 'TCPCurrencyCountrySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/localize_settings_48.png' ) );
 	}
 
 	function admin_menu() {

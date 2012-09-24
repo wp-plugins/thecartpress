@@ -23,7 +23,7 @@ class TCPCheckoutSettings {
 	function __construct() {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		global $tcp_miranda;
-		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Checkout', 'tcp' ), false, array( 'TCPCheckoutSettings', __FILE__ ) );
+		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Checkout', 'tcp' ), false, array( 'TCPCheckoutSettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/checkout_settings_48.png' ) );
 	}
 
 	function admin_menu() {

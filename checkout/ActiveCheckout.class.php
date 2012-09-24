@@ -35,91 +35,66 @@ class ActiveCheckout {//shortcode
 			$cancelled = tcp_get_cancelled_order_status();
 			if ( $order_status == $cancelled ) $_REQUEST['tcp_checkout'] = 'ko';
 		}
-		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
+
+/* Put the check on the cart first. This is because if people try and load the checkout OK page i.e. the URL
+*  mysite/shopping_cart_slug/checkout/?tcp_checkout=ok   then it would have a silly empty set of fields.
+*/
+ 		if ( $shoppingCart->isEmpty() ) {
+			ob_start(); ?>
+			<span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' ); ?></span>
+			<?php tcp_do_template( 'tcp_shopping_cart_empty' ); ?>
+			<?php do_action( 'tcp_shopping_cart_empty' ); ?>
+			<?php return ob_get_clean();
+		} elseif ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
+			/* This next function adjusts the stock counts IF the setup flag $stock_management AND $stock_adjust are both true.
+			*  If stock management is not used or if the stock_adjust is false then stock decrement would be done on checkout 
+			*/
+
+			do_action( 'tcp_completed_ok_stockadjust', $order_id );
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			ob_start();
 			if ( strlen( $html ) > 0 ) : echo $html; ?>
-				
 			<?php else : ?>
-
 				<div class="tcp_payment_area">
-
-				<div class="tcp_order_successfully">
-
-				<?php global $thecartpress;
-				$checkout_successfully_message = $thecartpress->get_setting( 'checkout_successfully_message', '' );
-				if ( strlen( $checkout_successfully_message ) > 0 ) : ?>
-
-					<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_successfully_message ); ?></p>
-
-				<?php else : ?>
-
-					<span class="tcp_checkout_ok"><?php _e( 'The order has been completed successfully.', 'tcp' ); ?>
-
-					<?php if ( $shoppingCart->hasDownloadable() ) : ?>
-
-						<br/><?php printf( __( 'Please, to download the products visit <a href="%s">My Downloads</a> page (login required).', 'tcp' ), home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' ) ); ?>
-
+					<div class="tcp_order_successfully">
+					<?php global $thecartpress;
+					$checkout_successfully_message = $thecartpress->get_setting( 'checkout_successfully_message', '' );
+					if ( strlen( $checkout_successfully_message ) > 0 ) : ?>
+						<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_successfully_message ); ?></p>
+					<?php else : ?>
+						<span class="tcp_checkout_ok"><?php _e( 'The order has been completed successfully.', 'tcp' ); ?>
+						<?php if ( $shoppingCart->hasDownloadable() ) : ?>
+							<br/><?php printf( __( 'Please, to download the products visit <a href="%s">My Downloads</a> page (login required).', 'tcp' ), home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' ) ); ?>
+						<?php endif; ?>
+						</span>
 					<?php endif; ?>
-
-					</span>
-
-				<?php endif; ?>
-
-				</div><!-- .tcp_payment_area -->
-				
+					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_successfully -->
-
 			<?php endif; ?>
-
 			<br/>
-
 			<?php OrderPage::show( $order_id, array() ); ?>
-
 			<br/>
 			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
-
 			<?php TheCartPress::removeShoppingCart();
 			do_action( 'tcp_checkout_end', $order_id );
 			return ob_get_clean();
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
 			if ( strlen( $html ) == 0 ) : ob_start(); ?>
-
 				<div class="tcp_payment_area">
-
-				<div class="tcp_order_unsuccessfully">
-
-				<?php $checkout_unsuccessfully_message = __( 'Transaction Error. The order has been canceled', 'tcp' );
-				if ( strlen( $checkout_unsuccessfully_message ) > 0 ) : ?>
-
-					<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message ); ?></p>
-
-				<?php else : ?>
-
-					<span class="tcp_checkout_ko"><?php _e( 'Transaction Error. The order has been canceled', 'tcp' ); ?></span>
-
-				<?php endif; ?>
-
-				<br/><?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() ); ?>
-
-				</div><!-- .tcp_payment_area -->
-
+					<div class="tcp_order_unsuccessfully">
+					<?php $checkout_unsuccessfully_message = __( 'Transaction Error. The order has been canceled', 'tcp' );
+					if ( strlen( $checkout_unsuccessfully_message ) > 0 ) : ?>
+						<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message ); ?></p>
+					<?php else : ?>
+						<span class="tcp_checkout_ko"><?php _e( 'Transaction Error. The order has been canceled', 'tcp' ); ?></span>
+					<?php endif; ?>
+					<br/><?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() ); ?>
+					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_unsuccessfully -->
-
 			<?php endif;
 			do_action( 'tcp_checkout_end', $order_id );
 			return ob_get_clean();
-		} elseif ( $shoppingCart->isEmpty() ) {
-			ob_start(); ?>
-
-			<span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' ); ?></span>
-
-			<?php tcp_do_template( 'tcp_shopping_cart_empty' ); ?>
-
-			<?php do_action( 'tcp_shopping_cart_empty' ); ?>
-
-			<?php return ob_get_clean();
 		} else {
 			$param = array(
 				'validate'	=> true,

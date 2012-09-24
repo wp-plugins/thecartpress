@@ -159,8 +159,18 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		else return false;
 	}
 
+	public function get_shipping_region_id() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['shipping']['shipping_region_id'];
+		else return false;
+	}
+
 	public function get_shipping_country() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['shipping']['shipping_country'];
+		else return false;
+	}
+
+	public function get_shipping_country_id() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['shipping']['shipping_country_id'];
 		else return false;
 	}
 
@@ -223,11 +233,22 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_region'];
 		else return false;
 	}
+	
+	public function get_billing_region_id() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_region_id'];
+		else return false;
+	}
 
 	public function get_billing_country() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_country'];
 		else return false;
 	}
+	
+	public function get_billing_country_id() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_country_id'];
+		else return false;
+	}
+
 
 	public function get_billing_telephone_1() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_telephone_1'];
@@ -349,7 +370,7 @@ class TCP_DetailSourceSession implements TCP_IDetailSource {
 	}
 
 	public function get_weight() {
-		if ( $this->item ) return $this->item->getUnitWeight();
+		if ( $this->item ) return $this->item->getUnitWeight() * $this->get_qty_ordered();
 		else return false;
 	}
 

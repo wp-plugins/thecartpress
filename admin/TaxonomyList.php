@@ -73,9 +73,13 @@ jQuery(document).ready(function() {
 if ( is_array( $taxonomy_defs ) && count( $taxonomy_defs ) > 0 ) :
 	foreach( $taxonomy_defs as $taxonomy => $taxonomy_def ) : ?>
 <tr>
-	<td><?php $object = get_post_type_object( $taxonomy_def['post_type'] );
-		if ( $object ) echo $object->labels->name;
-		else _e( 'No post type', 'tcp' );?></td>
+	<td><?php $post_types = $taxonomy_def['post_type'];
+		if ( ! is_array( $post_types ) ) $post_types = array( $post_types );
+		foreach( $post_types as $post_type ) {
+			$object = get_post_type_object( $post_type );
+			if ( $object ) echo $object->labels->name;
+			else _e( 'No post type', 'tcp' );
+		} ?></td>
 	<td><?php echo $taxonomy_def['name']; ?></td>
 	<td><?php echo $taxonomy; ?></td>
 	<td><?php echo $taxonomy_def['desc']; ?>&nbsp;</td>

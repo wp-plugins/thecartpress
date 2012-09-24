@@ -45,6 +45,7 @@ class UIImprovements {
 		elseif ( $currency == 'RUB' ) return 'руб';
 		elseif ( $currency == 'ZAR' ) return 'R';
 		elseif ( $currency == 'VEB' ) return 'BsF';
+		elseif ( $currency == 'IDR' ) return 'Rp.';
 		else return $currency;
 	}
 
@@ -144,7 +145,7 @@ class UIImprovements {
 		</script><?php
 	}
 
-function admin_bar_menu() {
+	function admin_bar_menu() {
 		global $wp_admin_bar;
 		//if ( is_admin_bar_showing() && current_user_can( 'tcp_read_orders' ) ) {
 		if ( current_user_can( 'tcp_read_orders' ) ) {

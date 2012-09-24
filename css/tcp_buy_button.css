@@ -215,9 +215,7 @@ table.tcp_products_list .tcp_buy_button .tcp-buy-dynamic-options .tcp_dynamic_op
 
 div.tcp_buy_button .tcp_added_product_title {
 	font-weight:normal;
-	display:block;
-	line-height: 30px;
-	font-size:.9em;
+	line-height: 24px;
 }
 
 

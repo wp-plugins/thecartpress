@@ -19,7 +19,7 @@
 define( 'TCP_PRODUCT_POST_TYPE'	, 'tcp_product' );
 define( 'TCP_PRODUCT_CATEGORY'	, 'tcp_product_category' );
 define( 'TCP_PRODUCT_TAG'		, 'tcp_product_tag' );
-define( 'TCP_SUPPLIER_TAG'		, 'tcp_product_supplier' );
+//define( 'TCP_SUPPLIER_TAG'		, 'tcp_product_supplier' );
 
 /**
  * This class defines the post type 'tcp_product'
@@ -33,9 +33,16 @@ class ProductCustomPostType {
 			add_action( 'manage_posts_custom_column', array( &$this, 'manage_posts_custom_column' ) );
 			add_action( 'restrict_manage_posts', array( &$this, 'restrictManagePosts' ) );
 			add_filter( 'parse_query', array( &$this, 'parseQuery' ) );
+			
+			add_action( 'load-edit.php', array( &$this, 'load_edit' ) );
 			//for quick edit
 			//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
 		}
+	}
+
+	function load_edit() {
+		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_style( 'thickbox' );
 	}
 
 	static function create_default_custom_post_type_and_taxonomies() {
@@ -108,7 +115,7 @@ class ProductCustomPostType {
 		);
 		tcp_create_custom_taxonomy( TCP_PRODUCT_TAG, $taxonomy_def );
 
-		$taxonomy_def = array(
+		/*$taxonomy_def = array(
 			'post_type'		=> TCP_PRODUCT_POST_TYPE,
 			'name'			=> _x( 'Suppliers', 'taxonomy general name', 'tcp' ),
 			'desc'			=> __( 'Suppliers for products', 'tcp'),
@@ -124,13 +131,12 @@ class ProductCustomPostType {
 			'query_var'		=> true,
 			'rewrite'		=> 'product_supplier',
 		);
-		tcp_create_custom_taxonomy( TCP_SUPPLIER_TAG, $taxonomy_def );
+		tcp_create_custom_taxonomy( TCP_SUPPLIER_TAG, $taxonomy_def );*/
 	}
 
 	//http://vocecommunications.com/blog/2010/11/adding-rewrite-rules-for-custom-post-types/
 	static function register_post_type_archives( $post_type, $base_path = '' ) {
 //echo "register_post_type_archives( $post_type, $base_path )<br>";
-
 		global $wp_rewrite;
 		$permalink_prefix = $base_path;
 		$permalink_structure = '%year%/%monthnum%/%day%/%' . $post_type . '%/';
@@ -197,6 +203,11 @@ class ProductCustomPostType {
 				echo $post->ID;
 			} elseif ( 'thumbnail' == $column_name ) {
 				$image = tcp_get_the_thumbnail( $post->ID, 0, 0, array( '50', '50' )  );
+				if ( $image == '' ) {
+					//$image = '<a href="' . get_admin_url() . '/media-upload.php?post_id=' . $post->ID . '&type=image&TB_iframe=1" class="thickbox" title="' . __( 'Set featured image' ) . '">';
+					$image .= '<img src="' . plugins_url( 'images/tcp_icon_gray.png', dirname( __FILE__ ) ) .'" />';
+					//$image .= '</a>';
+				}
 				echo '&nbsp;', $image;
 			} elseif ( 'sku' == $column_name ) {
 				$sku = tcp_get_the_sku( $post->ID );
@@ -247,7 +258,7 @@ class ProductCustomPostType {
 	 * This function is executed before the admin product list query. WP 3.1
 	 */
 	function parseQuery( $query ) {
-		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0) {
+		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0 ) {
 			$query->query_vars['tax_query'] = array(
 				array(
 					'taxonomy'	=> TCP_PRODUCT_CATEGORY,

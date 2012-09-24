@@ -20,7 +20,7 @@ class TCPDownloadableProducts {
 
 	function __construct() {
 		if ( is_admin() ) {
-			add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
+			//add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
 			add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
 			add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
 			add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
@@ -68,22 +68,24 @@ class TCPDownloadableProducts {
 		return $out;
 	}
 
-	function tcp_product_metabox_toolbar( $post_id ) {
+	/*function tcp_product_metabox_toolbar( $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) : ?>
 			<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'file upload', 'tcp' ); ?></a></li>
 			<!--<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>FilesList.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'files', 'tcp' ); ?></a></li>-->
 		<?php endif;
-	}
+	}*/
 
 	function tcp_product_metabox_custom_fields( $post_id ) { ?>
 		<tr valign="top">
 		<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
 				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ): ?>checked <?php endif; ?> 
 				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
-				<?php if ( tcp_is_downloadable( $post_id ) ) : ?>
+				<?php $current_user = wp_get_current_user();
+				if ( tcp_is_downloadable( $post_id ) && user_can( $current_user->ID, 'tcp_edit_orders' ) ) : ?>
 					<span class="description"><?php _e( 'File','tcp' );?>:<?php echo tcp_get_the_file( $post_id );?></span>
+					&nbsp;<a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php _e( 'file upload', 'tcp' ); ?></a></li>
 				<?php endif;?>
 				</td>
 			</tr>

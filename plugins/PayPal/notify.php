@@ -22,23 +22,26 @@
 //ini_set('log_errors', true);
 //ini_set('error_log', dirname(__FILE__).'/ipn_errors.log');
 
-$custom		= isset( $_POST['custom'] ) ? $_POST['custom'] : '0-1-CANCELLED-TCPPayPal-0';//Order_id-test_mode-new_status-class-instance
-$custom		= explode( '-', $custom );
-$order_id	= $custom[0];
-$test_mode	= $custom[1] == '1';
-$new_status	= $custom[2];
-$classname	= $custom[3];
-$instance	= $custom[4];
-$transaction_id = isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : '';
+$custom			= isset( $_POST['custom'] ) ? $_POST['custom'] : '0-1-CANCELLED-TCPPayPal-0';//Order_id-test_mode-new_status-class-instance
+$transaction_id	= isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : '';
 
-$wordpress_path = dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/';
-include_once( $wordpress_path . 'wp-config.php' );			//loads WordPress
+$wordpress_path	= dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/';
+include_once( $wordpress_path . 'wp-config.php' );
+
 $thecartpress_path = dirname( dirname( dirname( __FILE__ ) ) ) . '/';
 require_once( $thecartpress_path . 'daos/Orders.class.php');
 require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php');
 
-$cancelled_status = tcp_get_cancelled_order_status();
+$custom		= explode( '-', $custom );
+$order_id	= $custom[0];
+$instance	= $custom[1];
+//$test_mode	= $custom[1] == '1';
+//$new_status	= $custom[2];
+//$classname	= $custom[3];
+//$instance	= $custom[4];
+
 if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
+	$cancelled_status = tcp_get_cancelled_order_status();
 	Orders::editStatus( $order_id, $cancelled_status, $transaction_id, __( 'Customer cancel at PayPal', 'tcp' ) );
 	$redirect = add_query_arg( 'tcp_checkout', 'ko', get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) ) );
 ?>
@@ -53,9 +56,11 @@ window.location="<?php echo $redirect;?>";
 <p>Canceling your order. Please wait...</p>
 </body>
 </html>
-
-<?php } else {
-	$data = tcp_get_payment_plugin_data( $classname, $instance );
+<?php
+} else {
+	$data = tcp_get_payment_plugin_data( TCPPayPal, $instance );
+	$test_mode	= $data['test_mode'];
+	$new_status	= $data['new_status'];
 	include( 'ipnlistener.class.php' );
 	$listener = new IpnListener();
 	$listener->use_sandbox = $test_mode;

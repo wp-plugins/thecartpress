@@ -47,38 +47,40 @@ class TCPPayPal extends TCP_Plugin {
 
 	function showEditFields( $data ) { ?>
 		<tr valign="top">
-		<th scope="row">
-			<label for="business"><?php _e( 'PayPal eMail', 'tcp' );?>:</label>
-		</th><td>
-			<input type="text" id="business" name="business" size="40" maxlength="50" value="<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" />
-		</td>
+			<th scope="row">
+				<label for="business"><?php _e( 'PayPal eMail', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" id="business" name="business" size="40" maxlength="50" value="<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" />
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<?php _e( 'PayPal prompt for shipping address', 'tcp' );?>:
+			</th>
+			<td>
+				<input type="radio" id="no_shipping_0" name="no_shipping" value="0" <?php checked( 0 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
+				<label for="no_shipping"><?php _e( 'PayPal prompt for an address, but do not require one', 'tcp' );?></label><br />
+				<input type="radio" id="no_shipping_1" name="no_shipping" value="1" <?php checked( 1 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
+				<label for="no_shipping"><?php _e( 'PayPal do not prompt for an address', 'tcp' );?></label><br />
+				<input type="radio" id="no_shipping_2" name="no_shipping" value="2" <?php checked( 2 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
+				<label for="no_shipping"><?php _e( 'PayPal prompt for an address, and require one', 'tcp' );?></label><br />
+				<span class="description"><?php _e( 'Be sure to match this in the Checkout Editor', 'tcp' );?></span>
+			</td>
 		</tr>
 
 		<tr valign="top">
-		<th scope="row">
-			<?php _e( 'PayPal prompt for shipping address', 'tcp' );?>:
-		</th><td>
-			<input type="radio" id="no_shipping_0" name="no_shipping" value="0" <?php checked( 0 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
-			<label for="no_shipping"><?php _e( 'PayPal prompt for an address, but do not require one', 'tcp' );?></label><br />
-			<input type="radio" id="no_shipping_1" name="no_shipping" value="1" <?php checked( 1 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
-			<label for="no_shipping"><?php _e( 'PayPal do not prompt for an address', 'tcp' );?></label><br />
-			<input type="radio" id="no_shipping_2" name="no_shipping" value="2" <?php checked( 2 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 );?> />
-			<label for="no_shipping"><?php _e( 'PayPal prompt for an address, and require one', 'tcp' );?></label><br />
-			<span class="description"><?php _e( 'Be sure to match this in the Checkout Editor', 'tcp' );?></span>
-		</td>
-		</tr>
-
-		<tr valign="top">
-		<th scope="row">
-			<?php _e( 'Payment type', 'tcp' );?>:
-		</th><td>
-			<select name="paymentaction">
-				<option value="sale"><?php _e( 'Sale', 'tcp' ); ?></option>
-				<option value="authorization"><?php _e( 'Authorization', 'tcp' ); ?></option>
-				<option value="order"><?php _e( 'Order', 'tcp' ); ?></option>
-			</select>
-			<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
-		</td>
+			<th scope="row">
+				<?php _e( 'Payment type', 'tcp' );?>:
+			</th>
+			<td>
+				<select name="paymentaction">
+					<option value="sale"><?php _e( 'Sale', 'tcp' ); ?></option>
+					<option value="authorization"><?php _e( 'Authorization', 'tcp' ); ?></option>
+					<option value="order"><?php _e( 'Order', 'tcp' ); ?></option>
+				</select>
+				<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
+			</td>
 		</tr>
 
 <!--		<tr valign="top">
@@ -107,38 +109,38 @@ class TCPPayPal extends TCP_Plugin {
 			<label for="send_detail"><?php _e( 'item detail, each with amount', 'tcp' );?></label><br />
 		</td></tr>-->
 		<tr valign="top">
-		<th scope="row">&nbsp;</th>
-		<td>&nbsp;</td>
+			<th scope="row">&nbsp;</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
+				<label for="logging"><?php _e( 'Log IPN data', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" id="logging" name="logging" value="yes" <?php checked( true , isset( $data['logging'] ) ? $data['logging'] : false );?> />
+			</td>
 		</tr>
 
 		<tr valign="top">
-		<th scope="row">
-			<label for="logging"><?php _e( 'Log IPN data', 'tcp' );?>:</label>
-		</th><td>
-			<input type="checkbox" id="logging" name="logging" value="yes" <?php checked( true , isset( $data['logging'] ) ? $data['logging'] : false );?> />
-		</td>
+			<th scope="row">
+				<label for="cpp_cart_border_color"><?php _e( 'Cart border color', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="text" id="cart_border_color" name="cpp_cart_border_color" size="6" maxlength="8" value="<?php echo isset( $data['cpp_cart_border_color'] ) ? $data['cpp_cart_border_color'] : '';?>" />
+				<span class="description"><?php _e( 'Optional, for customizing the PayPal page, and can be set from your PayPal account.<br /> Enter a 6 digit hex color code.', 'tcp' );?></span>
+			</td>
 		</tr>
 
 		<tr valign="top">
-		<th scope="row">
-			<label for="cpp_cart_border_color"><?php _e( 'Cart border color', 'tcp' );?>:</label>
-		</th><td>
-			<input type="text" id="cart_border_color" name="cpp_cart_border_color" size="6" maxlength="8" value="<?php echo isset( $data['cpp_cart_border_color'] ) ? $data['cpp_cart_border_color'] : '';?>" />
-			<span class="description"><?php _e( 'Optional, for customizing the PayPal page, and can be set from your PayPal account.<br /> Enter a 6 digit hex color code.', 'tcp' );?></span>
-		</td>
+			<th scope="row">
+				<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
+				<br/><a href="https://developer.paypal.com/?login_email=<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" target="_blank">developer.paypal.com</a>
+			</td>
 		</tr>
-
-		<tr valign="top">
-		<th scope="row">
-			<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
-		</th><td>
-			<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
-			<br/><a href="https://developer.paypal.com/?login_email=<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" target="_blank">developer.paypal.com</a>
-		</td>
-		</tr>
-		
 		<?php do_action( 'tcp_paypal_show_edit_fields', $data ); ?>
-		
 		<?php
 	}
 
@@ -176,7 +178,8 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() ) );
 		$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) ) );
 		$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
-		$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status . '-' . get_class( $this ) . '-' . $instance);
+		$p->add_field( 'custom', $order_id . '-' . $instance );
+		//$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status . '-' . get_class( $this ) . '-' . $instance );
 		$p->add_field( 'currency_code', $currency );
 		$p->add_field( 'cbt', __( 'Return to ', 'tcp' ) . $merchant ); //text for the Return to Merchant button
 		$p->add_field( 'no_shipping', $no_shipping );
@@ -188,20 +191,21 @@ class TCPPayPal extends TCP_Plugin {
 			$decimals = tcp_get_decimal_currency();
 			foreach( $shoppingCart->getItems() as $item ) {
 				$tax = tcp_get_the_tax( $item->getPostId() );
-				if ( ! tcp_is_display_prices_with_taxes() ) $discount = $item->getDiscount() / $item->getUnits();
+				if ( ! tcp_is_display_prices_with_taxes() ) $discount = round( $item->getDiscount() / $item->getUnits(), $decimals );
 				else $discount = 0;
 				$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
-				$unit_price_without_tax = round( $unit_price_without_tax, 2 );
+				$unit_price_without_tax = round( $unit_price_without_tax, $decimals );
 				$tax_amount = $unit_price_without_tax * $tax / 100;
-				//$tax_amount = round( $tax_amount * $item->getUnits(), $decimals );
-				$tax_amount = $tax_amount * $item->getUnits();
-				$amount += $unit_price_without_tax * $item->getUnits();
-				$taxes += $tax_amount;
+				$tax_amount = round( $tax_amount, $decimals );
+				$line_tax_amount = $tax_amount * $item->getUnits();
+				$line_price_without_tax = round( $unit_price_without_tax * $item->getUnits(), $decimals );
+				$amount += $line_price_without_tax;
+				$taxes += $line_tax_amount;
 			}
 			foreach( $shoppingCart->getOtherCosts() as $cost_id => $cost ) {
 				if ( ShoppingCart::$OTHER_COST_SHIPPING_ID == $cost_id && $shoppingCart->isFreeShipping() ) break;
 				$cost_without_tax = tcp_get_the_shipping_cost_without_tax( $cost->getCost() );
-				$cost_without_tax = round( $cost_without_tax, 2 );
+				$cost_without_tax = round( $cost_without_tax, $decimals );
 				$tax = tcp_get_the_shipping_tax();
 				$tax_amount = $cost_without_tax * $tax / 100;
 				//$tax_amount = round( $tax_amount, $decimals );
@@ -268,7 +272,13 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'country', $order->billing_country_id );
 		$p->add_field( 'email', $order->billing_email );
 		if ( ! empty( $data['cpp_cart_border_color'] ) ) $p->add_field( 'cpp_cart_border_color', $data['cpp_cart_border_color'] );
-		echo $p->submit_paypal_post();
+		echo $p->submit_paypal_post(); ?>
+		<script>
+		jQuery(document).ready(function() {
+			jQuery('form[name=paypal_form]').submit();
+		});
+		</script>
+		<?php
 
 		/*if ( ! $this->isSupportedCurrency( $currency_code ) ) {
 			require_once( dirname( __FILE__ ) . '/PayPal_Platform_PHP_SDK/lib/AdaptivePayments.php' );

@@ -73,10 +73,13 @@ class OrdersListTable extends WP_List_Table {
 	}
 
 	function column_total( $item ) {
-		$total = - $item->discount_amount;
-		$total = OrdersCosts::getTotalCost( $item->order_id, $total );
-		$total = tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
-		echo apply_filters( 'tcp_orders_list_column_total', $total, $item );
+		//$total = - $item->discount_amount;
+		//$total = OrdersCosts::getTotalCost( $item->order_id, $total );
+		//$total = tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
+
+		$total = Orders::getTotal( $item->order_id );
+		$total = apply_filters( 'tcp_orders_list_column_total', $total, $item );
+		echo tcp_format_the_price( $total, $item->order_currency_code );
 	}
 
 	function column_customer_id( $item ) {

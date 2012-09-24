@@ -51,16 +51,6 @@ class TCPFilterNavigation {
 		$this->order_type = $filter['order_type'];
 		$this->order_desc = $filter['order_desc'];
 
-		/*if ( $check_request && isset( $_REQUEST['tcp_layered_terms'] ) && is_array( $_REQUEST['tcp_layered_terms'] ) && count( $_REQUEST['tcp_layered_terms'] ) > 0 ) {
-			$taxonomy = $_REQUEST['tcp_layered_taxonomy'];
-			unset( $filter['layered'][$taxonomy] );
-			foreach( $_REQUEST['tcp_layered_terms'] as $term ) {
-				$filter['layered'][$taxonomy][] = $term;
-			}
-		} elseif ( $check_request && isset( $_REQUEST['tcp_layered_submit'] ) ) {
-			$taxonomy = $_REQUEST['tcp_layered_taxonomy'];
-			unset( $filter['layered'][$taxonomy] );
-		}*/
 		if ( $check_request ) {
 			$filters = $this->get_filters_request();
 			foreach( $filters as $f ) {

@@ -17,6 +17,12 @@
  */
 
 class TCPCountrySelection {
+
+	function __construct() {
+		//add_action( 'tcp_shopping_cart_after_cart', array( $this, 'tcp_shopping_cart_after_cart' ) );
+		add_action( 'wp_head', array( $this, 'wp_head' ), 5 );
+	}
+	
 	static function show() { ?>
 		<form method="post">
 		<div class="tcp_select_country">
@@ -53,6 +59,7 @@ class TCPCountrySelection {
 	function tcp_shopping_cart_after_cart() { ?>
 		<h3><?php _e( 'Select your country', 'tcp' ); ?></h3>
 		<?php TCPCountrySelection::show();
+		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
 	}
 
 	function wp_head() {
@@ -63,12 +70,6 @@ class TCPCountrySelection {
 		if ( isset( $_REQUEST['tcp_billing_region_id'] ) ) tcp_set_billing_region( $_REQUEST['tcp_billing_region_id'] );
 		//if ( isset( $_REQUEST['tcp_billing_country_id'] ) ) tcp_set_shipping_country( $_REQUEST['tcp_billing_country_id'] );
 		//if ( isset( $_REQUEST['tcp_billing_region_id'] ) ) tcp_set_shipping_region( $_REQUEST['tcp_billing_region_id'] );
-	}
-
-	function __construct() {
-		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
-		//add_action( 'tcp_shopping_cart_after_cart', array( $this, 'tcp_shopping_cart_after_cart' ) );
-		add_action( 'wp_head', array( $this, 'wp_head' ), 5 );
 	}
 }
 

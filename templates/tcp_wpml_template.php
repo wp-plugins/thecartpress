@@ -28,7 +28,8 @@ function tcp_get_current_language_iso() {
 }
 
 //Given a post_id this function returns the post_id in the default language
-function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_default_id( $post_id, $post_type = false ) {
+	if ( $post_type == false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$default_language = $sitepress->get_default_language();
@@ -38,7 +39,8 @@ function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
 }
 
 //Given a post_id this function returns the equivalent post_id in the current language
-function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_current_id( $post_id, $post_type = false ) {
+	if ( $post_type == false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$default_language = $sitepress->get_current_language();
@@ -53,7 +55,8 @@ function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
  * array(2) {	["en"]=> object(stdClass)#45 (6) { ["translation_id"]=> string(2) "11" ["language_code"]=> string(2) "en" ["element_id"]=> string(1)  "9" ["original"]=> string(1) "1" ["post_title"]=> string(21) "Tom Sawyer Adventures"       ["post_status"]=> string(7) "publish" }
  * 				["es"]=> object(stdClass)#44 (6) { ["translation_id"]=> string(2) "12" ["language_code"]=> string(2) "es" ["element_id"]=> string(2) "10" ["original"]=> string(1) "0" ["post_title"]=> string(27) "Las Aventuras de Tom Sawyer" ["post_status"]=> string(7) "publish" } }
  */
-function tcp_get_all_translations( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_all_translations( $post_id, $post_type = false ) {
+	if ( $post_type == false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
@@ -83,7 +86,8 @@ function tcp_get_current_language() {
 /**
  * This function adds a post identified by the $translate_post_id as a translation of the post identified by $post_id
  */
-function tcp_add_translation( $post_id, $translate_post_id, $language, $post_type = 'tcp_product' ) {
+function tcp_add_translation( $post_id, $translate_post_id, $language, $post_type = false ) {
+	if ( $post_type == false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$trid = $sitepress->get_element_trid( $post_id, 'post_' . $post_type );
@@ -91,7 +95,7 @@ function tcp_add_translation( $post_id, $translate_post_id, $language, $post_typ
 	}
 }
 
-/**
+/*
  * To register strings to translate. For Example to translate the titles of the wigets
  *
 function tcp_register_string( $context, $name, $value ) {

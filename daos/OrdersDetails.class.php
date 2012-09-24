@@ -63,13 +63,15 @@ class OrdersDetails {
 			if ( $row->tax == 0 ) {
 				$total += $row->price * $row->qty_ordered;
 			} else {
-				$t = $row->price * $row->tax / 100;
-				//$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
-				$t = ( $row->price + $t ) * $row->qty_ordered;
-				$total += $t;
+				//$t = $row->price * $row->tax / 100;
+				////$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
+				//$t = ( $row->price + $t ) * $row->qty_ordered;
+				//$total += $t;
+				$tax = round( $row->price * $row->tax / 100, $decimals );
+				$total += ( $row->price + $tax ) * $row->qty_ordered;
 			}
 		}
-		return $total;
+		return round( $total, $decimals );
 	}
 
 	static function getTotalDetailed( $order_id ) {

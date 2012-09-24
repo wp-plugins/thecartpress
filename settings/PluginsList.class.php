@@ -38,7 +38,6 @@ class TCPPluginsList {
 		}
 		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_settings', $menu_slug, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
-//		add_action( "load-$page", array( &$this, 'admin_action' ) );
 	}
 
 	function admin_load() {

@@ -18,6 +18,11 @@
 
 class StockSummaryDashboard {
 
+	function __construct() {
+		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
+	}
+
 	function show() { ?>
 <div class="table table_content">
 	<table style="width:100%" id="table_stock_summary">
@@ -31,16 +36,16 @@ class StockSummaryDashboard {
 	</tbody></table>
 	<script>
 	jQuery('.tcp_stock_summary_feedback').show();
-    jQuery.ajax({
-    	async	: true,
-		type    : "GET",
+	jQuery.ajax({
+		async	: true,
+		type	: "GET",
 		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
 		data	: {
-			action		: 'tcp_stock_summary_dashboard',
+			action	: 'tcp_stock_summary_dashboard',
 		},
 		success : function(response) {
-			response = eval(response);
 			jQuery('#tcp_stock_summary_feedback').hide();
+			response = eval(response);
 			if (response.length > 0) {
 				jQuery('#tcp_stock_sumary_no_items').hide();
 				for(i in response) {
@@ -54,7 +59,7 @@ class StockSummaryDashboard {
 		error	: function(response) {
 			jQuery('.tcp_stock_summary_feedback').hide();
 		},
-    });
+	});
 	</script>
 </div>
 	<?php }
@@ -103,11 +108,6 @@ class StockSummaryDashboard {
 
 	function wp_dashboard_setup() {
 		wp_add_dashboard_widget( 'tcp_stock_resume', __( 'Stock Summary', 'tcp' ), array( $this, 'show' ) );
-	}
-
-	function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 	}
 }
 

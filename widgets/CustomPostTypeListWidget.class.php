@@ -164,7 +164,6 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				</p>
 			</div><!-- p_included -->
 		</div><!-- tcp_post_included -->
-		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'order_type' ); ?>"><?php _e( 'Order by', 'tcp' ); ?></label>:
 			<?php $sorting_fields = tcp_get_sorting_fields();

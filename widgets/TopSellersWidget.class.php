@@ -46,7 +46,7 @@ class TopSellersWidget extends CustomListWidget {
 	}
 
 	function form( $instance, $title = '' ) {
-		parent::form( $instance, __( 'Top Seller!s', 'tcp') );
+		parent::form( $instance, __( 'Top Seller!', 'tcp') );
 		parent::show_post_type_form( $instance );
 	}
 }

@@ -56,6 +56,7 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'term'					=> isset( $_REQUEST['term'] ) ? $_REQUEST['term'] : '',
 			'limit'					=> isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : '10',
 			'see_pagination'		=> isset( $_REQUEST['see_pagination'] ),
+			'see_order_panel'		=> isset( $_REQUEST['see_order_panel'] ),
 			'loop'					=> isset( $_REQUEST['loop'] ) ? $_REQUEST['loop'] : 'default',
 			'order_type'			=> isset( $_REQUEST['order_type'] ) ? $_REQUEST['order_type'] : 'date',
 			'order_desc'			=> isset( $_REQUEST['order_desc'] ) ? 'desc' : 'asc',
@@ -138,6 +139,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 	$term					= isset( $shortcode_data['term'] ) ? $shortcode_data['term'] : '';
 	$limit					= isset( $shortcode_data['limit'] ) ? $shortcode_data['limit'] : 10;
 	$see_pagination			= isset( $shortcode_data['see_pagination'] ) ? $shortcode_data['see_pagination'] : false;
+	$see_order_panel		= isset( $shortcode_data['see_order_panel'] ) ? $shortcode_data['see_order_panel'] : false;
 	$loop					= isset( $shortcode_data['loop'] ) ? $shortcode_data['loop'] : '';
 	$columns				= isset( $shortcode_data['columns'] ) ? $shortcode_data['columns'] : 2;
 	$order_type				= isset( $shortcode_data['order_type'] ) ? $shortcode_data['order_type'] : 'date';
@@ -305,6 +307,15 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
+				<label for="id"><?php _e( 'See Order Panel', 'tcp' ); ?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" name="see_order_panel" id="see_order_panel" value="yes" <?php checked( $see_order_panel ); ?>/>
+				<br/><span class="description"><?php _e( 'Allows to display and order panel in the shortcode.', 'tcp' ); ?></span>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
 				<label for="loop"><?php _e( 'Loop', 'tcp' ); ?>:</label>
 				<br/>(<?php _e( 'theme', 'tcp' ); ?>:&nbsp;<?php if ( function_exists('wp_get_theme') ) echo wp_get_theme(); else echo get_template(); ?>)
 			</th>
@@ -397,8 +408,8 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 			<label for="image_size"><?php _e( 'Image size', 'tcp' ); ?>:</label>
 			<select id="image_size" name="image_size">
 			<?php $imageSizes = get_intermediate_image_sizes();
-			foreach($imageSizes as $imageSize) : ?>
-				<option value="<?php echo $imageSize; ?>" <?php selected( $imageSize, $image_size); ?>><?php echo $imageSize; ?></option>
+			foreach( $imageSizes as $imageSize ) : ?>
+				<option value="<?php echo $imageSize; ?>" <?php selected( $imageSize, $image_size ); ?>><?php echo $imageSize; ?></option>
 			<?php endforeach; ?>
 			?>
 			</select>

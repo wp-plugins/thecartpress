@@ -31,6 +31,12 @@ class TCPShortcode {
 					'after_title'	=> '',
 				);
 				ob_start();
+				if ( isset( $shortcode_data['see_order_panel'] ) && $shortcode_data['see_order_panel'] ) {
+					tcp_the_sort_panel();
+					$filter = new TCPFilterNavigation();
+					$shortcode_data['order_type'] = $filter->get_order_type();
+					$shortcode_data['order_desc'] = $filter->get_order_desc();
+				}
 				$customPostTypeListWidget->widget( $args, $shortcode_data );
 				return ob_get_clean();
 			}

@@ -168,16 +168,22 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		);
 		$form = new AuthorizeNetSIM_Form( $fields );
 		if ( $test_mode ) : ?>
-			<form method="post" action="https://test.authorize.net/gateway/transact.dll">
+			<form method="post" name="authorizednet_form" action="https://test.authorize.net/gateway/transact.dll">
 		<?php else : ?>
-			<form method="post" action="https://secure.authorize.net/gateway/transact.dll">
+			<form method="post" name="authorizednet_form" action="https://secure.authorize.net/gateway/transact.dll">
 		<?php endif;
 		echo $form->getHiddenFieldString();?>
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>"/>
 		<input type="hidden" name="new_status" value="<?php echo $new_status;?>"/>
 		<input type="hidden" name="instance" value="<?php echo $instance;?>"/>
 		<input type="submit" class="tcp_authorized_net" value="secure payment" />
-		</form><?php
+		</form>
+		<script>
+		jQuery(document).ready(function() {
+			jQuery('form[name=authorizednet_form]').submit();
+		});
+		</script>
+		<?php
 	}
 }
 ?>

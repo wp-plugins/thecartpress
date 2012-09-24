@@ -21,8 +21,7 @@ class TCPLoopSettings {
 	function __construct() {
 		$settings = get_option( 'tcp_settings' );
 		if ( isset( $settings['use_default_loop'] ) ) {
-			if ( $settings['use_default_loop'] != 'none' )
-				add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+			if ( $settings['use_default_loop'] != 'none' ) add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
 			if ( $settings['use_default_loop'] == 'yes' || $settings['use_default_loop'] == 'yes_2010' )
 				add_filter( 'template_include', array( $this, 'template_include' ) );
 		}
@@ -55,7 +54,7 @@ class TCPLoopSettings {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Loop Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-loop-settings' ); ?><h2><?php _e( 'Loop Settings', 'tcp' ); ?></h2>
 	
 	<p class="description"><?php _e( 'Allows to configure how to display the products in the WordPress Loop', 'tcp' ); ?></p>
 

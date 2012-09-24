@@ -88,10 +88,8 @@ function tcp_the_currency( $echo = true ) {
 	global $thecartpress;
 	$currency = $thecartpress->get_setting( 'currency', 'EUR' );
 	$currency = apply_filters( 'tcp_the_currency', $currency );
-	if ( $echo )
-		echo $currency;
-	else
-		return $currency;
+	if ( $echo ) echo $currency;
+	else return $currency;
 }
 
 function tcp_the_currency_iso( $echo = true ) {
@@ -168,7 +166,7 @@ function tcp_the_add_wishlist_button( $post_id ) {
 }
 
 /**
- * Returns the price of the current product
+ * Returns the price for current product
  * @since 1.0.9
  */
 function tcp_the_price( $before = '', $after = '', $echo = true ) {
@@ -181,7 +179,7 @@ function tcp_the_price( $before = '', $after = '', $echo = true ) {
 }
 
 /**
- * Returns the price of the given product
+ * Returns the price for given product
  * @param $filter, true to execute filters (by default) false, it doesn't apply filters. Since 1.1.9
  * @since 1.0.9
  */
@@ -192,14 +190,31 @@ function tcp_get_the_price( $post_id = 0, $filters = true ) {
 }
 
 /**
+ * Returns the real price for given product.
+ * This functions differs for 'tcp_get_the_price' that it returns the calculated price, not only the price saved in price field
+ * @since 1.2.5
+ */
+function tcp_get_the_product_price( $post_id = 0 ) {
+	$price = tcp_get_the_price( $post_id );
+	return (float)apply_filters( 'tcp_get_the_product_price', $price, $post_id );
+	return $price;
+}
+/**
  * Adds the currency to the price
  * @since 1.0.9
  */
 function tcp_format_the_price( $price, $currency = '') {
-	if ( $currency == '' ) $currency = tcp_get_the_currency();
+	if ( strlen( $currency ) == '' ) {
+		$currency = tcp_get_the_currency();
+		$currency_iso = tcp_get_the_currency_iso();
+	} else {
+		$currency_iso = $currency;
+		$currency = apply_filters( 'tcp_the_currency', $currency_iso );
+	}
 	$layout = tcp_get_the_currency_layout();
 	if ( strlen( $layout ) == 0 ) $layout = __( '%1$s%2$s (%3$s)', 'tcp' ); //'currency + price + (currency ISO)'
-	$label = sprintf( $layout, $currency, tcp_number_format( $price, tcp_get_decimal_currency() ), tcp_get_the_currency_iso() );
+
+	$label = sprintf( $layout, $currency, tcp_number_format( $price, tcp_get_decimal_currency() ), $currency_iso );
 	$label = apply_filters( 'tcp_format_the_price', $label );
 	return $label;
 }
@@ -213,6 +228,7 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_display_prices_with_taxes() ) {
 		if ( tcp_is_price_include_tax() ) {
+//			return $price;
 			$price_wo_tax = tcp_get_the_price_without_tax( $post_id, $price );
 			$tax = tcp_get_the_tax( $post_id );
 			return $price_wo_tax * ( 1 + $tax / 100 );
@@ -568,33 +584,6 @@ function tcp_is_display_prices_with_taxes() {
 	return $thecartpress->get_setting( 'display_prices_with_taxes', false );
 }
 
-
-/**
- * Returns true if the full tax summary must be displayed in the cart/order tables
- * @deprecated 1.2
- *
-function tcp_is_display_full_tax_summary() {
-	global $thecartpress;
-	return $thecartpress->get_setting( 'display_full_tax_summary', false );
-}
-
-/**
- * @deprecated 1.2
- *
-function tcp_get_display_zero_tax_subtotal() {
-	global $thecartpress;
-	return $thecartpress->get_setting( 'display_zero_tax_subtotal', false );
-}
-
-/**
- * Returns true if the  tax summary must be displayed in the cart/order tables
- * @deprecated 1.2
- *
-function display_zero_tax_subtotal() {
-	global $thecartpress;
-	return $thecartpress->settings( 'display_zero_tax_subtotal', false );
-}*/
-
 function tcp_get_the_product_type( $post_id = 0 ) {
 	$type = tcp_get_the_meta( 'tcp_type', $post_id );
 	if ( strlen( $type ) == 0 ) $type = '';
@@ -660,6 +649,28 @@ function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	return $sku;
 }
 
+/**
+ * @since 1.2.5
+ */
+function tcp_get_product_by_sku( $sku, $object = false ) {
+	$args = array(
+		'numberposts'	=> 1,
+		'post_type'		=> tcp_get_saleable_post_types(),
+		'status'		=> array( 'publish', 'draft' ),
+		'meta_query' => array(
+			array(
+				'key'		=> 'tcp_sku',
+				'value'		=> $sku,
+				'compare'	=> '='
+			),
+		),
+	);
+	if ( ! $object ) $args['fields'] = 'ids';
+	$posts = get_posts( $args );
+	if ( is_array( $posts ) && count( $posts ) > 0 ) return $posts[0];
+	else return false;
+}
+
 function tcp_is_downloadable( $post_id = 0 ) {
 	return tcp_get_the_meta( 'tcp_is_downloadable', $post_id );
 }
@@ -718,10 +729,10 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 			if ( $image_link == 'file' ) {
 				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
 			 	$href = $image_attributes[0];
-			} else {
-			 	$href = get_permalink( $thumbnail_id );
+			} else {//None, or Post URL
+				$href = tcp_get_permalink( $post_id );
+			 	//$href = get_permalink( $thumbnail_id );
 			}
-
 			$html = '<a href="' . $href . '"';
 			if ( isset( $args['class'] ) ) $html .= ' class="' . $args['class'] . '"';
 			$image = $html . '>' . $image . '</a>';
@@ -823,6 +834,28 @@ function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
 		return $excerpt;
 }
 
+/**
+ * @since 1.2.5
+ */
+function tcp_get_current_user_role() {
+	global $wp_roles;
+	$current_user = wp_get_current_user();
+	$roles = $current_user->roles;
+	$role = array_shift( $roles );
+	return $role; //isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
+}
+
+/**
+ * @since 1.2.5
+ */
+function tcp_get_current_user_role_title() {
+	global $wp_roles;
+	$current_user = wp_get_current_user();
+	$roles = $current_user->roles;
+	$role = array_shift( $roles );
+	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
+}
+
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
 	$meta_value = tcp_get_the_meta( $meta_key );
 	if ( strlen( $meta_value ) == 0 ) return '';
@@ -865,7 +898,8 @@ function tcp_is_saleable_post_type( $post_type ) {
  * Returns true if a post, defined by post_id, is saleable
  * @since 1.1.6
  */
-function tcp_is_saleable( $post_id ) {
+function tcp_is_saleable( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
 	return tcp_is_saleable_post_type( get_post_type( $post_id ) );
 }
 
@@ -990,6 +1024,23 @@ function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 //
 // Utils and Tools
 //
+
+/**
+ * Returns the current term
+ * @since 1.2.5
+ */
+function tcp_get_current_taxonomy() {
+	return get_query_var( 'taxonomy' );
+}
+
+/**
+ * Returns the current term
+ * @since 1.2.5
+ */
+function tcp_get_current_term() {
+	return get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+}
+
 /**
  * Selected in a multiple select control
  */
@@ -1022,7 +1073,7 @@ function tcp_checked_multiple( $values, $value, $echo = true ) {
  */
 function tcp_number_format( $number, $decimals = 2 ) {
 	global $thecartpress;
-	return number_format( $number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
+	return number_format( (float)$number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
 }
 
 /**
@@ -1139,5 +1190,4 @@ function tcp_the_cross_selling( $post_id = 0, $echo = true ) {
 	require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
 	return OrdersDetails::getCrossSelling( $post_id );
 }
-
 ?>

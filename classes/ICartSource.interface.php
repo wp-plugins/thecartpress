@@ -41,7 +41,9 @@ interface TCP_ICartSource {
 	public function get_shipping_postcode();
 	public function get_shipping_city();
 	public function get_shipping_region();
+	public function get_shipping_region_id();
 	public function get_shipping_country();
+	public function get_shipping_country_id();
 	public function get_shipping_telephone_1();
 	public function get_shipping_telephone_2();
 	public function get_shipping_fax();
@@ -55,7 +57,9 @@ interface TCP_ICartSource {
 	public function get_billing_postcode();
 	public function get_billing_city();
 	public function get_billing_region();
+	public function get_billing_region_id();
 	public function get_billing_country();
+	public function get_billing_country_id();
 	public function get_billing_telephone_1();
 	public function get_billing_telephone_2();
 	public function get_billing_fax();

@@ -202,11 +202,11 @@ $image_link_excerpt				= $thecartpress->get_setting( 'image_link_excerpt' . $suf
 		<p class="description"><?php _e( 'Total flexibility for developers and theme constructors.', 'tcp' ); ?></p>
 
 		<input type="radio" id="use_default_loop_2011" name="use_default_loop" value="yes" <?php checked( 'yes', $use_default_loop ); ?>
-		onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyeleven based)', 'tcp' ); ?></strong></label>
+		onclick="hide_excerpt();" /> <label for="use_default_loop_2011"><strong><?php _e( 'Use TCP default Templates (twentyeleven based)', 'tcp' ); ?></strong></label>
 		<br/>
 
 		<input type="radio" id="use_default_loop_2010" name="use_default_loop" value="yes_2010" <?php checked( 'yes_2010', $use_default_loop ); ?>
-		onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyten based)', 'tcp' ); ?></strong></label>
+		onclick="hide_excerpt();" /> <label for="use_default_loop_2010"><strong><?php _e( 'Use TCP default Templates (twentyten based)', 'tcp' ); ?></strong></label>
 		<p class="description"><?php _e( 'To show Product Pages with default/basic template provided by TheCartPress.', 'tcp' ); ?></p>
 		<p class="description"><?php printf( __( 'If this setting is activated you must configure the grid using <a href="%s">Loop settings</a> menu.', 'tcp' ), add_query_arg( 'page', 'loop_settings', get_admin_url() . 'admin.php' ) ); ?></p>
 		<p class="description"><?php _e( 'TheCartPress provides two version of default templates, one for themes based on "Twenty Eleven" and another for themes based on "Twenty Ten".', 'tcp' ); ?></p>
