@@ -38,7 +38,6 @@ class TCPPluginsList {
 		}
 		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_settings', $menu_slug, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
-//		add_action( "load-$page", array( &$this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -59,7 +58,7 @@ class TCPPluginsList {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php $this->plugin_type == 'payment' ? _e( 'Payment methods', 'tcp' ) : _e( 'Shipping methods', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-' . $this->plugin_type ); ?><h2><?php $this->plugin_type == 'payment' ? _e( 'Payment methods', 'tcp' ) : _e( 'Shipping methods', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

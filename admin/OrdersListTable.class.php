@@ -73,10 +73,13 @@ class OrdersListTable extends WP_List_Table {
 	}
 
 	function column_total( $item ) {
-		$total = - $item->discount_amount;
-		$total = OrdersCosts::getTotalCost( $item->order_id, $total );
-		$total = tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
-		echo apply_filters( 'tcp_orders_list_column_total', $total, $item );
+		//$total = - $item->discount_amount;
+		//$total = OrdersCosts::getTotalCost( $item->order_id, $total );
+		//$total = tcp_format_the_price( OrdersDetails::getTotal( $item->order_id, $total ) );
+
+		$total = Orders::getTotal( $item->order_id );
+		$total = apply_filters( 'tcp_orders_list_column_total', $total, $item );
+		echo tcp_format_the_price( $total, $item->order_currency_code );
 	}
 
 	function column_customer_id( $item ) {
@@ -97,6 +100,10 @@ class OrdersListTable extends WP_List_Table {
 		if ( current_user_can( 'tcp_edit_orders' ) )
 			$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit', 'tcp' ) . '</a>';
 		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'View this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
+		//$url = plugins_url( 'admin/PrintOrder.php', dirname( __FILE__ ) );
+		//$url = add_query_arg( 'sorder_id', $item->order_id, $url );
+		//$actions['inline hide-if-no-js'] = '<a href="' . $url . '" onclick="return false;" class="thickbox" title="' . esc_attr( __( 'View this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
+		
 		echo $this->row_actions( $actions );
 		$this->get_inline_data( $item->order_id );
 	}
@@ -124,7 +131,7 @@ class OrdersListTable extends WP_List_Table {
 
 	private function get_inline_data( $order_id ) { ?>
 		<div class="hidden" id="inline_<?php echo $order_id; ?>">
-		<?php $out = OrderPage::show( $order_id, true, false, true, true );
+		<?php $out = OrderPage::show( $order_id );
 		echo apply_filters( 'tcp_orders_list_get_inline_data', $out, $order_id ); ?>
 		</div><?php
  	}

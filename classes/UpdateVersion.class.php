@@ -123,10 +123,10 @@ class TCPUpdateVersion {
 				$rewrite = $thecartpress->get_setting( 'tag_rewrite', '' );
 				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_PRODUCT_TAG]['rewrite'] = array( 'slug' => $rewrite );
 			}
-			if ( isset( $taxonomy_defs[TCP_SUPPLIER_TAG] ) ) {
-				$rewrite = $thecartpress->get_setting( 'supplier_rewrite', '' );
-				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_SUPPLIER_TAG]['rewrite'] = array( 'slug' => $rewrite );
-			}
+			//if ( isset( $taxonomy_defs[TCP_SUPPLIER_TAG] ) ) {
+			//	$rewrite = $thecartpress->get_setting( 'supplier_rewrite', '' );
+			//	if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_SUPPLIER_TAG]['rewrite'] = array( 'slug' => $rewrite );
+			//}
 			tcp_set_custom_taxonomies( $taxonomy_defs );
 			update_option( 'tcp_version', 117 );
 			//

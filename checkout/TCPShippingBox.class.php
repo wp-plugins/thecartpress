@@ -2,22 +2,22 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/TCPCheckoutBox.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
+require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 class TCPShippingBox extends TCPCheckoutBox {
 	private $errors = array();
@@ -157,7 +157,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			</div> <!-- selected_shipping_area -->
 			
 			<input type="radio" id="selected_shipping_address" name="selected_shipping_address" value="Y"<?php if ( $selected_shipping_address == 'Y' && count( $addresses ) > 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').show();jQuery('#new_shipping_area').hide();" />
-			<label for="selected_shipping_address"><?php _e( 'shipping to the address selected', 'tcp' )?></label>
+			<label for="selected_shipping_address"><?php _e( 'Shipping to the address selected', 'tcp' )?></label>
 			<br /><?php
 		} ?>
 			<span id="p_use_billing_address">
@@ -166,7 +166,6 @@ class TCPShippingBox extends TCPCheckoutBox {
 			<?php if ( $selected_shipping_address == 'BIL' ) $this->showErrorMsg( 'shipping_country_id' );?>
 			<br/>
 			</span>
-
 			<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || ( count( $addresses ) == 0 && $selected_shipping_address != 'BIL' ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
 			<label for="new_shipping_address"><?php _e( 'New shipping address', 'tcp' );?></label>
 			<div id="new_shipping_area" <?php if ( $selected_shipping_address != 'new' ) : ?>style="display:none"<?php endif;?>><?php
@@ -288,91 +287,106 @@ class TCPShippingBox extends TCPCheckoutBox {
 				$email = '';
 			}?>
 				<ul>
-					<li><label for="shipping_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'shipping_firstname' );?></li>
-
-					<li><label for="shipping_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
-					<?php $this->showErrorMsg( 'shipping_lastname' );?></li>
-
-					<li><label for="shipping_company"><?php _e( 'Company', 'tcp' );?>:</label>
-					<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'shipping_company' );?></li>
-					<li><label for="shipping_tax_id_number"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
-					<input type="text" id="shipping_tax_id_number" name="shipping_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="30" />
-					<?php $this->showErrorMsg( 'shipping_tax_id_number' );?></li>
-					<li><label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
-					<?php global $thecartpress;
-					$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
-					$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
-					if ( $shipping_isos ) {
-						$countries = Countries::getSome( $shipping_isos, tcp_get_current_language_iso() );
-					} else {
-						$countries = Countries::getAll( tcp_get_current_language_iso() );
-					}
-					$country_bill = $country_id;
-					if ( $country_bill == '' ) $country_bill = $country;
-					?><select id="shipping_country_id" name="shipping_country_id"><?php //p_use_shipping_address
-					foreach( $countries as $item ) :?>
-						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-					<?php endforeach;?>
-					</select>
+					<li>
+						<label for="shipping_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'shipping_firstname' );?>
 					</li>
 
-					<li><label for="shipping_region_id"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
-					<?php $regions = apply_filters( 'tcp_load_regions_for_shipping', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
-					<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
-						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-					<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
-					<?php endforeach;?>
-					</select>
-					<input type="hidden" id="shipping_region_selected_id" value="<?php echo $region_id;?>"/>
-					<?php $this->showErrorMsg( 'shipping_region_id' );?>
-					<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
-					<?php $this->showErrorMsg( 'shipping_region' );?>
+					<li>
+						<label for="shipping_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
+						<?php $this->showErrorMsg( 'shipping_lastname' );?>
 					</li>
 
-					<li id="li_shipping_city_id"><label for="shipping_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
-					<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-					$cities = apply_filters( 'tcp_load_cities_for_shipping', $cities );
-					if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
-						<select id="shipping_city_id" name="shipping_city_id">
-						<?php foreach( $cities as $id => $city ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
+					<li>
+						<label for="shipping_company"><?php _e( 'Company', 'tcp' );?>:</label>
+						<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'shipping_company' );?>
+					</li>
+					<li>
+						<label for="shipping_tax_id_number"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
+						<input type="text" id="shipping_tax_id_number" name="shipping_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="30" />
+						<?php $this->showErrorMsg( 'shipping_tax_id_number' );?>
+					</li>
+					<li>
+						<label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
+						<?php global $thecartpress;
+						$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
+						$shipping_isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+						if ( $shipping_isos ) {
+							$countries = Countries::getSome( $shipping_isos, tcp_get_current_language_iso() );
+						} else {
+							$countries = Countries::getAll( tcp_get_current_language_iso() );
+						}
+						$country_bill = $country_id;
+						if ( $country_bill == '' ) $country_bill = $country;
+						?><select id="shipping_country_id" name="shipping_country_id"><?php //p_use_shipping_address
+						foreach( $countries as $item ) :?>
+							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
 						<?php endforeach;?>
 						</select>
-						<?php $this->showErrorMsg( 'shipping_city_id' );?>
-					<?php else : ?>
-						<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'shipping_city' );?>
-					<?php endif;?>
 					</li>
-
-					<li><label for="shipping_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'shipping_street' );?></li>
-
-					<li><label for="shipping_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php echo $postcode;?>" size="7" maxlength="7" />
-					<?php $this->showErrorMsg( 'shipping_postcode' );?></li>
-
-					<li><label for="shipping_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label>
-					<input type="text" id="shipping_telephone_1" name="shipping_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'shipping_telephone_1' );?></li>
-
-					<li><label for="shipping_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:</label>
-					<input type="text" id="shipping_telephone_2" name="shipping_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'shipping_telephone_2' );?></li>
-
-					<li><label for="shipping_fax"><?php _e( 'Fax', 'tcp' );?>:</label>
-					<input type="text" id="shipping_fax" name="shipping_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'shipping_fax' );?></li>
-
-					<li><label for="shipping_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
-					<input type="email" id="shipping_email" name="shipping_email" value="<?php echo $email;?>" size="15" maxlength="255" />
-					<?php $this->showErrorMsg( 'shipping_email' );?></li>
+					<li>
+						<label for="shipping_region_id"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
+						<?php $regions = apply_filters( 'tcp_load_regions_for_shipping', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
+						<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+							<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
+							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
+						<?php endforeach;?>
+						</select>
+						<input type="hidden" id="shipping_region_selected_id" value="<?php echo $region_id;?>"/>
+						<?php $this->showErrorMsg( 'shipping_region_id' );?>
+						<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+						<?php $this->showErrorMsg( 'shipping_region' );?>
+					</li>
+					<li id="li_shipping_city_id">
+						<label for="shipping_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
+						<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+						$cities = apply_filters( 'tcp_load_cities_for_shipping', $cities );
+						if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
+							<select id="shipping_city_id" name="shipping_city_id">
+							<?php foreach( $cities as $id => $city ) : ?>
+								<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
+							<?php endforeach;?>
+							</select>
+							<?php $this->showErrorMsg( 'shipping_city_id' );?>
+						<?php else : ?>
+							<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="50" />
+							<?php $this->showErrorMsg( 'shipping_city' );?>
+						<?php endif;?>
+					</li>
+					<li>
+						<label for="shipping_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'shipping_street' );?>
+					</li>
+					<li>
+						<label for="shipping_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php echo $postcode;?>" size="7" maxlength="7" />
+						<?php $this->showErrorMsg( 'shipping_postcode' );?>
+					</li>
+					<li>
+						<label for="shipping_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label>
+						<input type="text" id="shipping_telephone_1" name="shipping_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'shipping_telephone_1' );?>
+					</li>
+					<li>
+						<label for="shipping_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:</label>
+						<input type="text" id="shipping_telephone_2" name="shipping_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'shipping_telephone_2' );?>
+					</li>
+					<li>
+						<label for="shipping_fax"><?php _e( 'Fax', 'tcp' );?>:</label>
+						<input type="text" id="shipping_fax" name="shipping_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'shipping_fax' );?>
+					</li>
+					<li>
+						<label for="shipping_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
+						<input type="email" id="shipping_email" name="shipping_email" value="<?php echo $email;?>" size="15" maxlength="255" />
+						<?php $this->showErrorMsg( 'shipping_email' );?>
+					</li>
 				</ul>
 			</div> <!-- new_shipping_area -->
 			<?php do_action( 'tcp_checkout_shipping' );?>
@@ -391,44 +405,5 @@ class TCPShippingBox extends TCPCheckoutBox {
 		if ( ! preg_match( $pattern, $email ) ) return false;
 		return true;
 	}
-
-	/*//http://www.linuxjournal.com/article/9585
-	private function check_email_address( $email ) {
-		// First, we check that there's one @ symbol, 
-		// and that the lengths are right.
-		if ( ! ereg("^[^@]{1,64}@[^@]{1,255}$", $email ) ) {
-			// Email invalid because wrong number of characters 
-			// in one section or wrong number of @ symbols.
-			return false;
-		}
-		// Split it into sections to make life easier
-		$email_array = explode( "@", $email );
-		if ( count( $email_array ) < 2 )
-			return false;
-		$local_array = explode( ".", $email_array[0] );
-		for ( $i = 0; $i < sizeof( $local_array ); $i++ ) {
-			if ( ! ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&
-			↪'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$",
-			$local_array[$i] ) ) {
-				return false;
-			}
-		}
-		// Check if domain is IP. If not, 
-		// it should be valid domain name
-		if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) {
-			$domain_array = explode(".", $email_array[1]);
-			if (sizeof($domain_array) < 2) {
-				return false; // Not enough parts to domain
-			}
-			for ($i = 0; $i < sizeof($domain_array); $i++) {
-				if ( ! ereg( "^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|
-				↪([A-Za-z0-9]+))$",
-				$domain_array[$i] ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}*/
 }
 ?>

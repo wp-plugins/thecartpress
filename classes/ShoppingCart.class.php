@@ -96,9 +96,9 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Returns the item if it is in the cart
+	 * Returns and item if it's in the cart
 	 */
-	function getItem( $post_id, $option_1_id = 0 , $option_2_id = 0) {
+	function getItem( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			return $this->shopping_cart_items[$shopping_cart_id];
@@ -112,6 +112,16 @@ class ShoppingCart {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Returns and item if it's in the cart
+	 * @since 1.2.5
+	 */
+	function getItemBySku( $sku ) {
+		foreach( $this->shopping_cart_items as $item )
+			if ( $item->getSku() == $sku ) return $item;
+		return false;
 	}
 
 	/**
@@ -447,8 +457,9 @@ class ShoppingCartItem {
 	private $option_2_id;
 	private $count;
 	private $unit_price;
-	//private $tax;
+	private $tax = false;
 	private $unit_weight;
+	private $sku = false; //@since 1.2.5
 	//private $price_to_show; //unit price to show
 	private $is_downloadable = false;
 	private $discount = 0;
@@ -466,6 +477,7 @@ class ShoppingCartItem {
 		$this->unit_price	= round( $unit_price, $decimals );
 		//$this->tax			= round( $tax, 3 );
 		$this->unit_weight	= $unit_weight;
+		$this->setSku( tcp_get_the_sku( $post_id, $option_1_id, $option_2_id ) );
 		//$this->price_to_show = round( $price_to_show, $decimals );
 		do_action( 'tcp_shopping_cart_item_created', $this );
 	}
@@ -494,10 +506,6 @@ class ShoppingCartItem {
 		return tcp_get_the_title( $this->post_id, $this->option_1_id, $this->option_2_id );
 	}
 
-	function getSKU() {
-		return tcp_get_the_sku( $this->post_id, $this->option_1_id, $this->option_2_id );
-	}
-
 	function getCount() {
 		return $this->count;
 	}
@@ -524,12 +532,22 @@ class ShoppingCartItem {
 	}
 
 	function getTax() {
-		return apply_filters( 'tcp_item_get_tax', tcp_get_the_tax( $this->getPostId() ), $this->getPostId() );
+		if ( $this->tax === false ) return apply_filters( 'tcp_item_get_tax', tcp_get_the_tax( $this->getPostId() ), $this->getPostId() );
+		else return $this->tax;
 	}
 
-	//function setTax( $tax ) {
-	//	$this->tax = $tax;
-	//}
+	function setTax( $tax = false ) {
+		$this->tax = $tax;
+	}
+
+	function getSKU() {
+		if ( $this->sku === false ) return tcp_get_the_sku( $this->post_id, $this->option_1_id, $this->option_2_id );
+		else return $this->sku;
+	}
+
+	function setSku( $sku ) {
+		$this->sku = $sku;
+	}
 
 	function getUnitWeight() {
 		return apply_filters( 'tcp_item_get_unit_weight', $this->unit_weight, $this->getPostId() );

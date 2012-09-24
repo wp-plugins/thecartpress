@@ -26,7 +26,7 @@ class PostMetabox {
 
 	function admin_init() {
 		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( &$this, 'show' ), 'post', 'normal', 'high' );
-		add_action( 'delete_post', array( &$this, 'delete' ) );
+		add_action( 'delete_post', array( &$this, 'delete_post' ) );
 	}
 
 	function show() {
@@ -62,7 +62,7 @@ class PostMetabox {
 		<div class="clear"></div>
 	<?php }
 
-	function delete( $post_id ) {
+	function delete_post( $post_id ) {
 		$post = get_post( $post_id );
 		if ( ! wp_verify_nonce( isset( $_POST['tcp_pm_noncename'] ) ? $_POST['tcp_pm_noncename'] : '', 'tcp_pm_noncename' ) ) return array( $post_id, $post );
 		if ( $post->post_type != 'post' ) return array( $post_id, $post );

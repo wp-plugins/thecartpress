@@ -78,15 +78,19 @@ if ( $post_id ) {
 	} elseif ( isset( $_REQUEST['tcp_delete_virtual_file'] ) ) {
 		$file_path = tcp_get_the_file( $post_id );
 		do_action( 'tcp_delete_upload_file', $file_path );
-		if ( unlink( $file_path ) ) {?>
-			<div id="message" class="updated"><p><?php 
-				_e( 'The file has been deleted succesfuly', 'tcp' );
-			?></p></div><?php
-		} else {?>
-			<div id="message" class="error"><p><?php
-				_e( 'The file can not be deleted', 'tcp' );
-			?></p></div><?php
-		}
+		if ( ! file_exists( $file_path ) ) : ?>
+			<div id="message" class="updated"><p>
+				<?php _e( 'The file doesn\'t exist.', 'tcp' ); ?></p>
+			</div>
+		<?php elseif ( unlink( $file_path ) ) : ?>
+			<div id="message" class="updated"><p>
+				<?php _e( 'The file has been deleted succesfuly', 'tcp' ); ?></p>
+			</div>
+		<?php else : ?>
+			<div id="message" class="error"><p>
+				<?php _e( 'The file can not be deleted', 'tcp' ); ?></p>
+			</div>
+		<?php endif;
 		tcp_set_the_file( $post_id, '' );
 		$file_path = '';
 	}

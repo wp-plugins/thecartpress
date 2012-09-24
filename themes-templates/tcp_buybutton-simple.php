@@ -50,13 +50,13 @@ else $action = '';
 
 		</div>
 
-	<?php endif; ?>	
+	<?php endif; ?>
 
 	<?php if ( function_exists( 'tcp_has_dynamic_options' ) && tcp_has_dynamic_options( $post_id ) ) : ?>
 
 		<div class="tcp-buy-dynamic-options">
 
-			<?php tcp_the_buy_button_dyamic_options( $post_id ); ?>
+			<?php tcp_the_buy_button_dynamic_options( $post_id ); ?>
 
 		</div>
 

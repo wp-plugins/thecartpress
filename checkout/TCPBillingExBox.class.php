@@ -2,22 +2,22 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/TCPCheckoutBox.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
+require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 class TCPBillingExBox extends TCPCheckoutBox {
 	private $errors = array();
@@ -43,9 +43,9 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			$see_company		= isset( $settings['see_company'] ) ? $settings['see_company'] : true;
 			$req_company		= isset( $settings['req_company'] ) ? $settings['req_company'] : false;
 			$see_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
-			$req_tax_id_number	= isset( $settings['req_tax_id_number'] ) ? $settings['req_tax_id_number'] : true;
+			$req_tax_id_number	= isset( $settings['req_tax_id_number'] ) ? $settings['req_tax_id_number'] : false;
 			$see_region			= isset( $settings['see_region'] ) ? $settings['see_region'] : true;
-			$req_region			= isset( $settings['req_region'] ) ? $settings['req_region'] : true;
+			$req_region			= isset( $settings['req_region'] ) ? $settings['req_region'] : false;
 			$see_telephone_1	= isset( $settings['see_telephone_1'] ) ? $settings['see_telephone_1'] : true;
 			$req_telephone_1	= isset( $settings['req_telephone_1'] ) ? $settings['req_telephone_1'] : false;
 			$see_telephone_2	= isset( $settings['see_telephone_2'] ) ? $settings['see_telephone_2'] : true;
@@ -157,7 +157,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		$see_company		= isset( $settings['see_company'] ) ? $settings['see_company'] : true;
 		$req_company		= isset( $settings['req_company'] ) ? $settings['req_company'] : false;
 		$see_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
-		$req_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
+		$req_tax_id_number	= isset( $settings['req_tax_id_number'] ) ? $settings['req_tax_id_number'] : false;
 		$see_region			= isset( $settings['see_region'] ) ? $settings['see_region'] : true;
 		$req_region			= isset( $settings['req_region'] ) ? $settings['req_region'] : true;
 		$see_telephone_1	= isset( $settings['see_telephone_1'] ) ? $settings['see_telephone_1'] : true;
@@ -224,25 +224,25 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			<span class="description"><?php _e( 'This option only must be activated if the shipping box is not used', 'tcp' );?></span></td>
 		</tr>
 		</tbody>
-		</table><?php
-		return true;
+		</table>
+		<?php return true;
 	}
 
 	function save_config_settings() {
 		$settings = array(
-			'see_company'		=> isset( $_REQUEST['see_company'] ) ? $_REQUEST['see_company'] == 'yes' : false,
-			'req_company'		=> isset( $_REQUEST['req_company'] ) ? $_REQUEST['req_company'] == 'yes' : false,
-			'see_tax_id_number'	=> isset( $_REQUEST['see_tax_id_number'] ) ? $_REQUEST['see_tax_id_number'] == 'yes' : false,
-			'req_tax_id_number'	=> isset( $_REQUEST['req_tax_id_number'] ) ? $_REQUEST['req_tax_id_number'] == 'yes' : false,
-			'see_region'		=> isset( $_REQUEST['see_region'] ) ? $_REQUEST['see_region'] == 'yes' : false,
-			'req_region'		=> isset( $_REQUEST['req_region'] ) ? $_REQUEST['req_region'] == 'yes' : false,
-			'see_telephone_1'	=> isset( $_REQUEST['see_telephone_1'] ) ? $_REQUEST['see_telephone_1'] == 'yes' : false,
-			'req_telephone_1'	=> isset( $_REQUEST['req_telephone_1'] ) ? $_REQUEST['req_telephone_1'] == 'yes' : false,
-			'see_telephone_2'	=> isset( $_REQUEST['see_telephone_2'] ) ? $_REQUEST['see_telephone_2'] == 'yes' : false,
-			'req_telephone_2'	=> isset( $_REQUEST['req_telephone_2'] ) ? $_REQUEST['req_telephone_2'] == 'yes' : false,
-			'see_fax'			=> isset( $_REQUEST['see_fax'] ) ? $_REQUEST['see_fax'] == 'yes' : false,
-			'req_fax'			=> isset( $_REQUEST['req_fax'] ) ? $_REQUEST['req_fax'] == 'yes' : false,
-			'use_as_shipping'	=> isset( $_REQUEST['use_as_shipping'] ) ? $_REQUEST['use_as_shipping'] == 'yes' : false,
+			'see_company'		=> isset( $_REQUEST['see_company'] ),// ? $_REQUEST['see_company'] == 'yes' : false,
+			'req_company'		=> isset( $_REQUEST['req_company'] ),// ? $_REQUEST['req_company'] == 'yes' : false,
+			'see_tax_id_number'	=> isset( $_REQUEST['see_tax_id_number'] ),// ? $_REQUEST['see_tax_id_number'] == 'yes' : false,
+			'req_tax_id_number'	=> isset( $_REQUEST['req_tax_id_number'] ),// ? $_REQUEST['req_tax_id_number'] == 'yes' : false,
+			'see_region'		=> isset( $_REQUEST['see_region'] ),// ? $_REQUEST['see_region'] == 'yes' : false,
+			'req_region'		=> isset( $_REQUEST['req_region'] ),// ? $_REQUEST['req_region'] == 'yes' : false,
+			'see_telephone_1'	=> isset( $_REQUEST['see_telephone_1'] ),// ? $_REQUEST['see_telephone_1'] == 'yes' : false,
+			'req_telephone_1'	=> isset( $_REQUEST['req_telephone_1'] ),// ? $_REQUEST['req_telephone_1'] == 'yes' : false,
+			'see_telephone_2'	=> isset( $_REQUEST['see_telephone_2'] ),// ? $_REQUEST['see_telephone_2'] == 'yes' : false,
+			'req_telephone_2'	=> isset( $_REQUEST['req_telephone_2'] ),// ? $_REQUEST['req_telephone_2'] == 'yes' : false,
+			'see_fax'			=> isset( $_REQUEST['see_fax'] ),// ? $_REQUEST['see_fax'] == 'yes' : false,
+			'req_fax'			=> isset( $_REQUEST['req_fax'] ),// ? $_REQUEST['req_fax'] == 'yes' : false,
+			'use_as_shipping'	=> isset( $_REQUEST['use_as_shipping'] ),// ? $_REQUEST['use_as_shipping'] == 'yes' : false,
 		);
 		if ( ! $settings['see_company'] ) $settings['req_company'] = false;
 		if ( ! $settings['see_tax_id_number'] ) $settings['req_tax_id_number'] = false;
@@ -433,43 +433,54 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				$email = '';
 			}?>
 				<ul>
-					<li><label for="billing_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_firstname' );?></li>
-
-					<li><label for="billing_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
-					<?php $this->showErrorMsg( 'billing_lastname' );?></li>
-
-					<?php if ( $see_company ) :?>
-						<li><label for="billing_company"><?php _e( 'Company', 'tcp' );?>:<?php if ( $req_company ) :?><em>*</em><?php endif;?></label>
-						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_company' );?></li>
-					<?php endif;?>
-					<?php if ( $see_tax_id_number ) :?>
-						<li><label for="billing_tax_id_number"><?php _e( 'Tax id number', 'tcp' );?>:</label>
-						<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_tax_id_number' );?></li>
-					<?php endif;?>
-					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
-					<?php global $thecartpress;
-					$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
-					$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
-					if ( $billing_isos ) {
-						$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
-					} else {
-						$countries = Countries::getAll( tcp_get_current_language_iso() );
-					}
-					$country_bill = $country_id;
-					if ( $country_bill == '' ) $country_bill = $country;
-					?><select id="billing_country_id" name="billing_country_id"><?php //p_use_billing_address
-					foreach( $countries as $item ) :?>
-						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-					<?php endforeach;?>
-					</select>
+					<li>
+						<label for="billing_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_firstname' );?>
 					</li>
-					<?php if ( $see_region ) :?>
-						<li><label for="billing_region_id"><?php _e( 'Region', 'tcp' );?>:<?php if ( $req_region ) :?><em>*</em><?php endif;?></label>
+					<li>
+						<label for="billing_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
+						<?php $this->showErrorMsg( 'billing_lastname' );?>
+					</li>
+				<?php if ( $see_company ) :?>
+					<li>
+						<label for="billing_company"><?php _e( 'Company', 'tcp' );?>:
+						<?php if ( $req_company ) :?><em>*</em><?php endif;?></label>
+						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_company' );?>
+					</li>
+				<?php endif;?>
+				<?php if ( $see_tax_id_number ) :?>
+					<li>
+						<label for="billing_tax_id_number"><?php _e( 'Tax id number', 'tcp' );?>
+						<?php if ( $req_tax_id_number ) : ?><em>*</em><?php endif; ?>:</label>
+						<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_tax_id_number' );?>
+					</li>
+				<?php endif;?>
+					<li>
+						<label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
+						<?php global $thecartpress;
+						$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
+						$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+						if ( $billing_isos ) {
+							$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
+						} else {
+							$countries = Countries::getAll( tcp_get_current_language_iso() );
+						}
+						$country_bill = $country_id;
+						if ( $country_bill == '' ) $country_bill = $country; ?>
+						<select id="billing_country_id" name="billing_country_id">
+						<?php foreach( $countries as $item ) :?>
+							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
+						<?php endforeach;?>
+						</select>
+					</li>
+				<?php if ( $see_region ) :?>
+					<li>
+						<label for="billing_region_id"><?php _e( 'Region', 'tcp' );?>:
+						<?php if ( $req_region ) :?><em>*</em><?php endif;?></label>
 						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 							<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
@@ -481,53 +492,63 @@ class TCPBillingExBox extends TCPCheckoutBox {
 						<?php $this->showErrorMsg( 'billing_region_id' );?>
 						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
 						<?php $this->showErrorMsg( 'billing_region' );?>
-						</li>
-					<?php endif;?>
-					<li id="li_billing_city_id"><label for="billing_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
-					<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-					$cities = apply_filters( 'tcp_load_cities_for_billing', $cities );
-					if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
-						<select id="billing_city_id" name="billing_city_id">
-						<?php foreach( $cities as $id => $city ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
-						<?php endforeach;?>
-						</select>
-						<?php $this->showErrorMsg( 'billing_city_id' );?>
-					<?php else : ?>
-						<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_city' );?>
-					<?php endif;?>
 					</li>
-
-					<li><label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_street' );?></li>
-
-					<li><label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="5" maxlength="10" />
-					<?php $this->showErrorMsg( 'billing_postcode' );?></li>
-
-					<?php if ( $see_telephone_1 ) :?>
-						<li><label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:<?php if ( $req_telephone_1 ) :?><em>*</em><?php endif;?></label>
+				<?php endif;?>
+					<li id="li_billing_city_id">
+						<label for="billing_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
+						<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+						$cities = apply_filters( 'tcp_load_cities_for_billing', $cities );
+						if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
+							<select id="billing_city_id" name="billing_city_id">
+							<?php foreach( $cities as $id => $city ) : ?>
+								<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
+							<?php endforeach;?>
+							</select>
+							<?php $this->showErrorMsg( 'billing_city_id' );?>
+						<?php else : ?>
+							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="50" />
+							<?php $this->showErrorMsg( 'billing_city' );?>
+						<?php endif;?>
+					</li>
+					<li>
+						<label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_street' );?>
+					</li>
+					<li>
+						<label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
+						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="5" maxlength="10" />
+						<?php $this->showErrorMsg( 'billing_postcode' );?>
+					</li>
+				<?php if ( $see_telephone_1 ) :?>
+					<li>
+						<label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:
+						<?php if ( $req_telephone_1 ) :?><em>*</em><?php endif;?></label>
 						<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_telephone_1' );?></li>
-					<?php endif;?>
-
-					<?php if ( $see_telephone_2 ) :?>
-						<li><label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:<?php if ( $req_telephone_2 ) :?><em>*</em><?php endif;?></label>
+						<?php $this->showErrorMsg( 'billing_telephone_1' );?>
+					</li>
+				<?php endif;?>
+				<?php if ( $see_telephone_2 ) :?>
+					<li>
+						<label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:
+						<?php if ( $req_telephone_2 ) :?><em>*</em><?php endif;?></label>
 						<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_telephone_2' );?></li>
-					<?php endif;?>
-
-					<?php if ( $see_fax ) :?>
-						<li><label for="billing_fax"><?php _e( 'Fax', 'tcp' );?>:<?php if ( $req_fax ) :?><em>*</em><?php endif;?></label>
+						<?php $this->showErrorMsg( 'billing_telephone_2' );?>
+					</li>
+				<?php endif;?>
+				<?php if ( $see_fax ) :?>
+					<li>
+						<label for="billing_fax"><?php _e( 'Fax', 'tcp' );?>:
+						<?php if ( $req_fax ) :?><em>*</em><?php endif;?></label>
 						<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_fax' );?></li>
-					<?php endif;?>
-
-					<li><label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
-					<input type="email" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
-					<?php $this->showErrorMsg( 'billing_email' );?></li>
+						<?php $this->showErrorMsg( 'billing_fax' );?>
+					</li>
+				<?php endif;?>
+					<li>
+						<label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
+						<input type="email" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
+						<?php $this->showErrorMsg( 'billing_email' );?>
+					</li>
 				</ul>
 			</div> <!-- new_billing_area -->
 			<?php do_action( 'tcp_checkout_billing' );?>
@@ -546,44 +567,5 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		if ( ! preg_match( $pattern, $email ) ) return false;
 		return true;
 	}
-
-	/*//http://www.linuxjournal.com/article/9585
-	private function check_email_address( $email ) {
-		// First, we check that there's one @ symbol, 
-		// and that the lengths are right.
-		if ( ! ereg("^[^@]{1,64}@[^@]{1,255}$", $email ) ) {
-			// Email invalid because wrong number of characters 
-			// in one section or wrong number of @ symbols.
-			return false;
-		}
-		// Split it into sections to make life easier
-		$email_array = explode( "@", $email );
-		if ( count( $email_array ) < 2 )
-			return false;
-		$local_array = explode( ".", $email_array[0] );
-		for ( $i = 0; $i < sizeof( $local_array ); $i++ ) {
-			if ( ! ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&
-			↪'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$",
-			$local_array[$i] ) ) {
-				return false;
-			}
-		}
-		// Check if domain is IP. If not, 
-		// it should be valid domain name
-		if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) {
-			$domain_array = explode(".", $email_array[1]);
-			if (sizeof($domain_array) < 2) {
-				return false; // Not enough parts to domain
-			}
-			for ($i = 0; $i < sizeof($domain_array); $i++) {
-				if ( ! ereg( "^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|
-				↪([A-Za-z0-9]+))$",
-				$domain_array[$i] ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}*/
 }
 ?>

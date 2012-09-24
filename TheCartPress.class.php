@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.3
+Version: 1.2.5
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -707,6 +707,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$this->settings = array(
 				'legal_notice'				=> __( 'Checkout notice', 'tcp' ),
 				'stock_management'			=> false,
+				'stock_adjustment'			=> 1,
 				'disable_shopping_cart'		=> false,
 				'disable_ecommerce'			=> false,
 				'user_registration'			=> false,
@@ -829,7 +830,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function load_settings() {
-		$this->settings = get_option( 'tcp_settings' );
+		$this->settings = get_option( 'tcp_settings', array() );
 	}
 
 	function after_setup_theme() {
@@ -899,7 +900,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				}
 			}
 		}
-		if ( get_option( 'tcp_rewrite_rules' ) ) {
+		if ( get_option( 'tcp_rewrite_rules', false ) ) {
 			//global $wp_rewrite;
 			//$wp_rewrite->flush_rules();
 			flush_rewrite_rules();

@@ -18,7 +18,7 @@
 
 function tcp_create_id( $post_type, $label ) {
 	//$internal_id = 'tcp_' . str_replace ( ' ' , '_' , $label );
-	$internal_id = str_replace ( ' ' , '_' , $label );
+	$internal_id = sanitize_key( $label );
 	$i = 0;
 	while ( tcp_exists_custom_field_def( $post_type, $internal_id ) ) {
 		$internal_id = $internal_id . '_' . $i++;

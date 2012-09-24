@@ -168,7 +168,7 @@ class Orders {
 			'shipping_city_id'		=> $order['shipping_city_id'],
 			'shipping_region'		=> $order['shipping_region'],
 			'shipping_region_id'	=> $order['shipping_region_id'],
-			'shipping_postcode'		=> Orders::removeSpaces( $order['shipping_postcode'] ),
+			'shipping_postcode'		=> Orders::trimSpaces( $order['shipping_postcode'] ),
 			'shipping_country'		=> $order['shipping_country'],
 			'shipping_country_id'	=> $order['shipping_country_id'],
 			'shipping_telephone_1'	=> $order['shipping_telephone_1'],
@@ -184,7 +184,7 @@ class Orders {
 			'billing_city_id'		=> $order['billing_city_id'],
 			'billing_region'		=> $order['billing_region'],
 			'billing_region_id'		=> $order['billing_region_id'],
-			'billing_postcode'		=> Orders::removeSpaces( $order['billing_postcode'] ),
+			'billing_postcode'		=> Orders::trimSpaces( $order['billing_postcode'] ),
 			'billing_country'		=> $order['billing_country'],
 			'billing_country_id'	=> $order['billing_country_id'],
 			'billing_telephone_1'	=> $order['billing_telephone_1'],
@@ -248,6 +248,8 @@ class Orders {
 	}
 
 	static function quickEdit( $order_id, $new_status, $new_code_tracking ) {
+		$order_id = apply_filters( 'tcp_order_quick_edit_before', $order_id, $new_status, $new_code_tracking );
+		if ( $order_id === false ) return false;
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -258,10 +260,13 @@ class Orders {
 				'order_id'		=> $order_id,
 			), 
 			array( '%s', '%s', '%s' ), array( '%d' ) );
+		do_action( 'tcp_order_quick_edit', $order_id, $new_status, $new_code_tracking );
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
 	static function edit( $order_id, $new_status, $new_code_tracking, $comment, $internal_comment ) {
+		$order_id = apply_filters( 'tcp_order_edit_before', $order_id, $new_status, $new_code_tracking, $comment, $internal_comment );
+		if ( $order_id === false ) return false;
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -274,10 +279,13 @@ class Orders {
 				'order_id'		=> $order_id,
 			), 
 			array( '%s', '%s', '%s', '%s', ), array( '%d' ) );
+		do_action( 'tcp_order_edit_after', $order_id, $new_status, $new_code_tracking, $comment, $internal_comment );
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
 	static function editStatus( $order_id, $new_status, $transaction_id = '', $internal_comment = '' ) {
+		$order_id = apply_filters( 'tcp_order_edit_status_before', $order_id, $new_status, $transaction_id, $internal_comment );
+		if ( $order_id === false ) return false;
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -289,6 +297,7 @@ class Orders {
 				'order_id'		=> $order_id,
 			), 
 			array( '%s', '%s', '%s' ), array( '%d' ) );
+		do_action( 'tcp_order_edit_status_after', $order_id, $new_status, $transaction_id, $internal_comment );
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
@@ -356,8 +365,12 @@ class Orders {
 		$wpdb->query( $wpdb->prepare( $sql, $order_detail_id ) );
 	}
 
-	static function removeSpaces( $postcode ) {
-		return str_replace( ' ', '', $postcode );
+	/**
+	 * numeric US ZIP codes need no spaces but UK/Canadian postal codes generally have a space e.g. W1X 2GH 
+	 * plus some numeric places have spaces e.g. greece or netherlands. This code was str_replace( ' ', '', $postcode );
+	 */ 
+	static function trimSpaces( $postcode ) {
+		return preg_replace( '/\s+/', ' ', trim( $postcode ) );		 
 	}
 
 	/**
@@ -417,6 +430,76 @@ class Orders {
 			$amount += Orders::getTotal( $order->order_id );
 		}
 		return array( $amount, count( $orders ) );
+	}
+
+	/**
+	 *	Used to set the addresses. This is needed if you use Paypal or similar
+	 *      and the only address you want to use is provided by the payment gateway
+	 *      after payment has processed OK. We do not trim or clean zip codes as we 
+	 *	assume Payment gateway set these correctly
+	 *
+	 * @author: Lincoln Phipps, Open Mutual Limited
+	 */
+	static function editAddresses( $order_id, $newaddresses) {
+		global $wpdb;
+		$result = $wpdb->update( $wpdb->prefix . 'tcp_orders',
+			array(
+			'shipping_firstname'	=> $newaddresses['shipping_firstname'],
+			'shipping_street'		=> $newaddresses['shipping_street'],
+			'shipping_lastname'		=> $newaddresses['shipping_lastname'],
+			'shipping_company'		=> $newaddresses['shipping_company'],			
+			'shipping_city'			=> $newaddresses['shipping_city'],
+			'shipping_city_id'		=> $newaddresses['shipping_city_id'],
+			'shipping_region'		=> $newaddresses['shipping_region'],
+			'shipping_region_id'	=> $newaddresses['shipping_region_id'],
+			'shipping_postcode'		=> $newaddresses['shipping_postcode'] ,
+			'shipping_country'		=> $newaddresses['shipping_country'],
+			'shipping_country_id'	=> $newaddresses['shipping_country_id'],
+			'shipping_telephone_1'	=> $newaddresses['shipping_telephone_1'],
+			'shipping_telephone_2'	=> $newaddresses['shipping_telephone_2'],
+			'shipping_fax'			=> $newaddresses['shipping_fax'],
+			'shipping_email'		=> $newaddresses['shipping_email'],
+			'billing_firstname'		=> $newaddresses['billing_firstname'],
+			'billing_lastname'		=> $newaddresses['billing_lastname'],
+			'billing_company'		=> $newaddresses['billing_company'],
+			'billing_tax_id_number'	=> $newaddresses['billing_tax_id_number'],
+			'billing_street'		=> $newaddresses['billing_street'],
+			'billing_city'			=> $newaddresses['billing_city'],
+			'billing_city_id'		=> $newaddresses['billing_city_id'],
+			'billing_region'		=> $newaddresses['billing_region'],
+			'billing_region_id'		=> $newaddresses['billing_region_id'],
+			'billing_postcode'		=> $newaddresses['billing_postcode'] ,
+			'billing_country'		=> $newaddresses['billing_country'],
+			'billing_country_id'	=> $newaddresses['billing_country_id'],
+			'billing_telephone_1'	=> $newaddresses['billing_telephone_1'],
+			'billing_telephone_2'	=> $newaddresses['billing_telephone_2'],
+			'billing_fax'			=> $newaddresses['billing_fax'],
+			'billing_email'			=> $newaddresses['billing_email'],
+			),
+			array(
+				'order_id'		=> $order_id,
+			), 
+			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
+				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
+				 '%s', '%s', '%s', '%s', '%s' ), array( '%d' ) ); 
+		return $result;
+	}  /* editAddresses */
+
+	/**
+	 * @returns array( shipping_firstname, shipping_lastname, billing_firstname, billing_lastname )
+	 * used to detect missing addresses which are then stomped on by editAddresses() if we get a Paypal shipping addres
+	 */
+	static function getAddressNames( $order_id ) {
+		$order = Orders::get( $order_id );
+		if ( $order ) {
+			$detailed['shipping_firstname']	= $order->shipping_firstname;
+			$detailed['shipping_lastname']	= $order->shipping_lastname;
+			$detailed['billing_firstname']	= $order->billing_firstname;
+			$detailed['billing_lastname']	= $order->billing_lastname;
+			return $detailed;
+		} else {
+			return false;
+		}
 	}
 }
 ?>

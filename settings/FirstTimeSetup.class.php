@@ -26,7 +26,7 @@ class TCPFirstTimeSetup {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 		global $tcp_miranda;
-		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'First time setup', 'tcp' ), false, array( 'TCPFirstTimeSetup', __FILE__ ) );//, plugins_url( 'thecartpress/images/miranda/first_time_settings_48.png' ) );
+		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'First time setup', 'tcp' ), false, array( 'TCPFirstTimeSetup', __FILE__ ), plugins_url( 'thecartpress/images/miranda/first_settings_48.png' ) );
 	}
 
 	function plugin_action_links( $links, $file ) {
@@ -68,7 +68,7 @@ class TCPFirstTimeSetup {
 
 <div class="wrap">
 
-	<?php screen_icon(); ?><h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-first' ); ?><h2><?php _e( 'First time setup', 'tcp' ); ?></h2>
 
 <?php if ( ! empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">

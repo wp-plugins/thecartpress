@@ -2,22 +2,22 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( __FILE__ ) . '/TCPCheckoutBox.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
+require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 
 class TCPPaymentMethodsBox extends TCPCheckoutBox {
 	private $errors = array();
@@ -115,8 +115,10 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		$selected_billing_address = isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ? $_SESSION['tcp_checkout']['billing']['selected_billing_address'] : false;
 		if ( $selected_billing_address == 'new' ) {
 			$billing_country = $_SESSION['tcp_checkout']['billing']['billing_country_id'];
-		} else { //if ( $selected_billing_address == 'Y' ) {
+		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] )) { //if ( $selected_billing_address == 'Y' ) {
 			$billing_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
+		} else {
+			$billing_country = '';
 		}
 		$shipping_country = '';
 		$selected_shipping_address = isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : false;
@@ -124,8 +126,10 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 			$shipping_country = $_SESSION['tcp_checkout']['shipping']['shipping_country_id'];
 		} elseif ( $selected_shipping_address == 'BIL' ) {
 			$shipping_country = $billing_country;
-		} elseif ( $selected_shipping_address == 'Y' ) {
+		} elseif ( $selected_shipping_address == 'Y' && isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] ) ) {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
+		} else {
+			$shipping_country = '';
 		}
 		$applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );

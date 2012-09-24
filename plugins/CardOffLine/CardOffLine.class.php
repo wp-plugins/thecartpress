@@ -61,17 +61,12 @@ class TCPCardOffLine extends TCP_Plugin {
 		$return_url			= add_query_arg( 'order_id', $order_id, $return_url );
 		$store_part_number	= isset( $data['store_part_number'] ) ? $data['store_part_number'] : false;
 		$new_status			= $data['new_status'];?>
-
 		<p><?php _e( 'Off line payment:', 'tcp' );?></p>
-
 		<?php if ( isset( $data['notice'] ) ) echo '<p>', $data['notice'], '</p>'; ?>
-
 		<form name="tcp_offline_payment" id="tcp_offline_payment" action="<?php echo $notify_url;?>" method="post">
-
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
 		<input type="hidden" name="return_url" value="<?php echo $return_url;?>" />
 		<input type="hidden" name="new_status" value="<?php echo $new_status;?>" />
-
 		<table class="tcp_card_offline_payment">
 		<tbody>
 			<tr valign="top">
@@ -89,26 +84,18 @@ class TCPCardOffLine extends TCP_Plugin {
 			</th>
 			<td class="tcp_card_number">
 				<input type="text" id="card_number_1" name="card_number_1" size="4" maxlength="4" />
-
 				<?php if ( ! $store_part_number ) : ?>
 				<input type="text" id="card_number_2" name="card_number_2" size="4" maxlength="4" />
 				<input type="text" id="card_number_3" name="card_number_3" size="4" maxlength="4" />
-
 				<?php else : ?>
-
 				<input type="text" id="card_number_2" name="card_number_2" size="4" value="xxxx" readonly />
 				<input type="text" id="card_number_3" name="card_number_3" size="4" value="xxxx" readonly />
-
 				<?php endif; ?>
-
 				<input type="text" id="card_number_4" name="card_number_4" size="4" maxlength="4" />
 				<label><?php _e( 'cvc', 'tcp' );?>: <input type="text" id="cvc" name="cvc" size="4" maxlength="4" /></label>
-
 				<p class="error tcp_error" id="tcp_error_offline"></p>
-
 			</td>
 		</tr>
-
 		<tr valign="top">
 			<th scope="row" class="tcp_expiration_date">
 				<label for="expiration_month"><?php _e( 'Expiration date', 'tcp' );?>:</label>
@@ -116,17 +103,20 @@ class TCPCardOffLine extends TCP_Plugin {
 			<td class="tcp_expiration_date">
 				<label for="expiration_month"><?php _e( 'Month', 'tcp' );?>:</label>
 				<select id="expiration_month" name="expiration_month" >
-					<?php for($i = 1; $i < 13; $i++)
-					echo '<option value="', $i, '">', $i, '</option>', "\n";?>
+					<?php $current_month = (int)date( 'm' );
+					for($i = 1; $i < 13; $i++) : ?>
+					<option value="<?php $i; ?>" <?php selected( $current_month, $i ); ?>><?php echo $i; ?></option>
+					<?php endfor; ?>
 				</select>&nbsp;
-				<label for="expiration_month"><?php _e( 'Year', 'tcp' );?>:</label>
+				<label for="expiration_year"><?php _e( 'Year', 'tcp' );?>:</label>
+				<?php $current_year = date( 'Y' ); ?>
 				<select id="expiration_year" name="expiration_year" >
-					<?php for($i = 01; $i < 99; $i++)
-					echo '<option value="', $i, '">', $i, '</option>', "\n";?>
+					<?php for( $i = $current_year - 1; $i <= $current_year + 10; $i++ ) : ?>
+					<option value="<?php echo $i; ?>" <?php selected( $current_year, $i ); ?>><?php echo $i; ?></option>
+					<?php endfor; ?>
 				</select>
 			</td>
 		</tr>
-
 		<tr valign="top">
 			<th scope="row" class="tcp_card_type">
 				<label for="card_type"><?php _e( 'Card type', 'tcp' );?>:</label>
@@ -156,7 +146,6 @@ class TCPCardOffLine extends TCP_Plugin {
 		</tr>
 		</tbody>
 		</table>
-
 		<script>
 		//http://sites.google.com/site/abapexamples/javascript/luhn-validation
 		String.prototype.luhnCheck = function() {
@@ -188,9 +177,7 @@ class TCPCardOffLine extends TCP_Plugin {
 			}
 		}
 		</script>
-
 		<p class="tcp_card_offline_execute"><input type="button" onclick="tcp_checkCard();" name="tcp_send_off_line_info" value="<?php echo __( 'Send', 'tcp' );?>" class="button-primary"/></p>
-
 		</form>
 		<?php
 	}

@@ -26,7 +26,7 @@ class TCPCheckoutManager {
 	public static $TOP_BAR = 'TOP_BAR';
 	public static $ACCORDION = 'ACCORDION';
 
-	private $checkout_type;
+	protected $checkout_type;
 
 	public static $default_steps = array(
 		'TCPSigninBox',
@@ -38,7 +38,7 @@ class TCPCheckoutManager {
 		'TCPNoticeBox',
 	);
 
-	private $steps = array();
+	protected $steps = array();
 
 	function __construct( $checkout_type = 'ACCORDION' ) { //ACCORDION, TOP_BAR
 		$this->checkout_type = $checkout_type;
@@ -53,6 +53,10 @@ class TCPCheckoutManager {
 
 		$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 0;
 		$box = $this->get_box( $step );
+		if ( ! $box) {
+			$step = 0;
+			$box = $this->get_box( $step );
+		}
 		if ( isset( $_REQUEST['tcp_continue'] ) ) {
 			if ( ! $box->after_action() ) {
 				return $this->show_box( $box, $step );
@@ -73,7 +77,9 @@ class TCPCheckoutManager {
 	}
 
 	static function get_steps() {
-		return get_option( 'tcp_checkout_steps', TCPCheckoutManager::$default_steps );
+		$default_steps = TCPCheckoutManager::$default_steps;
+		$steps = get_option( 'tcp_checkout_steps', $default_steps );
+		return apply_filters( 'tcp_checkout_get_defaults', $steps );
 	}
 
 	static function update_steps( $steps) {
@@ -81,7 +87,8 @@ class TCPCheckoutManager {
 	}
 
 	static function restore_default() {
-		update_option( 'tcp_checkout_steps', TCPCheckoutManager::$default_steps );
+		$default_steps = TCPCheckoutManager::$default_steps;
+		update_option( 'tcp_checkout_steps', apply_filters( 'tcp_checkout_restore_defaults', $default_steps ) );
 	}
 
 	static function add_step( $class_name ) {
@@ -105,7 +112,7 @@ class TCPCheckoutManager {
 		TCPCheckoutManager::update_steps( $new_steps );
 	}
 
-	private function show_next_box( $box, $step ) {
+	protected function show_next_box( $box, $step ) {
 		$step++;
 		$next_box = $this->get_box( $step );
 		if ( $next_box ) {
@@ -121,7 +128,7 @@ class TCPCheckoutManager {
 		}
 	}
 
-	private function show_previous_box( $box, $step ) {
+	protected function show_previous_box( $box, $step ) {
 		if ( $step == 0 ) {
 			return $this->show_next_box( $box, 0 );
 		} else {
@@ -137,135 +144,103 @@ class TCPCheckoutManager {
 		}
 	}
 
-	private	function show_box( $box, $step = 0 ) {
+	protected function show_box( $box, $step = 0 ) {
 		global $thecartpress;
 		$user_registration = $thecartpress->get_setting( 'user_registration', false );
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
-
 <div class="checkout" id="checkout">
-
 		<?php $this->show_header( $box, $step );
-		if ( $step == count( $this->steps ) ) : //last step, no return ?>
-
-			<?php echo $this->create_order(); //create the order, show payment form ?>
-
-		<?php else : ?>
-
-			<?php if ( $box->is_form_encapsulated() ) : ?>
+		if ( $step == count( $this->steps ) ) : //last step, no return
+			echo $this->create_order(); //create the order, show payment form
+		else :
+			 if ( $box->is_form_encapsulated() ) : ?>
 	<form method="post">
 			<?php endif; ?>
-
-	<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
-
-		<h3>
-			<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
-		</h3>
-
-		<?php $see_continue_button = $box->show();
-
-		if ( ! $box->is_form_encapsulated() ) $html = '<form method="post">';
-		else $html = '';
-
-		if ( $step > 0 ) $html .= '<input type="submit" name="tcp_back" id="tcp_back" value="' . __( 'Back', 'tcp' ) . '" class="tcp_checkout_button" />';
-
-		if ( $see_continue_button ) {
-			if ( $step < count( $this->steps ) - 1 ) {
-				$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Continue', 'tcp' ) . '" class="tcp_checkout_button" />';
-			} elseif ( $step == count( $this->steps ) - 1 ) {
-	   			$html .= '<input type="submit" name="tcp_continue" id="tcp_continue" value="' . __( 'Purchase', 'tcp' ) . '" class="tcp_checkout_button" />';
-			}
-		}
-
-		$html .= '<input type="hidden" name="step" value="' . $step . '" />';
-
-		$html = apply_filters( 'tcp_show_box_back_continue', $html, $step );
-
-		if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
-
-		if ( strlen( $html ) > 0 ) : ?>
-			<span class="tcp_back_continue"><?php echo $html; ?></span>
-		<?php endif; ?>
-
-		<?php $this->show_footer( $box, $step ); ?>
-
-	</div><!-- <?php echo $box->get_class(); ?> -->
-
-			<?php if ( $box->is_form_encapsulated() ) : ?>
-	</form>
+		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
+			<h3>
+				<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
+			</h3>
+			<?php $see_continue_button = $box->show();
+			//Create continue and back buttons
+			ob_start();
+			if ( ! $box->is_form_encapsulated() ) : ?>
+			<form method="post">
+			<?php endif;
+			if ( $step > 0 ) : ?>
+			<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="tcp_checkout_button" />
+			<?php endif;
+			if ( $see_continue_button ) :
+				if ( $step < count( $this->steps ) - 1 ) : ?>
+					<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button" />
+				<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
+		   			<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button" />
+				<?php endif;
+			endif; ?>
+			<input type="hidden" name="step" value="<?php echo $step; ?>" />
+			<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step );
+			if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
+			if ( strlen( $html ) > 0 ) : ?>
+				<span class="tcp_back_continue"><?php echo $html; ?></span>
 			<?php endif; ?>
-
+			<?php $this->show_footer( $box, $step ); ?>
+		</div><!-- <?php echo $box->get_class(); ?> -->
+	<?php if ( $box->is_form_encapsulated() ) : ?>
+	</form>
+	<?php endif; ?>
 		<?php endif; ?>
-
 		<?php do_action( 'tcp_show_box', $step ); ?>
-
 </div><!-- checkout --><?php
-		return ob_get_clean();
+		return apply_filters( 'tcp_show_box_filter', ob_get_clean(), $step );
 	}
 
-	private function show_header( $box, $step = 0 ) {
-		if ( $step == count( $this->steps ) ) { //last step, no return
-		} elseif ( $this->checkout_type == TCPCheckoutManager::$TOP_BAR ) { ?>
-
+	protected function show_header( $box, $step = 0 ) {
+		if ( $step == count( $this->steps ) ) : //last step, no return
+		elseif ( $this->checkout_type == TCPCheckoutManager::$TOP_BAR ) : ?>
 			<ul class="tcp_checkout_bar">
-
 			<?php foreach( $this->steps as $s => $value ) : ?>
-
 				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
 					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
-
 				<li class="tcp_ckeckout_step">
-
 					<a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a>
-
 				</li>
-
 				<?php else : $b = $this->get_box( $s ); ?>
-
 				<li class="<?php if ( $s == $step ) : ?>tcp_ckeckout_active_step<?php else : ?>tcp_ckeckout_step<?php endif; ?>">
-
 					<span><?php echo $b->get_title(); ?></span>
-					
 					<?php do_action( 'tcp_ckeckout_header', $step ); ?>
-
 				</li>
-
 				<?php endif; ?>
 			<?php endforeach;?>
-
 			</ul>
-
-		<?php } else { //TCPCheckoutManager::$ACCORDION
+		<?php else : //TCPCheckoutManager::$ACCORDION
 			foreach( $this->steps as $s => $value ) : ?>
 				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
 					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
-
 					<div class="<?php echo $b->get_class(); ?>" id="<?php echo $b->get_class(); ?>">
-					
 						<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>" tcp_step="<?php echo $s; ?>"><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></a></h3>
-
 					</div>
-				<?php endif; ?>
-			<?php endforeach;
-		}
+				<?php endif;
+			endforeach;
+		endif;
 	}
 
-	private function show_footer( $box, $step = 0 ) {
+	protected function show_footer( $box, $step = 0 ) {
 		if ( $step == count( $this->steps ) -1 ) { //last step, no return
 		} elseif ( $this->checkout_type == TCPCheckoutManager::$ACCORDION ) {
 			foreach( $this->steps as $s => $value ) {
 				if ( $s > $step ) {
-					$b = $this->get_box( $s ); ?>
+					$b = $this->get_box( $s );
+					if ( $b ) : ?>
 					<h3 class="tcp_ckeckout_step"><span><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></span></h3>
-				<?php }
+					<?php endif;
+				}
 			}
 		}
-		
 	}
 
-	private function get_box( $step = 0 ) {
+	protected function get_box( $step = 0 ) {
 		if ( isset( $this->steps[$step] ) ) {
 			$checkout_box = isset( $this->steps[$step] ) ? $this->steps[$step] : false;
 			global $tcp_checkout_boxes;
@@ -283,7 +258,7 @@ class TCPCheckoutManager {
 		}
 	}
 	
-	private function create_order() {
+	protected function create_order() {
 		$selected_billing_address	= isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ? $_SESSION['tcp_checkout']['billing']['selected_billing_address'] : 'N';
 		$selected_shipping_address	= isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : 'N';
 		do_action( 'tcp_checkout_create_order_start' );
@@ -293,6 +268,29 @@ class TCPCheckoutManager {
 		$order['status']				= Orders::$ORDER_PENDING;
 		$order['comment']				= isset( $_SESSION['tcp_checkout']['cart']['comment'] ) ? $_SESSION['tcp_checkout']['cart']['comment'] : '';
 		$order['order_currency_code']	= tcp_get_the_currency_iso();
+		/* 
+		*  Set order billing address related fields to blanks so we avoid any errors later on 
+		*  if we use payment gateway to fill these fields and not the local wordpress form
+		*/
+		$order['billing_firstname']		= '';
+		$order['billing_lastname']		= '';
+		$order['billing_company']		= '';
+		$order['billing_tax_id_number']	= '';
+		$order['billing_street']		= '';
+		$order['billing_city']			= '';
+		$order['billing_city_id']		= '';
+		$order['billing_region']		= '';
+		$order['billing_region_id']		= '';
+		$order['billing_postcode']		= '';
+		$order['billing_country']		= ''; //$address->country;
+		$order['billing_country_id']	= '';
+		$order['billing_telephone_1']	= '';
+		$order['billing_telephone_2']	= '';
+		$order['billing_fax']			= '';
+		$order['billing_email']			= '';
+		$create_billing_address = false;
+		$create_shipping_address = false;
+
 		if ( $selected_billing_address == 'Y' ) {
 			$address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
 			$order['billing_firstname']		= $address->firstname;
@@ -420,7 +418,7 @@ class TCPCheckoutManager {
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
 			$order['shipping_amount'] = 0;
 			//$order['shipping_method'] = $class;
-			$order['shipping_method'] = $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );// . ' [' . $class . ']';
+			$order['shipping_method'] = strip_tags( $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) );// . ' [' . $class . ']';
 		} else {
 			$order['shipping_amount'] = 0;
 			$order['shipping_method'] = '';
@@ -442,7 +440,7 @@ class TCPCheckoutManager {
 			$order['payment_method'] = '';
 			$order['payment_name']   = '';
 		}
-		do_action( 'tcp_checkout_calculate_other_costs' );
+		do_action( 'tcp_checkout_calculate_other_costs', $order );
 		if ( tcp_is_display_prices_with_taxes() ) $order['discount_amount'] = $shoppingCart->getAllDiscounts();
 		else $order['discount_amount'] = $shoppingCart->getCartDiscountsTotal();
 		$order['weight'] = $shoppingCart->getWeight();
@@ -452,13 +450,15 @@ class TCPCheckoutManager {
 		//TODO more values???
 		if ( isset( $order['billing_country'] ) && strlen( $order['billing_country'] ) == 0 ) {
 			$country_bill = Countries::get( $order['billing_country_id'] );
-			$order['billing_country'] = $country_bill->name;
+			if ( $country_bill ) $order['billing_country'] = $country_bill->name;
+			else $order['billing_country'] = '';
 		}
 		if ( $order['shipping_country_id'] == $order['billing_country_id'] )
 			$order['shipping_country'] = $order['billing_country'];
 		elseif ( isset( $order['shipping_country'] ) && strlen( $order['shipping_country'] ) == 0 ) {
 			$country_ship = Countries::get( $order['shipping_country_id'] );
 			if ( $country_ship ) $order['shipping_country'] = $country_ship->name;
+			else $order['shipping_country'] = '';
 		}
 		$order_id = Orders::insert( $order );
 		$shoppingCart->setOrderId( $order_id );//since 1.1.0
@@ -535,7 +535,7 @@ class TCPCheckoutManager {
 			if ( $payment_method->sendPurchaseMail() ) {
 				global $thecartpress;
 				$send_email = $thecartpress->get_setting( 'send_email', true );
-				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id, '', false );
+				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id, '' );
 			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
 
@@ -561,7 +561,7 @@ class TCPCheckoutManager {
 		return ob_get_clean();
 	}
 
-	private function get_shipping_country() {
+	protected function get_shipping_country() {
 		$shipping_country = '';
 		$selected_shipping_address = isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ? $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] : false;
 		if ( $selected_shipping_address == 'new' ) {
@@ -584,7 +584,7 @@ class TCPCheckoutManager {
 		return $shipping_country;
 	}
 
-	private function createNewBillingAddress( $order ) {
+	protected function createNewBillingAddress( $order ) {
 		if ( $order['customer_id'] > 0 ) {
 			$address = array();
 			$address['customer_id']	= $order['customer_id'];

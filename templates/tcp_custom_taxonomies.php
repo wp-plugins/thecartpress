@@ -31,7 +31,7 @@ function tcp_get_custom_taxonomies( $post_type = '' ) {
 	} else {
 		$result = array();
 		foreach( $taxonomies as $id => $taxonomy ) {
-			if ( $taxonomy['post_type'] == $post_type) {
+			if ( ( is_array( $taxonomy['post_type'] ) && in_array( $post_type, $taxonomy['post_type'] ) ) || $taxonomy['post_type'] == $post_type ) {
 				$result[$id] = $taxonomy;
 			}
 		}

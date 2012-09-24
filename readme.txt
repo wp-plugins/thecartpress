@@ -3,8 +3,8 @@ Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
-Tested up to: 3.4.1
-Stable Tag: 1.2.3
+Tested up to: 3.4.2
+Stable Tag: 1.2.5
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,22 +293,45 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
-=1.2.3=
+= 1.2.5 =
+Low Stock email: Adding SKU
+Checkout: Signin Box, allow to add/remove Guest or Login area
+Styles: Some default css issues (Suggested in the community)
+Checkout: Billing Box Ex (extended) some configuration issues (Suggested in the community)
+Flate rate, shippig methods: Added a minimum amount (Suggested in the community)
+Navigation Tree: Collapsable (Suggested in the community)
+Stock: New stock management setting (thanks to the community)
+Stock: Set stock -1 by default
+Shortcodes: Order Panel (Suggested in the community)
+Custom Styles: Allows to add CSS styles
+Last Visited: Available for thecartpress no eCommerce (Suggested in the community)
+Card off-line: Current month and year
+CSS improvements: Less styles, better look
+Less javascript, only when needed (Suggested in the community)
+Thumbnails: Image for items with no thumbnail
+
+= 1.2.4 =
+* Use Weight: Configure all the eCommerce to use or not weight values
+* Checkout, See tax detail: Allows to display the tax detail in tax column: tax amount (Tax detail%)
+* Loop for twentyten based on themes improvements
+* Login/Profile template tag
+
+= 1.2.3 =
 * Ajax Chrome bug (thanks to the community)
 * Order eMail bug (thanks to the community)
 * Checkout setting: Send eMails to Merchant, when customers "click" in Purchase button
 
-=1.2.2=
+= 1.2.2 =
 * Ajax Chrome bug (thanks to the community)
 * Merchant not administrator (thanks to the community)
 * Order email (thanks to the community)
 * Checkout Editor: Checkout Cart with more settigns
 * Support New European eCommerce law (Agoust, 2012)
 
-=1.2.1=
+= 1.2.1 =
 * Shopping Cart template
 
-=1.2.0=
+= 1.2.0 =
 * Ajax eCommerce
 * Drag&Drop eCommerce
 * Settings: New design, Self-commented
@@ -326,17 +349,17 @@ This plugin is released under a GPL license.
 * Checkout Cart box: New setting to display or not the tax column
 * Custom Field: help info
 
-=1.1.9.2 =
+= 1.1.9.2 =
 * Empty Shopping cart bug (thanks to the community)
 * Minor bugs
 
-=1.1.9.1 =
+= 1.1.9.1 =
 * Stock: not activated setting for hidden out of stock products (thanks to the community)
 * Stock: Sort products by stock, in the Back-end
 * Price: Sort products by price, in the Back-end
 * UI Improvements: Checkout editor, Countries selecion (payment and shipping methods, and settings)
 
-=1.1.9 =
+= 1.1.9 =
 * UI improvements: Product setup hides/displays fields depending the product type
 * Stock: fixed low stock mails issue and other minor bugs (thanks to the community)
 * Stock: setting for hidden out of stock products (thanks to the community)
@@ -349,7 +372,7 @@ This plugin is released under a GPL license.
 * Session: Session issue with other plugins
 * Dashboard, Sales chart: More options, Sales chart by month/day, by amount/n.orders
 
-=1.1.8.1 =
+= 1.1.8.1 =
 * minor bugs (thanks to the community)
 
 = 1.1.8 =

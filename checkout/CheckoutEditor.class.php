@@ -71,7 +71,7 @@ class TCPCheckoutEditor {
 	function admin_page() { ?>
 <div class="wrap">
 
-<h2><?php screen_icon(); ?><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
+<?php screen_icon( 'tcp-checkout' ); ?><h2><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
 
 <ul class="subsubsub"></ul>
 
@@ -147,13 +147,15 @@ $order_steps = array_diff( $tcp_checkout_boxes, $order_steps ); ?>
 		
 		<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
 		<form method="post">
-			<?php require_once( $initial_path . $partial_path );
-			$box = new $class_name(); ?>
-			<?php if ( $box->show_config_settings() ) : ?>
-				<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path; ?>" />
-				<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
-				<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
-				</script>
+			<?php if ( file_exists( $initial_path . $partial_path ) ) :
+				require_once( $initial_path . $partial_path );
+				$box = new $class_name(); ?>
+				<?php if ( $box->show_config_settings() ) : ?>
+					<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path; ?>" />
+					<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
+					<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
+					</script>
+				<?php endif; ?>
 			<?php endif; ?>
 		</form>
 		</div>
