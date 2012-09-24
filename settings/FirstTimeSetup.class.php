@@ -17,6 +17,7 @@
  */
 
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 class TCPFirstTimeSetup {
 
