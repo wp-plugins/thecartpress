@@ -76,7 +76,7 @@ window.location="<?php echo $redirect;?>";
 		Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, 'No validation. Error in connection.' );
 		exit(0);
 	}
-
+	$ok = false;
 	if ( $verified ) {
 //  	Once you have a verified IPN you need to do a few more checks on the POST
 //		fields--typically against data you stored in your database during when the
@@ -102,6 +102,7 @@ window.location="<?php echo $redirect;?>";
 					if ( isset( $_POST['receipt_id'] ) ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
 					if ( isset( $_POST['memo'] ) ) $additional .= "\nCustomer comment: " . $_POST['memo'];
 					Orders::editStatus( $order_id, $new_status, $transaction_id, $comment . $additional );
+					$ok = true;
 					break;
 				case 'Refunded':
 				case 'Reversed':
@@ -140,5 +141,6 @@ window.location="<?php echo $redirect;?>";
 		//save for further investigation?
 		//mail( debug_email, 'Invalid IPN', $listener->getTextReport() );
 	}
+	add_action( 'tcp_paypal_standard_do_payment', $order_id, array( 'TransactionID' => $transaction_id ), $ok );
 }
 ?>

@@ -76,7 +76,7 @@ class ActiveCheckout {//shortcode
 			<br/>
 			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 			<?php TheCartPress::removeShoppingCart();
-			do_action( 'tcp_checkout_end', $order_id );
+			do_action( 'tcp_checkout_end', $order_id, true );
 			return ob_get_clean();
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
@@ -93,7 +93,7 @@ class ActiveCheckout {//shortcode
 					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_unsuccessfully -->
 			<?php endif;
-			do_action( 'tcp_checkout_end', $order_id );
+			do_action( 'tcp_checkout_end', $order_id, false );
 			return ob_get_clean();
 		} else {
 			$param = array(

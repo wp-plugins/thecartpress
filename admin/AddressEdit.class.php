@@ -26,11 +26,10 @@ class TCPAddressEdit {
 		if ( is_admin() ) add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 		else tcp_states_footer_scripts();
 		if ( ! is_user_logged_in() ) : ?>
-
 			<p><?php _e( 'You need to login to see your address.', 'tcp-fe' ); ?></p>
 			<?php tcp_login_form( array( 'echo' => true ) ); ?>
-
-		<?php return; endif;
+		<?php return; 
+		endif;
 		$address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : '0';
 		global $current_user;
 		get_currentuserinfo();
