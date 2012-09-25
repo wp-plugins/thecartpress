@@ -427,7 +427,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		$base = TCP_ADMIN_FOLDER . 'ShortCodeGenerator.php';
 		return $base;
 	}
-	
+
 	function get_base_settings() {
 		return __FILE__;
 	}
@@ -435,7 +435,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	function get_base_appearance() {
 		return __FILE__ . '/appearance';
 	}
-
 
 	function admin_menu() {
 		$base = $this->get_base();
@@ -460,7 +459,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_submenu_page( 'tcpml', __( 'Downloadable products', 'tcp' ), __( 'Downloadable products', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'VirtualProductDownloader.php' );
 			add_submenu_page( 'tcpml', __( 'TheCartPress checking', 'tcp' ), __( 'TheCartPress checking', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'Checking.php' );
 		}
-
 		$base = $this->get_base_tools();
 		add_menu_page( '', __( 'TCP Tools', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( '/images/tcp.png', __FILE__ ), 43 );
 		add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
@@ -477,7 +475,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
 			$suffix = '-' . $post->post_type;
 			if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
-			
 			$see_buy_button_in_content	= $this->get_setting( 'see_buy_button_in_content' . $suffix, true );
 			$align_buy_button_in_content= $this->get_setting( 'align_buy_button_in_content' . $suffix, 'north' );
 			$see_price_in_content		= $this->get_setting( 'see_price_in_content' );
@@ -801,7 +798,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_post_meta( $post_id, 'tcp_order', 10 );
 			add_post_meta( $post_id, 'tcp_sku', 'SKU_ONE' );
 			add_post_meta( $post_id, 'tcp_stock', -1 ); //No stock
-			
 			$category_id = term_exists( 'Category One', 'tcp_product_category' );
 			if ( ! $category_id ) $category_id = wp_insert_term( 'Category One', 'tcp_product_category' );
 			if ( isset( $category_id->term_id ) ) wp_set_object_terms( $post_id, (int)$category_id->term_id, 'tcp_product_category' );

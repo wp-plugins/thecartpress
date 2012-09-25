@@ -74,10 +74,11 @@ class TCPPayPal extends TCP_Plugin {
 				<?php _e( 'Payment type', 'tcp' );?>:
 			</th>
 			<td>
+				<?php $paymentaction = isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale'; ?>
 				<select name="paymentaction">
-					<option value="sale"><?php _e( 'Sale', 'tcp' ); ?></option>
-					<option value="authorization"><?php _e( 'Authorization', 'tcp' ); ?></option>
-					<option value="order"><?php _e( 'Order', 'tcp' ); ?></option>
+					<option value="sale" <?php selected( 'sale', $paymentaction ); ?>><?php _e( 'Sale', 'tcp' ); ?></option>
+					<option value="authorization" <?php selected( 'authorization', $paymentaction ); ?>><?php _e( 'Authorization', 'tcp' ); ?></option>
+					<option value="order" <?php selected( 'order', $paymentaction ); ?>><?php _e( 'Order', 'tcp' ); ?></option>
 				</select>
 				<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
 			</td>

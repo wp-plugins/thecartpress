@@ -111,14 +111,12 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 
 <table class="form-table">
 <tbody>
-
 <tr valign="top">
 	<th scope="row">
 		<label for="current_post_type"><?php _e( 'Post type', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<?php $post_types = get_post_types( '', 'object' ); ?>
-
 		<select id="current_post_type" name="current_post_type">
 			<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
 			<?php foreach( $post_types as $i => $post_type ) : ?>
@@ -129,22 +127,16 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 			</option>
 			<?php endforeach; ?>
 		</select>
-
 		<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
 		<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
-
 		<p class="description"><?php _e( 'Allows to create different configuration for each Post Type.', 'tcp' ); ?></p>
-
 		<span class="description"><?php _e( 'Options in bold have a specific configuration.', 'tcp' ); ?>
 		<?php _e( 'Remember to save changes before to load new post type settings.', 'tcp' ); ?>
 		</span>
-
 	</td>
 </tr>
-
 </tbody>
 </table>
-
 
 <table class="form-table">
 <tbody>
@@ -157,7 +149,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<p class="description"><?php _e( 'Allow to show or hide product titles (or any other post type) in the loops', 'tcp' ); ?></p>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="title_tag"><?php _e( 'Title Tag', 'tcp' ); ?>:</label>
@@ -177,7 +168,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<p class="description"><?php _e( 'Allow to select which tag to use with product titles (or any other post type)', 'tcp' ); ?></p>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_image"><?php _e( 'See Image', 'tcp' ); ?>:</label>
@@ -199,7 +189,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 		</select>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_excerpt"><?php _e( 'See Excerpt', 'tcp' ); ?>:</label>
@@ -208,7 +197,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_excerpt" id="see_excerpt" value="yes" <?php checked( $see_excerpt, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_content"><?php _e( 'See Content', 'tcp' ); ?>:</label>
@@ -225,7 +213,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_author" id="see_author" value="yes" <?php checked( $see_author, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_price"><?php _e( 'See Price', 'tcp' ); ?>:</label>
@@ -234,7 +221,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_price" id="see_price" value="yes" <?php checked( $see_price, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_buy_button"><?php _e( 'See Buy Button', 'tcp' ); ?>:</label>
@@ -243,7 +229,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_buy_button" id="see_buy_button" value="yes" <?php checked( $see_buy_button, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_posted_on"><?php _e( 'See Posted On', 'tcp' ); ?>:</label>
@@ -252,7 +237,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_posted_on" id="see_posted_on" value="yes" <?php checked( $see_posted_on, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_taxonomies"><?php _e( 'See Taxonomies', 'tcp' ); ?>:</label>
@@ -261,7 +245,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_taxonomies" id="see_taxonomies" value="yes" <?php checked( $see_taxonomies, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_meta_utilities"><?php _e( 'See Meta Utilities', 'tcp' ); ?>:</label>
@@ -270,7 +253,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_meta_utilities" id="see_meta_utilities" value="yes" <?php checked( $see_meta_utilities, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_sorting_panel"><?php _e( 'See Sorting Panel', 'tcp' ); ?>:</label>
@@ -279,7 +261,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_sorting_panel" id="see_sorting_panel" value="yes" <?php checked( $see_sorting_panel, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="order_type_"><?php _e( 'Disabled order types', 'tcp' ); ?>:</label>
@@ -291,7 +272,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<?php endforeach; ?>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_order_type"><?php _e( 'Order Type', 'tcp' ); ?>:</label>
@@ -315,7 +295,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="order_desc" id="order_desc" value="yes" <?php checked( $order_desc, 'desc' );?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="order_desc"><?php _e( 'Columns', 'tcp' ); ?>:</label>
@@ -324,7 +303,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input id="columns" name="columns" value="<?php echo $columns;?>" size="2" maxlength="2" type="text" />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_pagination"><?php _e( 'See Pagination', 'tcp' ); ?>:</label>
@@ -333,7 +311,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_pagination" id="see_pagination" value="yes" <?php checked( $see_pagination, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_first_custom_area"><?php _e( 'See First Custom Area', 'tcp' ); ?>:</label>
@@ -342,7 +319,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_first_custom_area" id="see_first_custom_area" value="yes" <?php checked( $see_first_custom_area, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_second_custom_area"><?php _e( 'See Second Custom Area', 'tcp' ); ?>:</label>
@@ -351,7 +327,6 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_second_custom_area" id="see_second_custom_area" value="yes" <?php checked( $see_second_custom_area, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="see_third_custom_area"><?php _e( 'See Third Custom Area', 'tcp' ); ?>:</label>

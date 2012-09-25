@@ -128,151 +128,153 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	}
 
 	public function see_comment() {
-		return htmlentities( stripslashes( $this->see_comment ) );
+		return stripslashes( $this->see_comment );
 	}
 
 	public function get_shipping_firstname() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_firstname ) );
+//		if ( $this->order ) return stripslashes( $this->order->shipping_firstname ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_firstname );
 		else return false;
 	}
 
 	public function get_shipping_lastname() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_lastname ) );
+		//if ( $this->order ) return stripslashes( $this->order->shipping_lastname ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_lastname );
 		else return false;
 	}
 
 	public function get_shipping_company() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_company ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_company );
 		else return false;
 	}
 
 	public function get_shipping_street() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_street ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_street );
 		else return false;
 	}
 
 	public function get_shipping_postcode() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_postcode ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_postcode );
 		else return false;
 	}
 
 	public function get_shipping_city() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_city ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_city );
 		else return false;
 	}
 
 	public function get_shipping_region() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_region ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_region );
 		else return false;
 	}
 
 	public function get_shipping_region_id() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_region_id ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_region_id );
 		else return false;
 	}
 
 	public function get_shipping_country() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_country ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_country );
 		else return false;
 	}
 
 	public function get_shipping_country_id() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_country_id ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_country_id );
 		else return false;
 	}
 
 	public function get_shipping_telephone_1() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_telephone_1 ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_telephone_1 );
 		else return false;
 	}
 
 	public function get_shipping_telephone_2() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_telephone_2 ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_telephone_2 );
 		else return false;
 	}
 
 	public function get_shipping_fax() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_fax ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_fax );
 		else return false;
 	}
 
 	public function get_shipping_email() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->shipping_email ) );
+		if ( $this->order ) return stripslashes( $this->order->shipping_email );
 		else return false;
 	}
 
 	public function get_billing_firstname() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_firstname ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_firstname );
 		else return false;
 	}
 
 	public function get_billing_lastname() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_lastname ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_lastname );
 		else return false;
 	}
 
 	public function get_billing_company() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_company ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_company );
 		else return false;
 	}
 	
 	public function get_billing_tax_id_number() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_tax_id_number ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_tax_id_number );
 		else return false;
 	}
 
 	public function get_billing_street() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_street ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_street );
 		else return false;
 	}
 
 	public function get_billing_postcode() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_postcode ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_postcode );
 		else return false;
 	}
 
 	public function get_billing_city() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_city ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_city );
 		else return false;
 	}
 
 	public function get_billing_region() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_region ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_region );
 		else return false;
 	}
 
 	public function get_billing_region_id() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_region_id ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_region_id );
 		else return false;
 	}
 
 	public function get_billing_country() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_country ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_country );
 		else return false;
 	}
 
 	public function get_billing_country_id() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_country_id ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_country_id );
 		else return false;
 	}
 
 	public function get_billing_telephone_1() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_telephone_1 ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_telephone_1 );
 		else return false;
 	}
 
 	public function get_billing_telephone_2() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_telephone_2 ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_telephone_2 );
 		else return false;
 	}
 
 	public function get_billing_fax() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_fax ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_fax );
 		else return false;
 	}
 
 	public function get_billing_email() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->billing_email ) );
+		if ( $this->order ) return stripslashes( $this->order->billing_email );
 		else return false;
 	}
 
@@ -294,7 +296,7 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	}
 
 	public function get_comment() {
-		if ( $this->order ) return htmlentities( stripslashes( $this->order->comment ) );
+		if ( $this->order ) return stripslashes( $this->order->comment );
 		else return false;
 	}
 
@@ -354,12 +356,12 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 	}
 
 	/*public function get_option_1_name() {
-		if ( $this->detail ) return htmlentities( stripslashes( $this->detail->option_1_name ) );
+		if ( $this->detail ) return stripslashes( $this->detail->option_1_name ) );
 		else return false;
 	}
 
 	public function get_option_2_name() {
-		if ( $this->detail ) return htmlentities( stripslashes( $this->detail->option_2_name ) );
+		if ( $this->detail ) return stripslashes( $this->detail->option_2_name ) );
 		else return false;
 	}*/
 
@@ -383,7 +385,7 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 	}
 
 	public function get_sku() {
-		if ( $this->detail ) return htmlentities( stripslashes( $this->detail->sku ) );
+		if ( $this->detail ) return stripslashes( $this->detail->sku );
 		else return false;
 	}
 
