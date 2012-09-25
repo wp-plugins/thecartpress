@@ -73,7 +73,8 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	) );
 	ob_start();
 	if ( $args['dropdown'] ) :
-		$args['show_option_none'] = sprintf ( __( 'Select %s', 'tcp' ), $args['taxonomy'] );
+		$taxonomy = get_taxonomy( $args['taxonomy'] );
+		$args['show_option_none'] = sprintf ( __( 'Select %s', 'tcp' ), $taxonomy->labels->name );
 		global $wp_query;
 		if ( isset( $wp_query->query_vars['taxonomy'] ) )
 			$args['selected']	= get_query_var( $wp_query->query_vars['taxonomy'] );

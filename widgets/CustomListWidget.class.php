@@ -151,7 +151,6 @@ class CustomListWidget extends TCPParentWidget {
 			$instance['see_pagination'] = $instance['pagination'];
 		global $thecartpress;
 		$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
-
 		if ( $use_default_loop == 'yes' ) {
 			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
 		} else{ //if ( $use_default_loop == 'yes_2010' ) {
