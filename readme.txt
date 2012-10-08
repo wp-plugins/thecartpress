@@ -4,7 +4,7 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable Tag: 1.2.5.1
+Stable Tag: 1.2.5.2
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,22 +293,33 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+
+= 1.2.5.2 =
+* Stock management update
+* Address editor: bug fixed
+* "Under Construccion", "Maintance mode" mode
+* Downloadables products: bug fixed for unregisterd users
+* Product filter by type: bug fixed in back-end
+
+= 1.2.5.1 =
+* File mising
+
 = 1.2.5 =
-Low Stock email: Adding SKU
-Checkout: Signin Box, allow to add/remove Guest or Login area
-Styles: Some default css issues (Suggested in the community)
-Checkout: Billing Box Ex (extended) some configuration issues (Suggested in the community)
-Flate rate, shippig methods: Added a minimum amount (Suggested in the community)
-Navigation Tree: Collapsable (Suggested in the community)
-Stock: New stock management setting (thanks to the community)
-Stock: Set stock -1 by default
-Shortcodes: Order Panel (Suggested in the community)
-Custom Styles: Allows to add CSS styles
-Last Visited: Available for thecartpress no eCommerce (Suggested in the community)
-Card off-line: Current month and year
-CSS improvements: Less styles, better look
-Less javascript, only when needed (Suggested in the community)
-Thumbnails: Image for items with no thumbnail in back-end panels
+* Low Stock email: Adding SKU
+* Checkout: Signin Box, allow to add/remove Guest or Login area
+* Styles: Some default css issues (Suggested in the community)
+* Checkout: Billing Box Ex (extended) some configuration issues (Suggested in the community)
+* Flate rate, shippig methods: Added a minimum amount (Suggested in the community)
+* Navigation Tree: Collapsable (Suggested in the community)
+* Stock: New stock management setting (thanks to the community)
+* Stock: Set stock -1 by default
+* Shortcodes: Order Panel (Suggested in the community)
+* Custom Styles: Allows to add CSS styles
+* Last Visited: Available for thecartpress no eCommerce (Suggested in the community)
+* Card off-line: Current month and year
+* CSS improvements: Less styles, better look
+* Less javascript, only when needed (Suggested in the community)
+* Thumbnails: Image for items with no thumbnail in back-end panels
 
 = 1.2.4 =
 * Use Weight: Configure all the eCommerce to use or not weight values

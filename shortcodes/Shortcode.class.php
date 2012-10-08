@@ -29,6 +29,7 @@ class TCPShortcode {
 					'after_widget'	=> '</div>',
 					'before_title'	=> '',
 					'after_title'	=> '',
+					'widget_id'		=> $id,
 				);
 				ob_start();
 				if ( isset( $shortcode_data['see_order_panel'] ) && $shortcode_data['see_order_panel'] ) {

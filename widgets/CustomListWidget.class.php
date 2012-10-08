@@ -39,7 +39,7 @@ class CustomListWidget extends TCPParentWidget {
 			if ( strlen( $order_type ) > 0 ) $loop_args['orderby']	= $order_type;
 		}
 		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
-		$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
+		//$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
 
 		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) {
 			$loop_args['meta_query'][] = array(
@@ -48,9 +48,18 @@ class CustomListWidget extends TCPParentWidget {
 				'compare'	=> '='
 			);
 		}
-		$loop_args['suppress_filters'] = true;
+//		global $wp_query;
+//		global $posts;
+//		$temp = $wp_query;
+//		$wp_query = null;
+		$loop_args = apply_filters( 'tcp_custom_list_widget_args', $loop_args );
 		query_posts( $loop_args );
+//		$wp_query = new WP_Query( $loop_args );
+//		$temp_posts = $posts;
+//		$posts = null;
+//		$posts = $wp_query->posts;
 		if ( ! have_posts() ) {
+			wp_reset_postdata();
 			wp_reset_query();
 			return;
 		}
@@ -62,17 +71,19 @@ class CustomListWidget extends TCPParentWidget {
 		} else {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;
 			if ( $columns < 1 ) {
-				$this->show_list( $instance );
+				$this->show_list( $instance, $args );
 			} else {
-				$this->show_grid( $instance );
+				$this->show_grid( $instance, $args );
 			}
 		}
 		wp_reset_postdata();
 		wp_reset_query();
+		//$posts = $temp_posts;
+		//$wp_query = $temp;
 		echo $after_widget;
 	}
 
-	function show_list( $instance ) {
+	function show_list( $instance, $args ) {
 		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) echo tcp_pagination_bar();
 		if ( have_posts() ) while ( have_posts() ) : the_post();
 			if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
@@ -146,9 +157,8 @@ class CustomListWidget extends TCPParentWidget {
 		<?php endwhile;
 	}
 
-	function show_grid( $instance ) {
-		if ( isset( $instance['pagination'] ) && $instance['pagination'] )
-			$instance['see_pagination'] = $instance['pagination'];
+	function show_grid( $instance, $args ) {
+		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) $instance['see_pagination'] = $instance['pagination'];
 		global $thecartpress;
 		$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
 		if ( $use_default_loop == 'yes' ) {

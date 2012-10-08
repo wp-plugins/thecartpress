@@ -77,12 +77,12 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	}
 
 	public function get_payment_method() {
-		if ( $this->order )	return htmlentities( $this->order->payment_name );
+		if ( $this->order )	return $this->order->payment_name;//htmlentities( 
 		else false;
 	}
 
 	public function get_shipping_method() {
-		if ( $this->order )	return htmlentities( $this->order->shipping_method );
+		if ( $this->order )	return $this->order->shipping_method;//htmlentities(
 		else false;
 	}
 

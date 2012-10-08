@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
+require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
 
-require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
+require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
 
 class TCPCheckoutManager {
 
@@ -465,7 +465,6 @@ class TCPCheckoutManager {
 		do_action( 'tcp_checkout_create_order_insert', $order_id );
 		foreach( $shoppingCart->getItems() as $item ) {
 			$post = get_post( $item->getPostId() );
-			$sku = tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 			$days_to_expire = (int)get_post_meta( $post->ID, 'tcp_days_to_expire', true );
 			if ( $days_to_expire > 0 ) {
 				$today = date( 'Y-m-d' );
@@ -482,7 +481,7 @@ class TCPCheckoutManager {
 			$ordersDetails['option_2_id']		= $item->getOption2Id();
 			$ordersDetails['weight']			= $item->getWeight();
 			$ordersDetails['is_downloadable']	= $item->isDownloadable() ? 'Y' : '';
-			$ordersDetails['sku']				= $sku;
+			$ordersDetails['sku']				= $item->getSKU(); //tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 			$ordersDetails['name']				= tcp_get_the_title( $post->ID );
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
 			$ordersDetails['option_2_name']		= $item->getOption2Id() > 0 ? get_the_title( $item->getOption2Id() ) : '';
@@ -490,7 +489,7 @@ class TCPCheckoutManager {
 			else $discount = 0;
 			$ordersDetails['price']				= tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
 			$ordersDetails['original_price']	= $item->getUnitPrice();
-			$ordersDetails['tax']				= tcp_get_the_tax( $item->getPostId() );
+			$ordersDetails['tax']				= $item->getTax(); //tcp_get_the_tax( $item->getPostId() );
 			$ordersDetails['qty_ordered']		= $item->getCount();
 			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;

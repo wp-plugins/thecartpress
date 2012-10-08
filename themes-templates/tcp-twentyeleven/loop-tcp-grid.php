@@ -59,6 +59,7 @@ $see_posted_on			= isset( $instance['see_posted_on' . $suffix] ) ? $instance['se
 $see_taxonomies			= isset( $instance['see_taxonomies' . $suffix] ) ? $instance['see_taxonomies' . $suffix] : false;
 $see_meta_utilities		= isset( $instance['see_meta_utilities' . $suffix] ) ? $instance['see_meta_utilities' . $suffix] : false;
 $see_sorting_panel		= isset( $instance['see_sorting_panel' . $suffix] ) ? $instance['see_sorting_panel' . $suffix] : false;
+$see_az					= isset( $instance['see_az' . $suffix] ) ? $instance['see_az' . $suffix] : false;
 $number_of_columns		= isset( $instance['columns' . $suffix] ) ? (int)$instance['columns' . $suffix] : 2;
 //custom areas. Usefull to insert other template tag from WordPress or another plugins 
 $see_first_custom_area	= isset( $instance['see_first_custom_area' . $suffix] ) ? $instance['see_first_custom_area' . $suffix] : false;
@@ -79,11 +80,17 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	tcp_the_sort_panel();
 } ?>
 
+<?php if ( $see_az ) {
+	$see_az_name = isset( $args['widget_id']) ? 'tcp_az_' . $args['widget_id'] : 'tcp_az';
+	tcp_the_az_panel( $see_az_name );
+} ?>
+
 <?php /* Start the Loop.*/ ?>
 
 <table class="tcp_products_list">
 <tr class="tcp_first-row">
-<?php while ( have_posts() ) : the_post();
+<?php $tcp_col = 0;
+while ( have_posts() ) : the_post();
 	if ( $column == 0 ) : $column = $number_of_columns ?>
 	</tr>
 	<tr>
@@ -200,6 +207,7 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . ++$tcp_col ); ?>
 	<td class="tcp_col <?php echo implode( ' ', $class ); ?> tcp_td_empty">&nbsp;</td>
 <?php endfor; ?>
-</tr></table>
+</tr>
+</table>
 <?php /* Display pagination */
 if ( $see_pagination ) tcp_get_the_pagination(); ?>

@@ -736,7 +736,7 @@ function tcp_the_total( $echo = true ) {
 /**
  * Since 1.1.7
  */
-function tcp_get_the_pagination( $echo = true) {
+function tcp_get_the_pagination( $echo = true ) {
 	ob_start();
 	if ( function_exists( 'wp_pagenavi' ) ) {
 		wp_pagenavi();
@@ -852,6 +852,86 @@ function tcp_breadcrumbs( $delimiter = '&raquo;', $before = '<span class="curren
 		}
 		echo '</div>';
 	}
+}
+
+function tcp_list_authors( $args = '' ) {
+	global $wpdb;
+
+	$defaults = array(
+		'orderby'		=> 'name',
+		'order'			=> 'ASC',
+		'number'		=> '',
+		'optioncount'	=> false,
+		'exclude_admin'	=> true,
+		'show_fullname'	=> false,
+		'hide_empty'	=> true,
+		'feed'			=> '',
+		'feed_image'	=> '',
+		'feed_type'		=> '',
+		'echo'			=> true,
+		'style'			=> 'list',
+		'html'			=> true,
+		'post_type'		=> TCP_PRODUCT_POST_TYPE,
+	);
+	$args = wp_parse_args( $args, $defaults );
+	extract( $args, EXTR_SKIP );
+	$return = '';
+	$query_args = wp_array_slice_assoc( $args, array( 'orderby', 'order', 'number' ) );
+	$query_args['fields'] = 'ids';
+	$authors = get_users( $query_args );
+
+	$author_count = array();
+	foreach ( (array) $wpdb->get_results("SELECT DISTINCT post_author, COUNT(ID) AS count FROM $wpdb->posts WHERE post_type = '$post_type' AND " . get_private_posts_cap_sql( $post_type ) . " GROUP BY post_author") as $row )
+		$author_count[$row->post_author] = $row->count;
+	foreach ( $authors as $author_id ) {
+		$author = get_userdata( $author_id );
+		if ( $exclude_admin && 'admin' == $author->display_name ) continue;
+		$posts = isset( $author_count[$author->ID] ) ? $author_count[$author->ID] : 0;
+		if ( !$posts && $hide_empty ) continue;
+		$link = '';
+		if ( $show_fullname && $author->first_name && $author->last_name ) $name = "$author->first_name $author->last_name";
+		else $name = $author->display_name;
+
+		if ( !$html ) {
+			$return .= $name . ', ';
+			continue; // No need to go further to process HTML.
+		}
+		if ( 'list' == $style ) $return .= '<li>';
+		$link = '<a href="' . tcp_get_author_posts_url( $author->ID, $author->user_nicename, $post_type ) . '" title="' . esc_attr( sprintf( __( "Posts by %s" ), $author->display_name ) ) . '">' . $name . '</a>';
+		//$link = '<a href="' . get_author_posts_url( $author->ID, $author->user_nicename ) . '" title="' . esc_attr( sprintf( __( "Posts by %s" ), $author->display_name ) ) . '">' . $name . '</a>';
+		
+		if ( ! empty( $feed_image ) || !empty( $feed ) ) {
+			$link .= ' ';
+			if ( empty( $feed_image ) ) {
+				$link .= '(';
+			}
+			$link .= '<a href="' . get_author_feed_link( $author->ID ) . '"';
+			$alt = $title = '';
+			if ( !empty( $feed ) ) {
+				$title = ' title="' . esc_attr( $feed ) . '"';
+				$alt = ' alt="' . esc_attr( $feed ) . '"';
+				$name = $feed;
+				$link .= $title;
+			}
+			$link .= '>';
+			if ( !empty( $feed_image ) ) $link .= '<img src="' . esc_url( $feed_image ) . '" style="border: none;"' . $alt . $title . ' />';
+			else $link .= $name;
+			$link .= '</a>';
+			if ( empty( $feed_image ) ) $link .= ')';
+		}
+		if ( $optioncount ) $link .= ' ('. $posts . ')';
+		$return .= $link;
+		$return .= ( 'list' == $style ) ? '</li>' : ', ';
+	}
+	$return = rtrim($return, ', ');
+	if ( ! $echo ) return $return;
+	echo $return;
+}
+
+function tcp_get_author_posts_url( $author_id, $author_nicename, $post_type = TCP_PRODUCT_POST_TYPE ) {
+	$link = get_author_posts_url( $author_id, $author_nicename );
+	$link = add_query_arg( 'post_type', $post_type, $link );//notice
+	return $link;
 }
 
 //

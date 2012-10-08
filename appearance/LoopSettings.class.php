@@ -335,7 +335,7 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	<input type="checkbox" name="see_third_custom_area" id="see_third_custom_area" value="yes" <?php checked( $see_third_custom_area, true ); ?> />
 	</td>
 </tr>
-<?php do_action( 'tcp_loop_settings_page' ); ?>
+<?php do_action( 'tcp_loop_settings_page', $settings ); ?>
 </tbody>
 </table>
 <?php wp_nonce_field( 'tcp_loop_settings' ); ?>
@@ -404,7 +404,7 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 		$settings['see_first_custom_area' . $suffix]	= isset( $_REQUEST['see_first_custom_area'] ) ? $_REQUEST['see_first_custom_area']  == 'yes' : false;
 		$settings['see_second_custom_area' . $suffix]	= isset( $_REQUEST['see_second_custom_area'] ) ? $_REQUEST['see_second_custom_area']  == 'yes' : false;
 		$settings['see_third_custom_area' . $suffix]	= isset( $_REQUEST['see_third_custom_area'] ) ? $_REQUEST['see_third_custom_area']  == 'yes' : false;
-		$settings = apply_filters( 'tcp_loop_settings_action', $settings );
+		$settings = apply_filters( 'tcp_loop_settings_action', $settings, $suffix );
 		update_option( 'ttc_settings', $settings );
 		$this->updated = true;
 	}

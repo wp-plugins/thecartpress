@@ -198,7 +198,7 @@ class TCPCartBox extends TCPCheckoutBox {
 				</td>
 				<?php if ( $see_sku ) : ?>
 				<td class="tcp_cart_sku">
-					<?php echo tcp_get_the_sku( $item->getPostId() ); ?>
+					<?php echo tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() ); //tcp_get_the_sku( $item->getPostId() ); ?>
 				</td>
 				<?php endif; ?>
 				<?php if ( $see_tax ) : ?>

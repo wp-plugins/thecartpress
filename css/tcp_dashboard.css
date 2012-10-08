@@ -372,3 +372,7 @@ div#icon-tcp-theme {
 div#icon-tcp-custom-styles {
 	background: url('../images/miranda/customstyles_settings_32.png') no-repeat center;
 }
+
+div#icon-tcp-underconstruction {
+	background: url('../images/miranda/under_construction_32.png') no-repeat center;
+}

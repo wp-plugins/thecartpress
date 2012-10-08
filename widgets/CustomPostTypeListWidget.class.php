@@ -43,7 +43,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				$loop_args['post__in'] = $instance['included'];
 			}
 		}
-		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance );
+		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance, $args );
 		parent::widget( $args, $loop_args, $instance );
 	}
 

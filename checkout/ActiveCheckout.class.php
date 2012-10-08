@@ -37,8 +37,7 @@ class ActiveCheckout {//shortcode
 		}
 
 /* Put the check on the cart first. This is because if people try and load the checkout OK page i.e. the URL
-*  mysite/shopping_cart_slug/checkout/?tcp_checkout=ok   then it would have a silly empty set of fields.
-*/
+*  mysite/shopping_cart_slug/checkout/?tcp_checkout=ok   then it would have a silly empty set of fields.*/
  		if ( $shoppingCart->isEmpty() ) {
 			ob_start(); ?>
 			<span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' ); ?></span>
@@ -49,7 +48,6 @@ class ActiveCheckout {//shortcode
 			/* This next function adjusts the stock counts IF the setup flag $stock_management AND $stock_adjust are both true.
 			*  If stock management is not used or if the stock_adjust is false then stock decrement would be done on checkout 
 			*/
-
 			do_action( 'tcp_completed_ok_stockadjust', $order_id );
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			ob_start();
@@ -145,12 +143,16 @@ class ActiveCheckout {//shortcode
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message .= $additional_msg . "\n";
 
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+			//$headers .= 'To: ' . $to . "\r\n";
+			$name = substr( $from, 0, strpos( $from, '@' ) );
+			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 			if ( $for_customer ) {
 				$customer_email = array();
 				if ( strlen( $order->shipping_email ) > 0 ) $customer_email[] = $order->shipping_email;
 				if ( strlen( $order->billing_email ) > 0 && $order->shipping_email != $order->billing_email ) $customer_email[] = $order->billing_email;
 				$to_customer = implode( ',', $customer_email );
-
 				$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
 				wp_mail( $to_customer, $subject, $message_to_customer , $headers );
 				do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
@@ -158,11 +160,6 @@ class ActiveCheckout {//shortcode
 			if ( $for_merchant ) {
 				$to = $thecartpress->get_setting( 'emails', '' );
 				if ( strlen( $to ) ) {
-					$headers  = 'MIME-Version: 1.0' . "\r\n";
-					$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-					//$headers .= 'To: ' . $to . "\r\n";
-					$name = substr( $from, 0, strpos( $from, '@' ) );
-					$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant_message', $message, $order_id );
 					wp_mail( $to, $subject, $message_to_merchant, $headers );
 					do_action( 'tcp_send_order_mail_to_merchant', $to, $subject, $message_to_merchant, $headers, $order_id );

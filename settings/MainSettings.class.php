@@ -42,7 +42,7 @@ class TCPMainSettings {
 		    'title'   => __( 'Overview' ),
 		    'content' =>
 	            '<p>' . __( 'You can customize TheCartPress as a Framework disabling the eCommerce funtionalities.', 'tcp' ) . '</p>' .
-	            '<p>' . __( 'Set the differents URLs for TheCartPress actions'. 'tcp' ) . '</p>'
+	            '<p>' . __( 'Set the different URLs for TheCartPress actions', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

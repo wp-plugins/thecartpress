@@ -95,17 +95,30 @@ class TCPStockManagement {
 		$old_status = Orders::getStatus( $order_id );
 		global $thecartpress;
 		$stock_adjustment = $thecartpress->get_setting( 'stock_adjustment', 1 );
-		$status_to_adjust = $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
 		if ( $stock_adjustment == 3 ) {  /* option is 3 if adjustment is on order set to COMPLETED  */
-			if ( $old_status != $new_status ) {  /* status changed */
-				if ( $old_status == $status_to_adjust ) {
-					$result = TCPStockManagement::stockAdjust( $order_id, false ); /* increment stock */
-				} elseif ( $new_status == $status_to_adjust ) {
-					$result = TCPStockManagement::stockAdjust( $order_id );  /* decrement stock */
-				}
-			}
+			$this->stock_adjust_manual( $order_id, $new_status, $old_status );
 		}
 		return $order_id;
+	}
+
+	private function stock_adjust_manual( $order_id, $new_status, $old_status = '' ) {
+		global $thecartpress;
+		$status_to_adjust = $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
+		if ( $old_status != $new_status ) {  /* status changed */
+			if ( $old_status == $status_to_adjust ) {
+				if ( tcp_is_greather_status( $status_to_adjust, $new_status ) ) {
+					$this->no_stock_enough = TCPStockManagement::stockAdjust( $order_id, false ); /* increment stock */
+				}
+			} elseif ( $new_status == $status_to_adjust ) {
+				if ( tcp_is_greather_status( $status_to_adjust, $old_status ) ) {
+					$this->no_stock_enough = TCPStockManagement::stockAdjust( $order_id );  /* decrement stock */
+				}
+			} elseif ( tcp_is_greather_status( $new_status, $status_to_adjust ) ) {
+				$this->no_stock_enough = TCPStockManagement::stockAdjust( $order_id);  /* decrement stock */
+			} elseif ( tcp_is_greather_status( $old_status, $status_to_adjust ) ) {
+				$this->no_stock_enough = TCPStockManagement::stockAdjust( $order_id, false );  /* increment stock */
+			}
+		}
 	}
 
 	/**
@@ -119,6 +132,7 @@ class TCPStockManagement {
 			$stock = tcp_get_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
 			if ( $stock == -1 ) {
+				return $this->no_stock_enough;
 			} elseif ( ! $decrement ) {  /* if here then we ADD the stock back to the */
 				tcp_set_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id, $stock + $ordersDetails->qty_ordered );
 			} elseif ( $stock >= $ordersDetails->qty_ordered ) {
@@ -167,7 +181,7 @@ class TCPStockManagement {
 		<input type="radio" id="stock_adjustment_2" name="stock_adjustment" value="2" <?php checked( 2, $stock_adjustment ); ?>/>
 		<span class="description"><?php _e( 'On OK from payment gateway', 'tcp' ); ?></span><br/>
 		<input type="radio" id="stock_adjustment_3" name="stock_adjustment" value="3" <?php checked( 3, $stock_adjustment ); ?>/> 
-		<span class="description"><?php _e( 'Manual on order status set to ', 'tcp' ); ?>
+		<span class="description"><?php _e( 'Order status set to ', 'tcp' ); ?>
 		<select id="stock_status_to_adjust" name="stock_status_to_adjust"> 
 		<?php $order_status_list = tcp_get_order_status();
 		foreach ( $order_status_list as $order_status ) : ?>
@@ -433,29 +447,36 @@ function show_hide_stock_management() {
 	function tcp_completed_ok_stockadjust( $order_id ) {
 		global $thecartpress;
 		$totalOrderDetails = OrdersDetails::getDetails($order_id) ;
-		$commonOrderDetails = Orders::get($order_id);
-		$_additional = $commonOrderDetails ->comment_internal;
+		$order = Orders::get( $order_id );
+		$_additional = $order->comment_internal;
 		$additional = __( 'No stock after payment for:', 'tcp' );
 		$stock_management = $thecartpress->get_setting('stock_management', false );
 		$stock_adjustment = $thecartpress->get_setting('stock_adjustment', 1 );
 
-		if ( $stock_management && $stock_adjustment == 2) {  /*  that is we are using stock management and only on payment completed */
-			$this->no_stock_enough = false;  // Seed off by assume it is all ok
-			foreach ( $totalOrderDetails as $ordersDetails) {  
-				$stock = tcp_get_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
-				$stock = apply_filters( 'tcp_checkout_stock', $stock );
-				if ( $stock == -1 ) {
-					$this->no_stock_enough = $this->no_stock_enough;
-				} elseif ( $stock >= $ordersDetails->qty_ordered ) {
-						tcp_set_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id, $stock - $ordersDetails->qty_ordered );
+		if ( $stock_management ) {
+			if ( $stock_adjustment == 2 ) {  /*  that is we are using stock management and only on payment completed */
+				$this->no_stock_enough = false;  // Seed off by assume it is all ok
+				//TCPStockManagement::stockAdjust( $order_id )
+				foreach ( $totalOrderDetails as $ordersDetails) {  
+					$stock = tcp_get_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
+					$stock = apply_filters( 'tcp_checkout_stock', $stock );
+					if ( $stock == -1 ) {
 						$this->no_stock_enough = $this->no_stock_enough;
-				} else {
-					$additional .= strip_tags($ordersDetails->name." ".$ordersDetails->option_1_name." ".$ordersDetails->option_2_name.",");
-					$this->no_stock_enough = true; /* Ahhh one of possibly many items out of stock. TODO backordering could be triggered here */
-				}
-			} /* foreach  */
+					} elseif ( $stock >= $ordersDetails->qty_ordered ) {
+							tcp_set_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id, $stock - $ordersDetails->qty_ordered );
+							$this->no_stock_enough = $this->no_stock_enough;
+					} else {
+						$additional .= strip_tags($ordersDetails->name." ".$ordersDetails->option_1_name." ".$ordersDetails->option_2_name.",");
+						$this->no_stock_enough = true; /* Ahhh one of possibly many items out of stock. TODO backordering could be triggered here */
+					}
+				} /* foreach  */
+			} elseif ( $stock_adjustment == 3 ) {
+				//$new_status = Orders::getStatus( $order_id );
+				$new_status = $order->status;
+				$this->stock_adjust_manual( $order_id, $new_status );
+			}
 			if ( $this->no_stock_enough ) {
-				Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $commonOrderDetails ->transaction_id, $_additional."\n".$additional );
+				Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $order->transaction_id, $_additional."\n".$additional );
 				$message = tcp_do_template( 'tcp_error_stock_when_pay', false );
 				if ( strlen( $message ) == 0 ) : ?>
 					<p><?php _e( 'There was an error when creating the order. Seller will contact you regarding your order.', 'tcp' ); ?></p>

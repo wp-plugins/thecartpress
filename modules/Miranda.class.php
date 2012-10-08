@@ -150,7 +150,6 @@ jQuery(':submit').on('click', function(event) {
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$activate_miranda = $thecartpress->get_setting( 'activate_miranda', true ); ?>
-
 	<tr valign="top">
 		<th scope="row">
 			<label for="activate_miranda"><?php _e( 'Activate miranda', 'tcp' ); ?></label>

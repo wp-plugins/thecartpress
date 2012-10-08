@@ -925,14 +925,19 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 //
 //Order status template functions
 //
+/**
+ * The order is very important, the first one is greather than the second one...
+ * @since 1.2.5.2
+ */
 function tcp_get_order_status() {
 	require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 	$status_list = array(
-		Orders::$ORDER_PENDING => array(
-			'name'	=> Orders::$ORDER_PENDING,
-			'label'	=>__( 'Pending', 'tcp' ),
+		Orders::$ORDER_COMPLETED => array(
+			'name'	=> Orders::$ORDER_COMPLETED,
+			'label'	=>__( 'Completed', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
+			'is_completed'			=> true,
 		),
 		Orders::$ORDER_PROCESSING => array(
 			'name'	=> Orders::$ORDER_PROCESSING,
@@ -940,12 +945,11 @@ function tcp_get_order_status() {
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
 		),
-		Orders::$ORDER_COMPLETED => array(
-			'name'	=> Orders::$ORDER_COMPLETED,
-			'label'	=>__( 'Completed', 'tcp' ),
+		Orders::$ORDER_PENDING => array(
+			'name'	=> Orders::$ORDER_PENDING,
+			'label'	=>__( 'Pending', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> false,
-			'is_completed'			=> true,
 		),
 		Orders::$ORDER_CANCELLED => array(
 			'name'	=> Orders::$ORDER_CANCELLED,
@@ -959,7 +963,7 @@ function tcp_get_order_status() {
 			'label'	=>__( 'Suspended', 'tcp' ),
 			'show_in_dashboard'		=> true,
 			'valid_for_deleting'	=> true,
-		)
+		),
 	);
 	return apply_filters( 'tcp_get_order_status', $status_list );
 }
@@ -1002,6 +1006,18 @@ function tcp_get_processing_order_status() {
 			return $status['name'];
 	return 'PROCESSING';
 }
+
+/**
+ * Returns true if stauts 1 is greather than status 2
+ * @since 1.2.5.2
+ */
+function tcp_is_greather_status( $status_1, $status_2 ) {
+	$status = tcp_get_order_status();
+	foreach( $status as $id => $status )
+		if ( $id == $status_1 ) return true;
+		elseif ( $id == $status_2 ) return false;
+	return false;
+}
 //
 // End Order status functions templates
 //
@@ -1011,7 +1027,7 @@ function tcp_get_processing_order_status() {
 //
 function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 	$types = array();
-	if ( $no_one ) $types[''] = $no_one_desc != '' ? $no_one_desc : __( 'No one', 'tcp' );
+	if ( $no_one ) $types[''] = array( 'label' => $no_one_desc != '' ? $no_one_desc : __( 'No one', 'tcp' ) );
 	$types['SIMPLE'] = array(
 		'label'	=> __( 'Simple', 'tcp' ),
 	);
@@ -1189,5 +1205,16 @@ function tcp_the_cross_selling( $post_id = 0, $echo = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
 	return OrdersDetails::getCrossSelling( $post_id );
+}
+
+/**
+ * @since 1.2.5.2
+ */
+function tcp_redirect_302( $url ) {
+	//Redirect Page
+	if ( function_exists( 'status_header' ) ) status_header( 302 );
+	header( 'HTTP/1.1 302 Temporary Redirect' );
+	header( 'Location:' . $url );
+	exit();
 }
 ?>

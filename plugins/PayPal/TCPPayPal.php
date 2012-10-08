@@ -23,6 +23,16 @@ new TCPPaypalCurrencyConverter();
 
 class TCPPayPal extends TCP_Plugin {
 
+	function __construct() {
+		parent::__construct();
+		add_action( 'init', array( $this, 'init' ) );
+	}
+
+	function init() {
+		add_action( 'wp_ajax_tcp_paypal_ipn', array( $this, 'tcp_paypal_ipn' ) );
+		add_action( 'wp_ajax_nopriv_tcp_paypal_ipn', array( $this, 'tcp_paypal_ipn' ) );
+	}
+
 	function getTitle() {
 		return 'PayPal Standard';
 	}
@@ -177,8 +187,10 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
 		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() ) );
-		$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) ) );
-		$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
+		//$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) ) );
+		$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', tcp_get_the_checkout_url() ) );
+		//$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
+		$p->add_field( 'notify_url', add_query_arg( 'action', 'tcp_paypal_ipn', admin_url( 'admin-ajax.php' ) ) );
 		$p->add_field( 'custom', $order_id . '-' . $instance );
 		//$p->add_field( 'custom', $order_id . '-' . $test_mode . '-' . $new_status . '-' . get_class( $this ) . '-' . $instance );
 		$p->add_field( 'currency_code', $currency );
@@ -186,12 +198,13 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'no_shipping', $no_shipping );
 		
 		if ( $send_detail == 0 ) { // && empty( $profile_shipping ) && empty( $profile_taxes ) ) { // Buy Now - one total
-			$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
+			//$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
+			$p->add_field( 'item_name', printf( __( 'Purchase from %s (Order No. %s)', 'tcp' ), $merchant, $order_id ) );
 			$amount = 0;
 			$taxes = 0;
 			$decimals = tcp_get_decimal_currency();
 			foreach( $shoppingCart->getItems() as $item ) {
-				$tax = tcp_get_the_tax( $item->getPostId() );
+				$tax = $item->getTax();//tcp_get_the_tax( $item->getPostId() );
 				if ( ! tcp_is_display_prices_with_taxes() ) $discount = round( $item->getDiscount() / $item->getUnits(), $decimals );
 				else $discount = 0;
 				$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() ) - $discount;
@@ -236,7 +249,7 @@ class TCPPayPal extends TCP_Plugin {
 				$p->add_field( "item_name_$i", strip_tags( html_entity_decode( $item->getTitle(), ENT_QUOTES ) ) );
 				$p->add_field( "amount_$i", number_format( $item->getUnitPrice(), 2, '.', '' ) );
 				$p->add_field( "quantity_$i", $item->getUnits() );
-				$tax = tcp_get_the_tax( $item->getPostId() );//$item->getTax()
+				$tax = $item->getTax();//tcp_get_the_tax( $item->getPostId() );//$item->getTax()
 				$tax = ( $item->getUnitPrice() * $tax / 100 ) * $item->getUnits();
 				if ( $tax > 0 ) $p->add_field( "tax_$i", number_format( $tax, 2, '.', '' ) );
 				if ( $discount > 0 ) {
@@ -315,5 +328,108 @@ class TCPPayPal extends TCP_Plugin {
 		$supported = array( 'AUD', 'CAD', 'CZK', 'DKK', 'EUR', 'HUF', 'JPY', 'NOK', 'NZD', 'PLN', 'GBP', 'SGD', 'SEK', 'CHF', 'USD' );
 		return in_array( $currency_iso, $supported );
 	}*/
+
+	function tcp_paypal_ipn() {
+		$custom			= isset( $_POST['custom'] ) ? $_POST['custom'] : '321-0'; //-CANCELLED-TCPPayPal-0';//Order_id-test_mode-new_status-class-instance
+		$transaction_id	= isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : '';
+		$custom		= explode( '-', $custom );
+		$order_id	= $custom[0];
+		$instance	= $custom[1];
+
+		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
+			$cancelled_status = tcp_get_cancelled_order_status();
+			Orders::editStatus( $order_id, $cancelled_status, $transaction_id, __( 'Customer cancel at PayPal', 'tcp' ) );
+			ActiveCheckout::sendMails( $order_id, __( 'Customer cancel at PayPal', 'tcp' ) );
+		} else {
+			$data = tcp_get_payment_plugin_data( 'TCPPayPal', $instance );
+			$test_mode	= $data['test_mode'];
+			$new_status	= $data['new_status'];
+			include( 'ipnlistener.class.php' );
+			$listener = new IpnListener();
+			$listener->use_sandbox = $test_mode;
+			//To post over standard HTTP connection, use:
+			//$listener->use_ssl = false;
+			//To post using the fsockopen() function rather than cURL, use:
+			//$listener->use_curl = false;
+			try {
+				$listener->requirePostMethod();
+				$verified = $listener->processIpn();
+			} catch ( Exception $e ) {
+				$verified = false;
+				Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, __( 'No validation. Error in connection.', 'tcp' ) );
+				ActiveCheckout::sendMails( $order_id, __( 'No validation. Error in connection.', 'tcp' ) );
+				exit(0);
+			}
+			if ( $verified ) {
+		//  	Once you have a verified IPN you need to do a few more checks on the POST
+		//		fields--typically against data you stored in your database during when the
+		//		end user made a purchase (such as in the "success" page on a web payments
+		//		standard button). The fields PayPal recommends checking are:
+		//		1. Check the $_POST['payment_status'] is "Completed"
+		//		2. Check that $_POST['txn_id'] has not been previously processed
+		//		3. Check that $_POST['receiver_email'] is your Primary PayPal email
+		//		4. Check that $_POST['payment_amount'] and $_POST['payment_currency']
+		//		are correct
+		//		Since implementations on this varies, I will leave these checks out of this
+		//		example and just send an email using the getTextReport() method to get all
+		//		of the details about the IPN.
+				if ( $_POST['receiver_email'] == $data['business'] ) {
+					$ok = false;
+					//$order_row = Orders::getOrderByTransactionId( $classname, $transaction_id );
+					$additional = "\npayment_status: " . $_POST['payment_status'];
+					switch ( $_POST['payment_status'] ) {
+						case 'Completed':
+						case 'Canceled_Reversal':
+						case 'Processed': //should check price, but with profile options, we can't know it, could check currency
+							$comment = "\nmc_gross: " . $_POST['mc_gross'] . ' ' . $_POST['mc_currency'];
+							$comment .= "\nmc_shipping: " . $_POST['mc_shipping'] . ', tax=' . $_POST['tax'];
+							if ( isset( $_POST['receipt_id'] ) ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
+							if ( isset( $_POST['memo'] ) ) $additional .= "\nCustomer comment: " . $_POST['memo'];
+							Orders::editStatus( $order_id, $new_status, $transaction_id, $comment . $additional );
+							$ok = true;
+							break;
+						case 'Refunded':
+						case 'Reversed':
+							$additional .= "\nreason code: " . $_POST['reason_code'];
+							Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $additional );
+							break;
+						case 'Expired':
+						case 'Failed':
+							Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $transaction_id, $additional );
+							require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/checkout/ActiveCheckout.class.php' );
+							break;
+						case 'Pending':
+							$additional .= "\npending_reason=" . $_POST['pending_reason'];
+							Orders::editStatus( $order_id, Orders::$ORDER_PENDING, $transaction_id, $additional );
+							break;
+						case 'Expired':
+						case 'Failed':
+						case 'Denied':
+						case 'Voided':
+							Orders::editStatus( $order_id, $cancelled_status, $transaction_id, $additional );
+							break;
+						default :
+							$additional .= "\nreason code: " . $_POST['reason_code'];
+							Orders::editStatus( $order_id, Orders::$ORDER_PENDING, $transaction_id, $additional );
+							break;
+					}
+					do_action( 'tcp_paypal_standard_do_payment', $order_id, array( 'TransactionID' => $transaction_id ), $ok );
+					ActiveCheckout::sendMails( $order_id, $additional );
+				} else {
+					$additional = $_POST['payment_status']. ': receiver_email is wrong (' . $_POST['receiver_email'] . ')';
+					Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $additional );
+					ActiveCheckout::sendMails( $order_id, $additional );
+				}
+			} else {
+				Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, 'Invalid IPN' );
+				ActiveCheckout::sendMails( $order_id, 'Invalid IPN' );
+				//An Invalid IPN *may* be caused by a fraudulent transaction attempt. It's
+				//a good idea to have a developer or sys admin manually investigate any
+				//invalid IPN.
+				//save for further investigation?
+				//mail( debug_email, 'Invalid IPN', $listener->getTextReport() );
+			}
+		}
+	}
 }
 ?>

@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.5.1
+Version: 1.2.5.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -625,21 +625,21 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		}
 		require_once( TCP_CLASSES_FOLDER . 'Roles.class.php' );
 		require_once( TCP_DAOS_FOLDER . 'manage_daos.php' );
-		//Page Shopping Cart
+		//Shopping Cart page
 		$shopping_cart_page_id = get_option( 'tcp_shopping_cart_page_id' );
 		if ( ! $shopping_cart_page_id || ! get_page( $shopping_cart_page_id ) ) {
 			$shopping_cart_page_id = TheCartPress::createShoppingCartPage();
 		} else {
 			wp_publish_post( (int)$shopping_cart_page_id );
 		}
-		//Page Checkout
+		//Checkout page
 		$page_id = get_option( 'tcp_checkout_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCheckoutPage( $shopping_cart_page_id );
 		} else {
 			wp_publish_post( (int)$page_id );
 		}
-		//Page Catalogue
+		//Catalogue page
 		$page_id = get_option( 'tcp_catalogue_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCataloguePage();
@@ -673,6 +673,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				),
 			)
 		);
+		//default shortcode: "all products"
 		if ( ! get_option( 'tcp_shortcodes_data' ) )
 			add_option( 'tcp_shortcodes_data', array( array(
 				'id'					=> 'all_products',

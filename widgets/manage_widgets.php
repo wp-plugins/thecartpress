@@ -51,6 +51,7 @@ function tcp_widgets_init() {
 	require_once( 'ArchivesWidget.class.php' );
 	require_once( 'AttributesListWidget.class.php' );
 	require_once( 'WishListWidget.class.php' );
+	require_once( 'AuthorsWidget.class.php' );
 	register_widget( 'LastVisitedWidget' );
 	register_widget( 'CustomPostTypeListWidget' );
 	register_widget( 'TaxonomyCloudsPostTypeWidget' );
@@ -61,6 +62,7 @@ function tcp_widgets_init() {
 	register_widget( 'TCPArchivesWidget' );
 	register_widget( 'AttributesListWidget' );
 	register_widget( 'WishListWidget' );
+	register_widget( 'TCPAuthorsWidget' );
 	//register_widget( 'TCPCalendar' );
 }
 

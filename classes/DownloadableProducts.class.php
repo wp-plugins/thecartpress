@@ -147,16 +147,16 @@ class TCPDownloadableProducts {
 			$url = get_bloginfo('url') . '/wp-content/plugins/thecartpress/admin/VirtualProductDownloader.php';
 			ob_start(); ?>
 			<ul>
-			<?php foreach( $details as $detail ) : ?>
-				<?php if ( tcp_is_downloadable( $detail->post_id ) ) :
+			<?php foreach( $details as $detail ) :
+				if ( tcp_is_downloadable( $detail->post_id ) ) :
 					$exists_downloadables = true;
 					$uuid = tcp_get_download_uuid( $detail->order_detail_id );
 					$link = add_query_arg( 'uuid', $uuid, $url );
 					$link = add_query_arg( 'did', $detail->order_detail_id, $link );
 					$post = get_post( $detail->post_id ); ?>
 					<li><a href="<?php echo $link; ?>" target="_blank"><?php echo esc_html( $post->post_title ); ?></a></li>
-				<?php endif; ?>
-			<?php endforeach; ?>
+				<?php endif;
+			endforeach; ?>
 			</ul>
 			<?php $html = ob_get_clean();
 			if ( $exists_downloadables ) {

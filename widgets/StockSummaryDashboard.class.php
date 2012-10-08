@@ -23,6 +23,14 @@ class StockSummaryDashboard {
 		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 	}
 
+	function init() {
+		add_action( 'wp_ajax_tcp_stock_summary_dashboard', array( $this, 'tcp_stock_summary_dashboard' ) );
+	}
+
+	function wp_dashboard_setup() {
+		wp_add_dashboard_widget( 'tcp_stock_resume', __( 'Stock Summary', 'tcp' ), array( $this, 'show' ) );
+	}
+
 	function show() { ?>
 <div class="table table_content">
 	<table style="width:100%" id="table_stock_summary">
@@ -100,14 +108,6 @@ class StockSummaryDashboard {
 			);
 		}
 		die( json_encode( $result ) );
-	}
-
-	function init() {
-		add_action( 'wp_ajax_tcp_stock_summary_dashboard', array( $this, 'tcp_stock_summary_dashboard' ) );
-	}
-
-	function wp_dashboard_setup() {
-		wp_add_dashboard_widget( 'tcp_stock_resume', __( 'Stock Summary', 'tcp' ), array( $this, 'show' ) );
 	}
 }
 

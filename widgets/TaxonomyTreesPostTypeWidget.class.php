@@ -22,7 +22,7 @@ class TaxonomyTreesPostTypeWidget extends TCPParentWidget {
 
 	function TaxonomyTreesPostTypeWidget() {
 		parent::__construct( 'taxonomytreesposttype', __( 'Use this widget to add trees of different taxonomies', 'tcp' ), 'TCP Navigation Tree' );
-		add_action( 'wp_head', array( $this, 'wp_head' ) );
+		add_action( 'init', array( $this, 'wp_head' ) );
 	}
 
 	function wp_head() {
