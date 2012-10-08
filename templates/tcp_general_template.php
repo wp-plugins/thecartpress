@@ -26,6 +26,13 @@ function tcp_get_the_shopping_cart_url() {
 	return tcp_the_shopping_cart_url( false );
 }
 
+/**
+ * @since 1.2.5.2
+ */
+function tcp_is_the_shopping_cart_page() {
+	return is_page( tcp_get_current_id( get_option( 'tcp_shopping_cart_page_id' ), 'page' ) );
+}
+
 function tcp_the_checkout_url( $echo = true ) {
 	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );
 	if ( $echo ) echo $url;
@@ -34,6 +41,20 @@ function tcp_the_checkout_url( $echo = true ) {
 
 function tcp_get_the_checkout_url() {
 	return tcp_the_checkout_url( false );
+}
+
+/**
+ * @since 1.2.5.2
+ */
+function tcp_is_the_checkout_page() {
+	return is_page( tcp_get_current_id( get_option( 'tcp_checkout_page_id' ), 'page' ) );
+}
+
+/**
+ * @since 1.2.5.2
+ */
+function tcp_is_the_catalogue_page() {
+	return is_page( tcp_get_current_id( get_option( 'tcp_catalogue_page_id' ), 'page' ) );
 }
 
 function tcp_the_continue_url( $echo = true) {

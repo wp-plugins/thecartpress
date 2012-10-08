@@ -18,10 +18,24 @@
 
 class TCPCustomStyles {
 	function __construct() {
+		add_filter( 'body_class', array( &$this, 'body_classes' ) );
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
 		add_action( 'wp_head', array( &$this, 'wp_head' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Custom Styles', 'tcp' ), false, array( 'TCPCustomStyles', __FILE__ ), plugins_url( 'thecartpress/images/miranda/customstyles_settings_48.png' ) );
+	}
+
+	function body_classes( $classes ) {
+		if ( tcp_is_the_checkout_page() || tcp_is_the_shopping_cart_page() || tcp_is_the_catalogue_page() ) {
+			$classes[] = 'tcp-store';
+		} elseif ( is_tax() && tcp_is_saleable_taxonomy( tcp_get_current_taxonomy() ) ) {
+				$classes[] = 'tcp-store';
+		//} elseif ( is_archive() && tcp_is_saleable() ) {
+		//	$classes[] = 'tcp-archive';
+		} elseif ( tcp_is_saleable() ) {
+			$classes[] = 'tcp-archive';
+		}
+		return $classes;
 	}
 
 	function wp_head() {

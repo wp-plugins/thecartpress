@@ -31,7 +31,6 @@ class BrothersListWidget extends CustomListWidget {
 		if ( ! is_single() ) return;
 		global $post;
 		if ( $post ) {
-			$post_type = get_post_type_object( $post->post_type );
 			$taxonomies = get_object_taxonomies( $post->post_type );
 			if ( count( $taxonomies ) == 0 ) return;
 			$terms = get_the_terms( $post->ID, $taxonomies[0] );
@@ -39,7 +38,7 @@ class BrothersListWidget extends CustomListWidget {
 			$ids = array();
 			if ( is_array( $terms ) && count( $terms ) ) {
 				foreach( $terms as $term ) {
-					$ids[] = tcp_get_default_id( $term->term_id, $term->taxonomy );
+					$ids[] = $term->term_id; //tcp_get_default_id( $term->term_id, $term->taxonomy );
 					if ( $title == '' ) $title = $term->name;
 					else $title .= ' - ' . $term->name;
 				}
