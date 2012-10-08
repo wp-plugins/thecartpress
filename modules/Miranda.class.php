@@ -25,7 +25,6 @@ class TCPMiranda {
 			add_action( 'admin_init', array( &$this, 'admin_init' ) );
 			add_action( 'tcp_main_settings_page', array( $this, 'tcp_main_settings_page' ) );
 			add_filter( 'tcp_main_settings_action', array( $this, 'tcp_main_settings_action' ) );
-			add_action( 'admin_footer', array( &$this, 'admin_footer' ) );
 		}
 	}
 
@@ -101,6 +100,7 @@ jQuery('.toplevel_page_thecartpress\\/TheCartPress\\.class').click(function(even
 			wp_enqueue_style( 'tcp_miranda', plugins_url( 'thecartpress/css/tcp_miranda.css' ) );
 			wp_enqueue_script( 'thickbox' );
 			wp_enqueue_style( 'thickbox' );
+			add_action( 'admin_footer', array( &$this, 'admin_footer' ) );
 
 			add_action( 'wp_ajax_tcp_load_miranda', array( &$this, 'tcp_load_miranda' ) );
 			add_action( 'wp_ajax_tcp_miranda_load_admin_panel', array( &$this, 'tcp_miranda_load_admin_panel' ) );
@@ -150,7 +150,6 @@ jQuery(':submit').on('click', function(event) {
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$activate_miranda = $thecartpress->get_setting( 'activate_miranda', true ); ?>
-
 	<tr valign="top">
 		<th scope="row">
 			<label for="activate_miranda"><?php _e( 'Activate miranda', 'tcp' ); ?></label>
@@ -264,7 +263,7 @@ class TCPMirandaSection extends TCPMirandaContent {
 	}
 }
 
-class TCPMirandaItem extends TCPMirandaObject{
+class TCPMirandaItem extends TCPMirandaObject {
 	private $url;
 
 	function __construct( $title, $description = false, $url = false, $icon = false ) {
@@ -278,14 +277,12 @@ class TCPMirandaItem extends TCPMirandaObject{
 	
 	function show() {
 		$icon = $this->getIcon() !== false ? $this->getIcon() : plugins_url( 'thecartpress/images/miranda/default_settings_48.png' ); ?>
-
 			<article class="tcp-miranda-item">
-
 				<a <?php $this->showUrl(); ?>>
-					<img src="<?php echo $icon; ?>" width="48px" height="48px" border="0"/>
+					<!--<img src="<?php echo $icon; ?>" width="48px" height="48px" border="0" />-->
+					<img src="<?php echo $icon; ?>" height="48px" border="0" />
 					<span><?php echo $this->getTitle(); ?></span>
 				</a>
-
 			</article><?php
 	}
 
@@ -297,14 +294,14 @@ class TCPMirandaItem extends TCPMirandaObject{
 			if ( isset( $this->url[1] ) ) $url = add_query_arg( 'page', $this->url[1], $url );
 			$url = add_query_arg( 'modal', true, $url );
 			$url = add_query_arg( 'height', 600, $url );
-			$url = add_query_arg( 'width', 600, $url );
+			$url = add_query_arg( 'width', 700, $url );
 			echo 'href="' . $url . '" class="thickbox"';
 		} else {
 			$url = $this->url;
 			//$url = add_query_arg( 'modal', true, $url );
 			//$url = add_query_arg( 'TB_iframe', true, $url );
 			$url = add_query_arg( 'height', 600, $url );
-			$url = add_query_arg( 'width', 600, $url );
+			$url = add_query_arg( 'width', 700, $url );
 			echo 'href="' . $url . '" class="thickbox"';
 		}
 	}

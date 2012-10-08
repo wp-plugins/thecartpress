@@ -77,9 +77,12 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count ' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e( 'See product count', 'tcp ' ); ?></label>
+	<?php global $thecartpress;
+	if ( $thecartpress && $thecartpress->get_setting( 'use_weight', true ) ) : ?>
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight ' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp ' ); ?></label>
+	<?php endif; ?>
 		<br />
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_delete_all ' ); ?>" name="<?php echo $this->get_field_name( 'see_delete_all' ); ?>"<?php checked( $see_delete_all ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_delete_all' ); ?>"><?php _e( 'See delete button', 'tcp ' ); ?></label>

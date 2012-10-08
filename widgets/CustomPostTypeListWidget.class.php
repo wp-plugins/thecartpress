@@ -43,7 +43,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				$loop_args['post__in'] = $instance['included'];
 			}
 		}
-		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance );
+		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance, $args );
 		parent::widget( $args, $loop_args, $instance );
 	}
 
@@ -107,7 +107,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 			<?php endforeach; ?>
 			</select>
 			<span class="description"><?php _e( 'Press save to load the next list', 'tcp' ); ?></span>
-		</p><p style="margin-bottom:0;">
+		</p>
+		<p style="margin-bottom:0;">
 			<input type="checkbox" class="checkbox" onclick="tcp_show_taxonomy(this.checked);" id="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'use_taxonomy' ); ?>" value="yes" <?php checked( $use_taxonomy ); ?> />
 			<label for="<?php echo $this->get_field_id( 'use_taxonomy' ); ?>"><?php _e( 'Use Taxonomy', 'tcp' ); ?></label>
 		</p>
@@ -121,7 +122,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				<?php endforeach; ?>
 				</select>
 				<span class="description"><?php _e( 'Press save to load the next list', 'tcp' ); ?></span>
-			</p><p>
+			</p>
+			<p>
 				<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'term' ); ?>" id="<?php echo $this->get_field_id( 'term' ); ?>" class="widefat">
 				<?php if ( $instance['taxonomy'] ) : 
@@ -142,15 +144,14 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				<label for="<?php echo $this->get_field_id( 'included' ); ?>"><?php _e( 'Included', 'tcp' )?>:</label>
 				<select name="<?php echo $this->get_field_name( 'included' ); ?>[]" id="<?php echo $this->get_field_id( 'included' ); ?>" class="widefat" multiple size="8" style="height: auto">
 					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' ); ?></option>
-				<?php
-				$args = array(
+				<?php $args = array(
 					'post_type'			=> $instance['post_type'],
 					'posts_per_page'	=> -1,
 					'fields'			=> 'ids',
 				);
 				if ( $instance['post_type'] == TCP_PRODUCT_POST_TYPE ) {
-					$args['meta_key'] = 'tcp_is_visible';
-					$args['meta_value'] = true;
+					$args['meta_key']	= 'tcp_is_visible';
+					$args['meta_value']	= true;
 				}
 				$included = isset( $instance['included'] ) ? $instance['included'] : array();
 				if ( ! is_array( $included ) ) $included = array();
@@ -164,21 +165,21 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				</p>
 			</div><!-- p_included -->
 		</div><!-- tcp_post_included -->
-		
 		<p>
 			<label for="<?php echo $this->get_field_id( 'order_type' ); ?>"><?php _e( 'Order by', 'tcp' ); ?></label>:
 			<?php $sorting_fields = tcp_get_sorting_fields();
 			//$sorting_fields[] = array( 'value' => 'rand', 'title' => __( 'Random', 'tcp' ) ); ?>
 			<select id="<?php echo $this->get_field_id( 'order_type' ); ?>" name="<?php echo $this->get_field_name( 'order_type' ); ?>">
-			<?php foreach( $sorting_fields as $sorting_field ) : ?>
-			<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
-			<?php endforeach; ?>
+				<?php foreach( $sorting_fields as $sorting_field ) : ?>
+				<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
+				<?php endforeach; ?>
 			</select>
 			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="asc" <?php checked( $instance['order_desc'], 'asc' ); ?>/>
 			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Asc.', 'tcp' ); ?></label>
 			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="desc" <?php checked( $instance['order_desc'], 'desc' ); ?>/>
 			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Desc.', 'tcp' ); ?></label>
 		</p>
+		<?php do_action( 'tcp_custom_post_type_form', $this, $instance ); ?>
 		<?php parent::show_post_type_form( $instance );
 	}
 }

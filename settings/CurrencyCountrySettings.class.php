@@ -25,7 +25,7 @@ class TCPCurrencyCountrySettings {
 	function __construct() {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 		global $tcp_miranda;
-		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Localize', 'tcp' ), false, array( 'TCPCurrencyCountrySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/currency_settings_48.png' ) );
+		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Localize', 'tcp' ), false, array( 'TCPCurrencyCountrySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/localize_settings_48.png' ) );
 	}
 
 	function admin_menu() {
@@ -59,7 +59,8 @@ class TCPCurrencyCountrySettings {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Currency Settings', 'tcp' ); ?></h2>
+
+<?php screen_icon( 'tcp-localize' ); ?><h2><?php _e( 'Localize', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
@@ -73,12 +74,18 @@ $currency_layout	= $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$
 $decimal_currency	= $thecartpress->get_setting( 'decimal_currency', 2 );
 $decimal_point		= $thecartpress->get_setting( 'decimal_point', '.' );
 $thousands_separator= $thecartpress->get_setting( 'thousands_separator', ',' );
-$unit_weight		= $thecartpress->get_setting( 'unit_weight', 'gr');
+$use_weight			= $thecartpress->get_setting( 'use_weight', true );
+$unit_weight		= $thecartpress->get_setting( 'unit_weight', 'gr' );
 $country			= $thecartpress->get_setting( 'country', '' );
 $billing_isos		= $thecartpress->get_setting( 'billing_isos', array() );
 $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 <form method="post" action="">
+
+<h3><?php _e( 'Currency Settings', 'tcp' ); ?></h3>
+
+<div id="excerpt_content" class="postbox">
+
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -110,7 +117,7 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		<input type="text" id="currency_layout" name="currency_layout" value="<?php echo $currency_layout; ?>" size="20" maxlength="25" />
 		<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' ); ?></p>
-		<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
+		<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files), looking for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
 	</td>
 </tr>
 <tr valign="top">
@@ -131,7 +138,7 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 </tr>
 <tr valign="top">
 	<th scope="row">
-		<label for="continue_url"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
+		<label for="thousands_separator"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo $thousands_separator; ?>" size="1" maxlength="1" />
@@ -139,7 +146,16 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 </tr>
 <tr valign="top">
 	<th scope="row">
-		<label for="continue_url"><?php _e( 'Unit weight', 'tcp' ); ?></label>
+		<label for="use_weight"><?php _e( 'Use weight', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" name="use_weight" id="use_weight" <?php checked( $use_weight ); ?> value="yes" />
+		<p class="description"><?php _e( 'Allows to show or hide weight values in the store', 'tcp' ); ?></p>
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="unit_weight"><?php _e( 'Unit weight', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="unit_weight" name="unit_weight">
@@ -169,10 +185,17 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 	</td>
 </tr>
 
-<tr>
-	<th colspan="2"><h2><?php _e( 'Countries Settings', 'tcp'); ?></h2></th>
-</tr>
+</tbody>
+</table>
 
+</div>
+
+<h3><?php _e( 'Countries Settings', 'tcp'); ?></h3>
+
+<div id="excerpt_content" class="postbox">
+
+<table class="form-table">
+<tbody>
 <tr valign="top">
 	<th scope="row">
 		<label for="country"><?php _e( 'Base country', 'tcp' ); ?></label>
@@ -249,12 +272,19 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		</div>
 	</td>
 </tr>
+
 </tbody>
 </table>
 
+</div>
+
+<?php do_action( 'tcp_localize_settings_page' ); ?>
+
 <?php wp_nonce_field( 'tcp_currency_settings' ); ?>
 <?php submit_button( null, 'primary', 'save-currency-settings' ); ?>
+
 </form>
+
 </div>
 <?php
 	}
@@ -268,12 +298,14 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		$settings['decimal_currency']		= isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
 		$settings['decimal_point']			= isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
 		$settings['thousands_separator']	= isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
+		$settings['use_weight']				= isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;
 		$settings['unit_weight']			= isset( $_POST['unit_weight'] ) ? $_POST['unit_weight'] : 'gr';
 		if ( isset( $_POST['all_shipping_isos'] ) && $_POST['all_shipping_isos'] == 'yes' ) $settings['shipping_isos'] = array();
 		else $settings['shipping_isos'] = isset( $_POST['shipping_isos'] ) ? $_POST['shipping_isos'] : array();
 		if ( isset( $_POST['all_billing_isos'] ) && $_POST['all_billing_isos'] == 'yes' ) $settings['billing_isos'] = array();
 		else $settings['billing_isos'] = isset( $_POST['billing_isos'] ) ? $_POST['billing_isos'] : array();
 		$settings['country'] = isset( $_POST['country'] ) ? $_POST['country'] : '';
+		$settings = apply_filters( 'tcp_localize_settings_action', $settings );
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;
 		global $thecartpress;

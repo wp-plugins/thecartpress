@@ -31,7 +31,7 @@ class TCPPaypalCurrencyConverter {
 		$convert_to = isset( $data['convert_to'] ) ? $data['convert_to'] : tcp_get_the_currency_iso(); ?>
 	<tr valign="top">
 		<th scope="row">
-			<label for="use_conversion"><?php _e( 'Use google API', 'tcp' );?>:</label>
+			<label for="use_conversion"><?php _e( 'Currency conversion', 'tcp' );?>:</label>
 		</th><td>
 			<label>
 				<input type="radio" name="use_conversion" id="no_conversion" value="no" class="use_conversion" <?php checked( 'no', $use_conversion ); ?>/>

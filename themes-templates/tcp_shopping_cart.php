@@ -43,17 +43,32 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?>
 				</td>
 			</tr>
+		<?php if ( strlen( $source->get_shipping_company() ) > 0 && strlen( $source->get_billing_company() ) > 0 ) : ?>
 			<tr>
 				<td class="shipping_info">
-					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : echo $source->get_shipping_company(); ?><?php endif; ?>&nbsp;
+					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>
+						<?php echo $source->get_shipping_company(); ?>
+					<?php endif; ?>&nbsp;
 				</td>
 				<td class="billing_info">
 					<?php if ( strlen( $source->get_billing_company() ) > 0 ) : ?>
 						<?php echo $source->get_billing_company(); ?>
-						<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) echo '&nbsp;(', $source->get_billing_tax_id_number(), ')'; ?>
 					<?php endif; ?>&nbsp;
 				</td>
 			</tr>
+		<?php endif; ?>
+		<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
+			<tr>
+				<td class="shipping_info">
+					&nbsp;
+				</td>
+				<td class="billing_info">
+					<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
+					<?php echo $source->get_billing_tax_id_number(); ?>
+					<?php endif; ?>&nbsp;
+				</td>
+			</tr>
+		<?php endif; ?>
 			<tr>
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_street(); ?><br/>
@@ -117,14 +132,20 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?>
 				</td>
 			</tr>
+		<?php if ( strlen( $source->get_billing_company() ) > 0 ) : ?>
 			<tr>
 				<td class="billing_info">
-					<?php if ( strlen( $source->get_billing_company() ) > 0 ) : ?>
-						<?php echo $source->get_billing_company(); ?>
-						<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) echo '&nbsp;(', $source->get_billing_tax_id_number(), ')'; ?>
-					<?php endif; ?>&nbsp;
+					<?php echo $source->get_billing_company(); ?>
 				</td>
 			</tr>
+		<?php endif; ?>
+		<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
+			<tr>
+				<td class="billing_info">
+					<?php echo $source->get_billing_tax_id_number(); ?>
+				</td>
+			</tr>
+		<?php endif; ?>
 			<tr>
 				<td class="billing_info">
 					<?php echo $source->get_billing_street(); ?>
@@ -221,16 +242,16 @@ if ( $source->has_order_details() ) :
 			<?php echo tcp_number_format( $order_detail->get_qty_ordered(), 0 ); ?>
 		<?php else : ?>
 			<form method="post">
-			<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
-			<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
-			<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />
-			<?php do_action( 'tcp_get_shopping_cart_hidden_fields', $order_detail ); ?>
-			<?php ob_start(); ?>
-			<input type="text" name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count" />
-			<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" />
-			<?php echo apply_filters( 'tcp_shopping_cart_page_units', ob_get_clean(), $order_detail ); ?>
-			<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" />
-			<?php do_action( 'tcp_cart_units', $order_detail ); ?>
+				<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
+				<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
+				<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />
+				<?php do_action( 'tcp_get_shopping_cart_hidden_fields', $order_detail ); ?>
+				<?php ob_start(); ?>
+				<input type="number" name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count" min="0" step="1"/>
+				<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" />
+				<?php echo apply_filters( 'tcp_shopping_cart_page_units', ob_get_clean(), $order_detail ); ?>
+				<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" />
+				<?php do_action( 'tcp_cart_units', $order_detail ); ?>
 			</form>
 		<?php endif; ?>
 		</td>
@@ -241,11 +262,13 @@ if ( $source->has_order_details() ) :
 			<td class="tcp_cart_weight"><?php echo tcp_number_format( $order_detail->get_weight() ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
 		<?php endif; ?>
 		<?php $decimals	= tcp_get_decimal_currency();
-		$price = $order_detail->get_price() * $order_detail->get_qty_ordered() - $order_detail->get_discount();
-		$tax = ( $price / $order_detail->get_qty_ordered() ) * ( $order_detail->get_tax() / 100 ) * $order_detail->get_qty_ordered();
-		$tax = round( $tax, $decimals ); //to avoid decimal issues
-		$total_tax += $tax;
-		$price = round( $price, $decimals ); //to avoid decimal issues
+		$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
+		$price = $order_detail->get_price() - $discount;
+		$price = round( $price, $decimals );
+		$tax = $price * $order_detail->get_tax() / 100;
+		$tax = round( $tax, $decimals );
+		$total_tax += $tax * $order_detail->get_qty_ordered();
+		$price = round( $price * $order_detail->get_qty_ordered(), $decimals );
 		$total += $price; ?>
 		<?php if ( $source->see_tax() ) : ?>
 			<td class="tcp_cart_tax"><?php echo tcp_format_the_price( $tax ); ?></td>
@@ -263,7 +286,6 @@ if ( $source->has_order_details() ) :
 	if ( $source->see_tax() ) $colspan ++;
 	if ( $source->see_thumbnail() ) $colspan ++; ?>
 	<td colspan="<?php echo $colspan; ?>" class="tcp_cart_subtotal_title"><?php _e( 'Subtotal', 'tcp' ); ?></td>
-	<?php //$total = round( $total, tcp_get_decimal_currency() ); //to avoid decimal issues?>
 	<td class="tcp_cart_subtotal"><?php echo tcp_format_the_price( $total ); ?></td>
 	</tr>
 	<?php $discount = $source->get_discount();

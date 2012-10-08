@@ -2,18 +2,18 @@
 /**
  * This file is part of TheCartPress.
  * 
- * TheCartPress is free software: you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * TheCartPress is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
@@ -129,21 +129,21 @@ class TCPBillingBox extends TCPCheckoutBox {
 				$default_address_id = $default_address ? $default_address->address_id : 0;
 			}?>
 				<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif;?>>
-					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' );?></label>
+					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' ); ?></label>
 					<br />
 					<select id="selected_billing_id" name="selected_billing_id">
 					<?php foreach( $addresses as $address ) :?>
-						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->street . ', ' . $address->city );?></option>
+						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id ); ?>><?php echo stripslashes( $address->street . ', ' . $address->city ); ?></option>
 					<?php endforeach;?>
 					</select>
-					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' );?>
+					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' ); ?>
 				</div> <!-- selected_billing_area -->
 				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
-				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' )?></label>
+				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' ); ?></label>
 				<br />
 			<?php endif;?>
 			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
-			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
+			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' ); ?></label>
 			<div id="new_billing_area" class="clearfix" <?php
 				if ( $selected_billing_address == 'new' ) :
 				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
@@ -267,96 +267,105 @@ class TCPBillingBox extends TCPCheckoutBox {
 				$email = '';
 			}?>
 				<ul>
-					<li><label for="billing_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_firstname' );?></li>
-
-					<li><label for="billing_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
-					<?php $this->showErrorMsg( 'billing_lastname' );?></li>
-
-					<li><label for="billing_company"><?php _e( 'Company', 'tcp' );?>:</label>
-					<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_company' );?></li>
-
-					<li><label for="billing_tax_id_number"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
-					<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_tax_id_number' );?></li>
-
-					<li><label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
-					<?php global $thecartpress;
-					$country = $thecartpress->get_setting( 'country', '' );
-					$billing_isos = $thecartpress->get_setting( 'billing_isos', false );
-					if ( $billing_isos ) {
-						$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
-					} else {
-						$countries = Countries::getAll( tcp_get_current_language_iso() );
-					}
-					$country_bill = $country_id;
-					if ( $country_bill == '' ) $country_bill = $country;
-					?><select id="billing_country_id" name="billing_country_id"><?php //p_use_billing_address
-					foreach( $countries as $item ) :?>
-						<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-					<?php endforeach;?>
-					</select>
+					<li><label for="billing_firstname"><?php _e( 'Firstname', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_firstname' ); ?>
 					</li>
-
-					<li><label for="billing_region_id"><?php _e( 'Region', 'tcp' );?>:<em>*</em></label>
-					<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
-					<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
-						<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-					<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-						<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
-					<?php endforeach;?>
-					</select>
-					<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id;?>"/>
-					<?php $this->showErrorMsg( 'billing_region_id' );?>
-					<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
-					<?php $this->showErrorMsg( 'billing_region' );?>
+					<li>
+						<label for="billing_lastname"><?php _e( 'Lastname', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
+						<?php $this->showErrorMsg( 'billing_lastname' ); ?>
 					</li>
-
-					<li id="li_billing_city_id"><label for="billing_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
-					<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-					$cities = apply_filters( 'tcp_load_cities_for_billing', $cities );
-					if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
-						<select id="billing_city_id" name="billing_city_id">
-						<?php foreach( $cities as $id => $city ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
+					<li>
+						<label for="billing_company"><?php _e( 'Company', 'tcp' ); ?>:</label>
+						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_company' ); ?>
+					</li>
+					<li>
+						<label for="billing_tax_id_number"><?php _e( 'Tax ID number', 'tcp' ); ?>:</label>
+						<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_tax_id_number' ); ?>
+					</li>
+					<li>
+						<label for="billing_country_id"><?php _e( 'Country', 'tcp' ); ?>:<em>*</em></label>
+						<?php global $thecartpress;
+						$country = $thecartpress->get_setting( 'country', '' );
+						$billing_isos = $thecartpress->get_setting( 'billing_isos', false );
+						if ( $billing_isos ) {
+							$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
+						} else {
+							$countries = Countries::getAll( tcp_get_current_language_iso() );
+						}
+						$country_bill = $country_id;
+						if ( $country_bill == '' ) $country_bill = $country;
+						?><select id="billing_country_id" name="billing_country_id"><?php //p_use_billing_address
+						foreach( $countries as $item ) :?>
+							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
 						<?php endforeach;?>
 						</select>
-						<?php $this->showErrorMsg( 'billing_city_id' );?>
-					<?php else : ?>
-						<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_city' );?>
-					<?php endif;?>
 					</li>
-
-					<li><label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-					<?php $this->showErrorMsg( 'billing_street' );?></li>
-
-					<li><label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="8" maxlength="10" />
-					<?php $this->showErrorMsg( 'billing_postcode' );?></li>
-
-					<li><label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:</label>
-					<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'billing_telephone_1' );?></li>
-
-					<li><label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:</label>
-					<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'billing_telephone_2' );?></li>
-
-					<li><label for="billing_fax"><?php _e( 'Fax', 'tcp' );?>:</label>
-					<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
-					<?php $this->showErrorMsg( 'billing_fax' );?></li>
-
-					<li><label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
-					<input type="text" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
-					<?php $this->showErrorMsg( 'billing_email' );?></li>
+					<li>
+						<label for="billing_region_id"><?php _e( 'Region', 'tcp' ); ?>:<em>*</em></label>
+						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
+						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+							<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
+							<option value="<?php echo $id;?>" <?php selected( $id, $region_id ); ?>><?php echo $region['name'];?></option>
+						<?php endforeach;?>
+						</select>
+						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id;?>"/>
+						<?php $this->showErrorMsg( 'billing_region_id' ); ?>
+						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+						<?php $this->showErrorMsg( 'billing_region' ); ?>
+					</li>
+					<li id="li_billing_city_id"><label for="billing_city_id"><?php _e( 'City', 'tcp' ); ?>:<em>*</em></label>
+						<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+						$cities = apply_filters( 'tcp_load_cities_for_billing', $cities );
+						if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
+							<select id="billing_city_id" name="billing_city_id">
+							<?php foreach( $cities as $id => $city ) : ?>
+								<option value="<?php echo $id;?>" <?php selected( $id, $city_id ); ?>><?php echo $city['name'];?></option>
+							<?php endforeach;?>
+							</select>
+							<?php $this->showErrorMsg( 'billing_city_id' ); ?>
+						<?php else : ?>
+							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="50" />
+							<?php $this->showErrorMsg( 'billing_city' ); ?>
+						<?php endif;?>
+					</li>
+					<li>
+						<label for="billing_street"><?php _e( 'Address', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_street' ); ?>
+					</li>
+					<li>
+						<label for="billing_postcode"><?php _e( 'Postal code', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="8" maxlength="10" />
+						<?php $this->showErrorMsg( 'billing_postcode' ); ?>
+					</li>
+					<li>
+						<label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' ); ?>:</label>
+						<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_telephone_1' ); ?>
+					</li>
+					<li>
+						<label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' ); ?>:</label>
+						<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_telephone_2' ); ?>
+					</li>
+					<li>
+						<label for="billing_fax"><?php _e( 'Fax', 'tcp' ); ?>:</label>
+						<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_fax' ); ?>
+					</li>
+					<li>
+						<label for="billing_email"><?php _e( 'eMail', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
+						<?php $this->showErrorMsg( 'billing_email' ); ?>
+					</li>
 				</ul>
 			</div> <!-- new_billing_area -->
-			<?php do_action( 'tcp_checkout_billing' );?>
+			<?php do_action( 'tcp_checkout_billing' ); ?>
 		</div><!-- billing_layer_info -->
 		<?php return true;
 	}
@@ -372,44 +381,5 @@ class TCPBillingBox extends TCPCheckoutBox {
 		if ( ! preg_match( $pattern, $email ) ) return false;
 		return true;
 	}
-
-	/*//http://www.linuxjournal.com/article/9585
-	private function check_email_address( $email ) {
-		// First, we check that there's one @ symbol, 
-		// and that the lengths are right.
-		if ( ! ereg("^[^@]{1,64}@[^@]{1,255}$", $email ) ) {
-			// Email invalid because wrong number of characters 
-			// in one section or wrong number of @ symbols.
-			return false;
-		}
-		// Split it into sections to make life easier
-		$email_array = explode( "@", $email );
-		if ( count( $email_array ) < 2 )
-			return false;
-		$local_array = explode( ".", $email_array[0] );
-		for ( $i = 0; $i < sizeof( $local_array ); $i++ ) {
-			if ( ! ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&
-			↪'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$",
-			$local_array[$i] ) ) {
-				return false;
-			}
-		}
-		// Check if domain is IP. If not, 
-		// it should be valid domain name
-		if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) {
-			$domain_array = explode(".", $email_array[1]);
-			if (sizeof($domain_array) < 2) {
-				return false; // Not enough parts to domain
-			}
-			for ($i = 0; $i < sizeof($domain_array); $i++) {
-				if ( ! ereg( "^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|
-				↪([A-Za-z0-9]+))$",
-				$domain_array[$i] ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}*/
 }
 ?>

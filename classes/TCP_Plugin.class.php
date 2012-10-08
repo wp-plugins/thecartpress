@@ -91,7 +91,7 @@ class TCP_Plugin {
 	}
 
 	/**
-	 * Returns if the plugin alows to send the "purchase" email
+	 * Returns if the plugin allows to send the "purchase" email
 	 * @since 1.2.3
 	 */
 	function sendPurchaseMail() {

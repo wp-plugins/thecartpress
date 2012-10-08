@@ -112,8 +112,13 @@ class Transference extends TCP_Plugin {
 		</table>
 		<p>
 		<?php $additional = ob_get_clean(); echo $additional; ?>
-		<input type="button" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
-		</p><?php
+		<input type="button" id="tcp_transference" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
+		</p>
+		<!--<script>
+		//jQuery(document).ready(function() {
+			//jQuery('#tcp_transference').click();
+		//});
+		</script>--><?php
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );

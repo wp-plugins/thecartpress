@@ -28,7 +28,6 @@ function tcp_widgets_init() {
 	if ( ! $disable_ecommerce ) {
 		require_once( 'ShoppingCartSummaryWidget.class.php' );
 		require_once( 'ShoppingCartWidget.class.php' );
-		require_once( 'LastVisitedWidget.class.php' );
 		require_once( 'RelatedListWidget.class.php' );
 		require_once( 'CheckoutWidget.class.php' );
 		require_once( 'SelectCountryWidget.class.php' );
@@ -36,13 +35,13 @@ function tcp_widgets_init() {
 		require_once( 'CrossSellingWidget.class.php' );
 		register_widget( 'ShoppingCartSummaryWidget' );
 		register_widget( 'ShoppingCartWidget' );
-		register_widget( 'LastVisitedWidget' );
 		register_widget( 'RelatedListWidget' );
 		register_widget( 'CheckoutWidget' );//TODO At this moment, only for testing purpouse
 		register_widget( 'TCPSelectCountryWidget' );
 		register_widget( 'BuyButtonWidget' );
 		register_widget( 'CrossSellingWidget' );
 	}
+	require_once( 'LastVisitedWidget.class.php' );
 	require_once( 'CustomPostTypeListWidget.class.php' );
 	require_once( 'TaxonomyCloudsPostTypeWidget.class.php' );
 	require_once( 'TaxonomyTreesPostTypeWidget.class.php' );
@@ -52,6 +51,8 @@ function tcp_widgets_init() {
 	require_once( 'ArchivesWidget.class.php' );
 	require_once( 'AttributesListWidget.class.php' );
 	require_once( 'WishListWidget.class.php' );
+	require_once( 'AuthorsWidget.class.php' );
+	register_widget( 'LastVisitedWidget' );
 	register_widget( 'CustomPostTypeListWidget' );
 	register_widget( 'TaxonomyCloudsPostTypeWidget' );
 	register_widget( 'TaxonomyTreesPostTypeWidget' );
@@ -61,6 +62,7 @@ function tcp_widgets_init() {
 	register_widget( 'TCPArchivesWidget' );
 	register_widget( 'AttributesListWidget' );
 	register_widget( 'WishListWidget' );
+	register_widget( 'TCPAuthorsWidget' );
 	//register_widget( 'TCPCalendar' );
 }
 

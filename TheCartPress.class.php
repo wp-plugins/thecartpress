@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.3
+Version: 1.2.5.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -427,7 +427,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		$base = TCP_ADMIN_FOLDER . 'ShortCodeGenerator.php';
 		return $base;
 	}
-	
+
 	function get_base_settings() {
 		return __FILE__;
 	}
@@ -435,7 +435,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	function get_base_appearance() {
 		return __FILE__ . '/appearance';
 	}
-
 
 	function admin_menu() {
 		$base = $this->get_base();
@@ -460,7 +459,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_submenu_page( 'tcpml', __( 'Downloadable products', 'tcp' ), __( 'Downloadable products', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'VirtualProductDownloader.php' );
 			add_submenu_page( 'tcpml', __( 'TheCartPress checking', 'tcp' ), __( 'TheCartPress checking', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'Checking.php' );
 		}
-
 		$base = $this->get_base_tools();
 		add_menu_page( '', __( 'TCP Tools', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( '/images/tcp.png', __FILE__ ), 43 );
 		add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
@@ -477,7 +475,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
 			$suffix = '-' . $post->post_type;
 			if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
-			
 			$see_buy_button_in_content	= $this->get_setting( 'see_buy_button_in_content' . $suffix, true );
 			$align_buy_button_in_content= $this->get_setting( 'align_buy_button_in_content' . $suffix, 'north' );
 			$see_price_in_content		= $this->get_setting( 'see_price_in_content' );
@@ -628,21 +625,21 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		}
 		require_once( TCP_CLASSES_FOLDER . 'Roles.class.php' );
 		require_once( TCP_DAOS_FOLDER . 'manage_daos.php' );
-		//Page Shopping Cart
+		//Shopping Cart page
 		$shopping_cart_page_id = get_option( 'tcp_shopping_cart_page_id' );
 		if ( ! $shopping_cart_page_id || ! get_page( $shopping_cart_page_id ) ) {
 			$shopping_cart_page_id = TheCartPress::createShoppingCartPage();
 		} else {
 			wp_publish_post( (int)$shopping_cart_page_id );
 		}
-		//Page Checkout
+		//Checkout page
 		$page_id = get_option( 'tcp_checkout_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCheckoutPage( $shopping_cart_page_id );
 		} else {
 			wp_publish_post( (int)$page_id );
 		}
-		//Page Catalogue
+		//Catalogue page
 		$page_id = get_option( 'tcp_catalogue_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCataloguePage();
@@ -676,6 +673,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				),
 			)
 		);
+		//default shortcode: "all products"
 		if ( ! get_option( 'tcp_shortcodes_data' ) )
 			add_option( 'tcp_shortcodes_data', array( array(
 				'id'					=> 'all_products',
@@ -707,6 +705,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$this->settings = array(
 				'legal_notice'				=> __( 'Checkout notice', 'tcp' ),
 				'stock_management'			=> false,
+				'stock_adjustment'			=> 1,
 				'disable_shopping_cart'		=> false,
 				'disable_ecommerce'			=> false,
 				'user_registration'			=> false,
@@ -800,7 +799,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			add_post_meta( $post_id, 'tcp_order', 10 );
 			add_post_meta( $post_id, 'tcp_sku', 'SKU_ONE' );
 			add_post_meta( $post_id, 'tcp_stock', -1 ); //No stock
-			
 			$category_id = term_exists( 'Category One', 'tcp_product_category' );
 			if ( ! $category_id ) $category_id = wp_insert_term( 'Category One', 'tcp_product_category' );
 			if ( isset( $category_id->term_id ) ) wp_set_object_terms( $post_id, (int)$category_id->term_id, 'tcp_product_category' );
@@ -829,7 +827,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function load_settings() {
-		$this->settings = get_option( 'tcp_settings' );
+		$this->settings = get_option( 'tcp_settings', array() );
 	}
 
 	function after_setup_theme() {
@@ -899,7 +897,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				}
 			}
 		}
-		if ( get_option( 'tcp_rewrite_rules' ) ) {
+		if ( get_option( 'tcp_rewrite_rules', false ) ) {
 			//global $wp_rewrite;
 			//$wp_rewrite->flush_rules();
 			flush_rewrite_rules();

@@ -18,7 +18,10 @@
 
 require_once( 'Ajax.class.php' );
 require_once( 'BuyButton.class.php' );
+require_once( 'CategoryImages.class.php' );
+require_once( 'CopyOrder.class.php' );
 require_once( 'CustomFields.class.php' );
+require_once( 'CustomStyles.class.php' );
 require_once( 'CustomTemplates.class.php' );
 require_once( 'FilterNavigation.class.php' );
 require_once( 'GroupedProducts.class.php' );
@@ -27,6 +30,7 @@ require_once( 'LastLogin.class.php' );
 require_once( 'StockManagement.class.php' );
 require_once( 'TopSellers.class.php' );
 require_once( 'UIImprovements.class.php' );
+require_once( 'UnderConstruction.class.php' );
 require_once( 'WishList.class.php' );
 require_once( 'WPPluginsAdminPanel.class.php' );
 ?>

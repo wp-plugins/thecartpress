@@ -27,60 +27,36 @@ class TCPShoppingCartPage {
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
 		ob_start(); ?>
-
 <div class="tcp_shopping_cart_page">
-
 <?php  if ( $shoppingCart->isEmpty() ) : ?>
-
 	<span class="tcp_shopping_cart_empty"><?php echo __( 'The cart is empty', 'tcp' );?></span>
-
 	<?php tcp_do_template( 'tcp_shopping_cart_empty' ); ?>
-
 	<?php do_action( 'tcp_shopping_cart_empty' ); ?>
-
 <?php else : ?>
-
-	<div class="entry-content" id="shopping_cart">
-
+	<div id="shopping_cart">
 	<?php if ( is_array( $notice ) && count( $notice ) > 0 ) : ?>
-
 		<p class="tcp_shopping_cart_notice">
-
 		<?php foreach( $notice as $not ) : ?>
-
 			<?php echo $not; ?><br/>
-
 		<?php endforeach; ?>
-
 		</p>
-
 	<?php elseif ( strlen( $notice ) > 0 ) : ?>
-
 		<p class="tcp_shopping_cart_notice"><?php echo $notice; ?></p>
-
 	<?php endif;
 	do_action( 'tcp_shopping_cart_before_cart' );
 	$cart_table = new TCPCartTable();
 	$cart_table->show( new TCPCartSourceSession() );
 	do_action( 'tcp_shopping_cart_after_cart' ); ?>
-
 		<ul class="tcp_sc_links">
-
 			<li class="tcp_sc_checkout"><a href="<?php tcp_the_checkout_url();?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 			<li class="tcp_sc_continue"><a href="<?php tcp_the_continue_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
-
 			<?php do_action( 'tcp_shopping_cart_after_links' );?>
-
 		</ul>
-
 	</div><!-- .entry-content -->
-
 <?php endif; ?>
-
+<?php do_action( 'tcp_shopping_cart_footer' ); ?>
 </div><!-- .tcp_shopping_cart_page -->
-
 <?php do_action( 'tcp_shopping_cart_after' ); ?>
-
 <?php return ob_get_clean();
 	}
 }

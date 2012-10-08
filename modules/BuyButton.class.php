@@ -94,11 +94,14 @@ class TCPBuyButton {
 		$buy_buttons = array();
 		foreach( $paths as $path ) {
 			$filenames = glob( $path['path'] );
-			foreach( $filenames as $filename )
-				$buy_buttons[] = array(
-					'label'	=> $path['label'] . ': ' . basename( $filename, '.php' ),
-					'path'	=> $filename,
-	   			);
+			if ( $filenames != false ) {
+				foreach( $filenames as $filename ) {
+					$buy_buttons[] = array(
+						'label'	=> $path['label'] . ': ' . basename( $filename, '.php' ),
+						'path'	=> $filename,
+		   			);
+				}
+			}
 	   	}
 		return $buy_buttons;
 	}

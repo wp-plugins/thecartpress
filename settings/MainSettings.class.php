@@ -42,7 +42,7 @@ class TCPMainSettings {
 		    'title'   => __( 'Overview' ),
 		    'content' =>
 	            '<p>' . __( 'You can customize TheCartPress as a Framework disabling the eCommerce funtionalities.', 'tcp' ) . '</p>' .
-	            '<p>' . __( 'Set the differents URLs for TheCartPress actions'. 'tcp' ) . '</p>'
+	            '<p>' . __( 'Set the different URLs for TheCartPress actions', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
@@ -58,15 +58,12 @@ class TCPMainSettings {
 	function admin_page() { ?>
 
 <div class="wrap">
-
-	<?php screen_icon(); ?><h2><?php _e( 'Main Settings', 'tcp' ); ?></h2>
-
+	<?php screen_icon( 'tcp-main' ); ?><h2><?php _e( 'Main Settings', 'tcp' ); ?></h2>
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
 	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
 	</div>
 <?php endif; ?>
-
 <?php global $thecartpress;
 $disable_ecommerce		= $thecartpress->get_setting( 'disable_ecommerce', false );
 $disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart', false );
@@ -75,35 +72,30 @@ $after_add_to_cart		= $thecartpress->get_setting( 'after_add_to_cart', '' );
 $hide_downloadable_menu	= $thecartpress->get_setting( 'hide_downloadable_menu', false );
 $downloadable_path		= $thecartpress->get_setting( 'downloadable_path', '' );
 $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
-
 <form method="post" action="">
-
 <table class="form-table">
 <tbody>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="disable_ecommerce"><?php _e( 'Disable eCommerce', 'tcp' ); ?></label>
+		<label for="disable_ecommerce"><?php _e( 'Disable eCommerce', 'tcp' ); ?></label>
 	</th>
 	<td>
 	<input type="checkbox" id="disable_ecommerce" name="disable_ecommerce" value="yes" <?php checked( true, $disable_ecommerce ); ?> />
 	<span class="description"><?php _e( 'To use TheCartPress as a Framework, disabling all eCommerce functionalities.', 'tcp' ); ?></span>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="disable_shopping_cart"><?php _e( 'Disable Shopping cart', 'tcp' ); ?></label>
+		<label for="disable_shopping_cart"><?php _e( 'Disable Shopping cart', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="disable_shopping_cart" name="disable_shopping_cart" value="yes" <?php checked( true, $disable_shopping_cart ); ?> />
 		<span class="description"><?php _e( 'To use TheCartPress as a catalog, disabling the Shopping cart and the Checkout.', 'tcp' ); ?></span>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="continue_url"><?php _e( 'Continue Shopping in', 'tcp' ); ?></label>
+		<label for="continue_url"><?php _e( 'Continue Shopping in', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="text" id="continue_url" name="continue_url" value="<?php echo $continue_url; ?>" size="50" maxlength="255" />
@@ -113,7 +105,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="continue_url"><?php _e( 'After adding to cart', 'tcp' ); ?></label>
+		<label for="continue_url"><?php _e( 'After adding to cart', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="after_add_to_cart" name="after_add_to_cart">
@@ -123,19 +115,17 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		</select>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="continue_url"><?php _e( 'Hide downloadable menu', 'tcp' ); ?></label>
+		<label for="continue_url"><?php _e( 'Hide downloadable menu', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="hide_downloadable_menu" name="hide_downloadable_menu" value="yes" <?php checked( $hide_downloadable_menu, true ); ?> />
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="continue_url"><?php _e( 'Downloadable path', 'tcp' ); ?></label>
+		<label for="continue_url"><?php _e( 'Downloadable path', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="text" id="downloadable_path" name="downloadable_path" value="<?php echo $downloadable_path; ?>" size="50" maxlength="255" />
@@ -143,7 +133,6 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<p class="description"><?php printf( __( 'For example, path for the current page in your server is: %s' , 'tcp' ), dirname( __FILE__ ) ); ?></p>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
 	<label for="hide_visibles"><?php _e( 'Hide visibles', 'tcp' ); ?></label>
@@ -153,20 +142,13 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<p class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></p>
 	</td>
 </tr>
-
 <?php do_action( 'tcp_main_settings_page' ); ?>
-
 </tbody>
 </table>
-
 <?php wp_nonce_field( 'tcp_main_settings' ); ?>
 <?php submit_button( null, 'primary', 'save-main-settings' ); ?>
-
 </form>
-
-</div>
-
-<?php
+</div><?php
 	}
 
 	function admin_action() {

@@ -38,7 +38,6 @@ class TCPPluginsList {
 		}
 		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_settings', $menu_slug, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
-//		add_action( "load-$page", array( &$this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -59,7 +58,7 @@ class TCPPluginsList {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php $this->plugin_type == 'payment' ? _e( 'Payment methods', 'tcp' ) : _e( 'Shipping methods', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-' . $this->plugin_type ); ?><h2><?php $this->plugin_type == 'payment' ? _e( 'Payment methods', 'tcp' ) : _e( 'Shipping methods', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
@@ -115,47 +114,41 @@ class TCPPluginsList {
 	global $tcp_payment_plugins;
 	$plugins = $tcp_shipping_plugins + $tcp_payment_plugins;
 }
-foreach( $plugins as $id => $plugin ) :
-	$tr_class = '';
-	$data = tcp_get_plugin_data( $id );
-	if ( is_array( $data ) && count( $data ) > 0 ) {
-		$n_active = 0;
-		foreach( $data as $instances )
-			if ( $instances['active'] ) $n_active++;
-		$out = sprintf( __( 'N<sup>o</sup> of instances: %d, actives: %d ', 'tcp') ,  count( $data ), $n_active );
-		if ( $n_active > 0 )
-			$tr_class = 'class="tcp_active_plugin"';
-	} else {
-		$out = __( 'Not in use', 'tcp' );
-	} ?>
-
-	<tr <?php echo $tr_class;?>>
-
-		<td>
-
-		<?php $icon = $plugin->getIcon();
-		if ( $icon ) : ?>
-
-			<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php echo $plugin->getTitle(); ?>" class="tcp_payment_title">
-			<img src="<?php echo $icon; ?>" height="32px" />
-			</a>
-
-		<?php else : ?>
-
-			<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php _e( 'Edit', 'tcp' ); ?>" class="tcp_payment_title"><?php echo $plugin->getTitle(); ?></a>
-
-		<?php endif; ?>
-
-			<div class="tcp_plugins_edit"><a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>"><?php _e( 'edit', 'tcp' ); ?></a></div>
-
-		</td>
-
-		<td><?php echo $plugin->getDescription(); ?></td>
-
-		<td><?php echo $out;?></td>
-
-	</tr>
-<?php endforeach;?>
+if ( is_array( $plugins ) ) :
+	foreach( $plugins as $id => $plugin ) :
+		$tr_class = '';
+		$data = tcp_get_plugin_data( $id );
+		if ( is_array( $data ) && count( $data ) > 0 ) {
+			$n_active = 0;
+			foreach( $data as $instances )
+				if ( $instances['active'] ) $n_active++;
+			$out = sprintf( __( 'N<sup>o</sup> of instances: %d, actives: %d ', 'tcp') ,  count( $data ), $n_active );
+			if ( $n_active > 0 )
+				$tr_class = 'class="tcp_active_plugin"';
+		} else {
+			$out = __( 'Not in use', 'tcp' );
+		} ?>
+		<tr <?php echo $tr_class;?>>
+			<td>
+			<?php $icon = $plugin->getIcon();
+			if ( $icon ) : ?>
+				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php echo $plugin->getTitle(); ?>" class="tcp_payment_title">
+				<img src="<?php echo $icon; ?>" height="32px" />
+				</a>
+			<?php else : ?>
+				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php _e( 'Edit', 'tcp' ); ?>" class="tcp_payment_title"><?php echo $plugin->getTitle(); ?></a>
+			<?php endif; ?>
+				<div class="tcp_plugins_edit"><a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>"><?php _e( 'edit', 'tcp' ); ?></a></div>
+			</td>
+			<td><?php echo $plugin->getDescription(); ?></td>
+			<td><?php echo $out;?></td>
+		</tr>
+	<?php endforeach;
+else : ?>
+		<tr class="tcp_no_plugins">
+			<td colspan="3"><?php _e( 'No plugins', 'tcp' ); ?></td>
+		</tr>
+<?php endif; ?>
 </tbody></table>
 </div> <!-- end wrap -->
 <?php

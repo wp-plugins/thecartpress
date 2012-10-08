@@ -29,6 +29,20 @@ class TCPJPlayer {
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
 	}
 
+	function init() {
+		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js' );
+		wp_enqueue_script( 'tcp_jplayer' );
+		wp_register_script( 'tcp_jplayer_playlist',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js' );
+		wp_enqueue_script( 'tcp_jplayer_playlist' );
+		global $thecartpress;
+		if ( $thecartpress ) {
+			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' );
+			$url = WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/skins/' . $jplayer_skin . '/style.css';
+			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
+			wp_enqueue_style( 'tcp_jplayer_skin', $url );
+		}
+	}
+
 	function admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
@@ -56,9 +70,9 @@ class TCPJPlayer {
 		//wp_enqueue_style('farbtastic');
 	}
 
-function admin_page() { ?>
+	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'JPlayer Settings', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-jplayer' ); ?><h2><?php _e( 'JPlayer Settings', 'tcp' ); ?></h2>
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
@@ -67,7 +81,7 @@ function admin_page() { ?>
 <?php endif; ?>
 
 <?php global $thecartpress;
-$jplayer_skin = isset( $thecartpress->settings['jplayer_skin'] ) ? $thecartpress->settings['jplayer_skin'] : 'tcp.black'; ?>
+$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' ); ?>
 
 <form method="post" action="">
 <?php if ( $handle = opendir( WP_PLUGIN_DIR . '/thecartpress/js/jquery.jplayer/skins/' ) ) : ?>
@@ -291,20 +305,6 @@ jQuery(document).ready(function() {
 			</div>
 		</div>
 	<?php }
-
-	function init() {
-		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js' );
-		wp_enqueue_script( 'tcp_jplayer' );
-		wp_register_script( 'tcp_jplayer_playlist',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js' );
-		wp_enqueue_script( 'tcp_jplayer_playlist' );
-		global $thecartpress;
-		if ( $thecartpress ) {
-			$jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' );
-			$url = WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/skins/' . $jplayer_skin . '/style.css';
-			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
-			wp_enqueue_style( 'tcp_jplayer_skin', $url );
-		}
-	}
 }
 
 $tcp_jplayer = new TCPJPlayer();

@@ -60,7 +60,7 @@ class TCPGroupedProducts {
 	function tcp_manage_posts_custom_column( $column_name, $post ) {
 		if ( 'grouped_in' == $column_name ) {
 			$post_ids = tcp_get_the_parents( $post->ID );
-			$titles = '';
+			$titles = '&nbsp;';
 			if ( is_array( $post_ids ) && count( $post_ids ) > 0 ) {
 				foreach( $post_ids as $post_id ) {
 					$titles .= '<a href="post.php?action=edit&post=' . $post_id->id_from . '">' . get_the_title( $post_id->id_from ) . '</a>&nbsp;';

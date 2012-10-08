@@ -26,12 +26,12 @@ function tcp_get_current_language_iso() {
 }
 
 //Given a post_id this function returns the post_id in the default language
-function tcp_get_default_id( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_default_id( $post_id, $post_type = false ) {
 	return $post_id;
 }
 
 //Given a post_id this function returns the equivalent post_id in the current language
-function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_current_id( $post_id, $post_type = false ) {
 	return $post_id;
 }
 
@@ -41,7 +41,7 @@ function tcp_get_current_id( $post_id, $post_type = 'tcp_product' ) {
  * array(2) {	["en"]=> object(stdClass)#45 (6) { ["translation_id"]=> string(2) "11" ["language_code"]=> string(2) "en" ["element_id"]=> string(1)  "9" ["original"]=> string(1) "1" ["post_title"]=> string(21) "Tom Sawyer Adventures"       ["post_status"]=> string(7) "publish" }
  * 				["es"]=> object(stdClass)#44 (6) { ["translation_id"]=> string(2) "12" ["language_code"]=> string(2) "es" ["element_id"]=> string(2) "10" ["original"]=> string(1) "0" ["post_title"]=> string(27) "Las Aventuras de Tom Sawyer" ["post_status"]=> string(7) "publish" } }
  */
-function tcp_get_all_translations( $post_id, $post_type = 'tcp_product' ) {
+function tcp_get_all_translations( $post_id, $post_type = false ) {
 	return false;
 }
 

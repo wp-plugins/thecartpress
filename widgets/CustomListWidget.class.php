@@ -39,7 +39,7 @@ class CustomListWidget extends TCPParentWidget {
 			if ( strlen( $order_type ) > 0 ) $loop_args['orderby']	= $order_type;
 		}
 		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
-		$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
+		//$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
 
 		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) {
 			$loop_args['meta_query'][] = array(
@@ -48,8 +48,18 @@ class CustomListWidget extends TCPParentWidget {
 				'compare'	=> '='
 			);
 		}
+//		global $wp_query;
+//		global $posts;
+//		$temp = $wp_query;
+//		$wp_query = null;
+		$loop_args = apply_filters( 'tcp_custom_list_widget_args', $loop_args );
 		query_posts( $loop_args );
+//		$wp_query = new WP_Query( $loop_args );
+//		$temp_posts = $posts;
+//		$posts = null;
+//		$posts = $wp_query->posts;
 		if ( ! have_posts() ) {
+			wp_reset_postdata();
 			wp_reset_query();
 			return;
 		}
@@ -61,17 +71,19 @@ class CustomListWidget extends TCPParentWidget {
 		} else {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;
 			if ( $columns < 1 ) {
-				$this->show_list( $instance );
+				$this->show_list( $instance, $args );
 			} else {
-				$this->show_grid( $instance );
+				$this->show_grid( $instance, $args );
 			}
 		}
 		wp_reset_postdata();
 		wp_reset_query();
+		//$posts = $temp_posts;
+		//$wp_query = $temp;
 		echo $after_widget;
 	}
 
-	function show_list( $instance ) {
+	function show_list( $instance, $args ) {
 		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) echo tcp_pagination_bar();
 		if ( have_posts() ) while ( have_posts() ) : the_post();
 			if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
@@ -145,12 +157,10 @@ class CustomListWidget extends TCPParentWidget {
 		<?php endwhile;
 	}
 
-	function show_grid( $instance ) {
-		if ( isset( $instance['pagination'] ) && $instance['pagination'] )
-			$instance['see_pagination'] = $instance['pagination'];
+	function show_grid( $instance, $args ) {
+		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) $instance['see_pagination'] = $instance['pagination'];
 		global $thecartpress;
 		$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
-
 		if ( $use_default_loop == 'yes' ) {
 			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
 		} else{ //if ( $use_default_loop == 'yes_2010' ) {
@@ -184,7 +194,7 @@ class CustomListWidget extends TCPParentWidget {
 	}
 
 	protected function show_post_type_form( $instance ) {
-		$defaults = array(
+		$instance = wp_parse_args( (array)$instance, array(
 			'limit'						=>  5,
 			'loop'						=> '',
 			'columns'					=> 2,
@@ -200,24 +210,7 @@ class CustomListWidget extends TCPParentWidget {
 			'see_first_custom_area'		=> false,
 			'see_second_custom_area'	=> false,
 			'see_third_custom_area'		=> false,
-		);
-		$instance = wp_parse_args( ( array ) $instance, $defaults );
-		$see_title				= isset( $instance['see_title'] ) ? $instance['see_title'] 	: false;
-		$title_tag				= isset( $instance['title_tag'] ) ? $instance['title_tag'] : '';
-		$see_image				= isset( $instance['see_image'] ) ? $instance['see_image']	: false;
-		$image_size				= isset( $instance['image_size'] ) ? $instance['image_size']	: 'thumbnail';
-		$see_content			= isset( $instance['see_content'] ) ? $instance['see_content']	: false;
-		$see_excerpt			= isset( $instance['see_excerpt'] ) ? $instance['see_excerpt']	: false;
-		$see_author				= isset( $instance['see_author'] ) ? $instance['see_author']	: false;
-		$see_posted_on			= isset( $instance['see_posted_on'] ) ? $instance['see_posted_on']: false;
-		$see_meta_utilities		= isset( $instance['see_meta_utilities'] ) ? $instance['see_meta_utilities'] : false;
-		$columns				= isset( $instance['columns'] ) ? $instance['columns'] : 2;
-		$see_price				= isset( $instance['see_price'] ) ? $instance['see_price']	: false;
-		$see_buy_button			= isset( $instance['see_buy_button'] ) ? $instance['see_buy_button']: false;
-		$use_taxonomy 			= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : false;
-		$see_first_custom_area 	= isset( $instance['see_first_custom_area'] ) ? $instance['see_first_custom_area'] : false;
-		$see_second_custom_area = isset( $instance['see_second_custom_area'] ) ? $instance['see_second_custom_area'] : false;
-		$see_third_custom_area 	= isset( $instance['see_third_custom_area'] ) ? $instance['see_third_custom_area'] : false; ?>
+		) ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit', 'tcp' ); ?>:</label>
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $instance['limit']; ?>" size="3" />
@@ -255,83 +248,84 @@ class CustomListWidget extends TCPParentWidget {
 			<?php $advanced_id = 'column_advanced_' . $this->get_field_id( 'columns' );?>
 			<input type="button" onclick="jQuery('#<?php echo $advanced_id; ?>').toggle();" value="<?php _e( 'show/hide advanced options', 'tcp' );?>" class="button-secondary" />
 		</p>
-	</div>
-	<div id="<?php echo $advanced_id; ?>" style="display:none;">
-		<p>
-			<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
-			<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $columns; ?>" size="3" />
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_title' ); ?>" name="<?php echo $this->get_field_name( 'see_title' ); ?>" value="yes" <?php checked( $see_title ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_title' ); ?>"><?php _e( 'Show title', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?></label>
-			<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
-				<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' );?></option>
-				<option value="h2" <?php selected( $title_tag, 'h2' ); ?>>h2</option>
-				<option value="h3" <?php selected( $title_tag, 'h3' ); ?>>h3</option>
-				<option value="h4" <?php selected( $title_tag, 'h4' ); ?>>h4</option>
-				<option value="h5" <?php selected( $title_tag, 'h5' ); ?>>h5</option>
-				<option value="h6" <?php selected( $title_tag, 'h6' ); ?>>h6</option>
-				<option value="p" <?php selected( $title_tag, 'p' ); ?>>p</option>
-				<option value="div" <?php selected( $title_tag, 'div' ); ?>>div</option>
-				<option value="span" <?php selected( $title_tag, 'span' ); ?>>span</option>
-			</select>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_image' ); ?>" name="<?php echo $this->get_field_name( 'see_image' ); ?>" value="yes" <?php checked( $see_image ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_image' ); ?>"><?php _e( 'Show image', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image size', 'tcp' ); ?></label>
-			<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
-			<?php $imageSizes = get_intermediate_image_sizes();
-			foreach( $imageSizes as $size ) : ?>
-				<option value="<?php echo $size;?>" <?php selected( $size, $image_size );?>><?php echo $size;?></option>
-			<?php endforeach;?>
-			</select>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_content' ); ?>" name="<?php echo $this->get_field_name( 'see_content' ); ?>" value="yes" <?php checked( $see_content ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_content' ); ?>"><?php _e( 'Show content', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'see_excerpt' ); ?>" value="yes" <?php checked( $see_excerpt ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_excerpt' ); ?>"><?php _e( 'Show excerpt', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_author' ); ?>" name="<?php echo $this->get_field_name( 'see_author' ); ?>" value="yes" <?php checked( $see_author ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_author' ); ?>"><?php _e( 'Show author', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_posted_on' ); ?>" name="<?php echo $this->get_field_name( 'see_posted_on' ); ?>" value="yes" <?php checked( $see_posted_on ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_posted_on' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_price' ); ?>" name="<?php echo $this->get_field_name( 'see_price' ); ?>" value="yes" <?php checked( $see_price ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_price' ); ?>"><?php _e( 'Show price', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_buy_button' ); ?>" name="<?php echo $this->get_field_name( 'see_buy_button' ); ?>" value="yes" <?php checked( $see_buy_button ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_buy_button' ); ?>"><?php _e( 'Show buy button', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_utilities' ); ?>" value="yes" <?php checked( $see_meta_utilities ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>"><?php _e( 'Show utilities', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_first_custom_area' ); ?>" value="yes" <?php checked( $see_first_custom_area ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>"><?php _e( 'Show first custom area', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_second_custom_area' ); ?>" value="yes" <?php checked( $see_second_custom_area ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>"><?php _e( 'Show second custom area', 'tcp' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_third_custom_area' ); ?>" value="yes" <?php checked( $see_third_custom_area ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>"><?php _e( 'Show third custom area', 'tcp' ); ?></label>
-		</p><?php
+		<div id="<?php echo $advanced_id; ?>" style="display:none;">
+			<p>
+				<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
+				<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_title' ); ?>" name="<?php echo $this->get_field_name( 'see_title' ); ?>" value="yes" <?php checked( $instance['see_title'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_title' ); ?>"><?php _e( 'Show title', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'title_tag' ); ?>"><?php _e( 'Title tag', 'tcp' ); ?></label>
+				<select id="<?php echo $this->get_field_id( 'title_tag' ); ?>" name="<?php echo $this->get_field_name( 'title_tag' ); ?>">
+					<?php $title_tag = $instance['title_tag']; ?>
+					<option value="" <?php selected( $title_tag, '' ); ?>><?php _e( 'No tag', 'tcp' );?></option>
+					<option value="h2" <?php selected( $title_tag, 'h2' ); ?>>h2</option>
+					<option value="h3" <?php selected( $title_tag, 'h3' ); ?>>h3</option>
+					<option value="h4" <?php selected( $title_tag, 'h4' ); ?>>h4</option>
+					<option value="h5" <?php selected( $title_tag, 'h5' ); ?>>h5</option>
+					<option value="h6" <?php selected( $title_tag, 'h6' ); ?>>h6</option>
+					<option value="p" <?php selected( $title_tag, 'p' ); ?>>p</option>
+					<option value="div" <?php selected( $title_tag, 'div' ); ?>>div</option>
+					<option value="span" <?php selected( $title_tag, 'span' ); ?>>span</option>
+				</select>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_image' ); ?>" name="<?php echo $this->get_field_name( 'see_image' ); ?>" value="yes" <?php checked( $instance['see_image'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_image' ); ?>"><?php _e( 'Show image', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image size', 'tcp' ); ?></label>
+				<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
+				<?php $imageSizes = get_intermediate_image_sizes();
+				foreach( $imageSizes as $size ) : ?>
+					<option value="<?php echo $size;?>" <?php selected( $size, $instance['image_size'] );?>><?php echo $size;?></option>
+				<?php endforeach;?>
+				</select>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_content' ); ?>" name="<?php echo $this->get_field_name( 'see_content' ); ?>" value="yes" <?php checked( $instance['see_content'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_content' ); ?>"><?php _e( 'Show content', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'see_excerpt' ); ?>" value="yes" <?php checked( $instance['see_excerpt'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_excerpt' ); ?>"><?php _e( 'Show excerpt', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_author' ); ?>" name="<?php echo $this->get_field_name( 'see_author' ); ?>" value="yes" <?php checked( $instance['see_author'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_author' ); ?>"><?php _e( 'Show author', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_posted_on' ); ?>" name="<?php echo $this->get_field_name( 'see_posted_on' ); ?>" value="yes" <?php checked( $instance['see_posted_on'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_posted_on' ); ?>"><?php _e( 'Show tags', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_price' ); ?>" name="<?php echo $this->get_field_name( 'see_price' ); ?>" value="yes" <?php checked( $instance['see_price'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_price' ); ?>"><?php _e( 'Show price', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_buy_button' ); ?>" name="<?php echo $this->get_field_name( 'see_buy_button' ); ?>" value="yes" <?php checked( $instance['see_buy_button'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_buy_button' ); ?>"><?php _e( 'Show buy button', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>" name="<?php echo $this->get_field_name( 'see_meta_utilities' ); ?>" value="yes" <?php checked( $instance['see_meta_utilities'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_meta_utilities' ); ?>"><?php _e( 'Show utilities', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_first_custom_area' ); ?>" value="yes" <?php checked( $instance['see_first_custom_area'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_first_custom_area' ); ?>"><?php _e( 'Show first custom area', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_second_custom_area' ); ?>" value="yes" <?php checked( $instance['see_second_custom_area'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_second_custom_area' ); ?>"><?php _e( 'Show second custom area', 'tcp' ); ?></label>
+			</p>
+			<p>
+				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>" name="<?php echo $this->get_field_name( 'see_third_custom_area' ); ?>" value="yes" <?php checked( $instance['see_third_custom_area'] ); ?> />
+				<label for="<?php echo $this->get_field_id( 'see_third_custom_area' ); ?>"><?php _e( 'Show third custom area', 'tcp' ); ?></label>
+			</p>
+		</div><?php
 	}
 }
 ?>

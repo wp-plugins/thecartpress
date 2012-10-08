@@ -86,7 +86,8 @@ class TCPCustomTemplateMetabox {
 				<option value="<?php echo $template;?>" <?php selected( $custom_template, $template );?>><?php echo $file_name;?></option>
 				<?php endforeach;?>
 			</select>
-		</p><p>
+		</p>
+		<!--<p>
 			<?php $custom_template = tcp_get_custom_template_by_post_type( $post->post_type );
 			$post_type = get_post_type_object( $post->post_type );
 			if ( $post_type ) $post_type_name = $post_type->labels->name;?>
@@ -97,7 +98,7 @@ class TCPCustomTemplateMetabox {
 				<option value="<?php echo $template;?>" <?php selected( $custom_template, $template );?>><?php echo $file_name;?></option>
 				<?php endforeach;?>
 			</select>
-		</p>
+		</p>-->
 		<?php else : ?>
 			<p><?php _e( 'No templates', 'tcp' );?></p>
 		<?php endif;

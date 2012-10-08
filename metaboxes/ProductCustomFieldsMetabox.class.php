@@ -21,6 +21,10 @@ require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
 	
 class ProductCustomFieldsMetabox {
 
+	function __construct() {
+		add_action( 'admin_init', array( $this, 'register_metabox' ) );
+	}
+
 	function register_metabox() {
 		$saleable_post_types = tcp_get_saleable_post_types();
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
@@ -134,6 +138,7 @@ class ProductCustomFieldsMetabox {
 						<option value="<?php echo $tax->tax_id; ?>" <?php selected( $tax_id, $tax->tax_id ); ?>><?php echo $tax->title; ?></option>
 					<?php endforeach; ?>
 					</select>
+					<a href="admin.php?page=thecartpress/admin/TaxesList.php"><?php _e( 'Taxes', 'tcp' ); ?></a>
 				</td>
 			</tr>
 
@@ -146,7 +151,7 @@ class ProductCustomFieldsMetabox {
 			<tr valign="top">
 				<th scope="row"><label for="tcp_initial_units"><?php _e( 'Initial Quantity', 'tcp' ); ?>:</label></th>
 				<td><input type="text" min="0" placeholder="1" name="tcp_initial_units" id="tcp_initial_units" value="<?php tcp_the_initial_units(); ?>" class="regular-text" style="width:12em" />
-				<p class="description"><?php _e( 'Initial number of units to display in the buy button. If the product is displayed inside a grouped product this value will be omitted, using the unit field defined in the grouped list.', 'tcp'); ?></p></td>
+				<span class="description"><?php _e( 'Initial number of units to display in the buy button. If the product is displayed inside a grouped product this value will be omitted, using the unit field defined in the grouped list.', 'tcp'); ?></span></td>
 			</tr>
 
 			<tr valign="top">
@@ -166,7 +171,7 @@ class ProductCustomFieldsMetabox {
 				<th scope="row"><label for="tcp_hide_buy_button"><?php _e( 'Hide buy button', 'tcp' ); ?>:</label></th>
 				<?php $tcp_hide_buy_button = get_post_meta( $post_id, 'tcp_hide_buy_button', true ); ?>
 				<td><input type="checkbox" name="tcp_hide_buy_button" id="tcp_hide_buy_button" <?php checked( $tcp_hide_buy_button, true ); ?> />
-				<p class="description"><?php _e( 'Allow to hide the buy button for this product', 'tcp' ); ?></p></td>
+				<span class="description"><?php _e( 'Allow to hide the buy button for this product', 'tcp' ); ?></span></td>
 			</tr>
 
 			<tr valign="top">
@@ -212,8 +217,8 @@ class ProductCustomFieldsMetabox {
 			wp_set_post_terms( $post_id, $terms, TCP_PRODUCT_CATEGORY );
 			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_PRODUCT_TAG, array( 'fields' => 'names' ) );
 			wp_set_post_terms( $post_id, $terms, TCP_PRODUCT_TAG );
-			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_SUPPLIER_TAG, array( 'fields' => 'ids' ) );
-			wp_set_post_terms( $post_id, $terms, TCP_SUPPLIER_TAG );
+			//$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_SUPPLIER_TAG, array( 'fields' => 'ids' ) );
+			//wp_set_post_terms( $post_id, $terms, TCP_SUPPLIER_TAG );
 		}
 		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
 		if ( $tax_id > 0 ) {
@@ -307,10 +312,6 @@ class ProductCustomFieldsMetabox {
 			require_once( dirname( dirname( __FILE__ ) ) . '/classes/TheCartPressSearchEngine.class.php' );
 			TheCartPressSearchEngine::refresh();
 		}
-	}
-	
-	function __construct() {
-		add_action( 'admin_init', array( $this, 'register_metabox' ) );
 	}
 }
 

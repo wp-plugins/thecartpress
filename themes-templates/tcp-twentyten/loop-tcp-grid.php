@@ -67,55 +67,45 @@ $see_third_custom_area	= isset( $instance['see_third_custom_area' . $suffix] ) ?
 $see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : false;
 $column = $number_of_columns;
 
+if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffix] != '' ) {
+	$title_tag = '<' . $instance['title_tag' . $suffix] . ' class="entry-title">';
+	$title_end_tag = '</' . $instance['title_tag' . $suffix] . '>';
+} else {
+	$title_tag = '';
+	$title_end_tag = '';
+} ?>
+
+<?php if ( $see_sorting_panel ) {
+	tcp_the_sort_panel();
+}
+
 while ( have_posts() ) : the_post();
 if ( $column == 0 ) : $column = $number_of_columns ?>
-
 	</tr>
 	<tr>
-
 	<?php endif;
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col ); ?>
-
 	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
-
 	<?php $column--; ?>
-
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
 		<?php if ( $see_title ) : ?>
-
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
-
+			<?php echo $title_tag; ?><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
 		<?php endif; ?>
-
 		<?php if ( $see_posted_on ) : ?>
-
 			<div class="entry-meta">
-
 				<?php tcp_posted_on(); ?>
-
 			</div><!-- .entry-meta -->
-
 		<?php endif; ?>
-
 			<?php if ( $see_price ) :?>
-
 			<div class="entry-price">
-
 				<?php tcp_the_price_label();?>
-
 			</div>
-
 			<?php endif;?>
-
 			<?php if ( $see_image ) : ?>
-
 			<div class="entry-post-thumbnail">
-
 				<?php if ( $see_buy_button ) : ?>
-	
-					<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
+					<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . tcp_get_permalink() . '">';
 					$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
 					$args = array(
 						'size'	=> $image_size,
@@ -124,51 +114,33 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 					);
 					$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID(), $args );
 					echo $image; ?>
-	
 				<?php else : ?>
-	
-					<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
-	
+					<a class="size-<?php echo $image_size;?>" href="<?php echo tcp_get_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
 				<?php endif; ?>
-	
 			</div><!-- .entry-post-thumbnail -->
-
 			<?php endif; ?>	
-
 			<?php if ( $see_excerpt ) : ?>
-
 			<div class="entry-summary">
-
 				<?php the_excerpt(); ?>
-
 			</div><!-- .entry-summary -->
-
 			<?php endif; ?>
-
 			<?php if ( $see_buy_button ) : ?>
-
 			<div class="entry-buy-button">	
-
 				<?php tcp_the_buy_button(); ?>
-
 			</div>
-
 			<?php endif;?>
-
 		<?php if ( $see_content ) : ?>
 			<div class="entry-content">
 				<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?>
 				<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 			</div><!-- .entry-content -->
 		<?php endif; ?>
-
 		<?php if ( $see_first_custom_area ) :?>
         <?php endif;?>
         <?php if ( $see_second_custom_area ) :?>
         <?php endif;?>
         <?php if ( $see_third_custom_area ) :?>
         <?php endif;?>
-
         <?php if ( $see_author ) :?>
             <?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
                 <div id="entry-author-info">
@@ -182,7 +154,6 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
                 </div><!-- #entry-author-info -->
             <?php endif; ?>
         <?php endif; ?>
-
 			<div class="entry-utility">
 			<?php if ( $see_taxonomies ) : ?>
 				<?php if ( count( get_the_terms( 0, 'tcp_product_category' ) ) ) : ?>
@@ -206,14 +177,11 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 					<?php endif; ?>
 				<?php endif; ?>
 			<?php endif; ?> 
-
 			<?php if ( $see_meta_utilities ) : ?>
 	                <span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
 	                <?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
 			<?php endif; ?> 
-	                
 			</div><!-- .entry-utility -->
-
 		</div><!-- #post-## -->
 		<?php comments_template( '', true ); ?>
 </td>

@@ -31,19 +31,13 @@
 
 <?php if ( ! have_posts() ) : ?>
 	<article id="post-0" class="post no-results not-found">
-
 		<header class="entry-header">
 			<h1 class="entry-title"><?php _e( 'Nothing Found', 'twentyeleven' ); ?></h1>
 		</header><!-- .entry-header -->
-
 		<div class="entry-content">
-
 			<p><?php _e( 'Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'twentyeleven' ); ?></p>
-
 			<?php get_search_form(); ?>
-
 		</div><!-- .entry-content -->
-
 	</article><!-- #post-0 -->
 <?php endif; ?>
 
@@ -65,6 +59,7 @@ $see_posted_on			= isset( $instance['see_posted_on' . $suffix] ) ? $instance['se
 $see_taxonomies			= isset( $instance['see_taxonomies' . $suffix] ) ? $instance['see_taxonomies' . $suffix] : false;
 $see_meta_utilities		= isset( $instance['see_meta_utilities' . $suffix] ) ? $instance['see_meta_utilities' . $suffix] : false;
 $see_sorting_panel		= isset( $instance['see_sorting_panel' . $suffix] ) ? $instance['see_sorting_panel' . $suffix] : false;
+$see_az					= isset( $instance['see_az' . $suffix] ) ? $instance['see_az' . $suffix] : false;
 $number_of_columns		= isset( $instance['columns' . $suffix] ) ? (int)$instance['columns' . $suffix] : 2;
 //custom areas. Usefull to insert other template tag from WordPress or another plugins 
 $see_first_custom_area	= isset( $instance['see_first_custom_area' . $suffix] ) ? $instance['see_first_custom_area' . $suffix] : false;
@@ -85,62 +80,45 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	tcp_the_sort_panel();
 } ?>
 
+<?php if ( $see_az ) {
+	$see_az_name = isset( $args['widget_id']) ? 'tcp_az_' . $args['widget_id'] : 'tcp_az';
+	tcp_the_az_panel( $see_az_name );
+} ?>
+
 <?php /* Start the Loop.*/ ?>
 
 <table class="tcp_products_list">
 <tr class="tcp_first-row">
-<?php while ( have_posts() ) : the_post();
+<?php $tcp_col = 0;
+while ( have_posts() ) : the_post();
 	if ( $column == 0 ) : $column = $number_of_columns ?>
-
 	</tr>
 	<tr>
-
 	<?php endif;
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col );
 	//$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
-
 	<td id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
-
 	<?php $column--;?>
-
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
 			<?php if ( $see_posted_on ) : ?>
-
 			<div class="entry-meta">
-
 				<?php tcp_posted_on(); ?> <?php tcp_posted_by(); ?>
-
 			</div><!-- .entry-meta -->
-
 			<?php endif; ?>
-
 			<?php if ( $see_title ) : ?>
-
-				<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag;?>
-
+				<?php echo $title_tag; ?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a><?php echo $title_end_tag; ?>
 			<?php endif; ?>
-
 			<div class="wrapper-price">
-
 			<?php if ( $see_price ) :?>
-
 				<div class="entry-price">
-
 				<?php tcp_the_price_label(); ?>
-
 				</div><!-- entry-price -->
-
 			<?php endif;?>
-
 			<?php if ( $see_image ) : ?>
-
 				<div class="entry-post-thumbnail">
-
 					<?php if ( $see_buy_button ) : ?>
-	
-						<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . get_permalink() . '">';
+						<?php $image = '<a class="tcp_size-' . $image_size . '" href="' . tcp_get_permalink() . '">';
 						$image .= tcp_get_the_thumbnail( get_the_ID(), 0, 0, $image_size ) . '</a>';
 						$args = array(
 							'size'	=> $image_size,
@@ -149,64 +127,36 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 						);
 						$image = apply_filters( 'tcp_get_image_in_excerpt', $image, get_the_ID(), $args );
 						echo $image; ?>
-	
 					<?php else : ?>
-	
-						<a class="size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
-	
+						<a class="size-<?php echo $image_size;?>" href="<?php echo tcp_get_permalink(); ?>"><?php the_post_thumbnail($image_size); ?></a>				
 					<?php endif; ?>
-
 				</div><!-- .entry-post-thumbnail -->
-
 			<?php endif; ?>
-
 			</div><!-- .wrapper-price -->
-
 			<?php if ( $see_excerpt ) : ?>
-
 			<div class="entry-summary">
-
 				<?php the_excerpt(); ?>
-
 			</div><!-- .entry-summary -->
-
 			<?php endif; ?>
-
 			<?php if ( $see_buy_button ) : ?>
-
 			<div class="entry-buy-button">
-
 				<?php tcp_the_buy_button(); ?>
-
 			</div>
-
 			<?php endif;?>
-
 			<?php if ( $see_content ) : ?>
-
 			<div class="entry-content">
-
 				<?php the_content( __( 'More <span class="meta-nav">&rarr;</span>', 'tcp' ) ); ?>
-
 				<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'tcp' ), 'after' => '</div>' ) ); ?>
-
 			</div><!-- .entry-content -->
-
 			<?php endif; ?>
-
 			<?php if ( $see_first_custom_area ) : ?>
 			<?php endif;?>
-
 			<?php if ( $see_second_custom_area ) : ?>
 			<?php endif;?>
-
 			<?php if ( $see_third_custom_area ) : ?>
 			<?php endif;?>
-
 			<?php if ( $see_author ) :?>
-
 				<?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
-
 				<div id="entry-author-info">
 					<div id="author-avatar">
 						<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'tcp_author_bio_avatar_size', 60 ) ); ?>
@@ -221,12 +171,9 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 						</div><!-- #author-link	-->
 					</div><!-- #author-description -->
 				</div><!-- #entry-author-info -->
-
 				<?php endif; ?>
 			<?php endif; ?>
-
 			<?php if ( $see_taxonomies ) : ?>
-
 				<div class="entry-taxonomies">
 					<span class="tcp_taxonomies">
 					<?php
@@ -241,37 +188,26 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 					endforeach;?>
 					</span>
 				</div><!-- taxonomies -->
-
 			<?php endif;?>
-
 			<?php if ( $see_meta_utilities ) : ?>
-
 				<div class="entry-utilities">
-
 				<?php if ( comments_open() ) : ?>
-
 					<?php if ( isset( $show_sep) && $show_sep ) : ?>
 					<span class="sep"> | </span>
 					<?php endif; // End if $show_sep ?>
-
 					<span class="comments-link"><?php comments_popup_link( '<span class="leave-reply">' . __( 'Leave a review', 'ecommerce-twentyeleven' ) . '</span>', __( '<b>1</b> Review', 'twentyeleven' ), __( '<b>%</b> Reviews', 'ecommerce-twentyeleven' ) ); ?></span>
-
 				<?php endif; // End if comments_open() ?>
-
 				<?php edit_post_link( __( 'Edit', 'twentyeleven' ), '<span class="edit-link">', '</span>' ); ?>
-
 				</div><!-- .entry-utility -->
-
 			<?php endif; ?>
 		</div><!-- #post-## -->
 </td>
 <?php endwhile; // End the loop ?>
-
 <?php for(; $column > 0; $column-- ) : 
 	$class = array( 'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . ++$tcp_col ); ?>
 	<td class="tcp_col <?php echo implode( ' ', $class ); ?> tcp_td_empty">&nbsp;</td>
 <?php endfor; ?>
-</tr></table>
-
+</tr>
+</table>
 <?php /* Display pagination */
 if ( $see_pagination ) tcp_get_the_pagination(); ?>
