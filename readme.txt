@@ -300,6 +300,7 @@ This plugin is released under a GPL license.
 * "Under Construccion", "Maintance mode" mode
 * Downloadables products: bug fixed for unregisterd users
 * Product filter by type: bug fixed in back-end
+* class tcp-store in TheCartPress pages, taxonomy, archives or products pages.
 
 = 1.2.5.1 =
 * File mising

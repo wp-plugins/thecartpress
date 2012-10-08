@@ -48,16 +48,8 @@ class CustomListWidget extends TCPParentWidget {
 				'compare'	=> '='
 			);
 		}
-//		global $wp_query;
-//		global $posts;
-//		$temp = $wp_query;
-//		$wp_query = null;
 		$loop_args = apply_filters( 'tcp_custom_list_widget_args', $loop_args );
 		query_posts( $loop_args );
-//		$wp_query = new WP_Query( $loop_args );
-//		$temp_posts = $posts;
-//		$posts = null;
-//		$posts = $wp_query->posts;
 		if ( ! have_posts() ) {
 			wp_reset_postdata();
 			wp_reset_query();
@@ -78,8 +70,6 @@ class CustomListWidget extends TCPParentWidget {
 		}
 		wp_reset_postdata();
 		wp_reset_query();
-		//$posts = $temp_posts;
-		//$wp_query = $temp;
 		echo $after_widget;
 	}
 
