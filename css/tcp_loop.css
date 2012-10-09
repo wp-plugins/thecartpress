@@ -10,6 +10,7 @@ table.tcp_products_list,
 	border:0;
 	padding:0;
 	width: 100%;
+	font-size: 12px;
 }
 table.tcp_products_list tr,
 table.tcp_products_list tr td,
@@ -81,20 +82,22 @@ table.tcp_products_list .entry-title {
 	font-weight: bold;
 	line-height: 1.5em;
 	padding: .375em 0 .375em;
-	font-size: 1em;
+	font-size: 1.3em;
+	margin: 0;
 }
 
 table.tcp_products_list .entry-post-thumbnail img,
 #content table.tcp_products_list .entry-post-thumbnail img {
     height: auto;
 	max-width:100%;
+	border:0;
+	padding: 0;
+	margin: 0;
 }
 
 .entry-price {
 	font-weight: bold;
     line-height: 1.5em;
-	font-size:.9em;
-	opacity:0.7;
 }
 .entry-price.free {
 	color:#7DB72F;
@@ -129,12 +132,10 @@ table.tcp_products_list .entry-post-thumbnail img,
 }
 .tcp_products_list .entry-meta  {
 	line-height: 1.1em;
-	font-size: .85em;
-}
-.tcp_products_list .entry-meta  {
+	font-size: .9em;
 	opacity:0.7;
 	filter:alpha(opacity=70); /* For IE8 and earlier */
-    line-height: .9em;
+	margin-bottom: .625em;
 }
 .entry-meta span.tcp_posted_on,
 .entry-meta span.tcp_by_author {
