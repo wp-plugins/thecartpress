@@ -124,7 +124,7 @@ class Transference extends TCP_Plugin {
 		$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PROCESSING;
 		Orders::editStatus( $order_id, $new_status, 'no-id' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
-		ActiveCheckout::sendMails( $order_id, $additional );
+		ActiveCheckout::sendMails( $order_id );//, $additional );
 	}
 }
 ?>

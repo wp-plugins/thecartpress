@@ -21,19 +21,19 @@ if ( ! isset( $source ) ) return;
 if ( $source->see_address() ) : ?>
 	<table id="tcp_order_id" width="100%" cellpading="0" cellspacing="0">
 		<tr valign="top">
-			<th class="tcp_order_id_row" scope="row"><?php _e( 'Order ID', 'tcp' ); ?>:</th>
+			<th class="tcp_order_id_row" scope="row" style="text-align: left"><?php _e( 'Order ID', 'tcp' ); ?>:</th>
 			<td class="tcp_order_id_value tcp_order_id"><?php echo $source->get_order_id(); ?></td>
 		</tr>
 		<tr valign="top">
-			<th class="tcp_order_id_row" scope="row"><?php _e( 'Created at', 'tcp' ); ?>:</th>
+			<th class="tcp_order_id_row" scope="row" style="text-align: left"><?php _e( 'Created at', 'tcp' ); ?>:</th>
 			<td class="tcp_order_id_value tcp_created_at"><?php echo $source->get_created_at(); ?></td>
 		</tr>
 	</table>
 	<?php if ( strlen( $source->get_shipping_firstname() ) > 0 && strlen( $source->get_shipping_lastname() ) > 0 ) : ?>
 		<table id="shipping_billing_info" width="100%" cellpading="0" cellspacing="0">
 			<tr valign="top">
-				<th class="shipping_info"><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></th>
-				<th class="billing_info"><h3><?php _e( 'Billing address', 'tcp' ); ?></h3></th>
+				<th class="shipping_info" style="text-align: left"><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></th>
+				<th class="billing_info" style="text-align: left"><h3><?php _e( 'Billing address', 'tcp' ); ?></h3></th>
 			</tr>
 			<tr valign="top">
 				<td class="shipping_info">
@@ -125,7 +125,7 @@ if ( $source->see_address() ) : ?>
 	<?php else : ?>
 		<table id="shipping_billing_info" width="100%" cellpading="0" cellspacing="0">
 			<tr valign="top">
-				<th class="billing_info"><h3><?php _e( 'Shipping and Billing address', 'tcp' ); ?></h3></th>
+				<th class="billing_info" style="text-align: left"><h3><?php _e( 'Shipping and Billing address', 'tcp' ); ?></h3></th>
 			</tr>
 			<tr valign="top">
 				<td class="billing_info">
@@ -183,27 +183,27 @@ if ( $source->see_address() ) : ?>
 	<?php endif; ?>
 	<table id="tcp_status" width="100%" cellpading="0" cellspacing="0">
 		<tr valign="top">
-			<th class="tcp_status_row" scope="row"><?php _e( 'Payment method', 'tcp' ); ?>: </th>
+			<th class="tcp_status_row" scope="row" style="text-align: left"><?php _e( 'Payment method', 'tcp' ); ?>: </th>
 			<td class="tcp_status_value tcp_payment_method" ><?php echo $source->get_payment_name(); ?></td>
 		</tr>
 	<?php if ( $source->get_payment_notice() ) : ?>
 		<tr valign="top">
-			<th class="tcp_status_row" scope="row"><?php _e( 'Payment notice', 'tcp' ); ?>: </th>
+			<th class="tcp_status_row" scope="row" style="text-align: left"><?php _e( 'Payment notice', 'tcp' ); ?>: </th>
 			<td class="tcp_payment_notice"><?php echo $source->get_payment_notice(); ?></td>
 		</tr>
 	<?php endif; ?>
 		<tr valign="top">
-			<th class="tcp_status_row" scope="row"><?php _e( 'Shipping method', 'tcp' ); ?>: </th>
+			<th class="tcp_status_row" scope="row" style="text-align: left"><?php _e( 'Shipping method', 'tcp' ); ?>: </th>
 			<td class="tcp_status_value tcp_shipping_method"><?php echo $source->get_shipping_method(); ?></td>
 		</tr>
 	<?php if ( $source->get_shipping_notice() ) : ?>
 		<tr valign="top">
-			<th class="tcp_status_row" scope="row"><?php _e( 'Shipping notice', 'tcp' ); ?>: </th>
+			<th class="tcp_status_row" scope="row" style="text-align: left"><?php _e( 'Shipping notice', 'tcp' ); ?>: </th>
 			<td class="tcp_shipping_notice"><?php echo $source->get_shipping_notice(); ?></td>
 		</tr>
 	<?php endif; ?>
 		<tr valign="top">
-			<th class="tcp_status_row" scope="row"><?php _e( 'Status', 'tcp' ); ?>: </th>
+			<th class="tcp_status_row" scope="row" style="text-align: left"><?php _e( 'Status', 'tcp' ); ?>: </th>
 			<td class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo tcp_get_status_label( $source->get_status() ); ?></td>
 		</tr>
 	</table>
@@ -214,13 +214,13 @@ if ( $source->see_address() ) : ?>
 		<?php if ( $source->see_thumbnail() ) : ?>
 			<th class="tcp_cart_thumbnail">&nbsp;</th>
 		<?php endif; ?>
-		<th class="tcp_cart_name"><?php _e( 'Name', 'tcp' ); ?></th>
-		<th class="tcp_cart_price"><?php _e( 'Price', 'tcp' ); ?></th>
-		<th class="tcp_cart_units"><?php _e( 'Units', 'tcp' ); ?></th>
-		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku"><?php _e( 'Sku', 'tcp' ); ?></th><?php endif; ?>
-		<?php if ( $source->see_weight() ) : ?><th class="tcp_cart_weight"><?php _e( 'Weight', 'tcp' ); ?></th><?php endif; ?>
-		<?php if ( $source->see_tax() ) : ?><th class="tcp_cart_tax"><?php _e( 'Tax', 'tcp' ); ?></th><?php endif; ?>
-		<th class="tcp_cart_total"><?php _e( 'Total', 'tcp' ); ?></th>
+		<th class="tcp_cart_name" style="text-align: left"><?php _e( 'Name', 'tcp' ); ?></th>
+		<th class="tcp_cart_price" style="text-align: left"><?php _e( 'Price', 'tcp' ); ?></th>
+		<th class="tcp_cart_units" style="text-align: left"><?php _e( 'Units', 'tcp' ); ?></th>
+		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku" style="text-align: left"><?php _e( 'Sku', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_weight() ) : ?><th class="tcp_cart_weight" style="text-align: left"><?php _e( 'Weight', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_tax() ) : ?><th class="tcp_cart_tax" style="text-align: left"><?php _e( 'Tax', 'tcp' ); ?></th><?php endif; ?>
+		<th class="tcp_cart_total" style="text-align: left"><?php _e( 'Total', 'tcp' ); ?></th>
 	</tr>
 </thead>
 <tbody>
