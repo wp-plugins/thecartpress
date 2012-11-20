@@ -110,12 +110,12 @@ th, td {
 			<td><?php echo $order->created_at;?></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row">
+			<th scope="row" colspan="2">
 				<label><?php _e( 'User email', 'tcp' ); ?>:</label>
 			</th>
 		</tr>
 		<tr valign="top">
-			<td>
+			<td colspan="2">
 				<?php $user_data = get_userdata( $order->customer_id );
 				if ( $user_data ) printf( __( '%s&lt;%s&gt; (registered)', 'tcp' ), $user_data->user_nicename, $user_data->user_email );
 				else printf( __( '%s (unregistered)', 'tcp' ), $order->billing_email ); ?>
@@ -170,7 +170,7 @@ th, td {
 			<th scope="row">
 				<label for="comment"><?php _e( 'Customer\'s comment', 'tcp' ); ?>:</label>
 			</th>
-			<td colspan="2">
+			<td>
 				<textarea valign="top" name="comment" id="comment" rows="5" cols="40" maxlength="250"><?php echo $order->comment; ?></textarea>
 			</td>
 		</tr>
@@ -178,11 +178,11 @@ th, td {
 			<th scope="row">
 				<label for="comment_internal"><?php _e( 'Internal comment', 'tcp' ); ?>:</label>
 			</th>
-			<td colspan="2">
+			<td>
 				<textarea valign="top" name="comment_internal" id="comment_internal" rows="5" cols="40" maxlength="250"><?php echo $order->comment_internal; ?></textarea>
 			</td>
 		</tr>
-		<?php do_action( 'tcp_admin_order_after_editor', $order_id ); ?>
+		<?php do_action( 'tcp_admin_order_after_editor', $order_id, $order ); ?>
 		</tbody>
 		</table>
 		<div class="submit">

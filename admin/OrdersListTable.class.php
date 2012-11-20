@@ -108,8 +108,14 @@ class OrdersListTable extends WP_List_Table {
 		$this->get_inline_data( $item->order_id );
 	}
 
+	function column_status( $item ) {
+		echo tcp_get_status_label( $item->status );
+	}
+
 	function column_default( $item, $column_name ) {
-		echo isset( $item->$column_name ) ?  strip_tags( $item->$column_name ) : '???';
+		$out = isset( $item->$column_name ) ?  strip_tags( $item->$column_name ) : '???';
+		$out = apply_filters( 'tcp_orders_list_columns', $out, $item, $column_name );
+		echo $out;
 	}
 	
 	function extra_tablenav( $which ) {
