@@ -38,6 +38,7 @@ class Orders {
 		  `customer_id`				bigint(20) unsigned NOT NULL,
   		  `ip`						varchar(20)			NOT NULL,
 		  `weight`					int(11)				NOT NULL default 0,
+		  `shipping_notice`			text				NOT NULL,
 		  `shipping_method`			text				NOT NULL,
 		  `status`					varchar(50)			NOT NULL,
 		  `order_currency_code`		char(3)				NOT NULL,

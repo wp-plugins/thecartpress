@@ -154,8 +154,12 @@ class TCPUpdateVersion {
 				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` VARCHAR(500) NOT NULL AFTER `payment_method`;';
 				$wpdb->query( $sql );
 			}
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
-			$wpdb->query( $sql );
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_notice\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `shipping_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `weight`;';
+				$wpdb->query( $sql );
+			}
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `comment` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
 			$wpdb->query( $sql );
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `comment_internal` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
