@@ -20,6 +20,7 @@ require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
 require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 
 class ActiveCheckout {//shortcode
+
 	function show() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
@@ -35,9 +36,8 @@ class ActiveCheckout {//shortcode
 			$cancelled = tcp_get_cancelled_order_status();
 			if ( $order_status == $cancelled ) $_REQUEST['tcp_checkout'] = 'ko';
 		}
-
-/* Put the check on the cart first. This is because if people try and load the checkout OK page i.e. the URL
-*  mysite/shopping_cart_slug/checkout/?tcp_checkout=ok   then it would have a silly empty set of fields.*/
+		/* Put the check on the cart first. This is because if people try and load the checkout OK page i.e. the URL
+		*  mysite/shopping_cart_slug/checkout/?tcp_checkout=ok then it would have a silly empty set of fields.*/
  		if ( $shoppingCart->isEmpty() ) {
 			ob_start(); ?>
 			<span class="tcp_shopping_cart_empty"><?php _e( 'The cart is empty', 'tcp' ); ?></span>
@@ -46,8 +46,7 @@ class ActiveCheckout {//shortcode
 			<?php return ob_get_clean();
 		} elseif ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
 			/* This next function adjusts the stock counts IF the setup flag $stock_management AND $stock_adjust are both true.
-			*  If stock management is not used or if the stock_adjust is false then stock decrement would be done on checkout 
-			*/
+			*  If stock management is not used or if the stock_adjust is false then stock decrement would be done on checkout */
 			do_action( 'tcp_completed_ok_stockadjust', $order_id );
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			ob_start();
@@ -60,15 +59,14 @@ class ActiveCheckout {//shortcode
 					if ( strlen( $checkout_successfully_message ) > 0 ) : ?>
 						<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_successfully_message ); ?></p>
 					<?php else : ?>
-						<span class="tcp_checkout_ok"><?php _e( 'The order has been completed successfully.', 'tcp' ); ?>
-						<?php if ( $shoppingCart->hasDownloadable() ) : ?>
-							<br/><?php printf( __( 'Please, to download the products visit <a href="%s">My Downloads</a> page (login required).', 'tcp' ), home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' ) ); ?>
-						<?php endif; ?>
-						</span>
+						<span class="tcp_checkout_ok"><?php _e( 'The order has been completed successfully.', 'tcp' ); ?></span>
 					<?php endif; ?>
 					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_successfully -->
 			<?php endif; ?>
+
+			<?php do_action( 'tcp_checkout_ok_footer', $shoppingCart ); ?>
+
 			<br/>
 			<?php OrderPage::show( $order_id, array() ); ?>
 			<br/>
@@ -128,11 +126,10 @@ class ActiveCheckout {//shortcode
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to_customer . "\r\n";
-			$name = get_bloginfo( 'name' ); //$name = substr( $from, 0, strpos( $from, '@' ) );
-			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
+			$headers .= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
-			$subject = sprintf( __( 'Order from %s', 'tcp' ), get_bloginfo( 'name' ) );
+			$subject = sprintf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id );
 			$old_value = $thecartpress->getShoppingCart()->getOrderId();
 			$_REQUEST['order_id'] = $order_id;
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );

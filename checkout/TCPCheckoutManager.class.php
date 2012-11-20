@@ -154,16 +154,15 @@ class TCPCheckoutManager {
 		if ( $step == count( $this->steps ) ) : //last step, no return
 			echo $this->create_order(); //create the order, show payment form
 		else :
-			 if ( $box->is_form_encapsulated() ) : ?>
+	if ( $box->is_form_encapsulated() ) : ?>
 	<form method="post">
-			<?php endif; ?>
+	<?php endif; ?>
 		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
 			<h3>
 				<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
 			</h3>
 			<?php $see_continue_button = $box->show();
-			//Create continue and back buttons
-			ob_start();
+			ob_start(); //Create continue and back buttons
 			if ( ! $box->is_form_encapsulated() ) : ?>
 			<form method="post">
 			<?php endif;
@@ -188,7 +187,7 @@ class TCPCheckoutManager {
 	<?php if ( $box->is_form_encapsulated() ) : ?>
 	</form>
 	<?php endif; ?>
-		<?php endif; ?>
+	<?php endif; ?>
 		<?php do_action( 'tcp_show_box', $step ); ?>
 </div><!-- checkout --><?php
 		return apply_filters( 'tcp_show_box_filter', ob_get_clean(), $step );
@@ -409,44 +408,47 @@ class TCPCheckoutManager {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$shipping_country = $this->get_shipping_country();
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
-			$smi = $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];
-			$smi = explode( '#', $smi );
-			$class = $smi[0];
-			$instance = $smi[1];
-			$shipping_method = new $class();
-			$shipping_amount = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
+			$smi	= $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];
+			$smi	= explode( '#', $smi );
+			$class	= $smi[0];
+			$instance	= $smi[1];
+			$shipping_method	= new $class();
+			$shipping_amount	= $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
-			$order['shipping_amount'] = 0;
-			//$order['shipping_method'] = $class;
-			$order['shipping_method'] = strip_tags( $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) );// . ' [' . $class . ']';
+			$order['shipping_amount']	= 0;
+			$order['shipping_method']	= strip_tags( $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) );// . ' [' . $class . ']';
+			$order['shipping_notice']	= $shipping_method->getNotice( $instance, $shipping_country, $shoppingCart );
 		} else {
-			$order['shipping_amount'] = 0;
-			$order['shipping_method'] = '';
+			$order['shipping_amount']	= 0;
+			$order['shipping_method']	= '';
+			$order['shipping_notice']	= '';
 		}
 		if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
-			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
-			$pmi = explode ('#', $pmi );
-			$class = $pmi[0];
-			$instance = $pmi[1];
-			$payment_method = new $class();
-			$payment_amount = $payment_method->getCost( $instance, $shipping_country, $shoppingCart );
-			$order['payment_amount'] = 0;
+			$pmi	= $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
+			$pmi	= explode ('#', $pmi );
+			$class	= $pmi[0];
+			$instance	= $pmi[1];
+			$payment_method	= new $class();
+			$payment_amount	= $payment_method->getCost( $instance, $shipping_country, $shoppingCart );
+			$order['payment_amount']	= 0;
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, $payment_amount, __( 'Payment cost', 'tcp' ) );
-			$order['payment_method'] = $class;
+			$order['payment_method']	= $class;
+			$order['payment_notice']	= $payment_method->getNotice( $instance, $shipping_country, $shoppingCart );
 			//$order['payment_name']   = $payment_method->getName();
-			$order['payment_name']   = $payment_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );// . ' [' . $payment_method->getName() . ']';
+			$order['payment_name']		= $payment_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );// . ' [' . $payment_method->getName() . ']';
 		} else {
-			$order['payment_amount'] = 0;
-			$order['payment_method'] = '';
-			$order['payment_name']   = '';
+			$order['payment_amount']	= 0;
+			$order['payment_method']	= '';
+			$order['payment_notice']		= '';
+			$order['payment_name']	 	= '';
 		}
 		do_action( 'tcp_checkout_calculate_other_costs', $order );
 		if ( tcp_is_display_prices_with_taxes() ) $order['discount_amount'] = $shoppingCart->getAllDiscounts();
 		else $order['discount_amount'] = $shoppingCart->getCartDiscountsTotal();
 		$order['weight'] = $shoppingCart->getWeight();
-		$order['comment_internal'] = '';
-		$order['code_tracking'] = '';
-		$order['transaction_id'] = '';
+		$order['comment_internal']	= '';
+		$order['code_tracking']		= '';
+		$order['transaction_id']	= '';
 		//TODO more values???
 		if ( isset( $order['billing_country'] ) && strlen( $order['billing_country'] ) == 0 ) {
 			$country_bill = Countries::get( $order['billing_country_id'] );
@@ -480,7 +482,7 @@ class TCPCheckoutManager {
 			$ordersDetails['option_1_id']		= $item->getOption1Id();
 			$ordersDetails['option_2_id']		= $item->getOption2Id();
 			$ordersDetails['weight']			= $item->getWeight();
-			$ordersDetails['is_downloadable']	= $item->isDownloadable() ? 'Y' : '';
+			$ordersDetails['is_downloadable']	= $item->isDownloadable() ? 'Y' : 'N';
 			$ordersDetails['sku']				= $item->getSKU(); //tcp_get_the_sku( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
 			$ordersDetails['name']				= tcp_get_the_title( $post->ID );
 			$ordersDetails['option_1_name']		= $item->getOption1Id() > 0 ? get_the_title( $item->getOption1Id() ) : '';
@@ -518,13 +520,10 @@ class TCPCheckoutManager {
 		// shows Payment Area
 		//
 		ob_start(); ?>
-
 		<div class="tcp_payment_area">
-
 		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
-
-		<p><?php _e( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ); ?></p>
-
+		<p><?php echo apply_filters( 'tcp_checkout_ok_message', __( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ), $order_id ); ?></p>
+		
 		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) :
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
@@ -537,25 +536,15 @@ class TCPCheckoutManager {
 				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id, '' );
 			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
-
 			<div class="tcp_pay_form">
-
 				<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
-
 				<div class="tcp_plugin_notice"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
-
 			</div>
-
 		<?php endif; ?>
-
 		<?php OrderPage::show( $order_id, array( 'see_sku' => true ) ); ?>
-
-		<br />
-
-		<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
-
+			<br />
+			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 		</div><!-- tcp_payment_area--><?php
-
 		//$shoppingCart->deleteAll();//remove since 1.1.0
 		return ob_get_clean();
 	}

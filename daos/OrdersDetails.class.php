@@ -132,7 +132,7 @@ class OrdersDetails {
 	static function isDownloadable( $order_id ) {
 		global $wpdb;
 		$count = $wpdb->get_var( $wpdb->prepare( 'select count(*) from ' . $wpdb->prefix . 'tcp_orders_details
-			where order_id = %d and is_downloadable != \'Y \'', $order_id ) );
+			where order_id = %d and is_downloadable = \'Y \'', $order_id ) );
 		return $count == 0;
 	}
 

@@ -19,17 +19,17 @@
 class TCPAjax {
 	function __construct() {
 		add_action( 'init', array( &$this, 'init' ) );
-		//add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 	}
 
 	function init() {
-		if ( is_admin() ) {
-			add_action( 'admin_init', array( &$this, 'admin_init' ) );
-			add_action( 'tcp_main_settings_page', array( &$this, 'tcp_main_settings_page' ) );
-			add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
-		}
 		global $thecartpress;
 		if ( $thecartpress && $thecartpress->get_setting( 'activate_ajax', true ) ) {
+			add_action( 'wp_ajax_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_tcp_checkout', array( $this, 'tcp_checkout' ) );
+			add_action( 'wp_ajax_nopriv_tcp_checkout', array( $this, 'tcp_checkout' ) );
+
 			add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 			add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
 			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 99, 2 );
@@ -46,6 +46,11 @@ class TCPAjax {
 		}
 	}
 
+	function admin_init() {
+		add_action( 'tcp_main_settings_page', array( &$this, 'tcp_main_settings_page' ) );
+		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
+	}
+
 	function wp_enqueue_scripts() {
 		wp_enqueue_script( 'query-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-droppable' );
@@ -53,7 +58,7 @@ class TCPAjax {
 
 	function tcp_get_the_thumbnail_with_permalink( $image, $post_id, $args ) {
 		ob_start(); ?>
-		<script>
+		<script type="text/javascript">
 		jQuery(document).ready(function () {
 			jQuery('.tcp_image_<?php echo $post_id; ?>').draggable({
 				helper: 'clone',
@@ -67,7 +72,6 @@ class TCPAjax {
 		<?php return $image . ob_get_clean();
 	}
 
-	
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$activate_ajax = $thecartpress->get_setting( 'activate_ajax', true ); ?>
@@ -86,14 +90,6 @@ class TCPAjax {
 		$settings['activate_ajax'] = isset( $_POST['activate_ajax'] ) ? $_POST['activate_ajax'] == 'yes' : false;
 		return $settings;
 	}
-
-	function admin_init() {
-		add_action( 'wp_ajax_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
-		add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
-		add_action( 'wp_ajax_tcp_checkout', array( $this, 'tcp_checkout' ) );
-		add_action( 'wp_ajax_nopriv_tcp_checkout', array( $this, 'tcp_checkout' ) );
-	}
-
 
 	function tcp_ckeckout_current_title( $title, $step ) { 
 		return $title . '<img src="' . admin_url( 'images/loading.gif' ) . '" class="tcp_checkout_feedback" style="display: none;" />';
@@ -480,16 +476,13 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 
 	function tcp_the_add_to_cart_button( $out, $post_id ) { 
 		ob_start(); ?>
-
 <img src="<?php echo admin_url( 'images/loading.gif' ); ?>" class="tcp_feedback" id="tcp_buy_button_feedback_<?php echo $post_id; ?>" style="display: none;" /><?php
-
 		return $out . ob_get_clean();
 	}
 
 	function tcp_the_add_to_cart_items_in_the_cart( $out, $post_id ) {
 		ob_start(); ?>
-<script>
-
+<script type="text/javascript">
 //if ( ! jQuery.isFunction(window.tcp_items_in_the_cart_<?php echo $post_id; ?>)) {
 	tcpDispatcher.add('tcp_items_in_the_cart_<?php echo $post_id; ?>', <?php echo $post_id; ?>);
 

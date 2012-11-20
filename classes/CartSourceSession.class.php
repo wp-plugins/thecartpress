@@ -76,7 +76,19 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		return false;
 	}
 
+	public function get_payment_name() {
+		return false;
+	}
+
+	public function get_payment_notice() {
+		return false;
+	}
+
 	public function get_shipping_method() {
+		return false;
+	}
+
+	public function get_shipping_notice() {
 		return false;
 	}
 
@@ -333,8 +345,15 @@ class TCP_DetailSourceSession implements TCP_IDetailSource {
 	}
 
 	public function get_name() {
-		if ( $this->item ) return stripslashes( $this->item->getTitle() );
-		else return false;
+		if ( $this->item ) {
+			//return stripslashes( $this->item->getTitle() );
+			$post_id = tcp_get_current_id( $this->get_post_id() );
+			$option_1_id = tcp_get_current_id( $this->get_option_1_id() );
+			$option_2_id = tcp_get_current_id( $this->get_option_2_id() );
+			return stripslashes( tcp_get_the_title( $post_id, $option_1_id, $option_2_id ) );
+		} else {
+			return false;
+		}
 	}
 
 	/*public function get_option_1_name() {

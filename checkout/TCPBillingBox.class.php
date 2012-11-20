@@ -37,7 +37,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 	function after_action() {
 		$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
-		if ( $selected_billing_address == 'new' ) {
+		if ( $selected_billing_address == 'new' || $selected_billing_address == 'N' ) {
 			if ( ! isset( $_REQUEST['billing_firstname'] ) || strlen( $_REQUEST['billing_firstname'] ) == 0 )
 				$this->errors['billing_firstname'] = __( 'The billing First name field must be completed', 'tcp' );
 			if ( ! isset( $_REQUEST['billing_lastname'] ) || strlen( $_REQUEST['billing_lastname'] ) == 0 )
@@ -57,7 +57,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			}
 			if ( ! isset( $_REQUEST['billing_postcode'] ) || strlen( $_REQUEST['billing_postcode'] ) == 0 )
 				$this->errors['billing_postcode'] = __( 'The billing Postcode field must be completed', 'tcp' );
-			if ( ! isset( $_REQUEST['billing_email'] ) || strlen( $_REQUEST['billing_email'] ) == 0 )
+			if ( ! isset( $_REQUEST['billing_email'] ) || strlen( trim( $_REQUEST['billing_email'] ) ) == 0 )
 				$this->errors['billing_email'] = __( 'The billing eMail field must be completed', 'tcp' );
 			elseif ( ! $this->check_email_address( $_REQUEST['billing_email'] ) ) 
 				$this->errors['billing_email'] = __( 'The billing eMail field must be a valid email', 'tcp' );
@@ -111,7 +111,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
 			$selected_billing_address = $_SESSION['tcp_checkout']['billing']['selected_billing_address'];
 		} else {
-			$selected_billing_address = 'Y';
+			$selected_billing_address = 'N';
 		}?>
 		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php global $current_user;
@@ -127,12 +127,12 @@ class TCPBillingBox extends TCPCheckoutBox {
 			} else {
 				$default_address = Addresses::getCustomerDefaultBillingAddress( $current_user->ID );
 				$default_address_id = $default_address ? $default_address->address_id : 0;
-			}?>
+			} ?>
 				<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif;?>>
 					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' ); ?></label>
 					<br />
 					<select id="selected_billing_id" name="selected_billing_id">
-					<?php foreach( $addresses as $address ) :?>
+					<?php foreach( $addresses as $address ) : ?>
 						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id ); ?>><?php echo stripslashes( $address->street . ', ' . $address->city ); ?></option>
 					<?php endforeach;?>
 					</select>
@@ -267,12 +267,12 @@ class TCPBillingBox extends TCPCheckoutBox {
 				$email = '';
 			}?>
 				<ul>
-					<li><label for="billing_firstname"><?php _e( 'Firstname', 'tcp' ); ?>:<em>*</em></label>
+					<li><label for="billing_firstname"><?php _e( 'First name', 'tcp' ); ?>:<em>*</em></label>
 						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
 						<?php $this->showErrorMsg( 'billing_firstname' ); ?>
 					</li>
 					<li>
-						<label for="billing_lastname"><?php _e( 'Lastname', 'tcp' ); ?>:<em>*</em></label>
+						<label for="billing_lastname"><?php _e( 'Last name', 'tcp' ); ?>:<em>*</em></label>
 						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
 						<?php $this->showErrorMsg( 'billing_lastname' ); ?>
 					</li>
@@ -359,7 +359,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 						<?php $this->showErrorMsg( 'billing_fax' ); ?>
 					</li>
 					<li>
-						<label for="billing_email"><?php _e( 'eMail', 'tcp' ); ?>:<em>*</em></label>
+						<label for="billing_email"><?php _e( 'Email', 'tcp' ); ?>:<em>*</em></label>
 						<input type="text" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_email' ); ?>
 					</li>

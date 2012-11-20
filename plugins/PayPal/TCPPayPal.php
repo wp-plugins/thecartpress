@@ -93,7 +93,15 @@ class TCPPayPal extends TCP_Plugin {
 				<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
 			</td>
 		</tr>
-
+		<tr valign="top">
+			<th scope="row">
+				<label for="redirect"><?php _e( 'Redirect automatically', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" id="redirect" name="redirect" value="yes" <?php checked( isset( $data['redirect'] ) ? $data['redirect'] : false ); ?> />
+				<p class="description"><?php _e( 'If checked, Checkout page will redirect automatically to the Paypal payment site. Otherwise, customers must click on "Pay with PayPal".', 'tcp' ); ?></p>
+			</td>
+		</tr>
 <!--		<tr valign="top">
 		<th scope="row">
 			<label for="profile_shipping"><?php _e( 'Use PayPal profile shipping', 'tcp' );?>:</label>
@@ -161,6 +169,7 @@ class TCPPayPal extends TCP_Plugin {
 		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] );
 		$data['no_shipping']			= isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
 		$data['paymentaction']			= isset( $_REQUEST['paymentaction'] ) ? $_REQUEST['paymentaction'] : 'sale';
+		$data['redirect']				= isset( $_REQUEST['redirect'] );
 		$data['send_detail']			= 0;//isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
 		$data['logging']				= isset( $_REQUEST['logging'] );
 		$data['cpp_cart_border_color']	= isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
@@ -176,6 +185,7 @@ class TCPPayPal extends TCP_Plugin {
 		$profile_shipping	= $data['profile_shipping'];
 		$profile_taxes		= $data['profile_taxes'];
 		$paymentaction		= isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale';
+		$redirect			= isset( $data['redirect'] ) ? $data['redirect'] : false;
 		$no_shipping		= isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
 		$send_detail		= 0; //isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
 		$logging			= $data['logging'];
@@ -199,7 +209,7 @@ class TCPPayPal extends TCP_Plugin {
 		
 		if ( $send_detail == 0 ) { // && empty( $profile_shipping ) && empty( $profile_taxes ) ) { // Buy Now - one total
 			//$p->add_field( 'item_name', __( 'Purchase from ', 'tcp' ) . $merchant );
-			$p->add_field( 'item_name', printf( __( 'Purchase from %s (Order No. %s)', 'tcp' ), $merchant, $order_id ) );
+			$p->add_field( 'item_name', sprintf( __( 'Purchase from %s (Order No. %s)', 'tcp' ), $merchant, $order_id ) );
 			$amount = 0;
 			$taxes = 0;
 			$decimals = tcp_get_decimal_currency();
@@ -286,13 +296,15 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'country', $order->billing_country_id );
 		$p->add_field( 'email', $order->billing_email );
 		if ( ! empty( $data['cpp_cart_border_color'] ) ) $p->add_field( 'cpp_cart_border_color', $data['cpp_cart_border_color'] );
-		echo $p->submit_paypal_post(); ?>
-		<script>
-		jQuery(document).ready(function() {
-			jQuery('form[name=paypal_form]').submit();
-		});
+		echo $p->submit_paypal_post();
+		if ( $redirect ) : ?>
+		<script type="text/javascript">
+		jQuery().ready( function() {
+			jQuery( 'form[name=paypal_form]' ).submit();
+		} );
 		</script>
-		<?php
+		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp'); ?></p>
+		<?php endif;
 
 		/*if ( ! $this->isSupportedCurrency( $currency_code ) ) {
 			require_once( dirname( __FILE__ ) . '/PayPal_Platform_PHP_SDK/lib/AdaptivePayments.php' );
@@ -335,7 +347,6 @@ class TCPPayPal extends TCP_Plugin {
 		$custom		= explode( '-', $custom );
 		$order_id	= $custom[0];
 		$instance	= $custom[1];
-
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 			$cancelled_status = tcp_get_cancelled_order_status();
 			Orders::editStatus( $order_id, $cancelled_status, $transaction_id, __( 'Customer cancel at PayPal', 'tcp' ) );

@@ -42,10 +42,9 @@ if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders'
 $order = Orders::get( $order_id );
 
 if ( isset( $_REQUEST['send_email'] ) ) :
-	if ( $_REQUEST['send_email'] == 'billing' ) $to = $order->billing_email;
-	else $to = $order->shipping_email;
 	require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
-	ActiveCheckout::sendMails( $order_id, '', true ); ?>
+	if ( $_REQUEST['send_email'] != 'merchant' ) ActiveCheckout::sendMails( $order_id, '', true );
+	else ActiveCheckout::sendOrderMails( $order_id, '', false, true ); ?>
 	<div id="message" class="updated">
 		<p><?php _e( 'Mail sent', 'tcp' ); ?></p>
 	</div>
@@ -54,6 +53,12 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 #shipping_info {
 	width: 50%;
 	float: left;
+}
+th {
+	font-weight: bold;
+}
+th, td {
+	text-align: left;
 }
 </style>
 
@@ -75,6 +80,11 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 	<li>&nbsp;|&nbsp;</li>
 	<li><a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a></li>
 <?php endif;?>
+<?php if ( $order_id > 0 && current_user_can( 'tcp_edit_products') ) : ?>
+	<li>&nbsp;|&nbsp;</li>
+	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'merchant' ), get_permalink() ); ?>"><?php _e( 'Send email to me', 'tcp' ); ?></a></li>
+<?php endif; ?>
+
 </ul><!-- subsubsub -->
 <div class="clear"></div>
 	<?php $orderpage = OrderPage::show( $order_id, array( 'see_sku' => true ), false, true );
@@ -84,53 +94,55 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 	<form method="post" name="frm">
 		<input type="hidden" name="status" value="<?php echo $status = $order->status;?>" />
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
-		<table class="form-table">
+		<table width="100%" cellpadding="0" cellspacing="0">
 		<tbody>
 		<?php do_action( 'tcp_admin_order_before_editor', $order_id ); ?>
 		<tr valign="top">
 			<th scope="row">
-				<label><?php _e( 'Order Id.', 'tcp' ); ?>:</label>
+				<label><?php _e( 'Order Id.', 'tcp' ); ?></label>
 			</th>
-			<td><?php echo $order_id;?></td>
+			<th scope="row">
+				<label><?php _e( 'Date', 'tcp' ); ?></label>
+			</th>
+		</tr>
+		<tr>
+			<td ><?php echo $order_id;?></td>
+			<td><?php echo $order->created_at;?></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
 				<label><?php _e( 'User email', 'tcp' ); ?>:</label>
 			</th>
-			<td><?php $user_data = get_userdata( $order->customer_id );
-			if ( $user_data )
-				echo $user_data->user_nicename, '&lt;', $user_data->user_email, '&gt;';
-			else
-				echo $order->billing_email;?></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row">
-				<label><?php _e( 'Date', 'tcp' ); ?>:</label>
-			</th>
-			<td><?php echo $order->created_at;?></td>
+			<td>
+				<?php $user_data = get_userdata( $order->customer_id );
+				if ( $user_data ) printf( __( '%s&lt;%s&gt; (registered)', 'tcp' ), $user_data->user_nicename, $user_data->user_email );
+				else printf( __( '%s (unregistered)', 'tcp' ), $order->billing_email ); ?>
+			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
 				<label><?php _e( 'Shipping method', 'tcp' ); ?>:</label>
 			</th>
-			<td><?php echo $order->shipping_method;?></td>
-		</tr>
-		<tr valign="top">
 			<th scope="row">
 				<label><?php _e( 'Payment method', 'tcp' ); ?>:</label>
 			</th>
+		</tr>
+		<tr valign="top">
+			<td><?php echo $order->shipping_method;?></td>
 			<td><?php echo $order->payment_name;?></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
 				<label><?php _e( 'Transaction id', 'tcp' ); ?>:</label>
 			</th>
-			<td><?php echo $order->transaction_id;?></td>
-		</tr>
-		<tr valign="top">
 			<th scope="row">
 				<label>IP:</label>
 			</th>
+		</tr>
+		<tr valign="top">
+			<td><?php echo $order->transaction_id;?></td>
 			<td><?php echo $order->ip;?></td>
 		</tr>
 		<tr valign="top">
@@ -158,7 +170,7 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 			<th scope="row">
 				<label for="comment"><?php _e( 'Customer\'s comment', 'tcp' ); ?>:</label>
 			</th>
-			<td>
+			<td colspan="2">
 				<textarea valign="top" name="comment" id="comment" rows="5" cols="40" maxlength="250"><?php echo $order->comment; ?></textarea>
 			</td>
 		</tr>
@@ -166,7 +178,7 @@ if ( isset( $_REQUEST['send_email'] ) ) :
 			<th scope="row">
 				<label for="comment_internal"><?php _e( 'Internal comment', 'tcp' ); ?>:</label>
 			</th>
-			<td>
+			<td colspan="2">
 				<textarea valign="top" name="comment_internal" id="comment_internal" rows="5" cols="40" maxlength="250"><?php echo $order->comment_internal; ?></textarea>
 			</td>
 		</tr>

@@ -21,7 +21,7 @@ class TCPLoopSettings {
 	function __construct() {
 		$settings = get_option( 'tcp_settings' );
 		if ( isset( $settings['use_default_loop'] ) ) {
-			if ( $settings['use_default_loop'] != 'none' ) add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+			if ( $settings['use_default_loop'] != 'none' ) add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 			if ( $settings['use_default_loop'] == 'yes' || $settings['use_default_loop'] == 'yes_2010' )
 				add_filter( 'template_include', array( $this, 'template_include' ) );
 		}
@@ -55,7 +55,7 @@ class TCPLoopSettings {
 	function admin_page() { ?>
 <div class="wrap">
 	<?php screen_icon( 'tcp-loop-settings' ); ?><h2><?php _e( 'Loop Settings', 'tcp' ); ?></h2>
-	
+
 	<p class="description"><?php _e( 'Allows to configure how to display the products in the WordPress Loop', 'tcp' ); ?></p>
 
 <?php $settings = get_option( 'ttc_settings' );
@@ -412,18 +412,58 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	function template_include( $template ) {
 		global $wp_query;
 		if ( isset( $wp_query->tax_query ) ) {
-			foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
-				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
-					$settings = get_option( 'tcp_settings' );
-					if ( $settings['use_default_loop'] == 'yes' ) {
-						$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php';
-						break;
-					} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
-						$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/taxonomy.php';
-						break;
+			if ( is_array( $wp_query->tax_query->queries ) && count( $wp_query->tax_query->queries ) > 0 ) {
+				foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
+					if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
+						$template = $this->get_template_taxonomy();
+						if ( $template ) return $template;
 					}
 				}
 			}
+		}
+
+		global $post;
+		if ( $post && tcp_is_saleable_post_type( $post->post_type ) ) {
+			if ( is_single() ) $template = $this->get_template_single();
+			else $template = $this->get_template_archive();
+			if ( $template ) return $template;
+		}
+		
+		return $template;
+	}
+
+	private function get_template_taxonomy() {
+		$settings = get_option( 'tcp_settings' );
+		if ( $settings['use_default_loop'] == 'yes' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php';
+		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/taxonomy.php';
+		} else {
+			$template = false;
+		}
+		return $template;
+	}
+
+	private function get_template_archive( $product_type = false) {
+		$settings = get_option( 'tcp_settings' );
+		if ( $settings['use_default_loop'] == 'yes' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php';
+		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/archive-tcp_product.php';
+		} else {
+			$template = false;
+		}
+		return $template;
+	}
+
+	private  function get_template_single( $product_type = false ) {
+		$settings = get_option( 'tcp_settings' );
+		if ( $settings['use_default_loop'] == 'yes' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/single-tcp_product.php';
+		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/single-tcp_product.php';
+		} else {
+			$template = false;
 		}
 		return $template;
 	}

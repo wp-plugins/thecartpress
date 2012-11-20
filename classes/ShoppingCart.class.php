@@ -83,6 +83,18 @@ class ShoppingCart {
 		//$this->removeOrderId();
 	}
 
+	function refresh() {
+		$items = $this->getItems();
+		$this->deleteAll();
+		foreach( $items as $item ) {
+			$price = tcp_get_the_price( $item->getPostId() );
+			if ( $item->getOption1Id() > 0 ) $price += tcp_get_the_price( $item->getOption1Id() );
+			if ( $item->getOption2Id() > 0 ) $price += tcp_get_the_price( $item->getOption2Id() );
+			$this->add( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $item->getCount(), $price, $item->getWeight() );
+		}
+		$this->removeOrderId();
+	}
+
 	function getItemsId() {
 		$ids = array();
 		foreach( $this->shopping_cart_items as $item )

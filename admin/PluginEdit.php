@@ -39,6 +39,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 			$plugin_data[$instance]['countries'] = isset( $_REQUEST['countries'] ) ? $_REQUEST['countries'] : array();
 		}
 		$plugin_data[$instance]['new_status'] = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : Orders::$ORDER_PENDING;
+		$plugin_data[$instance]['unique'] = isset( $_REQUEST['unique'] );
 		$plugin = tcp_get_plugin( $plugin_id );
 		$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance], $instance );
 		$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $plugin_id, $instance );
@@ -113,98 +114,107 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 	<table class="form-table">
 	<tbody>
 	<tr valign="top">
-	<th scope="row">
-		<label for="title"><?php _e( 'Title', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" />
-	</td>
+		<th scope="row">
+			<label for="title"><?php _e( 'Title', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" />
+		</td>
 	</tr>
 	<tr valign="top">
-	<th scope="row">
-		<label for="active"><?php _e( 'Active', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<input type="checkbox" name="active" id="active" <?php checked( isset( $data['active'] ) ? $data['active'] : false, true ); ?> value="yes" />
-	</td>
+		<th scope="row">
+			<label for="active"><?php _e( 'Active', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" name="active" id="active" <?php checked( isset( $data['active'] ) ? $data['active'] : false, true ); ?> value="yes" />
+		</td>
 	</tr>
 <?php if ( $plugin_type == 'payment' ) : ?>
 	<tr valign="top">
-	<th scope="row">
-		<label for="not_for_downloadable"><?php _e( 'Do not Apply for downloadable products', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<input type="checkbox" name="not_for_downloadable" id="not_for_downloadable" <?php checked( isset( $data['not_for_downloadable'] ) ? $data['not_for_downloadable'] : false, true ); ?> value="yes" />
-	</td>
+		<th scope="row">
+			<label for="not_for_downloadable"><?php _e( 'Do not Apply for downloadable products', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" name="not_for_downloadable" id="not_for_downloadable" <?php checked( isset( $data['not_for_downloadable'] ) ? $data['not_for_downloadable'] : false, true ); ?> value="yes" />
+		</td>
 	</tr>
 	<tr valign="top">
-	<th scope="row">
-		<label for="new_status"><?php _e( 'New status', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<select class="postform" id="new_status" name="new_status">
-		<?php $order_status_list = tcp_get_order_status();
-		foreach ( $order_status_list as $order_status ) : ?>
-			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $new_status ); ?>><?php echo $order_status['label']; ?></option>		
-		<?php endforeach; ?>
-		</select>
-		<p class="description"><?php _e( 'If the payment is right, the order status will be the selected one.', 'tcp' ); ?></p>
-	</td>
+		<th scope="row">
+			<label for="new_status"><?php _e( 'New status', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<select class="postform" id="new_status" name="new_status">
+			<?php $order_status_list = tcp_get_order_status();
+			foreach ( $order_status_list as $order_status ) : ?>
+				<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $new_status ); ?>><?php echo $order_status['label']; ?></option>		
+			<?php endforeach; ?>
+			</select>
+			<p class="description"><?php _e( 'If the payment is right, the order status will be the selected one.', 'tcp' ); ?></p>
+		</td>
 	</tr>
 <?php endif; ?>
 	<tr valign="top">
-	<th scope="row">
-		<label for="all_countries"><?php _e( 'Apply the plugin to all countries', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<input type="checkbox" name="all_countries" id="all_countries" <?php checked( isset( $data['all_countries'] ) ? $data['all_countries'] : '', 'yes' ); ?> value="yes"
-		onclick="if (this.checked) jQuery('.sel_countries').hide(); else jQuery('.sel_countries').show();"/>
-	</td>
+		<th scope="row">
+			<label for="all_countries"><?php _e( 'Apply the plugin to all countries', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" name="all_countries" id="all_countries" <?php checked( isset( $data['all_countries'] ) ? $data['all_countries'] : '', 'yes' ); ?> value="yes"
+			onclick="if (this.checked) jQuery('.sel_countries').hide(); else jQuery('.sel_countries').show();"/>
+		</td>
 	</tr>
 	<tr valign="top" class="sel_countries" <?php $all = isset( $data['all_countries'] ) ? $data['all_countries'] : '';
 		if ( $all == 'yes' ) echo 'style="display:none;"'; ?>>
-	<th scope="row">
-		<label for="countries"><?php _e( 'Apply the plugin only to selected ones', 'tcp' ); ?>:</label>
-	</th>
-	<td>
-		<?php $selected_countries = isset( $data['countries'] ) ? $data['countries'] : array(); ?>
-		<div style="float:left">
-			<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
-				<?php global $thecartpress;
-				if ( $plugin_type == 'shipping' ) {
-					$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
-				} else {//billing
-					$isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
-				}
-				if ( $isos ) {
-					$countries = Countries::getSome( $isos );
-				} else {
-					$countries = Countries::getAll();
-				}
-				foreach( $countries as $country ) :?>
-				<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $selected_countries, $country->iso ); ?>><?php echo $country->name;?></option>
-				<?php endforeach;?>
-			</select>
-		</div>
-		<script>
-			jQuery('#countries').tcp_convert_multiselect();
-		</script>
-		<div>
-			<input type="button" value="<?php _e( 'EU', 'tcp'); ?>" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'NAFTA', 'tcp'); ?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' ); ?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'CARICOM', 'tcp'); ?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' ); ?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'MERCASUR', 'tcp'); ?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' ); ?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'CAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' ); ?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
-			<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
-			<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
-			<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('countries');" class="button-secondary"/>
-		</div>
-	</td>
+		<th scope="row">
+			<label for="countries"><?php _e( 'Apply the plugin only to selected ones', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<?php $selected_countries = isset( $data['countries'] ) ? $data['countries'] : array(); ?>
+			<div style="float:left">
+				<select class="postform" id="countries" name="countries[]" multiple="true" size="10" style="height: auto;">
+					<?php global $thecartpress;
+					if ( $plugin_type == 'shipping' ) {
+						$isos = isset( $thecartpress->settings['shipping_isos'] ) ? $thecartpress->settings['shipping_isos'] : false;
+					} else {//billing
+						$isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
+					}
+					if ( $isos ) {
+						$countries = Countries::getSome( $isos );
+					} else {
+						$countries = Countries::getAll();
+					}
+					foreach( $countries as $country ) :?>
+					<option value="<?php echo $country->iso;?>" <?php tcp_selected_multiple( $selected_countries, $country->iso ); ?>><?php echo $country->name;?></option>
+					<?php endforeach;?>
+				</select>
+			</div>
+			<script >
+				jQuery('#countries').tcp_convert_multiselect();
+			</script>
+			<div>
+				<input type="button" value="<?php _e( 'EU', 'tcp'); ?>" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'NAFTA', 'tcp'); ?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' ); ?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'CARICOM', 'tcp'); ?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' ); ?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'MERCASUR', 'tcp'); ?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' ); ?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'CAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' ); ?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
+				<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
+				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('countries');" class="button-secondary"/>
+			</div>
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row">
+			<label for="unique"><?php _e( 'If applicable, display only this method', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" id="unique" name="unique" value="yes" <?php checked( isset( $data['unique'] ) ? $data['unique'] : false ); ?> />
+		</td>
 	</tr>
 	<?php do_action( 'tcp_plugin_edit_fields', $data ); ?>
 	<?php $plugin->showEditFields( $data ); ?>
-	</tbody></table>
+	</tbody>
+	</table>
 	<p class="submit">
 		<input name="tcp_plugin_save" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
 		<input name="tcp_plugin_delete" value="<?php _e( 'Delete', 'tcp' ); ?>" type="submit" class="button-secondary" />

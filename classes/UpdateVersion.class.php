@@ -20,33 +20,6 @@ class TCPUpdateVersion {
 
 	function update( $thecartpress ) {
 		$version = (int)get_option( 'tcp_version' );
-		if ( $version < 110 ) {
-			global $wpdb;
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'transaction_id\'';
-			$row = $wpdb->get_row( $sql );
-			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `transaction_id` VARCHAR(250)  NOT NULL AFTER `payment_amount`;';
-				$wpdb->query( $sql );
-			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'custom_id\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `custom_id` bigint(250) unsigned NOT NULL AFTER `customer_id`;';
-				$wpdb->query( $sql );
-			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'tax_id_number\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `tax_id_number` bigint(250) unsigned NOT NULL AFTER `company`;';
-				$wpdb->query( $sql );
-			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'company_id\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `company_id` bigint(250) unsigned NOT NULL AFTER `tax_id_number`;';
-				$wpdb->query( $sql );
-			}
-			//
-			//TODO Deprecated 1.2
-			//
-		}
 		if ( $version < 112 ) {
 			global $wpdb;
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
@@ -173,7 +146,26 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.3
 			//
 		}
-		update_option( 'tcp_version', 122 );
+		if ( $version < 126 ) {
+			global $wpdb;
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` VARCHAR(500) NOT NULL AFTER `payment_method`;';
+				$wpdb->query( $sql );
+			}
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `comment` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `comment_internal` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+			$wpdb->query( $sql );
+			//
+			//TODO Deprecated 1.4
+			//
+		}
+
+		update_option( 'tcp_version', 126 );
 	}
 }
 ?>

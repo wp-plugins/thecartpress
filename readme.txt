@@ -4,7 +4,7 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable Tag: 1.2.5.2
+Stable Tag: 1.2.6
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -294,13 +294,29 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 1.2.6 =
+* Translated: Product names translated in Shopping cart and checkout
+* Plugins: "If applicable, display only this method"
+* PayPal, new property: redirect automatically (Suggested in the community)
+* Stock: Hide Buy button if no stock (Suggested in the community)
+* Plugins, getNotice: plugins API update
+* TCPRemboursement, Transference update to support getNotice
+* Orders: Update to support getNotice
+* Shortcodes: tcp_navigation_tree shortcode
+* Users login/register panels
+* Theme Compatibility: Archives, Single and Taxonomy templates
+* Theme Compatibility (2): buy button position: South, North or Both.
+* FreeProducts: Payment method for free products
+* Theme Compatibility: add single and taxonomy templates
+* Order edit, Order email: Display status label
+
 = 1.2.5.2 =
 * Stock management update
 * Address editor: bug fixed
 * "Under Construccion", "Maintance mode" mode
 * Downloadables products: bug fixed for unregisterd users
 * Product filter by type: bug fixed in back-end
-* class tcp-store in TheCartPress pages, taxonomy, archives or products pages.
+* class tcp-store in TheCartPress pages, taxonomy, archives or products pages
 
 = 1.2.5.1 =
 * File mising

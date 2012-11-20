@@ -511,6 +511,12 @@ li.tcp_checkout_active_step span{font-weight:bold;}
 	color:#C00;
 }
 
+#tcp_order_id th,
+#tcp_status th,
+#shipping_billing_info td {
+	text-align: left !important;
+}
+
 .tcp-button-endcheckout {
     background: url("http://haiku-futon.com/wp-content/plugins/thecartpress-ceca/images/black_button.png") no-repeat scroll 0 0 transparent;
     border: 0 none;

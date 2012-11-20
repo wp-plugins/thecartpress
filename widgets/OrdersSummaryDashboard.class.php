@@ -20,6 +20,10 @@ require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
 class OrdersSummaryDashboard {
 
+	function __construct() {
+		wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders Summary', 'tcp' ), array( $this, 'show' ) );
+	}
+
 	function show() {
 		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			$customer_id = -1;
@@ -82,10 +86,6 @@ class OrdersSummaryDashboard {
 	| <a class="tcp_link_to_tcp" href="http://community.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress community', 'tcp'); ?>"><?php _e( 'Visit TheCartPress community', 'tcp'); ?></a></p>
 </div>
 	<?php }
-
-	function __construct() {
-		wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders Summary', 'tcp' ), array( $this, 'show' ) );
-	}
 }
 
 new OrdersSummaryDashboard();

@@ -97,9 +97,7 @@ class Transference extends TCP_Plugin {
 		return isset( $data['title'] ) ? $data['title'] : $this->getTitle();
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-		$url = add_query_arg( 'order_id', $order_id, $url );
+	function getNotice( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		ob_start(); ?>
 		<p><?php echo $data['notice']; ?></p>
@@ -110,18 +108,22 @@ class Transference extends TCP_Plugin {
 			<tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr>
 			<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr>
 		</table>
+		<?php return ob_get_clean();
+	}
+
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+		$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
+		$url = add_query_arg( 'order_id', $order_id, $url );
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$additional = $this->getNotice( $instance, $shippingCountry, $shoppingCart, $order_id );
+		echo $additional; ?>
 		<p>
-		<?php $additional = ob_get_clean(); echo $additional; ?>
-		<input type="button" id="tcp_transference" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; //add_query_arg( $params, tcp_the_checkout_url() ); ?>';"/>
+			<input type="button" class="tcp_pay_button" id="tcp_transference" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; ?>';"/>
 		</p>
-		<!--<script>
-		//jQuery(document).ready(function() {
-			//jQuery('#tcp_transference').click();
-		//});
-		</script>--><?php
-		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+		<?php require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+		$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PROCESSING;
+		Orders::editStatus( $order_id, $new_status, 'no-id' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
-		Orders::editStatus( $order_id, $data['new_status'], 'no-id' );
 		ActiveCheckout::sendMails( $order_id, $additional );
 	}
 }

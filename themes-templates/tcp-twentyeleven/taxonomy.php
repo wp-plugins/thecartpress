@@ -32,8 +32,7 @@ get_header(); ?>
 						 * If you want to overload this in a child theme then include a file
 						 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 						 */
-						//get_template_part( 'loop-tcp-grid' );
-						require_once( dirname( __FILE__ ) . '/loop-tcp-grid.php' );
+						tcp_get_template_part( dirname( __FILE__ ), 'loop-tcp-grid' );
 					?>
 
 					<?php if ( is_active_sidebar( 'sidebar-related' ) ) : ?>

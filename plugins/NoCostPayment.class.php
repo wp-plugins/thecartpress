@@ -54,7 +54,7 @@ class NoCostPayment extends TCP_Plugin {
 		$url	= add_query_arg( 'order_id', $order_id, $url ); ?>
 		<h2><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></h2>
 		<p><?php echo $data['notice'];?></p>
-		<p><input type="button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
+		<p><input type="button" class="tcp_pay_button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
 		<?php require_once( TCP_DAOS_FOLDER . '/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] ); //Orders::$ORDER_PROCESSING );
 		require_once( TCP_CHECKOUT_FOLDER . '/ActiveCheckout.class.php' );

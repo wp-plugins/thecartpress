@@ -83,7 +83,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		</script>
 		<p><?php _e( 'Drag the payments plugins to sort them', 'tcp' ); ?></p>
 		<?php $settings = get_option( 'tcp_' . get_class( $this ), array() );
-		$payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : ''; ?>
+		$payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : array(); ?>
 		<input type="hidden" name="tcp_payment_sorting" id="tcp_payment_sorting" value="" />
 		<ul id="tcp_payment_list">
 		<?php global $tcp_payment_plugins;
@@ -93,10 +93,10 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				$tcp_payment_plugin = $tcp_payment_plugins[$id]; ?>
 				<li class="tcp_payment_item" id="<?php echo $id; ?>"><?php echo $tcp_payment_plugin->getName(); ?></li>
 			<?php endif;
-		else
-			foreach( $tcp_payment_plugins as $id => $tcp_payment_plugin ) : ?>
+		foreach( $tcp_payment_plugins as $id => $tcp_payment_plugin )
+			if ( ! in_array( $id, $payment_sorting ) ) : ?>
 				<li class="tcp_payment_item" id="<?php echo $id; ?>"><?php echo $tcp_payment_plugin->getName(); ?></li>
-			<?php endforeach; ?>
+			<?php endif; ?>
 		</ul>
 		<?php return true;
 	}

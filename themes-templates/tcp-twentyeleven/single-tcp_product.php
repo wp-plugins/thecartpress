@@ -11,7 +11,7 @@ get_header(); ?>
 		<div id="primary">
 			<div id="content" role="main">
 				<?php while ( have_posts() ) : the_post(); ?>
-					<?php get_template_part( 'content', 'single-product' ); ?>
+					<?php tcp_get_template_part( dirname( __FILE__ ), 'content', 'single-product' );?>
 					<?php if ( is_active_sidebar( 'sidebar-related' ) ) : ?>
                         <div id="cross-content">
                           <?php dynamic_sidebar( 'sidebar-related' ); ?>
@@ -21,5 +21,5 @@ get_header(); ?>
 				<?php endwhile; // end of the loop. ?>
 			</div><!-- #content -->
 		</div><!-- #primary -->
-<?php get_sidebar(); ?>
+<?php //get_sidebar(); ?>
 <?php get_footer(); ?>

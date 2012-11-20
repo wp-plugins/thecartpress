@@ -18,6 +18,10 @@
 
 class TCPShortcode {
 
+	function __construct() {
+		add_shortcode( 'tcp_list', array( $this, 'show' ) );
+	}
+
 	function show( $atts ) {
 		extract( shortcode_atts( array( 'id' => '' ), $atts ) );
 		$shortcodes_data = get_option( 'tcp_shortcodes_data' );
@@ -42,10 +46,6 @@ class TCPShortcode {
 				return ob_get_clean();
 			}
 		return sprintf( __( 'Mal formed shortcode: %s', 'tcp' ), $id );
-	}
-
-	function __construct() {
-		add_shortcode( 'tcp_list', array( $this, 'show' ) );
 	}
 }
 

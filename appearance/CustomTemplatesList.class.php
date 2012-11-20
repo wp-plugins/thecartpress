@@ -19,7 +19,7 @@
 class TCPCustomTemplatesList {
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 	}
 
 	function admin_menu() {

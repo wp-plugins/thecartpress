@@ -16,24 +16,9 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Shows a Cart table.
- */
-class TCPCartTable {
-
-	static function show( $source, $echo = true, $default_template = false ) {
-		ob_start();
-		if ( $default_template ) {
-			$located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
-		} else {
-			$located = locate_template( 'tcp_shopping_cart.php' );
-			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
-		}
-		$located = apply_filters( 'tcp_cart_table_template', $located, $source );
-		require( $located );
-		$out = ob_get_clean();
-		if ( $echo ) echo $out;
-		else return $out;
-	}
-}
+require_once( 'BuyButtonShortcode.class.php' );
+require_once( 'NavigationTreeShortcode.class.php' );
+require_once( 'PriceShortcode.class.php' );
+require_once( 'Shortcode.class.php' );
+require_once( 'ShoppingCartPage.class.php' );
 ?>

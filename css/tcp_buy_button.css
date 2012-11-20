@@ -185,6 +185,7 @@ table.tcp_products_list .tcp_buy_button .tcp-buy-dynamic-options .tcp_dynamic_op
 	font-size:12px;
 	font-family:Arial, Helvetica, sans-serif;
 }
+
 .tcp_buy_button select{
 	font-size:12px;
 }
@@ -199,10 +200,7 @@ table.tcp_products_list .tcp_buy_button .tcp-buy-dynamic-options .tcp_dynamic_op
 	font-size:1.625em;
 	padding-top:8px;
 	padding-bottom:8px;
-
-
 }
-
 
 .tcp_dynamic_option_panel label{
 	margin-right:6px;
@@ -218,21 +216,21 @@ div.tcp_buy_button .tcp_added_product_title {
 	line-height: 24px;
 }
 
-
-
 .tcp-add-to-wishlist {
 	display:inline;
 }
-
 
 /* Add buttons
 -------------------------------------*/
 .tcp_add_to_shopping_cart,
 .tcp_add_selected_to_shopping_cart,
 .tcp_add_to_wish_list,
+.tcp_pay_button,
 input[type="submit"].tcp_add_to_shopping_cart,
 input[type="submit"].tcp_add_selected_to_shopping_cart,
-input[type="submit"].tcp_add_to_wish_list {
+input[type="submit"].tcp_add_to_wish_list,
+input[type="submit"].tcp_pay_button,
+input[type="button"].tcp_pay_button {
 	display: inline-block;
 	outline: none;
 	cursor: pointer;
@@ -248,23 +246,23 @@ input[type="submit"].tcp_add_to_wish_list {
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	
 	font-weight:normal !important;
 	margin:4px;
-
 	color: #fef4e9;
 	border: solid 1px #da7c0c;
 	background: #f78d1d;
 	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
 	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
-	
-	
 }
+
 .tcp_add_to_shopping_cart:hover,
 .tcp_add_selected_to_shopping_cart:hover,
+.tcp_pay_button:hover,
 input[type="submit"].tcp_add_to_shopping_cart:hover,
-input[type="submit"].tcp_add_selected_to_shopping_cart:hover {
+input[type="submit"].tcp_add_selected_to_shopping_cart:hover,
+input[type="submit"].tcp_pay_button:hover,
+input[type="button"].tcp_pay_button:hover {
 	text-decoration: none;
 
 	background: #f47c20;
@@ -272,10 +270,14 @@ input[type="submit"].tcp_add_selected_to_shopping_cart:hover {
 	background: -moz-linear-gradient(top,  #f88e11,  #f06015);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
 }
+
 .tcp_add_to_shopping_cart:active,
 .tcp_add_selected_to_shopping_cart:active,
+.tcp_pay_button:active,
 input[type="submit"].tcp_add_to_shopping_cart:active,
-input[type="submit"].tcp_add_selected_to_shopping_cart:active {
+input[type="submit"].tcp_add_selected_to_shopping_cart:active,
+input[type="submit"].tcp_pay_button:active,
+input[type="button"].tcp_pay_button:active {
 	position: relative;
 	top: 1px;
 
@@ -287,7 +289,6 @@ input[type="submit"].tcp_add_selected_to_shopping_cart:active {
 
 .tcp_add_to_wish_list,
 input[type="submit"].tcp_add_to_wish_list {
-	
 	color: #d9eef7;
 	border: solid 1px #0076a3;
 	background: #0095cd;
@@ -312,7 +313,6 @@ input[type="submit"].tcp_add_to_wish_list:active {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 }
 
-
 /* TIER PRICES 
 */
 div.tcp_tier_price {
@@ -331,7 +331,6 @@ div.tcp_tier_price ul {
 div.tcp_tier_price ul {
     margin: 0.325em 0 0 2em;
 }
-
 
 /* Fix floats container "Clearfix" */
 

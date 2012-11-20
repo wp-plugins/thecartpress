@@ -85,6 +85,13 @@
 		width: 50%;
 		float: left;
 	}
+
+	#tcp_order_id th,
+	#tcp_order_id td,
+	#tcp_status th,
+	#tcp_status td {
+		text-align: left !important;
+	}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>

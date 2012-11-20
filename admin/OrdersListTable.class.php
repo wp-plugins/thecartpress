@@ -96,7 +96,7 @@ class OrdersListTable extends WP_List_Table {
 		$actions = array();
 		$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
 		$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : 0;
-		$href = TCP_ADMIN_PATH . 'OrderEdit.php&order_id= ' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
+		$href = TCP_ADMIN_PATH . 'OrderEdit.php&order_id=' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
 		if ( current_user_can( 'tcp_edit_orders' ) )
 			$actions['edit'] = '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">' . __( 'Edit', 'tcp' ) . '</a>';
 		$actions['inline hide-if-no-js'] = '<a href="javascript:tcp_show_order_view(' . $item->order_id . ');" class="editinline" title="' . esc_attr( __( 'View this item inline' ) ) . '">' . __( 'View', 'tcp' ) . '</a>';
@@ -109,7 +109,7 @@ class OrdersListTable extends WP_List_Table {
 	}
 
 	function column_default( $item, $column_name ) {
-		echo isset( $item->$column_name ) ? $item->$column_name : '???';
+		echo isset( $item->$column_name ) ?  strip_tags( $item->$column_name ) : '???';
 	}
 	
 	function extra_tablenav( $which ) {

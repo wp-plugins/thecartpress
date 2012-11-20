@@ -114,11 +114,19 @@ class TCP_Plugin {
 	}
 
 	/**
+	 * Returns a notice to store in orders
+	 * @since 1.2.5.3
+	 */
+	function getNotice( $instance, $shippingCountry, $shoppingCart, $order_id = 0  ) {
+		return '';
+	}
+
+	/**
 	 * Shows the button or the notice after the orders have been saved
 	 *
 	 * Must be implemented only for payment methods
 	 */
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
 	}
 
 	function __construct() {
@@ -261,6 +269,12 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 			$all_countrie =	isset( $data['all_countries'] ) ? $data['all_countries'] == 'yes' : false;
 			if ( $all_countrie ) unset( $applicable_plugins[$id] );
 		}
+	foreach( $applicable_plugins as $id => $plugin_instance ) {
+		if ( $type == 'shipping' ) $data = tcp_get_shipping_plugin_data( get_class( $plugin_instance['plugin'] ), $plugin_instance['instance'] );
+		else $data = tcp_get_payment_plugin_data( get_class( $plugin_instance['plugin'] ), $plugin_instance['instance'] );
+		$unique	= isset( $data['unique'] ) ? $data['unique'] : false;
+		if ( $unique ) return array( $plugin_instance );
+	}
 	return $applicable_plugins;
 }
 

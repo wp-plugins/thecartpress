@@ -258,6 +258,7 @@ $image_link_excerpt				= $thecartpress->get_setting( 'image_link_excerpt' . $suf
 		<select id="align_buy_button_in_content" name="align_buy_button_in_content">
 			<option value="north" <?php selected( 'north', $align_buy_button_in_content ); ?>><?php _e( 'North', 'tcp' ); ?></option>
 			<option value="south" <?php selected( 'south', $align_buy_button_in_content ); ?>><?php _e( 'South', 'tcp' ); ?></option>
+			<option value="both" <?php selected( 'both', $align_buy_button_in_content ); ?>><?php _e( 'Both', 'tcp' ); ?></option>
 		</select>
 	</td>
 </tr>

@@ -19,20 +19,25 @@
 class UIImprovements {
 
 	function __construct() {
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'init', array( &$this, 'init' ) );
+	}
+	function init() {
 		add_filter( 'tcp_the_currency', array( &$this, 'tcp_the_currency' ) );
-		if ( is_admin() ) {
-			add_action( 'tcp_show_settings', array( &$this, 'tcp_show_settings' ) );
-			add_filter( 'admin_footer_text', array( &$this, 'admin_footer_text' ) );
-			add_action( 'wp_dashboard_setup', array( &$this, 'wp_dashboard_setup' ) );
-			add_action( 'admin_head', array( &$this, 'admin_head' ) );
-		} else {
-			add_action( 'twentyten_credits', array( &$this, 'twentyten_credits' ) );
-			add_action( 'twentyeleven_credits', array( &$this, 'twentyten_credits' ) );
-			add_action( 'wp_meta', array( &$this, 'wp_meta' ) );
-			add_filter( 'post_class', array( &$this, 'post_class' ), 10, 3 );
-		}
-		add_action( 'admin_bar_menu', array( &$this, 'admin_bar_menu' ), 65 );
+		add_action( 'twentyten_credits', array( &$this, 'twentyten_credits' ) );
+		add_action( 'twentyeleven_credits', array( &$this, 'twentyten_credits' ) );
+		add_action( 'wp_meta', array( &$this, 'wp_meta' ) );
+		add_filter( 'post_class', array( &$this, 'post_class' ), 10, 3 );
+		global $thecartpress;
+		if ( $thecartpress && $thecartpress->get_setting( 'disable_ecommerce' ) && $thecartpress->get_setting( 'disable_shopping_cart' ) ) add_action( 'admin_bar_menu', array( &$this, 'admin_bar_menu' ), 65 );
 		add_action( 'wp_before_admin_bar_render', array( &$this, 'wp_before_admin_bar_render' ) );
+	}
+
+	function admin_init() {
+		add_action( 'tcp_show_settings', array( &$this, 'tcp_show_settings' ) );
+		add_filter( 'admin_footer_text', array( &$this, 'admin_footer_text' ) );
+		add_action( 'wp_dashboard_setup', array( &$this, 'wp_dashboard_setup' ) );
+		add_action( 'admin_head', array( &$this, 'admin_head' ) );
 	}
 
 	function tcp_the_currency( $currency ) {
@@ -71,9 +76,9 @@ class UIImprovements {
 		wp_add_dashboard_widget( 'tcp_rss_widget', __( 'TheCartPress blog', 'tcp' ), array( &$this, 'theCartPressRSSDashboardWidget' ) );
 	}
 
-	function admin_head() {?>
-	<script>
-	function tcp_hide_product_fields(product_type) {
+	function admin_head() { ?>
+<script type="text/javascript">
+	function tcp_hide_product_fields( product_type ) {
 		var speed = 'fast';
 		if ('SIMPLE' == product_type) {
 			jQuery('#tcp_price').parent().parent().fadeIn(speed);
@@ -93,9 +98,8 @@ class UIImprovements {
 			tcp_hide_product_fields(jQuery('#tcp_type option:selected').val());
 		});
 	});
-	</script>
-	<?php
-	}
+</script>
+	<?php }
 
 	function post_class( $classes, $class = '', $post_id = 0 ) {
 		//if ( tcp_is_saleable( $post_id ) ) $classes[] = 'tcp_hentry';
@@ -106,7 +110,7 @@ class UIImprovements {
 	 * Improves the user experience in the settings page. DEPRECATED
 	 */
 	function tcp_show_settings() { ?>
-		<script>
+		<script type="text/javascript">
 		jQuery(document).ready(function() {
 			jQuery('.form-table').hide();
 			jQuery('div.wrap h3').hide();

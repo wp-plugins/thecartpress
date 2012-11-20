@@ -68,7 +68,7 @@ class TCPParentWidget extends WP_Widget {
 		$private 	= isset( $instance['private'] ) ? $instance['private'] : false;
 		$roles		= isset( $instance['roles'] ) ? $instance['roles'] : array(); ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' ); ?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>

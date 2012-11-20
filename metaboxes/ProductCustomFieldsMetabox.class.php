@@ -164,7 +164,8 @@ class ProductCustomFieldsMetabox {
 					else
 						$is_visible = tcp_is_visible( $post_id );
 					?>
-				<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php checked( $is_visible, true ); ?> /></td>
+					<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php checked( $is_visible, true ); ?> />
+				</td>
 			</tr>
 
 			<tr valign="top">
@@ -174,11 +175,13 @@ class ProductCustomFieldsMetabox {
 				<span class="description"><?php _e( 'Allow to hide the buy button for this product', 'tcp' ); ?></span></td>
 			</tr>
 
+			<?php $tcp_exclude_range = get_post_meta( $post_id, 'tcp_exclude_range', true ); ?>
 			<tr valign="top">
 				<th scope="row"><label for="tcp_exclude_range"><?php _e( 'Exclude for range prices', 'tcp' ); ?>:</label></th>
-				<?php $tcp_exclude_range = get_post_meta( $post_id, 'tcp_exclude_range', true ); ?>
-				<td><input type="checkbox" name="tcp_exclude_range" id="tcp_exclude_range" <?php checked( $tcp_exclude_range, true ); ?> />
-				<span class="description"><?php _e( 'If the product is assigned to a Grouped product, this options exclude the product from the range price of the parent product.', 'tcp' ); ?></span></td>
+				<td>
+					<input type="checkbox" name="tcp_exclude_range" id="tcp_exclude_range" value="yes" <?php checked( $tcp_exclude_range, true ); ?> />
+					<span class="description"><?php _e( 'If the product is assigned to a Grouped product, this options exclude the product from the range price of the parent product.', 'tcp' ); ?></span>
+				</td>
 			</tr>
 
 			<tr valign="top">
@@ -221,12 +224,8 @@ class ProductCustomFieldsMetabox {
 			//wp_set_post_terms( $post_id, $terms, TCP_SUPPLIER_TAG );
 		}
 		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
-		if ( $tax_id > 0 ) {
-			$tax = Taxes::get( $tax_id );
-			update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
-		} else {
-			update_post_meta( $post_id, 'tcp_tax_id', 0 );
-		}
+		if ( $tax_id > 0 ) update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
+		else update_post_meta( $post_id, 'tcp_tax_id', 0 );
 		update_post_meta( $post_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
 		update_post_meta( $post_id, 'tcp_exclude_range', isset( $_POST['tcp_exclude_range'] ) );
 		if ( isset( $_POST['tcp_type'] ) ) {

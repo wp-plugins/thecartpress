@@ -13,9 +13,8 @@
 		<?php if ( has_term( 'beta', 'category-price', '' )) : ?>
             <img src="/wp-content/themes/ecommerce-twentyeleven/images/beta3.jpg" alt="Beta Version" width="66" height="33" class="tcp-beta-single"/>
 		<?php endif; ?>
-                
-		<h1 class="entry-title"><?php the_title(); ?></h1>
 
+		<h1 class="entry-title"><?php the_title(); ?>!!</h1>
 			<!--<div class="entry-meta">
 				<?php tcp_posted_on(); ?> <?php tcp_posted_by(); ?>
 			</div>--><!-- .entry-meta -->

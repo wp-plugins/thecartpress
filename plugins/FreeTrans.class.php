@@ -28,12 +28,14 @@ class FreeTrans extends TCP_Plugin {
 
 	function showEditFields( $data ) {?>
 		<tr valign="top">
-		<th scope="row">
-			<label for="minimun"><?php _e( 'Minimun amount', 'tcp' );?>:</label>
-		</th><td>
-			<input type="text" id="minimun" name="minimun" value="<?php echo isset( $data['minimun'] ) ? $data['minimun'] : 0;?>" size="13" maxlength="13"/>
-		</td>
-		</tr><?php
+			<th scope="row">
+				<label for="minimun"><?php _e( 'Minimun amount', 'tcp' ); ?>:</label>
+			</th>
+			<td>
+				<input type="text" id="minimun" name="minimun" value="<?php echo isset( $data['minimun'] ) ? $data['minimun'] : 0; ?>" size="13" maxlength="13"/>
+			</td>
+		</tr>
+		<?php
 	}
 
 	function saveEditFields( $data ) {

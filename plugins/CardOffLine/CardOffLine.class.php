@@ -177,7 +177,7 @@ class TCPCardOffLine extends TCP_Plugin {
 			}
 		}
 		</script>
-		<p class="tcp_card_offline_execute"><input type="button" onclick="tcp_checkCard();" name="tcp_send_off_line_info" value="<?php echo __( 'Send', 'tcp' );?>" class="button-primary"/></p>
+		<p class="tcp_card_offline_execute"><input type="button" onclick="tcp_checkCard();" class="tcp_pay_button" name="tcp_send_off_line_info" value="<?php echo __( 'Send', 'tcp' );?>" class="button-primary"/></p>
 		</form>
 		<?php
 	}

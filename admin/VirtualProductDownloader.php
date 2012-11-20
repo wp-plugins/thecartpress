@@ -179,7 +179,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) || ( isset( $_REQUEST['uuid'] ) && is
 		$file_path = tcp_get_the_file( $post_id );
 		do_action( 'tcp_download_file', $file_path );
 		if ( ! file_exists( $file_path ) ) {
-			wp_die( __( 'The file doesn\'t exists.', 'tcp' ) );
+			wp_die( $file_path . __( 'The file doesn\'t exists.', 'tcp' ) );
 			return;
 		}
 		$file_size = filesize( $file_path );

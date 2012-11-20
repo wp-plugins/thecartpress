@@ -67,30 +67,37 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 	}
 
 	public function get_order_id() {
-		if ( $this->order )	return $this->order->order_id;
-		else false;
+		return $this->order ? $this->order->order_id : false;
 	}
 
 	public function get_created_at() {
-		if ( $this->order )	return $this->order->created_at;
-		else false;
+		return $this->order ? $this->order->created_at : false;
 	}
 
 	public function get_payment_method() {
-		if ( $this->order )	return $this->order->payment_name;//htmlentities( 
-		else false;
+		return $this->order ? $this->order->payment_method : false;//htmlentities(
+	}
+
+	public function get_payment_name() {
+		return $this->order ? $this->order->payment_name : false;//htmlentities(
+	}
+
+	public function get_payment_notice() {
+		return $this->order ? $this->order->payment_notice : false;//htmlentities( 
 	}
 
 	public function get_shipping_method() {
-		if ( $this->order )	return $this->order->shipping_method;//htmlentities(
-		else false;
+		return $this->order ? $this->order->shipping_method : false;//htmlentities(
+	}
+
+	public function get_shipping_notice() {
+		return $this->order ? $this->order->shipping_notice : false;//htmlentities( 
 	}
 
 	public function get_status() {
-		if ( $this->order )	return $this->order->status;
-		else false;
+		return $this->order ? $this->order->status : false;
 	}
-	
+
 	public function see_other_costs() {
 		return $this->see_other_costs;
 	}
@@ -385,8 +392,7 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 	}
 
 	public function get_sku() {
-		if ( $this->detail ) return stripslashes( $this->detail->sku );
-		else return false;
+		return $this->detail ? '&nbsp;' . stripslashes( $this->detail->sku ) : false;
 	}
 
 	public function get_weight() {

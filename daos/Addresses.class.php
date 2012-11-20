@@ -137,7 +137,7 @@ class Addresses {
 				'custom_id'			=> isset( $address['custom_id'] ) ? $address['custom_id'] : 0,
 				'default_shipping'	=> $address['default_shipping'],
 				'default_billing'	=> $address['default_billing'],
-				'name'				=> $address['address_name'],
+				'name'				=> isset( $address['address_name'] ) ? $address['address_name'] : '',
 				'firstname'			=> $address['firstname'],
 				'lastname'			=> $address['lastname'],
 				'company'			=> $address['company'],

@@ -18,7 +18,7 @@
 
 class TCPUnderConstruction {
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
 		add_action( 'template_redirect', array( &$this, 'template_redirect' ) );
 	}
 

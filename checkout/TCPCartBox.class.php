@@ -55,10 +55,10 @@ class TCPCartBox extends TCPCheckoutBox {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		} ?>
 		<div id="cart_layer_info" class="checkout_info clearfix">
-			<?php $settings = get_option( 'tcp_' . get_class( $this ), array() ); ?>
-		 	<?php do_action( 'tcp_checkout_cart_before', $settings ); ?>
-			<?php $this->show_order_cart( $shipping_country, $settings ); ?>
-		 	<?php do_action( 'tcp_checkout_cart_after' ); ?>
+			<?php $settings = get_option( 'tcp_' . get_class( $this ), array() );
+		 	do_action( 'tcp_checkout_cart_before', $settings );
+			$this->show_order_cart( $shipping_country, $settings );
+		 	do_action( 'tcp_checkout_cart_after' ); ?>
 		 	<div class="tcp_go_to_shopping_cart">
 		 		<a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'Shopping Cart', 'tcp' ); ?></a>
 		 	</div><!-- .tcp_go_to_shopping_cart -->
@@ -184,7 +184,7 @@ class TCPCartBox extends TCPCheckoutBox {
 			$table_amount_without_tax += $line_price_without_tax;
 			$table_amount_with_tax += $line_price_with_tax; ?>
 			<tr class="tcp_cart_product_row<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
-				<?php $title = tcp_get_the_title( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id() );
+				<?php $title = tcp_get_the_title( tcp_get_current_id( $item->getPostId() ), tcp_get_current_id( $item->getOption1Id() ), tcp_get_current_id( $item->getOption2Id() ) );
 				$title = apply_filters( 'tcp_cart_box_title_item', $title, $item ); ?>
 				<td class="tcp_cart_name">
 					<?php echo $title; ?>

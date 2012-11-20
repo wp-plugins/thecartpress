@@ -70,6 +70,8 @@ class TCPStockManagement {
 				add_action( 'tcp_show_shopping_cart_summary_widget_params', array( &$this, 'tcp_show_shopping_cart_summary_widget_params' ) );
 
 				add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
+				add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
+
 				add_filter( 'tcp_apply_filters_for_saleables', array( &$this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
 				add_filter( 'tcp_custom_post_type_list_widget', array( &$this, 'tcp_apply_filters_for_saleables' ), 10, 2 );
 
@@ -77,10 +79,11 @@ class TCPStockManagement {
 				add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 				add_action( 'tcp_checkout_ok', array( &$this, 'tcp_checkout_ok' ) );
 				add_action( 'tcp_completed_ok_stockadjust', array( &$this, 'tcp_completed_ok_stockadjust' ) );
+
+				
 			}
 		}
-		add_action( 'tcp_main_settings_page', array( &$this, 'tcp_main_settings_page' ) );
-		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 	}
 
 	function tcp_order_edit_status_before( $order_id, $new_status, $transaction_id, $internal_comment ) {
@@ -132,7 +135,7 @@ class TCPStockManagement {
 			$stock = tcp_get_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id );
 			if ( $stock == -1 ) {
-				return $this->no_stock_enough;
+				return $no_stock_enough;
 			} elseif ( ! $decrement ) {  /* if here then we ADD the stock back to the */
 				tcp_set_the_stock( $ordersDetails->post_id, $ordersDetails->option_1_id, $ordersDetails->option_2_id, $stock + $ordersDetails->qty_ordered );
 			} elseif ( $stock >= $ordersDetails->qty_ordered ) {
@@ -158,8 +161,8 @@ class TCPStockManagement {
 		$stock_management		= $thecartpress->get_setting( 'stock_management', false );
 		$stock_adjustment		= $thecartpress->get_setting( 'stock_adjustment', 1 );  /* we set stock_adjustment to 1 because that is the TCP default before I started to add functionilty */
 		$stock_status_to_adjust	= $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
-		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 );
-		$hide_out_of_stock = $thecartpress->get_setting( 'hide_out_of_stock', false );  ?>
+		$stock_limit			= $thecartpress->get_setting( 'stock_limit', 10 );
+		$hide_out_of_stock		= $thecartpress->get_setting( 'hide_out_of_stock', false ); ?>
 <tr valign="top">
 	<th scope="row">
 	<label for="stock_management"><?php _e( 'Stock management', 'tcp' ); ?></label>
@@ -205,7 +208,7 @@ class TCPStockManagement {
 	<label for="hide_out_of_stock"><?php _e( 'Hide out of stock products', 'tcp' ); ?></label>
 	</th>
 	<td>
-		<input type="checkbox" id="hide_out_of_stock" name="hide_out_of_stock" value="yes" <?php checked( true, $hide_out_of_stock ); ?> />
+		<input type="checkbox" id="hide_out_of_stock" name="hide_out_of_stock" value="yes" <?php checked( $hide_out_of_stock ); ?> />
 		<span class="description"><?php _e( 'Allows to hide out of Stock products', 'tcp' ); ?></span>
 	</td>
 </tr>
@@ -234,11 +237,11 @@ function show_hide_stock_management() {
 	}
 
 	function tcp_main_settings_action( $settings ) {
-		$settings['stock_management']		= isset( $_POST['stock_management'] ) ? $_POST['stock_management'] == 'yes' : false;
+		$settings['stock_management']		= isset( $_POST['stock_management'] );// ? $_POST['stock_management'] == 'yes' : false;
 		$settings['stock_adjustment']		= isset( $_POST['stock_adjustment'] ) ? (int)$_POST['stock_adjustment'] : 1;
 		$settings['stock_status_to_adjust']	= isset( $_POST['stock_status_to_adjust'] ) ? $_POST['stock_status_to_adjust'] : Orders::$ORDER_COMPLETED;
 		$settings['stock_limit']			= isset( $_POST['stock_limit'] ) ? (int)$_POST['stock_limit'] : 10;
-		$settings['hide_out_of_stock']		= isset( $_POST['hide_out_of_stock'] ) ? $_POST['hide_out_of_stock'] == 'yes' : false;
+		$settings['hide_out_of_stock']		= isset( $_POST['hide_out_of_stock'] );
 		return $settings;
 	}
 
@@ -297,6 +300,11 @@ function show_hide_stock_management() {
 
 	function add_template_class() {
 		tcp_add_template_class( 'tcp_error_stock_when_pay', __( 'This notice will be showed when the client is going to pay and there is no stock of any product in the cart.', 'tcp') );
+	}
+
+	function admin_init() {
+		add_action( 'tcp_main_settings_page', array( &$this, 'tcp_main_settings_page' ) );
+		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
 	}
 
 	function tcp_product_metabox_custom_fields( $post_id ) {
@@ -564,8 +572,12 @@ function show_hide_stock_management() {
 	}
 
 	function tcp_the_add_to_cart_unit_field( $out, $post_id ) {
-		if ( tcp_get_the_stock( $post_id ) == 0 )
-			$out = '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
+		if ( tcp_get_the_stock( $post_id ) == 0 ) return '<span class="tcp_no_stock">' . __( 'No stock for this product', 'tcp' ) . '</span>';
+		return $out;
+	}
+
+	function tcp_the_add_to_cart_button( $out, $post_id ) {
+		if ( tcp_get_the_stock( $post_id ) == 0 ) return '';
 		return $out;
 	}
 

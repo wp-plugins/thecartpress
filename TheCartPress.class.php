@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.5.2
+Version: 1.2.6
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -26,6 +26,8 @@ Parent: thecartpress
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+define ( 'DONOTCACHEPAGE', 'TCP' );//WPSuperCache
 
 define( 'TCP_FOLDER'					, dirname( __FILE__ ) . '/' );
 define( 'TCP_ADMIN_FOLDER'				, TCP_FOLDER . 'admin/' );
@@ -55,60 +57,44 @@ class TheCartPress {
 
 	function __construct() {
 		$this->load_settings();
-		
-		require_once( TCP_TEMPLATES_FOLDER	. 'manage_templates.php' );
 		require_once( TCP_CLASSES_FOLDER	. 'ShoppingCart.class.php' );
 		require_once( TCP_CLASSES_FOLDER	. 'TCP_Plugin.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER	. 'tcp_checkout_template.php' );
-
-		add_action( 'init', array( $this, 'init' ), 9 );
-		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 11 );
-		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
-		if ( ! $disable_ecommerce ) {
-			//add_action( 'user_register', array( $this, 'user_register' ) );
-			if ( is_admin() ) {
-				register_activation_hook( __FILE__, array( $this, 'activate_plugin' ) );
-				register_deactivation_hook( __FILE__, array( $this, 'deactivate_plugin' ) );
-				add_action( 'admin_init', array( $this, 'admin_init' ) );
-				add_action( 'admin_notices', array( $this, 'admin_notices' ) ); //to check the plugin
-				require_once( TCP_METABOXES_FOLDER . 'manage_metaboxes.php' );
-			}
-			add_filter( 'the_content', array( $this, 'the_content' ) );
-			add_filter( 'the_content', array( $this, 'the_excerpt' ) );
-			add_filter( 'request', array( $this, 'request' ) );
-			add_filter( 'posts_request', array( $this, 'posts_request' ) );
-			add_filter( 'get_pagenum_link', array( $this, 'get_pagenum_link' ) );
-			//add_filter( 'login_form_bottom', array( $this, 'login_form_bottom' ) );
-			add_shortcode( 'tcp_buy_button', array( $this, 'shortCodeBuyButton' ) );
-			add_shortcode( 'tcp_price', array( $this, 'shortCodePrice' ) );
-			require_once( TCP_SHORTCODES_FOLDER	. 'ShoppingCartPage.class.php' );
-			require_once( TCP_CHECKOUT_FOLDER	. 'ActiveCheckout.class.php' );
-			add_filter( 'tcp_get_saleable_post_types', array( $this, 'tcp_get_saleable_post_types' ) );
-		}
-		if ( is_admin() ) {
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			require_once( TCP_SETTINGS_FOLDER . 'manage_settings.php' );
-			require_once( TCP_APPEARANCE_FOLDER . 'manage_appearance.php' );
-		}
-		require_once( TCP_APPEARANCE_FOLDER . 'LoopSettings.class.php' );
-		require_once( TCP_SHORTCODES_FOLDER . 'Shortcode.class.php' );
-		add_action( 'shutdown', array( $this, 'shutdown' ) );
+		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'init', array( &$this, 'last_init' ), 999 );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'after_setup_theme', array( &$this, 'after_setup_theme' ), 11 );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'shutdown', array( &$this, 'shutdown' ) );
+		register_activation_hook( __FILE__, array( &$this, 'activate_plugin' ) );
+		register_deactivation_hook( __FILE__, array( &$this, 'deactivate_plugin' ) );
+		require_once( TCP_SHORTCODES_FOLDER . 'manage_shortcodes.php' );
+		require_once( TCP_WIDGETS_FOLDER . 'manage_widgets.php' );
+		require_once( TCP_CLASSES_FOLDER . 'DownloadableProducts.class.php' );
+		require_once( TCP_CLASSES_FOLDER . 'CountrySelection.class.php' );
+		$this->loading_default_checkout_plugins();
 	}
 
 	function init() {
+		require_once( TCP_SETTINGS_FOLDER . 'manage_settings.php' );
+		require_once( TCP_APPEARANCE_FOLDER . 'manage_appearance.php' );
+		require_once( TCP_METABOXES_FOLDER . 'manage_metaboxes.php' );
 		if ( ! session_id() ) session_start();
 		if ( function_exists( 'load_plugin_textdomain' ) ) load_plugin_textdomain( 'tcp', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		wp_register_script( 'tcp_scripts', plugins_url( 'thecartpress/js/tcp_admin_scripts.js' ) );
-		if ( is_admin() ) {
-			wp_enqueue_script( 'jquery-ui-core' );
-			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'tcp_scripts' );
-			wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
-		} else {
-			wp_enqueue_script( 'jquery' );
+		//add_action( 'user_register', array( $this, 'user_register' ) );
+		wp_enqueue_script( 'jquery' );
+		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
+		if ( ! $disable_ecommerce ) {
+			add_filter( 'the_content', array( &$this, 'the_content' ) );
+			add_filter( 'the_content', array( &$this, 'the_excerpt' ) );
+			add_filter( 'request', array( &$this, 'request' ) );
+			add_filter( 'posts_request', array( &$this, 'posts_request' ) );
+			add_filter( 'get_pagenum_link', array( &$this, 'get_pagenum_link' ) );
+			require_once( TCP_CHECKOUT_FOLDER	. 'ActiveCheckout.class.php' );
+			add_filter( 'tcp_get_saleable_post_types', array( &$this, 'tcp_get_saleable_post_types' ) );
 		}
 		$this->load_custom_post_types_and_custom_taxonomies();
-		$this->check_for_shopping_cart_actions();
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
 			if ( $this->get_setting( 'load_default_buy_button_style', true ) ) wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'thecartpress/css/tcp_buy_button.css' ) );
@@ -117,10 +103,32 @@ class TheCartPress {
 			if ( $this->get_setting( 'responsive_featured_thumbnails', true ) ) wp_enqueue_style( 'tcp_responsive_style', plugins_url( 'thecartpress/css/tcp_responsive.css' ) );
 			new TemplateCustomPostType();
 			$this->loading_default_checkout_boxes();
-			$this->loading_default_checkout_plugins();
 			//feed: http://<site>/?feed=tcp-products
 		}
 		$this->update_version();
+	}
+
+	function last_init() {
+		$this->check_for_shopping_cart_actions();
+	}
+
+	function admin_init() {
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'tcp_scripts' );
+		wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
+		$disable_ecommerce = $this->get_setting( 'disable_ecommerce', false );
+		if ( ! $disable_ecommerce ) {
+			add_action( 'admin_notices', array( &$this, 'admin_notices' ) ); //to check the plugin
+			add_action( 'wp_ajax_tcp_checkout_steps_save', array( &$this, 'tcp_checkout_steps_save' ) );
+			//default notices
+			tcp_add_template_class( 'tcp_checkout_email', __( 'This notice will be added in the email to the customer when the Checkout process ends', 'tcp' )  );
+			tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process', 'tcp' ) );
+			tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right', 'tcp' ) );
+			tcp_add_template_class( 'tcp_checkout_end_ko', __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
+			tcp_add_template_class( 'tcp_shopping_cart_empty', __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
+			tcp_add_template_class( 'tcp_checkout_order_cart', __( 'This notice will be showed at the Checkout Resume Cart', 'tcp' ) );
+		}
 	}
 
 	function update_version() {
@@ -223,7 +231,13 @@ class TheCartPress {
 
 	static function getShoppingCart() {
 		if ( ! session_id() ) session_start();
-		if ( TheCartPress::$tcp_shoppingCart !== false ) return TheCartPress::$tcp_shoppingCart;
+		if ( TheCartPress::$tcp_shoppingCart !== false ) {
+			if ( isset( $_SESSION['tcp_session_refresh'] ) ) {
+				TheCartPress::$tcp_shoppingCart->refresh();
+				unset( $_SESSION['tcp_session_refresh'] );
+			}
+			return TheCartPress::$tcp_shoppingCart;
+		}
 		
 		if ( isset( $_SESSION['tcp_session'] ) ) {
 			if ( is_string( $_SESSION['tcp_session'] ) ) TheCartPress::$tcp_shoppingCart = unserialize( $_SESSION['tcp_session'] );
@@ -232,6 +246,10 @@ class TheCartPress {
 		if ( TheCartPress::$tcp_shoppingCart === false ) {
 			TheCartPress::$tcp_shoppingCart = new ShoppingCart();
 			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
+		}
+		if ( isset( $_SESSION['tcp_session_refresh'] ) ) {
+			TheCartPress::$tcp_shoppingCart->refresh();
+			unset( $_SESSION['tcp_session_refresh'] );
 		}
 		return TheCartPress::$tcp_shoppingCart;
 	}
@@ -246,6 +264,12 @@ class TheCartPress {
 			$_SESSION['tcp_session'] = serialize( TheCartPress::$tcp_shoppingCart );
 		}
 	}
+
+	static function refreshShoppingCart( $refresh = true ) {
+		if ( ! session_id() ) session_start();
+		if ( $refresh ) $_SESSION['tcp_session_refresh'] = $refresh;
+		else unset( $_SESSION['tcp_session_refresh'] );
+	}	
 
 	function shutdown() {
 		TheCartPress::saveShoppingCart();
@@ -396,27 +420,10 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		return $input;
 	}
 
-//	function login_form_bottom( $content ) {
-//		return '<p class="login-lostpassword"><a href="'. wp_lostpassword_url( get_permalink() ) . '" title="' . __( 'Lost Password', 'tcp' ) . '">' . __( 'Lost Password', 'tcp' ) . '</a></p>';
-//	}
-
-	function shortCodeBuyButton( $atts ) {
-		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
-		return tcp_get_the_buy_button( $post_id );
-	}
-
-	function shortCodePrice( $atts ) {
-		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
-		return tcp_get_the_price_label( $post_id );
-	}
-
-	/**
-	 * Runs when a user is registered (or created) before email
-	 */
-	function user_register( $user_id ) {
+	/*function user_register( $user_id ) {
 		$user = new WP_User( $user_id );
 		$user->set_role( 'customer' );
-	}
+	}*/
 
 	function get_base() {
 		$base = TCP_ADMIN_FOLDER . 'OrdersListTable.php';
@@ -445,10 +452,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			if ( ! $this->get_setting( 'hide_downloadable_menu' ) ) add_submenu_page( $base, __( 'My Downloads', 'tcp' ), __( 'My Downloads', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'DownloadableList.php' );
 			add_submenu_page( $base, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_addresses', TCP_ADMIN_FOLDER . 'AddressesList.php' );
 			add_submenu_page( $base, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', TCP_ADMIN_FOLDER . 'TaxesList.php' );
-			if ( ! $disable_ecommerce ) {
-				add_submenu_page( $base, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'RelatedCats.php' );
-				add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
-			}
+			add_submenu_page( $base, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'RelatedCats.php' );
+			add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
 			add_submenu_page( 'tcpml', __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'OrderEdit.php' );
 			add_submenu_page( 'tcpml', __( 'list of Assigned products', 'tcp' ), __( 'list of Assigned products', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedProductsList.php' );
 			add_submenu_page( 'tcpml', __( 'list of Assigned categories', 'tcp' ), __( 'list of Assigned categories', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedCategoriesList.php' );
@@ -506,8 +511,10 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$html = apply_filters( 'tcp_filter_content', $html, $post->ID );
 			if ( $align_buy_button_in_content == 'north' ) {
 				return $html . do_shortcode( $content );
-			} else {
+			} elseif ( $align_buy_button_in_content == 'south' ) {
 				return do_shortcode( $content ) . $html;
+			} else {
+				return $html . do_shortcode( $content ) . $html;
 			}
 		}
 		return $content;
@@ -522,10 +529,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			$see_buy_button_in_excerpt	= $this->get_setting( 'see_buy_button_in_excerpt' );
 			$align_buy_button_in_excerpt= $this->get_setting( 'align_buy_button_in_excerpt', 'north' );
 			$see_price_in_excerpt		= $this->get_setting( 'see_price_in_excerpt', true );
-			if ( ! function_exists( 'has_post_thumbnail' ) )
-				$see_image_in_excerpt = false;
-			else
-				$see_image_in_excerpt = $this->get_setting( 'see_image_in_excerpt' );
+			if ( ! function_exists( 'has_post_thumbnail' ) ) $see_image_in_excerpt = false;
+			else $see_image_in_excerpt = $this->get_setting( 'see_image_in_excerpt' );
 			$html = '';
 			if ( $see_buy_button_in_excerpt ) {
 				$html .= tcp_the_buy_button( $post->ID, false );
@@ -541,11 +546,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			    //$image_attributes = array{0 => url, 1 => width, 2 => height};
 				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, $image_size );
 				if ( strlen( $image_link ) > 0 ) {
-					if ( $image_link == 'file' ) {
-						$href = $image_attributes[0];
-					} else {
-						$href = get_permalink( $thumbnail_id );
-					}
+					if ( $image_link == 'file' ) $href = $image_attributes[0];
+					else $href = get_permalink( $thumbnail_id );
 					$image	= '<a href="' . $href . '">' . get_the_post_thumbnail( $post->ID, $image_size, $attr ) . '</a>';
 				} else {
 					$image = get_the_post_thumbnail( $post->ID, $image_size, $attr );
@@ -561,10 +563,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 				$content = $image . $content;//$html .= $image;
 			}
 			$html = apply_filters( 'tcp_filter_excerpt', $html, $post->ID );
-			if ( $align_buy_button_in_excerpt == 'north' )
-				return do_shortcode( $html . $content );
-			else
-				return do_shortcode( $content . $html );
+			if ( $align_buy_button_in_excerpt == 'north' ) return do_shortcode( $html . $content );
+			else return do_shortcode( $content . $html );
 		}
 		return $content;
 	}
@@ -577,9 +577,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function loading_default_checkout_boxes() {
-		if ( is_admin() ) {
-			add_action( 'wp_ajax_tcp_checkout_steps_save', array( &$this, 'tcp_checkout_steps_save' ) );
-		}
 		tcp_register_checkout_box( 'thecartpress/checkout/TCPBillingExBox.class.php', 'TCPBillingExBox' );
 		tcp_register_checkout_box( 'thecartpress/checkout/TCPBillingBox.class.php', 'TCPBillingBox' );
 		tcp_register_checkout_box( 'thecartpress/checkout/TCPShippingBox.class.php', 'TCPShippingBox' );
@@ -613,6 +610,8 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		tcp_register_payment_plugin( 'TCPCardOffLine' );
 		require_once( TCP_PLUGINS_FOLDER .'authorize.net/TCPAuthorizeNet.class.php' );
 		tcp_register_payment_plugin( 'TCPAuthorizeNet' );
+		require_once( TCP_PLUGINS_FOLDER .'FreeProducts.class.php' );
+		tcp_register_payment_plugin( 'TCPFreeProducts' );
 	}
 
 	function activate_plugin() {
@@ -620,9 +619,7 @@ echo '<br>RES=', count( $res ), '<br>';*/
 		unset( $_SESSION['tcp_session'] );
 		update_option( 'tcp_rewrite_rules', true );
 		global $wp_version;
-		if ( version_compare( $wp_version, '3.0', '<' ) ) {
-			exit( __( 'TheCartPress requires WordPress version 3.0 or newer.', 'tcp' ) );
-		}
+		if ( version_compare( $wp_version, '3.0', '<' ) ) exit( __( 'TheCartPress requires WordPress version 3.0 or newer.', 'tcp' ) );
 		require_once( TCP_CLASSES_FOLDER . 'Roles.class.php' );
 		require_once( TCP_DAOS_FOLDER . 'manage_daos.php' );
 		//Shopping Cart page
@@ -807,23 +804,14 @@ echo '<br>RES=', count( $res ), '<br>';*/
 	}
 
 	function deactivate_plugin() {
-		$id = get_option( 'tcp_shopping_cart_page_id' );
-		wp_delete_post( $id );
-		$id = get_option( 'tcp_checkout_page_id' );
-		wp_delete_post( $id );
-		$id = get_option( 'tcp_catalogue_page_id' );
-		wp_delete_post( $id );
+		wp_delete_post( get_option( 'tcp_shopping_cart_page_id' ) );
+		wp_delete_post( get_option( 'tcp_checkout_page_id' ) );
+		wp_delete_post( get_option( 'tcp_catalogue_page_id' ) );
 		remove_role( 'customer' );
 		remove_role( 'merchant' );
-	}
-
-	function admin_init() { //default notices
-		tcp_add_template_class( 'tcp_checkout_email', __( 'This notice will be added in the email to the customer when the Checkout process ends', 'tcp' )  );
-		tcp_add_template_class( 'tcp_checkout_notice', __( 'This notice will be showed in the Checkout Notice Box into the checkout process', 'tcp' ) );
-		tcp_add_template_class( 'tcp_checkout_end', __( 'This notice will be showed if the checkout process ends right', 'tcp' ) );
-		tcp_add_template_class( 'tcp_checkout_end_ko', __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );
-		tcp_add_template_class( 'tcp_shopping_cart_empty', __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
-		tcp_add_template_class( 'tcp_checkout_order_cart', __( 'This notice will be showed at the Checkout Resume Cart', 'tcp' ) );
+		//tcp_delete_custom_post_type( TCP_PRODUCT_POST_TYPE );
+		//tcp_delete_custom_taxonomy( TCP_PRODUCT_CATEGORY );
+		//tcp_delete_custom_taxonomy( TCP_PRODUCT_TAG );
 	}
 
 	function load_settings() {
@@ -898,8 +886,6 @@ echo '<br>RES=', count( $res ), '<br>';*/
 			}
 		}
 		if ( get_option( 'tcp_rewrite_rules', false ) ) {
-			//global $wp_rewrite;
-			//$wp_rewrite->flush_rules();
 			flush_rewrite_rules();
 			update_option( 'tcp_rewrite_rules', false );
 		}
@@ -919,17 +905,13 @@ echo '<br>RES=', count( $res ), '<br>';*/
 }
 
 //require_once( TCP_MODULES_FOLDER . 'Miranda.class.php' );
+require_once( TCP_TEMPLATES_FOLDER	. 'manage_templates.php' );
 
 $thecartpress = new TheCartPress();
 
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
-
-require_once( TCP_WIDGETS_FOLDER . 'manage_widgets.php' );
 require_once( TCP_MODULES_FOLDER . 'manage_modules.php' );
-
-require_once( TCP_CLASSES_FOLDER . 'DownloadableProducts.class.php' );
-require_once( TCP_CLASSES_FOLDER . 'CountrySelection.class.php' );
 
 //add_action( 'all', create_function( '', 'echo \'<!-- TODO: \', current_filter(), \' -->\';' ) );
 ?>

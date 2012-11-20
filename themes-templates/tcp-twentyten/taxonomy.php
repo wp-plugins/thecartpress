@@ -8,10 +8,8 @@
  */
 
 get_header(); ?>
-
 		<div id="container">
 			<div id="content" role="main">
-
 				<h1 class="page-title"><?php
 					printf( __( 'Category Archives: %s', 'twentyten' ), '<span>' . single_cat_title( '', false ) . '</span>' );
 				?></h1>
@@ -24,12 +22,8 @@ get_header(); ?>
 				 * If you want to overload this in a child theme then include a file
 				 * called loop-category.php and that will be used instead.
 				 */
-				//get_template_part( 'loop', 'tcp-grid' );
-				require_once( dirname( __FILE__ ) . '/loop-tcp-grid.php' );
-				?>
-
+				tcp_get_template_part( dirname( __FILE__ ), 'loop', 'tcp-grid' ); ?>
 			</div><!-- #content -->
 		</div><!-- #container -->
-
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

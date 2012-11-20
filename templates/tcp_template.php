@@ -74,10 +74,8 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 
 function tcp_the_title( $echo = true, $html = true ) {
 	$title = tcp_get_the_title();
-	if ( $echo )
-		echo $title;
-	else
-		return $title;
+	if ( $echo ) echo $title;
+	else return $title;
 }
 
 function tcp_get_the_currency() {
@@ -192,6 +190,7 @@ function tcp_get_the_price( $post_id = 0, $filters = true ) {
 /**
  * Returns the real price for given product.
  * This functions differs for 'tcp_get_the_price' that it returns the calculated price, not only the price saved in price field
+ * It's useful to get the price of a product + dynamic option in tha front-end
  * @since 1.2.5
  */
 function tcp_get_the_product_price( $post_id = 0 ) {
@@ -398,7 +397,7 @@ function tcp_get_the_tax_id( $post_id = 0 ) {
  * @since 1.0.9
  */
 function tcp_get_the_tax_type( $post_id = 0 ) {
-	$tax_id = tcp_get_the_meta( 'tcp_tax_id', $post_id );
+	$tax_id = tcp_get_the_tax_id( $post_id );
 	if ( ! $tax_id ) {
 		return '';
 	} else {
@@ -509,7 +508,7 @@ function tcp_get_the_shipping_cost_without_tax( $cost ) {
  */
 function tcp_get_the_shipping_tax() {
 	$tax_id = tcp_get_the_shipping_tax_id();
-	if ( $tax_id == 0 ) return 0;
+	if ( $tax_id == 0 ) return apply_filters( 'tcp_get_the_shipping_tax', 0 );
 	$country_iso = tcp_get_tax_country();
 	$region_iso = tcp_get_tax_region();
 	require_once( TCP_DAOS_FOLDER . 'TaxRates.class.php' );
@@ -627,9 +626,10 @@ function tcp_get_the_order( $post_id = 0 ) {
 }
 
 function tcp_the_sku( $before = '', $after = '', $echo = true ) {
-	$sku = tcp_the_meta( 'tcp_sku', $before, $after, false );
-	if ( $echo ) echo $sku;
-	else return $sku;
+	//$sku = tcp_the_meta( 'tcp_sku', $before, $after, false );
+	$sku = tcp_get_the_sku( get_the_ID() );
+	if ( $echo ) echo $before . $sku . $after;
+	else return $before . $sku . $after;
 }
 
 function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
@@ -838,22 +838,46 @@ function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
  * @since 1.2.5
  */
 function tcp_get_current_user_role() {
-	global $wp_roles;
-	$current_user = wp_get_current_user();
-	$roles = $current_user->roles;
+	$roles = tcp_get_current_user_roles();
 	$role = array_shift( $roles );
-	return $role; //isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
+	return $role;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_current_user_roles() {
+	$current_user = wp_get_current_user();
+	return $current_user->roles;
 }
 
 /**
  * @since 1.2.5
  */
 function tcp_get_current_user_role_title() {
-	global $wp_roles;
-	$current_user = wp_get_current_user();
-	$roles = $current_user->roles;
-	$role = array_shift( $roles );
+	$role = tcp_get_current_user_role();
 	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_user_roles( $user_id = false, $only_first = false ) {
+	if ( $user_id === false ) return tcp_get_current_user_roles();
+	$user = new WP_User( $user_id );
+	if ( ! empty( $user->roles ) && is_array( $user->roles ) ) {
+		if ( $only_first ) return $user->roles[0];
+		else return $user->roles;
+	}
+	return false;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_user_role( $user_id = false ) {
+	if ( $user_id === false ) return tcp_get_current_user_role();
+	return tcp_get_user_roles( $user_id, true );
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
@@ -1018,6 +1042,17 @@ function tcp_is_greather_status( $status_1, $status_2 ) {
 		elseif ( $id == $status_2 ) return false;
 	return false;
 }
+
+/**
+ * Returns status label
+ * @since 1.2.6
+ */
+function tcp_get_status_label( $status ) {
+	$status_list = tcp_get_order_status();
+	foreach( $status_list as $item )
+		if ( $item['name'] == $status )
+			return $item['label'];
+}
 //
 // End Order status functions templates
 //
@@ -1061,7 +1096,7 @@ function tcp_get_current_term() {
  * Selected in a multiple select control
  */
 function tcp_selected_multiple( $values, $value, $echo = true ) {
-	if ( ! is_array( $values ) ) return false;
+	if ( ! is_array( $values ) ) $values = array( $values );
 	if ( in_array( $value, $values ) )
 		if ( $echo )
 			echo ' selected="true"';
@@ -1073,11 +1108,10 @@ function tcp_selected_multiple( $values, $value, $echo = true ) {
  * Checked in a multiple select control
  */
 function tcp_checked_multiple( $values, $value, $echo = true ) {
-	if ( in_array( $value, $values ) )
-		if ( $echo )
-			echo ' checked="true"';
-		else
-			return ' checked="true"';
+	if ( is_array( $values ) && count( $values ) > 0 && in_array( $value, $values ) ) {
+		if ( $echo ) echo ' checked="true"';
+		else return ' checked="true"';
+	}
 }
 
 /**
@@ -1216,5 +1250,16 @@ function tcp_redirect_302( $url ) {
 	header( 'HTTP/1.1 302 Temporary Redirect' );
 	header( 'Location:' . $url );
 	exit();
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_template_part( $path, $slug, $name = '' ) {
+	$template = $path . '/' . $slug;
+	$template .= ( $name != '' ) ? '-' . $name : '';
+	$template .= '.php';
+	if ( file_exists( $template ) ) require_once( $template );
+	else get_template_part( $slug, $name );
 }
 ?>

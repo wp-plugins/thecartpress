@@ -288,13 +288,13 @@ class TCPShippingBox extends TCPCheckoutBox {
 			}?>
 				<ul>
 					<li>
-						<label for="shipping_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
+						<label for="shipping_firstname"><?php _e( 'First name', 'tcp' );?>:<em>*</em></label>
 						<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
 						<?php $this->showErrorMsg( 'shipping_firstname' );?>
 					</li>
 
 					<li>
-						<label for="shipping_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
+						<label for="shipping_lastname"><?php _e( 'Last name', 'tcp' );?>:<em>*</em></label>
 						<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
 						<?php $this->showErrorMsg( 'shipping_lastname' );?>
 					</li>
@@ -383,7 +383,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 						<?php $this->showErrorMsg( 'shipping_fax' );?>
 					</li>
 					<li>
-						<label for="shipping_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
+						<label for="shipping_email"><?php _e( 'Email', 'tcp' );?>:<em>*</em></label>
 						<input type="email" id="shipping_email" name="shipping_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_email' );?>
 					</li>

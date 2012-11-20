@@ -155,14 +155,14 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_main_settings' );
 		$settings = get_option( 'tcp_settings' );
-		$settings['disable_ecommerce']		= isset( $_POST['disable_ecommerce'] ) ? $_POST['disable_ecommerce'] == 'yes' : false;
+		$settings['disable_ecommerce']		= isset( $_POST['disable_ecommerce'] );// ? $_POST['disable_ecommerce'] == 'yes' : false;
 		if ( $settings['disable_ecommerce'] ) $settings['disable_shopping_cart'] = true;
-		else $settings['disable_shopping_cart']	= isset( $_POST['disable_shopping_cart'] ) ? $_POST['disable_shopping_cart'] == 'yes' : false;
+		else $settings['disable_shopping_cart']	= isset( $_POST['disable_shopping_cart'] );// ? $_POST['disable_shopping_cart'] == 'yes' : false;
 		$settings['continue_url']			= isset( $_POST['continue_url'] ) ? wp_filter_nohtml_kses( $_POST['continue_url'] ) : '';
 		$settings['after_add_to_cart']		= isset( $_POST['after_add_to_cart'] ) ? $_POST['after_add_to_cart'] : '';
-		$settings['hide_downloadable_menu']	= isset( $_POST['hide_downloadable_menu'] ) ? $_POST['hide_downloadable_menu'] == 'yes' : false;
+		$settings['hide_downloadable_menu']	= isset( $_POST['hide_downloadable_menu'] );// ? $_POST['hide_downloadable_menu'] == 'yes' : false;
 		$settings['downloadable_path']		= isset( $_POST['downloadable_path'] ) ? wp_filter_nohtml_kses( $_POST['downloadable_path'] ) : '';
-		$settings['hide_visibles']			= isset( $_POST['hide_visibles'] ) ? $_POST['hide_visibles'] == 'yes' : false;
+		$settings['hide_visibles']			= isset( $_POST['hide_visibles'] );// ? $_POST['hide_visibles'] == 'yes' : false;
 		$settings = apply_filters( 'tcp_main_settings_action', $settings );
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;

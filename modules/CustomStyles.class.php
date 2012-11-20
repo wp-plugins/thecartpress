@@ -40,7 +40,7 @@ class TCPCustomStyles {
 
 	function wp_head() {
 		if ( ! get_option( 'tcp_custom_style_activate', false ) ) return;
-		$custom_styles = get_option( 'tcp_custom_style', '' );
+		$custom_styles = stripslashes( get_option( 'tcp_custom_style', '' ) );
 		if ( strlen( $custom_styles ) > 0 ) : ?>
 <style type="text/css">
 	<?php echo $custom_styles; ?>
@@ -90,7 +90,7 @@ class TCPCustomStyles {
 <label for="tcp_custom_style_activate"><input type="checkbox" name="tcp_custom_style_activate" id="tcp_custom_style_activate" value="yes" <?php checked( $tcp_custom_style_activate ); ?>/>&nbsp;<?php _e( 'Activate next Styles', 'tcp' ); ?></label>
 <br/>
 <textarea name="tcp_custom_style" id="tcp_custom_style" cols="60" rows="30">
-<?php echo get_option( 'tcp_custom_style', '' ); ?>
+<?php echo stripslashes( get_option( 'tcp_custom_style', '' ) ); ?>
 </textarea>
 
 <?php $templates = tcp_get_custom_templates(); ?>

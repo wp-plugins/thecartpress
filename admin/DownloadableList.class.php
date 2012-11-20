@@ -59,7 +59,7 @@ if ( is_array( $orders ) && count( $orders ) > 0 ) {
 		$url = add_query_arg( 'order_detail_id', $order->order_detail_id, $url ); ?>
 		<tr>
 		<td class="tcp_title">
-			<a href="#" onclick="tcp_refresh('<?php echo $url; ?>');return false;" title="<?php _e( 'download the product', 'tcp' );?>"><?php echo get_the_post_thumbnail( $order->post_id );?></a>
+			<a href="#" onclick="tcp_refresh('<?php echo $url; ?>');return false;" title="<?php _e( 'download the product', 'tcp' );?>"><?php echo get_the_post_thumbnail( $order->post_id, 'thumbnail' );?></a>
 			<a href="#" onclick="tcp_refresh('<?php echo $url; ?>');return false;" title="<?php _e( 'download the product', 'tcp' );?>"><?php echo get_the_title( $order->post_id );?></a>
 		</td>
 		<td class="tcp_expires">

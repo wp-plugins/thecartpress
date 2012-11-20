@@ -19,12 +19,11 @@
 class TCPDownloadableProducts {
 
 	function __construct() {
-		if ( is_admin() ) {
-			//add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
-			add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
-		}
+		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+	}
+
+	function init() {
 		add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
 		add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
 		add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 1, 2 );
@@ -33,6 +32,14 @@ class TCPDownloadableProducts {
 		add_filter( 'tcp_shopping_cart_page_units', array( &$this, 'tcp_shopping_cart_page_units' ), 10, 2 );
 		add_filter( 'tcp_send_order_mail_to_customer_message', array( &$this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
 		add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		add_action( 'tcp_checkout_ok_footer', array( &$this, 'tcp_checkout_ok_footer' ) );
+	}
+
+	function admin_init() {
+		add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
+		add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+		add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+		add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
 	}
 
 	function tcp_the_add_to_cart_unit_field( $out, $post_id ) {
@@ -40,7 +47,7 @@ class TCPDownloadableProducts {
 			//require_once( TCP_CLASSES_FOLDER . 'MP3Player.class.php' );
 			//$out = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false ); //DEPRECATED
 			global $tcp_jplayer;
-			$out = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
+			if ( $tcp_jplayer ) $out = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
 			$out .= '<input type="hidden" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" />';
 		}
 		return $out;
@@ -68,45 +75,45 @@ class TCPDownloadableProducts {
 		return $out;
 	}
 
-	/*function tcp_product_metabox_toolbar( $post_id ) {
+	function tcp_product_metabox_toolbar( $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) : ?>
 			<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'file upload', 'tcp' ); ?></a></li>
 			<!--<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>FilesList.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'files', 'tcp' ); ?></a></li>-->
 		<?php endif;
-	}*/
+	}
 
 	function tcp_product_metabox_custom_fields( $post_id ) { ?>
 		<tr valign="top">
-		<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
-				<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ): ?>checked <?php endif; ?> 
-				onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
-				<?php $current_user = wp_get_current_user();
-				if ( tcp_is_downloadable( $post_id ) && user_can( $current_user->ID, 'tcp_edit_orders' ) ) : ?>
-					<span class="description"><?php _e( 'File','tcp' );?>:<?php echo tcp_get_the_file( $post_id );?></span>
-					&nbsp;<a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php _e( 'file upload', 'tcp' ); ?></a></li>
-				<?php endif;?>
-				</td>
-			</tr>
-			<?php
-			if ( tcp_is_downloadable( $post_id ) )
-				$style = '';
-			else
-				$style = 'style="display:none;"';
-			?>
-			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
-				<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
-				<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
-				<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
-				</td>
-			</tr>
-			<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
-				<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
-				<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
-				<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
-				</td>
-			</tr>
+			<th scope="row"><label for="tcp_is_downloadable"><?php _e( 'Is downloadable', 'tcp' );?>:</label></th>
+			<td><input type="checkbox" name="tcp_is_downloadable" id="tcp_is_downloadable" value="yes" <?php if ( get_post_meta( $post_id, 'tcp_is_downloadable', true ) ): ?>checked <?php endif; ?> 
+			onclick="if (this.checked) jQuery('.tcp_is_downloadable').show(); else jQuery('.tcp_is_downloadable').hide();"/>
+			<?php $current_user = wp_get_current_user();
+			if ( tcp_is_downloadable( $post_id ) ) : ?>
+				<span class="description"><?php _e( 'File','tcp' );?>:<?php echo tcp_get_the_file( $post_id );?></span>
+				&nbsp;<a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php _e( 'file upload', 'tcp' ); ?></a></li>	
+			<?php endif;?>
+			</td>
+		</tr>
+		<?php
+		if ( tcp_is_downloadable( $post_id ) )
+			$style = '';
+		else
+			$style = 'style="display:none;"';
+		?>
+		<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
+			<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
+			<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
+			<span class="description"><?php _e( 'If you don\'t want to set a number of maximun downloads, set this value to -1.', 'tcp' );?></span>
+			</td>
+		</tr>
+		<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
+			<th scope="row"><label for="tcp_days_to_expire"><?php _e( 'Days to expire', 'tcp' );?>:</label></th>
+			<td><input name="tcp_days_to_expire" id="tcp_days_to_expire" value="<?php echo (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
+			<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
+			</td>
+		</tr>
 	<?php }	
 
 	function tcp_product_metabox_save_custom_fields( $post_id ) {
@@ -175,6 +182,12 @@ class TCPDownloadableProducts {
 			}
 		}
 	}
+
+	function tcp_checkout_ok_footer( $shoppingCart ) {
+		if ( $shoppingCart->hasDownloadable() ) {
+			printf( __( 'Please, to download products visit <a href="%s">My Downloads</a> page (login required).', 'tcp' ), tcp_get_download_area_url() );
+		}
+	}			
 }
 
 new TCPDownloadableProducts();
@@ -188,5 +201,10 @@ function tcp_create_download_uuid( $order_detail_id ) {
 
 function tcp_get_download_uuid( $order_detail_id ) {
 	return tcp_get_order_detail_meta( $order_detail_id, 'tcp_download_uuid', true );
+}
+
+function tcp_get_download_area_url() {
+	$url = home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' );
+	return apply_filters( 'tcp_get_download_area_url', $url );
 }
 ?>

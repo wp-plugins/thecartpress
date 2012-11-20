@@ -434,12 +434,12 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			}?>
 				<ul>
 					<li>
-						<label for="billing_firstname"><?php _e( 'Firstname', 'tcp' );?>:<em>*</em></label>
+						<label for="billing_firstname"><?php _e( 'First name', 'tcp' );?>:<em>*</em></label>
 						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
 						<?php $this->showErrorMsg( 'billing_firstname' );?>
 					</li>
 					<li>
-						<label for="billing_lastname"><?php _e( 'Lastname', 'tcp' );?>:<em>*</em></label>
+						<label for="billing_lastname"><?php _e( 'Last name', 'tcp' );?>:<em>*</em></label>
 						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
 						<?php $this->showErrorMsg( 'billing_lastname' );?>
 					</li>
@@ -545,7 +545,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					</li>
 				<?php endif;?>
 					<li>
-						<label for="billing_email"><?php _e( 'eMail', 'tcp' );?>:<em>*</em></label>
+						<label for="billing_email"><?php _e( 'Email', 'tcp' );?>:<em>*</em></label>
 						<input type="email" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_email' );?>
 					</li>

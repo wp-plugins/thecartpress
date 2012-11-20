@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of TheCartPress.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( 'tcp_buybutton_template.php' );
-require_once( 'tcp_calendar_template.php' );
-require_once( 'tcp_custom_taxonomies.php' );
+class TCPBuyButtonShortcode {
 
-require_once( 'tcp_general_template.php' );
-require_once( 'tcp_ordersmeta_template.php' );
-require_once( 'tcp_states_template.php' );
-require_once( 'tcp_template.php' );
-require_once( 'tcp_template_template.php' );
-require_once( 'tcp_template_login.php' );
+	function __construct() {
+		add_shortcode( 'tcp_buy_button', array( &$this, 'tcp_buy_button' ) );
+	}
 
-require_once( TCP_CHECKOUT_FOLDER	. 'tcp_checkout_template.php' );
+	function tcp_buy_button( $atts ) {
+		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
+		return tcp_get_the_buy_button( $post_id );
+	}
+}
+
+new TCPBuyButtonShortcode();
 ?>

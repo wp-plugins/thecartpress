@@ -19,14 +19,15 @@
 class TCPBuyButton {
 
 	function __construct() {
-		if ( is_admin() ) {
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
-			add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
-			add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
-		} else {
-			add_filter( 'tcp_get_buybutton_template', array( &$this, 'tcp_get_buybutton_template' ), 10, 2 );
-		}
+		add_action( 'admin_menu', array( $this, 'admin_menu' ), 90 );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_filter( 'tcp_get_buybutton_template', array( &$this, 'tcp_get_buybutton_template' ), 10, 2 );
+	}
+
+	function admin_init() {
+		add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
+		add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
+		add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
 	}
 
 	static function show( $post_id = 0, $echo = true  ) {

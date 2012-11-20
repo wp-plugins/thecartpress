@@ -38,7 +38,7 @@ class Orders {
 		  `customer_id`				bigint(20) unsigned NOT NULL,
   		  `ip`						varchar(20)			NOT NULL,
 		  `weight`					int(11)				NOT NULL default 0,
-		  `shipping_method`			varchar(100)		NOT NULL,
+		  `shipping_method`			text				NOT NULL,
 		  `status`					varchar(50)			NOT NULL,
 		  `order_currency_code`		char(3)				NOT NULL,
 		  `shipping_amount`			decimal(13, 2)		NOT NULL default 0,
@@ -46,9 +46,10 @@ class Orders {
 		  `payment_name`			varchar(255)		NOT NULL,
   		  `payment_method`			varchar(100)		NOT NULL default \'\',
 		  `payment_amount`			decimal(13, 2)		NOT NULL default 0,
+		  `payment_notice`			varchar(500)		NOT NULL default \'\',
 		  `transaction_id`			varchar(250)		NOT NULL default \'\',
-		  `comment`					varchar(250)		NOT NULL,
-		  `comment_internal`		varchar(250)		NOT NULL default \'\',
+		  `comment`					text				NOT NULL,
+		  `comment_internal`		text				NOT NULL default \'\',
 		  `code_tracking`			varchar(50)			NOT NULL,
 		  `shipping_firstname`		varchar(50)			NOT NULL,
 		  `shipping_lastname`		varchar(100)		NOT NULL,
@@ -143,12 +144,13 @@ class Orders {
 	 */
 	static function insert( $order ) {
 		global $wpdb;
-		$wpdb->insert($wpdb->prefix . 'tcp_orders', array(
+		$wpdb->insert( $wpdb->prefix . 'tcp_orders', array(
 			'created_at'			=> $order['created_at'],
 			'customer_id'			=> $order['customer_id'],
 			'ip'					=> $order['ip'],
 			'weight'				=> $order['weight'],
 			'shipping_method'		=> $order['shipping_method'],
+			'shipping_notice'		=> $order['shipping_notice'],
 			'status'				=> $order['status'],
 			'order_currency_code'	=> $order['order_currency_code'],
 			'shipping_amount'		=> $order['shipping_amount'],
@@ -156,6 +158,7 @@ class Orders {
 			'payment_name'			=> $order['payment_name'],
 			'payment_method'		=> $order['payment_method'],
 			'payment_amount'		=> $order['payment_amount'],
+			'payment_notice'		=> $order['payment_notice'],
 			'transaction_id'		=> $order['transaction_id'],
 			'comment'				=> $order['comment'],
 			'comment_internal'		=> $order['comment_internal'],
@@ -191,10 +194,10 @@ class Orders {
 			'billing_telephone_2'	=> $order['billing_telephone_2'],
 			'billing_fax'			=> $order['billing_fax'],
 			'billing_email'			=> $order['billing_email'],
-		), array('%s', '%d', '%s', '%d', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
+		), array( '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s', '%s' )
+				 '%s', '%s', '%s', '%s', '%s',  '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -216,8 +219,8 @@ class Orders {
 		global $wpdb;
 		$sql = 'select o.order_id, od.order_detail_id, shipping_firstname,
 				shipping_lastname, created_at, customer_id, status, post_id, price, tax,
-				qty_ordered, shipping_method, shipping_amount, discount_amount, payment_name,
-				payment_method, payment_amount, transaction_id, order_currency_code,
+				qty_ordered, shipping_method, shipping_notice, shipping_amount, discount_amount, payment_name,
+				payment_method, payment_amount, payment_notice, transaction_id, order_currency_code,
 				code_tracking, is_downloadable, max_downloads, expires_at, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders o left join ' .
 				$wpdb->prefix . 'tcp_orders_details od on o.order_id = od.order_id where 1=1';
@@ -230,8 +233,8 @@ class Orders {
 	static function getOrdersEx( $paged, $per_page = 20, $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;
 		$sql = 'select order_id, shipping_firstname, shipping_lastname, created_at, customer_id,
-				status, shipping_method, shipping_amount, discount_amount, payment_name,
-				payment_method, payment_amount, transaction_id, order_currency_code,
+				status, shipping_method, shipping_notice, shipping_amount, discount_amount, payment_name,
+				payment_method, payment_notice, payment_amount, transaction_id, order_currency_code,
 				code_tracking, billing_email
 				from ' . $wpdb->prefix . 'tcp_orders where 1=1';
 		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );

@@ -19,23 +19,23 @@
 if ( ! isset( $source ) ) return;
 
 if ( $source->see_address() ) : ?>
-	<table id="tcp_order_id">
-		<tr>
+	<table id="tcp_order_id" width="100%" cellpading="0" cellspacing="0">
+		<tr valign="top">
 			<th class="tcp_order_id_row" scope="row"><?php _e( 'Order ID', 'tcp' ); ?>:</th>
 			<td class="tcp_order_id_value tcp_order_id"><?php echo $source->get_order_id(); ?></td>
 		</tr>
-		<tr>
+		<tr valign="top">
 			<th class="tcp_order_id_row" scope="row"><?php _e( 'Created at', 'tcp' ); ?>:</th>
 			<td class="tcp_order_id_value tcp_created_at"><?php echo $source->get_created_at(); ?></td>
 		</tr>
 	</table>
 	<?php if ( strlen( $source->get_shipping_firstname() ) > 0 && strlen( $source->get_shipping_lastname() ) > 0 ) : ?>
-		<table id="shipping_billing_info">
-			<tr>
+		<table id="shipping_billing_info" width="100%" cellpading="0" cellspacing="0">
+			<tr valign="top">
 				<th class="shipping_info"><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></th>
 				<th class="billing_info"><h3><?php _e( 'Billing address', 'tcp' ); ?></h3></th>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_firstname(); ?> <?php echo $source->get_shipping_lastname(); ?>
 				</td>
@@ -44,7 +44,7 @@ if ( $source->see_address() ) : ?>
 				</td>
 			</tr>
 		<?php if ( strlen( $source->get_shipping_company() ) > 0 && strlen( $source->get_billing_company() ) > 0 ) : ?>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>
 						<?php echo $source->get_shipping_company(); ?>
@@ -58,7 +58,7 @@ if ( $source->see_address() ) : ?>
 			</tr>
 		<?php endif; ?>
 		<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					&nbsp;
 				</td>
@@ -69,7 +69,7 @@ if ( $source->see_address() ) : ?>
 				</td>
 			</tr>
 		<?php endif; ?>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_street(); ?><br/>
 				</td>
@@ -77,7 +77,7 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_street(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_postcode() . ', ' . $source->get_shipping_city(); ?><br/>
 				</td>
@@ -85,7 +85,7 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_region() . ', ' . $source->get_shipping_country(); ?><br/>
 				</td>
@@ -93,7 +93,7 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php $telephone = $source->get_shipping_telephone_1();
 					if ( strlen( $source->get_shipping_telephone_2() ) > 0 ) $telephone .= ' - ' . $source->get_shipping_telephone_2(); ?>
@@ -105,7 +105,7 @@ if ( $source->see_address() ) : ?>
 					<?php if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_shipping_fax(); ?><?php endif; ?>
 				</td>
@@ -113,7 +113,7 @@ if ( $source->see_address() ) : ?>
 					<?php if ( strlen( $source->get_billing_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_billing_fax(); ?><?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_email() ) > 0 ) : echo $source->get_shipping_email(); ?><?php endif; ?>
 				</td>
@@ -123,80 +123,92 @@ if ( $source->see_address() ) : ?>
 			</tr>
 		</table>
 	<?php else : ?>
-		<table id="shipping_billing_info">
-			<tr>
+		<table id="shipping_billing_info" width="100%" cellpading="0" cellspacing="0">
+			<tr valign="top">
 				<th class="billing_info"><h3><?php _e( 'Shipping and Billing address', 'tcp' ); ?></h3></th>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?>
 				</td>
 			</tr>
 		<?php if ( strlen( $source->get_billing_company() ) > 0 ) : ?>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_company(); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
 		<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_tax_id_number(); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_street(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php $telephone = $source->get_billing_telephone_1();
 					if ( strlen( $source->get_billing_telephone_2() ) > 0 ) $telephone .= ' - ' . $source->get_billing_telephone_2(); ?>
 					<?php if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php if ( strlen( $source->get_billing_fax() ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $source->get_billing_fax(); ?><?php endif; ?>
 				</td>
 			</tr>
 
-			<tr>
+			<tr valign="top">
 				<td class="billing_info">
 					<?php if ( strlen( $source->get_billing_email() ) > 0 ) : echo $source->get_billing_email(); ?><br/><?php endif; ?>
 				</td>
 			</tr>
 		</table>
 	<?php endif; ?>
-	<table id="tcp_status">
-		<tr>
+	<table id="tcp_status" width="100%" cellpading="0" cellspacing="0">
+		<tr valign="top">
 			<th class="tcp_status_row" scope="row"><?php _e( 'Payment method', 'tcp' ); ?>: </th>
-			<td class="tcp_status_value tcp_payment_method" ><?php echo $source->get_payment_method(); ?></td>
+			<td class="tcp_status_value tcp_payment_method" ><?php echo $source->get_payment_name(); ?></td>
 		</tr>
-		<tr>
+	<?php if ( $source->get_payment_notice() ) : ?>
+		<tr valign="top">
+			<th class="tcp_status_row" scope="row"><?php _e( 'Payment notice', 'tcp' ); ?>: </th>
+			<td class="tcp_payment_notice"><?php echo $source->get_payment_notice(); ?></td>
+		</tr>
+	<?php endif; ?>
+		<tr valign="top">
 			<th class="tcp_status_row" scope="row"><?php _e( 'Shipping method', 'tcp' ); ?>: </th>
 			<td class="tcp_status_value tcp_shipping_method"><?php echo $source->get_shipping_method(); ?></td>
 		</tr>
-		<tr>
+	<?php if ( $source->get_shipping_notice() ) : ?>
+		<tr valign="top">
+			<th class="tcp_status_row" scope="row"><?php _e( 'Shipping notice', 'tcp' ); ?>: </th>
+			<td class="tcp_shipping_notice"><?php echo $source->get_shipping_notice(); ?></td>
+		</tr>
+	<?php endif; ?>
+		<tr valign="top">
 			<th class="tcp_status_row" scope="row"><?php _e( 'Status', 'tcp' ); ?>: </th>
-			<td class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo $source->get_status(); ?></td>
+			<td class="tcp_status_value tcp_status tcp_status_<?php echo $source->get_status(); ?>"><?php echo tcp_get_status_label( $source->get_status() ); ?></td>
 		</tr>
 	</table>
 <?php endif; ?>
-<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
+<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table" width="100%" cellpading="0" cellspacing="0">
 <thead>
 	<tr class="tcp_cart_title_row">
 		<?php if ( $source->see_thumbnail() ) : ?>

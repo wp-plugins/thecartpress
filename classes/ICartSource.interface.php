@@ -31,7 +31,10 @@ interface TCP_ICartSource {
 	public function get_order_id();
 	public function get_created_at();
 	public function get_payment_method();
+	public function get_payment_name();
+	public function get_payment_notice();
 	public function get_shipping_method();
+	public function get_shipping_notice();
 	public function get_status();
 	
 	public function get_shipping_firstname();//stripslashes
