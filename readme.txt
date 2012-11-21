@@ -309,6 +309,7 @@ This plugin is released under a GPL license.
 * FreeProducts: Payment method for free products
 * Theme Compatibility: add single and taxonomy templates
 * Order edit, Order email: Display status label
+* Authorize.net: Authorization and Capture, Authorization Only (Thanks to Douglas Bischoff)
 
 = 1.2.5.2 =
 * Stock management update

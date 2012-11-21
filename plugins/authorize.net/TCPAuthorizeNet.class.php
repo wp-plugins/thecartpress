@@ -80,6 +80,19 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		</tr>
 		<tr valign="top">
 			<th scope="row">
+				<?php _e( 'Transaction Type', 'tcp' );?>:
+			</th>
+			<td>
+				<?php $trans_type = isset( $data['trans_type'] ) ? $data['trans_type'] : 'AUTH_CAPTURE'; ?>
+				<select name="trans_type">
+					<option value="AUTH_CAPTURE" <?php selected( 'AUTH_CAPTURE', $trans_type ); ?>><?php _e( 'Authorization and Capture', 'tcp' ); ?></option>
+					<option value="AUTH_ONLY" <?php selected( 'AUTH_ONLY', $trans_type ); ?>><?php _e( 'Authorization Only', 'tcp' ); ?></option>
+				</select>
+				<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
+			</td>
+		</tr>
+		<tr valign="top">
+			<th scope="row">
 				<label><?php _e( 'Response URL', 'tcp' ); ?>:</label>
 			</th>
 			<td>
@@ -102,6 +115,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		$data['test_mode']		= isset( $_REQUEST['test_mode'] );
 		$data['md5_hash']		= isset( $_REQUEST['md5_hash'] ) ? $_REQUEST['md5_hash'] : '';
 		$data['redirect']		= isset( $_REQUEST['redirect'] );
+		$data['trans_type']		= isset( $_REQUEST['trans_type'] ) ? $_REQUEST['trans_type'] : 'AUTH_CAPTURE';
 		return $data;
 	}
 
@@ -184,7 +198,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 //			'x_tax_exempt'		=> '',
 			'x_test_request'	=> $test_mode,
 //			'x_trans_id'		=> '',
-//			'x_type'			=> '',
+//			'x_type'			=> $data['trans_type'],
 //			'x_version'			=> '',
 			'x_zip'				=> $order->billing_postcode,
 		);

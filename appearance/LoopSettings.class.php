@@ -422,12 +422,12 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 			}
 		}
 
-		global $post;
+		/*global $post;
 		if ( $post && tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( is_single() ) $template = $this->get_template_single();
 			else $template = $this->get_template_archive();
 			if ( $template ) return $template;
-		}
+		}*/
 		
 		return $template;
 	}
