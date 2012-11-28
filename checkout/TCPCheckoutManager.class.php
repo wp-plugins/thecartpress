@@ -41,6 +41,8 @@ class TCPCheckoutManager {
 	protected $steps = array();
 
 	function __construct( $checkout_type = 'ACCORDION' ) { //ACCORDION, TOP_BAR
+		//global $thecartpress;
+		//$https_checkout = $thecartpress->get_setting( 'https_checkout', false );
 		$this->checkout_type = $checkout_type;
 		$this->steps = TCPCheckoutManager::get_steps();
 		if ( ! session_id() ) session_start();
@@ -464,7 +466,7 @@ class TCPCheckoutManager {
 		}
 		$order_id = Orders::insert( $order );
 		$shoppingCart->setOrderId( $order_id );//since 1.1.0
-		do_action( 'tcp_checkout_create_order_insert', $order_id );
+		do_action( 'tcp_checkout_create_order_insert', $order_id, $order );
 		foreach( $shoppingCart->getItems() as $item ) {
 			$post = get_post( $item->getPostId() );
 			$days_to_expire = (int)get_post_meta( $post->ID, 'tcp_days_to_expire', true );
@@ -533,7 +535,7 @@ class TCPCheckoutManager {
 			if ( $payment_method->sendPurchaseMail() ) {
 				global $thecartpress;
 				$send_email = $thecartpress->get_setting( 'send_email', true );
-				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id, '' );
+				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id );
 			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
 			<div class="tcp_pay_form">

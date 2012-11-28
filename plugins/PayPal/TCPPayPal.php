@@ -299,9 +299,9 @@ class TCPPayPal extends TCP_Plugin {
 		echo $p->submit_paypal_post();
 		if ( $redirect ) : ?>
 		<script type="text/javascript">
-		jQuery().ready( function() {
+		//jQuery().ready( function() {
 			jQuery( 'form[name=paypal_form]' ).submit();
-		} );
+		//} );
 		</script>
 		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp'); ?></p>
 		<?php endif;

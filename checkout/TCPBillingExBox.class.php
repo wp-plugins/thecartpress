@@ -39,7 +39,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );
 		$use_as_shipping = isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
-		if ( $selected_billing_address == 'new' ) {
+		if ( $selected_billing_address == 'new' || $selected_billing_address == 'N' ) {
 			$see_company		= isset( $settings['see_company'] ) ? $settings['see_company'] : true;
 			$req_company		= isset( $settings['req_company'] ) ? $settings['req_company'] : false;
 			$see_tax_id_number	= isset( $settings['see_tax_id_number'] ) ? $settings['see_tax_id_number'] : true;
@@ -98,7 +98,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				if ( ! isset( $_REQUEST['billing_fax'] ) || strlen( $_REQUEST['billing_fax'] ) == 0 )
 					$this->errors['billing_fax'] = __( 'The billing fax field must be completed', 'tcp' );
 			}
-			if ( ! isset( $_REQUEST['billing_email'] ) || strlen( $_REQUEST['billing_email'] ) == 0 ) {
+			if ( ! isset( $_REQUEST['billing_email'] ) || strlen( trim( $_REQUEST['billing_email'] ) ) == 0 ) {
 				$this->errors['billing_email'] = __( 'The billing eMail field must be completed', 'tcp' );
 			} elseif ( ! $this->check_email_address( $_REQUEST['billing_email'] ) ) {
 				$this->errors['billing_email'] = __( 'The billing eMail field must be a valid email', 'tcp' );
@@ -274,7 +274,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
 			$selected_billing_address = $_SESSION['tcp_checkout']['billing']['selected_billing_address'];
 		} else {
-			$selected_billing_address = 'Y';
+			$selected_billing_address = false;//'Y';
 		}?>
 		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php if ( $use_as_shipping ) :?>
@@ -286,6 +286,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		else $addresses = false;
 		$default_address = false;
 		if ( is_array( $addresses ) && count( $addresses ) > 0 ) :
+			if ( $selected_billing_address === false ) $selected_billing_address = 'Y';
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
 				$default_address_id = $_REQUEST['selected_billing_id'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] ) ) {
@@ -307,7 +308,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
 				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' )?></label>
 				<br />
-			<?php endif;?>
+		<?php endif;?>
 			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
 			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
 			<div id="new_billing_area" class="clearfix" <?php

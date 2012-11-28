@@ -29,10 +29,10 @@ function tcp_exists_shortcode_id( $id ) {
 	return false;
 }
 
-function tcp_shortcode_sorting_fields( $sorting_fields ) {
+/*function tcp_shortcode_sorting_fields( $sorting_fields ) {
 	$sorting_fields[] = array( 'value' => 'rand', 'title' => __( 'Random', 'tcp' ) );
 	return $sorting_fields;
-}
+}*/
 
 if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 	if ( ! isset( $_REQUEST['id'] ) || strlen( trim( $_REQUEST['id'] ) ) == 0 ) {?>
@@ -356,9 +356,9 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 				<label for="order_type"><?php _e( 'Order by', 'tcp' ); ?></label>:
 			</th>
 			<td>
-				<?php add_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' );
+				<?php //add_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' );
 				$sorting_fields = tcp_get_sorting_fields();
-				remove_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' ); ?>
+				//remove_filter( 'tcp_sorting_fields', 'tcp_shortcode_sorting_fields' ); ?>
 				<select id="order_type" name="order_type">
 				<?php foreach( $sorting_fields as $sorting_field ) : ?>
 				<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>

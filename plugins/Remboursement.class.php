@@ -96,10 +96,12 @@ class TCPRemboursement extends TCP_Plugin {
 		global $thecartpress;
 		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$title	= isset( $data['title'] ) ? $data['title'] : '';
+		$redirect = true;
 		$cost	= $this->getCost( $instance, $shippingCountry, $shoppingCart );
 		$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-		$url	= add_query_arg( 'order_id', $order_id, $url ); ?>
-		<?php printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
+		$url	= add_query_arg( 'order_id', $order_id, $url );
+		if ( $cost > 0 ) printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
+		else echo $title;
 		$additional = $this->getNotice( $instance, $shippingCountry, $shoppingCart, $order_id ); ?>
 		<p><?php echo $additional; ?></p>
 		<p><input type="button" class="tcp_pay_button" id="tcp_remboursement" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href='<?php echo $url; ?>';"/></p>
@@ -108,6 +110,12 @@ class TCPRemboursement extends TCP_Plugin {
 		Orders::editStatus( $order_id, $new_status, 'no-id' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id, $additional );
+		if ( $redirect ) : ?>
+		<script type="text/javascript">
+		//jQuery().ready( function() {
+			jQuery( '#tcp_remboursement' ).click();
+		//} );
+		</script><?php endif;
 	}
 }
 ?>

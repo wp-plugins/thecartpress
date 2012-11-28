@@ -168,8 +168,19 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.4
 			//
 		}
-
-		update_option( 'tcp_version', 126 );
+		if ( $version < 126.1 ) {
+			global $wpdb;
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
+			$row = $wpdb->get_row( $sql );
+			if ( $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `payment_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
+				$wpdb->query( $sql );
+			}
+			//
+			//TODO Deprecated 1.4
+			//
+		}
+		update_option( 'tcp_version', 126 );//TODO change to 126.1
 	}
 }
 ?>

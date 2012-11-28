@@ -125,7 +125,7 @@ class TCPAddressEdit {
 			<th scope="row"><label for="company"><?php _e( 'Company', 'tcp' ); ?>:</label></th>
 			<td>
 				<input type="text" id="company" name="company" value="<?php $this->tcp_get_value( 'company' ); ?>" size="20" maxlength="50" />
-				<?php $this->tcp_show_error_msg( $error_address, 'company' ); ?></td>
+				<?php //$this->tcp_show_error_msg( $error_address, 'company' ); ?></td>
 			</tr>
 			<tr valign="top">
 			<th scope="row"><label for="tax_id_number"><?php _e( 'Tax id number', 'tcp' ); ?>:</label></th>

@@ -121,11 +121,15 @@ class TCPLoginRegister {
 	function tcp_register_and_login_ajax() {
 		unset( $_REQUEST['tcp_redirect_to'] );
 		unset( $_REQUEST['tcp_redirect_error'] );
-		$error_msg = $this->tcp_register_and_login( false );
+		$error_msg = $this->_tcp_register_and_login( false );
 		die( json_encode( $error_msg ) );
 	}
 
-	function tcp_register_and_login( $redirect = true ) {
+	function tcp_register_and_login() {
+		return $this->_tcp_register_and_login();
+	}
+
+	function _tcp_register_and_login( $redirect = true ) {
 		$error_msg = false;
 		$user_name		= isset( $_REQUEST['tcp_new_user_name'] ) && trim( $_REQUEST['tcp_new_user_name'] ) != '' ? $_REQUEST['tcp_new_user_name'] : $error_msg = __( 'User name is required', 'tcp' );
 		if ( $error_msg && ! $redirect ) return $error_msg;
@@ -170,10 +174,11 @@ class TCPLoginRegister {
 		}
 		if ( $redirect ) {
 			if ( $error_msg && $redirect_to_error ) {
-				wp_redirect( $redirect_to );
+				wp_redirect( add_query_arg( 'tcp_register_error', urlencode( $error_msg ), $redirect_to_error ) );
 			} elseif ( $redirect_to ) {
-				wp_redirect( add_query_arg( 'tcp_register_error', urlencode( $error_msg ), $redirect_error ) );
+				wp_redirect( $redirect_to );
 			}
+			die();
 		}
 		return $error_msg;
 	}

@@ -137,6 +137,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		require_once dirname( __FILE__ ) . '/anet_php_sdk/AuthorizeNet.php'; // Include the SDK you downloaded in Step 2
 		$fp_timestamp	= time();
 		$fp_sequence	= $order_id . time(); // Enter an invoice or other unique number.
+		$amount			= apply_filters( 'tcp_authorized_net_amount', $amount, $order, $data );
 		$fingerprint	= AuthorizeNetSIM_Form::getFingerprint( $api_login_id, $transaction_key, $amount, $fp_sequence, $fp_timestamp );
 		$fields = array(
 			'x_address'			=> $order->billing_street,
@@ -202,7 +203,6 @@ class TCPAuthorizeNet extends TCP_Plugin {
 //			'x_version'			=> '',
 			'x_zip'				=> $order->billing_postcode,
 		);
-		$fields = apply_filters( 'tcp_authorized_net_fields', $fields, $order, $data );
 		$form = new AuthorizeNetSIM_Form( $fields ); ?>
 		<form method="post" name="authorizednet_form" action="<?php echo $url; ?>">
 			<?php echo $form->getHiddenFieldString(); ?>

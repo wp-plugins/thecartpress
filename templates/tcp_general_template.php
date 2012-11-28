@@ -471,7 +471,11 @@ function tcp_get_sorting_fields() {
 		array(
 			'value'	=> 'comment_count',
 			'title'	=> __( 'Popular', 'tcp' ),
-		)
+		),
+		array(
+			'value'	=> 'rand',
+			'title'	=> __( 'Random', 'tcp' ),
+		),
 	);
 	return apply_filters( 'tcp_sorting_fields', $sorting_fields );
 }
@@ -707,7 +711,7 @@ function tcp_register_form( $args = array() ) {
 			<label for="tcp_new_user_name"><?php echo $args['label_username']; ?></label>
 		</div>
 		<div class="tcp_register_username">
-			<input type="text" name="tcp_new_user_name" size="20" />
+			<input type="text" name="tcp_new_user_name" value="<?php echo isset( $_REQUEST['tcp_new_user_name'] ) ? $_REQUEST['tcp_new_user_name'] : ''; ?>" size="20" />
 		</div>
 		<div class="tcp_register_password_label">
 			<label for="tcp_new_user_pass"><?php echo $args['label_password']; ?></label>
@@ -726,10 +730,10 @@ function tcp_register_form( $args = array() ) {
 			<label for="tcp_user_email"><?php _e( 'E-mail', 'tcp' ); ?></label>
 		</div>
 		<div class="tcp_register_user_email">
-			<input type="text" name="tcp_new_user_email" size="25" maxlength="100"/>
+			<input type="text" name="tcp_new_user_email" value="<?php echo isset( $_REQUEST['tcp_new_user_email'] ) ? $_REQUEST['tcp_new_user_email'] : ''; ?>" size="25" maxlength="100"/>
 		</div>
 		<?php echo apply_filters( 'tcp_register_form', ob_get_clean(), $args ); ?>
-		<input type="hidden" name="tcp_redirect" value="<?php echo $args['redirect']; ?>" />
+		<input type="hidden" name="tcp_redirect_to" value="<?php echo $args['redirect']; ?>" />
 		<input type="hidden" name="tcp_role" value="<?php echo $args['role']; ?>" />
 		<?php if ( $args['locked'] ) : ?><input type="hidden" name="tcp_locked" value="yes" /><?php endif; ?>
 		<?php if ( $args['login'] ) : ?><input type="hidden" name="tcp_login" value="yes" /><?php endif; ?>

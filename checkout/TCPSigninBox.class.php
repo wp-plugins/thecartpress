@@ -130,7 +130,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 						<li><?php _e( 'Fast and easy checkout', 'tcp' ); ?></li>
 						<li><?php _e( 'Easy access to yours orders history and status', 'tcp' ); ?></li>
 						<li><a href="javascript: void(0)" onclick="jQuery('li.tcp_login_and_register').toggle();"><?php _e( 'Register', 'tcp' ); ?></a></li>
-						<li class="tcp_login_and_register" style="display:none;"><div id="tcp_login_and_register">
+						<li class="tcp_login_and_register" <?php if ( ! isset( $_REQUEST['tcp_register_error'] ) ) : ?>style="display:none;"<?php endif; ?>><div id="tcp_login_and_register">
 						<?php tcp_register_form(); ?>
 						</div><!-- tcp_login_register -->
 						</li>
