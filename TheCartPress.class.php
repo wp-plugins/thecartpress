@@ -732,7 +732,7 @@ class TheCartPress {
 				$thumbnail_post	= get_post( $thumbnail_id );
 				$image = apply_filters( 'tcp_get_image_in_excerpt', $image, $post->ID );
 				if ( ! empty( $thumbnail_post->post_excerpt ) ) {
-				    //$image_attributes = array{0 => url, 1 => width, 2 => height};
+					//$image_attributes = array{0 => url, 1 => width, 2 => height};
 					$image_attributes = wp_get_attachment_image_src( $thumbnail_id, $image_size );
 					$width = $image_attributes[1];
 					$image = '[caption id="attachment_' . $thumbnail_id . '" align="' . $image_align . ' tcp_featured_single_caption" width="' . $width  . '" caption="' . $thumbnail_post->post_excerpt  . '"]' . $image . '[/caption]';

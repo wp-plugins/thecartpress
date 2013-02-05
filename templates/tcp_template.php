@@ -73,7 +73,7 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 	return apply_filters ( 'tcp_get_the_title', $title, $post_id, $html, $show_parent );
 }
 
-function tcp_the_title( $echo = true, $html = true ) {
+function tcp_the_title( $echo = true ) {
 	$title = tcp_get_the_title();
 	if ( $echo ) echo $title;
 	else return $title;

@@ -145,8 +145,8 @@ class TCPStockManagement {
 		</td><?php
 	}
 
-	function tcp_dynamic_options_option_to_save( $option, $id, $_REQUEST ) {
-		$option['stock'] = trim( $_REQUEST['tcp_stock'][$id] );
+	function tcp_dynamic_options_option_to_save( $option, $id, $data ) {
+		$option['stock'] = trim( $data['tcp_stock'][$id] );
 		return $option;
 	}
 
