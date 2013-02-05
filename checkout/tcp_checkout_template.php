@@ -18,18 +18,17 @@
 
 $tcp_checkout_boxes = array();
 
-function tcp_register_checkout_box( $path, $class_name ) {
+/**
+ * $name_id, is a name to add to URL, so it must be valid text to create a valid URL
+ */
+function tcp_register_checkout_box( $path, $class_name, $name_id = '' ) {
+	if ( $name_id == '' ) $name_id = $class_name;
 	global $tcp_checkout_boxes;
-	$tcp_checkout_boxes[$class_name] = $path;
-	//require_once( dirname( __FILE__ ) . '/TCPCheckoutManager.class.php' );
-	
+	$tcp_checkout_boxes[$class_name] = array(
+		'path'	=> $path,
+		'name'	=> $name_id,
+	);
 }
-
-/*function tcp_remove_checkout_box( $class_name ) {
-	global $tcp_checkout_boxes;
-	unset( $tcp_checkout_boxes[$class_name] );
-}*/
-
 
 /**
  * @since 1.2.0

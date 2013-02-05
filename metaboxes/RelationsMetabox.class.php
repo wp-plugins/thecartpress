@@ -20,7 +20,7 @@ require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
 class RelationsMetabox {
 	function register_metabox() {
-		$saleable_post_types = tcp_get_saleable_post_types();
+		$saleable_post_types = tcp_get_product_post_types();
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
 				add_meta_box( 'tcp-product-assign', __( 'Related data', 'tcp' ), array( $this, 'show' ), $post_type, 'normal', 'high' );

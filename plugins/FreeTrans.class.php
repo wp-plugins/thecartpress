@@ -48,10 +48,10 @@ class FreeTrans extends TCP_Plugin {
 		return $shoppingCart->getTotal() >= $minimun_amount;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : __( 'Free transport', 'tcp' );
-		return $title;
+		return tcp_string( 'TheCartPress', 'shi_FreeTrans-title', $title );
 	}
 }
 ?>

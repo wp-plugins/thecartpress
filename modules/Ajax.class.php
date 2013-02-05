@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function tcp_the_feedback_image( $class ) { ?>
+<img src="<?php echo admin_url( 'images/loading.gif' ); ?>" class="<?php echo $class; ?>" style="display: none;" />
+<?php }
+
 class TCPAjax {
 	function __construct() {
 		add_action( 'init', array( &$this, 'init' ) );
@@ -25,6 +29,8 @@ class TCPAjax {
 	function init() {
 		global $thecartpress;
 		if ( $thecartpress && $thecartpress->get_setting( 'activate_ajax', true ) ) {
+			add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+
 			add_action( 'wp_ajax_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
 			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
 			add_action( 'wp_ajax_tcp_checkout', array( $this, 'tcp_checkout' ) );
@@ -538,6 +544,8 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 	function tcp_checkout() {
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		$activeCheckout = new ActiveCheckout();
+		global $wp_query;
+		$wp_query->in_the_loop = true;
 		exit( $activeCheckout->show() );
 	}
 }

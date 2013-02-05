@@ -28,10 +28,11 @@ class ShippingCost extends TCP_Plugin {
 		return __( 'Calculate the shipping cost using a table of weights ranges and zones.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>', 'tcp' );
 	}
 	
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title	= isset( $data['title'] ) ? $data['title'] : '';
-		$cost	= tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
+		$title = tcp_string( 'TheCartPress', 'shi_ShippingCost-title', $title );
+		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
@@ -337,7 +338,8 @@ jQuery(document).ready(function() {
 		return $data;
 	}
 
-	function getCost( $instance, $shippingCountry, $shoppingCart ) {
+	function getCost( $instance, $shippingCountry, $shoppingCart = false ) {
+		if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
 		$total_weight = $shoppingCart->getWeightForShipping();
 		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		$zones	= $data['zones'];

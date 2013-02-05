@@ -31,6 +31,10 @@ class TCPCheckoutBox {
 		return '';
 	}
 
+	function get_name() {
+		return get_class( $this );
+	}
+
 	function show_config_settings() { ?>
 		<p><?php _e( 'No config settings', 'tcp' );?></p><?php
 		return false;

@@ -38,12 +38,13 @@ function tcp_reload() {
 	<div class="clear"></div>
 <?php endif;
 
-if ( ! is_user_logged_in() ) : ?>
+if ( ! is_user_logged_in() ) : ob_start(); ?>
 
 	<p><?php _e( 'You need to login to see your downloads.', 'tcp-fe' ); ?></p>
 	<?php tcp_login_form( array( 'echo' => true ) ); ?>
 
-<?php return; endif;
+<?php return ob_get_clean();
+endif;
 
 global $current_user;
 get_currentuserinfo();

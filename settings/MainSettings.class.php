@@ -38,11 +38,11 @@ class TCPMainSettings {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize TheCartPress as a Framework disabling the eCommerce funtionalities.', 'tcp' ) . '</p>' .
-	            '<p>' . __( 'Set the different URLs for TheCartPress actions', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize TheCartPress as a Framework disabling the eCommerce funtionalities.', 'tcp' ) . '</p>' .
+				'<p>' . __( 'Set the different URLs for TheCartPress actions', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

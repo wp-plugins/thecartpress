@@ -18,7 +18,9 @@
 
 function tcp_the_buy_button( $post_id = 0, $echo = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	return TCPBuyButton::show( $post_id, $echo );
+	$out = apply_filters( 'tcp_the_buy_button', TCPBuyButton::show( $post_id, $echo ), $post_id );
+	if ( $echo ) echo $out;
+	else return $out;
 }
 
 function tcp_get_the_buy_button( $post_id = 0 ) {

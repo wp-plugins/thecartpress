@@ -55,7 +55,7 @@ table.tcp_buy_button tr td.tcp_buy_button_thumbnail {
 ---------------------------------------------*/
 #content table.tcp_products_list table.tcp_buy_button,
 table.tcp_products_list table.tcp_buy_button {
-    margin: 0;
+	margin: 0;
 }
 #content table.tcp_products_list table.tcp_buy_button tr td,
 table.tcp_products_list table.tcp_buy_button tr td {
@@ -100,9 +100,9 @@ table.tcp_buy_button .tcp_added_product_title {
 /* =TCP buy button extras
 -------------------------------------------------------------*/
 table.tcp_buy_button  img {
-    height: auto;
-    max-width: 45px;
-    vertical-align: top;
+	height: auto;
+	max-width: 45px;
+	vertical-align: top;
 	margin:0;
 	padding:0;
 }
@@ -158,7 +158,7 @@ div.tcp_buy_button_thumbnail {
 }
 div.tcp_buy_button_thumbnail  img {
    
-    vertical-align: top;
+	vertical-align: top;
 	margin:0 6px 3px 0;
 	padding:0;
 }
@@ -314,38 +314,39 @@ input[type="submit"].tcp_add_to_wish_list:active {
 }
 
 /* TIER PRICES 
-*/
+*
 div.tcp_tier_price {
 	float:left;
-}
+}*/
 a.tcp_view_tier_price {
 	text-decoration:none !important;
-    margin: 0.325em 0 0.325em 0;
+	margin: 0.325em 0 0.325em 0;
 	float:left;
 }
 
 div.tcp_tier_price ul {
-    list-style: square outside none;
+	list-style: square outside none;
 }
 
 div.tcp_tier_price ul {
-    margin: 0.325em 0 0 2em;
+	margin: 0.325em 0 0 2em;
 }
 
 /* Fix floats container "Clearfix" */
+/* deprecated */
 
 /* For modern browsers */
 .cf:before,
 .cf:after {
-    content:"";
-    display:table;
+	content:"";
+	display:table;
 }
 
 .cf:after {
-    clear:both;
+	clear:both;
 }
 
 /* For IE 6/7 (trigger hasLayout) */
 .cf {
-    zoom:1;
+	zoom:1;
 }

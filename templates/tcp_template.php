@@ -31,6 +31,7 @@ function tcp_get_admin_language_iso() {
 }
 
 $multilingual_template_path = apply_filters( 'tcp_get_multilingual_template_path', '' );
+
 if ( strlen( $multilingual_template_path ) > 0 ) {
 	include_once( $multilingual_template_path );
 } else {
@@ -155,15 +156,6 @@ function tcp_get_default_currency() {
 }
 
 /**
- * Displays the wish
- * @since 1.1.8
- */
-function tcp_the_add_wishlist_button( $post_id ) {
-	global $wish_list;
-	if ( isset( $wish_list ) ) echo $wish_list->tcp_the_add_to_cart_button( '', $post_id );
-}
-
-/**
  * Returns the price for current product
  * @since 1.0.9
  */
@@ -178,12 +170,12 @@ function tcp_the_price( $before = '', $after = '', $echo = true ) {
 
 /**
  * Returns the price for given product
- * @param $filter, true to execute filters (by default) false, it doesn't apply filters. Since 1.1.9
+ * @param $apply_filters, true to execute filters (by default) false, it doesn't apply filters. Since 1.1.9
  * @since 1.0.9
  */
-function tcp_get_the_price( $post_id = 0, $filters = true ) {
+function tcp_get_the_price( $post_id = 0, $apply_filters = true ) {
 	$price = (float)tcp_get_the_meta( 'tcp_price', $post_id );
-	if ( $filters ) $price = (float)apply_filters( 'tcp_get_the_price', $price, $post_id );
+	if ( $apply_filters ) $price = (float)apply_filters( 'tcp_get_the_price', $price, $post_id );
 	return $price;
 }
 
@@ -227,7 +219,6 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 	if ( $price === false ) $price = tcp_get_the_price( $post_id );
 	if ( tcp_is_display_prices_with_taxes() ) {
 		if ( tcp_is_price_include_tax() ) {
-//			return $price;
 			$price_wo_tax = tcp_get_the_price_without_tax( $post_id, $price );
 			$tax = tcp_get_the_tax( $post_id );
 			return $price_wo_tax * ( 1 + $tax / 100 );
@@ -251,10 +242,8 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
 function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
 	$label = tcp_get_the_price_label();
 	$label = $before . $label . $after;
-	if ( $echo )
-		echo $label;
-	else
-		return $label;
+	if ( $echo ) echo $label;
+	else return $label;
 }
 
 /**
@@ -263,7 +252,7 @@ function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
  */
 function tcp_get_the_price_label( $post_id = 0, $price = false ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+	$post_id = tcp_get_default_id( $post_id );
 	$price = tcp_get_the_price_to_show( $post_id, $price );
 	$label = tcp_format_the_price( $price );
 	$label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
@@ -656,7 +645,7 @@ function tcp_get_product_by_sku( $sku, $object = false ) {
 	$args = array(
 		'numberposts'	=> 1,
 		'post_type'		=> tcp_get_saleable_post_types(),
-		'status'		=> array( 'publish', 'draft' ),
+		'status'		=> array( 'publish', 'draft' ),//TODO
 		'meta_query' => array(
 			array(
 				'key'		=> 'tcp_sku',
@@ -667,8 +656,13 @@ function tcp_get_product_by_sku( $sku, $object = false ) {
 	);
 	if ( ! $object ) $args['fields'] = 'ids';
 	$posts = get_posts( $args );
-	if ( is_array( $posts ) && count( $posts ) > 0 ) return $posts[0];
-	else return false;
+	if ( is_array( $posts ) && count( $posts ) > 0 ) {
+		$post_id = $posts[0];
+		$post_id = tcp_get_default_id( $post_id );
+	} else {
+		$post_id = false;
+	}
+	return $post_id;
 }
 
 function tcp_is_downloadable( $post_id = 0 ) {
@@ -710,10 +704,10 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 
 function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
 	if ( has_post_thumbnail( $post_id ) ) {
-		$image_size		= isset( $args['size'] ) ? $args['size'] : 'thumbnail';
-		$image_align	= isset( $args['align'] ) ? $args['align'] : '';
-		$thumbnail_id	= get_post_thumbnail_id( $post_id );
-		$attr			= array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
+		$image_size = isset( $args['size'] ) ? $args['size'] : 'thumbnail';
+		$image_align = isset( $args['align'] ) ? $args['align'] : '';
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		$attr = array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
 		if ( is_numeric( $image_size ) ) $image_size = array( $image_size, $image_size );
 		if ( function_exists( 'get_the_post_thumbnail' ) ) $image = get_the_post_thumbnail( $post_id, $image_size, $attr );
 		return $image;
@@ -728,10 +722,10 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 		if ( strlen( $image_link ) > 0 ) {
 			if ( $image_link == 'file' ) {
 				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
-			 	$href = $image_attributes[0];
+				$href = $image_attributes[0];
 			} else {//None, or Post URL
 				$href = tcp_get_permalink( $post_id );
-			 	//$href = get_permalink( $thumbnail_id );
+				//$href = get_permalink( $thumbnail_id );
 			}
 			$html = '<a href="' . $href . '"';
 			if ( isset( $args['class'] ) ) $html .= ' class="' . $args['class'] . '"';
@@ -801,10 +795,8 @@ function tcp_get_the_content( $post_id = 0, $echo = false ) {
 	$content = apply_filters( 'the_content', $content );
 	add_filter( 'the_content', array( $thecartpress, 'the_content' ) );
 	$content = str_replace(']]>', ']]>', $content);
-   	if ( $echo )
-		echo $content;
-	else
-		return $content;
+	if ( $echo ) echo $content;
+	else return $content;
 }
 
 /**
@@ -828,56 +820,8 @@ function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
 	//$excerpt = apply_filters( 'get_the_excerpt', $excerpt );
 	add_filter( 'the_content', array( $thecartpress, 'the_content' ) );
 	add_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
-	if ( $echo )
-		echo $excerpt;
-	else
-		return $excerpt;
-}
-
-/**
- * @since 1.2.5
- */
-function tcp_get_current_user_role() {
-	$roles = tcp_get_current_user_roles();
-	$role = array_shift( $roles );
-	return $role;
-}
-
-/**
- * @since 1.2.6
- */
-function tcp_get_current_user_roles() {
-	$current_user = wp_get_current_user();
-	return $current_user->roles;
-}
-
-/**
- * @since 1.2.5
- */
-function tcp_get_current_user_role_title() {
-	$role = tcp_get_current_user_role();
-	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
-}
-
-/**
- * @since 1.2.6
- */
-function tcp_get_user_roles( $user_id = false, $only_first = false ) {
-	if ( $user_id === false ) return tcp_get_current_user_roles();
-	$user = new WP_User( $user_id );
-	if ( ! empty( $user->roles ) && is_array( $user->roles ) ) {
-		if ( $only_first ) return $user->roles[0];
-		else return $user->roles;
-	}
-	return false;
-}
-
-/**
- * @since 1.2.6
- */
-function tcp_get_user_role( $user_id = false ) {
-	if ( $user_id === false ) return tcp_get_current_user_role();
-	return tcp_get_user_roles( $user_id, true );
+	if ( $echo ) echo $excerpt;
+	else return $excerpt;
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {
@@ -902,7 +846,10 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 //
 //Saleable post type
 //
-function tcp_get_saleable_post_types( $one_more = false) {
+/**
+ * @since 1.1.0
+ */
+function tcp_get_saleable_post_types( $one_more = false ) {
 	$saleable_post_types = array( TCP_PRODUCT_POST_TYPE );
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
 	if ( $one_more !== false ) $saleable_post_types[] = $one_more;
@@ -944,6 +891,16 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 	$tax = get_taxonomy( $taxonomy );
 	if ( isset( $tax->object_type[0] ) ) return tcp_is_saleable_post_type( $tax->object_type[0] );
 	else return false;
+}
+
+/**
+ * Dynamic Option is a saleable post type, but it's not a product, it's an option
+ * @since 1.2.6.1
+ */
+function tcp_get_product_post_types( $one_more = false ) {
+	$product_post_types = tcp_get_saleable_post_types( $one_more );
+	$product_post_types = apply_filters( 'tcp_get_product_post_types', $product_post_types );
+	return $product_post_types;
 }
 
 //
@@ -1177,7 +1134,7 @@ function tcp_get_current_url() {
 		}
 	} else {
 		if ( $_SERVER['SERVER_PORT'] != '80' ) {
-		    $path .= ':' . $_SERVER['SERVER_PORT'];
+			$path .= ':' . $_SERVER['SERVER_PORT'];
 		}
 	}
 	$path .= $_SERVER['REQUEST_URI'];

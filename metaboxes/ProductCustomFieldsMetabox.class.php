@@ -121,7 +121,7 @@ class ProductCustomFieldsMetabox {
 
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' ); ?>:</label></th>
-				<td><input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id ) ); ?>" class="regular-text" style="width:12em !important" />&nbsp;<?php tcp_the_currency(); ?> <?php tcp_price_include_tax_message(); ?>
+				<td><input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id, false ) ); ?>" class="regular-text" style="width:12em !important" />&nbsp;<?php tcp_the_currency(); ?> <?php tcp_price_include_tax_message(); ?>
 				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 
@@ -262,6 +262,7 @@ class ProductCustomFieldsMetabox {
 					update_post_meta( $translation->element_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
 					update_post_meta( $translation->element_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
 					update_post_meta( $translation->element_id, 'tcp_price', isset( $_POST['tcp_price'] ) ? (float)$_POST['tcp_price'] : 0 );
+					do_action( 'tcp_product_metabox_save_custom_fields_translations', $translation->element_id, $post_id );
 				}
 		do_action( 'tcp_product_metabox_save_custom_fields', $post_id );
 		$this->refreshMoira();
@@ -308,7 +309,7 @@ class ProductCustomFieldsMetabox {
 		global $thecartpress;
 		$search_engine_activated = isset( $thecartpress->settings['search_engine_activated'] ) ? $thecartpress->settings['search_engine_activated'] : true;
 		if ( $search_engine_activated ) {
-			require_once( dirname( dirname( __FILE__ ) ) . '/classes/TheCartPressSearchEngine.class.php' );
+			require_once( TCP_CLASSES_FOLDER . 'TheCartPressSearchEngine.class.php' );
 			TheCartPressSearchEngine::refresh();
 		}
 	}

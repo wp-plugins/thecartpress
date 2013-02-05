@@ -102,7 +102,7 @@ class TCP_Plugin {
 	 * Returns the text label to show in the checkout.
 	 * Must be implemented
 	 */
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 	}
 
 	/**
@@ -139,9 +139,10 @@ $tcp_payment_plugins = array();
 /**
  * Registers a shipping plugin
  */
-function tcp_register_shipping_plugin( $class_name ) {
+function tcp_register_shipping_plugin( $class_name, $object = false ) {
 	global $tcp_shipping_plugins;
-	$obj = new $class_name();
+	if ( $object === false ) $obj = new $class_name();
+	else $obj = $object;
 	$tcp_shipping_plugins['shi_' . $class_name] = $obj;
 	tcp_add_template_class( 'tcp_shipping_plugins_' . $class_name, sprintf( __( 'This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s', 'tcp' ), $obj->getName() ) );
 }
@@ -149,13 +150,13 @@ function tcp_register_shipping_plugin( $class_name ) {
 /**
  * Registers a payment plugin
  */
-function tcp_register_payment_plugin( $class_name ) {
+function tcp_register_payment_plugin( $class_name, $object = false ) {
 	global $tcp_payment_plugins;
-	$obj = new $class_name();
+	if ( $object === false ) $obj = new $class_name();
+	else $obj = $object;
 	$tcp_payment_plugins['pay_' . $class_name] = $obj;
 	tcp_add_template_class( 'tcp_payment_plugins_' . $class_name, sprintf( __( 'This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s', 'tcp' ), $obj->getName() ) );
 	global $tcp_miranda;
-	//if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'payments', $obj->getTitle(), $obj->getDescription(), array( $class_name ), $obj->getIcon() );
 	if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'payments', $obj->getTitle(), $obj->getDescription(), 'http://google.com', $obj->getIcon() );
 }
 

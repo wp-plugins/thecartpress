@@ -57,9 +57,7 @@ function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 		if ( $excerpt ) $html .= apply_filters( 'the_excerpt', $post->post_excerpt ); //get_the_excerpt();
 		else $html .= apply_filters( 'the_content', $post->post_content );
 	}
-	if ( $echo )
-		echo $html;
-	else
-		return $html;
+	if ( $echo ) echo $html;
+	else return $html;
 }
 ?>

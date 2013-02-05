@@ -23,12 +23,13 @@ class TCPAddressesList {
 	function show( $echo = true ) {
 		if ( is_admin() ) $admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
 		else $admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
-		if ( ! is_user_logged_in() ) : ?>
+		if ( ! is_user_logged_in() ) : ob_start(); ?>
 
-			<p><?php _e( 'You need to login to see your address.', 'tcp-fe' ); ?></p>
+			<p><?php _e( 'You need to login to see your address.', 'tcp' ); ?></p>
 			<?php tcp_login_form( array( 'echo' => true ) ); ?>
 
-		<?php return; endif;
+		<?php return ob_get_clean();
+		endif;
 		global $current_user;
 		get_currentuserinfo();
 		if ( isset( $_REQUEST['tcp_delete_address'] ) ) {

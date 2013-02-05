@@ -37,16 +37,16 @@ class TCPTaxSettings {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize how to apply the taxes.', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize how to apply the taxes.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
-	        '<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
-	        '<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
-	        '<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>'
+			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
+			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
+			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>'
 		);
 		//wp_enqueue_script('custom-background');
 		//wp_enqueue_style('farbtastic');

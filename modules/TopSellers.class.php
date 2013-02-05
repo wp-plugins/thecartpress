@@ -20,7 +20,8 @@ class TCPTopSellers {
 
 	function __construct() {
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		//add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		add_shortcode( 'tcp_total_sales', array( &$this, 'tcp_total_sales' ) );
 	}
 
 	function widgets_init() {
@@ -34,12 +35,33 @@ class TCPTopSellers {
 		}
 	}
 
-	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
-		$n = get_post_meta( $post_id, 'tcp_total_sales', true );
+	/*function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
+		$n = tcp_get_the_total_sales( $post_id );
 		$n += $ordersDetails['qty_ordered'];
 		update_post_meta( $post_id, 'tcp_total_sales', $n++ );
+	}*/
+
+	function tcp_total_sales( $atts ) {
+		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
+		return tcp_get_the_total_sales( $post_id );
 	}
+
 }
 
 new TCPTopSellers();
+
+function tcp_get_the_total_sales( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$post_id = tcp_get_default_id( $post_id );
+	require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
+	$total_sales = OrdersDetails::get_product_total_sales( $post_id );
+	return apply_filters( 'tcp_get_the_total_sales', $total_sales, $post_id );
+	//return (int)get_post_meta( $post_id, 'tcp_total_sales', true );
+}
+
+function tcp_the_total_sales( $post_id = 0, $echo = true ) {
+	$sales = tcp_get_total_sales( $post_id );
+	if ( $echo ) echo $sales;
+	else return $sales;
+}
 ?>

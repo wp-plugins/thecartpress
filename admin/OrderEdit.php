@@ -90,28 +90,32 @@ th, td {
 	<?php $orderpage = OrderPage::show( $order_id, array( 'see_sku' => true ), false, true );
 	$orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage ); ?>
 	<?php echo $orderpage; ?>
+
+	<?php do_action( 'tcp_admin_order_top', $order_id ); ?>
+
 	<?php if ( $order ) : ?>
 	<form method="post" name="frm">
 		<input type="hidden" name="status" value="<?php echo $status = $order->status;?>" />
 		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
-		<table width="100%" cellpadding="0" cellspacing="0">
+
+		<table class="form-table">
 		<tbody>
 		<?php do_action( 'tcp_admin_order_before_editor', $order_id ); ?>
 		<tr valign="top">
-			<th scope="row">
-				<label><?php _e( 'Order Id.', 'tcp' ); ?></label>
+			<th scope="col">
+				<label style="font-weight:bold;"><?php _e( 'Order ID', 'tcp' ); ?></label>
 			</th>
-			<th scope="row">
-				<label><?php _e( 'Date', 'tcp' ); ?></label>
+			<th scope="col">
+				<label style="font-weight:bold;"><?php _e( 'Date', 'tcp' ); ?></label>
 			</th>
 		</tr>
 		<tr>
-			<td ><?php echo $order_id;?></td>
+			<td><?php echo $order_id;?></td>
 			<td><?php echo $order->created_at;?></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row" colspan="2">
-				<label><?php _e( 'User email', 'tcp' ); ?>:</label>
+			<th scope="col" colspan="2">
+				<label style="font-weight:bold;"><?php _e( 'User email', 'tcp' ); ?></label>
 			</th>
 		</tr>
 		<tr valign="top">
@@ -122,11 +126,11 @@ th, td {
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row">
-				<label><?php _e( 'Shipping method', 'tcp' ); ?>:</label>
+			<th scope="col">
+				<label style="font-weight:bold;"><?php _e( 'Shipping method', 'tcp' ); ?></label>
 			</th>
-			<th scope="row">
-				<label><?php _e( 'Payment method', 'tcp' ); ?>:</label>
+			<th scope="col">
+				<label style="font-weight:bold;"><?php _e( 'Payment method', 'tcp' ); ?></label>
 			</th>
 		</tr>
 		<tr valign="top">
@@ -134,11 +138,11 @@ th, td {
 			<td><?php echo $order->payment_name;?></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row">
-				<label><?php _e( 'Transaction id', 'tcp' ); ?>:</label>
+			<th scope="col">
+				<label style="font-weight:bold;"><?php _e( 'Transaction id', 'tcp' ); ?>:</label>
 			</th>
-			<th scope="row">
-				<label>IP:</label>
+			<th scope="col">
+				<label style="font-weight:bold;">IP:</label>
 			</th>
 		</tr>
 		<tr valign="top">
@@ -147,7 +151,7 @@ th, td {
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="new_status"><?php _e( 'Status', 'tcp' ); ?>:</label>
+				<label for="new_status"  style="font-weight:bold;"><?php _e( 'Status', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<select class="postform" id="new_status" name="new_status">
@@ -160,15 +164,15 @@ th, td {
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="code_tracking"><?php _e( 'Code tracking', 'tcp' ); ?>:</label>
+				<label for="code_tracking"  style="font-weight:bold;"><?php _e( 'Code tracking', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-				<input name="code_tracking" id="code_tracking" type="text" size="10" maxlength="50" value="<?php echo $order->code_tracking; ?>" />
+				<input name="code_tracking" id="code_tracking" type="text" size="20" maxlength="50" value="<?php echo $order->code_tracking; ?>" />
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="comment"><?php _e( 'Customer\'s comment', 'tcp' ); ?>:</label>
+				<label for="comment"  style="font-weight:bold;"><?php _e( 'Customer\'s comment', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<textarea valign="top" name="comment" id="comment" rows="5" cols="40" maxlength="250"><?php echo $order->comment; ?></textarea>
@@ -176,7 +180,7 @@ th, td {
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="comment_internal"><?php _e( 'Internal comment', 'tcp' ); ?>:</label>
+				<label for="comment_internal"  style="font-weight:bold;"><?php _e( 'Internal comment', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<textarea valign="top" name="comment_internal" id="comment_internal" rows="5" cols="40" maxlength="250"><?php echo $order->comment_internal; ?></textarea>

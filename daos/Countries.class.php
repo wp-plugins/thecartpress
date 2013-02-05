@@ -69,7 +69,7 @@ class Countries {
 			return $language;
 		} else {
 			global $wpdb;
-			$row = $wpdb->get_row( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_countries WHERE field = %s' ), $language );
+			$row = $wpdb->get_row( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_countries WHERE field = %s', $language ) );
 			if ( $row ) {
 				return $language;
 			} else {

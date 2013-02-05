@@ -38,14 +38,14 @@ class TCPThemeCompatibilitySettings {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize Theme Compatibility.', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize Theme Compatibility.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
-	        '<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
+			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
 			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
 			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>' .
 			'<p>' . __( '<a href="http://extend.thecartpress.com/" target="_blank">Extend site</a>', 'tcp' ) . '</p>'

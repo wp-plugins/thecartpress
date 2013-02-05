@@ -26,6 +26,11 @@ class TCPLoginRegister {
 		add_action( 'user_register', array( &$this, 'user_register' ) );
 		add_filter( 'wp_authenticate_user', array( &$this, 'wp_authenticate_user' ), 1 );
 		add_action( 'admin_menu', array( &$this, 'admin_menus' ) );
+		if ( ! is_admin() ) {
+			add_filter( 'login_url', array( &$this, 'login_url' ), 10, 2 );
+			add_filter( 'logout_url', array( &$this, 'logout_url' ), 10, 2 );
+		}
+		add_shortcode( 'tcp_my_account', array( &$this, 'tcp_my_account' ) );
 	}
 
 	function admin_init() {
@@ -188,6 +193,44 @@ class TCPLoginRegister {
 		//if ( isset( $_REQUEST['tcp_role'] ) ) $user->add_role( $_REQUEST['tcp_role'] );
 		//if ( isset( $_REQUEST['tcp_lock'] ) && $_REQUEST['tcp_lock'] ) tcp_set_user_locked( $user_id, $_REQUEST['tcp_role'] );
 		//var_dump( $user );
+	}
+
+	function login_url( $login_url, $redirect ) {
+		/*$login_url = remove_query_arg( 'redirect_to', $login_url );
+		$login_url = add_query_arg( 'redirect_to', tcp_get_the_my_account_url(), $login_url );
+		return $login_url;*/
+		return add_query_arg( 'redirect_to', get_permalink(), tcp_get_the_my_account_url() );
+	}
+
+	function logout_url( $logout_url, $redirect ) {
+		$logout_url = remove_query_arg( 'redirect_to', $logout_url );
+		$logout_url = add_query_arg( 'redirect_to', get_permalink(), $logout_url );
+		return $logout_url;
+	}
+
+	function tcp_my_account() {
+		ob_start();?>
+<div class="tcp_login_form">
+	<?php
+	$args = array( 'see_register' => false );
+	if ( isset( $_REQUEST['redirect_to'] ) ) $args['redirect'] = $_REQUEST['redirect_to'];
+	tcp_login_form( $args ); ?>
+</div>
+
+<!--<h2><?php //_e( 'My Adresses', 'tcp-fe' ); ?></h2>
+	<?php //_e( 'You have the following dispatch and/or billing addresse(s) at interloom', 'tcp-fe' ); ?>
+	<?php //echo $this->tcp_addresses_list(); ?>
+	<a href="<?php tcp_the_my_addresses_url(); ?>"><?php _e( 'See all addresses', 'tcp-fe' ); ?></a>
+<h2><?php //_e( 'My orders', 'tcp-fe' ); ?></h2>
+	<?php //_e( 'Here is an overview of your current and previous orders', 'tcp_fe' ); ?>
+	<?php //echo $this->tcp_orders_list(); ?>
+	<a href="<?php tcp_the_my_orders_url(); ?>"><?php _e( 'See all orders', 'tcp-fe' ); ?></a>-->
+<?php if ( get_option( 'users_can_register' ) ) : ?>
+	<div class="tcp_register_form">
+	<?php tcp_register_form(); ?>
+	</div>
+<?php endif;
+		return ob_get_clean();
 	}
 }
 

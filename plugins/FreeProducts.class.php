@@ -30,8 +30,10 @@ class TCPFreeProducts extends TCP_Plugin {
 		return 'Free Products. <br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		return __( 'Free products', 'tcp' );
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : __( 'Free products', 'tcp' );
+		return tcp_string( 'TheCartPress', 'shi_TCPFreeProducts-title', $title );
 	}
 
 	function sendPurchaseMail() {
@@ -44,15 +46,13 @@ class TCPFreeProducts extends TCP_Plugin {
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		if ( $shoppingCart->getTotal() == 0 ) {
-			$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-			$url	= add_query_arg( 'order_id', $order_id, $url );
+			$url	= add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
 			$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
-			require_once( TCP_DAOS_FOLDER . '/Orders.class.php' );
+			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			Orders::editStatus( $order_id, $data['new_status'] );
-			require_once( TCP_CHECKOUT_FOLDER . '/ActiveCheckout.class.php' );
+			require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 			ActiveCheckout::sendMails( $order_id ); ?>
-			<script>window.location.href = '<?php echo $url; ?>';
-			</script><?php
+			<script>window.location.href = '<?php echo $url; ?>';</script><?php
 		} else {
 			wp_die( __( 'Access deny', 'tcp' ) );
 		}

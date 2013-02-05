@@ -25,9 +25,7 @@ class CrossSellingWidget extends CustomListWidget {
 	}
 
 	function widget( $args, $instance ) {
-//		require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
-//		$post_ids = OrdersDetails::getCrossSelling( get_the_ID() );
-		$post_ids = tcp_the_cross_selling( get_the_ID() );
+		$post_ids = tcp_the_cross_selling();
 		if ( ! is_array( $post_ids ) || count( $post_ids ) == 0 ) return;
 		$ids = array();
 		$id_to_remove = get_the_ID();
@@ -37,7 +35,7 @@ class CrossSellingWidget extends CustomListWidget {
 		if ( count( $ids ) == 0 ) return;
 		$loop_args = array(
 			'post__in'			=> $ids,
-			'post_type'			=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
+			'post_type'			=> tcp_get_product_post_types(), //tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
 			'posts_per_page'	=> $instance['limit'],
 		);
 		parent::widget( $args, $loop_args, $instance );

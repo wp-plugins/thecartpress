@@ -17,6 +17,52 @@
  */
 
 /**
+ * @since 1.2.5
+ */
+function tcp_get_current_user_role() {
+	$roles = tcp_get_current_user_roles();
+	$role = array_shift( $roles );
+	return $role;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_current_user_roles() {
+	$current_user = wp_get_current_user();
+	return $current_user->roles;
+}
+
+/**
+ * @since 1.2.5
+ */
+function tcp_get_current_user_role_title() {
+	$role = tcp_get_current_user_role();
+	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_user_roles( $user_id = false, $only_first = false ) {
+	if ( $user_id === false ) return tcp_get_current_user_roles();
+	$user = new WP_User( $user_id );
+	if ( ! empty( $user->roles ) && is_array( $user->roles ) ) {
+		if ( $only_first ) return $user->roles[0];
+		else return $user->roles;
+	}
+	return false;
+}
+
+/**
+ * @since 1.2.6
+ */
+function tcp_get_user_role( $user_id = false ) {
+	if ( $user_id === false ) return tcp_get_current_user_role();
+	return tcp_get_user_roles( $user_id, true );
+}
+
+/**
  * @since 1.2.6
  */
 function tcp_is_user_locked( $user_id ) {

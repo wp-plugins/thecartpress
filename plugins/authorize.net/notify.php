@@ -54,12 +54,12 @@ if ( $fingerprint == $x_md5_hash ) {
 		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
 		ActiveCheckout::sendMails( $order_id, $error );
 	}
-	$redirect = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
+	$redirect = tcp_get_the_checkout_ok_url();
 } else {
 	$error = __( 'Error notifiying Authorize.net payment', 'tcp' );
 	$error .= ' fp=' . $fingerprint . ', md5=' . $x_md5_hash;
 	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
-	$redirect = add_query_arg( 'tcp_checkout', 'ko', tcp_get_the_checkout_url() );
+	$redirect = tcp_get_the_checkout_ko_url();
 } ?>
 <html>
 <head>

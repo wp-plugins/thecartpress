@@ -24,6 +24,7 @@ $per			= isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
 $fix			= isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
 $update_type	= isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
 $cat_slug		= isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+$round_price	= isset( $_REQUEST['round_price'] );
 
 if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	$args = array(
@@ -63,7 +64,6 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 <form method="post">
 	<table class="form-table">
 	<tbody>
-
 	<tr valign="top">
 	<th scope="row"><label for="post_type"><?php _e( 'Post type', 'tcp' )?>:</label></th>
 	<td>
@@ -115,6 +115,15 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 		<span id="div_fix"<?php if ( $update_type != 'fix' ) : ?> style="display:none;"<?php endif;?>>&nbsp;<input type="text" name="fix" value="<?php echo $fix;?>" size="5" maxlength="5" class="tcp_count"/><?php tcp_the_currency();?></span>
 	</td>
 	</tr>
+	<tr valign="top">
+		<th scope="row">
+			<label for="round_price"><?php _e( 'Prices rounded', 'tcp' );?></label>
+		</th>
+		<td>
+			<label><input type="checkbox" name="round_price" id="round_price" value="yes" <?php checked( $round_price ); ?> />
+			<p class="description"><?php _e( 'Only for percentage prices', 'tcp' ); ?></p>
+		</td>
+	</tr>
 	<?php do_action( 'tcp_update_price_search_controls' ); ?>
 	</tbody>
 	</table>
@@ -155,13 +164,14 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 				$price = tcp_get_the_price( $post->ID );
 				if ( $update_type == 'per' ) {
 					$new_price = $price * (1 + $per / 100);
+					if ( $round_price ) $new_price = round( $new_price );
 				} else { //fixed
 					$new_price = $price + $fix;
 				}?>
 			<tr>
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID;?>"><?php echo $post->post_title;?></a></td>
 				<td><?php echo tcp_format_the_price( $price );?></td>
-				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" class="tcp_count"/> <?php tcp_the_currency();?></td>
+				<td><input type="text" value="<?php echo tcp_number_format( $new_price );?>" name="tcp_new_price_<?php echo $post->ID;?>" size="13" maxlength="13" /> <?php tcp_the_currency();?></td>
 				<td>&nbsp;</td>
 			</tr>
 			<?php do_action( 'tcp_update_price_controls', $post );

@@ -13,9 +13,9 @@ get_header(); ?>
 				<?php while ( have_posts() ) : the_post(); ?>
 					<?php tcp_get_template_part( dirname( __FILE__ ), 'content', 'single-product' );?>
 					<?php if ( is_active_sidebar( 'sidebar-related' ) ) : ?>
-                        <div id="cross-content">
-                          <?php dynamic_sidebar( 'sidebar-related' ); ?>
-                        </div>
+						<div id="cross-content">
+						<?php dynamic_sidebar( 'sidebar-related' ); ?>
+						</div>
 					<?php endif; ?>
 					<?php comments_template( '', true ); ?>
 				<?php endwhile; // end of the loop. ?>

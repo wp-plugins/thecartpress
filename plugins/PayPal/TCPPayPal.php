@@ -41,9 +41,9 @@ class TCPPayPal extends TCP_Plugin {
 		return 'https://www.paypal.com/es_ES/ES/i/logo/paypal_logo.gif';
 	}
 
-	function getName() {
+	/*function getName() {
 		return 'PayPal';
-	}
+	}*/
 
 	function getDescription() {
 		return 'PayPal Standard payment method.<br>Author: <a href="http://thecartpress.com">TheCartPress team</a>';
@@ -52,7 +52,7 @@ class TCPPayPal extends TCP_Plugin {
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_payment_plugin_data( 'TCPPayPal', $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
-		return $title;
+		return tcp_string( 'TheCartPress', 'pay_TCPPayPal-title', $title );
 	}
 
 	function showEditFields( $data ) { ?>
@@ -196,9 +196,9 @@ class TCPPayPal extends TCP_Plugin {
 		$p = new tcp_paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
-		$p->add_field( 'return', add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() ) );
+		$p->add_field( 'return', tcp_get_the_checkout_ok_url() );
 		//$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) ) );
-		$p->add_field( 'cancel_return', add_query_arg( 'tcp_checkout', 'ko', tcp_get_the_checkout_url() ) );
+		$p->add_field( 'cancel_return', tcp_get_the_checkout_ko_url() );
 		//$p->add_field( 'notify_url', plugins_url( 'thecartpress/plugins/PayPal/notify.php' ) );
 		$p->add_field( 'notify_url', add_query_arg( 'action', 'tcp_paypal_ipn', admin_url( 'admin-ajax.php' ) ) );
 		$p->add_field( 'custom', $order_id . '-' . $instance );

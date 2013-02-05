@@ -36,8 +36,9 @@ if ( $current_user->ID == 0 ) {
 		return;
 	}
 }
+$template = locate_template( 'tcp_print_order.php' );
 $file_name	= 'tcp_print_order.php';
-$template	= get_stylesheet_directory() . '/' . $file_name;
+//$template	= get_stylesheet_directory() . '/' . $file_name;
 $template	= apply_filters( 'tcp_get_print_order_template', $template, $order_id );
 if ( file_exists( $template ) ) {
 	include( $template );

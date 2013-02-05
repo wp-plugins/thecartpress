@@ -42,6 +42,7 @@ function tcp_widgets_init() {
 		register_widget( 'CrossSellingWidget' );
 	}
 	require_once( 'LastVisitedWidget.class.php' );
+	require_once( 'LoginWidget.class.php' );
 	require_once( 'CustomPostTypeListWidget.class.php' );
 	require_once( 'TaxonomyCloudsPostTypeWidget.class.php' );
 	require_once( 'TaxonomyTreesPostTypeWidget.class.php' );
@@ -53,6 +54,7 @@ function tcp_widgets_init() {
 	require_once( 'WishListWidget.class.php' );
 	require_once( 'AuthorsWidget.class.php' );
 	register_widget( 'LastVisitedWidget' );
+	register_widget( 'TCPLoginWidget' );
 	register_widget( 'CustomPostTypeListWidget' );
 	register_widget( 'TaxonomyCloudsPostTypeWidget' );
 	register_widget( 'TaxonomyTreesPostTypeWidget' );
@@ -69,17 +71,19 @@ function tcp_widgets_init() {
 add_action( 'wp_dashboard_setup', 'tcp_wp_dashboard_setup' );
 
 function tcp_wp_dashboard_setup() {
-	global $thecartpress;
-	if ( ! $thecartpress->get_setting( 'disable_ecommerce' ) ) {
-		require_once( TCP_WIDGETS_FOLDER . 'OrdersSummaryDashboard.class.php' );
-		require_once( TCP_WIDGETS_FOLDER . 'SalesChartDashboard.class.php' );
-	}
-	global $wp_meta_boxes;
-	$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
-	$tcp_orders_resume = array( 'tcp_orders_resume' => $normal_dashboard['tcp_orders_resume']);
-	unset( $normal_dashboard['tcp_orders_resume'] );
-	$sorted_dashboard = array_merge( $tcp_orders_resume, $normal_dashboard);
-	$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+	//if ( current_user_can( 'tcp_edit_orders' ) || current_user_can( 'tcp_edit_order' ) ) {
+		global $thecartpress;
+		if ( ! $thecartpress->get_setting( 'disable_ecommerce' ) ) {
+			require_once( TCP_WIDGETS_FOLDER . 'OrdersSummaryDashboard.class.php' );
+			require_once( TCP_WIDGETS_FOLDER . 'SalesChartDashboard.class.php' );
+		}
+		global $wp_meta_boxes;
+		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
+		$tcp_orders_resume = array( 'tcp_orders_resume' => $normal_dashboard['tcp_orders_resume']);
+		unset( $normal_dashboard['tcp_orders_resume'] );
+		$sorted_dashboard = array_merge( $tcp_orders_resume, $normal_dashboard);
+		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
+	//}
 }
 
 ?>

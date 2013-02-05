@@ -53,6 +53,7 @@ class ShoppingCart {
 		$count = (int)$count;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
+		$sci = false;
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			if ( $count > 0 ) {
 				$sci = $this->shopping_cart_items[$shopping_cart_id];
@@ -64,6 +65,7 @@ class ShoppingCart {
 			}
 			$this->removeOrderId();
 		}
+		return $sci;
 	}
 
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {

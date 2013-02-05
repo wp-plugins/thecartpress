@@ -28,60 +28,60 @@
 	.tcp_order_page_name {
 		text-align: left;
 	}
-    body,td,th {
-	   font-family: Arial, Helvetica, sans-serif;
-	   font-size: 12px;
-	   color: #333;
+	body,td,th {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: #333;
 	}
 	a:link {
-	   color: #C00;
-	   text-decoration: none;
-    }
-    a:hover {
-	    color: #960000;
+		color: #C00;
 		text-decoration: none;
-    }
+	}
+	a:hover {
+		color: #960000;
+		text-decoration: none;
+	}
 	a:visited {
-    	text-decoration: none;
-	    color: #C00;
-    }
-    a:active {
-	    text-decoration: none;
-	    color: #960000;
-    }
+		text-decoration: none;
+		color: #C00;
+	}
+	a:active {
+		text-decoration: none;
+		color: #960000;
+	}
 	.tcp_shopping_cart_table .tcp_cart_name {
 		text-align: left;
 		bbackground-color: #f0f0f0;
-	    width: inherit;
-	    font-size: 12px;
+		width: inherit;
+		font-size: 12px;
 	}
 	.tcp_shopping_cart_table .tcp_cart_name a{
-	    text-align: left;
+		text-align: left;
 		text-decoration: none;
 	}
 	.tcp_shopping_cart_table {
 		width: 90%;
-	    border:0px;
+		border:0px;
 	}
-   .tcp_shopping_cart_table tr th,
-   .tcp_shopping_cart_table thead th {
-	    background-color: #333;
-	    padding: 4px 10px;
-	    line-height: 22px;
-	    color: #CCC;
+	.tcp_shopping_cart_table tr th,
+	.tcp_shopping_cart_table thead th {
+		background-color: #333;
+		padding: 4px 10px;
+		line-height: 22px;
+		color: #CCC;
 	}
-   .tcp_shopping_cart_table tr td {
-	    background-color: #f7f7f7;
-	    font-size: 11px;
-	    padding: 4px 10px;
-	    border-top: 1px dotted #ccc;
+	.tcp_shopping_cart_table tr td {
+		background-color: #f7f7f7;
+		font-size: 11px;
+		padding: 4px 10px;
+		border-top: 1px dotted #ccc;
 	}
 
-   .tcp_shopping_cart_table tr.odd td {
+	.tcp_shopping_cart_table tr.odd td {
 		background-color: #FfF7FC;
 	}
 	
-    #shipping_info {
+	#shipping_info {
 		width: 50%;
 		float: left;
 	}

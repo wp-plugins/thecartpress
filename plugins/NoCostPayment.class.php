@@ -25,7 +25,7 @@ class NoCostPayment extends TCP_Plugin {
 		return 'No payment method. Only for test purpose.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
 		return __( 'No payment!!, for test purpose', 'tcp' ) . ': ' . $shoppingCart->getTotal();
 	}
 
@@ -50,8 +50,7 @@ class NoCostPayment extends TCP_Plugin {
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$url	= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-		$url	= add_query_arg( 'order_id', $order_id, $url ); ?>
+		$url	= add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() ); ?>
 		<h2><?php _e( 'No payment!!, for test purpose.', 'tcp' );?></h2>
 		<p><?php echo $data['notice'];?></p>
 		<p><input type="button" class="tcp_pay_button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>

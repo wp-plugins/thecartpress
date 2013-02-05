@@ -18,9 +18,7 @@ get_header(); ?>
 			<?php if ( have_posts() ) : ?>
 				<header class="page-header">
 					<h1 class="page-title">
-                    <?php
-                        printf( $wp_query->queried_object->labels->name );
-                    ?> 
+					<?php printf( $wp_query->queried_object->labels->name ); ?>
 						<?php if ( is_day() ) : ?>
 							<?php printf( __( '%s', 'twentyeleven' ), '<span>' . get_the_date() . '</span>' ); ?>
 						<?php elseif ( is_month() ) : ?>
@@ -42,8 +40,8 @@ get_header(); ?>
 						//get_template_part( 'loop-tcp-grid' );
 						require_once( dirname( __FILE__ ) . '/loop-tcp-grid.php' );
 					?>
-<?php else : ?>
-			  <article id="post-0" class="post no-results not-found">
+			<?php else : ?>
+				<article id="post-0" class="post no-results not-found">
 					<header class="entry-header">
 						<h1 class="entry-title"><?php _e( 'Nothing Found', 'twentyeleven' ); ?></h1>
 					</header><!-- .entry-header -->

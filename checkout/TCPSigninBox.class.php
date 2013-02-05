@@ -30,6 +30,10 @@ class TCPSigninBox extends TCPCheckoutBox {
 		return 'identify_layer';
 	}
 
+	function get_name() {
+		return 'login';
+	}
+
 	function before_action() {
 		if ( is_user_logged_in() ) {
 			return 1;

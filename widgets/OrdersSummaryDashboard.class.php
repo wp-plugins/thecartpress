@@ -21,7 +21,8 @@ require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 class OrdersSummaryDashboard {
 
 	function __construct() {
-		wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders Summary', 'tcp' ), array( $this, 'show' ) );
+		if ( current_user_can( 'tcp_edit_orders' ) || current_user_can( 'tcp_edit_order' ) )
+			wp_add_dashboard_widget( 'tcp_orders_resume', __( 'Orders Summary', 'tcp' ), array( $this, 'show' ) );
 	}
 
 	function show() {

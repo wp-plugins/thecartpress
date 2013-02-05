@@ -21,7 +21,19 @@ require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
 class TCPCheckoutEditor {
 
 	function __construct() {
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+	}
+
+	function admin_init() {
+		add_action( 'wp_ajax_tcp_checkout_steps_save', array( &$this, 'tcp_checkout_steps_save' ) );
+	}
+
+	function tcp_checkout_steps_save() {
+		$steps = $_REQUEST['list'];
+		$steps = explode( ',', $steps );
+		require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
+		TCPCheckoutManager::update_steps( $steps );
 	}
 
 	function admin_menu() {
@@ -82,7 +94,8 @@ $order_steps = TCPCheckoutManager::get_steps(); ?>
 <ul class="tcp_activated_boxes">
 <?php if ( count( $order_steps ) > 0 ) :
 	foreach( $order_steps as $class_name ) :
-		if ( isset( $tcp_checkout_boxes[$class_name] ) ) : $partial_path = $tcp_checkout_boxes[$class_name]; ?>
+		if ( isset( $tcp_checkout_boxes[$class_name] ) ) : $partial_path = $tcp_checkout_boxes[$class_name];
+if ( is_array( $partial_path ) ) $partial_path = $partial_path['path']; ?>
 	<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
 		<h4><?php echo $class_name; ?></h4>
 		<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>

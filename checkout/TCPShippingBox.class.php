@@ -35,6 +35,10 @@ class TCPShippingBox extends TCPCheckoutBox {
 		return 'shipping_layer';
 	}
 
+	function get_name() {
+		return 'shipping';
+	}
+
 	function before_action() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		if ( $shoppingCart->isDownloadable() ) {

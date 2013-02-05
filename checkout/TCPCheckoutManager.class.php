@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/daos/Orders.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
-require_once( dirname( dirname( __FILE__ ) ) . '/classes/OrderPage.class.php' );
+require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class TCPCheckoutManager {
 
@@ -52,7 +52,6 @@ class TCPCheckoutManager {
 	function show() {
 		$html = apply_filters( 'tcp_checkout_manager', '' );
 		if ( strlen( $html ) > 0 ) return $html;
-
 		$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 0;
 		$box = $this->get_box( $step );
 		if ( ! $box) {
@@ -114,6 +113,19 @@ class TCPCheckoutManager {
 		TCPCheckoutManager::update_steps( $new_steps );
 	}
 
+	static function get_step_by_permalink( $permalink ) {
+		$steps = TCPCheckoutManager::get_steps();
+		if ( defined( 'TCP_CHECKOUT_PURCHASE' ) && TCP_CHECKOUT_PURCHASE == $permalink ) return count( $steps );
+		global $tcp_checkout_boxes;
+		$i = 0;
+		foreach( $steps as $step ) {
+			$box = $tcp_checkout_boxes[$step];
+			if ( $box['name'] == $permalink ) return $i;
+			else $i++;
+		}
+		return 0;
+	}
+
 	protected function show_next_box( $box, $step ) {
 		$step++;
 		$next_box = $this->get_box( $step );
@@ -152,45 +164,63 @@ class TCPCheckoutManager {
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
 <div class="checkout" id="checkout">
-		<?php $this->show_header( $box, $step );
-		if ( $step == count( $this->steps ) ) : //last step, no return
-			echo $this->create_order(); //create the order, show payment form
-		else :
-	if ( $box->is_form_encapsulated() ) : ?>
-	<form method="post">
-	<?php endif; ?>
-		<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
-			<h3>
-				<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
-			</h3>
-			<?php $see_continue_button = $box->show();
-			ob_start(); //Create continue and back buttons
-			if ( ! $box->is_form_encapsulated() ) : ?>
-			<form method="post">
-			<?php endif;
-			if ( $step > 0 ) : ?>
-			<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="tcp_checkout_button" />
-			<?php endif;
-			if ( $see_continue_button ) :
-				if ( $step < count( $this->steps ) - 1 ) : ?>
-					<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button" />
-				<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
-		   			<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button" />
-				<?php endif;
-			endif; ?>
-			<input type="hidden" name="step" value="<?php echo $step; ?>" />
-			<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step );
-			if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
-			if ( strlen( $html ) > 0 ) : ?>
-				<span class="tcp_back_continue"><?php echo $html; ?></span>
-			<?php endif; ?>
-			<?php $this->show_footer( $box, $step ); ?>
-		</div><!-- <?php echo $box->get_class(); ?> -->
-	<?php if ( $box->is_form_encapsulated() ) : ?>
-	</form>
-	<?php endif; ?>
-	<?php endif; ?>
-		<?php do_action( 'tcp_show_box', $step ); ?>
+	<?php $this->show_header( $box, $step );
+	if ( $step == count( $this->steps ) ) { //last step, no return
+if ( in_the_loop() ) echo '<br/><br/>In the Loop!!!!<br/><br/>';
+else echo '<br/><br/>NOT in the Loop!!!!<br/><br/>';
+
+		if ( in_the_loop() ) {
+			$order_id = $this->create_order(); //create the order, show payment form
+		} else {
+			$shoppingCart = TheCartPress::getShoppingCart();
+			$order_id = $shoppingCart->getOrderId();
+		}
+		echo $this->show_payment_area( $order_id );
+	} else {
+		$next_box = $this->get_box( $step + 1 );
+		$action = tcp_get_the_checkout_url();
+		if ( defined( 'TCP_CHECKOUT_PURCHASE' ) ) {
+			if ( $next_box ) $action .= $next_box->get_name();
+			else $action = $action .= TCP_CHECKOUT_PURCHASE;
+		}
+		if ( $box->is_form_encapsulated() ) : ?>
+			<form method="post" action="<?php echo $action; ?>">
+		<?php endif; ?>
+				<div class="<?php echo $box->get_class(); ?> active" id="<?php echo $box->get_class(); ?>">
+					<h3>
+						<?php echo apply_filters( 'tcp_ckeckout_current_title', $step + 1 . '. ' . $box->get_title(), $step ); ?>
+					</h3>
+					<?php $see_continue_button = $box->show();
+					ob_start(); //Create continue and back buttons
+					if ( ! $box->is_form_encapsulated() ) : ?><form method="post" action="<?php echo $action; ?>"><?php endif;
+					if ( $step > 0 ) : 
+						if ( defined( 'TCP_CHECKOUT' ) ) : ?>
+						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp_checkout_button"><?php _e( 'Back', 'tcp' ); ?></a>
+						<?php else : ?>
+						<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="tcp_checkout_button" />
+						<?php endif;
+					endif;
+					if ( $see_continue_button ) :
+						if ( $step < count( $this->steps ) - 1 ) : ?>
+							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button" />
+						<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
+							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button" />
+							<input type="hidden" name="step" value="<?php echo count( $this->steps ) - 1; ?>" />
+						<?php endif;
+					endif; ?>
+					<input type="hidden" name="step" value="<?php echo $step; ?>" />
+					<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step );
+					if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
+					if ( strlen( $html ) > 0 ) : ?>
+						<span class="tcp_back_continue"><?php echo $html; ?></span>
+					<?php endif; ?>
+					<?php $this->show_footer( $box, $step ); ?>
+				</div><!-- <?php echo $box->get_class(); ?> -->
+		<?php if ( $box->is_form_encapsulated() ) : ?>
+			</form>
+		<?php endif;
+	}
+	do_action( 'tcp_show_box', $step ); ?>
 </div><!-- checkout --><?php
 		return apply_filters( 'tcp_show_box_filter', ob_get_clean(), $step );
 	}
@@ -202,7 +232,8 @@ class TCPCheckoutManager {
 			<?php foreach( $this->steps as $s => $value ) : ?>
 				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
-					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
+					if ( defined( 'TCP_CHECKOUT' ) ) $url = get_site_url() . '/' . TCP_CHECKOUT .'/' . $b->get_name();
+					else $url = add_query_arg( 'step', $s, get_permalink() ); ?>
 				<li class="tcp_ckeckout_step">
 					<a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a>
 				</li>
@@ -214,11 +245,12 @@ class TCPCheckoutManager {
 				<?php endif; ?>
 			<?php endforeach;?>
 			</ul>
-		<?php else : //TCPCheckoutManager::$ACCORDION
+		<?php else ://TCPCheckoutManager::$ACCORDION
 			foreach( $this->steps as $s => $value ) : ?>
 				<?php if ( $s < $step ) :
 					$b = $this->get_box( $s );
-					$url = add_query_arg( 'step', $s, get_permalink() ); ?>
+					if ( defined( 'TCP_CHECKOUT' ) ) $url = get_site_url() . '/' . TCP_CHECKOUT .'/' . $b->get_name();
+					else $url = add_query_arg( 'step', $s, get_permalink() ); ?>
 					<div class="<?php echo $b->get_class(); ?>" id="<?php echo $b->get_class(); ?>">
 						<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>" tcp_step="<?php echo $s; ?>"><?php echo $s + 1; ?>. <?php echo $b->get_title(); ?></a></h3>
 					</div>
@@ -247,7 +279,7 @@ class TCPCheckoutManager {
 			global $tcp_checkout_boxes;
 			if ( $checkout_box && isset( $tcp_checkout_boxes[$checkout_box] ) ) {
 				$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
-				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box] );
+				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box]['path'] );
 				return new $checkout_box();
 			} else {
 				return false;
@@ -518,14 +550,18 @@ class TCPCheckoutManager {
 		}
 		if ( $create_shipping_address ) $this->createNewShippingAddress( $order );
 		if ( $create_billing_address ) $this->createNewBillingAddress( $order );
-		//
-		// shows Payment Area
-		//
+		return $order_id;
+	}
+	
+	function show_payment_area( $order_id ) {
+		$shipping_country = tcp_get_shipping_country();
+		$shoppingCart = TheCartPress::getShoppingCart();
 		ob_start(); ?>
 		<div class="tcp_payment_area">
 		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
-		<p><?php echo apply_filters( 'tcp_checkout_ok_message', __( 'The next step helps you to pay using the payment method chosen by you.', 'tcp' ), $order_id ); ?></p>
-		
+
+		<p><?php echo apply_filters( 'tcp_checkout_ok_message', __( 'Please continue checking out using your chosen payment method.', 'tcp' ), $order_id ); ?></p>
+
 		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) :
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
@@ -547,7 +583,7 @@ class TCPCheckoutManager {
 			<br />
 			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 		</div><!-- tcp_payment_area--><?php
-		//$shoppingCart->deleteAll();//remove since 1.1.0
+		//$shoppingCart->deleteAll();//removed since 1.1.0
 		return ob_get_clean();
 	}
 

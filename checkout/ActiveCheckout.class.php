@@ -22,12 +22,12 @@ require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 class ActiveCheckout {//shortcode
 
 	function show() {
+		global $thecartpress;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
 		if ( isset( $_REQUEST['order_id'] ) ) {
 			$order_id = $_REQUEST['order_id'];
 		} else {
-			global $thecartpress;
 			$shoppingCart = TheCartPress::getShoppingCart();
 			$order_id = $shoppingCart->getOrderId();
 		}
@@ -50,12 +50,11 @@ class ActiveCheckout {//shortcode
 			do_action( 'tcp_completed_ok_stockadjust', $order_id );
 			$html = tcp_do_template( 'tcp_checkout_end', false );
 			ob_start();
-			if ( strlen( $html ) > 0 ) : echo $html; ?>
-			<?php else : ?>
+			if ( strlen( $html ) > 0 ) : echo $html;
+			else : ?>
 				<div class="tcp_payment_area">
 					<div class="tcp_order_successfully">
-					<?php global $thecartpress;
-					$checkout_successfully_message = $thecartpress->get_setting( 'checkout_successfully_message', '' );
+					<?php $checkout_successfully_message = $thecartpress->get_setting( 'checkout_successfully_message', '' );
 					if ( strlen( $checkout_successfully_message ) > 0 ) : ?>
 						<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_successfully_message ); ?></p>
 					<?php else : ?>

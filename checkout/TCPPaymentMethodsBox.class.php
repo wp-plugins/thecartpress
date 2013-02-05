@@ -21,14 +21,54 @@ require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 
 class TCPPaymentMethodsBox extends TCPCheckoutBox {
 	private $errors = array();
+	private $applicable_plugins = array();
 	private $payment_sorting = array();
 
 	function get_title() {
-		return __( 'Payment methods', 'tcp' );
+		if ( isset( $_SESSION['tcp_checkout']['payment_methods'] ) ) {
+			$plugin = explode( '#', $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] );
+			$object = new $plugin[0]();
+			return sprintf( __( 'Payment method: %s', 'tcp' ), $object->getCheckoutMethodLabel( $plugin[1], '', false ) );
+		} else {
+			return __( 'Payment methods', 'tcp' );
+		}
 	}
 
 	function get_class() {
 		return 'payment_layer';
+	}
+
+	function get_name() {
+		return 'payment-methods';
+	}
+
+	function before_action() {
+		$shoppingCart = TheCartPress::getShoppingCart();
+		$billing_country = '';
+		$selected_billing_address = isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ? $_SESSION['tcp_checkout']['billing']['selected_billing_address'] : false;
+		if ( $selected_billing_address == 'new' ) {
+			$billing_country = $_SESSION['tcp_checkout']['billing']['billing_country_id'];
+		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] )) { //if ( $selected_billing_address == 'Y' ) {
+			$billing_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
+		} else {
+			$billing_country = '';
+		}
+		$this->applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
+		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$hidden_if_unique = isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false;
+		if ( $hidden_if_unique && count( $this->applicable_plugins ) == 1 ) {
+			$plugin_data = $this->applicable_plugins[0];
+			$tcp_plugin = $plugin_data['plugin'];
+			$instance = $plugin_data['instance'];
+			$plugin_name = get_class( $tcp_plugin );
+			$_SESSION['tcp_checkout']['payment_methods'] = array(
+				'payment_method_id' => $plugin_name . '#' . $instance,
+			);
+			return 1;
+		} else {
+			$this->payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+			return 0;
+		}
 	}
 
 	function after_action() {
@@ -98,12 +138,17 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				<li class="tcp_payment_item" id="<?php echo $id; ?>"><?php echo $tcp_payment_plugin->getName(); ?></li>
 			<?php endif; ?>
 		</ul>
+		<?php $tcp_hidden_if_unique	= isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false; ?>
+		<ul>
+			<li><label><input type="checkbox" value="yes" name="tcp_hidden_if_unique" <?php checked( $tcp_hidden_if_unique ); ?>/> <?php _e( 'Hide box if only one method is applicable', 'tcp' ); ?></label></li>
+		</ul>
 		<?php return true;
 	}
 
 	function save_config_settings() {
 		$settings = array(
-			'sorting'	=> isset( $_REQUEST['tcp_payment_sorting'] ) ? explode( ',', $_REQUEST['tcp_payment_sorting'] ) : '',
+			'sorting'			=> isset( $_REQUEST['tcp_payment_sorting'] ) ? explode( ',', $_REQUEST['tcp_payment_sorting'] ) : '',
+			'hidden_if_unique'	=> isset( $_REQUEST['tcp_hidden_if_unique'] ),
 		);
 		update_option( 'tcp_' . get_class( $this ), $settings );
 		return true;
@@ -131,18 +176,18 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		} else {
 			$shipping_country = '';
 		}
-		$applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
+		/*$this->applicable_plugins = tcp_get_applicable_payment_plugins( $billing_country, $shoppingCart );
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );
-		$this->payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';
+		$this->payment_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';*/
 		if ( is_array( $this->payment_sorting ) && count( $this->payment_sorting ) > 0 ) {
-			usort( $applicable_plugins, array( $this, 'sort_plugins' ) );
+			usort( $this->applicable_plugins, array( $this, 'sort_plugins' ) );
 		} ?>
 		<div class="checkout_info clearfix" id="payment_layer_info">
-		<?php if ( is_array( $applicable_plugins ) && count( $applicable_plugins ) > 0 ) : ?>
+		<?php if ( is_array( $this->applicable_plugins ) && count( $this->applicable_plugins ) > 0 ) : ?>
 			<ul><?php
 			$first_plugin_value = false;
 			$payment_method_id = isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ? $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] : false;
-			foreach( $applicable_plugins as $plugin_data ) :
+			foreach( $this->applicable_plugins as $plugin_data ) :
 				$tcp_plugin = $plugin_data['plugin'];
 				$instance = $plugin_data['instance'];
 				$plugin_name = get_class( $tcp_plugin );

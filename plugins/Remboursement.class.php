@@ -19,7 +19,7 @@
 class TCPRemboursement extends TCP_Plugin {
 
 	function getTitle() {
-		return 'Cash on delivery';
+		return __( 'Cash on delivery', 'tcp' );
 	}
 
 	function getDescription() {
@@ -53,6 +53,7 @@ class TCPRemboursement extends TCP_Plugin {
 
 	function saveEditFields( $data ) {
 		$data['notice']		= isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
+		tcp_register_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] );
 		$data['percentage']	= isset( $_REQUEST['percentage'] ) ? (float)$_REQUEST['percentage'] : '0';
 		$data['fix']		= isset( $_REQUEST['fix'] ) ? (float)$_REQUEST['fix'] : '0';
 		return $data;
@@ -62,24 +63,26 @@ class TCPRemboursement extends TCP_Plugin {
 		return false;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$title	= isset( $data['title'] ) ? $data['title'] : '';
-		$cost	= tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$title = isset( $data['title'] ) ? $data['title'] : '';
+		$title = tcp_string( 'TheCartPress', 'pay_TCPRemboursement-title', $title );
+		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		//return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 		ob_start(); ?>
 		<?php if ( $cost > 0 ) printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 		else echo $title; ?>
-		<?php if ( strlen( trim( $data['notice'] ) ) > 0 ) : ?>
-			<p><?php echo $data['notice'];?></p>
+		<?php if ( false && strlen( trim( $data['notice'] ) ) > 0 ) : ?>
+			<p><?php echo tcp_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] ); ?></p>
 		<?php endif; ?>
 		<?php return ob_get_clean();
 	}
 
-	function getCost( $instance, $shippingCountry, $shoppingCart ) {
+	function getCost( $instance, $shippingCountry, $shoppingCart = false ) {
 		$data		= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$percentage	= isset( $data['percentage'] ) ? $data['percentage'] : 0;
 		if ( $percentage > 0 ) {
+			if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
 			return $shoppingCart->getTotal() * $percentage / 100;
 		} else {
 			$fix = isset( $data['fix'] ) ? $data['fix'] : 0;

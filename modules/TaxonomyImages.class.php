@@ -19,6 +19,7 @@ class TCPTaxonomyImages {
 
 	function __construct() {
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_shortcode( 'tcp_the_taxonomy_list', array( &$this, 'tcp_the_taxonomy_list_shortcode' ) );
 	}
 
 	function admin_init() {
@@ -34,6 +35,10 @@ class TCPTaxonomyImages {
 		add_action( 'wp_ajax_tcp_taxonomy_image_add', array( &$this, 'tcp_taxonomy_image_add' ) );
 		add_action( 'wp_ajax_tcp_taxonomy_image_remove', array( &$this, 'tcp_taxonomy_image_remove' ) );
 		add_filter( 'attachment_fields_to_edit', array( &$this, 'attachment_fields_to_edit' ), 20, 2 );
+	}
+
+	function tcp_the_taxonomy_list_shortcode( $atts ) {
+		return tcp_the_taxonomy_list( $atts, '', '', false );
 	}
 
 	function admin_print_scripts_edit_tags() {
@@ -186,10 +191,4 @@ function tcp_the_taxonomy_list( $args = array(), $before = '', $after = '', $ech
 	if ( $echo ) echo $out;
 	else return $out;
 }
-
-function tcp_the_taxonomy_list_shortcode( $atts ) {
-	return tcp_the_taxonomy_list( $atts, '', '', false );
-}
-
-add_shortcode( 'tcp_the_taxonomy_list', 'tcp_the_taxonomy_list_shortcode' );
 ?>

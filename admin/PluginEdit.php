@@ -28,6 +28,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
+	tcp_register_string( 'TheCartPress', $plugin_id . '-title', $plugin_data[$instance]['title'] );
 	if ( strlen($plugin_data[$instance]['title'] ) > 0 ) {
 		$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
 		$plugin_data[$instance]['not_for_downloadable'] = isset( $_REQUEST['not_for_downloadable'] );
@@ -56,7 +57,8 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
 	do_action( 'tcp_plugin_edit_delete', $plugin_id );
 	unset( $plugin_data[$instance] );
-	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data ); ?>
+	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );
+	tcp_unregister_string( 'TheCartPress', $plugin_id . '-title' ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Instance deleted', 'tcp' ); ?>
 	</p></div><?php

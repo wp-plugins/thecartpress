@@ -76,7 +76,6 @@ if ( isset( $settings['use_default_loop'] ) && $settings['use_default_loop'] == 
 	<?php endif; ?>
 
 <?php $settings = get_option( 'ttc_settings' );
-
 if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_type'] ) ) > 0 ) {
 	$current_post_type = $_POST['current_post_type'];
 	$suffix = '-' . $current_post_type;
@@ -84,7 +83,6 @@ if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_
 	$suffix = '';
 	$current_post_type = '';
 }
-
 $see_title				= isset( $settings['see_title' . $suffix ] ) ? $settings['see_title' . $suffix ] : true;
 $title_tag				= isset( $settings['title_tag' . $suffix ] ) ? $settings['title_tag' . $suffix ] : 'h2';
 $see_image				= isset( $settings['see_image' . $suffix ] ) ? $settings['see_image' . $suffix ] : true;
@@ -421,14 +419,12 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 				}
 			}
 		}
-
 		/*global $post;
 		if ( $post && tcp_is_saleable_post_type( $post->post_type ) ) {
 			if ( is_single() ) $template = $this->get_template_single();
 			else $template = $this->get_template_archive();
 			if ( $template ) return $template;
 		}*/
-		
 		return $template;
 	}
 
@@ -444,7 +440,7 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 		return $template;
 	}
 
-	private function get_template_archive( $product_type = false) {
+	/*private function get_template_archive( $product_type = false) {
 		$settings = get_option( 'tcp_settings' );
 		if ( $settings['use_default_loop'] == 'yes' ) {
 			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php';
@@ -454,9 +450,9 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 			$template = false;
 		}
 		return $template;
-	}
+	}*/
 
-	private  function get_template_single( $product_type = false ) {
+	/*private  function get_template_single( $product_type = false ) {
 		$settings = get_option( 'tcp_settings' );
 		if ( $settings['use_default_loop'] == 'yes' ) {
 			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/single-tcp_product.php';
@@ -466,7 +462,7 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 			$template = false;
 		}
 		return $template;
-	}
+	}*/
 }
 
 new TCPLoopSettings();

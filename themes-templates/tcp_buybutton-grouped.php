@@ -53,23 +53,17 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 	$product_id	= tcp_get_current_id( $product->id_to, get_post_type( $product->id_to ) ); 
 	if ( get_post_status( $product_id ) == 'publish' ) : ?>
 
-	<div class="tcp_buy_button_simple_item tcp_buy_button_simple_item_<?php echo $post_id; ?>_<?php echo $product_id; ?> cf">
+	<div class="tcp_buy_button_simple_item tcp_buy_button_simple_item_<?php echo $post_id; ?>_<?php echo $product_id; ?> tcp-cf">
 
 		<div class="tcp_buy_button_name">
 			<?php if ( tcp_is_visible( $product_id ) ) : ?>
-
 				<a href="<?php echo get_permalink( $product_id ); ?>"><?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?></a>
-
 			<?php else : ?>
-
 				<?php echo tcp_get_the_title( $product_id, 0, 0, true, false ); ?>
-
 			<?php endif; ?>
-
 		</div>
 	
 		<div class="tcp_buy_button_thumbnail">
-
 			<?php $args = array(
 				'size'	=> $thecartpress->get_setting( 'image_size_grouped_by_button', 'thumbnail' ),
 				'align'	=> '',
@@ -78,35 +72,22 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 			if ( ! tcp_is_visible( $product_id ) ) $args['link'] = 'file';
 			$image = tcp_get_the_thumbnail_with_permalink( $product_id, $args, false );
 			echo apply_filters( 'tcp_get_image_in_grouped_buy_button', $image, $product_id ); ?>
-
 		</div>
 
-		<div class="tcp_buy_button_main cf">
-
+		<div class="tcp_buy_button_main tcp-cf">
 			<?php if ( function_exists( 'tcp_the_buy_button_options' ) ) : ?>
-
 				<?php echo tcp_the_buy_button_options( $product_id, $post_id ); ?>
-
 			<?php endif; ?>
-
 			<?php if ( ! ( function_exists( 'tcp_has_options' ) && tcp_has_options( $product_id ) ) ) : ?>
-
 			<div class="tcp_unit_price" id="tcp_unit_price_<?php echo $product_id; ?>">
-
 				<?php echo tcp_get_the_price_label( $product_id ); ?>
-
 			</div>
-
 			<?php endif; ?>
 	
 			<?php if ( function_exists( 'tcp_the_buy_button_dyamic_options' ) && tcp_has_dynamic_options( $product_id ) ) : ?>
-	
 				<div class="tcp-buy-dynamic-options">
-
 					<?php tcp_the_buy_button_dyamic_options( $product_id ); ?>
-
-		 		</div>
-
+				</div>
 			<?php endif; ?>
 
 			<div class="tcp-add-to-cart">

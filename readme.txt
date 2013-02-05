@@ -3,8 +3,8 @@ Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
-Tested up to: 3.5
-Stable Tag: 1.2.6
+Tested up to: 3.5.1
+Stable Tag: 1.2.7
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,6 +293,23 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+
+= 1.2.7 =
+* Checkout, Shipping and Payment methods: Hide box if only one method is applicable
+* Checkout, Shipping and Payment methods: Display the selected method title in the box title
+* Checkout: Different URL for each step (for Adwords and Analitics), only if permalinks are active (Suggested in the community)
+* Brothers list: Multiple taxonomies, select which ones to use and the relation between them (AND or OR)
+* Brothers list: Sorting products improvements (Suggested in the community)
+* Custom fields: Improvements in the admin panel (Suggested in the community)
+* WPML support: slug (Suggested in the community)
+* BuddyPress support (Suggested in the community)
+* Login widget
+* Login, logout and registration improvements (+ TheCartPress Frontend plugin)
+* Price update: round prices
+* Stock: product out of stock if all options are out of stock
+* Custom fields: new File uploaded type
+* 100% WPML Integration: Payment and Shipping methods, Custom fields, etc.
+* New notice in Billing Box (in checkout)
 
 = 1.2.6 =
 * Translated: Product names translated in Shopping cart and checkout
@@ -634,7 +651,3 @@ This plugin is released under a GPL license.
 = 1.0 =
 First public version.
 
-== Upgrade Notice ==
-
-= 1.0.1 =
-This version fixes, in the first version of ThecartPress E-commerce, some issues and enhances the funcionality.

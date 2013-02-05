@@ -66,7 +66,7 @@ $see_second_custom_area	= isset( $instance['see_second_custom_area' . $suffix] )
 $see_third_custom_area	= isset( $instance['see_third_custom_area' . $suffix] ) ? $instance['see_third_custom_area' . $suffix] : false;
 $see_pagination			= isset( $instance['see_pagination' . $suffix] ) ? $instance['see_pagination' . $suffix] : false;
 $column = $number_of_columns;
-
+$tcp_col = 0;
 if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffix] != '' ) {
 	$title_tag = '<' . $instance['title_tag' . $suffix] . ' class="entry-title">';
 	$title_end_tag = '</' . $instance['title_tag' . $suffix] . '>';
@@ -136,24 +136,24 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 			</div><!-- .entry-content -->
 		<?php endif; ?>
 		<?php if ( $see_first_custom_area ) :?>
-        <?php endif;?>
-        <?php if ( $see_second_custom_area ) :?>
-        <?php endif;?>
-        <?php if ( $see_third_custom_area ) :?>
-        <?php endif;?>
-        <?php if ( $see_author ) :?>
-            <?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
-                <div id="entry-author-info">
-                    <div id="author-avatar">
-                        <?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) ); ?>
-                    </div><!-- #author-avatar -->
-                    <div id="author-description">
-                        <h2><?php printf( esc_attr__( 'About %s', 'twentyten' ), get_the_author_meta() ); ?></h2>
-                        <?php the_author_meta( 'description'); ?>
-                    </div><!-- #author-description -->
-                </div><!-- #entry-author-info -->
-            <?php endif; ?>
-        <?php endif; ?>
+		<?php endif;?>
+		<?php if ( $see_second_custom_area ) :?>
+		<?php endif;?>
+		<?php if ( $see_third_custom_area ) :?>
+		<?php endif;?>
+		<?php if ( $see_author ) :?>
+		<?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
+			<div id="entry-author-info">
+				<div id="author-avatar">
+					<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) ); ?>
+				</div><!-- #author-avatar -->
+				<div id="author-description">
+					<h2><?php printf( esc_attr__( 'About %s', 'twentyten' ), get_the_author_meta() ); ?></h2>
+					<?php the_author_meta( 'description'); ?>
+				</div><!-- #author-description -->
+			</div><!-- #entry-author-info -->
+		<?php endif; ?>
+		<?php endif; ?>
 			<div class="entry-utility">
 			<?php if ( $see_taxonomies ) : ?>
 				<?php if ( count( get_the_terms( 0, 'tcp_product_category' ) ) ) : ?>
@@ -178,8 +178,8 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 				<?php endif; ?>
 			<?php endif; ?> 
 			<?php if ( $see_meta_utilities ) : ?>
-	                <span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
-	                <?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
+				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'twentyten' ), __( '1 Comment', 'twentyten' ), __( '% Comments', 'twentyten' ) ); ?>
+				<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?></span>
 			<?php endif; ?> 
 			</div><!-- .entry-utility -->
 		</div><!-- #post-## -->

@@ -27,22 +27,28 @@ class Transference extends TCP_Plugin {
 	}
 
 	function showEditFields( $data ) { ?>
-		<tr valign="top">
+	<tr valign="top">
 		<th scope="row">
 			<label for="notice"><?php _e( 'Notice', 'tcp' ); ?>:</label>
 		</th><td>
 			<textarea id="notice" name="notice" cols="40" rows="4" maxlength="500"><?php echo isset( $data['notice'] ) ? $data['notice'] : ''; ?></textarea>
-		</td></tr><tr valign="top">
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row">
 			<label for="owner"><?php _e( 'Owner', 'tcp' ); ?>:</label>
 		</th><td>
 			<input type="text" id="owner" name="owner" size="40" maxlength="50" value="<?php echo isset( $data['owner'] ) ? $data['owner'] : ''; ?>" />
-		</td></tr><tr valign="top">
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row">
-			<label for="bank"><?php _e( 'bank', 'tcp' ); ?>:</label>
+			<label for="bank"><?php _e( 'Bank', 'tcp' ); ?>:</label>
 		</th><td>
 			<input type="text" id="bank" name="bank" size="40" maxlength="50" value="<?php echo isset( $data['bank'] ) ? $data['bank'] : ''; ?>" />
-		</td></tr><tr valign="top">
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row">
 			<label for="account"><?php _e( 'Account', 'tcp' ); ?>:</label>
 		</th><td><?php
@@ -61,18 +67,32 @@ class Transference extends TCP_Plugin {
 			<input type="text" id="account2" name="account2" size="4" maxlength="4" value="<?php echo $account2; ?>" />
 			<input type="text" id="account3" name="account3" size="2" maxlength="2" value="<?php echo $account3; ?>" />
 			<input type="text" id="account4" name="account4" size="10" maxlength="10" value="<?php echo $account4; ?>" />
-		</td></tr><tr valign="top">
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row">
 			<label for="iban"><?php _e( 'IBAN', 'tcp' ); ?>:</label>
 		</th><td>
 			<input type="text" id="iban" name="iban" size="20" maxlength="40" value="<?php echo isset( $data['iban'] ) ? $data['iban'] : ''; ?>" />
-		</td></tr><tr valign="top">
+		</td>
+	</tr>
+	<tr valign="top">
 		<th scope="row">
 			<label for="swift"><?php _e( 'SWIFT', 'tcp' ); ?>:</label>
 		</th><td>
 			<input type="text" id="swift" name="swift" size="20" maxlength="40" value="<?php echo isset( $data['swift'] ) ? $data['swift'] : ''; ?>" />
-		</td></tr>
-	<?php }
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row">
+			<label for="redirect"><?php _e( 'Redirect automatically', 'tcp' );?>:</label>
+		</th>
+		<td>
+			<input type="checkbox" id="redirect" name="redirect" value="yes" <?php checked( isset( $data['redirect'] ) ? $data['redirect'] : false ); ?> />
+			<p class="description"><?php _e( 'If checked, Checkout page will redirect automatically to Checkout Ok page. Otherwise, customers must click on "Finish" button.', 'tcp' ); ?></p>
+		</td>
+	</tr><?php
+	}
 
 	function saveEditFields( $data ) {
 		$data['notice']		= isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
@@ -85,6 +105,7 @@ class Transference extends TCP_Plugin {
 		$data['account']	= $account1 . $account2 . $account3 . $account4;
 		$data['iban']		= isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
 		$data['swift']		= isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
+		$data['redirect']	= isset( $_REQUEST['redirect'] );
 		return $data;
 	}
 
@@ -92,9 +113,9 @@ class Transference extends TCP_Plugin {
 		return false;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( 'Transference', $instance );
-		return isset( $data['title'] ) ? $data['title'] : $this->getTitle();
+		return tcp_string( 'TheCartPress', 'pay_Transference-title', isset( $data['title'] ) ? $data['title'] : $this->getTitle() );
 	}
 
 	function getNotice( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
@@ -112,19 +133,22 @@ class Transference extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-		$url = add_query_arg( 'order_id', $order_id, $url );
+		$url = add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$redirect = isset( $data['redirect'] ) ? $data['redirect'] : false;
 		$additional = $this->getNotice( $instance, $shippingCountry, $shoppingCart, $order_id );
-		echo $additional; ?>
-		<p>
-			<input type="button" class="tcp_pay_button" id="tcp_transference" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; ?>';"/>
-		</p>
-		<?php require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-		$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PROCESSING;
+		echo $additional;
+		if ( ! $redirect ) : ?>
+		<p><input type="button" class="tcp_pay_button" id="tcp_transference" value="<?php _e( 'Finish', 'tcp' ); ?>" onclick="window.location.href='<?php echo $url; ?>';"/></p>
+		<?php endif;
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+		$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING;
 		Orders::editStatus( $order_id, $new_status, 'no-id' );
 		require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );//, $additional );
+		if ( $redirect ) : ?>
+		<script>window.location.href='<?php echo $url; ?>';</script>
+		<?php endif;
 	}
 }
 ?>

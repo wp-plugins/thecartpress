@@ -26,7 +26,7 @@ else $action = '';
 
 /**** Start editing to customise your buy buttons! */ ?>
 
-<div class="tcp_buy_button_area tcp_buy_button_simple tcp_buy_button_<?php echo get_post_type(); ?> cf <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
+<div class="tcp_buy_button_area tcp_buy_button_simple tcp_buy_button_<?php echo get_post_type(); ?> tcp-cf <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
 
 <form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
 

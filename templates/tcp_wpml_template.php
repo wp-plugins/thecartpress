@@ -29,7 +29,7 @@ function tcp_get_current_language_iso() {
 
 //Given a post_id this function returns the post_id in the default language
 function tcp_get_default_id( $post_id, $post_type = false ) {
-	if ( $post_type == false ) $post_type = get_post_type( $post_id );
+	if ( $post_type === false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$default_language = $sitepress->get_default_language();
@@ -40,7 +40,7 @@ function tcp_get_default_id( $post_id, $post_type = false ) {
 
 //Given a post_id this function returns the equivalent post_id in the current language
 function tcp_get_current_id( $post_id, $post_type = false ) {
-	if ( $post_type == false ) $post_type = get_post_type( $post_id );
+	if ( $post_type === false ) $post_type = get_post_type( $post_id );
 	global $sitepress;
 	if ( $sitepress ) {
 		$default_language = $sitepress->get_current_language();
@@ -95,27 +95,34 @@ function tcp_add_translation( $post_id, $translate_post_id, $language, $post_typ
 	}
 }
 
-/*
- * To register strings to translate. For Example to translate the titles of the wigets
- *
-function tcp_register_string( $context, $name, $value ) {
-	if ( function_exists( 'icl_register_string' ) )
-		icl_register_string( $context, $name, $value );
+function tcp_add_term_translation( $term_id, $taxonomy = TCP_PRODUCT_CATEGORY, $language = false ) {
+	global $sitepress;
+	if ( $language === false ) $language = $sitepress->get_default_language();
+//echo 'tcp_add_term_translation ', $term_id, ', ', $taxonomy, ', ', $language, '...<br>';
+	$sitepress->set_element_language_details( $term_id, 'tax_' . $taxonomy, null, $language );
 }
 
-function tcp_unregiser_string( $context, $name ) {
-	if ( function_exists( 'icl_unregister_string' ) )
-		icl_unregister_string( $context, $name );
+/**
+ * Registers one string to translate.
+ */
+function tcp_register_string( $context, $name, $value ) {
+	if ( function_exists( 'icl_register_string' ) ) icl_register_string( $context, $name, $value );
+}
+
+/**
+ * Unregisters one string to translate.
+ */
+function tcp_unregister_string( $context, $name ) {
+	if ( function_exists( 'icl_unregister_string' ) ) icl_unregister_string( $context, $name );
 }
 
 /**
  * Returns the translation of a string identified by $context and $name
- *
-function tcp_t( $context, $name, $value ) {
-	if ( function_exists( 'icl_t' ) )
-		return icl_t( $context, $name, $value );
-	else
-		return $value;
-}*/
+ */
+function tcp_string( $context, $name, $value ) {
+	if ( function_exists( 'icl_t' ) ) return nl2br( icl_t( $context, $name, $value ) );
+	else return $value;
+}
+
 //end Multilanguage
 ?>

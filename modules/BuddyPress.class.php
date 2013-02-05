@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of TheCartPress.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TCPLocalPickUp extends TCP_Plugin {
-
-	function getTitle() {
-		return 'LocalPickUp';
+class TCPBuddyPress {
+	function __construct() {
+		add_action( 'tcp_load_custom_post_types', array( &$this, 'tcp_load_custom_post_types' ), 10, 2 );
+		//add_filter( 'bp_blogs_record_post_post_types', array( &$this, 'bp_blogs_record_post_post_types' ) );
 	}
 
-	function getDescription() {
-		return 'Local pick-Up.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
+	function tcp_load_custom_post_types( $post_type, $post_type_args ) {
+		add_filter( 'bp_blogs_record_post_post_types', function( $posts ) { $posts[] = $post_type; return $posts; } );
 	}
-
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
-		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : __( 'Local pick up', 'tcp' );
-		return tcp_string( 'TheCartPress', 'shi_TCPLocalPickUp-title', $title );
-	}
+	
+	/*function bp_blogs_record_post_post_types( $posts ) {
+		$posts[] = $post_type;
+		return $posts;
+	}*/
 }
+
+new TCPBuddyPress();
 ?>

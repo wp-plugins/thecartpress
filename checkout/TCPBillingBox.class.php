@@ -35,6 +35,10 @@ class TCPBillingBox extends TCPCheckoutBox {
 		return 'billing_layer';
 	}
 
+	function get_name() {
+		return 'billing';
+	}
+
 	function after_action() {
 		$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
 		if ( $selected_billing_address == 'new' || $selected_billing_address == 'N' ) {
@@ -72,6 +76,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				}
 			}
 		}
+		$this->errors = apply_filters( 'tcp_billing_box_after_action', $this->errors );
 		if ( count( $this->errors ) > 0 ) {
 			return false;
 		} else {
@@ -367,6 +372,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 					</li>
 				</ul>
 			</div> <!-- new_billing_area -->
+			<?php tcp_do_template( 'tcp_checkout_billing_notice' ); ?>
 			<?php do_action( 'tcp_checkout_billing' ); ?>
 		</div><!-- billing_layer_info -->
 		<?php return true;

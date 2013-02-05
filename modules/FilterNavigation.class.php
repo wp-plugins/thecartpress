@@ -54,8 +54,19 @@ class TCPFilterNavigation {
 		if ( $check_request ) {
 			$filters = $this->get_filters_request();
 			foreach( $filters as $f ) {
-				$taxonomy = $f['taxonomy'];
-				$filter['layered'][$taxonomy][] = $f['term'];
+				if ( 'taxonomy' == $f['type'] ) {
+					$taxonomy = $f['taxonomy'];
+					$filter['layered'][$taxonomy][] = array(
+						'type' => $f['type'],
+						'term' => $f['term']
+					);
+				} else {//custom_field
+					$custom_field = $f['custom_field'];
+					$filter['layered'][$custom_field][] = array(
+						'type' => $f['type'],
+						'value' => $f['value']
+					);
+				}
 			}
 		}
 
@@ -72,8 +83,16 @@ class TCPFilterNavigation {
 			if ( $pos = strpos( $key, 'tcp_filter' ) === 0 ) {
 				$taxonomy = substr( $key, $pos + 10 );
 				$filters[] = array(
-					'taxonomy'	=> $taxonomy,
-					'term'		=> $value
+					'type' => 'taxonomy',
+					'taxonomy' => $taxonomy,
+					'term' => $value
+				);
+			} elseif ( $pos = strpos( $key, 'tcp_custom' ) === 0 ) {
+				$custom_field = substr( $key, $pos + 10 );
+				$filters[] = array(
+					'type' => 'custom_field',
+					'custom_field' => $custom_field,
+					'value' => $value,
 				);
 			}
 		return $filters;
@@ -108,14 +127,32 @@ class TCPFilterNavigation {
 	}
 
 	function is_filter_by_taxonomy( $taxonomy ) {
+		//if ( isset( $this->layered[$taxonomy] ) ) return $this->layered[$taxonomy]['type'] != 'taxonomy';
 		return isset( $this->layered[$taxonomy] );
 	}
 
 	function is_filter_by_term( $taxonomy, $term ) {
-		if ( isset( $this->layered[$taxonomy] ) )
+		if ( isset( $this->layered[$taxonomy] ) ) {
+			//if ( $this->layered[$taxonomy]['type'] != 'taxonomy' ) return false;
 			foreach( $this->layered[$taxonomy] as $t ) {
-				if ( $t == $term ) return true;
+				if ( $t['term'] == $term ) return true;
 			}
+		}
+		return false;
+	}
+
+	function is_filter_by_custom_field( $custom_field ) {
+		//if ( isset( $this->layered[$custom_field] ) ) return $this->layered[$custom_field]['type'] != 'custom_field';
+		return isset( $this->layered[$custom_field] );
+	}
+
+	function is_filter_by_value( $custom_field, $value ) {
+		if ( isset( $this->layered[$custom_field] ) ) {
+			//if ( $this->layered[$custom_field]['type'] != 'custom_field' ) return false;
+			foreach( $this->layered[$custom_field] as $v ) {
+				if ( $v['value'] == $value ) return true;
+			}
+		}
 		return false;
 	}
 }

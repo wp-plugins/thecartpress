@@ -17,9 +17,11 @@
  */
 
 require_once( 'Ajax.class.php' );
+//require_once( 'BuddyPress.class.php' );
 require_once( 'BuyButton.class.php' );
 require_once( 'TaxonomyImages.class.php' );
 require_once( 'CopyOrder.class.php' );
+//require_once( 'CheckoutPermalinks.class.php' );
 require_once( 'CustomFields.class.php' );
 require_once( 'CustomStyles.class.php' );
 require_once( 'CustomTemplates.class.php' );

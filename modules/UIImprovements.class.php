@@ -34,7 +34,7 @@ class UIImprovements {
 	}
 
 	function admin_init() {
-		add_action( 'tcp_show_settings', array( &$this, 'tcp_show_settings' ) );
+		//add_action( 'tcp_show_settings', array( &$this, 'tcp_show_settings' ) );
 		add_filter( 'admin_footer_text', array( &$this, 'admin_footer_text' ) );
 		add_action( 'wp_dashboard_setup', array( &$this, 'wp_dashboard_setup' ) );
 		add_action( 'admin_head', array( &$this, 'admin_head' ) );

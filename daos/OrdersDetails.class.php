@@ -21,24 +21,24 @@ class OrdersDetails {
 	static function createTable() {
 		global $wpdb;
 		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . 'tcp_orders_details` (
-		  `order_detail_id`		bigint(20) unsigned NOT NULL auto_increment,
-		  `order_id`			bigint(20) unsigned NOT NULL,
-		  `post_id`				bigint(20) unsigned NOT NULL,
-		  `option_1_id`			bigint(20) unsigned NOT NULL,
-		  `option_2_id`			bigint(20) unsigned NOT NULL,
-		  `weight`				int(11) unsigned	NOT NULL default 0,
-		  `is_downloadable`		char(1)				NOT NULL COMMENT \'Y->yes\',
-		  `sku`					varchar(50)			NOT NULL,
-		  `name`				varchar(255)		NOT NULL,
-		  `option_1_name`		varchar(255)		NOT NULL,
-  		  `option_2_name`		varchar(255)		NOT NULL,
-		  `price`				decimal(13,2)		NOT NULL default 0,
-		  `original_price`		decimal(13,2)		NOT NULL default 0,
-		  `tax`					double				NOT NULL default 0,
-		  `qty_ordered`			int(11) unsigned	NOT NULL default 0,
-		  `max_downloads`		int(4)				NOT NULL default 10,
-		  `expires_at`			date				NOT NULL,
-		  PRIMARY KEY  (`order_detail_id`)
+			`order_detail_id`	bigint(20) unsigned NOT NULL auto_increment,
+			`order_id`			bigint(20) unsigned NOT NULL,
+			`post_id`			bigint(20) unsigned NOT NULL,
+			`option_1_id`		bigint(20) unsigned NOT NULL,
+			`option_2_id`		bigint(20) unsigned NOT NULL,
+			`weight`			int(11) unsigned	NOT NULL default 0,
+			`is_downloadable`	char(1)				NOT NULL COMMENT \'Y->yes\',
+			`sku`				varchar(50)			NOT NULL,
+			`name`				varchar(255)		NOT NULL,
+			`option_1_name`		varchar(255)		NOT NULL,
+			`option_2_name`		varchar(255)		NOT NULL,
+			`price`				decimal(13,2)		NOT NULL default 0,
+			`original_price`	decimal(13,2)		NOT NULL default 0,
+			`tax`				double				NOT NULL default 0,
+			`qty_ordered`		int(11) unsigned	NOT NULL default 0,
+			`max_downloads`		int(4)				NOT NULL default 10,
+			`expires_at`		date				NOT NULL,
+			PRIMARY KEY  (`order_detail_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
 		$wpdb->query( $sql );
 	}
@@ -160,6 +160,14 @@ class OrdersDetails {
 		$sql = 'select order_detail_id from ' . $wpdb->prefix . 'tcp_orders_details where ';
 		$sql .= $wpdb->prepare( 'order_id = %d', $order_id);
 		return $wpdb->get_results( $sql );
+	}
+
+	static function get_product_total_sales( $post_id ) {
+		global $wpdb;
+		$sql = 'select sum( od.qty_ordered ) from ' . $wpdb->prefix . 'tcp_orders_details od left join ' . $wpdb->prefix . 'tcp_orders o on od.order_id = o.order_id';
+		$sql .= $wpdb->prepare( ' and o.status = %s', Orders::$ORDER_COMPLETED);
+		$sql .= $wpdb->prepare( ' where od.post_id = %d', $post_id);
+		return $wpdb->get_var( $sql );	
 	}
 }
 ?>

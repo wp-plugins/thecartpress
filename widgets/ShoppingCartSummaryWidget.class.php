@@ -44,29 +44,29 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['title']				= strip_tags( $new_instance['title'] );
-		$instance['hide_if_empty']		= isset( $new_instance['hide_if_empty'] );
-		$instance['see_product_count']	= isset( $new_instance['see_product_count'] );
-		$instance['see_weight']			= isset( $new_instance['see_weight'] );
-		$instance['see_delete_all']		= isset( $new_instance['see_delete_all'] );
-		$instance['see_shopping_cart']	= isset( $new_instance['see_shopping_cart'] );
-		$instance['see_checkout']		= isset( $new_instance['see_checkout'] );
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['hide_if_empty'] = isset( $new_instance['hide_if_empty'] );
+		$instance['see_product_count'] = isset( $new_instance['see_product_count'] );
+		$instance['see_weight'] = isset( $new_instance['see_weight'] );
+		$instance['see_delete_all'] = isset( $new_instance['see_delete_all'] );
+		$instance['see_shopping_cart'] = isset( $new_instance['see_shopping_cart'] );
+		$instance['see_checkout'] = isset( $new_instance['see_checkout'] );
 		$instance = apply_filters( 'tcp_shopping_cart_summary_widget_update', $instance, $new_instance );
 		return $instance;
 	}
 
 	function form( $instance ) {
 		$defaults = array(
-			'title'				=> __( 'Shopping cart', 'tcp' ),
-			'see_weight'		=> true,
-			'see_delete_all'	=> true,
+			'title' => __( 'Shopping cart', 'tcp' ),
+			'see_weight' => true,
+			'see_delete_all' => true,
 		);
-		$hide_if_empty		= isset( $instance['hide_if_empty'] ) ? (bool)$instance['hide_if_empty'] : false;
-		$see_product_count	= isset( $instance['see_product_count'] ) ? (bool)$instance['see_product_count'] : false;
-		$see_weight			= isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
-		$see_delete_all		= isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
-		$see_shopping_cart	= isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
-		$see_checkout		= isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false;
+		$hide_if_empty = isset( $instance['hide_if_empty'] ) ? (bool)$instance['hide_if_empty'] : false;
+		$see_product_count = isset( $instance['see_product_count'] ) ? (bool)$instance['see_product_count'] : false;
+		$see_weight = isset( $instance['see_weight'] ) ? (bool)$instance['see_weight'] : false;
+		$see_delete_all = isset( $instance['see_delete_all'] ) ? (bool)$instance['see_delete_all'] : false;
+		$see_shopping_cart = isset( $instance['see_shopping_cart'] ) ? (bool)$instance['see_shopping_cart'] : false;
+		$see_checkout = isset( $instance['see_checkout'] ) ? (bool)$instance['see_checkout'] : false;
 		$instance = wp_parse_args( ( array ) $instance, $defaults ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>

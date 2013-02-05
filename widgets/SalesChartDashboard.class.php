@@ -67,7 +67,7 @@ class SalesChartDashboard {
 				$date = date( 'Y-m-d', strtotime( $date . ' -1 day' ) );
 				$days[$date] = array( $date, 0, 0 );
 			}
-			foreach( $orderdata as $order ) {
+			if ( is_array( $orderdata ) ) foreach( $orderdata as $order ) {
 				$order->sales = Orders::getAmountByDay( $order->thedate, $status );
 				$days[$order->thedate] = array( $order->thedate, $order->sales, $order->count );
 			}
@@ -85,9 +85,9 @@ class SalesChartDashboard {
 				$data_column .= 'data.addColumn("number", "' . __( 'Sales amount', 'tcp' ) . '");' . "\n";
 			else //if ( $to_see == 'orders' )
 				$data_column .= 'data.addColumn("number", "' . __( 'Orders', 'tcp' ) . '");' . "\n";
-		    $r = 0;
-		    $script = 'data.addRows(' . count($days) . ');' . "\n";
-		    foreach( $days as $day ) {
+				$r = 0;
+				$script = 'data.addRows(' . count($days) . ');' . "\n";
+				foreach( $days as $day ) {
 				$script .= 'data.setCell(' . $r . ', 0, new Date("'. date( 'M j, Y', strtotime( $day[0] ) ) . '"));' . "\n";
 				if ( $to_see == 'amount' )
 					$script .= 'data.setCell(' . $r . ', 1, '. $day[1] . ');' . "\n";
@@ -149,7 +149,7 @@ class SalesChartDashboard {
 						}
 					}
 				};';
-            } else {
+			} else {
 				$options = 'var options = {
 					width: "100%",
 					height: 300,
@@ -170,8 +170,8 @@ class SalesChartDashboard {
 				};';
 			}
 		} ?>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
 	google.load('visualization', '1', {packages: ['corechart']});
 	<?php if ( $chart_type == 'Table' ) : ?>google.load('visualization', '1', {packages: ['table']});<?php endif; ?>
 	<?php if ( $chart_type == 'Gauge' ) : ?>google.load('visualization', '1', {packages: ['Gauge']});<?php endif; ?>
@@ -274,7 +274,7 @@ class SalesChartDashboard {
 	function __construct() {
 		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			wp_add_dashboard_widget( 'tcp_sales_chart', __( 'Sales and Orders', 'tcp' ), array( $this, 'show' ), array( $this, 'show_form' ) );
-		} else {
+		} elseif ( current_user_can( 'tcp_edit_order' ) ) {
 			wp_add_dashboard_widget( 'tcp_sales_chart', __( 'Sales and Orders', 'tcp' ), array( $this, 'show' ) );
 		}
 	}

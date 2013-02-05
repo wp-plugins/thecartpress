@@ -278,16 +278,12 @@ if ( $post_id ) :
 			</label>-->
 
 			<?php if ( tcp_is_saleable_post_type( $post_type_to ) ) : ?>
-
 				<label for="product_type"><?php _e( 'Products type', 'tcp' ); ?>:
-
-				<?php $types = tcp_get_product_types();
-				$product_types = array( '' => __( 'All', 'tcp' ) );
-				foreach( $types as $id => $type ) $product_types[$id] = $type['label'];
-				tcp_html_select( 'product_type', $product_types, $product_type ); ?>
-
+					<?php $types = tcp_get_product_types();
+					$product_types = array( '' => __( 'All', 'tcp' ) );
+					foreach( $types as $id => $type ) $product_types[$id] = $type['label'];
+					tcp_html_select( 'product_type', $product_types, $product_type ); ?>
 				</label>
-
 			<?php endif; ?>
 
 			<input id="tcp_filter_product_type" name="tcp_filter_product_type" value="<?php _e( 'filter', 'tcp' ); ?>" type="submit" class="button"/>
@@ -347,7 +343,7 @@ if ( $post_id ) :
 
 				<td><a href="post.php?action=edit&post=<?php echo $post->ID; ?>" title="<?php _e( 'edit product', 'tcp' ); ?>"><?php echo $post->post_title; ?></a></td>
 
-				<td><?php tcp_the_price_label( $post->ID ); ?></td>
+				<td><?php echo tcp_get_the_price_label( $post->ID ); ?></td>
 
 				<td><?php if ( $show_back_end_label ) echo get_post_meta( $post->ID, 'tcp_back_end_label', true );
 				else echo $post->post_excerpt; ?>

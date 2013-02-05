@@ -51,14 +51,13 @@ class TCPCardOffLine extends TCP_Plugin {
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_payment_plugin_data( 'TCPCardOffLine', $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
-		return $title;
+		return tcp_string( 'TheCartPress', 'pay_TCPCardOffLine-title', $title );
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$notify_url			= plugins_url( 'thecartpress/plugins/CardOffLine/notify.php' );
-		$return_url			= add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
-		$return_url			= add_query_arg( 'order_id', $order_id, $return_url );
+		$return_url			= add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
 		$store_part_number	= isset( $data['store_part_number'] ) ? $data['store_part_number'] : false;
 		$new_status			= $data['new_status'];?>
 		<p><?php _e( 'Off line payment:', 'tcp' );?></p>

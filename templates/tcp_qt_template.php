@@ -59,4 +59,28 @@ function tcp_get_current_language() {
 function tcp_add_translation( $post_id, $translate_post_id, $language, $post_type = 'tcp_product' ) {
 	return;
 }
+
+function tcp_add_term_translation( $term_id, $taxonomy = TCP_PRODUCT_CATEGORY, $language = false ) {
+	return;
+}
+
+/**
+ * Registers one string to translate
+ */
+function tcp_register_string( $context, $name, $value ) {
+}
+
+/**
+ * Unregisters one string to translate.
+ */
+function tcp_unregister_string( $context, $name ) {
+}
+
+/**
+ * Returns the translation of a string identified by $context and $name
+ */
+function tcp_string( $context, $name, $value ) {
+	return $value;
+}
+
 ?>

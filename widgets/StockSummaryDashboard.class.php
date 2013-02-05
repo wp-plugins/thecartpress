@@ -28,7 +28,9 @@ class StockSummaryDashboard {
 	}
 
 	function wp_dashboard_setup() {
-		wp_add_dashboard_widget( 'tcp_stock_resume', __( 'Stock Summary', 'tcp' ), array( $this, 'show' ) );
+		if ( current_user_can( 'tcp_edit_orders' ) || current_user_can( 'tcp_edit_order' ) ) {
+			wp_add_dashboard_widget( 'tcp_stock_resume', __( 'Stock Summary', 'tcp' ), array( $this, 'show' ) );
+		}
 	}
 
 	function show() { ?>

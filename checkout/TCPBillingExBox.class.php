@@ -35,6 +35,10 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		return 'billing_layer';
 	}
 
+	function get_name() {
+		return 'billing';
+	}
+
 	function after_action() {
 		$selected_billing_address = isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
 		$settings = get_option( 'tcp_' . get_class( $this ), array() );
@@ -113,6 +117,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				}
 			}
 		}
+		$this->errors = apply_filters( 'tcp_billing_box_after_action', $this->errors );
 		if ( count( $this->errors ) > 0 ) {
 			return false;
 		} else {
@@ -171,57 +176,57 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
-			<th scope="row"><label for="see_company"><?php _e( 'Display billing company', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_company" id="see_company" value="yes" <?php checked( $see_company );?>/></td>
+			<th scope="row"><label for="see_company"><?php _e( 'Display billing company', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_company" id="see_company" value="yes" <?php checked( $see_company ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_company"><?php _e( 'Required billing company', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_company" id="req_company" value="yes" <?php checked( $req_company );?>/></td>
+			<th scope="row"><label for="req_company"><?php _e( 'Required billing company', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_company" id="req_company" value="yes" <?php checked( $req_company ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="see_tax_id_number"><?php _e( 'Display billing tax id number', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_tax_id_number" id="see_tax_id_number" value="yes" <?php checked( $see_tax_id_number );?>/></td>
+			<th scope="row"><label for="see_tax_id_number"><?php _e( 'Display billing tax id number', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_tax_id_number" id="see_tax_id_number" value="yes" <?php checked( $see_tax_id_number ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_tax_id_number"><?php _e( 'Required billing tax id number', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_tax_id_number" id="req_tax_id_number" value="yes" <?php checked( $req_tax_id_number );?>/></td>
+			<th scope="row"><label for="req_tax_id_number"><?php _e( 'Required billing tax id number', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_tax_id_number" id="req_tax_id_number" value="yes" <?php checked( $req_tax_id_number ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="see_region"><?php _e( 'Display billing region', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_region" id="see_region" value="yes" <?php checked( $see_region );?>/></td>
+			<th scope="row"><label for="see_region"><?php _e( 'Display billing region', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_region" id="see_region" value="yes" <?php checked( $see_region ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_region"><?php _e( 'Required billing region', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_region" id="req_region" value="yes" <?php checked( $req_region );?>/></td>
+			<th scope="row"><label for="req_region"><?php _e( 'Required billing region', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_region" id="req_region" value="yes" <?php checked( $req_region ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="see_telephone_1"><?php _e( 'Display billing telephone 1', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_telephone_1" id="see_telephone_1" value="yes" <?php checked( $see_telephone_1 );?>/></td>
+			<th scope="row"><label for="see_telephone_1"><?php _e( 'Display billing telephone 1', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_telephone_1" id="see_telephone_1" value="yes" <?php checked( $see_telephone_1 ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_telephone_1"><?php _e( 'Required billing telephone 1', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_telephone_1" id="req_telephone_1" value="yes" <?php checked( $req_telephone_1 );?>/></td>
+			<th scope="row"><label for="req_telephone_1"><?php _e( 'Required billing telephone 1', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_telephone_1" id="req_telephone_1" value="yes" <?php checked( $req_telephone_1 ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="see_telephone_2"><?php _e( 'Display billing telephone 2', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_telephone_2" id="see_telephone_2" value="yes" <?php checked( $see_telephone_2 );?>/></td>
+			<th scope="row"><label for="see_telephone_2"><?php _e( 'Display billing telephone 2', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_telephone_2" id="see_telephone_2" value="yes" <?php checked( $see_telephone_2 ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_telephone_2"><?php _e( 'Required billing telephone 2', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_telephone_2" id="req_telephone_2" value="yes" <?php checked( $req_telephone_2 );?>/></td>
+			<th scope="row"><label for="req_telephone_2"><?php _e( 'Required billing telephone 2', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_telephone_2" id="req_telephone_2" value="yes" <?php checked( $req_telephone_2 ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="see_fax"><?php _e( 'Display billing fax', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="see_fax" id="see_fax" value="yes" <?php checked( $see_fax );?>/></td>
+			<th scope="row"><label for="see_fax"><?php _e( 'Display billing fax', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="see_fax" id="see_fax" value="yes" <?php checked( $see_fax ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="req_fax"><?php _e( 'Required billing fax', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="req_fax" id="req_fax" value="yes" <?php checked( $req_fax );?>/></td>
+			<th scope="row"><label for="req_fax"><?php _e( 'Required billing fax', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="req_fax" id="req_fax" value="yes" <?php checked( $req_fax ); ?>/></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="use_as_shipping"><?php _e( 'Use as shipping', 'tcp' );?>:</label></th>
-			<td><input type="checkbox" name="use_as_shipping" id="use_as_shipping" value="yes" <?php checked( $use_as_shipping );?>/>
-			<span class="description"><?php _e( 'This option only must be activated if the shipping box is not used', 'tcp' );?></span></td>
+			<th scope="row"><label for="use_as_shipping"><?php _e( 'Use as shipping', 'tcp' ); ?>:</label></th>
+			<td><input type="checkbox" name="use_as_shipping" id="use_as_shipping" value="yes" <?php checked( $use_as_shipping ); ?>/>
+			<span class="description"><?php _e( 'This option only must be activated if the shipping box is not used', 'tcp' ); ?></span></td>
 		</tr>
 		</tbody>
 		</table>
@@ -278,8 +283,8 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		}?>
 		<div class="checkout_info clearfix" id="billing_layer_info">
 		<?php if ( $use_as_shipping ) :?>
-			<span class="tcp_use_as_shipping"><?php _e( 'This data will be used also as Shipping.', 'tcp' );?></span><br/>
-		<?php endif;?>
+			<span class="tcp_use_as_shipping"><?php _e( 'This data will be used also as Shipping.', 'tcp' ); ?></span><br/>
+		<?php endif; ?>
 		<?php global $current_user;
 		get_currentuserinfo();
 		if ( $current_user->ID > 0 ) $addresses = Addresses::getCustomerAddresses( $current_user->ID );
@@ -295,27 +300,27 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				$default_address = Addresses::getCustomerDefaultBillingAddress( $current_user->ID );
 				$default_address_id = $default_address ? $default_address->address_id : 0;
 			}?>
-				<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif;?>>
-					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' );?></label>
+				<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif; ?>>
+					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' ); ?></label>
 					<br />
 					<select id="selected_billing_id" name="selected_billing_id">
 					<?php foreach( $addresses as $address ) :?>
-						<option value="<?php echo $address->address_id;?>" <?php selected( $address->address_id, $default_address_id );?>><?php echo stripslashes( $address->street . ', ' . $address->city );?></option>
-					<?php endforeach;?>
+						<option value="<?php echo $address->address_id; ?>" <?php selected( $address->address_id, $default_address_id ); ?>><?php echo stripslashes( $address->street . ', ' . $address->city ); ?></option>
+					<?php endforeach; ?>
 					</select>
-					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' );?>
+					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' ); ?>
 				</div> <!-- selected_billing_area -->
-				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
+				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
 				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' )?></label>
 				<br />
-		<?php endif;?>
-			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
-			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' );?></label>
+		<?php endif; ?>
+			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
+			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' ); ?></label>
 			<div id="new_billing_area" class="clearfix" <?php
 				if ( $selected_billing_address == 'new' ) :
 				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 					?>style="display:none"<?php
-				endif;?>><?php
+				endif; ?>><?php
 			if ( isset( $_REQUEST['billing_firstname'] ) ) {
 				$firstname = $_REQUEST['billing_firstname'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_firstname'] ) ) {
@@ -435,33 +440,33 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			}?>
 				<ul>
 					<li>
-						<label for="billing_firstname"><?php _e( 'First name', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_firstname' );?>
+						<label for="billing_firstname"><?php _e( 'First name', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname; ?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_firstname' ); ?>
 					</li>
 					<li>
-						<label for="billing_lastname"><?php _e( 'Last name', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
-						<?php $this->showErrorMsg( 'billing_lastname' );?>
+						<label for="billing_lastname"><?php _e( 'Last name', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname; ?>" size="40" maxlength="100" />
+						<?php $this->showErrorMsg( 'billing_lastname' ); ?>
 					</li>
 				<?php if ( $see_company ) :?>
 					<li>
-						<label for="billing_company"><?php _e( 'Company', 'tcp' );?>:
-						<?php if ( $req_company ) :?><em>*</em><?php endif;?></label>
-						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_company' );?>
+						<label for="billing_company"><?php _e( 'Company', 'tcp' ); ?>:
+						<?php if ( $req_company ) :?><em>*</em><?php endif; ?></label>
+						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company; ?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_company' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( $see_tax_id_number ) :?>
 					<li>
-						<label for="billing_tax_id_number"><?php _e( 'Tax id number', 'tcp' );?>
+						<label for="billing_tax_id_number"><?php _e( 'Tax id number', 'tcp' ); ?>
 						<?php if ( $req_tax_id_number ) : ?><em>*</em><?php endif; ?>:</label>
-						<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_tax_id_number' );?>
+						<input type="text" id="billing_tax_id_number" name="billing_tax_id_number" value="<?php echo $tax_id_number; ?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_tax_id_number' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 					<li>
-						<label for="billing_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
+						<label for="billing_country_id"><?php _e( 'Country', 'tcp' ); ?>:<em>*</em></label>
 						<?php global $thecartpress;
 						$country = isset( $thecartpress->settings['country'] ) ? $thecartpress->settings['country'] : '';
 						$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
@@ -474,92 +479,93 @@ class TCPBillingExBox extends TCPCheckoutBox {
 						if ( $country_bill == '' ) $country_bill = $country; ?>
 						<select id="billing_country_id" name="billing_country_id">
 						<?php foreach( $countries as $item ) :?>
-							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-						<?php endforeach;?>
+							<option value="<?php echo $item->iso; ?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name; ?></option>
+						<?php endforeach; ?>
 						</select>
 					</li>
 				<?php if ( $see_region ) :?>
 					<li>
-						<label for="billing_region_id"><?php _e( 'Region', 'tcp' );?>:
-						<?php if ( $req_region ) :?><em>*</em><?php endif;?></label>
+						<label for="billing_region_id"><?php _e( 'Region', 'tcp' ); ?>:
+						<?php if ( $req_region ) :?><em>*</em><?php endif; ?></label>
 						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
-							<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
+							<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
 						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
-						<?php endforeach;?>
+							<option value="<?php echo $id; ?>" <?php selected( $id, $region_id ); ?>><?php echo $region['name']; ?></option>
+						<?php endforeach; ?>
 						</select>
-						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id;?>"/>
-						<?php $this->showErrorMsg( 'billing_region_id' );?>
-						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
-						<?php $this->showErrorMsg( 'billing_region' );?>
+						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id; ?>"/>
+						<?php $this->showErrorMsg( 'billing_region_id' ); ?>
+						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region; ?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
+						<?php $this->showErrorMsg( 'billing_region' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 					<li id="li_billing_city_id">
-						<label for="billing_city_id"><?php _e( 'City', 'tcp' );?>:<em>*</em></label>
+						<label for="billing_city_id"><?php _e( 'City', 'tcp' ); ?>:<em>*</em></label>
 						<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
 						$cities = apply_filters( 'tcp_load_cities_for_billing', $cities );
 						if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
 							<select id="billing_city_id" name="billing_city_id">
 							<?php foreach( $cities as $id => $city ) : ?>
-								<option value="<?php echo $id;?>" <?php selected( $id, $city_id );?>><?php echo $city['name'];?></option>
-							<?php endforeach;?>
+								<option value="<?php echo $id; ?>" <?php selected( $id, $city_id ); ?>><?php echo $city['name']; ?></option>
+							<?php endforeach; ?>
 							</select>
-							<?php $this->showErrorMsg( 'billing_city_id' );?>
+							<?php $this->showErrorMsg( 'billing_city_id' ); ?>
 						<?php else : ?>
-							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="50" />
-							<?php $this->showErrorMsg( 'billing_city' );?>
-						<?php endif;?>
+							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city; ?>" size="20" maxlength="50" />
+							<?php $this->showErrorMsg( 'billing_city' ); ?>
+						<?php endif; ?>
 					</li>
 					<li>
-						<label for="billing_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street;?>" size="20" maxlength="50" />
-						<?php $this->showErrorMsg( 'billing_street' );?>
+						<label for="billing_street"><?php _e( 'Address', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street; ?>" size="20" maxlength="50" />
+						<?php $this->showErrorMsg( 'billing_street' ); ?>
 					</li>
 					<li>
-						<label for="billing_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode;?>" size="5" maxlength="10" />
-						<?php $this->showErrorMsg( 'billing_postcode' );?>
+						<label for="billing_postcode"><?php _e( 'Postal code', 'tcp' ); ?>:<em>*</em></label>
+						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode; ?>" size="5" maxlength="10" />
+						<?php $this->showErrorMsg( 'billing_postcode' ); ?>
 					</li>
 				<?php if ( $see_telephone_1 ) :?>
 					<li>
-						<label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' );?>:
-						<?php if ( $req_telephone_1 ) :?><em>*</em><?php endif;?></label>
-						<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_telephone_1' );?>
+						<label for="billing_telephone_1"><?php _e( 'Telephone 1', 'tcp' ); ?>:
+						<?php if ( $req_telephone_1 ) :?><em>*</em><?php endif; ?></label>
+						<input type="text" id="billing_telephone_1" name="billing_telephone_1" value="<?php echo $telephone_1; ?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_telephone_1' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( $see_telephone_2 ) :?>
 					<li>
-						<label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' );?>:
-						<?php if ( $req_telephone_2 ) :?><em>*</em><?php endif;?></label>
-						<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_telephone_2' );?>
+						<label for="billing_telephone_2"><?php _e( 'Telephone 2', 'tcp' ); ?>:
+						<?php if ( $req_telephone_2 ) :?><em>*</em><?php endif; ?></label>
+						<input type="text" id="billing_telephone_2" name="billing_telephone_2" value="<?php echo $telephone_2; ?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_telephone_2' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 				<?php if ( $see_fax ) :?>
 					<li>
-						<label for="billing_fax"><?php _e( 'Fax', 'tcp' );?>:
-						<?php if ( $req_fax ) :?><em>*</em><?php endif;?></label>
-						<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax;?>" size="15" maxlength="20" />
-						<?php $this->showErrorMsg( 'billing_fax' );?>
+						<label for="billing_fax"><?php _e( 'Fax', 'tcp' ); ?>:
+						<?php if ( $req_fax ) :?><em>*</em><?php endif; ?></label>
+						<input type="text" id="billing_fax" name="billing_fax" value="<?php echo $fax; ?>" size="15" maxlength="20" />
+						<?php $this->showErrorMsg( 'billing_fax' ); ?>
 					</li>
-				<?php endif;?>
+				<?php endif; ?>
 					<li>
-						<label for="billing_email"><?php _e( 'Email', 'tcp' );?>:<em>*</em></label>
-						<input type="email" id="billing_email" name="billing_email" value="<?php echo $email;?>" size="15" maxlength="255" />
-						<?php $this->showErrorMsg( 'billing_email' );?>
+						<label for="billing_email"><?php _e( 'Email', 'tcp' ); ?>:<em>*</em></label>
+						<input type="email" id="billing_email" name="billing_email" value="<?php echo $email; ?>" size="15" maxlength="255" />
+						<?php $this->showErrorMsg( 'billing_email' ); ?>
 					</li>
 				</ul>
 			</div> <!-- new_billing_area -->
-			<?php do_action( 'tcp_checkout_billing' );?>
+			<?php tcp_do_template( 'tcp_checkout_billing_notice' ); ?>
+			<?php do_action( 'tcp_checkout_billing' ); ?>
 		</div><!-- billing_layer_info -->
 		<?php return true;
 	}
 	
 	private function showErrorMsg( $field_name ) {
 		if ( isset( $this->errors[$field_name] ) ) : ?>
-			<br/><span class="error"><?php echo $this->errors[$field_name];?></span>
+			<br/><span class="error"><?php echo $this->errors[$field_name]; ?></span>
 		<?php endif;
 	}
 

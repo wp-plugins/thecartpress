@@ -47,7 +47,7 @@ class TCPShoppingCartPage {
 	$cart_table = new TCPCartTable();
 	$cart_table->show( new TCPCartSourceSession() );
 	do_action( 'tcp_shopping_cart_after_cart' ); ?>
-		<ul class="tcp_sc_links">
+		<ul class="tcp_sc_links tcp-cf">
 			<li class="tcp_sc_checkout"><a href="<?php tcp_the_checkout_url();?>"><?php _e( 'Checkout', 'tcp' );?></a></li>
 			<li class="tcp_sc_continue"><a href="<?php tcp_the_continue_url();?>"><?php _e( 'Continue shopping', 'tcp' );?></a></li>
 			<?php do_action( 'tcp_shopping_cart_after_links' );?>

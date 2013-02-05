@@ -33,7 +33,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
 		$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
-		return $title;
+		return tcp_string( 'TheCartPress', 'pay_TCPAuthorizeNet-title', $title );
 	}
 
 	function showEditFields( $data ) {?>
@@ -126,7 +126,6 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		$new_status		= $data['new_status'];
 		$test_mode		= isset( $data['test_mode'] ) ? $data['test_mode'] : true;
 		$redirect		= isset( $data['redirect'] ) ? $data['redirect'] : false;
-		//$md5_hash			= isset( $data['md5_hash'] ) ? $data['md5_hash'] : true;
 		if ( $test_mode ) $url = 'https://test.authorize.net/gateway/transact.dll';
 		else $url = 'https://secure.authorize.net/gateway/transact.dll';
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
