@@ -95,17 +95,18 @@ class Transference extends TCP_Plugin {
 	}
 
 	function saveEditFields( $data ) {
-		$data['notice']		= isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
-		$data['owner']		= isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
-		$data['bank']		= isset( $_REQUEST['bank'] ) ? $_REQUEST['bank'] : '';
-		$account1			= isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
-		$account2			= isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
-		$account3			= isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
-		$account4			= isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
-		$data['account']	= $account1 . $account2 . $account3 . $account4;
-		$data['iban']		= isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
-		$data['swift']		= isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
-		$data['redirect']	= isset( $_REQUEST['redirect'] );
+		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
+		tcp_register_string( 'TheCartPress', 'pay_Transference-notice', $data['notice'] );
+		$data['owner'] = isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
+		$data['bank'] = isset( $_REQUEST['bank'] ) ? $_REQUEST['bank'] : '';
+		$account1 = isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
+		$account2 = isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
+		$account3 = isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
+		$account4 = isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
+		$data['account'] = $account1 . $account2 . $account3 . $account4;
+		$data['iban'] = isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
+		$data['swift'] = isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
+		$data['redirect'] = isset( $_REQUEST['redirect'] );
 		return $data;
 	}
 
@@ -120,8 +121,9 @@ class Transference extends TCP_Plugin {
 
 	function getNotice( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		ob_start(); ?>
-		<p><?php echo $data['notice']; ?></p>
+		ob_start();
+		$notice = tcp_string( 'TheCartPress', 'pay_Transference-notice', $data['notice'] ); ?>
+		<p><?php echo $notice; ?></p>
 		<table class="tcp-bank-account">
 			<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
 			<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>

@@ -1219,4 +1219,16 @@ function tcp_get_template_part( $path, $slug, $name = '' ) {
 	if ( file_exists( $template ) ) require_once( $template );
 	else get_template_part( $slug, $name );
 }
+
+/**
+ * @since 1.2.7
+ */
+function tcp_debug_trace( $object = false, $args = false ) {
+	$traces = debug_backtrace(); ?>
+	<ul>
+	<?php foreach( $traces as $id => $trace ) : ?>
+		<li><?php printf( '%s -> %s: line %s (%s)', isset( $trace['class'] ) ? $trace['class'] : '', $trace['function'], isset( $trace['line'] ) ? $trace['line'] : '', isset( $trace['file'] ) ? $trace['file'] : '' ); ?></li>
+	<?php endforeach; ?>
+	</ul>
+<?php }
 ?>

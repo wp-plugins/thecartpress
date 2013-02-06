@@ -166,9 +166,6 @@ class TCPCheckoutManager {
 <div class="checkout" id="checkout">
 	<?php $this->show_header( $box, $step );
 	if ( $step == count( $this->steps ) ) { //last step, no return
-if ( in_the_loop() ) echo '<br/><br/>In the Loop!!!!<br/><br/>';
-else echo '<br/><br/>NOT in the Loop!!!!<br/><br/>';
-
 		if ( in_the_loop() ) {
 			$order_id = $this->create_order(); //create the order, show payment form
 		} else {

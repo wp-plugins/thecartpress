@@ -347,36 +347,6 @@ class TheCartPress {
 			$apply_filters = true;
 		}
 		if ( $apply_filters ) {
-			$filter = new TCPFilterNavigation();
-			if ( $filter->is_filter_by_layered() ) {
-				$layered = $filter->get_layered();
-				foreach( $layered as $tax => $layers ) {
-					$query->set( $tax, '' );
-					foreach( $layers as $layer ) {
-						if ( $layer['type'] == 'taxonomy' ) {
-							$query->set( $tax, get_query_var( $tax ) . $layer['term'] . ',' );
-						} else { //custom_field_def
-							$meta_query = $query->get( 'meta_query' );
-							$meta_query[] = array(
-								'key' => $tax,
-								'value' => $layer['value'],
-								'compare' => '=',
-							);
-							$query->set( 'meta_query', $meta_query );
-						}
-					}
-				}
-			}
-			if ( $filter->is_filter_by_price_range() ) {
-				$meta_query = $wp_query->get( 'meta_query' );
-				$meta_query[] = array(
-					'key'		=> 'tcp_price',
-					'value'		=> array( $filter->get_min_price(), $filter->get_max_price() ),
-					'type'		=> 'NUMERIC',
-					'compare'	=> 'BETWEEN'
-				);
-				$query->set( 'meta_query', $meta_query );
-			}
 			//TODO filter by custom field
 			$meta_query = $query->get( 'meta_query' );
 			$meta_query[] = array(
@@ -386,21 +356,52 @@ class TheCartPress {
 				'compare'	=> '='
 			);
 			$query->set( 'meta_query', $meta_query );
-			$query->set( 'posts_per_page', (int)$this->get_setting( 'products_per_page', 10 ) );
-			$query = apply_filters( 'tcp_apply_filters_for_saleables', $query );
-			if ( $filter->get_order_type() == 'price' ) {
-				$query->set( 'orderby', 'meta_value_num' );
-				$query->set( 'meta_key', 'tcp_price' );
-			} elseif ( $filter->get_order_type() == 'order' ) {
-				$query->set( 'orderby', 'meta_value_num' );
-				$query->set( 'meta_key', 'tcp_order' );
-			} else {
-				$query->set( 'orderby', $filter->get_order_type() );
+			global $wp_the_query;
+			if ( $query == $wp_the_query ) {
+				$filter = new TCPFilterNavigation();
+				if ( $filter->is_filter_by_layered() ) {
+					$layered = $filter->get_layered();
+					foreach( $layered as $tax => $layers ) {
+						$query->set( $tax, '' );
+						foreach( $layers as $layer ) {
+							if ( $layer['type'] == 'taxonomy' ) {
+								$query->set( $tax, get_query_var( $tax ) . $layer['term'] . ',' );
+							} else { //custom_field_def
+								$meta_query = $query->get( 'meta_query' );
+								$meta_query[] = array(
+									'key' => $tax,
+									'value' => $layer['value'],
+									'compare' => '=',
+								);
+								$query->set( 'meta_query', $meta_query );
+							}
+						}
+					}
+				}
+				if ( $filter->is_filter_by_price_range() ) {
+					$meta_query = $wp_query->get( 'meta_query' );
+					$meta_query[] = array(
+						'key'		=> 'tcp_price',
+						'value'		=> array( $filter->get_min_price(), $filter->get_max_price() ),
+						'type'		=> 'NUMERIC',
+						'compare'	=> 'BETWEEN'
+					);
+					$query->set( 'meta_query', $meta_query );
+				}
+				$query->set( 'posts_per_page', (int)$this->get_setting( 'products_per_page', 10 ) );
+				$query = apply_filters( 'tcp_apply_filters_for_saleables', $query );
+				if ( $filter->get_order_type() == 'price' ) {
+					$query->set( 'orderby', 'meta_value_num' );
+					$query->set( 'meta_key', 'tcp_price' );
+				} elseif ( $filter->get_order_type() == 'order' ) {
+					$query->set( 'orderby', 'meta_value_num' );
+					$query->set( 'meta_key', 'tcp_order' );
+				} else {
+					$query->set( 'orderby', $filter->get_order_type() );
+				}
+				$query->set( 'order', $filter->get_order_desc() );
+				$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
 			}
-
-			$query->set( 'order', $filter->get_order_desc() );
-
-			$query = apply_filters( 'tcp_sort_main_loop', $query, $filter->get_order_type(), $filter->get_order_desc() );
 		}
 	}
 
