@@ -180,7 +180,7 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.4
 			//
 		}
-		update_option( 'tcp_version', 126 );//TODO change to 126.1
+		update_option( 'tcp_version', 127 );
 	}
 }
 ?>
