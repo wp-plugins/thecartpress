@@ -38,7 +38,7 @@ if ( ! $disable_shopping_cart ) :
 		$warnings_msg[] = __( 'Checkout page has been created', 'tcp' );
 	}
 	$page_id = get_option( 'tcp_my_account_page_id' );
-var_dump($page_id);
+
 	if ( ! $page_id || ! get_page( $page_id ) ) {
 		TheCartPress::create_my_account_page();
 		$warnings_msg[] = __( 'My Account page has been created', 'tcp' );
