@@ -151,7 +151,7 @@ class TCPUpdateVersion {
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
 			$row = $wpdb->get_row( $sql );
 			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` VARCHAR(500) NOT NULL AFTER `payment_method`;';
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `payment_method`;';
 				$wpdb->query( $sql );
 			}
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_notice\'';
@@ -164,18 +164,6 @@ class TCPUpdateVersion {
 			$wpdb->query( $sql );
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `comment_internal` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
 			$wpdb->query( $sql );
-			//
-			//TODO Deprecated 1.4
-			//
-		}
-		if ( $version < 126.1 ) {
-			global $wpdb;
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
-			$row = $wpdb->get_row( $sql );
-			if ( $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `payment_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
-				$wpdb->query( $sql );
-			}
 			//
 			//TODO Deprecated 1.4
 			//
