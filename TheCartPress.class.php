@@ -307,7 +307,7 @@ class TheCartPress {
 			$warnings[] = __( 'The <strong>Checkout page</strong> has been deleted.', 'tcp' );
 		$page_id = get_option( 'tcp_my_account_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) )
-			$warnings[] = __( 'My Account page has been created', 'tcp' );
+			$warnings[] = __( 'My Account page has been deleted', 'tcp' );
 		$warnings = apply_filters( 'tcp_check_the_plugin', $warnings );
 		if ( count( $warnings ) > 0 ) : 
 			$checking_path = TCP_ADMIN_PATH . 'Checking.php'; ?>
@@ -335,6 +335,15 @@ class TheCartPress {
 			}
 			$apply_filters = true;
 		}*/
+
+		if ( $query->is_author ) {
+			$post_types = get_post_types( array( 'public' => true ) );
+			unset($post_types['attachment']);
+			unset($post_types['page']);
+			$query->set( 'post_type', $post_types );
+		}
+
+
 		if ( ! $apply_filters && isset( $query->tax_query ) ) {
 			foreach ( $query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {

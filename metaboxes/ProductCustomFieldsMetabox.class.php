@@ -122,7 +122,7 @@ class ProductCustomFieldsMetabox {
 			<tr valign="top">
 				<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' ); ?>:</label></th>
 				<td><input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id, false ) ); ?>" class="regular-text" style="width:12em !important" />&nbsp;<?php tcp_the_currency(); ?> <?php tcp_price_include_tax_message(); ?>
-				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
+				<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
 			</tr>
 
 			<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id ); ?>

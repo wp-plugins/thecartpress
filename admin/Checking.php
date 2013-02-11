@@ -17,14 +17,12 @@
  */
 ?>
 <div class="wrap">
-	<h2><?php _e( 'Set up', 'tcp' );?></h2>
+	<h2><?php _e( 'Set up', 'tcp' ); ?></h2>
 	<ul class="subsubsub">
 	</ul>
 	<div class="clear"></div>
-<?php
-global $thecartpress;
-
-$disable_shopping_cart = isset( $thecartpress->settings['disable_shopping_cart'] ) ? $thecartpress->settings['disable_shopping_cart'] : false;
+<?php global $thecartpress;
+$disable_shopping_cart = $thecartpress->get_setting( 'disable_shopping_cart', false );
 if ( ! $disable_shopping_cart ) :
 	$warnings_msg = array();
 	$shopping_cart_page_id = get_option( 'tcp_shopping_cart_page_id' );
@@ -38,7 +36,6 @@ if ( ! $disable_shopping_cart ) :
 		$warnings_msg[] = __( 'Checkout page has been created', 'tcp' );
 	}
 	$page_id = get_option( 'tcp_my_account_page_id' );
-
 	if ( ! $page_id || ! get_page( $page_id ) ) {
 		TheCartPress::create_my_account_page();
 		$warnings_msg[] = __( 'My Account page has been created', 'tcp' );
@@ -46,15 +43,15 @@ if ( ! $disable_shopping_cart ) :
 	$warnings_msg = apply_filters( 'tcp_checking_pages', $warnings_msg, $shopping_cart_page_id );
 	if ( count( $warnings_msg ) > 0 ) : ?>
 		<ul id="tcp_fix_bug">
-		<?php foreach( $warnings_msg as $msg ) :?>
+		<?php foreach( $warnings_msg as $msg ) : ?>
 			<li><?php echo $msg;?></li>
-		<?php endforeach;?>
+		<?php endforeach; ?>
 		</ul>
-		<p class="description"><?php _e( 'All problems have been solved', 'tcp' );?></p>
+		<p class="description"><?php _e( 'All problems have been solved', 'tcp' ); ?></p>
 		<script>
 		jQuery('#message_checking_error').hide();
 		</script>
 	<?php endif; ?>
-		<p class="description"><?php _e( 'The checking result is Ok.', 'tcp' );?></p>
-<?php endif;?>
+	<p class="description"><?php _e( 'The checking result is Ok.', 'tcp' ); ?></p>
+<?php endif; ?>
 </div>

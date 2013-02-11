@@ -66,8 +66,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 $plugin			= tcp_get_plugin( $plugin_id );
 $plugin_type	= tcp_get_plugin_type( $plugin_id );
 $plugin_data	= get_option( 'tcp_plugins_data_' . $plugin_id );
-$instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance=';
-?>
+$instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
 
 <div class="wrap">
 <h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle(); ?></h2>
@@ -213,7 +212,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<input type="checkbox" id="unique" name="unique" value="yes" <?php checked( isset( $data['unique'] ) ? $data['unique'] : false ); ?> />
 		</td>
 	</tr>
-	<?php do_action( 'tcp_plugin_edit_fields', $data ); ?>
+	<?php do_action( 'tcp_plugin_edit_fields', $data, $plugin_type ); ?>
 	<?php $plugin->showEditFields( $data ); ?>
 	</tbody>
 	</table>

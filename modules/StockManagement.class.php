@@ -574,7 +574,7 @@ function show_hide_stock_management() {
 	function tcp_get_dynamic_options( $posts, $parent_id ) {
 		$res = array();
 		foreach( $posts as $id => $post_id ) {
-			if ( tcp_get_the_stock( $post_id ) > 0 ) $res[] = $post_id;
+			if ( tcp_get_the_stock( $post_id ) != 0 ) $res[] = $post_id;
 		}
 		return $res;
 	}

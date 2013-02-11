@@ -850,7 +850,7 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
  * @since 1.1.0
  */
 function tcp_get_saleable_post_types( $one_more = false ) {
-	$saleable_post_types = array( TCP_PRODUCT_POST_TYPE );
+	$saleable_post_types = array();
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
 	if ( $one_more !== false ) $saleable_post_types[] = $one_more;
 	return $saleable_post_types;

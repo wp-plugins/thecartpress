@@ -216,7 +216,8 @@ class ProductCustomPostType {
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
 				echo $sku;
 			} elseif ( 'price' == $column_name ) {
-				$price = tcp_get_the_price( $post->ID );
+//				$price = tcp_get_the_price( $post->ID );
+				$price = $post->tcp_price;
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();

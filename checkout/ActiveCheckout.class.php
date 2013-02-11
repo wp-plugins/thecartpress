@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
-require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class ActiveCheckout {//shortcode
 
