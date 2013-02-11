@@ -771,6 +771,7 @@ function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock
 			}
 		} else {
 			$post_id = tcp_get_default_id( $post_id );
+			update_post_meta( $post_id, 'tcp_stock', (int)$stock );
 			$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 			if ( is_array( $translations ) && count( $translations ) > 0 )
 				foreach( $translations as $translation )
