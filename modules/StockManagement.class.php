@@ -208,15 +208,19 @@ class TCPStockManagement {
 		if ( $decrement ) foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );		
-			if ( $stock < $ordersDetail->qty_ordered ) return true;
+//echo 'Checking to decrement stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
+			if ( $stock > -1 && $stock < $ordersDetail->qty_ordered ) return true;
 		}
+
 		foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			if ( $stock == -1 ) {
 			} elseif ( ! $decrement ) {  /* if here then we ADD the stock back to the */
+//echo 'Add stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
 				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock + $ordersDetail->qty_ordered );
 			} elseif ( $stock >= $ordersDetail->qty_ordered ) {
+//echo 'Remove stock ', $ordersDetail->post_id, ' stock=', $stock, ' - ', $ordersDetail->qty_ordered, '<br>';
 				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock - $ordersDetail->qty_ordered );
 			}
 		}
@@ -771,6 +775,7 @@ function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock
 			}
 		} else {
 			$post_id = tcp_get_default_id( $post_id );
+//echo 'Updated stock ', $post_id, ' stock=', $stock, '<br>';
 			update_post_meta( $post_id, 'tcp_stock', (int)$stock );
 			$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 			if ( is_array( $translations ) && count( $translations ) > 0 )

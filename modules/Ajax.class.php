@@ -82,6 +82,11 @@ class TCPAjax {
 		global $thecartpress;
 		$activate_ajax = $thecartpress->get_setting( 'activate_ajax', true ); ?>
 		<tr valign="top">
+			<th colspan="2">
+				<h3><?php _e( 'Ajax', 'tcp' ); ?></h3>
+			</th>
+		</tr>
+		<tr valign="top">
 			<th scope="row">
 				<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>
 			</th>
