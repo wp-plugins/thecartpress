@@ -37,6 +37,7 @@ function tcp_get_current_user_roles() {
  * @since 1.2.5
  */
 function tcp_get_current_user_role_title() {
+	global $wp_roles;
 	$role = tcp_get_current_user_role();
 	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
 }

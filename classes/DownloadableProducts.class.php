@@ -151,7 +151,7 @@ class TCPDownloadableProducts {
 			require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
 			$exists_downloadables = false;
 			$details = OrdersDetails::getDetails( $order_id );
-			$url = get_bloginfo('url') . '/wp-content/plugins/thecartpress/admin/VirtualProductDownloader.php';
+			$url = WP_PLUGIN_URL . '/thecartpress/admin/VirtualProductDownloader.php';
 			ob_start(); ?>
 			<ul>
 			<?php foreach( $details as $detail ) :

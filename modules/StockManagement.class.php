@@ -244,6 +244,12 @@ class TCPStockManagement {
 		$stock_limit			= $thecartpress->get_setting( 'stock_limit', 10 );
 		$hide_out_of_stock		= $thecartpress->get_setting( 'hide_out_of_stock', false ); ?>
 <tr valign="top">
+	<th colspan="2">
+		<h3><?php _e( 'Stock', 'tcp' ); ?></h3>
+	</th>
+</tr>
+
+<tr valign="top">
 	<th scope="row">
 	<label for="stock_management"><?php _e( 'Stock management', 'tcp' ); ?></label>
 	</th>

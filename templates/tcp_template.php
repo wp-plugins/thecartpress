@@ -67,8 +67,7 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 	}
 	if ( $show_parent && ! tcp_is_visible( $post_id ) ) {
 		$parent_id = tcp_get_the_parent( $post_id );
-		if ( $parent_id > 0 ) $post_id = $parent_id;
-		$title = get_the_title( $post_id ) . ' - ' . $title;
+		if ( $parent_id ) $title = get_the_title( $parent_id ) . ' - ' . $title;
 	}
 	return apply_filters ( 'tcp_get_the_title', $title, $post_id, $html, $show_parent );
 }
@@ -1028,6 +1027,14 @@ function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 //
 //End product types
 //
+
+//
+// Roles
+//
+function tcp_get_default_roles() {
+	$default_roles = array( 'super-admin', 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+	return apply_filters( 'tcp_get_default_roles', $default_roles );
+}
 
 //
 // Utils and Tools

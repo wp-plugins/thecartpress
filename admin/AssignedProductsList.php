@@ -16,7 +16,7 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ).'/daos/RelEntities.class.php' );
+require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
 $post_id		= isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
 $post_type		= get_post_type( $post_id );

@@ -17,9 +17,14 @@
  */
 
 define( 'TCP_CUSTOM_FIELD_TYPE_TEXT', 'string' );
+define( 'TCP_CUSTOM_FIELD_TYPE_TEXT_MULTILINE', 'string-multiline' );
 define( 'TCP_CUSTOM_FIELD_TYPE_NUMBER', 'number' );
 define( 'TCP_CUSTOM_FIELD_TYPE_LIST', 'list' );
+define( 'TCP_CUSTOM_FIELD_TYPE_RADIO', 'radio' );
+define( 'TCP_CUSTOM_FIELD_TYPE_CHECK', 'check' );
 define( 'TCP_CUSTOM_FIELD_TYPE_FILE', 'upload' );
+define( 'TCP_CUSTOM_FIELD_TYPE_IMAGE', 'image' );
+define( 'TCP_CUSTOM_FIELD_TYPE_EMAIL', 'email' );
 
 class TCPCustomFields {
 
@@ -107,12 +112,14 @@ function tcp_get_custom_fields( $post_id, $post_type = false ) {
 	$defs = tcp_get_custom_fields_def( $post_type );
 	$fields = array();
 	foreach( $defs as $def ) {
-		$value = get_post_meta( $post_id, $def['label'], true );
-		if ( $def['type'] == TCP_CUSTOM_FIELD_TYPE_LIST ) {
+		if ( $def['type'] == TCP_CUSTOM_FIELD_TYPE_LIST || $def['type'] == TCP_CUSTOM_FIELD_TYPE_RADIO ) {
+			$value = get_post_meta( $post_id, $def['label'], true );
 			if ( isset( $def['values'][$value] ) ) {
 				$values = explode( ',', $def['values'] );
 				$value = isset( $values[$value] ) ? $values[$value] : 0;
 			}
+		} elseif ( $def['type'] == TCP_CUSTOM_FIELD_TYPE_CHECK ) {
+		
 		} else {
 			$value = get_post_meta( $post_id, $def['values'], true );
 		}
@@ -190,13 +197,20 @@ function tcp_edit_custom_fields( $post_id, $post_type = false ) {
 		<tr valign="top">
 			<th scope="row"><label for="<?php echo $custom_field['id']; ?>"><?php echo tcp_string( 'TheCartPress', 'custom_field_' . $custom_field['id'] . '-label', $custom_field['label'] ); ?>:</label></th>
 			<td>
-			<?php if ( $custom_field['type'] == TCP_CUSTOM_FIELD_TYPE_LIST ) :?>
+			<?php if ( $custom_field['type'] == TCP_CUSTOM_FIELD_TYPE_LIST ) : ?>
 				<select name="<?php echo $custom_field['id']; ?>" id="<?php echo $custom_field['id']; ?>">
 				<?php $poss_values = explode( ',', $custom_field['values'] );
 				foreach( $poss_values as $poss_value ) : ?>
 					<option value="<?php echo $poss_value; ?>" <?php selected( $value, $poss_value ); ?>><?php echo $poss_value; ?></option>
 				<?php endforeach; ?>
 				</select>
+			<?php elseif ( $custom_field['type'] == TCP_CUSTOM_FIELD_TYPE_RADIO ) : ?>
+				<ul class="tcp-custom-filed-radio-list">
+				<?php $poss_values = explode( ',', $custom_field['values'] );
+				foreach( $poss_values as $poss_value ) : ?>
+				<li><input type="radio" name="<?php echo $custom_field['id']; ?>" id="<?php echo $custom_field['id']; ?>-<?php echo $poss_value; ?>" value="<?php echo $poss_value; ?>" <?php checked( $value, $poss_value ); ?> /> <?php echo $poss_value; ?></li>
+				<?php endforeach; ?>
+				</ul>
 			<?php else : ?>
 				<?php if ( $custom_field['type'] == TCP_CUSTOM_FIELD_TYPE_FILE ) : ?>
 					<?php if ( isset( $value['url'] ) ) : ?>

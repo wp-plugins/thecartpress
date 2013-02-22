@@ -36,9 +36,9 @@ get_header(); ?>
 					?>
 
 					<?php if ( is_active_sidebar( 'sidebar-related' ) ) : ?>
-                        <div id="cross-content">
-                          <?php dynamic_sidebar( 'sidebar-related' ); ?>
-                        </div>
+						<div id="cross-content">
+							<?php dynamic_sidebar( 'sidebar-related' ); ?>
+						</div>
 					<?php endif; ?>
 
 			<?php else : ?>

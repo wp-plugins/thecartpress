@@ -63,13 +63,11 @@ class ActiveCheckout {//shortcode
 					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_successfully -->
 			<?php endif; ?>
-
 			<?php do_action( 'tcp_checkout_ok_footer', $shoppingCart ); ?>
-
 			<br/>
 			<?php OrderPage::show( $order_id, array() ); ?>
 			<br/>
-			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+			<a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 			<?php TheCartPress::removeShoppingCart();
 			do_action( 'tcp_checkout_end', $order_id, true );
 			return ob_get_clean();
@@ -133,7 +131,7 @@ class ActiveCheckout {//shortcode
 			$_REQUEST['order_id'] = $order_id;
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );
 			ob_start();
-			include( TCP_ADMIN_FOLDER . 'PrintOrder.php' );
+			TCPPrintOrder::printOrder( $order_id );
 			$thecartpress->getShoppingCart()->setOrderId( $old_value );
 			$message = ob_get_clean();
 			$message .= tcp_do_template( 'tcp_checkout_email', false );

@@ -24,7 +24,11 @@ class TemplateCustomPostType {
 	public static $TEMPLATE = 'tcp_template';
 	
 	function __construct() {
-		global $thecartpress;
+		add_action( 'init', array( &$this, 'init' ) );
+	}
+	
+	function init() {
+		//global $thecartpress;
 		$labels = array(
 			'name'					=> _x( 'Notices', 'post type general name', 'tcp' ),
 			'singular_name'			=> _x( 'Notice', 'post type singular name', 'tcp' ),
@@ -60,4 +64,6 @@ class TemplateCustomPostType {
 		register_post_type( TemplateCustomPostType::$TEMPLATE, $register );
 	}
 }
+
+new TemplateCustomPostType();
 ?>

@@ -216,7 +216,7 @@ class ProductCustomPostType {
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
 				echo $sku;
 			} elseif ( 'price' == $column_name ) {
-//				$price = tcp_get_the_price( $post->ID );
+				//$price = tcp_get_the_price( $post->ID );
 				$price = $post->tcp_price;
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
 				$product_type = tcp_get_the_product_type( $post->ID );
@@ -232,7 +232,6 @@ class ProductCustomPostType {
 	 */
 	function restrictManagePosts() {
 		global $typenow;
-		//if ( $typenow == TCP_PRODUCT_POST_TYPE ) {
 		if ( tcp_is_saleable_post_type( $typenow ) ) {
 			global $wp_query;
 			wp_dropdown_categories( array(
@@ -264,6 +263,7 @@ class ProductCustomPostType {
 	 * This function is executed before the admin product list query. WP 3.1
 	 */
 	function parse_query( $query ) {
+		if ( ! is_admin() ) return $query;
 		if ( isset( $_REQUEST['tcp_product_cat'] ) && $_REQUEST['tcp_product_cat'] > 0 ) {
 			$query->query_vars['tax_query'] = array(
 				array(

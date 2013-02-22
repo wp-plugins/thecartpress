@@ -19,7 +19,7 @@
 class TCPUpdateVersion {
 
 	function update( $thecartpress ) {
-		$version = (int)get_option( 'tcp_version' );
+		$version = (float)get_option( 'tcp_version' );
 		if ( $version < 112 ) {
 			global $wpdb;
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
@@ -168,7 +168,16 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.4
 			//
 		}
-		update_option( 'tcp_version', 127 );
+		if ( $version < 127.1 ) {
+			$customer = get_role( 'customer' );
+			$customer->remove_cap( 'tcp_edit_addresses' );
+			$customer->add_cap( 'tcp_edit_address' );
+			$merchant = get_role( 'merchant' );
+			$merchant->add_cap( 'tcp_edit_address' );
+			$administrator = get_role( 'administrator' );
+			$administrator->add_cap( 'tcp_edit_address' );
+		}
+		update_option( 'tcp_version', 127.1 );
 	}
 }
 ?>

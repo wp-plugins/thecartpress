@@ -78,7 +78,7 @@ th, td {
 <?php endif;?>
 <?php if ( $order_id > 0 ) : ?>
 	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a></li>
+	<li><a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a></li>
 <?php endif;?>
 <?php if ( $order_id > 0 && current_user_can( 'tcp_edit_products') ) : ?>
 	<li>&nbsp;|&nbsp;</li>

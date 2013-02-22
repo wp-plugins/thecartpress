@@ -47,6 +47,15 @@ class TCPCheckoutBox {
 	}
 
 	/**
+	 * Recovery box will be a box to get the execution after a checkout ko
+	 * Payment methods will be the recovery box
+	 * @since 1.2.8
+	 */
+	function isRecoveryBox() {
+		return false;
+	}
+	
+	/**
 	 * Returns true if the box needs a form tag encapsulating it
 	 */
 	function is_form_encapsulated() {

@@ -19,6 +19,7 @@
 require_once( 'BuyButtonShortcode.class.php' );
 require_once( 'NavigationTreeShortcode.class.php' );
 require_once( 'PriceShortcode.class.php' );
+require_once( 'RegisterForm.class.php' );
 require_once( 'Shortcode.class.php' );
 require_once( 'ShoppingCartPage.class.php' );
 ?>

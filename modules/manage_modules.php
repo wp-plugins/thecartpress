@@ -17,7 +17,7 @@
  */
 
 require_once( 'Ajax.class.php' );
-//require_once( 'BuddyPress.class.php' );
+require_once( 'BuddyPress.class.php' );
 require_once( 'BuyButton.class.php' );
 require_once( 'TaxonomyImages.class.php' );
 require_once( 'CopyOrder.class.php' );
@@ -27,9 +27,10 @@ require_once( 'CustomStyles.class.php' );
 require_once( 'CustomTemplates.class.php' );
 require_once( 'FilterNavigation.class.php' );
 require_once( 'GroupedProducts.class.php' );
-require_once( 'JPlayer.class.php' );
+//require_once( 'JPlayer.class.php' );
 require_once( 'LastLogin.class.php' );
 require_once( 'LoginRegister.class.php' );
+require_once( 'PriceUpdate.class.php' );
 require_once( 'StockManagement.class.php' );
 require_once( 'TopSellers.class.php' );
 require_once( 'UIImprovements.class.php' );

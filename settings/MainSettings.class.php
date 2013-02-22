@@ -139,7 +139,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 	</th>
 	<td>
 		<input type="checkbox" id="hide_visibles" name="hide_visibles" value="yes" <?php checked( $hide_visibles, true ); ?> />
-		<p class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></p>
+		<span class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></span>
 	</td>
 </tr>
 <?php do_action( 'tcp_main_settings_page' ); ?>

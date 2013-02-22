@@ -134,18 +134,20 @@ class TCPAutoUpdate
 	}
 	
 	public function get_remote_post( $method ) {
-		$xml = xmlrpc_encode_request( $method, array( 'plugin_slug' => $this->slug ) );
-		$curl_hdl = curl_init();
-		curl_setopt( $curl_hdl, CURLOPT_URL, $this->update_path );
-		curl_setopt( $curl_hdl, CURLOPT_HEADER, 0 ); 
-		curl_setopt( $curl_hdl, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $curl_hdl, CURLOPT_POST, true );
-		curl_setopt( $curl_hdl, CURLOPT_POSTFIELDS, $xml );
-		// Invoke RPC command
-		$response = curl_exec( $curl_hdl );
-		curl_close( $curl_hdl );
-		$result = xmlrpc_decode_request( $response, $method );
-		return $result;
+		if ( function_exists ( 'xmlrpc_encode_request' ) ) {
+			$xml = xmlrpc_encode_request( $method, array( 'plugin_slug' => $this->slug ) );
+			$curl_hdl = curl_init();
+			curl_setopt( $curl_hdl, CURLOPT_URL, $this->update_path );
+			curl_setopt( $curl_hdl, CURLOPT_HEADER, 0 ); 
+			curl_setopt( $curl_hdl, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $curl_hdl, CURLOPT_POST, true );
+			curl_setopt( $curl_hdl, CURLOPT_POSTFIELDS, $xml );
+			// Invoke RPC command
+			$response = curl_exec( $curl_hdl );
+			curl_close( $curl_hdl );
+			$result = xmlrpc_decode_request( $response, $method );
+			return $result;
+		}
 	}
 }
 ?>
