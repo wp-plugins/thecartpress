@@ -248,7 +248,7 @@ class ProductCustomFieldsMetabox {
 		update_post_meta( $post_id, 'tcp_price', $price );
 		update_post_meta( $post_id, 'tcp_initial_units', $tcp_initial_units );
 
-		$weight = isset( $_POST['tcp_weight'] ) ? (float)$_POST['tcp_weight'] : 0;
+		$weight = isset( $_POST['tcp_weight'] ) ? $_POST['tcp_weight'] : 0;
 		$weight = tcp_input_number( $weight );
 		update_post_meta( $post_id, 'tcp_weight', $weight );
 		update_post_meta( $post_id, 'tcp_order', isset( $_POST['tcp_order'] ) ? (int)$_POST['tcp_order'] : '' );
