@@ -253,14 +253,6 @@ class TCPLoginRegister {
 	tcp_login_form( $args ); ?>
 </div>
 
-<!--<h2><?php //_e( 'My Adresses', 'tcp-fe' ); ?></h2>
-	<?php //_e( 'You have the following dispatch and/or billing addresse(s) at interloom', 'tcp-fe' ); ?>
-	<?php //echo $this->tcp_addresses_list(); ?>
-	<a href="<?php tcp_the_my_addresses_url(); ?>"><?php _e( 'See all addresses', 'tcp-fe' ); ?></a>
-<h2><?php //_e( 'My orders', 'tcp-fe' ); ?></h2>
-	<?php //_e( 'Here is an overview of your current and previous orders', 'tcp_fe' ); ?>
-	<?php //echo $this->tcp_orders_list(); ?>
-	<a href="<?php tcp_the_my_orders_url(); ?>"><?php _e( 'See all orders', 'tcp-fe' ); ?></a>-->
 <?php if ( get_option( 'users_can_register' ) ) : ?>
 	<div class="tcp_register_form">
 	<?php tcp_register_form(); ?>
