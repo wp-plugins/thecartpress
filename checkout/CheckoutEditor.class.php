@@ -139,14 +139,13 @@ class TCPCheckoutEditor {
 			<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
 			<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
 			<form method="post">
-				<?php if ( file_exists( $initial_path . $partial_path ) ) :
-					require_once( $initial_path . $partial_path );
+				<?php if ( file_exists( $initial_path . $partial_path['path'] ) ) :
+					require_once( $initial_path . $partial_path['path'] );
 					$box = new $class_name(); ?>
 					<?php if ( $box->show_config_settings() ) : ?>
-						<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path; ?>" />
+						<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path['path']; ?>" />
 						<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
 						<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
-						</script>
 					<?php endif; ?>
 				<?php endif; ?>
 			</form>

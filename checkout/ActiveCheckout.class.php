@@ -28,7 +28,6 @@ class ActiveCheckout {//shortcode
 		if ( isset( $_REQUEST['order_id'] ) ) {
 			$order_id = $_REQUEST['order_id'];
 		} else {
-			$shoppingCart = TheCartPress::getShoppingCart();
 			$order_id = $shoppingCart->getOrderId();
 		}
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
@@ -68,8 +67,8 @@ class ActiveCheckout {//shortcode
 			<?php OrderPage::show( $order_id, array() ); ?>
 			<br/>
 			<a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
-			<?php TheCartPress::removeShoppingCart();
-			do_action( 'tcp_checkout_end', $order_id, true );
+			<?php if ( apply_filters( 'tcp_checkout_remove_shopping_cart', true ) ) TheCartPress::removeShoppingCart(); ?>
+			<?php do_action( 'tcp_checkout_end', $order_id, true );
 			return ob_get_clean();
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
