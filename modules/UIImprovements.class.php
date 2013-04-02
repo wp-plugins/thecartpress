@@ -26,6 +26,7 @@ class UIImprovements {
 		add_filter( 'tcp_the_currency', array( &$this, 'tcp_the_currency' ) );
 		add_action( 'twentyten_credits', array( &$this, 'twentyten_credits' ) );
 		add_action( 'twentyeleven_credits', array( &$this, 'twentyten_credits' ) );
+		add_action( 'twentytwelve_credits', array( &$this, 'twentyten_credits' ) );
 		add_action( 'wp_meta', array( &$this, 'wp_meta' ) );
 		add_filter( 'post_class', array( &$this, 'post_class' ), 10, 3 );
 		global $thecartpress;

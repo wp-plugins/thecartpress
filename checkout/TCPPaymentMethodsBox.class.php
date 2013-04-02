@@ -42,6 +42,10 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		return 'payment-methods';
 	}
 
+	function isRecoveryBox() {
+		return true;
+	}
+
 	function before_action() {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$billing_country = '';

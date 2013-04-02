@@ -145,8 +145,8 @@ class TCPStockManagement {
 		</td><?php
 	}
 
-	function tcp_dynamic_options_option_to_save( $option, $id, $_REQUEST ) {
-		$option['stock'] = trim( $_REQUEST['tcp_stock'][$id] );
+	function tcp_dynamic_options_option_to_save( $option, $id, $data ) {
+		$option['stock'] = trim( $data['tcp_stock'][$id] );
 		return $option;
 	}
 
@@ -208,15 +208,19 @@ class TCPStockManagement {
 		if ( $decrement ) foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );		
-			if ( $stock < $ordersDetail->qty_ordered ) return true;
+//echo 'Checking to decrement stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
+			if ( $stock > -1 && $stock < $ordersDetail->qty_ordered ) return true;
 		}
+
 		foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			if ( $stock == -1 ) {
 			} elseif ( ! $decrement ) {  /* if here then we ADD the stock back to the */
+//echo 'Add stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
 				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock + $ordersDetail->qty_ordered );
 			} elseif ( $stock >= $ordersDetail->qty_ordered ) {
+//echo 'Remove stock ', $ordersDetail->post_id, ' stock=', $stock, ' - ', $ordersDetail->qty_ordered, '<br>';
 				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock - $ordersDetail->qty_ordered );
 			}
 		}
@@ -239,6 +243,12 @@ class TCPStockManagement {
 		$stock_status_to_adjust	= $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
 		$stock_limit			= $thecartpress->get_setting( 'stock_limit', 10 );
 		$hide_out_of_stock		= $thecartpress->get_setting( 'hide_out_of_stock', false ); ?>
+<tr valign="top">
+	<th colspan="2">
+		<h3><?php _e( 'Stock', 'tcp' ); ?></h3>
+	</th>
+</tr>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="stock_management"><?php _e( 'Stock management', 'tcp' ); ?></label>
@@ -574,7 +584,7 @@ function show_hide_stock_management() {
 	function tcp_get_dynamic_options( $posts, $parent_id ) {
 		$res = array();
 		foreach( $posts as $id => $post_id ) {
-			if ( tcp_get_the_stock( $post_id ) > 0 ) $res[] = $post_id;
+			if ( tcp_get_the_stock( $post_id ) != 0 ) $res[] = $post_id;
 		}
 		return $res;
 	}
@@ -771,6 +781,8 @@ function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock
 			}
 		} else {
 			$post_id = tcp_get_default_id( $post_id );
+//echo 'Updated stock ', $post_id, ' stock=', $stock, '<br>';
+			update_post_meta( $post_id, 'tcp_stock', (int)$stock );
 			$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 			if ( is_array( $translations ) && count( $translations ) > 0 )
 				foreach( $translations as $translation )

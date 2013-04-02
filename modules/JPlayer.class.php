@@ -25,14 +25,16 @@
 class TCPJPlayer {
 
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'init', array( &$this, 'init' ), 20 );
 		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
 	}
 
 	function init() {
-		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js' );
+		//add_filter( 'the_content', array( &$this, 'the_content' ) );
+
+		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js', 'jquery' );
 		wp_enqueue_script( 'tcp_jplayer' );
-		wp_register_script( 'tcp_jplayer_playlist',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js' );
+		wp_register_script( 'tcp_jplayer_playlist',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js', 'jquery' );
 		wp_enqueue_script( 'tcp_jplayer_playlist' );
 		global $thecartpress;
 		if ( $thecartpress ) {
@@ -41,6 +43,13 @@ class TCPJPlayer {
 			$url = apply_filters( 'tcp_jplayer_skin_current_skin_url', $url, $jplayer_skin );
 			wp_enqueue_style( 'tcp_jplayer_skin', $url );
 		}
+	}
+
+	function the_content( $content ) {
+		ob_start();
+		$this->show();
+		$out = ob_get_clean();
+		return $content . $out;
 	}
 
 	function admin_menu() {
@@ -54,10 +63,10 @@ class TCPJPlayer {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize The default TheCartPress player (JPlayer).', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize The default TheCartPress player (JPlayer).', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
@@ -87,7 +96,7 @@ $jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' ); ?>
 <?php if ( $handle = opendir( WP_PLUGIN_DIR . '/thecartpress/js/jquery.jplayer/skins/' ) ) : ?>
 	<?php while ( false !== ( $entry = readdir( $handle ) ) ) : ?>
 		<?php if ( $entry != '.' && $entry != '..' ) : ?>
-    <div class="tcp_jplayer_skins">
+	<div class="tcp_jplayer_skins">
 
 		<label class="tcp_jplayer_skin_title"><input type="radio" name="jplayer_skin" value="<?php echo $entry; ?>" <?php checked( $jplayer_skin, $entry ); ?>/> <?php echo $entry; ?></label>
 		<div class="tcp_jplayer_skin_detail">
@@ -144,79 +153,26 @@ $jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' ); ?>
 		}
 		$uri = $this->get_url( $post_id );
 		if ( strlen( $uri ) > 0 ) {
-		$playlists = $this->get_playlists( $post_id );
-		//if ( count( $playlists ) > 0 ) {
+			$playlists = $this->get_playlists( $post_id );
+	var_dump($playlists);
 			ob_start(); ?>
-			<div id="tcp_jplayer" class="jp-jplayer"></div>
-			<script>
-jQuery(document).ready(function() {
-	var myPlaylist = new jPlayerPlaylist({
-		jPlayer: "#tcp_jplayer",
-		cssSelectorAncestor: "#tcp_jplayer_container"
-	}, [
-<?php foreach( $playlists as $playlist ) : ?>
-		{
-			title:	'<?php echo $playlist['title']; ?>',
-			mp3:	'<?php echo $playlist['uri']; ?>',
-			//artist:'The Stark Palace',
-			//poster: 'http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png'
-		},
-<?php endforeach; ?>
-	], {
-		playlistOptions: {
-			enableRemoveControls: true
-		},
-		swfPath:	'<?php echo WP_PLUGIN_URL; ?>/thecartpress/js/jquery.jplayer',
-		supplied:	'mp3',
-		//wmode:	'window',
-	});
-
-	/*jQuery('#tcp_jplayer').jPlayer({
-		ready			: function() {
-			jQuery('#tcp_jplayer').jPlayer('setMedia', {
-				mp3: '<?php echo $uri; ?>'
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#jquery_jplayer_1").jPlayer({
+		ready: function () {
+			jQuery(this).jPlayer( "setMedia", {
+				mp3: "<?php echo $playlists[0]['uri']; ?>",
 			});
 		},
-		solution		: 'flash, html',
-		swfPath			: '<?php echo WP_PLUGIN_URL; ?>/thecartpress/js/jquery.jplayer',
-		supplied		: 'mp3',
-		preload			: 'metadata',
-		volume			: 0.8,
-		muted			: false,
-		backgroundColor	: '#000000',
-		cssSelectorAncestor: '.jp-audio',
-		cssSelector		: {
-			videoPlay		: '.jp-video-play',
-			play			: '.jp-play',
-			pause			: '.jp-pause',
-			stop			: '.jp-stop',
-			seekBar			: '.jp-seek-bar',
-			playBar			: '.jp-play-bar',
-			mute			: '.jp-mute',
-			unmute			: '.jp-unmute',
-			volumeBar		: '.jp-volume-bar',
-			volumeBarValue	: '.jp-volume-bar-value',
-			volumeMax		: '.jp-volume-max',
-			currentTime		: '.jp-current-time',
-			duration		: '.jp-duration',
-			fullScreen		: '.jp-full-screen',
-			restoreScreen	: '.jp-restore-screen',
-			repeat			: '.jp-repeat',
-			repeatOff		: '.jp-repeat-off',
-			gui				: '.jp-gui',
-			noSolution		: '.jp-no-solution'
-		},
-		errorAlerts		: false,
-		warningAlerts	: false
-	});*/
+		swfPath: "/js",
+		supplied: "mp3"
+	});
 });
 </script>
 			<?php echo $this->showItem( $title );
 			$out = ob_get_clean();
-			if ( $args['echo'] )
-				echo $out;
-			else
-				return $out;
+			if ( $args['echo'] ) echo $out;
+			else return $out;
 		}
 	}
 
@@ -252,58 +208,48 @@ jQuery(document).ready(function() {
 
 	function showItem( $titles ) { 
 		if ( ! is_array( $titles ) ) $titles = array( $titles );?>
-	
-		<div id="tcp_jplayer_container" class="jp-audio">
-			<div class="jp-type-single">
-				<div class="jp-gui jp-interface">
-					<ul class="jp-controls">
-						
-						<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-						<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-						<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-						
-						<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-						<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-						<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+	<div id="tcp_jplayer">
+<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+	<div id="jp_container_1" class="jp-audio">
+		<div class="jp-type-single">
+			<div class="jp-gui jp-interface">
+				<ul class="jp-controls">
+					<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+					<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+					<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+					<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+					<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+					<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+				</ul>
+				<div class="jp-progress">
+					<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
+					</div>
+				</div>
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
+				</div>
+				<div class="jp-time-holder">
+					<div class="jp-current-time"></div>
+					<div class="jp-duration"></div>
+					<ul class="jp-toggles">
+						<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+						<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
 					</ul>
-					<div class="jp-progress">
-						<div class="jp-seek-bar">
-							<div class="jp-play-bar"></div>
-						</div>
-					</div>
-					<div class="jp-volume-bar">
-						<div class="jp-volume-bar-value"></div>
-					</div>
-					<div class="jp-time-holder">
-						<div class="jp-current-time"></div>
-						<div class="jp-duration"></div>
-						<ul class="jp-toggles">
-							<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-							<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="jp-title">
-					<?php //if ( count( $titles ) > 0 ) : ?>
-						<ul>
-						<?php //foreach( $titles as $title ) : ?>
-							<li><?php //echo $title; ?></li>
-						<?php //endforeach; ?>
-						</ul>
-					<?php //endif; ?>
-				</div>
-				<div class="jp-playlist">
-					<ul>
-						<!-- The method Playlist.displayPlaylist() uses this unordered list -->
-						<li></li>
-					</ul>
-				</div>
-				<div class="jp-no-solution">
-					<span><?php _e( 'Update Required', 'tcp' ); ?></span>
-					<?php _e( 'To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.', 'tcp' ); ?>
 				</div>
 			</div>
+			<div class="jp-title">
+				<ul>
+					<li>Bubble</li>
+				</ul>
+			</div>
+			<div class="jp-no-solution">
+				<span>Update Required</span>
+				To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+			</div>
 		</div>
+	</div>
+</div><!-- .tcp_jplayer -->
 	<?php }
 }
 

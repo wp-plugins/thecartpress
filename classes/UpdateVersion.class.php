@@ -19,7 +19,7 @@
 class TCPUpdateVersion {
 
 	function update( $thecartpress ) {
-		$version = (int)get_option( 'tcp_version' );
+		$version = (float)get_option( 'tcp_version' );
 		if ( $version < 112 ) {
 			global $wpdb;
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
@@ -151,7 +151,7 @@ class TCPUpdateVersion {
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
 			$row = $wpdb->get_row( $sql );
 			if ( ! $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` VARCHAR(500) NOT NULL AFTER `payment_method`;';
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `payment_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `payment_method`;';
 				$wpdb->query( $sql );
 			}
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_notice\'';
@@ -168,19 +168,16 @@ class TCPUpdateVersion {
 			//TODO Deprecated 1.4
 			//
 		}
-		if ( $version < 126.1 ) {
-			global $wpdb;
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'payment_notice\'';
-			$row = $wpdb->get_row( $sql );
-			if ( $row ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `payment_notice` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
-				$wpdb->query( $sql );
-			}
-			//
-			//TODO Deprecated 1.4
-			//
+		if ( $version < 127.1 ) {
+			$customer = get_role( 'customer' );
+			$customer->remove_cap( 'tcp_edit_addresses' );
+			$customer->add_cap( 'tcp_edit_address' );
+			$merchant = get_role( 'merchant' );
+			$merchant->add_cap( 'tcp_edit_address' );
+			$administrator = get_role( 'administrator' );
+			$administrator->add_cap( 'tcp_edit_address' );
 		}
-		update_option( 'tcp_version', 126 );//TODO change to 126.1
+		update_option( 'tcp_version', 127.1 );
 	}
 }
 ?>

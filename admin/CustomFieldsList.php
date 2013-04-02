@@ -117,7 +117,9 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 		<select id="type" name="type">
 			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_TEXT; ?>"><?php _e( 'Text', 'tcp' );?></option>
 			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_NUMBER; ?>"><?php _e( 'Number', 'tcp' );?></option>
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_LIST; ?>"><?php _e( 'List', 'tcp' );?></option>
+			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_LIST; ?>"><?php _e( 'Select List', 'tcp' );?></option>
+			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_RADIO; ?>"><?php _e( 'Radio list', 'tcp' );?></option>
+			<!--<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_CHECK; ?>"><?php _e( 'Check box', 'tcp' );?></option>-->
 			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_FILE; ?>"><?php _e( 'File', 'tcp' );?></option>
 		</select>
 	</td>

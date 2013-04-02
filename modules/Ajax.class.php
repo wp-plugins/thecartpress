@@ -31,10 +31,10 @@ class TCPAjax {
 		if ( $thecartpress && $thecartpress->get_setting( 'activate_ajax', true ) ) {
 			add_action( 'wp_footer', 'tcp_states_footer_scripts' );
 
-			add_action( 'wp_ajax_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
-			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( $this, 'tcp_shopping_cart_actions' ) );
-			add_action( 'wp_ajax_tcp_checkout', array( $this, 'tcp_checkout' ) );
-			add_action( 'wp_ajax_nopriv_tcp_checkout', array( $this, 'tcp_checkout' ) );
+			add_action( 'wp_ajax_tcp_shopping_cart_actions', array( &$this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( &$this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_tcp_checkout', array( &$this, 'tcp_checkout' ) );
+			add_action( 'wp_ajax_nopriv_tcp_checkout', array( &$this, 'tcp_checkout' ) );
 
 			add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 			add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
@@ -81,6 +81,11 @@ class TCPAjax {
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$activate_ajax = $thecartpress->get_setting( 'activate_ajax', true ); ?>
+		<tr valign="top">
+			<th colspan="2">
+				<h3><?php _e( 'Ajax', 'tcp' ); ?></h3>
+			</th>
+		</tr>
 		<tr valign="top">
 			<th scope="row">
 				<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>

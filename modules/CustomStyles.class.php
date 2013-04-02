@@ -26,14 +26,19 @@ class TCPCustomStyles {
 	}
 
 	function body_classes( $classes ) {
-		if ( tcp_is_the_checkout_page() || tcp_is_the_shopping_cart_page() || tcp_is_the_catalogue_page() ) {
+		if ( tcp_is_the_checkout_page() ) {
 			$classes[] = 'tcp-store';
+			$classes[] = 'tcp-checkout-page';
+		} elseif ( tcp_is_the_shopping_cart_page() ) {
+			$classes[] = 'tcp-store';
+			$classes[] = 'tcp-shopping-cart-page';
+		} elseif ( tcp_is_the_catalogue_page() ) {
+			$classes[] = 'tcp-store';
+			$classes[] = 'tcp-catalogue-page';
 		} elseif ( is_tax() && tcp_is_saleable_taxonomy( tcp_get_current_taxonomy() ) ) {
-				$classes[] = 'tcp-store';
-		//} elseif ( is_archive() && tcp_is_saleable() ) {
-		//	$classes[] = 'tcp-archive';
+			$classes[] = 'tcp-store';
 		} elseif ( tcp_is_saleable() ) {
-			$classes[] = 'tcp-archive';
+			$classes[] = 'tcp-store';
 		}
 		return $classes;
 	}

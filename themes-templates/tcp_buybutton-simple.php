@@ -40,7 +40,7 @@ else $action = '';
 
 			<?php echo tcp_the_buy_button_options( $post_id ); ?>
 
-		</div>		 
+		</div>
 
 	<?php else : ?>
 
@@ -81,9 +81,9 @@ else $action = '';
 		</div>
 
 	<?php endif; ?>
-   
+
 	<?php if ( function_exists( 'tcp_the_tier_price' ) ) tcp_the_tier_price(); ?>
-		   
+
 </div>
 <?php do_action( 'tcp_buy_button_bottom', $post_id ); ?>
 

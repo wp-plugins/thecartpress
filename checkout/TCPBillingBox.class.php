@@ -298,26 +298,24 @@ class TCPBillingBox extends TCPCheckoutBox {
 						<?php global $thecartpress;
 						$country = $thecartpress->get_setting( 'country', '' );
 						$billing_isos = $thecartpress->get_setting( 'billing_isos', false );
-						if ( $billing_isos ) {
-							$countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
-						} else {
-							$countries = Countries::getAll( tcp_get_current_language_iso() );
-						}
+						if ( $billing_isos ) $countries = Countries::getSome( $billing_isos, tcp_get_current_language_iso() );
+						else $countries = Countries::getAll( tcp_get_current_language_iso() );
 						$country_bill = $country_id;
 						if ( $country_bill == '' ) $country_bill = $country;
 						?><select id="billing_country_id" name="billing_country_id"><?php //p_use_billing_address
-						foreach( $countries as $item ) :?>
-							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill )?>><?php echo $item->name;?></option>
-						<?php endforeach;?>
+						foreach( $countries as $item ) : ?>
+							<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill ); ?>><?php echo $item->name; ?></option>
+						<?php endforeach; ?>
 						</select>
 					</li>
 					<li>
 						<label for="billing_region_id"><?php _e( 'Region', 'tcp' ); ?>:<em>*</em></label>
-						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
+						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )	?>
 						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 							<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
-						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $region_id ); ?>><?php echo $region['name'];?></option>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region_item ) : ?>
+							<option value="<?php echo $id;?>" <?php selected( $id, $region_id ); ?>><?php echo $region_item['name']; ?></option>
+							<?php //if ( $id == $region_id ) $region = $region_item['name']; ?>
 						<?php endforeach;?>
 						</select>
 						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id;?>"/>

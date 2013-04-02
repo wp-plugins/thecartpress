@@ -233,11 +233,12 @@ class Orders {
 
 	static function getOrdersEx( $paged, $per_page = 20, $status = 'PENDING', $customer_id = -1 ) {
 		global $wpdb;
-		$sql = 'select order_id, shipping_firstname, shipping_lastname, created_at, customer_id,
+		/*$sql = 'select order_id, shipping_firstname, shipping_lastname, created_at, customer_id,
 				status, shipping_method, shipping_notice, shipping_amount, discount_amount, payment_name,
 				payment_method, payment_notice, payment_amount, transaction_id, order_currency_code,
 				code_tracking, billing_email
-				from ' . $wpdb->prefix . 'tcp_orders where 1=1';
+				from ' . $wpdb->prefix . 'tcp_orders where 1=1';*/
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_orders where 1=1';
 		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
 		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
 		$sql .= ' order by created_at desc' . $wpdb->prepare( ' limit %d, %d', ($paged-1) * $per_page, $per_page );

@@ -48,10 +48,11 @@ class Addresses {
 		$wpdb->query( $sql );
 	}
 
-	static function getCustomerAddresses( $customer_id ) {
+	static function getCustomerAddresses( $customer_id = false ) {
 		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_addresses
-			where customer_id = %d', $customer_id ) );
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_addresses';
+		if ( $customer_id !== false ) $sql .= $wpdb->prepare( ' where customer_id = %d', $customer_id );
+		return $wpdb->get_results( $sql );
 	}
 
 	static function isOwner( $address_id, $customer_id ) {
@@ -107,6 +108,13 @@ class Addresses {
 			where customer_id = %d and default_shipping = \'Y\'', $customer_id ) );
 	}
 
+	static function getCustomerDefaultShippingAddresses( $customer_id = false ) {
+		global $wpdb;
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_addresses where default_shipping = \'Y\'';
+		if ( $customer_id !== false ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
+		return $wpdb->get_results( $sql );
+	}
+
 	static function getCustomerDefaultBillingAddressId( $customer_id ) {
 		global $wpdb;
 		return $wpdb->get_var( $wpdb->prepare( 'select address_id from ' . $wpdb->prefix . 'tcp_addresses
@@ -117,6 +125,13 @@ class Addresses {
 		global $wpdb;
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_addresses
 			where customer_id = %d and default_billing = \'Y\'', $customer_id ) );
+	}
+
+	static function getCustomerDefaultBillingAddresses( $customer_id = false ) {
+		global $wpdb;
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_addresses where default_billing = \'Y\'';
+		if ( $customer_id !== false ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
+		return $wpdb->get_results(  $sql );
 	}
 
 	static function save( $address ) {

@@ -113,12 +113,25 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 				<?php endif; ?>
 
 			</div>
-		  
+
 			<?php if ( function_exists( 'tcp_the_tier_price' ) && tcp_has_tier_price( $product_id ) ) : ?>
 
-				<a href="#" class="tcp_view_tier_price" product_id="<?php echo $product_id; ?>" title="<?php _e( 'View/hide tier price', 'tcp' ); ?>"><?php _e( 'View/hide tier price', 'tcp' ); ?></a>
+				<a href="#" class="tcp_view_tier_price_<?php echo $product_id; ?>" title="<?php _e( 'View/hide tier price', 'tcp' ); ?>"><?php _e( 'View/hide tier price', 'tcp' ); ?></a>
 
 				<?php tcp_the_tier_price( $product_id ); ?>
+
+				<script>
+				jQuery('.tcp_view_tier_price_<?php echo $product_id; ?>').click(function(e) {
+					e.preventDefault();
+					var tar = jQuery('.tcp_tier_price_<?php echo $product_id; ?>');
+					if (tar.is(":visible")) {
+						tar.hide();
+					} else {
+						jQuery('.tcp_tier_price').hide();
+						tar.show();
+					}
+				});
+				</script>
 
 			<?php endif; ?>
 

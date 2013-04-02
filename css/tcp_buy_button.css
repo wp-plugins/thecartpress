@@ -350,3 +350,7 @@ div.tcp_tier_price ul {
 .cf {
 	zoom:1;
 }
+
+.tcp_jplayer {
+	position: absolute;
+}

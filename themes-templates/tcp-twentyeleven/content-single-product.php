@@ -7,11 +7,11 @@
  * @since Twenty Eleven 1.0
  */
 ?>
-
+HOLAAAAA
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<?php if ( has_term( 'beta', 'category-price', '' )) : ?>
-			<img src="/wp-content/themes/ecommerce-twentyeleven/images/beta3.jpg" alt="Beta Version" width="66" height="33" class="tcp-beta-single"/>
+			<img src="<?php WP_CONTENT_URL; ?>/themes/ecommerce-twentyeleven/images/beta3.jpg" alt="Beta Version" width="66" height="33" class="tcp-beta-single"/>
 		<?php endif; ?>
 		<h1 class="entry-title"><?php the_title(); ?>!!</h1>
 		<!--<div class="entry-meta">

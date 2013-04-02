@@ -34,7 +34,7 @@ Countries::createTable();
 Countries::initData();
 
 require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-//Orders::createTable();
+Orders::createTable();
 
 require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
 OrdersDetails::createTable();

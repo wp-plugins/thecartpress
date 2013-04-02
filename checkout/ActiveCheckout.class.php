@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
-require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class ActiveCheckout {//shortcode
 
@@ -28,7 +28,6 @@ class ActiveCheckout {//shortcode
 		if ( isset( $_REQUEST['order_id'] ) ) {
 			$order_id = $_REQUEST['order_id'];
 		} else {
-			$shoppingCart = TheCartPress::getShoppingCart();
 			$order_id = $shoppingCart->getOrderId();
 		}
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
@@ -63,15 +62,13 @@ class ActiveCheckout {//shortcode
 					</div><!-- .tcp_payment_area -->
 				</div><!-- .tcp_order_successfully -->
 			<?php endif; ?>
-
 			<?php do_action( 'tcp_checkout_ok_footer', $shoppingCart ); ?>
-
 			<br/>
 			<?php OrderPage::show( $order_id, array() ); ?>
 			<br/>
-			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
-			<?php TheCartPress::removeShoppingCart();
-			do_action( 'tcp_checkout_end', $order_id, true );
+			<a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+			<?php if ( apply_filters( 'tcp_checkout_remove_shopping_cart', true ) ) TheCartPress::removeShoppingCart(); ?>
+			<?php do_action( 'tcp_checkout_end', $order_id, true );
 			return ob_get_clean();
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
 			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
@@ -132,13 +129,10 @@ class ActiveCheckout {//shortcode
 			$old_value = $thecartpress->getShoppingCart()->getOrderId();
 			$_REQUEST['order_id'] = $order_id;
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );
-			ob_start();
-			include( TCP_ADMIN_FOLDER . 'PrintOrder.php' );
+			$message = TCPPrintOrder::printOrder( $order_id );
 			$thecartpress->getShoppingCart()->setOrderId( $old_value );
-			$message = ob_get_clean();
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message .= $additional_msg . "\n";
-
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to . "\r\n";

@@ -19,8 +19,8 @@
 class TCPBuyButton {
 
 	function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menu' ), 90 );
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_filter( 'tcp_get_buybutton_template', array( &$this, 'tcp_get_buybutton_template' ), 10, 2 );
 	}
 

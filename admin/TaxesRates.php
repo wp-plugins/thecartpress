@@ -16,9 +16,10 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( dirname( dirname( __FILE__ ) ).'/daos/Countries.class.php' );
-require_once( dirname( dirname( __FILE__ ) ).'/daos/Taxes.class.php' );
-require_once( dirname( dirname( __FILE__ ) ).'/daos/TaxRates.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
+require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
+require_once( TCP_DAOS_FOLDER . 'TaxRates.class.php' );
+
 add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 
 ?><h2><?php _e( 'Taxes Rates', 'tcp' );?></h2><?php

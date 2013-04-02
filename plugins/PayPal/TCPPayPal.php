@@ -174,7 +174,7 @@ class TCPPayPal extends TCP_Plugin {
 		$data['logging']				= isset( $_REQUEST['logging'] );
 		$data['cpp_cart_border_color']	= isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
 		$data['test_mode']				= isset( $_REQUEST['test_mode'] );
-		$data =  apply_filters( 'tcp_paypal_save_edit_fields', $data );
+		$data = apply_filters( 'tcp_paypal_save_edit_fields', $data );
 		return $data;
 	}
 

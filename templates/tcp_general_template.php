@@ -660,7 +660,7 @@ function tcp_login_form( $args = array() ) {
 			</td>
 			<td id="tcp_profile_info" style="vertical-align: top;">
 				<div class="tcp_profile_name">
-				<?php echo $current_user->user_nicename; ?> (<?php echo tcp_get_current_user_role_title(); ?>)
+				<?php echo $current_user->display_name; ?> (<?php echo tcp_get_current_user_role_title(); ?>)
 				</div>
 				<div class="tcp_last_login">
 				<?php printf( __( 'Last login: %s', 'tcp' ), tcp_get_the_last_login() ); ?>
@@ -694,28 +694,28 @@ function tcp_login_form( $args = array() ) {
 
 function tcp_register_form( $args = array() ) {
 	$defaults = array(
-		'echo'				=> true,
-//		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
-//		'redirect'			=> 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
-		'redirect'			=> get_permalink(),
-		'role'				=> 'customer',
-		'locked'			=> false,
-		'login'				=> true,
-		'form_id'			=> 'loginform',
-		'label_username'	=> __( 'Username' ),
-		'label_password'	=> __( 'Password' ),
+		'echo'			=> true,
+//		'redirect'		=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+//		'redirect'		=> 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
+		'redirect'		=> get_permalink(),
+		'role'			=> array( 'customer' ),
+		'locked'		=> false,
+		'login'			=> true,
+		'form_id'		=> 'loginform',
+		'label_username'=> __( 'Username' ),
+		'label_password'=> __( 'Password' ),
 		'label_repeat_password'=> __( 'Repeat password' ), //'&nbsp;',
-		'label_remember'	=> __( 'Remember Me' ),
-		'label_log_in'		=> __( 'Log In' ),
-		'id_username'		=> 'user_login',
-		'id_password'		=> 'user_pass',
-		'id_remember'		=> 'rememberme',
-		'id_submit'			=> 'wp-submit',
-		'remember'			=> true,
-		'value_username'	=> '',
-		'value_remember'	=> false, // Set this to true to default the "Remember me" checkbox to checked
-		'see_register'		=> true,
-		'ajax'				=> false,
+		'label_remember'=> __( 'Remember Me' ),
+		'label_log_in'	=> __( 'Log In' ),
+		'id_username'	=> 'user_login',
+		'id_password'	=> 'user_pass',
+		'id_remember'	=> 'rememberme',
+		'id_submit'		=> 'wp-submit',
+		'remember'		=> true,
+		'value_username'=> '',
+		'value_remember'=> false, // Set this to true to default the "Remember me" checkbox to checked
+		'see_register'	=> true,
+		'ajax'			=> false,
 	);
 	$args = wp_parse_args( $args, apply_filters( 'register_form_defaults', $defaults ) );
 	ob_start();
@@ -759,7 +759,7 @@ function tcp_register_form( $args = array() ) {
 		<?php echo apply_filters( 'tcp_register_form', ob_get_clean(), $args ); ?>
 		<?php do_action( 'register_form' ); ?>
 		<input type="hidden" name="tcp_redirect_to" value="<?php echo $args['redirect']; ?>" />
-		<input type="hidden" name="tcp_role" value="<?php echo $args['role']; ?>" />
+		<input type="hidden" name="tcp_role" value="<?php echo implode( ',', $args['role'] ); ?>" />
 		<?php if ( $args['locked'] ) : ?><input type="hidden" name="tcp_locked" value="yes" /><?php endif; ?>
 		<?php if ( $args['login'] ) : ?><input type="hidden" name="tcp_login" value="yes" /><?php endif; ?>
 		<p>
@@ -767,6 +767,8 @@ function tcp_register_form( $args = array() ) {
 		</p>
 		<p id="tcp_error_register" class="tcp_error" style="display:none;"><?php _e( 'Error', 'tcp' ); ?>: </p>
 	</form>
+	<?php else : ?>
+		<p><?php _e( 'The user is already logged', 'tcp' ); ?></p>
 	<?php endif;
 	$out = ob_get_clean();
 	if ( $args['echo'] ) echo $out;

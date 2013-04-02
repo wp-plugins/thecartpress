@@ -26,6 +26,7 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+		if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
 		return __( 'No payment!!, for test purpose', 'tcp' ) . ': ' . $shoppingCart->getTotal();
 	}
 

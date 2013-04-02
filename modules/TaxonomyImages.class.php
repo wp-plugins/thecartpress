@@ -43,9 +43,9 @@ class TCPTaxonomyImages {
 
 	function admin_print_scripts_edit_tags() {
 		wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'thickbox' );
-        wp_enqueue_script( 'media-upload' );
-        $this->admin_print_scripts_media_upload_popup();
+		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_script( 'media-upload' );
+		$this->admin_print_scripts_media_upload_popup();
 	}
 
 	function admin_print_styles_edit_tags() {

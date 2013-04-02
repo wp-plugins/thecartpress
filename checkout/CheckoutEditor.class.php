@@ -47,10 +47,10 @@ class TCPCheckoutEditor {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize Checkout Steps.', 'tcp' ) . '</p>'
+			'id'      => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize Checkout Steps.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
@@ -62,7 +62,6 @@ class TCPCheckoutEditor {
 		//wp_enqueue_script('custom-background');
 		//wp_enqueue_style('farbtastic');
 	}
-
 
 	function admin_action() {
 		if ( empty( $_POST ) ) return;
@@ -84,73 +83,79 @@ class TCPCheckoutEditor {
 <div class="wrap">
 <?php screen_icon( 'tcp-checkout' ); ?><h2><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
 <ul class="subsubsub"></ul>
+
 <form method="post">
 	<input type="submit" name="tcp_restore_default" value="<?php _e( 'Restore default values', 'tcp' ); ?>" class="button-secondary" />
 </form>
+
 <div class="clear"></div>
-<?php global $tcp_checkout_boxes;
-$order_steps = TCPCheckoutManager::get_steps(); ?>
-<h3><?php _e( 'Activated boxes', 'tcp' ); ?> <img src="images/loading.gif" class="tcp_checkout_editor_feedback" style="display:none;"/></h3>
-<ul class="tcp_activated_boxes">
-<?php if ( count( $order_steps ) > 0 ) :
-	foreach( $order_steps as $class_name ) :
-		if ( isset( $tcp_checkout_boxes[$class_name] ) ) : $partial_path = $tcp_checkout_boxes[$class_name];
-if ( is_array( $partial_path ) ) $partial_path = $partial_path['path']; ?>
-	<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
-		<h4><?php echo $class_name; ?></h4>
-		<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
-		<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
-		<form method="post">
-			<?php 
-			$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
-			require_once( $initial_path . $partial_path );
-			$box = new $class_name(); ?>
-			<?php if ( $box->show_config_settings() ) : ?>
+	<?php global $tcp_checkout_boxes;
+	$order_steps = TCPCheckoutManager::get_steps(); ?>
 
-				<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path; ?>" />
-				<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
-
-				<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
-			<?php endif; ?>
-		</form>
-		</div>
-	</li>
-		<?php endif; ?>
-	<?php endforeach; ?>
-<?php endif; ?>
-</ul>
-<p class="description"><?php _e( 'Drag and drop to reorder', 'tcp' ); ?></p>
-<?php $order_steps = TCPCheckoutManager::get_steps();
-foreach( $order_steps as $class_name )
-	if ( isset( $tcp_checkout_boxes[$class_name] ) )
-		unset( $tcp_checkout_boxes[$class_name] );
-$order_steps = array_diff( (array)$tcp_checkout_boxes, $order_steps ); ?>
-<h3><?php _e( 'Deactivated boxes', 'tcp' ); ?></h3>
-<ul class="tcp_deactivated_boxes">
-<?php if ( count( $order_steps ) > 0 ) :
-	foreach( $tcp_checkout_boxes as $class_name => $partial_path ) : ?>
-	<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
-		<h4><?php echo $class_name; ?></h4>
-		<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
-		<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
-		<form method="post">
-			<?php if ( file_exists( $initial_path . $partial_path ) ) :
+	<h3><?php _e( 'Activated boxes', 'tcp' ); ?> <img src="images/loading.gif" class="tcp_checkout_editor_feedback" style="display:none;"/></h3>
+	<ul class="tcp_activated_boxes">
+	<?php if ( count( $order_steps ) > 0 ) :
+		foreach( $order_steps as $class_name ) :
+			if ( isset( $tcp_checkout_boxes[$class_name] ) ) : $partial_path = $tcp_checkout_boxes[$class_name];
+	if ( is_array( $partial_path ) ) $partial_path = $partial_path['path']; ?>
+		<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
+			<h4><?php echo $class_name; ?></h4>
+			<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
+			<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
+			<form method="post">
+				<?php 
+				$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
 				require_once( $initial_path . $partial_path );
 				$box = new $class_name(); ?>
 				<?php if ( $box->show_config_settings() ) : ?>
+
 					<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path; ?>" />
 					<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
+
 					<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
-					</script>
 				<?php endif; ?>
+			</form>
+			</div>
+		</li>
 			<?php endif; ?>
-		</form>
-		</div>
-	</li>
-	<?php endforeach; ?>
-<?php endif; ?>
-</ul>
-<p class="description"><?php _e( 'Drag and drop to Activated Box area', 'tcp' ); ?></p>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</ul>
+
+	<p class="description"><?php _e( 'Drag and drop to reorder', 'tcp' ); ?></p>
+
+	<?php $order_steps = TCPCheckoutManager::get_steps();
+	foreach( $order_steps as $class_name )
+		if ( isset( $tcp_checkout_boxes[$class_name] ) )
+			unset( $tcp_checkout_boxes[$class_name] );
+	$order_steps = array_diff( (array)$tcp_checkout_boxes, $order_steps ); ?>
+
+	<h3><?php _e( 'Deactivated boxes', 'tcp' ); ?></h3>
+	<ul class="tcp_deactivated_boxes">
+	<?php if ( count( $order_steps ) > 0 ) :
+		foreach( $tcp_checkout_boxes as $class_name => $partial_path ) : ?>
+		<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
+			<h4><?php echo $class_name; ?></h4>
+			<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
+			<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
+			<form method="post">
+				<?php if ( file_exists( $initial_path . $partial_path['path'] ) ) :
+					require_once( $initial_path . $partial_path['path'] );
+					$box = new $class_name(); ?>
+					<?php if ( $box->show_config_settings() ) : ?>
+						<input type="hidden" name="tcp_box_path" value="<?php echo $partial_path['path']; ?>" />
+						<input type="hidden" name="tcp_box_name" value="<?php echo $class_name; ?>" />
+						<p><input type="submit" name="tcp_save_fields" id="tcp_save_<?php echo $class_name; ?>" value="<?php _e( 'save', 'tcp' ); ?>" class="button-primary"/></p>
+					<?php endif; ?>
+				<?php endif; ?>
+			</form>
+			</div>
+		</li>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</ul>
+
+	<p class="description"><?php _e( 'Drag and drop to Activated Box area', 'tcp' ); ?></p>
 
 </div><!-- wrap -->
 <script>
@@ -181,8 +186,8 @@ function do_drop() {
 	});
 	var li_string = lis.join();
 	jQuery('.tcp_checkout_editor_feedback').show();
-    jQuery.ajax({
-    	async	: true,
+	jQuery.ajax({
+		async	: true,
 		type    : "GET",
 		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
 		data	: {
@@ -195,7 +200,7 @@ function do_drop() {
 		error	: function(response) {
 			jQuery('.tcp_checkout_editor_feedback').hide();
 		},
-    });
+	});
 }
 </script>
 <?php }

@@ -166,9 +166,6 @@ class TCPCheckoutManager {
 <div class="checkout" id="checkout">
 	<?php $this->show_header( $box, $step );
 	if ( $step == count( $this->steps ) ) { //last step, no return
-if ( in_the_loop() ) echo '<br/><br/>In the Loop!!!!<br/><br/>';
-else echo '<br/><br/>NOT in the Loop!!!!<br/><br/>';
-
 		if ( in_the_loop() ) {
 			$order_id = $this->create_order(); //create the order, show payment form
 		} else {
@@ -561,7 +558,6 @@ else echo '<br/><br/>NOT in the Loop!!!!<br/><br/>';
 		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
 
 		<p><?php echo apply_filters( 'tcp_checkout_ok_message', __( 'Please continue checking out using your chosen payment method.', 'tcp' ), $order_id ); ?></p>
-
 		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) :
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
@@ -581,7 +577,7 @@ else echo '<br/><br/>NOT in the Loop!!!!<br/><br/>';
 		<?php endif; ?>
 		<?php OrderPage::show( $order_id, array( 'see_sku' => true ) ); ?>
 			<br />
-			<a href="<?php echo add_query_arg( 'order_id', $order_id, plugins_url( 'thecartpress/admin/PrintOrder.php' ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
+			<a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 		</div><!-- tcp_payment_area--><?php
 		//$shoppingCart->deleteAll();//removed since 1.1.0
 		return ob_get_clean();

@@ -17,19 +17,21 @@
  */
 
 class TCPBuddyPress {
+
 	function __construct() {
-		add_action( 'tcp_load_custom_post_types', array( &$this, 'tcp_load_custom_post_types' ), 10, 2 );
-		//add_filter( 'bp_blogs_record_post_post_types', array( &$this, 'bp_blogs_record_post_post_types' ) );
+//		add_action( 'tcp_load_custom_post_types', array( &$this, 'tcp_load_custom_post_types' ), 10, 2 );
+		add_filter( 'bp_blogs_record_post_post_types', array( &$this, 'bp_blogs_record_post_post_types' ) );
+		add_filter( 'bp_blogs_record_comment_post_types', array( &$this, 'bp_blogs_record_post_post_types' ) );
 	}
 
-	function tcp_load_custom_post_types( $post_type, $post_type_args ) {
-		add_filter( 'bp_blogs_record_post_post_types', function( $posts ) { $posts[] = $post_type; return $posts; } );
-	}
+//	function tcp_load_custom_post_types( $post_type, $post_type_args ) {
+//		add_filter( 'bp_blogs_record_post_post_types', function( $posts ) { $posts[] = $post_type; return $posts; } );
+//	}
 	
-	/*function bp_blogs_record_post_post_types( $posts ) {
-		$posts[] = $post_type;
+	function bp_blogs_record_post_post_types( $posts ) {
+		$posts[] = 'tcp_product';
 		return $posts;
-	}*/
+	}
 }
 
 new TCPBuddyPress();

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of TheCartPress.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,7 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( 'DownloadableList.class.php' );
-$downloadableList = new TCPDownloadableList();
-$downloadableList->show();
+class TCPRegisterformShortcode {
+
+	function __construct() {
+		add_shortcode( 'tcp_register_form', array( &$this, 'tcp_register_form' ) );
+	}
+
+	function tcp_register_form( $atts ) {
+		$atts['locked'] = 'true' == isset( $atts['locked'] ) ? strtolower( $atts['locked'] ) : false;
+		$atts['login'] = 'true' == isset( $atts['login'] ) ? strtolower( $atts['login'] ) : false;
+		$atts['role'] = explode( ',', $atts['role'] );
+		$atts['echo'] = false;
+		return tcp_register_form( $atts );
+	}
+}
+
+new TCPRegisterformShortcode();
 ?>

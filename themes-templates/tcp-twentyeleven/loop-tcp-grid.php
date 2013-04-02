@@ -76,9 +76,7 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	$title_end_tag = '';
 } ?>
 
-<?php if ( $see_sorting_panel ) {
-	tcp_the_sort_panel();
-} ?>
+<?php if ( $see_sorting_panel ) cp_the_sort_panel(); ?>
 
 <?php if ( $see_az ) {
 	$see_az_name = isset( $args['widget_id']) ? 'tcp_az_' . $args['widget_id'] : 'tcp_az';

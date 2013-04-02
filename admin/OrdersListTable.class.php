@@ -27,7 +27,7 @@ class OrdersListTable extends WP_List_Table {
 		$search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
 		$per_page = apply_filters( 'tcp_orders_per_page', 15 );
 		$paged = $this->get_pagenum();
-		if ( current_user_can( 'tcp_edit_orders' ) ) {				
+		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			//$search_by //TODO
 			$this->items = Orders::getOrdersEx( $paged, $per_page, $status );
 			$total_items = Orders::getCountOrdersByStatus( $status, $search_by );
@@ -65,7 +65,7 @@ class OrdersListTable extends WP_List_Table {
 		$orders_columns['shipping_method'] = _x( 'Shipping', 'column name', 'tcp' );
 		$orders_columns['total'] = _x( 'Total', 'column name', 'tcp' );
 		$orders_columns = apply_filters( 'tcp_manage_orders_columns', $orders_columns );
-		return array( $orders_columns, array(), array() );
+		return array( $orders_columns , array(), array() );
 	}
 
 	function column_cb( $item ) {
@@ -126,7 +126,7 @@ class OrdersListTable extends WP_List_Table {
 			<option value="" <?php selected( '', $status );?>><?php _e( 'all', 'tcp' );?></option>
 		<?php $order_status_list = tcp_get_order_status();
 		foreach ( $order_status_list as $order_status ) : ?>
-			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $status );?>><?php echo $order_status['label']; ?></option>		
+			<option value="<?php echo $order_status['name'];?>"<?php selected( $order_status['name'], $status );?>><?php echo $order_status['label']; ?></option>
 		<?php endforeach; ?>
 		</select>
 		<?php $search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : ''; ?>

@@ -54,18 +54,20 @@ class TCPFilterNavigation {
 		if ( $check_request ) {
 			$filters = $this->get_filters_request();
 			foreach( $filters as $f ) {
-				if ( 'taxonomy' == $f['type'] ) {
+				if ( isset( $f['type'] ) && 'taxonomy' == $f['type'] ) {
 					$taxonomy = $f['taxonomy'];
 					$filter['layered'][$taxonomy][] = array(
 						'type' => $f['type'],
 						'term' => $f['term']
 					);
-				} else {//custom_field
+				} elseif ( isset( $f['custom_field'] ) ) { //custom_field
 					$custom_field = $f['custom_field'];
 					$filter['layered'][$custom_field][] = array(
-						'type' => $f['type'],
+						'type' => $f['type'],//TODO????
 						'value' => $f['value']
 					);
+				} else {
+					$filter = apply_filters( 'tcp_filter_navigation_get_filter', $filter, $f );
 				}
 			}
 		}
@@ -95,6 +97,7 @@ class TCPFilterNavigation {
 					'value' => $value,
 				);
 			}
+		$filters = apply_filters( 'tcp_filter_navigation_get_filters_request', $filters );
 		return $filters;
 	}
 
@@ -138,6 +141,13 @@ class TCPFilterNavigation {
 				if ( $t['term'] == $term ) return true;
 			}
 		}
+		return false;
+	}
+
+	function is_filter_by_dinamic_options( $taxonomy, $term ) {
+		if ( isset( $this->layered['dynamic_options'] ) )
+			foreach( $this->layered['dynamic_options'] as $layered )
+				if ( $layered['taxonomy'] == $taxonomy && $layered['term'] == $term ) return true;
 		return false;
 	}
 

@@ -67,13 +67,12 @@ function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $h
 	}
 	if ( $show_parent && ! tcp_is_visible( $post_id ) ) {
 		$parent_id = tcp_get_the_parent( $post_id );
-		if ( $parent_id > 0 ) $post_id = $parent_id;
-		$title = get_the_title( $post_id ) . ' - ' . $title;
+		if ( $parent_id ) $title = get_the_title( $parent_id ) . ' - ' . $title;
 	}
 	return apply_filters ( 'tcp_get_the_title', $title, $post_id, $html, $show_parent );
 }
 
-function tcp_the_title( $echo = true, $html = true ) {
+function tcp_the_title( $echo = true ) {
 	$title = tcp_get_the_title();
 	if ( $echo ) echo $title;
 	else return $title;
@@ -850,7 +849,7 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
  * @since 1.1.0
  */
 function tcp_get_saleable_post_types( $one_more = false ) {
-	$saleable_post_types = array( TCP_PRODUCT_POST_TYPE );
+	$saleable_post_types = array();
 	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
 	if ( $one_more !== false ) $saleable_post_types[] = $one_more;
 	return $saleable_post_types;
@@ -1028,6 +1027,14 @@ function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 //
 //End product types
 //
+
+//
+// Roles
+//
+function tcp_get_default_roles() {
+	$default_roles = array( 'super-admin', 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+	return apply_filters( 'tcp_get_default_roles', $default_roles );
+}
 
 //
 // Utils and Tools
@@ -1219,4 +1226,16 @@ function tcp_get_template_part( $path, $slug, $name = '' ) {
 	if ( file_exists( $template ) ) require_once( $template );
 	else get_template_part( $slug, $name );
 }
+
+/**
+ * @since 1.2.7
+ */
+function tcp_debug_trace( $object = false, $args = false ) {
+	$traces = debug_backtrace(); ?>
+	<ul>
+	<?php foreach( $traces as $id => $trace ) : ?>
+		<li><?php printf( '%s -> %s: line %s (%s)', isset( $trace['class'] ) ? $trace['class'] : '', $trace['function'], isset( $trace['line'] ) ? $trace['line'] : '', isset( $trace['file'] ) ? $trace['file'] : '' ); ?></li>
+	<?php endforeach; ?>
+	</ul>
+<?php }
 ?>

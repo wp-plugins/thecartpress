@@ -18,6 +18,7 @@
 
 class TCPLoginRegister {
 	function __construct() {
+		add_action( 'init', array( &$this, 'init' ) );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_action( 'wp_ajax_tcp_register_and_login', array( &$this, 'tcp_register_and_login' ) );
 		add_action( 'wp_ajax_nopriv_tcp_register_and_login', array( &$this, 'tcp_register_and_login' ) );
@@ -26,18 +27,51 @@ class TCPLoginRegister {
 		add_action( 'user_register', array( &$this, 'user_register' ) );
 		add_filter( 'wp_authenticate_user', array( &$this, 'wp_authenticate_user' ), 1 );
 		add_action( 'admin_menu', array( &$this, 'admin_menus' ) );
-		if ( ! is_admin() ) {
-			add_filter( 'login_url', array( &$this, 'login_url' ), 10, 2 );
-			add_filter( 'logout_url', array( &$this, 'logout_url' ), 10, 2 );
-		}
 		add_shortcode( 'tcp_my_account', array( &$this, 'tcp_my_account' ) );
 	}
 
+	function init() {
+		if ( ! is_admin() ) {
+			global $thecartpress;
+			if ( $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ) ) {
+				add_filter( 'login_url', array( &$this, 'login_url' ), 10, 2 );
+				add_filter( 'logout_url', array( &$this, 'logout_url' ), 10, 2 );
+			}
+		}
+	}
+
 	function admin_init() {
+		add_action( 'tcp_main_settings_page', array( $this, 'tcp_main_settings_page' ) );
+		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
+
 		add_action( 'edit_user_profile', array( &$this, 'edit_user_profile' ), 10 );
 		add_action( 'edit_user_profile_update', array( &$this, 'edit_user_profile_update' ) );
 		add_filter( 'manage_users_columns', array( &$this, 'manage_users_columns' ) );
 		add_filter( 'manage_users_custom_column', array( &$this, 'manage_users_custom_column' ), 10, 3 );
+	}
+
+	function tcp_main_settings_page() {
+		global $thecartpress;
+		$my_account_as_login_page = $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ); ?>
+<tr valign="top">
+	<th colspan="2">
+		<h3><?php _e( 'Custom Login', 'tcp' ); ?></h3>
+	</th>
+</tr>
+<tr valign="top">
+	<th scope="row">
+	<label for="my_account_as_login_page"><?php _e( 'Use "My Account" as login', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" id="my_account_as_login_page" name="my_account_as_login_page" value="yes" <?php checked( $my_account_as_login_page ); ?> />
+		<span class="description"><?php _e( 'Allows to change the default login panel for My Account page.', 'tcp' ); ?></span>
+	</td>
+</tr>
+<?php }
+
+	function tcp_main_settings_action( $settings ) {
+		$settings['my_account_as_login_page'] = isset( $_POST['my_account_as_login_page'] );
+		return $settings;
 	}
 
 	function admin_menus() {
@@ -147,7 +181,8 @@ class TCPLoginRegister {
 		$user_email		= isset( $_REQUEST['tcp_new_user_email'] ) ? $_REQUEST['tcp_new_user_email'] : $error_msg =  __( 'User email is required', 'tcp' );
 		if ( $error_msg && ! $redirect ) return $error_msg;
 		$login			= isset( $_REQUEST['tcp_login'] );
-		$role			= isset( $_REQUEST['tcp_role'] ) ? $_REQUEST['tcp_role'] : 'customer';
+		$roles			= isset( $_REQUEST['tcp_role'] ) ? explode( ',', $_REQUEST['tcp_role'] ) : array( 'customer' );
+		if ( ! is_array( $roles ) ) $roles = array( $roles );
 		$locked			= isset( $_REQUEST['tcp_locked'] );
 		$user_name = trim( $user_name );
 		if ( username_exists( $user_name ) ) {
@@ -164,7 +199,8 @@ class TCPLoginRegister {
 				$error_msg = $user_id->get_error_message();
 			} else {
 				$user = new WP_User( $user_id );
-				$user->set_role( $role );
+				foreach( $roles as $role )
+					$user->add_role( $role );
 				do_action( 'tcp_register_and_login', $user_id );
 				if ( $locked ) tcp_set_user_locked( $user_id );
 				if ( $redirect && $login && ! $locked ) {
@@ -217,14 +253,6 @@ class TCPLoginRegister {
 	tcp_login_form( $args ); ?>
 </div>
 
-<!--<h2><?php //_e( 'My Adresses', 'tcp-fe' ); ?></h2>
-	<?php //_e( 'You have the following dispatch and/or billing addresse(s) at interloom', 'tcp-fe' ); ?>
-	<?php //echo $this->tcp_addresses_list(); ?>
-	<a href="<?php tcp_the_my_addresses_url(); ?>"><?php _e( 'See all addresses', 'tcp-fe' ); ?></a>
-<h2><?php //_e( 'My orders', 'tcp-fe' ); ?></h2>
-	<?php //_e( 'Here is an overview of your current and previous orders', 'tcp_fe' ); ?>
-	<?php //echo $this->tcp_orders_list(); ?>
-	<a href="<?php tcp_the_my_orders_url(); ?>"><?php _e( 'See all orders', 'tcp-fe' ); ?></a>-->
 <?php if ( get_option( 'users_can_register' ) ) : ?>
 	<div class="tcp_register_form">
 	<?php tcp_register_form(); ?>
