@@ -106,7 +106,7 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 			border: 1px solid #BBBBBB;
 			padding: 2px;
 			background: url("../images/white-grad.png") repeat-x scroll left top #F2F2F2;
-	    	text-shadow: 0 1px 0 #FFFFFF;
+			text-shadow: 0 1px 0 #FFFFFF;
 			cursor: move;
 		}
 		</style>
@@ -198,8 +198,10 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 				$plugin_value = $plugin_name . '#' . $instance;
 				if ( ! $payment_method_id ) $payment_method_id = $plugin_value;?>
 				<li>
+					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>" class="tcp_payment_<?php echo $plugin_name;?>">
 					<input type="radio" id="<?php echo $plugin_name;?>_<?php echo $instance;?>"	name="payment_method_id" value="<?php echo $plugin_value;?>" <?php checked( $plugin_value, $payment_method_id );?> />
-					<label for="<?php echo $plugin_name;?>_<?php echo $instance;?>" class="tcp_payment_<?php echo $plugin_name;?>"><span class="tcp_payment_title_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></span></label>
+					<span class="tcp_payment_title_<?php echo $plugin_name;?>"><?php echo $tcp_plugin->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart );?></span>
+					</label>
 					<div class="tcp_plugin_notice tcp_plugin_notice_<?php echo $plugin_name; ?>"><?php tcp_do_template_excerpt( 'tcp_payment_plugins_' . $plugin_name ); ?></div>
 				</li>
 			<?php endforeach;?>

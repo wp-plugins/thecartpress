@@ -186,18 +186,9 @@ function tcp_get_plugin_type( $plugin_id ) {
 }
 
 function tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart ) {
-	if ( $shoppingCart->isDownloadable() )
-		return array();
-	else
-		$shipping_plugins = tcp_get_applicable_plugins( $shipping_country, $shoppingCart );
-		//FreeTrans
-		//var_dump( $shipping_plugins );
-		/*foreach( $shipping_plugins as $shipping_plugin )
-			if ( get_class( $shipping_plugin['plugin'] ) == 'FreeTrans' ) {
-				$shipping_plugins = array ( $shipping_plugin );
-				break;
-			}*/
-		return $shipping_plugins;
+	if ( $shoppingCart->isDownloadable() ) return array();
+	else $shipping_plugins = tcp_get_applicable_plugins( $shipping_country, $shoppingCart );
+	return $shipping_plugins;
 }
 
 function tcp_get_applicable_payment_plugins( $shipping_country, $shoppingCart ) {
@@ -216,7 +207,7 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 	$applicable_plugins = array();
 	$applicable_for_country = false;
 	foreach( $tcp_plugins as $plugin_id => $plugin ) {
-		$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
+		$plugin_data = tcp_get_plugin_data( $plugin_id );
 		if ( is_array( $plugin_data ) && count( $plugin_data ) > 0 ) {
 			$applicable_instance_id = -1;
 			$applicable_for_country = false;
@@ -288,8 +279,13 @@ function tcp_get_payment_plugin_data( $plugin_name, $instance = 0 ) {
 }
 
 function tcp_get_plugin_data( $plugin_id, $instance = -1 ) {
-	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
+	$plugin_data = get_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id ), array() );
 	if ( $instance == -1 ) return $plugin_data;
-	else return $plugin_data[$instance];
+	else return isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : false;
 }
+
+function tcp_update_plugin_data( $plugin_id, $plugin_data ) {
+	update_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id ), $plugin_data );
+}
+
 ?>

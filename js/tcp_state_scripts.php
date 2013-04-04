@@ -33,7 +33,7 @@ var countries = {
 	<?php do_action( 'tcp_states_loading' );?>
 };
 
-jQuery(document).ready(function() {
+//jQuery(document).ready(function() {
 	if (jQuery('#country_id')) {
 		jQuery('#country_id').change(function () {
 			var country_id = jQuery('#country_id').val();
@@ -67,9 +67,8 @@ jQuery(document).ready(function() {
 	}
 	
 	if (jQuery('#billing_country_id')) {
-		jQuery('#billing_country_id').change(function () {
+		jQuery( '#new_billing_area' ).on( 'change', '#billing_country_id', function () {
 			var country_id = jQuery('#billing_country_id').val();
-
 			var region_select = jQuery('#billing_region_id'); //state
 			if (region_select) {
 				var first_option = jQuery('#billing_region_id option:first');
@@ -90,12 +89,12 @@ jQuery(document).ready(function() {
 				jQuery('#billing_region').show();//textbox
 				region_select.hide();
 			}
-		});
+		} );
 		jQuery('#billing_country_id').change();
 
 		jQuery('#billing_region_id').change(function() {
 			jQuery('#billing_region').val(jQuery("#billing_region_id option:selected").text());
-		});
+		} );
 	}
 
 	if (jQuery('#shipping_country_id')) {
@@ -129,4 +128,4 @@ jQuery(document).ready(function() {
 			jQuery('#shipping_region').val(jQuery("#shipping_region_id option:selected").text());
 		});
 	}
-});
+//});

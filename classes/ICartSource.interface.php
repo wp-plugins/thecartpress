@@ -70,7 +70,7 @@ interface TCP_ICartSource {
 
 	public function has_order_details();
 	public function get_orders_details();//Returns an array of TCP_IDetailSource
-
+	
 	public function get_discount();
 	//public function get_discounts();//TODO
 	public function get_comment();

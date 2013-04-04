@@ -149,30 +149,38 @@ class CustomListWidget extends TCPParentWidget {
 
 	function show_grid( $instance, $args ) {
 		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) $instance['see_pagination'] = $instance['pagination'];
-		global $thecartpress;
-		$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
-		if ( $use_default_loop == 'yes' ) {
-			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
-		} else{ //if ( $use_default_loop == 'yes_2010' ) {
-			include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyten/loop-tcp-grid.php' );
+		$loop = locate_template( 'loop-tcp-grid.php' );
+		if ( strlen( $loop ) ) {
+			include( $loop );
+		} else {
+			global $thecartpress;
+			$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
+			if ( $use_default_loop == 'yes' ) { //2011	
+				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
+			} elseif ( $use_default_loop == 'yes_2010' ) {
+				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyten/loop-tcp-grid.php' );
+			} else { //if ( $use_default_loop == 'yes_2012' ) {
+				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentytwelve/loop-tcp-grid.php' );
+			}
 		}
 	}
 
 	function update( $new_instance, $old_instance ) {
 		$instance = parent::update( $new_instance, $old_instance );
-		$instance['limit']					= (int)$new_instance['limit'];
-		$instance['loop']					= $new_instance['loop'];
-		$instance['columns']				= (int)$new_instance['columns'];
-		$instance['see_title']				= $new_instance['see_title'] == 'yes';
-		$instance['title_tag']				= $new_instance['title_tag'];
-		$instance['see_image']				= $new_instance['see_image'] == 'yes';
-		$instance['image_size']				= $new_instance['image_size'];
-		$instance['see_content']			= $new_instance['see_content'] == 'yes';
-		$instance['see_excerpt']			= $new_instance['see_excerpt'] == 'yes';
-		$instance['see_author']				= $new_instance['see_author'] == 'yes';
-		$instance['see_posted_on']			= $new_instance['see_posted_on'] == 'yes';
-		$instance['see_price']				= $new_instance['see_price'] == 'yes';
-		$instance['see_buy_button']			= $new_instance['see_buy_button'] == 'yes';
+		$instance['limit'] = (int)$new_instance['limit'];
+		$instance['loop'] = $new_instance['loop'];
+		$instance['columns'] = (int)$new_instance['columns'];
+		$instance['see_title'] = $new_instance['see_title'] == 'yes';
+		$instance['title_tag'] = $new_instance['title_tag'];
+		$instance['see_image'] = $new_instance['see_image'] == 'yes';
+		$instance['image_size'] = $new_instance['image_size'];
+		$instance['see_content'] = $new_instance['see_content'] == 'yes';
+		$instance['see_excerpt'] = $new_instance['see_excerpt'] == 'yes';
+		$instance['see_author'] = $new_instance['see_author'] == 'yes';
+		$instance['see_posted_on'] = $new_instance['see_posted_on'] == 'yes';
+		$instance['see_price'] = $new_instance['see_price'] == 'yes';
+		$instance['see_buy_button']	= $new_instance['see_buy_button'] == 'yes';
+		$instance['see_meta_utilities']	= $new_instance['see_meta_utilities'] == 'yes';
 		$instance['see_first_custom_area']	= $new_instance['see_first_custom_area'] == 'yes';
 		$instance['see_second_custom_area']	= $new_instance['see_second_custom_area'] == 'yes';
 		$instance['see_third_custom_area']	= $new_instance['see_third_custom_area'] == 'yes';
@@ -185,21 +193,22 @@ class CustomListWidget extends TCPParentWidget {
 
 	protected function show_post_type_form( $instance ) {
 		$instance = wp_parse_args( (array)$instance, array(
-			'limit'						=>  5,
-			'loop'						=> '',
-			'columns'					=> 2,
-			'see_title'					=> true,
-			'title_tag'					=> '',
-			'see_image'					=> false,
-			'image_size'				=> 'thumbnail',
-			'see_content'				=> false,
-			'see_excerpt'				=> false,
-			'see_posted_on'				=> false,
-			'see_price'					=> true,
-			'see_buy_button'			=> false,
-			'see_first_custom_area'		=> false,
-			'see_second_custom_area'	=> false,
-			'see_third_custom_area'		=> false,
+			'limit' =>  5,
+			'loop' => '',
+			'columns' => 2,
+			'see_title' => true,
+			'title_tag' => '',
+			'see_image' => false,
+			'image_size' => 'thumbnail',
+			'see_content' => false,
+			'see_excerpt' => false,
+			'see_posted_on' => false,
+			'see_price' => true,
+			'see_buy_button' => false,
+			'see_meta_utilities' => false,
+			'see_first_custom_area' => false,
+			'see_second_custom_area' => false,
+			'see_third_custom_area' => false,
 		) ); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit', 'tcp' ); ?>:</label>

@@ -17,6 +17,7 @@
  */
 
 //Not in use!!!
+return;
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 
@@ -376,6 +377,7 @@ function show_excerpt() {
 			<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('shipping_isos');" class="button-secondary"/>				
 			<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('shipping_isos');" class="button-secondary"/>
+			<input type="button" value="<?php _e( 'Toggle', 'tcp'); ?>" title="<?php _e( 'Toggle the selected ones', 'tcp' ); ?>" onclick="tcp_select_toggle('shipping_isos');" class="button-secondary"/>
 			<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('shipping_isos');" class="button-secondary"/>
 			</p>
 			<script>

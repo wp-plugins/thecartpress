@@ -87,7 +87,7 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 			<?php if ( function_exists( 'tcp_the_buy_button_dyamic_options' ) && tcp_has_dynamic_options( $product_id ) ) : ?>
 				<div class="tcp-buy-dynamic-options">
 					<?php tcp_the_buy_button_dyamic_options( $product_id ); ?>
-				</div>
+			</div>
 			<?php endif; ?>
 
 			<div class="tcp-add-to-cart">
@@ -116,22 +116,9 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 
 			<?php if ( function_exists( 'tcp_the_tier_price' ) && tcp_has_tier_price( $product_id ) ) : ?>
 
-				<a href="#" class="tcp_view_tier_price_<?php echo $product_id; ?>" title="<?php _e( 'View/hide tier price', 'tcp' ); ?>"><?php _e( 'View/hide tier price', 'tcp' ); ?></a>
+				<a href="#" class="tcp_view_tier_price" product_id="<?php echo $product_id; ?>" title="<?php _e( 'View/hide tier price', 'tcp' ); ?>"><?php _e( 'View/hide tier price', 'tcp' ); ?></a>
 
 				<?php tcp_the_tier_price( $product_id ); ?>
-
-				<script>
-				jQuery('.tcp_view_tier_price_<?php echo $product_id; ?>').click(function(e) {
-					e.preventDefault();
-					var tar = jQuery('.tcp_tier_price_<?php echo $product_id; ?>');
-					if (tar.is(":visible")) {
-						tar.hide();
-					} else {
-						jQuery('.tcp_tier_price').hide();
-						tar.show();
-					}
-				});
-				</script>
 
 			<?php endif; ?>
 
@@ -167,15 +154,15 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 		<?php tcp_the_add_to_cart_items_in_the_cart( $post_id ); ?>
 
 	<?php endif; ?>
-	
+
 	<div class="tcp-add-to-wishlist">
 		<?php tcp_the_add_wishlist_button( $post_id ) ; ?>
 	</div>
 
 </div>
-	
+
 <?php do_action( 'tcp_buy_button_bottom', $post_id ); ?>
-	
+
 </form>
 </div> <!--end tcp_buy_button_area-->
 

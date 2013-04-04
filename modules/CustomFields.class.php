@@ -125,7 +125,7 @@ function tcp_get_custom_fields( $post_id, $post_type = false ) {
 		}
 		$fields[] = array(
 			'id' => $def['id'],
-			'label' => $def['label'],//TODO multilingual
+			'label' => tcp_string( 'TheCartPress', 'custom_field_' . $def['id'] . '-label', $def['label'] ),
 			'type' => $def['type'],//string, number, list, upload
 			'values' => $def['values'],
 			'desc' => $def['desc'],
@@ -341,7 +341,6 @@ function tcp_display_custom_field_file( $custom_field_def, $upload, $echo = true
 	if ( $echo ) echo $out;
 	else return $out;
 }
-
 
 /**
  * @since 1.2.7

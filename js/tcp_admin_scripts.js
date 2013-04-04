@@ -78,11 +78,11 @@ function tcp_load_select_values_to_textbox(select_id, txt_id) {
 //http://sites.google.com/site/abapexamples/javascript/luhn-validation
 String.prototype.luhnCheck = function()
 {
-    var luhnArr = [[0,2,4,6,8,1,3,5,7,9],[0,1,2,3,4,5,6,7,8,9]], sum = 0;
-    this.replace(/\D+/g,"").replace(/[\d]/g, function(c, p, o){
-        sum += luhnArr[ (o.length-p)&1 ][ parseInt(c,10) ];
-    });
-    return (sum%10 === 0) && (sum > 0);
+	var luhnArr = [[0,2,4,6,8,1,3,5,7,9],[0,1,2,3,4,5,6,7,8,9]], sum = 0;
+	this.replace(/\D+/g,"").replace(/[\d]/g, function(c, p, o){
+		sum += luhnArr[ (o.length-p)&1 ][ parseInt(c,10) ];
+	});
+	return (sum%10 === 0) && (sum > 0);
 };
 
 //European union
@@ -155,6 +155,23 @@ function tcp_select_values(select_id, values) {
 	});
 }
 
+function tcp_select_toggle( select_id ) {
+	jQuery( '#' + select_id + ' option' ).each( function() {
+		this.selected = ! this.selected;
+	} );
+	jQuery( '#' + select_id + ' input:checkbox' ).each( function() {
+		var chk = jQuery( this );
+		var checked = chk.attr( 'checked' );
+		if ( ! checked ) {
+			chk.attr( 'checked', 'true' );
+			chk.parent().addClass( 'tcp-multiselect-on' );
+		} else {
+			chk.removeAttr( 'checked' );
+			chk.parent().removeClass( 'tcp-multiselect-on' );
+		}
+	} );
+}
+
 function tcp_select_none(select_id) {
 	jQuery('#' + select_id + ' option').each(function() {
 		this.selected = false;
@@ -176,14 +193,15 @@ function tcp_select_all(select_id) {
 		chk.parent().addClass('tcp-multiselect-on');
 	});
 }
+
 function add_url_param(url, key, value) {
-    key = escape(key);
-    value = escape(value);
+	key = escape(key);
+	value = escape(value);
 	if ( url.indexOf("?") > 0) {
 		return url + "&" + key + "=" + value;
-    } else {
-   		return url + "?" + key + "=" + value;
-    }
+	} else {
+		return url + "?" + key + "=" + value;
+	}
 }
 
 function tcp_show_order_view( order_id ) {

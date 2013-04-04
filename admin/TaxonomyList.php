@@ -29,6 +29,7 @@
 	update_option( 'tcp_rewrite_rules', true ); ?>
 	<div id="message" class="updated"><p><?php _e( 'Taxonomy deleted', 'tcp' );?></p></div>
 <?php endif; ?>
+<?php do_action( 'tcp_taxonomy_list_actions' ); ?>
 <script>
 jQuery(document).ready(function() {
 	jQuery('.tcp_show_delete_area').click(function() {
@@ -91,9 +92,11 @@ if ( is_array( $taxonomy_defs ) && count( $taxonomy_defs ) > 0 ) :
 			<input type="hidden" name="taxonomy" value="<?php echo $taxonomy; ?>" />
 			<input type="hidden" name="tcp_delete_taxonomy" value="y" />
 			<p><?php _e( 'Do you really want to delete this taxonomy?', 'tcp' ); ?></p>
-			<a href="" class="tcp_delete_taxonomy"><?php _e( 'Yes' , 'tcp' ); ?></a> |
-			<a href="" class="tcp_no_delete"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+			<a href="#" class="tcp_delete_taxonomy"><?php _e( 'Yes' , 'tcp' ); ?></a> |
+			<a href="#" class="tcp_no_delete"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
 			</form>
+		</div>
+		<?php do_action( 'tcp_taxonomy_list_action_list', $taxonomy, $taxonomy_def ); ?>
 	</td>
 </tr>
 	<?php endforeach; ?>

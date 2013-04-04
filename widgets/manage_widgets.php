@@ -44,6 +44,7 @@ function tcp_widgets_init() {
 	require_once( 'LastVisitedWidget.class.php' );
 	require_once( 'LoginWidget.class.php' );
 	require_once( 'CustomPostTypeListWidget.class.php' );
+	require_once( 'CustomValuesWidget.class.php' );
 	require_once( 'TaxonomyCloudsPostTypeWidget.class.php' );
 	require_once( 'TaxonomyTreesPostTypeWidget.class.php' );
 	require_once( 'SortPanelWidget.class.php' );
@@ -53,9 +54,11 @@ function tcp_widgets_init() {
 	require_once( 'AttributesListWidget.class.php' );
 	require_once( 'WishListWidget.class.php' );
 	require_once( 'AuthorsWidget.class.php' );
+	require_once( 'AuthorWidget.class.php' );
 	register_widget( 'LastVisitedWidget' );
 	register_widget( 'TCPLoginWidget' );
 	register_widget( 'CustomPostTypeListWidget' );
+	register_widget( 'CustomValuesWidget' );
 	register_widget( 'TaxonomyCloudsPostTypeWidget' );
 	register_widget( 'TaxonomyTreesPostTypeWidget' );
 	register_widget( 'SortPanelWidget' );
@@ -65,6 +68,7 @@ function tcp_widgets_init() {
 	register_widget( 'AttributesListWidget' );
 	register_widget( 'WishListWidget' );
 	register_widget( 'TCPAuthorsWidget' );
+	register_widget( 'TCPAuthorWidget' );
 	//register_widget( 'TCPCalendar' );
 }
 
@@ -79,9 +83,9 @@ function tcp_wp_dashboard_setup() {
 		}
 		global $wp_meta_boxes;
 		$normal_dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
-		$tcp_orders_resume = array( 'tcp_orders_resume' => $normal_dashboard['tcp_orders_resume']);
+		$tcp_orders_resume = array( 'tcp_orders_resume' => isset( $normal_dashboard['tcp_orders_resume'] ) ? $normal_dashboard['tcp_orders_resume'] : false );
 		unset( $normal_dashboard['tcp_orders_resume'] );
-		$sorted_dashboard = array_merge( $tcp_orders_resume, $normal_dashboard);
+		$sorted_dashboard = array_merge( $tcp_orders_resume, (array)$normal_dashboard);
 		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
 	//}
 }

@@ -97,18 +97,23 @@ div#tcp_orders_resume a.tcp_link_to_tcp:hover
 {
 	text-decoration: underline;
 }
-div#tcp_orders_resume td.tcp_status_COMPLETED a {
+td.tcp_status_COMPLETED,
+td.tcp_status_COMPLETED a {
 	color: green;
 	font-weight: bold;
 }
-div#tcp_orders_resume td.tcp_status_PENDING a {
+td.tcp_status_PENDING,
+td.tcp_status_PENDING a {
 	color: #f90;
 	font-weight: bold;
 }
-div#tcp_orders_resume td.tcp_status_PROCESSING a {
+td.tcp_status_PROCESSING,
+td.tcp_status_PROCESSING a {
 	color: red;
 	font-weight: bold;
 }
+td.tcp_status_CANCELLED,
+td.tcp_status_SUSPENDED,
 div#tcp_orders_resume td.tcp_status_CANCELLED a,
 div#tcp_orders_resume td.tcp_status_SUSPENDED a {
 }

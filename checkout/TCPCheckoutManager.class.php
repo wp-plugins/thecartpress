@@ -192,16 +192,16 @@ class TCPCheckoutManager {
 					if ( ! $box->is_form_encapsulated() ) : ?><form method="post" action="<?php echo $action; ?>"><?php endif;
 					if ( $step > 0 ) : 
 						if ( defined( 'TCP_CHECKOUT' ) ) : ?>
-						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp_checkout_button"><?php _e( 'Back', 'tcp' ); ?></a>
+						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp_checkout_button btn"><?php _e( 'Back', 'tcp' ); ?></a>
 						<?php else : ?>
 						<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="tcp_checkout_button" />
 						<?php endif;
 					endif;
 					if ( $see_continue_button ) :
 						if ( $step < count( $this->steps ) - 1 ) : ?>
-							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button" />
+							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
 						<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
-							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button" />
+							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
 							<input type="hidden" name="step" value="<?php echo count( $this->steps ) - 1; ?>" />
 						<?php endif;
 					endif; ?>
@@ -436,7 +436,7 @@ class TCPCheckoutManager {
 		} else {
 			$order['customer_id'] = 0;
 		}
-		$shoppingCart = TheCartPress::getShoppingCart();
+		$shoppingCart = apply_filters( 'tcp_checkout_create_order_get_shopping_cart', TheCartPress::getShoppingCart() );
 		$shipping_country = $this->get_shipping_country();
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
 			$smi	= $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];

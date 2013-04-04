@@ -701,6 +701,12 @@ function tcp_get_the_parents( $post_id, $rel_type = 'GROUPED' ) {
 	return RelEntities::getParents( $post_id, $rel_type );
 }
 
+function tcp_get_the_thumbnail_src( $post_id = 0, $image_size = 'full' ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	$image_attributes = wp_get_attachment_image_src( $thumbnail_id, $image_size );
+	return $image_attributes[0];
+}
+
 function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
 	if ( has_post_thumbnail( $post_id ) ) {
 		$image_size = isset( $args['size'] ) ? $args['size'] : 'thumbnail';
@@ -775,7 +781,7 @@ function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0
 }
 
 /**
- * Returns the content of the given post
+ * Displays the content of the given post
  * @since 1.1.8
  */
 function tcp_the_content( $post_id = 0 ) {
@@ -802,14 +808,14 @@ function tcp_get_the_content( $post_id = 0, $echo = false ) {
  * Echoes the excerpt of the given post
  * @since 1.1.8
  */
-function tcp_the_excerpt( $post_id = 0 ) {
-	tcp_get_the_excerpt( $post_id, true );
+function tcp_the_excerpt( $post_id = 0, $length = 0 ) {
+	tcp_get_the_excerpt( $post_id, $length, true );
 }
 
 /**
  * Returns the excerpt of the given post
  * @since 1.1.8
- */
+ *
 function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
 	global $thecartpress;
 	remove_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
@@ -821,6 +827,43 @@ function tcp_get_the_excerpt( $post_id = 0, $echo = false ) {
 	add_filter( 'the_excerpt', array( $thecartpress, 'the_excerpt' ) );
 	if ( $echo ) echo $excerpt;
 	else return $excerpt;
+}*/
+
+/**
+ * Returns the excerpt of the given post
+ * @since 1.2.8
+ * @see http://wp-snippets.com/dynamic-custom-length-excpert/
+ */
+function tcp_get_the_excerpt( $post_id = 0, $length = 0, $echo = false ) { // Max excerpt length. Length is set in characters
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$post = get_post( $post_id );
+	$text = $post->post_excerpt;
+	$see_points = false;
+	if ( strlen( $text ) == 0 ) {
+		$text = tcp_get_the_content( $post_id );
+		$see_points = true;
+	}
+	$text = strip_shortcodes( $text ); // optional, recommended
+	$text = strip_tags( $text ); // use ' $text = strip_tags($text,'&lt;p&gt;&lt;a&gt;'); ' if you want to keep some tags
+//	if ( $length > 0 ) $text = substr( $text, 0, $length );
+	if ( $length > 0 ) {
+		$initial_length = strlen( $text );
+		$text = explode( ' ', $text );
+		array_splice( $text, $length );
+		$text = implode( ' ', $text );
+		$see_points = $initial_length > strlen( $text );
+	}
+	if ( $see_points && strlen( $text ) ) $text .= sprintf( ' <a href="%s">[...]</a>', tcp_get_permalink( $post_id ) );
+//	$excerpt = tcp_reverse_strrchr( $text, '.', 1 );
+	$excerpt = $text;
+	$excerpt = apply_filters( 'the_excerpt', $excerpt );
+	if ( $echo ) echo $excerpt;
+	else return $excerpt;
+}
+
+// Returns the portion of haystack which goes until the last occurrence of needle
+function tcp_reverse_strrchr( $haystack, $needle, $trail ) {
+	return strrpos( $haystack, $needle ) ? substr( $haystack, 0, strrpos( $haystack, $needle ) + $trail ) : false;
 }
 
 function tcp_the_meta( $meta_key, $before = '', $after = '', $echo = true ) {

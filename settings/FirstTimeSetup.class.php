@@ -49,9 +49,9 @@ class TCPFirstTimeSetup {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
 				'<p>' . __( 'You can customize TheCartPress behaviour using this few steps.', 'tcp' ) . '</p>'
 		) );
 
@@ -295,6 +295,10 @@ class TCPFirstTimeSetup {
 				<p class="description"><?php _e( 'If this setting is activated you should have a configurable TCP Loop in your theme. (eg: loop-tcp-grid.php)', 'tcp' ); ?></p>
 				<p class="description"><?php printf( __( 'You must configure the grid using <a href="%s">Loop settings</a> menu.', 'tcp' ), add_query_arg( 'page', 'loop_settings', get_admin_url() . 'admin.php' ) ); ?></p>
 				<p class="description"><?php _e( 'Total flexibility for developers and theme constructors.', 'tcp' ); ?></p>
+
+				<input type="radio" id="use_default_loop_2012" name="use_default_loop" value="yes_2012" <?php checked( 'yes_2012', $use_default_loop ); ?>
+				onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentytwelve based)', 'tcp' ); ?></strong></label>
+				<br/>
 
 				<input type="radio" id="use_default_loop_2011" name="use_default_loop" value="yes" <?php checked( 'yes', $use_default_loop ); ?>
 				onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyeleven based)', 'tcp' ); ?></strong></label>

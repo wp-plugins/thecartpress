@@ -259,6 +259,7 @@ class ShippingCost extends TCP_Plugin {
 				<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>				
 				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'Toggle', 'tcp'); ?>" title="<?php _e( 'Toggle the selected ones', 'tcp' ); ?>" onclick="tcp_select_toggle('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'All', 'tcp'); ?>" title="<?php _e( 'Select all', 'tcp' ); ?>" onclick="tcp_select_all('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
 				<br/>
@@ -345,6 +346,7 @@ jQuery(document).ready(function() {
 		$zones	= $data['zones'];
 		$ranges	= $data['ranges'];
 		$costs	= $data['costs'];
+		if ( ! is_array( $ranges ) || count( $ranges ) == 0 ) return false;
 		foreach( $ranges as $r => $range ) {
 			if ( $range >= $total_weight ) {
 				$selected_range = $r;
@@ -380,7 +382,7 @@ jQuery(document).ready(function() {
 	}
 
 	private function startsWith( $Haystack, $Needle ) {
-    	return strpos( $Haystack, $Needle ) === 0;
+		return strpos( $Haystack, $Needle ) === 0;
 	}
 	
 	private function get_shipping_region_id() {

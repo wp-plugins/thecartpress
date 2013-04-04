@@ -48,7 +48,7 @@ class TCPDownloadableProducts {
 			//$out = TCPMP3Player::showPlayer( $post_id, TCPMP3Player::$SMALL, false ); //DEPRECATED
 			global $tcp_jplayer;
 			if ( $tcp_jplayer ) $out = $tcp_jplayer->show( $post_id, array( 'echo' => false ) );
-			$out .= '<input type="hidden" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" />';
+			$out = '<input type="hidden" name="tcp_count[]" id="tcp_count_' . $post_id . '" value="1" />';
 		}
 		return $out;
 	}

@@ -52,11 +52,12 @@ class TCPStockManagement {
 				add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 				add_action( 'tcp_checkout_ok', array( &$this, 'tcp_checkout_ok' ) );
 				add_action( 'tcp_completed_ok_stockadjust', array( &$this, 'tcp_completed_ok_stockadjust' ) );
-				
+
 				add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-				
+
 				add_filter( 'tcp_get_dynamic_options', array( &$this, 'tcp_get_dynamic_options' ), 10, 2 );
 				add_filter( 'tcp_custom_list_widget_args', array( &$this, 'tcp_custom_list_widget_args' ) );
+				add_filter( 'tcp_custom_values_get_other_values', array( &$this, 'tcp_custom_values_get_other_values' ) );
 			}
 		}
 	}
@@ -82,7 +83,7 @@ class TCPStockManagement {
 					//add_action( 'tcp_dynamic_options_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
 					//add_action( 'tcp_dynamic_options_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
 					//add_action( 'tcp_dynamic_options_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );
-					
+
 					add_action( 'tcp_dynamic_options_metabox_column_headers', array( &$this, 'tcp_dynamic_options_metabox_column_headers' ) );
 					add_action( 'tcp_dynamic_options_metabox_value_rows', array( &$this, 'tcp_dynamic_options_metabox_value_rows' ) );
 					add_action( 'tcp_dynamic_options_lists_header_new', array( &$this, 'tcp_dynamic_options_lists_header_new' ) );
@@ -601,6 +602,18 @@ function show_hide_stock_management() {
 		return $loop_args;
 	}
 
+	function tcp_custom_values_get_other_values( $other_values ) {
+		$other_values['tcp_stock'] = array(
+			'label' => __( 'Units in stock', 'tcp' ),
+			'callback' => 'tcp_get_the_stock_label',
+		);
+		$other_values['tcp_init_stock'] = array(
+			'label' => __( 'Initial stock', 'tcp' ),
+			'callback' => 'tcp_get_the_initial_stock',
+		);
+		return $other_values;
+	}
+
 	//ProductCustomPostType
 	function tcp_custom_columns_definition( $columns ) {
 		$columns['stock'] = __( 'Stock', 'tcp' );
@@ -759,6 +772,15 @@ function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 			$stock = -1;
 	}
 	return apply_filters( 'tcp_get_the_stock', $stock, $post_id, $option_1_id, $option_2_id );
+}
+
+/**
+ * Equal to 'tcp_get_the_stock' but return blamk if -1
+ */
+function tcp_get_the_stock_label( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+	$stock = tcp_get_the_stock( $post_id, $option_1_id, $option_2_id );
+	if ( $stock == -1 ) $stock = '';
+	return $stock;
 }
 
 function tcp_set_the_stock( $post_id, $option_1_id = 0, $option_2_id = 0, $stock = -1 ) {

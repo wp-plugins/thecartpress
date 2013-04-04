@@ -151,7 +151,8 @@ $allowed_ext = array(
 	'mxu'	=> 'video/vnd.mpegurl',
 	'avi'	=> 'video/x-msvideo',
 	'movie'	=> 'video/x-sgi-movie',
-	'ice'	=> 'x-conference-xcooltalk'
+	'ice'	=> 'x-conference-xcooltalk',
+	'epub'	=> 'application/epub+zip',
 );
 $wordpress_path = dirname( dirname( dirname( dirname( dirname( __FILE__) ) ) ) ) . '/';
 include_once( $wordpress_path . 'wp-config.php' );
@@ -179,7 +180,7 @@ if ( isset( $_REQUEST['order_detail_id'] ) || ( isset( $_REQUEST['uuid'] ) && is
 		$file_path = tcp_get_the_file( $post_id );
 		do_action( 'tcp_download_file', $file_path );
 		if ( ! file_exists( $file_path ) ) {
-			wp_die( $file_path . __( 'The file doesn\'t exists.', 'tcp' ) );
+			wp_die( $file_path . '<br>' . __( 'The file doesn\'t exists.', 'tcp' ) );
 			return;
 		}
 		$file_size = filesize( $file_path );
@@ -198,8 +199,9 @@ if ( isset( $_REQUEST['order_detail_id'] ) || ( isset( $_REQUEST['uuid'] ) && is
 		} else {
 			$mime_type = 'application/force-download';
 		}
-		$file_name = get_the_title( $post_id ) . '.' . $file_ext . '';
-		$file_name = str_replace( ' ', '_', $file_name );
+		//$file_name = get_the_title( $post_id ) . '.' . $file_ext . '';
+		$file_name = sanitize_title( get_the_title( $post_id ) ) . '.' . $file_ext . '';
+		//$file_name = str_replace( ' ', '_', $file_name );
 		// set headers
 		header( 'Pragma: public' );
 		header( 'Expires: 0' );

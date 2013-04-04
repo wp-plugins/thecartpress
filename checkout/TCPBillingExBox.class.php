@@ -171,8 +171,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		$req_telephone_2	= isset( $settings['req_telephone_2'] ) ? $settings['req_telephone_2'] : false;
 		$see_fax			= isset( $settings['see_fax'] ) ? $settings['see_fax'] : true;
 		$req_fax			= isset( $settings['req_fax'] ) ? $settings['req_fax'] : false;
-		$use_as_shipping	= isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
-		?>
+		$use_as_shipping	= isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false; ?>
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
@@ -300,22 +299,26 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				$default_address = Addresses::getCustomerDefaultBillingAddress( $current_user->ID );
 				$default_address_id = $default_address ? $default_address->address_id : 0;
 			}?>
-				<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif; ?>>
-					<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' ); ?></label>
-					<br />
-					<select id="selected_billing_id" name="selected_billing_id">
-					<?php foreach( $addresses as $address ) :?>
-						<option value="<?php echo $address->address_id; ?>" <?php selected( $address->address_id, $default_address_id ); ?>><?php echo stripslashes( $address->street . ', ' . $address->city ); ?></option>
-					<?php endforeach; ?>
-					</select>
-					<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' ); ?>
-				</div> <!-- selected_billing_area -->
-				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
-				<label for="selected_billing_address"><?php _e( 'Billing to the address selected', 'tcp' )?></label>
+			<div id="selected_billing_area" <?php if ( $selected_billing_address == 'new' ) : ?>style="display:none"<?php endif; ?>>
+				<label for="selected_billing_id"> <?php _e( 'Select billing address:', 'tcp' ); ?></label>
 				<br />
+				<select id="selected_billing_id" name="selected_billing_id">
+				<?php foreach( $addresses as $address ) :?>
+					<option value="<?php echo $address->address_id; ?>" <?php selected( $address->address_id, $default_address_id ); ?>><?php echo stripslashes( $address->street . ', ' . $address->city ); ?></option>
+				<?php endforeach; ?>
+				</select>
+				<?php if ( $selected_billing_address == 'Y' ) $this->showErrorMsg( 'billing_country_id' ); ?>
+			</div> <!-- selected_billing_area -->
+			<label for="selected_billing_address">
+				<input type="radio" id="selected_billing_address" name="selected_billing_address" value="Y"<?php if ( ( $selected_billing_address == 'Y' && count( $addresses ) > 0 ) ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#selected_billing_area').show();jQuery('#new_billing_area').hide();" />
+				<?php _e( 'Billing to the address selected', 'tcp' )?>
+			</label>
+			<br />
 		<?php endif; ?>
-			<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
-			<label for="new_billing_address"><?php _e( 'New billing address', 'tcp' ); ?></label>
+			<label for="new_billing_address">
+				<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif; ?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
+				<?php _e( 'New billing address', 'tcp' ); ?>
+			</label>
 			<div id="new_billing_area" class="clearfix" <?php
 				if ( $selected_billing_address == 'new' ) :
 				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
@@ -490,8 +493,8 @@ class TCPBillingExBox extends TCPCheckoutBox {
 						<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 						<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 							<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
-						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id; ?>" <?php selected( $id, $region_id ); ?>><?php echo $region['name']; ?></option>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region_item ) : ?>
+							<option value="<?php echo $id; ?>" <?php selected( $id, $region_id ); ?>><?php echo $region_item['name']; ?></option>
 						<?php endforeach; ?>
 						</select>
 						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id; ?>"/>

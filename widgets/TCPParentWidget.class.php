@@ -55,8 +55,8 @@ class TCPParentWidget extends WP_Widget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['title']		= strip_tags( $new_instance['title'] );
-		$instance['private']	= isset( $new_instance['private'] ) ? $new_instance['private'] == 'yes' : false;
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['private'] = isset( $new_instance['private'] ) ? $new_instance['private'] == 'yes' : false;
 		if ( ! isset( $new_instance['roles'] ) ) $instance['roles'] = array();
 		elseif ( in_array( '', $new_instance['roles'] ) ) $instance['roles'] = array();
 		else $instance['roles']	= $new_instance['roles'];
@@ -64,9 +64,9 @@ class TCPParentWidget extends WP_Widget {
 	}
 
 	function form( $instance, $title = '' ) {
-		$title		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : $title;
-		$private 	= isset( $instance['private'] ) ? $instance['private'] : false;
-		$roles		= isset( $instance['roles'] ) ? $instance['roles'] : array(); ?>
+		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : $title;
+		$private = isset( $instance['private'] ) ? $instance['private'] : false;
+		$roles = isset( $instance['roles'] ) ? $instance['roles'] : array(); ?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' ); ?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />

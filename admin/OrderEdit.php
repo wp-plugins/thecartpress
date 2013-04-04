@@ -62,57 +62,176 @@ th, td {
 }
 </style>
 
-<div class="wrap">
+<?php
 
-<h2><?php _e( 'Order', 'tcp' ); ?></h2>
+add_meta_box( 'tcp_order_id_metabox', __( 'Order ID', 'tcp' ), 'tcp_order_id_metabox' , 'tcp-order-edit', 'side', 'default' );
+if ( strlen( $order->shipping_firstname ) &&  strlen( $order->shipping_lastname ) )
+	add_meta_box( 'tcp_order_shipping_metabox', __( 'Shipping Address', 'tcp' ), 'tcp_order_shipping_metabox' , 'tcp-order-edit', 'side', 'default' );
+add_meta_box( 'tcp_order_billing_metabox', __( 'Billing Address', 'tcp' ), 'tcp_order_billing_metabox' , 'tcp-order-edit', 'side', 'default' );
 
-<ul class="subsubsub">
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status; ?>&paged=<?php echo $paged; ?>"><?php _e( 'Return to the list', 'tcp' ); ?></a></li>
-<?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
-	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() ); ?>"><?php _e( 'Send email to billing email', 'tcp' ); ?></a></li>
-<?php endif;?>
-<?php if ( $order && strlen( $order->shipping_email ) > 0 ) : ?>
-	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() ); ?>"><?php _e( 'Send email to shipping email', 'tcp' ); ?></a></li>
-<?php endif;?>
-<?php if ( $order_id > 0 ) : ?>
-	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a></li>
-<?php endif;?>
-<?php if ( $order_id > 0 && current_user_can( 'tcp_edit_products') ) : ?>
-	<li>&nbsp;|&nbsp;</li>
-	<li><a href="<?php echo add_query_arg( array( 'send_email' => 'merchant' ), get_permalink() ); ?>"><?php _e( 'Send email to me', 'tcp' ); ?></a></li>
+add_meta_box( 'tcp_order_details_metabox', __( 'Order details', 'tcp' ), 'tcp_order_details_metabox' , 'tcp-order-edit', 'normal', 'default' );
+add_meta_box( 'tcp_order_setup_metabox', __( 'Order Setup', 'tcp' ), 'tcp_order_setup_metabox' , 'tcp-order-edit', 'normal', 'default' );
+
+do_action( 'tcp_order_edit_metaboxes', $order_id, $order );
+
+function tcp_order_id_metabox() {
+	global $order_id, $order; ?>
+<table id="tcp_order_id" width="100%" cellpading="0" cellspacing="0">
+	<tr valign="top">
+		<th class="tcp_order_id_row" scope="row"><?php _e( 'Order ID', 'tcp' ); ?>:</th>
+		<td class="tcp_order_id_value tcp_order_id"><?php echo $order_id; ?></td>
+	</tr>
+	<tr valign="top">
+		<th class="tcp_order_id_row" scope="row"><?php _e( 'Created at', 'tcp' ); ?>:</th>
+		<td class="tcp_order_id_value tcp_created_at"><?php echo $order->created_at; ?></td>
+	</tr>
+	<tr>
+		<th><?php _e( 'Status', 'tcp' ); ?>: </th>
+		<?php $order_status = tcp_get_order_status(); ?>
+		<td class="tcp_status_<?php echo $order->status; ?>"><?php echo $order_status[$order->status]['name']; ?></td>
+	</tr>
+</table>
+<?php }
+
+function tcp_order_shipping_metabox() {
+	global $order_id, $order; ?>
+<table id="shipping_billing_info" width="100%" cellpading="0" cellspacing="0">
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php echo $order->shipping_firstname; ?> <?php echo $order->shipping_lastname; ?>
+		</td>
+	</tr>
+<?php if ( strlen( $order->shipping_company ) > 0 && strlen( $order->billing_company ) > 0 ) : ?>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php if ( strlen( $order->shipping_company ) > 0 ) : ?>
+				<?php echo $order->shipping_company; ?>
+			<?php endif; ?>&nbsp;
+		</td>
+	</tr>
 <?php endif; ?>
+<?php if ( strlen( $order->billing_tax_id_number ) > 0 ) : ?>
+	<tr valign="top">
+		<td class="shipping_info">
+			&nbsp;
+		</td>
+	</tr>
+<?php endif; ?>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php echo $order->shipping_street; ?><br/>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php echo $order->shipping_postcode . ', ' . $order->shipping_city; ?><br/>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php echo $order->shipping_region . ', ' . $order->shipping_country; ?><br/>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php $telephone = $order->shipping_telephone_1;
+			if ( strlen( $order->shipping_telephone_2 ) > 0 ) $telephone .= ' - ' . $order->shipping_telephone_2; ?>
+			<?php if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php if ( strlen( $order->shipping_fax ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $order->shipping_fax; ?><?php endif; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="shipping_info">
+			<?php if ( strlen( $order->shipping_email ) > 0 ) : echo $order->shipping_email; ?><?php endif; ?>
+		</td>
+	</tr>
+</table>
+<?php }
 
-</ul><!-- subsubsub -->
-<div class="clear"></div>
-	<?php $orderpage = OrderPage::show( $order_id, array( 'see_sku' => true ), false, true );
-	$orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage ); ?>
-	<?php echo $orderpage; ?>
+function tcp_order_billing_metabox() {
+	global $order_id, $order; ?>
+<table id="billing_info" width="100%" cellpading="0" cellspacing="0">
+	<tr valign="top">
+		<td class="billing_info">
+			<?php echo $order->billing_firstname;?> <?php echo $order->billing_lastname; ?>
+		</td>
+	</tr>
+<?php if ( strlen( $order->shipping_company ) > 0 && strlen( $order->billing_company ) > 0 ) : ?>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php if ( strlen( $order->billing_company ) > 0 ) : ?>
+				<?php echo $order->billing_company; ?>
+			<?php endif; ?>&nbsp;
+		</td>
+	</tr>
+<?php endif; ?>
+<?php if ( strlen( $order->billing_tax_id_number ) > 0 ) : ?>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php if ( strlen( $order->billing_tax_id_number ) > 0 ) : ?>
+			<?php echo $order->billing_tax_id_number; ?>
+			<?php endif; ?>&nbsp;
+		</td>
+	</tr>
+<?php endif; ?>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php echo $order->billing_street; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php echo $order->billing_postcode; ?>, <?php echo $order->billing_city; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php echo $order->billing_region; ?>, <?php echo $order->billing_country; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php $telephone = $order->billing_telephone_1;
+			if ( strlen( $order->billing_telephone_2 ) > 0 ) $telephone .= ' - ' . $order->billing_telephone_2; ?>
+			<?php if ( strlen( $telephone ) > 0 ) : _e( 'Telephones', 'tcp' ); ?>: <?php echo $telephone; ?><br/><?php endif; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php if ( strlen( $order->billing_fax ) > 0 ) : _e( 'Fax', 'tcp' ); ?>: <?php echo $order->billing_fax; ?><?php endif; ?>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="billing_info">
+			<?php if ( strlen( $order->billing_email ) > 0 ) : echo $order->billing_email; ?><br/><?php endif; ?>
+		</td>
+	</tr>
+</table>
+<?php }
 
-	<?php do_action( 'tcp_admin_order_top', $order_id ); ?>
+function tcp_order_details_metabox() {
+	global $order_id, $order;
+	$orderpage = OrderPage::show( $order_id, array( 'see_sku' => true, 'see_address' => false ), false, true );
+	$orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
+	echo $orderpage;
+}
 
-	<?php if ( $order ) : ?>
-	<form method="post" name="frm">
-		<input type="hidden" name="status" value="<?php echo $status = $order->status;?>" />
-		<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
+function tcp_order_setup_metabox() {
+	global $order_id, $order;
+	do_action( 'tcp_admin_order_top', $order_id );
+	if ( $order ) : ?>
+<div>
+<form method="post" name="frm">
+	<input type="hidden" name="status" value="<?php echo $status = $order->status; ?>" />
+	<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
 
-		<table class="form-table">
-		<tbody>
+	<table class="form-table">
+	<tbody>
 		<?php do_action( 'tcp_admin_order_before_editor', $order_id ); ?>
-		<tr valign="top">
-			<th scope="col">
-				<label style="font-weight:bold;"><?php _e( 'Order ID', 'tcp' ); ?></label>
-			</th>
-			<th scope="col">
-				<label style="font-weight:bold;"><?php _e( 'Date', 'tcp' ); ?></label>
-			</th>
-		</tr>
-		<tr>
-			<td><?php echo $order_id;?></td>
-			<td><?php echo $order->created_at;?></td>
-		</tr>
 		<tr valign="top">
 			<th scope="col" colspan="2">
 				<label style="font-weight:bold;"><?php _e( 'User email', 'tcp' ); ?></label>
@@ -134,8 +253,8 @@ th, td {
 			</th>
 		</tr>
 		<tr valign="top">
-			<td><?php echo $order->shipping_method;?></td>
-			<td><?php echo $order->payment_name;?></td>
+			<td><?php echo $order->shipping_method; ?></td>
+			<td><?php echo $order->payment_name; ?></td>
 		</tr>
 		<tr valign="top">
 			<th scope="col">
@@ -146,8 +265,8 @@ th, td {
 			</th>
 		</tr>
 		<tr valign="top">
-			<td><?php echo $order->transaction_id;?></td>
-			<td><?php echo $order->ip;?></td>
+			<td><?php echo $order->transaction_id; ?></td>
+			<td><?php echo $order->ip; ?></td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
@@ -187,21 +306,71 @@ th, td {
 			</td>
 		</tr>
 		<?php do_action( 'tcp_admin_order_after_editor', $order_id, $order ); ?>
-		</tbody>
-		</table>
-		<div class="submit">
-			<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
-			<?php do_action( 'tcp_admin_order_submit_area', $order_id ); ?>
-			<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
-				<a href="#" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' ); ?></a>
-				<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
-					<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
-					<p><?php _e( 'Do you really want to delete this order?', 'tcp' ); ?></p>
-					<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' ); ?>" type="submit" class="button-secondary" />
-					<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
-				</div>
-			<?php endif;?>
-		</div>
-	</form>
-<?php endif;?>
+	</tbody>
+	</table>
+	<p class="submit">
+		<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
+		<?php do_action( 'tcp_admin_order_submit_area', $order_id ); ?>
+		<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
+			<a href="#" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' ); ?></a>
+			<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
+				<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
+				<p><?php _e( 'Do you really want to delete this order?', 'tcp' ); ?></p>
+				<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' ); ?>" type="submit" class="button-secondary" />
+				<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+			</div>
+		<?php endif; ?>
+	</p><!-- .submit -->
+</form>
+</div>
+	<?php endif;
+}
+?>
+
+<div class="wrap">
+
+	<?php screen_icon( 'tcp-order' ); ?><h2><?php _e( 'Order', 'tcp' ); ?></h2>
+
+	<ul class="subsubsub">
+		<li><a href="<?php echo TCP_ADMIN_PATH; ?>OrdersListTable.php&status=<?php echo $status; ?>&paged=<?php echo $paged; ?>"><?php _e( 'Return to the list', 'tcp' ); ?></a></li>
+	<?php if ( $order && strlen( $order->billing_email ) > 0 ) : ?>
+		<li>&nbsp;|&nbsp;</li>
+		<li><a href="<?php echo add_query_arg( array( 'send_email' => 'billing' ), get_permalink() ); ?>"><?php _e( 'Send email to billing email', 'tcp' ); ?></a></li>
+	<?php endif;?>
+	<?php if ( $order && strlen( $order->shipping_email ) > 0 ) : ?>
+		<li>&nbsp;|&nbsp;</li>
+		<li><a href="<?php echo add_query_arg( array( 'send_email' => 'shipping' ), get_permalink() ); ?>"><?php _e( 'Send email to shipping email', 'tcp' ); ?></a></li>
+	<?php endif;?>
+	<?php if ( $order_id > 0 ) : ?>
+		<li>&nbsp;|&nbsp;</li>
+		<li><a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a></li>
+	<?php endif;?>
+	<?php if ( $order_id > 0 && current_user_can( 'tcp_edit_products') ) : ?>
+		<li>&nbsp;|&nbsp;</li>
+		<li><a href="<?php echo add_query_arg( array( 'send_email' => 'merchant' ), get_permalink() ); ?>"><?php _e( 'Send email to me', 'tcp' ); ?></a></li>
+	<?php endif; ?>
+	</ul><!-- subsubsub -->
+
+	<div class="clear"></div>
+
+	<div id="poststuff">
+
+		<div id="post-body" class="metabox-holder columns-2">
+
+			<div id="postbox-container-1" class="postbox-container">
+				<?php do_meta_boxes( 'tcp-order-edit', 'side', null ); ?>
+			</div>
+
+			<div id="postbox-container-2" class="postbox-container">
+				<?php do_meta_boxes( 'tcp-order-edit', 'normal', null ); ?>
+				<?php do_meta_boxes( 'tcp-order-edit', 'advanced', null ); ?>
+			</div>
+
+		</div><!-- /post-body -->
+
+		<br class="clear" />
+
+	</div><!-- /poststuff -->
+
 </div><!-- wrap -->
+

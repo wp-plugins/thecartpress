@@ -67,6 +67,7 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'image_size'			=> isset( $_REQUEST['image_size'] ) ? $_REQUEST['image_size'] : 'thumbnail',
 			'see_content'			=> isset( $_REQUEST['see_content'] ),// ? $_REQUEST['see_content'] == 'yes' : false,
 			'see_excerpt'			=> isset( $_REQUEST['see_excerpt'] ),// ? $_REQUEST['see_excerpt'] == 'yes' : false,
+			'excerpt_length'		=> isset( $_REQUEST['excerpt_length'] ) ? (int)$_REQUEST['excerpt_length'] : false,
 			'see_author'			=> isset( $_REQUEST['see_author'] ),// ? $_REQUEST['see_author'] == 'yes' : false,
 			'see_posted_on'			=> isset( $_REQUEST['see_posted_on'] ),// ? $_REQUEST['see_posted_on'] == 'yes' : false,
 			'see_taxonomies'		=> isset( $_REQUEST['see_taxonomies'] ),// ? $_REQUEST['see_taxonomies'] == 'yes' : false,
@@ -151,6 +152,7 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 	$image_size				= isset( $shortcode_data['image_size'] ) ? $shortcode_data['image_size'] : 'thumbnail';
 	$see_content			= isset( $shortcode_data['see_content'] ) ? $shortcode_data['see_content'] == 'yes' : false;
 	$see_excerpt			= isset( $shortcode_data['see_excerpt'] ) ? $shortcode_data['see_excerpt'] == 'yes' : false;
+	$excerpt_length			= isset( $shortcode_data['excerpt_length'] ) ? $shortcode_data['excerpt_length'] : false;
 	$see_author				= isset( $shortcode_data['see_author'] ) ? $shortcode_data['see_author'] == 'yes' : false;
 	$see_posted_on			= isset( $shortcode_data['see_posted_on'] ) ? $shortcode_data['see_posted_on'] == 'yes' : false;
 	$see_taxonomies			= isset( $shortcode_data['see_taxonomies'] ) ? $shortcode_data['see_taxonomies'] == 'yes' : false;
@@ -424,6 +426,10 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		<p>
 			<input type="checkbox" class="checkbox" id="see_excerpt" name="see_excerpt" value="yes" <?php checked( $see_excerpt ); ?> />
 			<label for="see_excerpt"><?php _e( 'Show excerpt', 'tcp' ); ?></label>
+		</p>
+		<p>
+			<label for="excerpt_length"><?php _e( 'Excerpt length', 'tcp' ); ?>: </label>
+			<input type="number" class="input-mini" id="excerpt_length" name="excerpt_length" value="<?php echo $excerpt_length; ?>" maxlength="3" />
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="see_author" name="see_author" value="yes" <?php checked( $see_author ); ?> />

@@ -22,8 +22,7 @@ class TCPLoopSettings {
 		$settings = get_option( 'tcp_settings' );
 		if ( isset( $settings['use_default_loop'] ) ) {
 			if ( $settings['use_default_loop'] != 'none' ) add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-			if ( $settings['use_default_loop'] == 'yes' || $settings['use_default_loop'] == 'yes_2010' )
-				add_filter( 'template_include', array( $this, 'template_include' ) );
+			add_filter( 'template_include', array( &$this, 'template_include' ) );
 		}
 	}
 
@@ -38,12 +37,11 @@ class TCPLoopSettings {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize your Theme Loops.', 'tcp' ) . '</p>'
+			'id'      => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize your Theme Loops.', 'tcp' ) . '</p>'
 		) );
-
 		get_current_screen()->set_help_sidebar(
 			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
 			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
@@ -413,17 +411,17 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 			if ( is_array( $wp_query->tax_query->queries ) && count( $wp_query->tax_query->queries ) > 0 ) {
 				foreach ( $wp_query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 					if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
-						$template = $this->get_template_taxonomy();
-						if ( $template ) return $template;
+						$tax_template = $this->get_template_taxonomy();
+						if ( $tax_template !== false ) return $tax_template;
 					}
 				}
 			}
 		}
 		/*global $post;
 		if ( $post && tcp_is_saleable_post_type( $post->post_type ) ) {
-			if ( is_single() ) $template = $this->get_template_single();
-			else $template = $this->get_template_archive();
-			if ( $template ) return $template;
+			//if ( is_single() ) $single_template = $this->get_template_single();
+			//else $single_template = $this->get_template_archive();
+			if ( $single_template !== false ) return $single_template;
 		}*/
 		return $template;
 	}
@@ -431,37 +429,42 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix ] ) 
 	private function get_template_taxonomy() {
 		$settings = get_option( 'tcp_settings' );
 		if ( $settings['use_default_loop'] == 'yes' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php';
+			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php';
 		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/taxonomy.php';
+			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/taxonomy.php';
+		} elseif ( $settings['use_default_loop'] == 'yes_2012' ) {
+			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentytwelve/taxonomy.php';
 		} else {
-			$template = false;
+			return false;
 		}
-		return $template;
 	}
 
-	/*private function get_template_archive( $product_type = false) {
+	/*private function get_template_archive( $product_type = false ) {
 		$settings = get_option( 'tcp_settings' );
-		if ( $settings['use_default_loop'] == 'yes' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php';
-		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/archive-tcp_product.php';
+#		if ( $settings['use_default_loop'] == 'yes' ) {
+#			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php';
+#		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+#			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/archive-tcp_product.php';
+#		} else
+		if ( $settings['use_default_loop'] == 'yes_2012' ) {
+			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentytwelve/archive-tcp_product.php';
 		} else {
-			$template = false;
+			return false;
 		}
-		return $template;
-	}*/
+	}
 
 	/*private  function get_template_single( $product_type = false ) {
 		$settings = get_option( 'tcp_settings' );
-		if ( $settings['use_default_loop'] == 'yes' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/single-tcp_product.php';
-		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
-			$template = WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/single-tcp_product.php';
+#		if ( $settings['use_default_loop'] == 'yes' ) {
+#			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyeleven/single-tcp_product.php';
+#		} elseif ( $settings['use_default_loop'] == 'yes_2010' ) {
+#			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentyten/single-tcp_product.php';
+#		} else
+		if ( $settings['use_default_loop'] == 'yes_2012' ) {
+			return WP_PLUGIN_DIR . '/thecartpress/themes-templates/tcp-twentytwelve/single-tcp_product.php';
 		} else {
-			$template = false;
+			return false;
 		}
-		return $template;
 	}*/
 }
 

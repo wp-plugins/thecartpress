@@ -100,10 +100,10 @@ class TCPBuyButton {
 					$buy_buttons[] = array(
 						'label'	=> $path['label'] . ': ' . basename( $filename, '.php' ),
 						'path'	=> $filename,
-		   			);
+					);
 				}
 			}
-	   	}
+		}
 		return $buy_buttons;
 	}
 

@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once( 'AdvancedCommunication.class.php' );
+//require_once( 'AdvancedMenus.class.php' );
 require_once( 'Ajax.class.php' );
+require_once( 'Bootstrap.class.php' );
 require_once( 'BuddyPress.class.php' );
 require_once( 'BuyButton.class.php' );
 require_once( 'TaxonomyImages.class.php' );

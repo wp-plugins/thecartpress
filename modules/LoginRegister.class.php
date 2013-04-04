@@ -245,20 +245,31 @@ class TCPLoginRegister {
 	}
 
 	function tcp_my_account() {
-		ob_start();?>
-<div class="tcp_login_form">
-	<?php
-	$args = array( 'see_register' => false );
-	if ( isset( $_REQUEST['redirect_to'] ) ) $args['redirect'] = $_REQUEST['redirect_to'];
-	tcp_login_form( $args ); ?>
-</div>
-
-<?php if ( get_option( 'users_can_register' ) ) : ?>
-	<div class="tcp_register_form">
-	<?php tcp_register_form(); ?>
+		ob_start(); ?>
+<div class="row-fluid">
+	<div class="span<?php echo get_option( 'users_can_register' ) ? '6' : '12'; ?>">
+		<?php if ( ! is_user_logged_in() ) : ?><h3><?php _e( 'Login', 'tcp' ); ?></h3><?php endif; ?>
+		<?php $args = array( 'see_register' => false );
+		if ( isset( $_REQUEST['redirect_to'] ) ) $args['redirect'] = $_REQUEST['redirect_to'];
+		tcp_login_form(); ?>
 	</div>
-<?php endif;
-		return ob_get_clean();
+<?php if ( ! is_user_logged_in() && get_option( 'users_can_register' ) ) : ?>
+	<div class="span6">
+		<h3><?php _e( 'Register', 'tcp' ); ?></h3>
+		<?php tcp_register_form( array( 'login' => true ) ); ?>
+	</div>
+<?php endif; ?>
+</div><!-- .row-fluid -->
+
+<!--<h2><?php //_e( 'My Adresses', 'tcp-fe' ); ?></h2>
+	<?php //_e( 'You have the following dispatch and/or billing addresse(s) at interloom', 'tcp-fe' ); ?>
+	<?php //echo $this->tcp_addresses_list(); ?>
+	<a href="<?php tcp_the_my_addresses_url(); ?>"><?php _e( 'See all addresses', 'tcp-fe' ); ?></a>
+<h2><?php //_e( 'My orders', 'tcp-fe' ); ?></h2>
+	<?php //_e( 'Here is an overview of your current and previous orders', 'tcp_fe' ); ?>
+	<?php //echo $this->tcp_orders_list(); ?>
+	<a href="<?php tcp_the_my_orders_url(); ?>"><?php _e( 'See all orders', 'tcp-fe' ); ?></a>-->
+		<?php return ob_get_clean();
 	}
 }
 

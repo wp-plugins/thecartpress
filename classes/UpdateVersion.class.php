@@ -20,28 +20,6 @@ class TCPUpdateVersion {
 
 	function update( $thecartpress ) {
 		$version = (float)get_option( 'tcp_version' );
-		if ( $version < 112 ) {
-			global $wpdb;
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_postcode` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_rel_entities WHERE field = \'units\'';
-			if ( $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_rel_entities DROP COLUMN `units`;';
-				$wpdb->query( $sql );
-			}
-			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_rel_entities WHERE field = \'meta_value\'';
-			if ( ! $wpdb->get_row( $sql ) ) {
-				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_rel_entities ADD COLUMN `meta_value` longtext NOT NULL AFTER `list_order`;';
-				$wpdb->query( $sql );
-			}
-			require_once( TCP_DAOS_FOLDER . 'OrdersMeta.class.php' );
-			OrdersMeta::createTable();
-			//
-			//TODO Deprecated 1.2.2
-			//
-		}
 		if ( $version < 113 ) {
 			$administrator = get_role( 'administrator' );
 			if ( $administrator ) $administrator->add_cap( 'tcp_edit_wish_list' );

@@ -159,19 +159,24 @@ class TCPShippingBox extends TCPCheckoutBox {
 				</select>
 				<?php if ( $selected_shipping_address == 'Y' ) $this->showErrorMsg( 'shipping_country_id' );?>
 			</div> <!-- selected_shipping_area -->
-			
-			<input type="radio" id="selected_shipping_address" name="selected_shipping_address" value="Y"<?php if ( $selected_shipping_address == 'Y' && count( $addresses ) > 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').show();jQuery('#new_shipping_area').hide();" />
-			<label for="selected_shipping_address"><?php _e( 'Shipping to the address selected', 'tcp' )?></label>
+			<label for="selected_shipping_address">
+				<input type="radio" id="selected_shipping_address" name="selected_shipping_address" value="Y"<?php if ( $selected_shipping_address == 'Y' && count( $addresses ) > 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').show();jQuery('#new_shipping_area').hide();" />
+				<?php _e( 'Shipping to the address selected', 'tcp' )?>
+			</label>
 			<br /><?php
 		} ?>
 			<span id="p_use_billing_address">
-			<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php if ( $selected_shipping_address == 'BIL' ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').hide();" />
-			<label for="use_billing_address"><?php _e( 'Use billing address', 'tcp' );?></label>
+			<label for="use_billing_address">
+				<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php if ( $selected_shipping_address == 'BIL' ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').hide();" />
+				<?php _e( 'Use billing address', 'tcp' );?>
+			</label>
 			<?php if ( $selected_shipping_address == 'BIL' ) $this->showErrorMsg( 'shipping_country_id' );?>
 			<br/>
 			</span>
-			<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || ( count( $addresses ) == 0 && $selected_shipping_address != 'BIL' ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
-			<label for="new_shipping_address"><?php _e( 'New shipping address', 'tcp' );?></label>
+			<label for="new_shipping_address">
+				<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || ( count( $addresses ) == 0 && $selected_shipping_address != 'BIL' ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
+				<?php _e( 'New shipping address', 'tcp' );?>
+			</label>
 			<div id="new_shipping_area" <?php if ( $selected_shipping_address != 'new' ) : ?>style="display:none"<?php endif;?>><?php
 			if ( isset( $_REQUEST['shipping_firstname'] ) ) {
 				$firstname = $_REQUEST['shipping_firstname'];
@@ -336,8 +341,8 @@ class TCPShippingBox extends TCPCheckoutBox {
 						<?php $regions = apply_filters( 'tcp_load_regions_for_shipping', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )?>
 						<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
 							<option value=""><?php _e( 'No state selected', 'tcp' );?></option>
-						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region ) : ?>
-							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region['name'];?></option>
+						<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region_item ) : ?>
+							<option value="<?php echo $id;?>" <?php selected( $id, $region_id );?>><?php echo $region_item['name'];?></option>
 						<?php endforeach;?>
 						</select>
 						<input type="hidden" id="shipping_region_selected_id" value="<?php echo $region_id;?>"/>

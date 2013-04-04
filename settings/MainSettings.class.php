@@ -30,7 +30,7 @@ class TCPMainSettings {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
-		add_menu_page( '', __( 'TCP Settings', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 41 );
+		//add_menu_page( '', __( 'TCP Settings', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 41 );
 		$page = add_submenu_page( $base, __( 'Main Settings', 'tcp' ), __( 'Main Settings', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );

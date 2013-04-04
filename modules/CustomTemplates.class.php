@@ -51,7 +51,8 @@ class TCPCustomTemplates {
 	function archive_template( $archive_template ) {
 		global $post;
 		if ( ! $post ) return;
-		$template = tcp_get_custom_template_by_post_type( $post->post_type );
+		//$template = tcp_get_custom_template_by_post_type( $post->post_type );
+		$template = tcp_get_custom_archive_by_post_type( $post->post_type );
 		if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_archive_template', $template );
 		return apply_filters( 'tcp_archive_template', $archive_template );
 	}
@@ -190,6 +191,25 @@ function tcp_get_custom_template_by_post_type( $post_type ) {
 	if ( $templates && is_array( $templates ) ) return isset( $templates[$post_type] ) ? $templates[$post_type] : false;
 }
 
+function tcp_set_custom_archive_by_post_type( $post_type, $archive = '') {
+	$templates = get_option( 'tcp_post_type_archives', false );
+	if ( $templates ) {
+		if ( ! $archive || $archive == '') {
+			if ( isset( $templates[$post_type] ) ) unset( $templates[$post_type] );
+		} else {
+			$templates[$post_type] = $archive;
+		}
+		update_option( 'tcp_post_type_archives', $templates );
+	} else {
+		update_option( 'tcp_post_type_archives', array( $post_type => $template ) );
+	}
+}
+
+function tcp_get_custom_archive_by_post_type( $post_type ) {
+	$archives = get_option( 'tcp_post_type_archives', false );
+	if ( $archives && is_array( $archives ) ) return isset( $archives[$post_type] ) ? $archives[$post_type] : false;
+}
+
 function tcp_set_custom_template_by_taxonomy( $taxonomy, $template = '' ) {
 	$templates = get_option( 'tcp_taxonomy_templates', false );
 	if ( $templates ) {
@@ -232,5 +252,26 @@ function tcp_get_custom_template_by_term( $term_id ) {
 		if ( isset( $templates[$term_id] ) ) return $templates[$term_id];
 	}
 	return false;
+}
+
+//Archives, taxonomies and singles
+function tcp_get_custom_files( $prefix ) {
+	$archives = array();
+	$theme = wp_get_theme();
+	$dir = $theme->get_stylesheet_directory();
+	$folder = dir( $dir );
+	while ( false !== ( $file = $folder->read() ) )
+		if ( substr( $file, 0, strlen( $prefix ) ) == $prefix )
+			$archives[$dir . '/' . $file] = $file;
+	$folder->close();
+	if ( $dir != $theme->get_template_directory() ) {
+		$dir = $theme->get_template_directory();
+		$folder = dir( $dir );
+		while ( false !== ( $file = $folder->read() ) )
+			if ( substr( $file, 0, strlen( $prefix ) ) == $prefix )
+				$archives[$dir . '/' . $file] = $file . ' (' . __( 'parent theme', 'tcp' ) . ')';
+		$folder->close();
+	}
+	return $archives;
 }
 ?>

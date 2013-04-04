@@ -163,12 +163,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		$see_tax = isset( $args['see_tax'] ) ? $args['see_tax'] : true;
 		$see_tax_detail = isset( $args['see_tax_detail'] ) ? $args['see_tax_detail'] : true;
 		$see_total = isset( $args['see_total'] ) ? $args['see_total'] : true;
-//$see_tax_summary	= isset( $args['see_tax_summary'] ) ? $args['see_tax_summary'] : false;
-//require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
-//require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
-//$cart_table = new TCPCartTable();
-//$cart_table->show( new TCPCartSourceSession( array( 'see_tax' => $see_tax, 'see_tax_summary' => $see_tax_summary, 'see_weight' => $see_weight, 'see_sku' => $see_sku, 'is_editing_units' => false, 'see_other_costs' => true ) ) );
-		$shoppingCart = TheCartPress::getShoppingCart(); ?>
+		$shoppingCart = apply_filters( 'tcp_checkout_show_order_cart_get_shopping_cart', TheCartPress::getShoppingCart() ); ?>
 	<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table">
 		<thead>
 			<tr class="tcp_cart_title_row">

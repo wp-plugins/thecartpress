@@ -164,35 +164,35 @@ class TCPPayPal extends TCP_Plugin {
 	}
 
 	function saveEditFields( $data ) {
-		$data['business']				= isset( $_REQUEST['business'] ) ? $_REQUEST['business'] : '';
-		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] );
-		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] );
-		$data['no_shipping']			= isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
-		$data['paymentaction']			= isset( $_REQUEST['paymentaction'] ) ? $_REQUEST['paymentaction'] : 'sale';
-		$data['redirect']				= isset( $_REQUEST['redirect'] );
-		$data['send_detail']			= 0;//isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
-		$data['logging']				= isset( $_REQUEST['logging'] );
-		$data['cpp_cart_border_color']	= isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
-		$data['test_mode']				= isset( $_REQUEST['test_mode'] );
+		$data['business'] = isset( $_REQUEST['business'] ) ? $_REQUEST['business'] : '';
+		$data['profile_shipping'] = isset( $_REQUEST['profile_shipping'] );
+		$data['profile_taxes'] = isset( $_REQUEST['profile_taxes'] );
+		$data['no_shipping'] = isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
+		$data['paymentaction'] = isset( $_REQUEST['paymentaction'] ) ? $_REQUEST['paymentaction'] : 'sale';
+		$data['redirect'] = isset( $_REQUEST['redirect'] );
+		$data['send_detail'] = 0;//isset( $_REQUEST['send_detail'] ) ? $_REQUEST['send_detail'] : 0;
+		$data['logging'] = isset( $_REQUEST['logging'] );
+		$data['cpp_cart_border_color'] = isset( $_REQUEST['cpp_cart_border_color'] ) ? $_REQUEST['cpp_cart_border_color'] : '';
+		$data['test_mode'] = isset( $_REQUEST['test_mode'] );
 		$data = apply_filters( 'tcp_paypal_save_edit_fields', $data );
 		return $data;
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$business			= $data['business'];
-		$test_mode			= $data['test_mode'];
+		$business		= $data['business'];
+		$test_mode		= $data['test_mode'];
 		$profile_shipping	= $data['profile_shipping'];
-		$profile_taxes		= $data['profile_taxes'];
-		$paymentaction		= isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale';
-		$redirect			= isset( $data['redirect'] ) ? $data['redirect'] : false;
-		$no_shipping		= isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
-		$send_detail		= 0; //isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
-		$logging			= $data['logging'];
-		$merchant			= get_bloginfo( 'name' );
-		$new_status			= $data['new_status'];
-		$currency			= tcp_get_the_currency_iso();
-		$currency			= apply_filters( 'tcp_paypal_get_convert_to', $currency, $data );
+		$profile_taxes	= $data['profile_taxes'];
+		$paymentaction	= isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale';
+		$redirect		= isset( $data['redirect'] ) ? $data['redirect'] : false;
+		$no_shipping	= isset( $data['no_shipping'] ) ? $data['no_shipping']: 0 ;
+		$send_detail	= 0; //isset( $data['send_detail'] ) ? $data['send_detail']: 0 ;
+		$logging		= $data['logging'];
+		$merchant		= get_bloginfo( 'name' );
+		$new_status		= $data['new_status'];
+		$currency		= tcp_get_the_currency_iso();
+		$currency		= apply_filters( 'tcp_paypal_get_convert_to', $currency, $data );
 		$p = new tcp_paypal_class( $test_mode, $logging );
 		$p->add_field( 'charset', 'utf-8' );
 		$p->add_field( 'business', $business );
@@ -303,7 +303,7 @@ class TCPPayPal extends TCP_Plugin {
 			jQuery( 'form[name=paypal_form]' ).submit();
 		//} );
 		</script>
-		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp'); ?></p>
+		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp' ); ?></p>
 		<?php endif;
 
 		/*if ( ! $this->isSupportedCurrency( $currency_code ) ) {

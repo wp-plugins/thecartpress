@@ -94,7 +94,6 @@ class TCPPaypalCurrencyConverter {
 	<?php if ( $use_conversion == 'no' ) : ?>
 		jQuery('#tr_conversion_rate').hide();
 		jQuery('#tr_convert_to').hide();
-		añert('no');
 	<?php elseif ( $use_conversion == 'google_api' ) : ?>
 		jQuery('#tr_conversion_rate').hide();
 		jQuery('#tr_convert_to').show();

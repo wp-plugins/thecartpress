@@ -152,27 +152,27 @@ jQuery('#tcp_back').click(function(event) {
 	return false;
 });
 
-jQuery('h3.tcp_ckeckout_step a').click(function(event) {
-	var step = jQuery(this).attr('tcp_step');
-	var feedback = jQuery('.tcp_feedback');
+jQuery( 'h3.tcp_ckeckout_step a' ).click( function( event ) {
+	var step = jQuery( this ).attr( 'tcp_step' );
+	var feedback = jQuery( '.tcp_feedback' );
 	data = 'action=tcp_checkout&step=' + step;
 	feedback.show();
 	jQuery.ajax({
 		async	: true,
-		type    : "POST",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		type    : 'POST',
+		url		: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
 		data	: data,
-		success : function(response) {
+		success : function( response ) {
 			feedback.hide();
-			jQuery('#checkout').replaceWith(response);
+			jQuery( '#checkout' ).replaceWith( response );
 		},
-		error	: function(response) {
+		error	: function( response ) {
 			feedback.hide();
 		},
-	});
+	} );
 	event.stopPropagation();
 	return false;
-});
+} );
 </script><?php
 	}
 

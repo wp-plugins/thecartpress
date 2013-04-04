@@ -261,7 +261,6 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		else return false;
 	}
 
-
 	public function get_billing_telephone_1() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_telephone_1'];
 		else return false;
@@ -385,6 +384,7 @@ class TCP_DetailSourceSession implements TCP_IDetailSource {
 	}
 
 	public function get_sku() {
+		if ( $this->item ) return $this->item->getSKU();
 		return false;
 	}
 

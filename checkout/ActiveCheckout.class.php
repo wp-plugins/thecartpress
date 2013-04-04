@@ -63,9 +63,9 @@ class ActiveCheckout {//shortcode
 				</div><!-- .tcp_order_successfully -->
 			<?php endif; ?>
 			<?php do_action( 'tcp_checkout_ok_footer', $shoppingCart ); ?>
-			<br/>
+			<div>
 			<?php OrderPage::show( $order_id, array() ); ?>
-			<br/>
+			</div>
 			<a href="<?php echo add_query_arg( 'action', 'tcp_print_order', add_query_arg( 'order_id', $order_id, admin_url( 'admin-ajax.php' ) ) ); ?>" target="_blank"><?php _e( 'Print', 'tcp' ); ?></a>
 			<?php if ( apply_filters( 'tcp_checkout_remove_shopping_cart', true ) ) TheCartPress::removeShoppingCart(); ?>
 			<?php do_action( 'tcp_checkout_end', $order_id, true );

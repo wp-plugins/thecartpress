@@ -101,6 +101,10 @@ function tcp_get_the_my_account_url() {
  * There is also an action that is called whenever the function is run called,
  * 'tcp_get_taxonomy_tree'.
  *
+ * Change Log
+ * -------------------------------------------
+ * 1.2.8, you could filter by author.
+ *
  * @since 1.0.7
  * @param array $args
  * @param boolean $echo Default to echo and not return the form.
@@ -115,6 +119,7 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 		'title_li'		=> '',
 		'collapsible'	=> false,
 		'dropdown'		=> false,
+		'by_author'		=> false,
 	) );
 	ob_start();
 	if ( $args['dropdown'] ) :
@@ -137,7 +142,12 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	dropdown.onchange = on_<?php echo $args['name']; ?>_change;
 // ]]>
 </script>
-	<?php else : ?>
+	<?php else :
+		if ( $args['by_author'] ) {
+			$terms = tcp_get_terms_by_author();
+			$args['include'] = $terms;
+		}
+	?>
 <ul class="tcp_navigation_tree"><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
 	<?php endif;
 	$tree = ob_get_clean();
@@ -145,6 +155,22 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	if ( $args['collapsible'] ) add_action ( 'wp_footer', 'tcp_get_taxonomy_tree_add_collapsible_behaviour' );
 	if ( $echo ) echo $before, $tree, $after;
 	else return $before . $tree . $after;
+}
+
+function tcp_get_terms_by_author( $author_id = 0 ) {
+	if ( $author_id == 0 ) $author_id = get_current_user_id();
+	$posts = get_posts( array(
+		'author' => $author_id,
+		'numberposts' => -1,
+		'fields' => 'ids',
+	) );
+	$terms = array();
+	foreach ( $posts as $post_id ) {
+		$terms = get_the_terms( $post_id, 'tcp_product_category' );
+		if ( $terms ) foreach( $terms as $term )
+			$terms[$term->term_id] = $term->term_id;
+		}
+	return $terms;
 }
 
 class TCPWalker_CategoryDropdown extends Walker {
@@ -416,20 +442,16 @@ function tcp_get_taxonomies_cloud( $args = false, $echo = true, $before = '', $a
 		);
 	$cloud = wp_tag_cloud( $args );
 	$cloud = apply_filters( 'tcp_get_taxonomies_cloud', $cloud );
-	if ( $echo )
-		echo $before, $cloud, $after;
-	else
-		return $before . $cloud . $after;
+	if ( $echo ) echo $before, $cloud, $after;
+	else return $before . $cloud . $after;
 }
 
 function tcp_get_tags_cloud( $args = false, $echo = true, $before = '', $after = '' ) {
 	do_action( 'tcp_get_tags_cloud' );
 	$cloud = tcp_get_taxonomies_cloud( $args, false, $before, $after );
 	$cloud = apply_filters( 'tcp_get_tags_cloud', $cloud );
-	if ( $echo )
-		echo $cloud;
-	else
-		return $cloud;
+	if ( $echo ) echo $cloud;
+	else return $cloud;
 }
 
 function tcp_get_suppliers_cloud( $args = false, $echo = true, $before = '', $after = '' ) {
@@ -648,43 +670,7 @@ function tcp_login_form( $args = array() ) {
 </div><!-- .tcp_login -->
 <?php else : ?>
 <div class="tcp_profile">
-	<?php  global $current_user;
-	global $user_level;
-	global $wpmu_version;
-	$redirect = get_permalink();
-	get_currentuserinfo(); ?>
-	<table cellpadding="0" cellspacing="0" width="100%">
-		<tr>
-			<td class="avatar" id="tcp_avatar" style="vertical-align: top;">
-				<?php echo get_avatar( $current_user->ID, $size = '100' );  ?>
-			</td>
-			<td id="tcp_profile_info" style="vertical-align: top;">
-				<div class="tcp_profile_name">
-				<?php echo $current_user->display_name; ?> (<?php echo tcp_get_current_user_role_title(); ?>)
-				</div>
-				<div class="tcp_last_login">
-				<?php printf( __( 'Last login: %s', 'tcp' ), tcp_get_the_last_login() ); ?>
-				</div>
-				<div class="tcp_profile_description">
-				<?php $current_user->description; ?>
-				</div>
-				<?php if ( $user_level > 8 ) : ?>
-					<?php if ( function_exists( 'bp_loggedin_user_link' ) ) : ?>
-						<a href="<?php bp_loggedin_user_link(); ?>"><?php echo strtolower( __( 'Profile' ) ); ?></a>
-					<?php else : ?>
-						<br/>
-						<a href="<?php bloginfo('wpurl') ?>/wp-admin/profile.php"><?php echo strtolower( __( 'Profile' ) ); ?></a>
-					<?php endif; ?>
-				<?php endif; ?>
-				<br />
-				<a id="wp-logout" href="<?php echo wp_logout_url( $redirect ) ?>"><?php echo strtolower( __( 'Log Out' ) ); ?></a>
-				<?php if ( ! empty( $wpmu_version ) || $user_level > 8 ) : ?>
-					<br />
-					<a href="<?php bloginfo( 'wpurl' ); ?>/wp-admin/"><?php _e( 'blog admin', 'tcp'); ?></a>
-				<?php endif; ?>
-			</td>
-		</tr>
-	</table>
+	<?php tcp_author_profile(); ?>
 </div><!-- .tcp_my_profile -->
 <?php endif;
 	$out = ob_get_clean();
@@ -773,6 +759,23 @@ function tcp_register_form( $args = array() ) {
 	$out = ob_get_clean();
 	if ( $args['echo'] ) echo $out;
 	else return $out;
+}
+
+/**
+ * Displays/returns the current author's profile
+ * @since 1.2.8
+ */
+function tcp_author_profile() {
+	$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
+	if ( $current_user == false ) {
+		global $current_user;
+		global $user_level;
+	} else {
+		$user_level = $current_user->user_level;
+	}
+	$located = locate_template( 'tcp_author_profile.php' );
+	if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_author_profile.php';
+	include( $located );
 }
 
 /**
@@ -994,6 +997,65 @@ function tcp_get_author_posts_url( $author_id, $author_nicename, $post_type = TC
 function tcp_the_add_wishlist_button( $post_id ) {
 	global $wish_list;
 	if ( isset( $wish_list ) ) echo $wish_list->tcp_the_add_to_cart_button( '', $post_id );
+}
+
+/**
+ * Display Custom Values
+ * @since 1.2.8
+ */
+function tcp_display_custom_values( $post_id = 0, $instance ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$defaults = array(
+		'see_label' =>  true,
+		'hide_empty_fields' => true,
+		'see_links' => false,
+		'selected_custom_fields' => '',
+	);
+	$instance = wp_parse_args( (array)$instance, $defaults );
+	$field_ids = explode( ',', $instance['selected_custom_fields'] );
+	if ( is_array( $field_ids ) && count( $field_ids ) > 0 ) :
+		$other_values = apply_filters( 'tcp_custom_values_get_other_values', array() ); ?>
+<dl>
+	<?php foreach( $field_ids as $id ) {
+		if ( $id == '' ) continue;
+		if ( substr( $id, 0, 12 ) == 'custom_field' ) {
+			$field_id = substr( $id, 13 );
+			$value = get_post_meta( $post_id, $field_id, true );
+			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
+			if ( $value == '' ) $value == '&nbsp;';
+			if ( $instance['see_label'] ) {
+				$field_def = tcp_get_custom_field_def( $field_id );
+				$label = tcp_string( 'TheCartPress', 'custom_field_' . $field_id . '-label', $field_def['label'] );
+			}
+		} elseif ( substr( $id, 0, 3 ) == 'tax' ) {
+			$tax_id = substr( $id, 4 );
+			$value = '';
+			$term_list = wp_get_post_terms( $post_id, $tax_id, array( 'fields' => 'names' ) );
+			if ( is_array( $term_list ) && count( $term_list ) > 0 ) {
+				foreach( $term_list as $term )
+					$value .= $term . ', ';
+				$value = substr( $value, 0, -2 );
+			}
+			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
+			if ( $instance['see_label'] ) {
+				$tax = get_taxonomy( $tax_id );
+				$label = $tax->labels->name;
+			}
+		} elseif ( substr( $id, 0, 3 ) == 'o_v' ) {
+			$ov_id = substr( $id, 4 );
+			if ( ! isset( $other_values[$ov_id] ) ) continue;
+			if ( function_exists( $other_values[$ov_id]['callback'] ) ) $value = $other_values[$ov_id]['callback']();
+			else $value = '';
+			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
+			if ( $instance['see_label'] ) {
+				$label = isset( $other_values[$ov_id]['label'] ) ? $other_values[$ov_id]['label'] : false;
+			}
+		} ?>
+	<?php if ( $instance['see_label'] ) : ?><dt><?php echo $label; ?></dt><?php endif; ?>
+	<dd><?php echo $value; ?></dd>
+	<?php } ?>
+</dl>
+	<?php endif;
 }
 
 //

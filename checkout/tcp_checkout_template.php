@@ -38,7 +38,7 @@ function tcp_get_billing_postcode() {
 		if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'new' ) {
 			$billing_postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];
 		} else { //if ( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] == 'Y' ) {
-			require_once( dirname( dirname( __FILE__ ) ) .'/daos/Addresses.class.php' );
+			require_once( dirname( dirname( __FILE__ ) ) . '/daos/Addresses.class.php' );
 			$billing_address = Addresses::get( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] );
 			$billing_postcode = $billing_address->postcode;
 		}

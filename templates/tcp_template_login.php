@@ -19,8 +19,8 @@
 /**
  * @since 1.2.5
  */
-function tcp_get_current_user_role() {
-	$roles = tcp_get_current_user_roles();
+function tcp_get_current_user_role( $current_user = false ) {
+	$roles = tcp_get_current_user_roles( $current_user );
 	$role = array_shift( $roles );
 	return $role;
 }
@@ -28,17 +28,17 @@ function tcp_get_current_user_role() {
 /**
  * @since 1.2.6
  */
-function tcp_get_current_user_roles() {
-	$current_user = wp_get_current_user();
+function tcp_get_current_user_roles( $current_user = false) {
+	if ( $current_user === false ) $current_user = wp_get_current_user();
 	return $current_user->roles;
 }
 
 /**
  * @since 1.2.5
  */
-function tcp_get_current_user_role_title() {
+function tcp_get_current_user_role_title( $current_user = false ) {
 	global $wp_roles;
-	$role = tcp_get_current_user_role();
+	$role = tcp_get_current_user_role( $current_user );
 	return isset( $wp_roles->role_names[$role] ) ? translate_user_role( $wp_roles->role_names[$role] ) : false;
 }
 

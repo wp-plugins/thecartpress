@@ -24,7 +24,7 @@ $plugin_type	= isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : tc
 $instance		= isset( $_REQUEST['instance'] ) ? (int)$_REQUEST['instance'] : 0;
 
 if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
-	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id, array() );
+	$plugin_data = tcp_get_plugin_data( $plugin_id );
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
@@ -44,7 +44,7 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 		$plugin = tcp_get_plugin( $plugin_id );
 		$plugin_data[$instance] = $plugin->saveEditfields( $plugin_data[$instance], $instance );
 		$plugin_data = apply_filters( 'tcp_plugin_edit_save', $plugin_data, $plugin_id, $instance );
-		update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data ); ?>
+		tcp_update_plugin_data( $plugin_id, $plugin_data ); ?>
 		<div id="message" class="updated"><p>
 			<?php _e( 'Instance saved', 'tcp' ); ?>
 		</p></div><?php
@@ -54,19 +54,19 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 		</p></div><?php
 	}
 } elseif ( isset( $_REQUEST['tcp_plugin_delete'] ) ) {
-	$plugin_data = get_option( 'tcp_plugins_data_' . $plugin_id );
+	$plugin_data = tcp_get_plugin_data( $plugin_id );
 	do_action( 'tcp_plugin_edit_delete', $plugin_id );
 	unset( $plugin_data[$instance] );
-	update_option( 'tcp_plugins_data_' . $plugin_id, $plugin_data );
+	tcp_update_plugin_data( $plugin_id, $plugin_data );
 	tcp_unregister_string( 'TheCartPress', $plugin_id . '-title' ); ?>
 	<div id="message" class="updated"><p>
 		<?php _e( 'Instance deleted', 'tcp' ); ?>
 	</p></div><?php
 }
-$plugin			= tcp_get_plugin( $plugin_id );
-$plugin_type	= tcp_get_plugin_type( $plugin_id );
-$plugin_data	= get_option( 'tcp_plugins_data_' . $plugin_id );
-$instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
+$plugin = tcp_get_plugin( $plugin_id );
+$plugin_type = tcp_get_plugin_type( $plugin_id );
+$plugin_data = tcp_get_plugin_data( $plugin_id );
+$instance_href = TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
 
 <div class="wrap">
 <h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle(); ?></h2>
@@ -200,6 +200,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 				<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
 				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
+				<input type="button" value="<?php _e( 'Toggle', 'tcp'); ?>" title="<?php _e( 'Toggle the selected ones', 'tcp' ); ?>" onclick="tcp_select_toggle('countries');" class="button-secondary"/>
 				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('countries');" class="button-secondary"/>
 			</div>
 		</td>

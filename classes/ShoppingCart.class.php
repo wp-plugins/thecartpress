@@ -99,7 +99,7 @@ class ShoppingCart {
 
 	function getItemsId() {
 		$ids = array();
-		foreach( $this->shopping_cart_items as $item )
+		foreach( $this->shopping_cart_items as $id => $item )
 			$ids[] = $item->getPostId();
 		return $ids;
 	}
@@ -114,6 +114,7 @@ class ShoppingCart {
 	 */
 	function getItem( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			return $this->shopping_cart_items[$shopping_cart_id];
 		} elseif ( $option_1_id == 0 && $option_2_id == 0) {
@@ -135,6 +136,16 @@ class ShoppingCart {
 	function getItemBySku( $sku ) {
 		foreach( $this->shopping_cart_items as $item )
 			if ( $item->getSku() == $sku ) return $item;
+		return false;
+	}
+
+	/**
+	 * Delete item by post_id
+	 * @since 1.2.8
+	 */
+	function deleteItem( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
+		foreach( $this->shopping_cart_items as $id => $item )
+			if ( $item->getPostId() == $post_id && $item->getOption1Id() == $option_1_id && $item->getOption2Id() == $option_2_id ) unset( $this->shopping_cart_items[$id] );
 		return false;
 	}
 
@@ -214,6 +225,7 @@ class ShoppingCart {
 	 */
 	function exists( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
+		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		return isset( $this->shopping_cart_items[$shopping_cart_id] );
 	}
 
@@ -474,7 +486,6 @@ class ShoppingCartItem {
 	private $tax = false;
 	private $unit_weight;
 	private $sku = false; //@since 1.2.5
-	//private $price_to_show; //unit price to show
 	private $is_downloadable = false;
 	private $discount = 0;
 	private $discount_desc = '';//not in use
@@ -482,17 +493,14 @@ class ShoppingCartItem {
 	private $attributes = array();
 
 	function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
-	//function __construct( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $tax = 0, $unit_weight = 0, $price_to_show = 0 ) {
-		$this->post_id		= $post_id;
-		$this->option_1_id	= $option_1_id;
-		$this->option_2_id	= $option_2_id;
-		$this->count		= (int)$count;
-		$decimals			= tcp_get_decimal_currency();
-		$this->unit_price	= round( $unit_price, $decimals );
-		//$this->tax			= round( $tax, 3 );
-		$this->unit_weight	= $unit_weight;
+		$this->post_id = $post_id;
+		$this->option_1_id = $option_1_id;
+		$this->option_2_id = $option_2_id;
+		$this->count = (int)$count;
+		$decimals = tcp_get_decimal_currency();
+		$this->unit_price = round( $unit_price, $decimals );
+		$this->unit_weight = $unit_weight;
 		$this->setSku( tcp_get_the_sku( $post_id, $option_1_id, $option_2_id ) );
-		//$this->price_to_show = round( $price_to_show, $decimals );
 		do_action( 'tcp_shopping_cart_item_created', $this );
 	}
 
@@ -568,7 +576,6 @@ class ShoppingCartItem {
 	}
 
 	function getPriceToShow() {
-		//return apply_filters( 'tcp_item_get_price_to_show', $this->price_to_show, $this->getPostId() );
 		return apply_filters( 'tcp_item_get_price_to_show', tcp_get_the_price_to_show( $this->getPostId(), $this->getUnitPrice() ) );
 	}
 
@@ -623,40 +630,6 @@ class ShoppingCartItem {
 		return $this->free_shipping;
 	}
 
-	/*//DEPRECATED
-	function setAttributes( $attributes ) {
-		$this->set_attributes( $attributes );
-	}
-
-	function getAttributes() {
-		return $this->get_attributes();
-	}
-
-	function hasAttributes() {
-		return $this->has_attributes();
-	}
-	
-	function removeAttributes() {
-		$this->remove_attributes();
-	}
-
-	function addAttribute( $id, $value ) {
-		$this->add_attributes( $id, $value );
-	}
-
-	function getAttribute( $id ) {
-		return $this->get_attribute( $id );
-	}
-
-	function setAttribute( $id, $value ) {
-		$this->set_attribute( $id, $value );
-	}
-
-	function removeAttribute( $id ) {
-		$this->remove_attributes( $id );
-	}
-	//DEPRECATED*/
-
 	function set_attributes( $attributes ) {
 		$this->attributes = $attributes;
 	}
@@ -678,8 +651,8 @@ class ShoppingCartItem {
 		$this->attributes[$id] = $value;
 	}
 
-	function get_attribute( $id ) {
-		return isset( $this->attributes[$id] ) ? $this->attributes[$id] : false;
+	function get_attribute( $id, $default = false ) {
+		return isset( $this->attributes[$id] ) ? $this->attributes[$id] : $default;
 	}
 
 	function set_attribute( $id, $value ) {

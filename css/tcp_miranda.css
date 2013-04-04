@@ -1,0 +1,23 @@
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+* html .clearfix { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+div.tcp-miranda-page h1,
+div.tcp-miranda-page h2,
+div.tcp-miranda-page a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+section.tcp-miranda-section {
+	border-bottom: 1px dotted #e1e1e1;
+}
+
+article.tcp-miranda-item {
+	margin: 2em;
+	float: left;
+}
+
+article.tcp-miranda-item img {
+	display: block;
+}

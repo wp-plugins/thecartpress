@@ -26,7 +26,7 @@ class TCPPluginsList {
 	}
 
 	function admin_menu() {
-		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
+		if ( ! current_user_can( 'tcp_edit_plugins' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
 		if ( $this->plugin_type == 'payment' ) {
@@ -36,16 +36,16 @@ class TCPPluginsList {
 			$title = __( 'Shipping Methods', 'tcp' );
 			$menu_slug = 'shipping_settings';
 		}
-		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_settings', $menu_slug, array( &$this, 'admin_page' ) );
+		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_plugins', $menu_slug, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 	}
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can customize Payment and Shipping plugins.', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can customize Payment and Shipping plugins.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

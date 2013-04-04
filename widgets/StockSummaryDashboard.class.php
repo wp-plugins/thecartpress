@@ -90,7 +90,7 @@ class StockSummaryDashboard {
 			'meta_query'	=> array(
 				array(
 					'key'		=>'tcp_stock',
-					'type'		=> 'NUMERIC',
+					//'type'		=> 'NUMERIC',
 					'compare'	=> '>',
 					'value'		=> -1,
 				),

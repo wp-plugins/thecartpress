@@ -57,36 +57,39 @@ class CustomPostTypeListWidget extends CustomListWidget {
 		$instance['included']			= $new_instance['included'];
 		$instance['order_type']			= $new_instance['order_type'];
 		$instance['order_desc']			= $new_instance['order_desc'];
-		$instance['see_posted_on']		= $new_instance['see_posted_on'] == 'yes';
 		$instance['see_taxonomies']		= $new_instance['see_taxonomies'] == 'yes';
-		$instance['see_meta_utilities']	= $new_instance['see_meta_utilities'] == 'yes';
 		return apply_filters( 'tcp_custom_post_type_list_widget_update', $instance, $new_instance );
 	}
 
 	function form( $instance ) {
 		parent::form( $instance, __( 'Custom Post type', 'tcp' ) );
 		$defaults = array(
-			'post_type'			=> TCP_PRODUCT_POST_TYPE,
-			'taxonomy'			=> true,
-			'term'				=> TCP_PRODUCT_CATEGORY,
-			'included'			=> array(),
+			'post_type' => TCP_PRODUCT_POST_TYPE,
+			'taxonomy' => true,
+			'term' => TCP_PRODUCT_CATEGORY,
+			'included' => array(),
+			'order_type' => 'date',
+			'order_desc' => 'asc',
+			'use_taxonomy' => true,
+			'related_type' => '',
+			'see_taxonomies' => false,
 		);
-		$instance			= wp_parse_args( (array)$instance, $defaults );
-		$order_type			= isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
-		$order_desc			= isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
-		$use_taxonomy		= isset( $instance['use_taxonomy'] ) ? $instance['use_taxonomy'] : true;
-		$related_type		= isset( $instance['related_type'] ) ? $instance['related_type'] : '';
+		$instance = wp_parse_args( (array)$instance, $defaults );
+		$order_type = $instance['order_type'];
+		$order_desc = $instance['order_desc'];
+		$use_taxonomy = $instance['use_taxonomy'];
+		$related_type = $instance['related_type'];
 		if ( $use_taxonomy ) {
 			$use_taxonomy_style	= '';
-			$included_style		= 'display: none;';
+			$included_style = 'display: none;';
 		} else {
 			$use_taxonomy_style	= 'display: none;';
-			$included_style		= '';
+			$included_style = '';
 		}
 		if ( $related_type != '') {
-			$p_included_style	= 'display: none;';
+			$p_included_style = 'display: none;';
 		} else {
-			$p_included_style	= '';
+			$p_included_style = '';
 		}?>
 		<script>
 		function tcp_show_taxonomy(checked) {
@@ -129,8 +132,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				<?php if ( $instance['taxonomy'] ) : 
 					$term_slug = isset( $instance['term'] ) ? $instance['term'] : '';
 					$terms = get_terms( $instance['taxonomy'], array( 'hide_empty' => false ) );
-					if ( is_array( $terms ) && count( $terms ) )
-						foreach( $terms as $term ) : 
+					if ( is_array( $terms ) && count( $terms ) ) foreach( $terms as $term ) :
 							if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>
 								<option value="<?php echo $term->slug; ?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name ); ?></option>
 							<?php endif;
@@ -145,12 +147,12 @@ class CustomPostTypeListWidget extends CustomListWidget {
 				<select name="<?php echo $this->get_field_name( 'included' ); ?>[]" id="<?php echo $this->get_field_id( 'included' ); ?>" class="widefat" multiple size="8" style="height: auto">
 					<option value="" <?php selected( $instance['included'], '' ); ?>><?php _e( 'all', 'tcp' ); ?></option>
 				<?php $args = array(
-					'post_type'			=> $instance['post_type'],
-					'posts_per_page'	=> -1,
-					'fields'			=> 'ids',
+					'post_type' => $instance['post_type'],
+					'posts_per_page' => -1,
+					'fields' => 'ids',
 				);
 				if ( $instance['post_type'] == TCP_PRODUCT_POST_TYPE ) {
-					$args['meta_key']	= 'tcp_is_visible';
+					$args['meta_key'] = 'tcp_is_visible';
 					$args['meta_value']	= true;
 				}
 				$included = isset( $instance['included'] ) ? $instance['included'] : array();
