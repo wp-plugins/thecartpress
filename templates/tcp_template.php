@@ -279,7 +279,7 @@ function tcp_get_min_max_price( $post_id = 0 ) {
 			}
 		}
 		if ( $min == 99999999999 ) $min = $max;
-		return array( $min, $max );
+		return apply_filters( 'tcp_get_min_max_price', array( $min, $max ), $post_id );
 	} else {
 		return false;
 	}

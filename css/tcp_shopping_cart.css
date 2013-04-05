@@ -144,20 +144,20 @@ input[type=submit].tcp_delete_shopping_cart {
     vertical-align: middle;
 }
 input[type=submit].tcp_modify_item_shopping_cart {
-	background: url(images/refresh-cart.png) no-repeat 50% 50% transparent;
+	background: url('../images/refresh-cart.png') no-repeat 50% 50% transparent;
 }
 input[type=submit].tcp_modify_item_shopping_cart:hover {
-	background: url(images/refresh-cart-on.png) no-repeat 50% 50% transparent;
+	background: url('../images/refresh-cart-on.png') no-repeat 50% 50% transparent;
 
 }
 input[type=submit].tcp_delete_item_shopping_cart,
 input[type=submit].tcp_delete_shopping_cart {
-	background: url(images/delete-cart.png) no-repeat 50% 50% transparent;
+	background: url('../images/delete-cart.png') no-repeat 50% 50% transparent;
 
 }
 input[type=submit].tcp_delete_item_shopping_cart:hover,
 input[type=submit].tcp_delete_shopping_cart:hover {
-	background: url(images/delete-cart-on.png) no-repeat 50% 50% transparent;
+	background: url('../images/delete-cart-on.png') no-repeat 50% 50% transparent;
 }
 #shipping_billing_info ul {
 	list-style: none;

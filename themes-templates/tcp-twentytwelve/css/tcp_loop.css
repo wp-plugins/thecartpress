@@ -105,13 +105,24 @@ div.tcp_order_panel label, div.tcp_order_panel input, div.tcp_order_panel button
     margin: 0;
     padding: 0;
 }
+.tcp_products_list .loop-customvalues,
 .tcp_products_list .entry-meta,
 .tcp_products_list .entry-utilities,
 .tcp_products_list .entry-taxonomies  {
 	margin: 4px 0; 
-	font-size: 0.85em;
+	font-size: 0.75em;
 	line-height: 1.71429;
 }
+.tcp_products_list .loop-customvalues .widget-title {
+  margin: 4px 0 0; 
+  font-size: 0.95em;
+  line-height: 1.71429;
+  padding: 0;
+}
+.tcp_products_list aside {
+  margin: 0 0 10px; 
+}
+
 .entry-taxonomies span {
 	clear: left;
 	display: block;

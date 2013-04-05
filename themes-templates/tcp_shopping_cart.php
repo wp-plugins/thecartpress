@@ -229,9 +229,9 @@ if ( $source->has_order_details() ) :
 				<?php do_action( 'tcp_get_shopping_cart_hidden_fields', $order_detail ); ?>
 				<?php ob_start(); ?>
 				<input type="number" name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count" min="0" step="1"/>
-				<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" />
+				<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" title="<?php _e( 'Modify', 'tcp' ); ?>" />
 				<?php echo apply_filters( 'tcp_shopping_cart_page_units', ob_get_clean(), $order_detail ); ?>
-				<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" />
+				<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" title="<?php _e( 'Delete', 'tcp' ); ?>" />
 				<?php do_action( 'tcp_cart_units', $order_detail ); ?>
 			</form>
 		<?php endif; ?>

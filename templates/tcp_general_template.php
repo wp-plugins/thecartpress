@@ -423,7 +423,7 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	<?php endif; ?>
 
 	<?php if ( $args['see_delete_all'] ) : ?>
-		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>"/></form></li>
+		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" title="<?php _e( 'Delete', 'tcp' ); ?>" /></form></li>
 	<?php endif; ?>
 	</ul>
 </div>
