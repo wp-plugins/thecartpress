@@ -637,7 +637,9 @@ function tcp_login_form( $args = array() ) {
 		<?php apply_filters( 'login_form_middle', '', $args ); ?>
 		<div class="tcp_login_submit">
 			<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary tcp_checkout_button" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
-			<input type="hidden" value="<?php echo esc_attr( $args['redirect'] ); ?>" name="tcp_redirect_to" />
+			<?php $redirect = $args['redirect'];
+			if ( strlen( $redirect ) == 0 ) $redirect = isset( $_REQUEST['redirect'] ) ? $_REQUEST['redirect'] : ''; ?>
+			<input type="hidden" value="<?php echo esc_attr( $redirect ); ?>" name="tcp_redirect_to" />
 		</div>
 		<div class="tcp_login_remember">
 			<input id="<?php echo esc_attr( $args['id_remember'] ); ?>" type="checkbox" value="forever" name="tcp_rememberme" <?php echo $args['value_remember'] ? ' checked="checked"' : ''; ?>/>
