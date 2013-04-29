@@ -21,15 +21,17 @@
  */
 class TCPCartTable {
 
-	static function show( $source, $echo = true, $default_template = false ) {
+	static function show( $source, $echo = true, $email = false ) {
 		ob_start();
-		if ( $default_template ) {
-			$located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
-		} else {
-			$located = locate_template( 'tcp_shopping_cart.php' );
-			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
-		}
-		$located = apply_filters( 'tcp_cart_table_template', $located, $source );
+		if ( $email ) $template = 'tcp_shopping_cart_email.php';
+		else $template = 'tcp_shopping_cart.php';
+		//if ( $default_template ) {
+		//	$located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_shopping_cart.php';
+		//} else {
+			$located = locate_template( $template );
+			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . $template;
+		//}
+		$located = apply_filters( $template, $located, $source );
 		require( $located );
 		$out = ob_get_clean();
 		if ( $echo ) echo $out;

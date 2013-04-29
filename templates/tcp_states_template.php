@@ -119,7 +119,7 @@ function tcp_get_shipping_region() {
  * @since 1.1.8
  */
 function tcp_set_shipping_as_billing() {
-	$_SESSION['tcp_checkout']['shipping']['selected_shipping_address']	= 'BIL';
+	$_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] = 'BIL';
 }
 
 /**

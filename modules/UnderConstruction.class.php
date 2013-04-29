@@ -33,10 +33,10 @@ class TCPUnderConstruction {
 
 	function admin_load() {
 		get_current_screen()->add_help_tab( array(
-		    'id'      => 'overview',
-		    'title'   => __( 'Overview' ),
-		    'content' =>
-	            '<p>' . __( 'You can set you site Under Contruction.', 'tcp' ) . '</p>'
+			'id'	  => 'overview',
+			'title'   => __( 'Overview' ),
+			'content' =>
+				'<p>' . __( 'You can set you site Under Contruction.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

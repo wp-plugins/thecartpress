@@ -141,7 +141,7 @@ input[type=submit].tcp_delete_shopping_cart {
 	box-shadow: 0 1px 2px rgba(64, 64, 64, 0.1);
 	padding: 0;
 	margin: 2px 1px;
-    vertical-align: middle;
+	vertical-align: middle;
 }
 input[type=submit].tcp_modify_item_shopping_cart {
 	background: url('../images/refresh-cart.png') no-repeat 50% 50% transparent;

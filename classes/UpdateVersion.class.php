@@ -155,7 +155,12 @@ class TCPUpdateVersion {
 			$administrator = get_role( 'administrator' );
 			$administrator->add_cap( 'tcp_edit_address' );
 		}
-		update_option( 'tcp_version', 127.1 );
+		if ( $version < 128 ) {
+			global $wpdb;
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders_details MODIFY COLUMN `weight` double NOT NULL;';
+			$wpdb->query( $sql );
+		}
+		update_option( 'tcp_version', 128 );
 	}
 }
 ?>

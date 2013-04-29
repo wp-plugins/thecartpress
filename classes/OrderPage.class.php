@@ -34,8 +34,9 @@ class OrderPage {
 	 *		'see_other_costs'	=> true,
 	 *		'see_thumbnail'		=> false
 	 *	);
+	 * @param email, to load a different template
 	 */
-	static function show( $order_id, $args = array(), $echo = true ) {
+	static function show( $order_id, $args = array(), $echo = true, $email = false ) {
 		$current_user = wp_get_current_user();
 		if ( $current_user->ID == 0 ) {
 			global $thecartpress;
@@ -52,7 +53,7 @@ class OrderPage {
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceDB.class.php' );
 		$cart_table = new TCPCartTable();
-		return $cart_table->show( new TCP_CartSourceDB( $order_id, $args ), $echo );
+		return $cart_table->show( new TCP_CartSourceDB( $order_id, $args ), $echo, $email );
 	}
 }
 ?>

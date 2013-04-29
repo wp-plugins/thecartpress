@@ -28,8 +28,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 		extract( $args );
 		global $wp_query;
 		$loop_args = array(
-			'post_type'			=> isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE,
-			'posts_per_page'	=> isset( $instance['limit'] ) ? $instance['limit'] : -1,
+			'post_type' => isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE,
+			'posts_per_page' => isset( $instance['limit'] ) ? $instance['limit'] : -1,
 		);
 		$see_pagination = isset( $instance['see_pagination'] ) ? $instance['see_pagination'] : false;
 		if ( $see_pagination ) $loop_args['paged'] = isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
@@ -49,15 +49,15 @@ class CustomPostTypeListWidget extends CustomListWidget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = parent::update( $new_instance, $old_instance );
-		$instance['post_type']			= $new_instance['post_type'];
-		$instance['use_taxonomy']		= $new_instance['use_taxonomy'] == 'yes';
-		$instance['taxonomy']			= $new_instance['taxonomy'];
-		$instance['term']				= $new_instance['term'];
-		$instance['related_type']		= $new_instance['related_type'];
-		$instance['included']			= $new_instance['included'];
-		$instance['order_type']			= $new_instance['order_type'];
-		$instance['order_desc']			= $new_instance['order_desc'];
-		$instance['see_taxonomies']		= $new_instance['see_taxonomies'] == 'yes';
+		$instance['post_type'] = $new_instance['post_type'];
+		$instance['use_taxonomy'] = $new_instance['use_taxonomy'] == 'yes';
+		$instance['taxonomy'] = $new_instance['taxonomy'];
+		$instance['term'] = $new_instance['term'];
+		$instance['related_type'] = $new_instance['related_type'];
+		$instance['included'] = $new_instance['included'];
+		$instance['order_type'] = $new_instance['order_type'];
+		$instance['order_desc'] = $new_instance['order_desc'];
+		$instance['see_taxonomies'] = $new_instance['see_taxonomies'] == 'yes';
 		return apply_filters( 'tcp_custom_post_type_list_widget_update', $instance, $new_instance );
 	}
 
@@ -133,10 +133,10 @@ class CustomPostTypeListWidget extends CustomListWidget {
 					$term_slug = isset( $instance['term'] ) ? $instance['term'] : '';
 					$terms = get_terms( $instance['taxonomy'], array( 'hide_empty' => false ) );
 					if ( is_array( $terms ) && count( $terms ) ) foreach( $terms as $term ) :
-							if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>
-								<option value="<?php echo $term->slug; ?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name ); ?></option>
-							<?php endif;
-						endforeach;
+						if ( $term->term_id == tcp_get_default_id( $term->term_id, $instance['taxonomy'] ) ) :?>
+							<option value="<?php echo $term->slug; ?>"<?php selected( $term_slug, $term->slug ); ?>><?php echo esc_attr( $term->name ); ?></option>
+						<?php endif;
+					endforeach;
 				endif; ?>
 				</select>
 			</p>

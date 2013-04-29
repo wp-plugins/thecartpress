@@ -37,6 +37,7 @@ class CustomValuesWidget extends TCPParentWidget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = parent::update( $new_instance, $old_instance );
+		$instance['post_type'] = $new_instance['post_type'];
 		$instance['see_label'] = $new_instance['see_label'] == 'yes';
 		$instance['hide_empty_fields'] = $new_instance['hide_empty_fields'] == 'yes';
 		$instance['see_links'] = $new_instance['see_links'] == 'yes';
@@ -47,6 +48,7 @@ class CustomValuesWidget extends TCPParentWidget {
 	function form( $instance ) {
 		parent::form( $instance, __( 'Custom Values', 'tcp' ) );
 		$defaults = array(
+			'post_type' => 'tcp_product',
 			'see_label' =>  true,
 			'hide_empty_fields' => true,
 			'see_links' => false,
@@ -65,8 +67,19 @@ class CustomValuesWidget extends TCPParentWidget {
 		$tcp_add_other_value = $this->get_field_id( 'tcp_add_other_value' );
 
 		$tcp_custom_field_list = $this->get_field_id( 'tcp_custom_field_list' );
-		$tcp_selected_custom_fields = $this->get_field_id( 'tcp_selected_custom_fields' );
-	?>
+		$tcp_selected_custom_fields = $this->get_field_id( 'tcp_selected_custom_fields' ); ?>
+<p>
+	<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
+	<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
+	<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ) ) as $post_type ) : 
+		if ( $post_type != 'tcp_product_option' ) : 
+			$obj_type = get_post_type_object( $post_type ); ?>
+		<option value="<?php echo $post_type;?>"<?php selected( $instance['post_type'], $post_type ); ?>><?php echo $obj_type->labels->singular_name; ?></option>
+		<?php endif;?>
+	<?php endforeach; ?>
+	</select>
+	<span class="description"><?php _e( 'Press save to load the next list', 'tcp' );?></span>
+</p>
 <p>
 	<label for="<?php echo $tcp_custom_fields; ?>"><?php _e( 'Custom Fields', 'tcp' ); ?>:</label>
 	<select id="<?php echo $tcp_custom_fields; ?>">

@@ -617,7 +617,7 @@ function tcp_login_form( $args = array() ) {
 	ob_start();
 	if ( ! is_user_logged_in() ) :
 	$url = plugins_url( 'checkout/login.php' , dirname( __FILE__ ) );
-	//$url = admin_url( 'admin-ajax.php' ); ?>
+	//$url = tcp_admin_url( 'admin-ajax.php' ); ?>
 <div id="tcp_login">
 	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo $url; ?>" name="<?php echo $args['form_id']; ?>">
 		<?php echo apply_filters( 'login_form_top', '', $args ); ?>

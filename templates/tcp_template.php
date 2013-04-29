@@ -249,12 +249,12 @@ function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
  * Returns the price with currency
  * @since 1.0.9
  */
-function tcp_get_the_price_label( $post_id = 0, $price = false ) {
+function tcp_get_the_price_label( $post_id = 0, $price = false, $apply_filters = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$post_id = tcp_get_default_id( $post_id );
 	$price = tcp_get_the_price_to_show( $post_id, $price );
 	$label = tcp_format_the_price( $price );
-	$label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
+	if ( $apply_filters ) $label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
 	return $label;
 }
 
@@ -892,8 +892,7 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
  * @since 1.1.0
  */
 function tcp_get_saleable_post_types( $one_more = false ) {
-	$saleable_post_types = array();
-	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', $saleable_post_types );
+	$saleable_post_types = apply_filters( 'tcp_get_saleable_post_types', array() );
 	if ( $one_more !== false ) $saleable_post_types[] = $one_more;
 	return $saleable_post_types;
 }
@@ -1281,4 +1280,27 @@ function tcp_debug_trace( $object = false, $args = false ) {
 	<?php endforeach; ?>
 	</ul>
 <?php }
+
+/**
+ * @since 1.2.9
+ */
+function tcp_session_start( $time = 3600, $session_name = 'tcp' ) {
+	/*if ( session_id() == $session_name ) return;
+	session_set_cookie_params( $time );
+	session_name( $session_name );*/
+	if ( ! session_id() ) session_start();
+
+/*	if ( isset( $_COOKIE[$session_name] ) ) {
+		setcookie( $session_name, $_COOKIE[$session_name], time() + $time, null, null, true );
+		setcookie( $session_name, $_COOKIE[$session_name], time() + $time, null, null, false );
+	}*/
+}
+
+function tcp_return_jsonp( $params ) {
+
+//	exit( $_REQUEST['callback'] . '(' . json_encode( $params ) . ')' );
+	//if ( is_array( $params ) ) $params = array( $params );
+//var_dump( json_encode( $params ) );
+	exit( json_encode( $params ) );
+}
 ?>

@@ -526,7 +526,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 					</li>
 					<li>
 						<label for="billing_postcode"><?php _e( 'Postal code', 'tcp' ); ?>:<em>*</em></label>
-						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode; ?>" size="5" maxlength="10" />
+						<input type="text" id="billing_postcode" name="billing_postcode" value="<?php echo $postcode; ?>" size="10" maxlength="10" />
 						<?php $this->showErrorMsg( 'billing_postcode' ); ?>
 					</li>
 				<?php if ( $see_telephone_1 ) :?>

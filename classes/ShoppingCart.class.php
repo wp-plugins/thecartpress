@@ -512,8 +512,16 @@ class ShoppingCartItem {
 		return $this->post_id . '_' . $this->option_1_id . '_' . $this->option_2_id;
 	}
 
+	function get_post_id() {
+		return $this->getPostId();
+	}
+
 	function getPostId() {
 		return $this->post_id;
+	}
+
+	function get_option_1_id() {
+		return $this->getOption1Id();
 	}
 
 	function getOption1Id() {
@@ -522,6 +530,10 @@ class ShoppingCartItem {
 
 	function getOption2Id() {
 		return $this->option_2_id;
+	}
+
+	function get_option_2_id() {
+		return $this->getOption2Id();
 	}
 
 	function getTitle() {

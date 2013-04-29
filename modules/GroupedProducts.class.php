@@ -37,7 +37,7 @@ class TCPGroupedProducts {
 
 	function tcp_get_product_types( $types ) {
 		$types['GROUPED'] = array( 
-			'label'	=> __( 'Grouped', 'tcp' )
+			'label' => __( 'Grouped', 'tcp' )
 		);
 		return $types;
 	}
@@ -107,7 +107,8 @@ class TCPGroupedProducts {
 				$min = $min_max[0];
 				$max = $min_max[1];
 				if ( $min != $max ) {
-					$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
+					//$label = sprintf( _x( '%s to %s', 'min_price to max_price', 'tcp' ), tcp_format_the_price( $min ), tcp_format_the_price( $max ) );
+					$label = sprintf( __( 'From %s', 'tcp' ), tcp_format_the_price( $min ) );
 				} else {
 					$label = tcp_format_the_price( $min );
 				}

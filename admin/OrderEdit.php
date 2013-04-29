@@ -215,7 +215,7 @@ function tcp_order_billing_metabox() {
 
 function tcp_order_details_metabox() {
 	global $order_id, $order;
-	$orderpage = OrderPage::show( $order_id, array( 'see_sku' => true, 'see_address' => false ), false, true );
+	$orderpage = OrderPage::show( $order_id, array( 'see_sku' => true, 'see_address' => false ), false );//, true );
 	$orderpage = str_replace( '<table class="tcp_details"', '<table class="tcp_shopping_cart_table"', $orderpage );
 	echo $orderpage;
 }
@@ -373,4 +373,3 @@ function tcp_order_setup_metabox() {
 	</div><!-- /poststuff -->
 
 </div><!-- wrap -->
-

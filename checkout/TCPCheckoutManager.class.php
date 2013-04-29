@@ -192,9 +192,9 @@ class TCPCheckoutManager {
 					if ( ! $box->is_form_encapsulated() ) : ?><form method="post" action="<?php echo $action; ?>"><?php endif;
 					if ( $step > 0 ) : 
 						if ( defined( 'TCP_CHECKOUT' ) ) : ?>
-						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp_checkout_button btn"><?php _e( 'Back', 'tcp' ); ?></a>
+						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="btn tcp_checkout_button btn"><?php _e( 'Back', 'tcp' ); ?></a>
 						<?php else : ?>
-						<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="tcp_checkout_button" />
+						<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="btn tcp_checkout_button" />
 						<?php endif;
 					endif;
 					if ( $see_continue_button ) :

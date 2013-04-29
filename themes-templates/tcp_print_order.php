@@ -105,7 +105,7 @@
 <?php if ( isset( $_REQUEST['order_id'] ) ) {
 	require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 	$order_id = $_REQUEST['order_id'];
-	OrderPage::show( $order_id, array( 'see_sku' => true ) );
+	OrderPage::show( $order_id, array( 'see_sku' => true ), true, true );
 }?>
 
 <p>

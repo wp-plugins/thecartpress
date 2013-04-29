@@ -45,7 +45,6 @@ if ( $source->see_address() ) : ?>
 		</dl>
 	</div>
 
-
 	<?php if ( strlen( $source->get_shipping_firstname() ) > 0 && strlen( $source->get_shipping_lastname() ) > 0 ) : ?>
 
 		<div id="shipping_billing_info" class="row-fluid">
@@ -201,8 +200,8 @@ if ( $source->has_order_details() ) :
 	<tr class="tcp_cart_product_row <?php if ( $i++ & 1 == 1 ) : ?> par<?php endif; ?>">
 		<?php if ( $source->see_thumbnail() ) : ?>
 			<td class="tcp_cart_thumbnail">
-			<?php $size = apply_filters( 'tcp_get_shopping_cart_image_size', array( 32, 32 ) );
-			echo tcp_get_the_thumbnail( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id(), $size ); ?>
+			<?php //$size = apply_filters( 'tcp_get_shopping_cart_image_size', array( 32, 32 ) );
+			echo tcp_get_the_thumbnail( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id() ); //, $size ); ?>
 			</td>
 		<?php endif; ?>
 		<td class="tcp_cart_name">
@@ -281,7 +280,7 @@ if ( $source->has_order_details() ) :
 		if ( $source->has_orders_costs() ) :
 			foreach( $source->get_orders_costs() as $order_cost ) : ?>
 				<tr class="tcp_cart_other_costs_row">
-				<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo $order_cost->get_description(); ?></td>
+				<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo htmlspecialchars( $order_cost->get_description() ); ?></td>
 				<td class="tcp_cart_other_costs"><?php echo tcp_format_the_price( $order_cost->get_cost() ); ?></td>
 				<?php $tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );
 				$total_tax += $tax;

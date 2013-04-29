@@ -36,7 +36,7 @@ class TCPPriceUpdate {
 			'id'	  => 'overview',
 			'title'   => __( 'Overview' ),
 			'content' =>
-				'<p>' . __( 'You can exucute large process to change Prices.', 'tcp' ) . '</p>'
+				'<p>' . __( 'You can execute large process to change Prices.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(

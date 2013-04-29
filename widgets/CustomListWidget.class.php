@@ -30,22 +30,22 @@ class CustomListWidget extends TCPParentWidget {
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
 		$order_desc = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
 		if ( $order_type == 'price' ) {
-			$loop_args['orderby']	= 'meta_value_num';
-			$loop_args['meta_key']	= 'tcp_price';
+			$loop_args['orderby'] = 'meta_value_num';
+			$loop_args['meta_key'] = 'tcp_price';
 		} elseif ( $order_type == 'order' ) {
-			$loop_args['orderby']	= 'meta_value_num';
-			$loop_args['meta_key']	= 'tcp_order';
+			$loop_args['orderby'] = 'meta_value_num';
+			$loop_args['meta_key'] = 'tcp_order';
 		} else {
-			if ( strlen( $order_type ) > 0 ) $loop_args['orderby']	= $order_type;
+			if ( strlen( $order_type ) > 0 ) $loop_args['orderby'] = $order_type;
 		}
 		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
 		//$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
 
 		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) {
 			$loop_args['meta_query'][] = array(
-				'key'		=> 'tcp_is_visible',
-				'value'		=> 1,
-				'compare'	=> '='
+				'key' => 'tcp_is_visible',
+				'value' => 1,
+				'compare' => '='
 			);
 		}
 		$loop_args = apply_filters( 'tcp_custom_list_widget_args', $loop_args );
@@ -62,11 +62,8 @@ class CustomListWidget extends TCPParentWidget {
 			include( $instance['loop'] );
 		} else {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;
-			if ( $columns < 1 ) {
-				$this->show_list( $instance, $args );
-			} else {
-				$this->show_grid( $instance, $args );
-			}
+			if ( $columns < 1 ) $this->show_list( $instance, $args );
+			else $this->show_grid( $instance, $args );
 		}
 		wp_reset_postdata();
 		wp_reset_query();

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$shortcodes_data	= get_option( 'tcp_shortcodes_data' );
-$shortcode_id		= isset( $_REQUEST['shortcode_id'] ) ? $_REQUEST['shortcode_id'] : -1;
+$shortcodes_data = get_option( 'tcp_shortcodes_data' );
+$shortcode_id = isset( $_REQUEST['shortcode_id'] ) ? $_REQUEST['shortcode_id'] : -1;
 
 function tcp_exists_shortcode_id( $id ) {
 	global $shortcodes_data;

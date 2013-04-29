@@ -4,7 +4,7 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable Tag: 1.2.8
+Stable Tag: 1.2.8.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,19 +293,21 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+= 1.2.8.1 =
+* Custom Javascript: Allows to add Javascript
+* Template for email: tcp_print_order.php & tcp_shopping_cart_email.php
+
 = 1.2.8 =
 * Author profile: widget and template function.
 * Improvements in Order management: New Order panel, notes and Emails manager.
 * Theme compatibility: Twentytwelve and Bootstrap
-* Widgets: TCP Custom Values widget
 * Custom Templates: Archives
-* CustomValues Widget: Powerful new widget to see custom fields, taxonomy and other data of the current Product or Post
-* Template tor email: tcp_print_order.php
+* Custom Values Widget: Powerful new widget to see custom fields, taxonomy and other data of the current Product or Post
 
 = 1.2.7.1 =
 * Premium Plugins versioning
 * Addresses: pagination, Merchant can see all addresses
-* Minor bugs from previous version ((Thanks to community)
+* Minor bugs from previous version (Thanks to community)
 
 = 1.2.7 =
 * Checkout, Shipping and Payment methods: Hide box if only one method is applicable

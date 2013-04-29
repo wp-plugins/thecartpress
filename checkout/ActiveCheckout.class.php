@@ -25,11 +25,9 @@ class ActiveCheckout {//shortcode
 		global $thecartpress;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
-		if ( isset( $_REQUEST['order_id'] ) ) {
-			$order_id = $_REQUEST['order_id'];
-		} else {
-			$order_id = $shoppingCart->getOrderId();
-		}
+		if ( isset( $_REQUEST['order_id'] ) ) $order_id = $_REQUEST['order_id'];
+		else $order_id = $shoppingCart->getOrderId();
+
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
 			$order_status = Orders::getStatus( $order_id );//We have to check if the order wasn't cancelled
 			$cancelled = tcp_get_cancelled_order_status();
@@ -126,6 +124,7 @@ class ActiveCheckout {//shortcode
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
 			$subject = sprintf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id );
+			$subject = apply_filters( 'tcp_send_order_email_subject', $subject, $order_id );
 			$old_value = $thecartpress->getShoppingCart()->getOrderId();
 			$_REQUEST['order_id'] = $order_id;
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );

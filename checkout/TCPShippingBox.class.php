@@ -167,7 +167,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 		} ?>
 			<span id="p_use_billing_address">
 			<label for="use_billing_address">
-				<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php if ( $selected_shipping_address == 'BIL' ) : ?> checked="true"<?php endif;?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').hide();" />
+				<input type="radio" id="use_billing_address" name="selected_shipping_address" value="BIL" <?php checked( $selected_shipping_address, 'BIL' ); ?> onChange="jQuery('#selected_shipping_area').hide();jQuery('#new_shipping_area').hide();" />
 				<?php _e( 'Use billing address', 'tcp' );?>
 			</label>
 			<?php if ( $selected_shipping_address == 'BIL' ) $this->showErrorMsg( 'shipping_country_id' );?>
@@ -373,7 +373,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 					</li>
 					<li>
 						<label for="shipping_postcode"><?php _e( 'Postal code', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php echo $postcode;?>" size="7" maxlength="7" />
+						<input type="text" id="shipping_postcode" name="shipping_postcode" value="<?php echo $postcode;?>" size="10" maxlength="10" />
 						<?php $this->showErrorMsg( 'shipping_postcode' );?>
 					</li>
 					<li>

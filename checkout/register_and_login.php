@@ -37,9 +37,9 @@ if ( $user_pass != $user_pass_2 ) {
 	} else {
 		do_action( 'tcp_register_and_login', $user_name, $_REQUEST);
 		$user = wp_signon( array(
-			'user_login']		=> $user_name,
-			'user_password']	=> $user_pass,
-			'remember'			=> false,
+			'user_login'		=> $user_name,
+			'user_password'	=> $user_pass,
+			'remember'	=> false,
 		), false );
 		if ( is_wp_error( $user ) ) $tcp_register_error = $user->get_error_message();
 	}

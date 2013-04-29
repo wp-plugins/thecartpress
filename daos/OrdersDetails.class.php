@@ -26,7 +26,7 @@ class OrdersDetails {
 			`post_id`			bigint(20) unsigned NOT NULL,
 			`option_1_id`		bigint(20) unsigned NOT NULL,
 			`option_2_id`		bigint(20) unsigned NOT NULL,
-			`weight`			int(11) unsigned	NOT NULL default 0,
+			`weight`			double				NOT NULL default 0,
 			`is_downloadable`	char(1)				NOT NULL COMMENT \'Y->yes\',
 			`sku`				varchar(50)			NOT NULL,
 			`name`				varchar(255)		NOT NULL,
@@ -111,7 +111,7 @@ class OrdersDetails {
 				'max_downloads'		=> $ordersDetails['max_downloads'],
 				'expires_at'		=> $ordersDetails['expires_at'],
 			),
-			array( '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%f', '%d', '%d', '%s' )
+			array( '%d', '%d', '%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%f', '%d', '%d', '%s' )
 		);
 		return $wpdb->insert_id;
 	}

@@ -16,9 +16,7 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if ( ! isset( $source ) ) return;
-
-if ( $source->see_address() ) : ?>
+if ( ! isset( $source ) ) return; ?>
 	<table id="tcp_order_id" width="100%" cellpading="0" cellspacing="0">
 		<tr valign="top">
 			<th class="tcp_order_id_row" scope="row" style="text-align: left; width:160px;"><?php _e( 'Order ID', 'tcp' ); ?>:</th>
@@ -210,8 +208,6 @@ if ( $source->see_address() ) : ?>
 		</tr>
 	</table>
 
-
-<?php endif; ?>
 <table style="margin-top:24px;" id="tcp_shopping_cart_table" class="tcp_shopping_cart_table" width="100%" cellpading="0" cellspacing="0">
 <thead>
 	<tr class="tcp_cart_title_row" style="background-color:#636363; color:#f0f0f0;">

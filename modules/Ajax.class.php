@@ -219,16 +219,16 @@ jQuery( 'h3.tcp_ckeckout_step a' ).click( function( event ) {
 			url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
 			data	: {
 				action	: 'tcp_shopping_cart_actions',
-				to_do	: 'get_total',
+				to_do	: 'get_total'
 			},
 			success : function(response) {
 				widget.find('.tcp_feedback').hide();
 				response += '<img src="<?php echo admin_url( 'images/loading.gif' ); ?>" class="tcp_feedback" style="display: none;" />';
 				widget.html(response);
 			},
-			error	: function(response) {
+			error : function(response) {
 				widget.find('.tcp_feedback').hide();
-			},
+			}
 		});
 	}
 //}
@@ -247,6 +247,7 @@ jQuery( 'h3.tcp_ckeckout_step a' ).click( function( event ) {
 	function tcp_listener_<?php echo $widget_id; ?>() {
 		var widget = jQuery('#<?php echo $widget_id; ?>');
 		widget.find('.tcp_feedback').show();
+		//jQuery.getJSON( 
 		jQuery.ajax({
 			async	: true,
 			type    : "GET",
@@ -301,62 +302,56 @@ jQuery( 'h3.tcp_ckeckout_step a' ).click( function( event ) {
 	function tcp_get_shopping_cart_summary( $out, $args ) {
 		ob_start();
 		$widget_id = isset( $args['widget_id'] ) ? 'tcp_' . str_replace( '-', '_', $args['widget_id'] ) : 'shopping_cart_summary'; ?>
-
 <img src="<?php echo admin_url( 'images/loading.gif' ); ?>" class="tcp_feedback" style="display: none;" />
-
 <script>
-tcpDispatcher.add('tcp_listener_<?php echo $widget_id; ?>', 0);
+tcpDispatcher.add( 'tcp_listener_<?php echo $widget_id; ?>', 0 );
 
 function tcp_listener_<?php echo $widget_id; ?>(){
 	var widget = jQuery('#<?php echo $widget_id; ?>');
 	widget.find('.tcp_feedback').show();
-	jQuery.ajax({
-    	async	: true,
-		type    : "GET",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-		data	: {
-			action	: 'tcp_shopping_cart_actions',
-			to_do	: 'get_summary',
-			args	: encodeURIComponent('<?php echo json_encode( $args ); ?>'),
-		},
-		success : function(response) {
-			widget.find('.tcp_feedback').hide();
-			widget.html(response);
-		},
-		error	: function(response) {
-			widget.find('.tcp_feedback').hide();
-		},
-	});
+	jQuery.getJSON(
+		'<?php echo admin_url( 'admin-ajax.php' ); ?>',
+		{
+			action : 'tcp_shopping_cart_actions',
+			to_do : 'get_summary',
+			args : encodeURIComponent('<?php echo json_encode( $args ); ?>'),
+		}
+	).done( function(response) {
+		widget.find('.tcp_feedback').hide();
+		widget.html(response);
+	} ).fail( function(response) {
+		widget.find('.tcp_feedback').hide();
+	} );
 }
 jQuery(document).ready(function () {
-	jQuery('#<?php echo $widget_id; ?>').droppable({
+	jQuery('#<?php echo $widget_id; ?>').droppable( {
 		drop: function( event, ui ) {
-			var ids = ui.draggable.attr('class');
-			ids = ids.split(' ');
-			for(i in ids) {
-				if ( ids[i].substr(0, 10) == 'tcp_image_') {
-					ids = ids[i].substr(10);
+			var ids = ui.draggable.attr( 'class' );
+			ids = ids.split( ' ' );
+			for( i in ids ) {
+				if ( ids[i].substr( 0, 10 ) == 'tcp_image_') {
+					ids = ids[i].substr( 10 );
 					data = 'action=tcp_shopping_cart_actions&to_do=add&tcp_add_to_shopping_cart=';
 					data += '&tcp_count[]=1';
 					data += '&tcp_post_id[]=' + ids;
-					jQuery.ajax({
-						async	: true,
-						type    : "POST",
-						url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-						data	: data,
-						success : function(response) {
-							tcpDispatcher.fire(0);
+					jQuery.ajax( {
+						async : true,
+						type : "POST",
+						url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+						data : data,
+						success : function( response ) {
+							tcpDispatcher.fire( 0 );
 						},
-					});
+					} );
 					break;
 				}
 			}
 			ui.helper.remove();
 		}
-	});
-});
-</script>
-		<?php $out .= ob_get_clean();
+	} );
+} );
+</script><?php
+		$out = $out . ob_get_clean();
 		return $out;
 	}
 
@@ -373,7 +368,7 @@ function TCPDispatcher() {
 		var listener = new Array(callback, post_id);
 		this.listeners.push(listener);
 	}
-	
+
 	this.fire = function(post_id) {
 		for(i in this.listeners) {
 			var listener = this.listeners[i];
@@ -386,57 +381,67 @@ function TCPDispatcher() {
 
 var tcpDispatcher = new TCPDispatcher();
 
-jQuery(document).on('click', '.tcp_add_to_shopping_cart', function(event) {
-	var post_id = jQuery(this).attr('target');
-	var feedback = jQuery(this).next('#tcp_buy_button_feedback_' + post_id);
-	var form = jQuery(this).closest('form');
-	if (jQuery(this).attr('class').indexOf('_GROUPED') == -1)  {
+jQuery(document).on( 'click', '.tcp_add_to_shopping_cart', function( event ) {
+	var post_id = jQuery( this ).attr( 'target' );
+	var feedback = jQuery( this ).next( '#tcp_buy_button_feedback_' + post_id );
+	var form = jQuery( this ).closest( 'form' );
+	if ( jQuery( this ).attr( 'class' ).indexOf( '_GROUPED' ) == -1)  {
 		var tcp_count = form.find('#tcp_count_' + post_id);
 		var val = tcp_count.val();
 		if ( val == 0 ) val = 1;
-		form.find('.tcp_count').val(0);
-		tcp_count.val(val);
+		form.find( '.tcp_count' ).val( 0 );
+		tcp_count.val( val );
 	} else {
 		post_id = 0;
 	}
 	data = 'action=tcp_shopping_cart_actions&to_do=add&tcp_add_to_shopping_cart=&' + form.serialize();
 	feedback.show();
-	jQuery.ajax({
-		async	: true,
-		type    : "POST",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-		data	: data,
-		success : function(response) {
-			feedback.hide();
-			tcpDispatcher.fire(post_id);
-		},
-		error	: function(response) {
-			feedback.hide();
-		},
-	});
-	return false;
-});
 
-jQuery(document).on('click', '.tcp_delete_shopping_cart', function(event) {
-	var feedback = jQuery(this).closest('.tcp_feedback');
+	jQuery.getJSON( "<?php echo admin_url( 'admin-ajax.php' ); ?>", data ).done( function( response ) {
+		feedback.hide();
+		tcpDispatcher.fire( post_id );
+	} ).fail( function (error ) {
+		feedback.hide();
+		tcpDispatcher.fire( post_id );
+	} );
+	return false;
+} );
+
+jQuery( document ).on( 'click', '.tcp_delete_shopping_cart', function( event ) {
+	var feedback = jQuery(this).closest( '.tcp_feedback' );
 	feedback.show();
-	jQuery.ajax({
-		async	: true,
-		type    : "GET",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-		data	: {
-			action	: 'tcp_shopping_cart_actions',
-			to_do	: 'delete_shopping_cart',
+	jQuery.getJSON(
+		"<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		{
+			action : 'tcp_shopping_cart_actions',
+			to_do : 'delete_shopping_cart',
+			tcp_delete_shopping_cart : '',
+		}
+	).done( function( response ) {
+		feedback.hide();
+		tcpDispatcher.fire(0);
+	} ).fail( function( response ) {
+		feedback.hide();
+		tcpDispatcher.fire( post_id );
+	} );
+	/*jQuery.ajax( {
+		async : true,
+		type : "GET",
+		url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		data : {
+			action : 'tcp_shopping_cart_actions',
+			to_do : 'delete_shopping_cart',
 			tcp_delete_shopping_cart : '',
 		},
-		success : function(response) {
+		success : function( response ) {
 			feedback.hide();
 			tcpDispatcher.fire(0);
 		},
-		error	: function(response) {
+		error : function( response ) {
 			feedback.hide();
+			tcpDispatcher.fire(post_id);
 		},
-	});
+	} );*/
 	return false;
 });
 
@@ -444,19 +449,26 @@ jQuery(document).on('click', '.tcp_delete_item_shopping_cart', function(event) {
 	var feedback = jQuery(this).closest('.tcp_feedback');
 	var form = jQuery(this).closest('form');
 	data = 'action=tcp_shopping_cart_actions&to_do=delete_item&tcp_delete_item_shopping_cart=&' + form.serialize();
-	jQuery.ajax({
-		async	: true,
-		type    : "POST",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-		data	: data,
+	
+	jQuery.getJSON( "<?php echo admin_url( 'admin-ajax.php' ); ?>", data ).done( function( response ) {
+		feedback.hide();
+		tcpDispatcher.fire( 0 );
+	} ).fail( function( response ) {
+		feedback.hide();
+	} );
+	/*jQuery.ajax({
+		async : true,
+		type : "POST",
+		url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		data : data,
 		success : function(response) {
 			feedback.hide();
 			tcpDispatcher.fire(0);
 		},
-		error	: function(response) {
+		error : function( response ) {
 			feedback.hide();
 		},
-	});
+	} );*/
 	event.stopPropagation();
 	return false;
 });
@@ -465,23 +477,31 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 	var feedback = jQuery(this).closest('.tcp_feedback');
 	var form = jQuery(this).closest('form');
 	data = 'action=tcp_shopping_cart_actions&to_do=modify_item&tcp_modify_item_shopping_cart=&' + form.serialize();
-	jQuery.ajax({
-		async	: true,
-		type    : "POST",
-		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-		data	: data,
+	jQuery.getJSON(
+		"<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		data
+	).done( function( response ) {
+		feedback.hide();
+		tcpDispatcher.fire( 0 );
+	} ).fail( function( response ) {
+		feedback.hide();
+	} );
+/*	jQuery.ajax({
+		async : true,
+		type : "POST",
+		url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		data : data,
 		success : function(response) {
 			feedback.hide();
 			tcpDispatcher.fire(0);
 		},
-		error	: function(response) {
+		error : function(response) {
 			feedback.hide();
 		},
-	});
+	});*/
 	event.stopPropagation();
 	return false;
 });
-
 </script><?php
 	}
 
@@ -494,27 +514,23 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 	function tcp_the_add_to_cart_items_in_the_cart( $out, $post_id ) {
 		ob_start(); ?>
 <script type="text/javascript">
-//if ( ! jQuery.isFunction(window.tcp_items_in_the_cart_<?php echo $post_id; ?>)) {
-	tcpDispatcher.add('tcp_items_in_the_cart_<?php echo $post_id; ?>', <?php echo $post_id; ?>);
+tcpDispatcher.add( 'tcp_items_in_the_cart_<?php echo $post_id; ?>', <?php echo $post_id; ?> );
 
-	function tcp_items_in_the_cart_<?php echo $post_id; ?>(){
-		jQuery.ajax({
-			async	: true,
-			type    : "GET",
-			url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-			data	: {
-				action	: 'tcp_shopping_cart_actions',
-				to_do	: 'get_items_in_the_cart',
-				post_id	: <?php echo $post_id; ?>,
-			},
-			success : function(response) {
-				jQuery('.tcp_added_product_title_<?php echo $post_id; ?>').replaceWith(response);
-			}
-		});
-	}
-//}
-</script>
-		<?php $out .= ob_get_clean();
+function tcp_items_in_the_cart_<?php echo $post_id; ?>() {
+	jQuery.getJSON(
+		"<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		{
+			action : 'tcp_shopping_cart_actions',
+			to_do : 'get_items_in_the_cart',
+			post_id : <?php echo $post_id; ?>,
+		} ).done( function( response ) {
+			jQuery( '.tcp_added_product_title_<?php echo $post_id; ?>' ).replaceWith( response );
+		} ).fail( function( error ) {
+			alert( error.responseText );
+		} );
+}
+</script><!-- HOLA -->
+		<?php $out = $out . ob_get_clean();
 		return $out;
 	}
 
@@ -524,13 +540,14 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 		case 'delete_shopping_cart' :
 		case 'delete_item' :
 		case 'modify_item' :
-			global $thecartpress;
+			/*global $thecartpress;
 			$thecartpress->check_for_shopping_cart_actions();
-			TheCartPress::saveShoppingCart();
-			exit( 1 );
+			TheCartPress::saveShoppingCart();*/
+			//exit( "1" );
+			tcp_return_jsonp( "1" );
 		case 'get_summary' :
 			$args = (array)json_decode( urldecode( $_REQUEST['args'] ) );
-			exit( tcp_get_shopping_cart_summary( $args, false ) );
+			tcp_return_jsonp( tcp_get_shopping_cart_summary( $args, false ) );
 		case 'get_detail' :
 			$args = (array)json_decode( urldecode( $_REQUEST['args'] ) );
 			exit( tcp_get_shopping_cart_detail( $args, false ) );
@@ -542,7 +559,7 @@ jQuery(document).on('click', '.tcp_modify_item_shopping_cart', function(event) {
 			exit( $shoppingCartPage->show() );
 		case 'get_items_in_the_cart' :
 			$post_id = $_REQUEST['post_id'];
-			exit( tcp_the_add_to_cart_items_in_the_cart( $post_id ) );
+			tcp_return_jsonp( tcp_the_add_to_cart_items_in_the_cart( $post_id, false ) );
 		}
 	}
 

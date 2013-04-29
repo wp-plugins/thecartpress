@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.8
+Version: 1.2.8.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -62,7 +62,7 @@ class TheCartPress {
 		require_once( TCP_CLASSES_FOLDER . 'TCP_Plugin.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER . 'tcp_checkout_template.php' );
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'init', array( &$this, 'init' ), 1 );
 		add_action( 'init', array( &$this, 'last_init' ), 999 );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_action( 'after_setup_theme', array( &$this, 'after_setup_theme' ), 11 );
@@ -78,7 +78,7 @@ class TheCartPress {
 	}
 
 	function init() {
-		if ( ! session_id() ) session_start();
+		tcp_session_start();
 		require_once( TCP_SETTINGS_FOLDER . 'manage_settings.php' );
 		require_once( TCP_APPEARANCE_FOLDER . 'manage_appearance.php' );
 		require_once( TCP_METABOXES_FOLDER . 'manage_metaboxes.php' );
@@ -222,9 +222,9 @@ class TheCartPress {
 			$post_id = isset( $_REQUEST['tcp_post_id'] ) ? $_REQUEST['tcp_post_id'] : 0;
 			do_action( 'tcp_before_delete_item_shopping_cart', $post_id );
 			if ( $post_id > 0 ) {
-				$option_1_id	= isset( $_REQUEST['tcp_option_1_id'] ) ? $_REQUEST['tcp_option_1_id'] : 0;
-				$option_2_id	= isset( $_REQUEST['tcp_option_2_id'] ) ? $_REQUEST['tcp_option_2_id'] : 0;
-				$shoppingCart	= TheCartPress::getShoppingCart();
+				$option_1_id = isset( $_REQUEST['tcp_option_1_id'] ) ? $_REQUEST['tcp_option_1_id'] : 0;
+				$option_2_id = isset( $_REQUEST['tcp_option_2_id'] ) ? $_REQUEST['tcp_option_2_id'] : 0;
+				$shoppingCart = TheCartPress::getShoppingCart();
 				$shoppingCart->delete( $post_id, $option_1_id, $option_2_id );
 				do_action( 'tcp_delete_item_shopping_cart', $post_id );
 			}
@@ -232,10 +232,10 @@ class TheCartPress {
 			$post_id = $_REQUEST['tcp_post_id'] ? $_REQUEST['tcp_post_id'] : 0;
 			do_action( 'tcp_before_modify_shopping_cart', $post_id );
 			if ( $post_id > 0 ) {
-				$option_1_id	= isset( $_REQUEST['tcp_option_1_id'] ) ? $_REQUEST['tcp_option_1_id'] : 0;
-				$option_2_id	= isset( $_REQUEST['tcp_option_2_id'] ) ? $_REQUEST['tcp_option_2_id'] : 0;
-				$count			= isset( $_REQUEST['tcp_count'] ) ? (int)$_REQUEST['tcp_count'] : 0;
-				$shoppingCart	= TheCartPress::getShoppingCart();
+				$option_1_id = isset( $_REQUEST['tcp_option_1_id'] ) ? $_REQUEST['tcp_option_1_id'] : 0;
+				$option_2_id = isset( $_REQUEST['tcp_option_2_id'] ) ? $_REQUEST['tcp_option_2_id'] : 0;
+				$count = isset( $_REQUEST['tcp_count'] ) ? (int)$_REQUEST['tcp_count'] : 0;
+				$shoppingCart = TheCartPress::getShoppingCart();
 				$shoppingCart->modify( $post_id, $option_1_id, $option_2_id, $count );
 				do_action( 'tcp_modify_shopping_cart', $post_id );
 			}
@@ -243,7 +243,7 @@ class TheCartPress {
 	}
 
 	static function getShoppingCart() {
-		if ( ! session_id() ) session_start();
+		tcp_session_start();
 		if ( TheCartPress::$tcp_shoppingCart !== false ) {
 			if ( isset( $_SESSION['tcp_session_refresh'] ) ) {
 				TheCartPress::$tcp_shoppingCart->refresh();
@@ -278,7 +278,7 @@ class TheCartPress {
 	}
 
 	static function refreshShoppingCart( $refresh = true ) {
-		if ( ! session_id() ) session_start();
+		tcp_session_start();
 		if ( $refresh ) $_SESSION['tcp_session_refresh'] = $refresh;
 		else unset( $_SESSION['tcp_session_refresh'] );
 	}	
