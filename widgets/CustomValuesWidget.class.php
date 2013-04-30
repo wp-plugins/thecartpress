@@ -47,6 +47,7 @@ class CustomValuesWidget extends TCPParentWidget {
 
 	function form( $instance ) {
 		parent::form( $instance, __( 'Custom Values', 'tcp' ) );
+
 		$defaults = array(
 			'post_type' => 'tcp_product',
 			'see_label' =>  true,
@@ -205,5 +206,19 @@ jQuery( 'ul#<?php echo $tcp_custom_field_list; ?>' ).sortable( {
 </p>-->
 <?php do_action( 'tcp_custom_values_widget_form', $instance );
 	}
+}
+
+add_filter( 'tcp_custom_values_get_other_values', 'custom_values_widget_add_default_values' );
+
+function custom_values_widget_add_default_values( $other_values ) {
+	$other_values['wp_modifed_date'] = array(
+		'label' => __( 'Modified date', 'tcp' ),
+		'callback' => 'get_the_modified_date',
+	);
+	$other_values['wp_modifed_time'] = array(
+		'label' => __( 'Modified time', 'tcp' ),
+		'callback' => 'get_the_modified_time',
+	);
+	return $other_values;
 }
 ?>

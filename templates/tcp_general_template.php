@@ -1042,6 +1042,7 @@ function tcp_display_custom_values( $post_id = 0, $instance ) {
 			if ( $instance['see_label'] ) {
 				$tax = get_taxonomy( $tax_id );
 				$label = $tax->labels->name;
+				$label = tcp_string( 'TheCartPress', 'custom_tax_' . $tax->labels->post_type . '_' . $tax_id . '-name', $label );
 			}
 		} elseif ( substr( $id, 0, 3 ) == 'o_v' ) {
 			$ov_id = substr( $id, 4 );

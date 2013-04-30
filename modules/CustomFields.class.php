@@ -164,6 +164,8 @@ function tcp_update_custom_field_def( $post_type, $id, $label, $type = TCP_CUSTO
 				'public' => $public,
 			);
 			$custom_fields[$post_type][$key] = $custom;
+			tcp_register_string( 'TheCartPress', 'custom_field_' . $id . '-label', $label );
+			tcp_register_string( 'TheCartPress', 'custom_field_' . $id . '-desc', $desc ); 
 			break;
 		}
 	update_option( 'tcp_custom_fields', $custom_fields );

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TheCartPress v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-24 17:47+0100\n"
-"PO-Revision-Date: 2013-04-24 17:47+0100\n"
+"POT-Creation-Date: 2013-04-30 07:51+0100\n"
+"PO-Revision-Date: 2013-04-30 07:51+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -621,168 +621,168 @@ msgid "See checkout link"
 msgstr "Zeige Zur-Kasse-Link"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:111
+#: widgets/CustomListWidget.class.php:108
 msgid "price"
 msgstr "Preis"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:121
+#: widgets/CustomListWidget.class.php:118
 msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 msgstr "weiterlesen <span class=\"meta-nav\">&rarr;</span>"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:122
+#: widgets/CustomListWidget.class.php:119
 msgid "Pages:"
 msgstr "Seiten:"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:129
+#: widgets/CustomListWidget.class.php:126
 #, php-format
 msgid "<span class=\"%1$s\">Posted in</span> %2$s"
 msgstr "<span class=\"%1$s\">Veröffentlicht in</span> %2$s"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:136
+#: widgets/CustomListWidget.class.php:133
 #, php-format
 msgid "<span class=\"%1$s\">Tagged</span> %2$s"
 msgstr "<span class=\"%1$s\">Tags</span> %2$s"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:140
+#: widgets/CustomListWidget.class.php:137
 msgid "Leave a comment"
 msgstr "Einen Kommentar schreiben"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:140
+#: widgets/CustomListWidget.class.php:137
 msgid "1 Comment"
 msgstr "1 Kommentar"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:140
+#: widgets/CustomListWidget.class.php:137
 msgid "% Comments"
 msgstr "% Kommentare"
 
 # @ twentyten
 # @ tcp
-#: widgets/CustomListWidget.class.php:141
+#: widgets/CustomListWidget.class.php:138
 msgid "Edit"
 msgstr "Bearbeiten"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:214
+#: widgets/CustomListWidget.class.php:211
 #: widgets/AuthorsWidget.class.php:69
 msgid "Limit"
 msgstr "Limit"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:218
+#: widgets/CustomListWidget.class.php:215
 msgid "Loop"
 msgstr "Loop"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:219
+#: widgets/CustomListWidget.class.php:216
 msgid "theme"
 msgstr "Theme"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:221
+#: widgets/CustomListWidget.class.php:218
 msgid "default"
 msgstr "default"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:239
+#: widgets/CustomListWidget.class.php:236
 msgid "parent"
 msgstr "parent"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:248
+#: widgets/CustomListWidget.class.php:245
 msgid "show/hide advanced options"
 msgstr "Erweiterte Optionen anzeigen /  verstecken"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:252
+#: widgets/CustomListWidget.class.php:249
 msgid "N<sup>o</sup> columns"
 msgstr "Anzahl der Spalten"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:257
+#: widgets/CustomListWidget.class.php:254
 msgid "Show title"
 msgstr "Titel anzeigen"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:260
+#: widgets/CustomListWidget.class.php:257
 msgid "Title tag"
 msgstr "Titel Schlagwort"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:263
+#: widgets/CustomListWidget.class.php:260
 msgid "No tag"
 msgstr "Kein Schlagwort"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:276
+#: widgets/CustomListWidget.class.php:273
 msgid "Show image"
 msgstr "Bild anzeigen"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:279
+#: widgets/CustomListWidget.class.php:276
 msgid "Image size"
 msgstr "Bildgröße"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:289
+#: widgets/CustomListWidget.class.php:286
 msgid "Show content"
 msgstr "Inhalt anzeigen"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:293
+#: widgets/CustomListWidget.class.php:290
 msgid "Show excerpt"
 msgstr "Auszug anzeigen"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:297
+#: widgets/CustomListWidget.class.php:294
 msgid "Show author"
 msgstr "Zeige Autor"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:301
+#: widgets/CustomListWidget.class.php:298
 msgid "Show tags"
 msgstr "Zeige Schlagwörter"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:305
+#: widgets/CustomListWidget.class.php:302
 msgid "Show price"
 msgstr "Preis anzeigen"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:309
+#: widgets/CustomListWidget.class.php:306
 msgid "Show buy button"
 msgstr "Zeige Kaufen-Button"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:313
+#: widgets/CustomListWidget.class.php:310
 msgid "Show utilities"
 msgstr "Zeige Utilities"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:317
+#: widgets/CustomListWidget.class.php:314
 msgid "Show first custom area"
 msgstr "Zeige den ersten benutzerdefinierten Bereich"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:321
+#: widgets/CustomListWidget.class.php:318
 msgid "Show second custom area"
 msgstr "Zeige den zweiten benutzerdefinierten Bereich"
 
 # @ tcp
-#: widgets/CustomListWidget.class.php:325
+#: widgets/CustomListWidget.class.php:322
 msgid "Show third custom area"
 msgstr "Zeige den dritten benutzerdefinierten Bereich"
 
@@ -1052,7 +1052,7 @@ msgstr "Klick Speichern, um die Liste der Taxonomien zu laden"
 
 # @ tcp
 #: widgets/AttributesListWidget.class.php:73
-#: widgets/CustomValuesWidget.class.php:94
+#: widgets/CustomValuesWidget.class.php:95
 msgid "Taxonomies"
 msgstr "Taxonomien"
 
@@ -1132,51 +1132,59 @@ msgid "Custom Values"
 msgstr "Benutzerdefinierte Styles"
 
 # @ tcp
-#: widgets/CustomValuesWidget.class.php:84
+#: widgets/CustomValuesWidget.class.php:85
 msgid "Custom Fields"
 msgstr "Benutzerdefinierte Felder"
 
 # @ tcp
-#: widgets/CustomValuesWidget.class.php:91
-#: widgets/CustomValuesWidget.class.php:100
-#: widgets/CustomValuesWidget.class.php:110
+#: widgets/CustomValuesWidget.class.php:92
+#: widgets/CustomValuesWidget.class.php:101
+#: widgets/CustomValuesWidget.class.php:111
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: widgets/CustomValuesWidget.class.php:103
+#: widgets/CustomValuesWidget.class.php:104
 msgid "Other values"
 msgstr ""
 
-#: widgets/CustomValuesWidget.class.php:119
-#: widgets/CustomValuesWidget.class.php:125
-#: widgets/CustomValuesWidget.class.php:131
-#: widgets/CustomValuesWidget.class.php:144
-#: widgets/CustomValuesWidget.class.php:155
-#: widgets/CustomValuesWidget.class.php:166
+#: widgets/CustomValuesWidget.class.php:120
+#: widgets/CustomValuesWidget.class.php:126
+#: widgets/CustomValuesWidget.class.php:132
+#: widgets/CustomValuesWidget.class.php:145
+#: widgets/CustomValuesWidget.class.php:156
+#: widgets/CustomValuesWidget.class.php:167
 msgid "remove"
 msgstr ""
 
-#: widgets/CustomValuesWidget.class.php:137
+#: widgets/CustomValuesWidget.class.php:138
 msgid "Add fields to the list, and drag and drop them to change order"
 msgstr ""
 
 # @ tcp
-#: widgets/CustomValuesWidget.class.php:196
+#: widgets/CustomValuesWidget.class.php:197
 #, fuzzy
 msgid "See label"
 msgstr "Label"
 
 # @ tcp
-#: widgets/CustomValuesWidget.class.php:200
+#: widgets/CustomValuesWidget.class.php:201
 #, fuzzy
 msgid "Hide empty fields"
 msgstr "Leere Begriffe ausblenden"
 
 # @ tcp
-#: widgets/CustomValuesWidget.class.php:204
+#: widgets/CustomValuesWidget.class.php:205
 #, fuzzy
 msgid "See links"
 msgstr "Permalinks Einstellungen"
+
+#: widgets/CustomValuesWidget.class.php:215
+msgid "Modified date"
+msgstr ""
+
+#: widgets/CustomValuesWidget.class.php:219
+msgid "Modified time"
+msgstr ""
 
 #: widgets/CheckoutWidget.class.php:24
 msgid "Allow to view the Checkout info (for debugging purpose)"
@@ -3891,30 +3899,30 @@ msgstr "Kategorien"
 msgid "no one"
 msgstr "keines"
 
-#: admin/DownloadableList.class.php:43
+#: admin/DownloadableList.class.php:46
 msgid "You need to login to see your downloads."
 msgstr "Sie m&uuml;ssen eingeloggt sein, um Ihre Downloads zu sehen."
 
 # @ tcp
-#: admin/DownloadableList.class.php:63
-#: admin/DownloadableList.class.php:64
+#: admin/DownloadableList.class.php:67
+#: admin/DownloadableList.class.php:68
 msgid "download the product"
 msgstr "das Produkt herunterladen"
 
 # @ tcp
-#: admin/DownloadableList.class.php:68
+#: admin/DownloadableList.class.php:72
 #, php-format
 msgid "expires at %s"
 msgstr "läuft ab am %s"
 
 # @ tcp
-#: admin/DownloadableList.class.php:71
+#: admin/DownloadableList.class.php:75
 #, php-format
 msgid "remaining number of downloads are %s"
 msgstr "verbleibende Anzahl der Downloads sind %s"
 
 # @ tcp
-#: admin/DownloadableList.class.php:82
+#: admin/DownloadableList.class.php:86
 msgid "No products to download"
 msgstr "Keine Produkte zum Download"
 
@@ -5655,28 +5663,28 @@ msgstr "URL"
 msgid "TCP Custom fields"
 msgstr "Benutzerdefinierte Felder"
 
-#: modules/CustomFields.class.php:218
+#: modules/CustomFields.class.php:220
 #, fuzzy
 msgid "Remove file"
 msgstr "Aus dem Begriff entfernen"
 
-#: modules/CustomFields.class.php:220
+#: modules/CustomFields.class.php:222
 msgid "If you upload a new file, existing one will be deleted"
 msgstr ""
 
-#: modules/CustomFields.class.php:235
+#: modules/CustomFields.class.php:237
 #, php-format
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr "Es sind keine benutzerdefinierten Felder vorhanden. Besuchen Sie <a href=\"%s\">Verwaltung benutzerdefinierter Felder </a>, um benutzerdefinierte Felder zu erstellen."
 
-#: modules/CustomFields.class.php:338
+#: modules/CustomFields.class.php:340
 #, fuzzy
 msgid "file..."
 msgstr "Dateien"
 
 # @ tcp
-#: modules/CustomFields.class.php:358
-#: modules/CustomFields.class.php:363
+#: modules/CustomFields.class.php:360
+#: modules/CustomFields.class.php:365
 #, fuzzy
 msgid "No value"
 msgstr "fester Wert"
@@ -6942,32 +6950,32 @@ msgid "(No inc. Tax)"
 msgstr "(exkl. Mwst.)"
 
 # @ tcp
-#: templates/tcp_template.php:960
+#: templates/tcp_template.php:959
 msgid "Completed"
 msgstr "Abgeschlossen"
 
 # @ tcp
-#: templates/tcp_template.php:967
+#: templates/tcp_template.php:966
 msgid "Processing"
 msgstr "In Bearbeitung"
 
 # @ tcp
-#: templates/tcp_template.php:973
+#: templates/tcp_template.php:972
 msgid "Pending"
 msgstr "Ausstehend"
 
 # @ tcp
-#: templates/tcp_template.php:979
+#: templates/tcp_template.php:978
 msgid "Cancelled"
 msgstr "Storniert"
 
 # @ tcp
-#: templates/tcp_template.php:986
+#: templates/tcp_template.php:985
 msgid "Suspended"
 msgstr "Suspendiert"
 
 # @ tcp
-#: templates/tcp_template.php:1066
+#: templates/tcp_template.php:1065
 msgid "Simple"
 msgstr "Einfach"
 
@@ -7062,89 +7070,89 @@ msgstr "zufällig"
 msgid "Sort"
 msgstr "Sortieren"
 
-#: templates/tcp_general_template.php:649
+#: templates/tcp_general_template.php:651
 msgid "Password Lost and Found"
 msgstr "Password verloren"
 
 # @ tcp
-#: templates/tcp_general_template.php:649
+#: templates/tcp_general_template.php:651
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
 
-#: templates/tcp_general_template.php:666
-#: templates/tcp_general_template.php:754
+#: templates/tcp_general_template.php:668
+#: templates/tcp_general_template.php:756
 msgid "Error"
 msgstr "Fehler"
 
 # @ tcp
-#: templates/tcp_general_template.php:693
+#: templates/tcp_general_template.php:695
 msgid "Repeat password"
 msgstr "Passwort wiederholen"
 
-#: templates/tcp_general_template.php:712
+#: templates/tcp_general_template.php:714
 msgid "Error has occurred while registering"
 msgstr "Während der Registrierung ist ein Fehler aufgetreten."
 
 # @ tcp
-#: templates/tcp_general_template.php:715
+#: templates/tcp_general_template.php:717
 msgid "Registration data has been saved."
 msgstr "Registrierung wurde abgeschlossen."
 
-#: templates/tcp_general_template.php:737
+#: templates/tcp_general_template.php:739
 msgid "Type your new password again."
 msgstr "Geben Sie das neue Passwort erneut ein."
 
 # @ tcp
-#: templates/tcp_general_template.php:740
+#: templates/tcp_general_template.php:742
 msgid "E-mail"
 msgstr "E-mail"
 
-#: templates/tcp_general_template.php:757
+#: templates/tcp_general_template.php:759
 msgid "The user is already logged"
 msgstr ""
 
-#: templates/tcp_general_template.php:824
+#: templates/tcp_general_template.php:826
 msgid "Home"
 msgstr "Home"
 
 # @ tcp
-#: templates/tcp_general_template.php:887
+#: templates/tcp_general_template.php:889
 #, php-format
 msgid "Search results for \"%s\""
 msgstr "Suchergebnisse für \"%s\""
 
-#: templates/tcp_general_template.php:891
+#: templates/tcp_general_template.php:893
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr "Posts mit  \"%s\" verschlagwortet"
 
-#: templates/tcp_general_template.php:897
+#: templates/tcp_general_template.php:899
 #, php-format
 msgid "Articles posted by %s"
 msgstr "Artikel von %s geschrieben"
 
-#: templates/tcp_general_template.php:901
+#: templates/tcp_general_template.php:903
 msgid "Error 404"
 msgstr "Fehler 404"
 
 # @ twentyten
 # @ tcp
-#: templates/tcp_general_template.php:906
+#: templates/tcp_general_template.php:908
 msgid "Page"
 msgstr "Seite"
 
 # @ tcp
-#: templates/tcp_general_template.php:956
+#: templates/tcp_general_template.php:958
 #, php-format
 msgid "Posts by %s"
 msgstr "Posts nach %s"
 
-#: templates/tcp_general_template.php:1065
+#: templates/tcp_general_template.php:1068
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\">Veröffentlicht am </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 
-#: templates/tcp_general_template.php:1074
+#: templates/tcp_general_template.php:1077
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">von </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"

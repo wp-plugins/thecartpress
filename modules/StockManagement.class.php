@@ -836,10 +836,8 @@ function tcp_is_stock_in_shopping_cart( $post_id = 0, $option_1_id = 0, $option_
 
 function tcp_the_initial_stock( $before = '', $after = '', $echo = true ) {
 	$stock = tcp_the_meta( 'tcp_initial_stock', $before, $after, false );
-	if ( $echo )
-		echo $stock;
-	else
-		return $stock;
+	if ( $echo ) echo $stock;
+	else return $stock;
 }
 
 function tcp_get_the_initial_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {

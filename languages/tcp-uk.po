@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-04 09:01+0100\n"
-"PO-Revision-Date: 2013-04-04 09:01+0100\n"
+"POT-Creation-Date: 2013-04-30 07:52+0100\n"
+"PO-Revision-Date: 2013-04-30 07:52+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -564,132 +564,132 @@ msgstr "Показувати посилання на кошик"
 msgid "See checkout link"
 msgstr "Показувати посилання на оформлення"
 
-#: thecartpress/widgets/CustomListWidget.class.php:111
+#: thecartpress/widgets/CustomListWidget.class.php:108
 msgid "price"
 msgstr "ціна"
 
-#: thecartpress/widgets/CustomListWidget.class.php:121
+#: thecartpress/widgets/CustomListWidget.class.php:118
 msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Розгорнути <span class=\"meta-nav\">&rarr;</span>"
 
-#: thecartpress/widgets/CustomListWidget.class.php:122
+#: thecartpress/widgets/CustomListWidget.class.php:119
 msgid "Pages:"
 msgstr "Сторінки:"
 
-#: thecartpress/widgets/CustomListWidget.class.php:129
+#: thecartpress/widgets/CustomListWidget.class.php:126
 #, php-format
 msgid "<span class=\"%1$s\">Posted in</span> %2$s"
 msgstr "<span class=\"%1$s\">Опубліковано в</span> %2$s"
 
-#: thecartpress/widgets/CustomListWidget.class.php:136
+#: thecartpress/widgets/CustomListWidget.class.php:133
 #, php-format
 msgid "<span class=\"%1$s\">Tagged</span> %2$s"
 msgstr "<span class=\"%1$s\">Позначено</span> %2$s"
 
-#: thecartpress/widgets/CustomListWidget.class.php:140
+#: thecartpress/widgets/CustomListWidget.class.php:137
 msgid "Leave a comment"
 msgstr "Написати відгук"
 
-#: thecartpress/widgets/CustomListWidget.class.php:140
+#: thecartpress/widgets/CustomListWidget.class.php:137
 msgid "1 Comment"
 msgstr "1 відгук"
 
-#: thecartpress/widgets/CustomListWidget.class.php:140
+#: thecartpress/widgets/CustomListWidget.class.php:137
 msgid "% Comments"
 msgstr "% відгуків"
 
-#: thecartpress/widgets/CustomListWidget.class.php:141
+#: thecartpress/widgets/CustomListWidget.class.php:138
 msgid "Edit"
 msgstr "Змінити"
 
-#: thecartpress/widgets/CustomListWidget.class.php:214
+#: thecartpress/widgets/CustomListWidget.class.php:211
 #: thecartpress/widgets/AuthorsWidget.class.php:69
 msgid "Limit"
 msgstr "Межа"
 
-#: thecartpress/widgets/CustomListWidget.class.php:218
+#: thecartpress/widgets/CustomListWidget.class.php:215
 msgid "Loop"
 msgstr "Цикл"
 
-#: thecartpress/widgets/CustomListWidget.class.php:219
+#: thecartpress/widgets/CustomListWidget.class.php:216
 msgid "theme"
 msgstr "тема"
 
-#: thecartpress/widgets/CustomListWidget.class.php:221
+#: thecartpress/widgets/CustomListWidget.class.php:218
 msgid "default"
 msgstr "типово"
 
-#: thecartpress/widgets/CustomListWidget.class.php:239
+#: thecartpress/widgets/CustomListWidget.class.php:236
 msgid "parent"
 msgstr "батьківська"
 
-#: thecartpress/widgets/CustomListWidget.class.php:248
+#: thecartpress/widgets/CustomListWidget.class.php:245
 msgid "show/hide advanced options"
 msgstr "показ./сховати розширені опції"
 
-#: thecartpress/widgets/CustomListWidget.class.php:252
+#: thecartpress/widgets/CustomListWidget.class.php:249
 msgid "N<sup>o</sup> columns"
 msgstr "Кількість колонок"
 
-#: thecartpress/widgets/CustomListWidget.class.php:257
+#: thecartpress/widgets/CustomListWidget.class.php:254
 msgid "Show title"
 msgstr "Показати назву"
 
-#: thecartpress/widgets/CustomListWidget.class.php:260
+#: thecartpress/widgets/CustomListWidget.class.php:257
 #, fuzzy
 msgid "Title tag"
 msgstr "Назва"
 
-#: thecartpress/widgets/CustomListWidget.class.php:263
+#: thecartpress/widgets/CustomListWidget.class.php:260
 #, fuzzy
 msgid "No tag"
 msgstr "Немає податків"
 
-#: thecartpress/widgets/CustomListWidget.class.php:276
+#: thecartpress/widgets/CustomListWidget.class.php:273
 msgid "Show image"
 msgstr "Показати зображення"
 
-#: thecartpress/widgets/CustomListWidget.class.php:279
+#: thecartpress/widgets/CustomListWidget.class.php:276
 msgid "Image size"
 msgstr "Розмір зображення"
 
-#: thecartpress/widgets/CustomListWidget.class.php:289
+#: thecartpress/widgets/CustomListWidget.class.php:286
 msgid "Show content"
 msgstr "Показати вміст"
 
-#: thecartpress/widgets/CustomListWidget.class.php:293
+#: thecartpress/widgets/CustomListWidget.class.php:290
 msgid "Show excerpt"
 msgstr "Показати витяг"
 
-#: thecartpress/widgets/CustomListWidget.class.php:297
+#: thecartpress/widgets/CustomListWidget.class.php:294
 msgid "Show author"
 msgstr "Показати автора"
 
-#: thecartpress/widgets/CustomListWidget.class.php:301
+#: thecartpress/widgets/CustomListWidget.class.php:298
 msgid "Show tags"
 msgstr "Показати ключові слова"
 
-#: thecartpress/widgets/CustomListWidget.class.php:305
+#: thecartpress/widgets/CustomListWidget.class.php:302
 msgid "Show price"
 msgstr "Показати ціну"
 
-#: thecartpress/widgets/CustomListWidget.class.php:309
+#: thecartpress/widgets/CustomListWidget.class.php:306
 msgid "Show buy button"
 msgstr "Показати кнопку прибання"
 
-#: thecartpress/widgets/CustomListWidget.class.php:313
+#: thecartpress/widgets/CustomListWidget.class.php:310
 msgid "Show utilities"
 msgstr "Показати інструменти"
 
-#: thecartpress/widgets/CustomListWidget.class.php:317
+#: thecartpress/widgets/CustomListWidget.class.php:314
 msgid "Show first custom area"
 msgstr "Показати першу користувацьку зону"
 
-#: thecartpress/widgets/CustomListWidget.class.php:321
+#: thecartpress/widgets/CustomListWidget.class.php:318
 msgid "Show second custom area"
 msgstr "Показати другу користувацьку зону"
 
-#: thecartpress/widgets/CustomListWidget.class.php:325
+#: thecartpress/widgets/CustomListWidget.class.php:322
 msgid "Show third custom area"
 msgstr "Показати третю користувацьку зону"
 
@@ -933,7 +933,7 @@ msgid "Press save to load the taxonomies"
 msgstr "Тисніть зберегти, щоб завантажити список таксономій."
 
 #: thecartpress/widgets/AttributesListWidget.class.php:73
-#: thecartpress/widgets/CustomValuesWidget.class.php:81
+#: thecartpress/widgets/CustomValuesWidget.class.php:95
 #, fuzzy
 msgid "Taxonomies"
 msgstr "Таксономія"
@@ -992,7 +992,7 @@ msgstr "Щоденник TheCartPress"
 msgid "Use this widget to allow customers to select theirs countries"
 msgstr "Використовуйте цей віджет, щоб додати дерево різних таксономій"
 
-#: thecartpress/widgets/SelectCountryWidget.class.php:52
+#: thecartpress/widgets/SelectCountryWidget.class.php:53
 #, fuzzy
 msgid "Select your country"
 msgstr "Показувати кількість товарів"
@@ -1002,53 +1002,61 @@ msgstr "Показувати кількість товарів"
 msgid "Allow to create Custom Values Lists"
 msgstr "Дозволити створювати списки особливих типів даних (custom post types)"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:48
+#: thecartpress/widgets/CustomValuesWidget.class.php:49
 #, fuzzy
 msgid "Custom Values"
 msgstr "Споживач"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:71
+#: thecartpress/widgets/CustomValuesWidget.class.php:85
 #, fuzzy
 msgid "Custom Fields"
 msgstr "Споживач"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:78
-#: thecartpress/widgets/CustomValuesWidget.class.php:87
-#: thecartpress/widgets/CustomValuesWidget.class.php:97
+#: thecartpress/widgets/CustomValuesWidget.class.php:92
+#: thecartpress/widgets/CustomValuesWidget.class.php:101
+#: thecartpress/widgets/CustomValuesWidget.class.php:111
 msgid "Add"
 msgstr "До кошика"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:90
+#: thecartpress/widgets/CustomValuesWidget.class.php:104
 msgid "Other values"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:106
-#: thecartpress/widgets/CustomValuesWidget.class.php:112
-#: thecartpress/widgets/CustomValuesWidget.class.php:118
-#: thecartpress/widgets/CustomValuesWidget.class.php:131
-#: thecartpress/widgets/CustomValuesWidget.class.php:142
-#: thecartpress/widgets/CustomValuesWidget.class.php:153
+#: thecartpress/widgets/CustomValuesWidget.class.php:120
+#: thecartpress/widgets/CustomValuesWidget.class.php:126
+#: thecartpress/widgets/CustomValuesWidget.class.php:132
+#: thecartpress/widgets/CustomValuesWidget.class.php:145
+#: thecartpress/widgets/CustomValuesWidget.class.php:156
+#: thecartpress/widgets/CustomValuesWidget.class.php:167
 msgid "remove"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:124
+#: thecartpress/widgets/CustomValuesWidget.class.php:138
 msgid "Add fields to the list, and drag and drop them to change order"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:183
+#: thecartpress/widgets/CustomValuesWidget.class.php:197
 #, fuzzy
 msgid "See label"
 msgstr "етикетка"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:187
+#: thecartpress/widgets/CustomValuesWidget.class.php:201
 #, fuzzy
 msgid "Hide empty fields"
 msgstr "Приховати порожні терміни"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:191
+#: thecartpress/widgets/CustomValuesWidget.class.php:205
 #, fuzzy
 msgid "See links"
 msgstr "ПОстійне посилання на %s"
+
+#: thecartpress/widgets/CustomValuesWidget.class.php:215
+msgid "Modified date"
+msgstr ""
+
+#: thecartpress/widgets/CustomValuesWidget.class.php:219
+msgid "Modified time"
+msgstr ""
 
 #: thecartpress/widgets/CheckoutWidget.class.php:24
 msgid "Allow to view the Checkout info (for debugging purpose)"
@@ -3532,26 +3540,26 @@ msgstr "Розділи"
 msgid "no one"
 msgstr "жодного"
 
-#: thecartpress/admin/DownloadableList.class.php:43
+#: thecartpress/admin/DownloadableList.class.php:46
 msgid "You need to login to see your downloads."
 msgstr ""
 
-#: thecartpress/admin/DownloadableList.class.php:63
-#: thecartpress/admin/DownloadableList.class.php:64
+#: thecartpress/admin/DownloadableList.class.php:67
+#: thecartpress/admin/DownloadableList.class.php:68
 msgid "download the product"
 msgstr "завантажити товар"
 
-#: thecartpress/admin/DownloadableList.class.php:68
+#: thecartpress/admin/DownloadableList.class.php:72
 #, php-format
 msgid "expires at %s"
 msgstr "дійсний до %s"
 
-#: thecartpress/admin/DownloadableList.class.php:71
+#: thecartpress/admin/DownloadableList.class.php:75
 #, php-format
 msgid "remaining number of downloads are %s"
 msgstr "можна скачати ще %s разів"
 
-#: thecartpress/admin/DownloadableList.class.php:82
+#: thecartpress/admin/DownloadableList.class.php:86
 msgid "No products to download"
 msgstr "Немає товарів для завантаження"
 
@@ -4153,26 +4161,26 @@ msgstr ""
 msgid "You can customize eMarketing Tools (BETA)."
 msgstr ""
 
-#: thecartpress/checkout/ActiveCheckout.class.php:42
+#: thecartpress/checkout/ActiveCheckout.class.php:40
 msgid "The cart is empty"
 msgstr "Кошик порожній"
 
-#: thecartpress/checkout/ActiveCheckout.class.php:60
+#: thecartpress/checkout/ActiveCheckout.class.php:58
 msgid "The order has been completed successfully."
 msgstr "Замовлення було успішно завершене."
 
-#: thecartpress/checkout/ActiveCheckout.class.php:78
-#: thecartpress/checkout/ActiveCheckout.class.php:82
+#: thecartpress/checkout/ActiveCheckout.class.php:76
+#: thecartpress/checkout/ActiveCheckout.class.php:80
 #, fuzzy
 msgid "Transaction Error. The order has been canceled"
 msgstr "Помика підтвердження. Адреса не збережена"
 
-#: thecartpress/checkout/ActiveCheckout.class.php:84
+#: thecartpress/checkout/ActiveCheckout.class.php:82
 #, php-format
 msgid "Retry the <a href=\"%s\">checkout process</a>"
 msgstr ""
 
-#: thecartpress/checkout/ActiveCheckout.class.php:128
+#: thecartpress/checkout/ActiveCheckout.class.php:126
 #, fuzzy, php-format
 msgid "Order from %s, Order ID: %s"
 msgstr "Замовлення"
@@ -4753,7 +4761,7 @@ msgid "Update Prices"
 msgstr "Оновлення цін"
 
 #: thecartpress/modules/PriceUpdate.class.php:39
-msgid "You can exucute large process to change Prices."
+msgid "You can execute large process to change Prices."
 msgstr ""
 
 #: thecartpress/modules/PriceUpdate.class.php:62
@@ -4936,25 +4944,6 @@ msgstr "Призупинені замовлення"
 #, fuzzy
 msgid "Copy to Shopping Cart"
 msgstr "Показувати кошик"
-
-#: thecartpress/modules/Miranda.class.php:155
-#, fuzzy
-msgid "Activate miranda"
-msgstr "Активність"
-
-#: thecartpress/modules/Miranda.class.php:159
-msgid "Activate miranda for the next generation of Graphical Interface."
-msgstr ""
-
-#: thecartpress/modules/Miranda.class.php:319
-#, fuzzy
-msgid "Default Settings"
-msgstr "Типове місце замовлення"
-
-#: thecartpress/modules/Miranda.class.php:320
-#, fuzzy
-msgid "Payments"
-msgstr "Платіж"
 
 #: thecartpress/modules/UIImprovements.class.php:60
 #, php-format
@@ -5203,26 +5192,26 @@ msgstr ""
 msgid "TCP Custom fields"
 msgstr "Споживач"
 
-#: thecartpress/modules/CustomFields.class.php:218
+#: thecartpress/modules/CustomFields.class.php:220
 #, fuzzy
 msgid "Remove file"
 msgstr "видалити файл"
 
-#: thecartpress/modules/CustomFields.class.php:220
+#: thecartpress/modules/CustomFields.class.php:222
 msgid "If you upload a new file, existing one will be deleted"
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:235
+#: thecartpress/modules/CustomFields.class.php:237
 #, php-format
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:338
+#: thecartpress/modules/CustomFields.class.php:340
 msgid "file..."
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:358
-#: thecartpress/modules/CustomFields.class.php:363
+#: thecartpress/modules/CustomFields.class.php:360
+#: thecartpress/modules/CustomFields.class.php:365
 #, fuzzy
 msgid "No value"
 msgstr "змінити ціну на"
@@ -5316,16 +5305,35 @@ msgstr "Згрупований"
 msgid "parent's assigned products"
 msgstr "пов’язані батьківські товари"
 
-#: thecartpress/modules/GroupedProducts.class.php:110
-#, fuzzy, php-format
-msgctxt "min_price to max_price"
-msgid "%s to %s"
-msgstr "до"
+#: thecartpress/modules/GroupedProducts.class.php:111
+#, php-format
+msgid "From %s"
+msgstr ""
 
-#: thecartpress/modules/GroupedProducts.class.php:125
+#: thecartpress/modules/GroupedProducts.class.php:126
 #, fuzzy
 msgid "Add selected to cart"
 msgstr "Додати вибрані в кошик"
+
+#: thecartpress/modules/CustomJavascript.class.php:25
+#: thecartpress/modules/CustomJavascript.class.php:65
+#, fuzzy
+msgid "Custom Javascript"
+msgstr "Споживач"
+
+#: thecartpress/modules/CustomJavascript.class.php:42
+#, fuzzy
+msgid "Custom JavaScript"
+msgstr "Тип дописів"
+
+#: thecartpress/modules/CustomJavascript.class.php:52
+#, fuzzy
+msgid "You can add Custom javascript."
+msgstr "Ви можете це зробити в якості гостя."
+
+#: thecartpress/modules/CustomJavascript.class.php:77
+msgid "Activate next Javascript"
+msgstr ""
 
 #: thecartpress/modules/BuyButton.class.php:76
 #, fuzzy
@@ -6358,32 +6366,32 @@ msgstr ""
 msgid "(No inc. Tax)"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:960
+#: thecartpress/templates/tcp_template.php:959
 #, fuzzy
 msgid "Completed"
 msgstr "завершені"
 
-#: thecartpress/templates/tcp_template.php:967
+#: thecartpress/templates/tcp_template.php:966
 #, fuzzy
 msgid "Processing"
 msgstr "в процесі"
 
-#: thecartpress/templates/tcp_template.php:973
+#: thecartpress/templates/tcp_template.php:972
 #, fuzzy
 msgid "Pending"
 msgstr "очікують"
 
-#: thecartpress/templates/tcp_template.php:979
+#: thecartpress/templates/tcp_template.php:978
 #, fuzzy
 msgid "Cancelled"
 msgstr "скасовані"
 
-#: thecartpress/templates/tcp_template.php:986
+#: thecartpress/templates/tcp_template.php:985
 #, fuzzy
 msgid "Suspended"
 msgstr "призупинені"
 
-#: thecartpress/templates/tcp_template.php:1066
+#: thecartpress/templates/tcp_template.php:1065
 msgid "Simple"
 msgstr "Простий"
 
@@ -6415,14 +6423,14 @@ msgid "Select %s"
 msgstr ""
 
 #: thecartpress/templates/tcp_general_template.php:296
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:267
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:263
 msgid "Modify"
 msgstr "Змінити"
 
 #: thecartpress/templates/tcp_general_template.php:305
 #: thecartpress/templates/tcp_general_template.php:332
 #: thecartpress/templates/tcp_general_template.php:394
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:310
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:306
 msgid "Discount"
 msgstr "Знижка"
 
@@ -6467,86 +6475,86 @@ msgstr "Випадково"
 msgid "Sort"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:649
+#: thecartpress/templates/tcp_general_template.php:651
 msgid "Password Lost and Found"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:649
+#: thecartpress/templates/tcp_general_template.php:651
 #, fuzzy
 msgid "Lost your password?"
 msgstr "Хибний пароль"
 
-#: thecartpress/templates/tcp_general_template.php:666
-#: thecartpress/templates/tcp_general_template.php:754
+#: thecartpress/templates/tcp_general_template.php:668
+#: thecartpress/templates/tcp_general_template.php:756
 msgid "Error"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:693
+#: thecartpress/templates/tcp_general_template.php:695
 #, fuzzy
 msgid "Repeat password"
 msgstr "Хибний пароль"
 
-#: thecartpress/templates/tcp_general_template.php:712
+#: thecartpress/templates/tcp_general_template.php:714
 msgid "Error has occurred while registering"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:715
+#: thecartpress/templates/tcp_general_template.php:717
 #, fuzzy
 msgid "Registration data has been saved."
 msgstr "Ви пов’язали матеріали"
 
-#: thecartpress/templates/tcp_general_template.php:737
+#: thecartpress/templates/tcp_general_template.php:739
 msgid "Type your new password again."
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:740
+#: thecartpress/templates/tcp_general_template.php:742
 #, fuzzy
 msgid "E-mail"
 msgstr "Зі скрині"
 
-#: thecartpress/templates/tcp_general_template.php:757
+#: thecartpress/templates/tcp_general_template.php:759
 msgid "The user is already logged"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:824
+#: thecartpress/templates/tcp_general_template.php:826
 msgid "Home"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:887
+#: thecartpress/templates/tcp_general_template.php:889
 #, fuzzy, php-format
 msgid "Search results for \"%s\""
 msgstr "Пошуковий двигунець"
 
-#: thecartpress/templates/tcp_general_template.php:891
+#: thecartpress/templates/tcp_general_template.php:893
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:897
+#: thecartpress/templates/tcp_general_template.php:899
 #, php-format
 msgid "Articles posted by %s"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:901
+#: thecartpress/templates/tcp_general_template.php:903
 msgid "Error 404"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:906
+#: thecartpress/templates/tcp_general_template.php:908
 #, fuzzy
 msgid "Page"
 msgstr "Сторінки:"
 
-#: thecartpress/templates/tcp_general_template.php:956
+#: thecartpress/templates/tcp_general_template.php:958
 #, fuzzy, php-format
 msgid "Posts by %s"
 msgstr "Тип дописів"
 
-#: thecartpress/templates/tcp_general_template.php:1065
+#: thecartpress/templates/tcp_general_template.php:1068
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:1074
+#: thecartpress/templates/tcp_general_template.php:1077
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr ""
@@ -6806,31 +6814,31 @@ msgstr "Показувати другу користувацьку зону"
 msgid "See Third Custom Area"
 msgstr "Показувати третю користувацьку зону"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:128
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:126
 #, fuzzy
 msgid "Shipping and Billing address"
 msgstr "Адреса для доставки"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:193
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:191
 #, fuzzy
 msgid "Payment notice"
 msgstr "Оплата вартості"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:203
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:201
 #, fuzzy
 msgid "Shipping notice"
 msgstr "Ціна доставки"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:224
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:220
 msgid "Sku"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:253
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:249
 #, fuzzy, php-format
 msgid "Discount %s"
 msgstr "Знижка"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:304
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:300
 msgid "Subtotal"
 msgstr "Разом"
 
@@ -6965,6 +6973,24 @@ msgstr "Архів розділу: %s"
 #, php-format
 msgid "About %s"
 msgstr "Про %s"
+
+#, fuzzy
+#~ msgid "Activate miranda"
+#~ msgstr "Активність"
+
+#, fuzzy
+#~ msgid "Default Settings"
+#~ msgstr "Типове місце замовлення"
+
+#, fuzzy
+#~ msgid "Payments"
+#~ msgstr "Платіж"
+
+#, fuzzy
+#~ msgctxt "min_price to max_price"
+
+#~ msgid "%s to %s"
+#~ msgstr "до"
 
 #~ msgid ""
 #~ "The next step helps you to pay using the payment method chosen by you."

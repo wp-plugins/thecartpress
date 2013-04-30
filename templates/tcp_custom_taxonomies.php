@@ -73,17 +73,17 @@ function tcp_update_custom_taxonomy( $taxonomy_id, $taxonomy_def ) {
 	$taxonomy_defs = tcp_get_custom_taxonomies();
 	$taxonomy_defs[$taxonomy_id] = $taxonomy_def;
 	tcp_set_custom_taxonomies( $taxonomy_defs );
-	/*tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-name', $taxonomy_def['name'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-label', $taxonomy_def['label'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-singular_name', $taxonomy_def['singular_name'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-search_items', $taxonomy_def['search_items'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-all_items', $taxonomy_def['all_items'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-parent_item', $taxonomy_def['parent_item'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-parent_item_colon', $taxonomy_def['parent_item_colon'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-edit_item', $taxonomy_def['edit_item'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-update_item', $taxonomy_def['update_item'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-add_new_item', $taxonomy_def['add_new_item'] );
-	tcp_register_string( 'TheCartPress', 'tax_' . $taxonomy . '-new_item_name', $taxonomy_def['new_item_name'] );*/
+	tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-name', $taxonomy_def['name'] );
+	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-name' );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-singular_name', $taxonomy_def['singular_name'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-search_items', $taxonomy_def['search_items'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-all_items', $taxonomy_def['all_items'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-parent_item', $taxonomy_def['parent_item'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-parent_item_colon', $taxonomy_def['parent_item_colon'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-edit_item', $taxonomy_def['edit_item'] );
+	//tcp_register_string( 'TheCartPress', 'custom_ax_' . $taxonomy_id . '-update_item', $taxonomy_def['update_item'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-add_new_item', $taxonomy_def['add_new_item'] );
+	//tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-new_item_name', $taxonomy_def['new_item_name'] );
 }
 
 /**
@@ -97,18 +97,16 @@ function tcp_delete_custom_taxonomy( $taxonomy_id ) {
 	foreach( $terms as $term )
 		wp_delete_term( $term, $taxonomy_id );
 	tcp_set_custom_taxonomies( $taxonomy_defs );
-
-	/*tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-name' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-label' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-singular_name' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-search_items' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-all_items' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-parent_item' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-parent_item_colon' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-edit_item' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-update_item' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-add_new_item' );
-	tcp_unregister_string( 'TheCartPress', 'tax_' . $taxonomy . '-new_item_name' );*/
+	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-name' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-singular_name' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-search_items' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-all_items' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-parent_item' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-parent_item_colon' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-edit_item' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-update_item' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-add_new_item' );
+	//tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_id . '-new_item_name' );
 }
 
 /**
