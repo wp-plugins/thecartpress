@@ -31,6 +31,10 @@ class TCPAuthorWidget extends TCPParentWidget {
 		if ( $title ) echo $before_title, $title, $after_title; ?>
 		<ul>
 		<?php $current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
+		if ( $current_user === false ) {
+			$current_user = get_the_author();
+			$current_user = get_user_by( 'login', $current_user );
+		}
 		tcp_author_profile( $current_user ); ?>
 		</ul>
 		<?php echo $after_widget;

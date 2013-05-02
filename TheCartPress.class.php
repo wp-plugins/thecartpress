@@ -908,8 +908,20 @@ if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === fa
 		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
 			foreach( $taxonomies as $id => $taxonomy ) {
 				if ( $taxonomy['activate'] ) {
+					$taxonomy_labels = array(
+						'name' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-name', $taxonomy['name'] ),
+						'singular_name' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-singular_name', $taxonomy['singular_name'] ),
+						'search_items' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-search_items', $taxonomy['search_items'] ),
+						'all_items' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-all_items', $taxonomy['all_items'] ),
+						'parent_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item', $taxonomy['parent_item'] ),
+						'parent_item_colon' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item_colon', $taxonomy['parent_item_colon'] ),
+						'edit_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-edit_item', $taxonomy['edit_item'] ),
+						'update_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-update_item', $taxonomy['update_item'] ),
+						'add_new_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-add_new_item', $taxonomy['add_new_item'] ),
+						'new_item_name' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-new_item_name', $taxonomy['new_item_name'] ),
+					);
 					$register = array (
-						'labels' => $taxonomy,
+						'labels' => $taxonomy_labels,
 						'hierarchical' => $taxonomy['hierarchical'],
 						'query_var' => $id,
 						//'show_in_nav_menus' => true,

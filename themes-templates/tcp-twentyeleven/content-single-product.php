@@ -7,7 +7,6 @@
  * @since Twenty Eleven 1.0
  */
 ?>
-HOLAAAAA
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<?php if ( has_term( 'beta', 'category-price', '' )) : ?>

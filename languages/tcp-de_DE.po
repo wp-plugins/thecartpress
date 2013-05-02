@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: TheCartPress v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-30 07:51+0100\n"
-"PO-Revision-Date: 2013-04-30 07:51+0100\n"
+"PO-Revision-Date: 2013-04-30 11:52+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -1180,7 +1180,7 @@ msgstr "Permalinks Einstellungen"
 
 #: widgets/CustomValuesWidget.class.php:215
 msgid "Modified date"
-msgstr ""
+msgstr "Letztes Update"
 
 #: widgets/CustomValuesWidget.class.php:219
 msgid "Modified time"
@@ -5620,15 +5620,13 @@ msgstr "Es gab einen Fehler beim Erstellen der Bestellung. Bitte nehmen Sie mit 
 
 # @ tcp
 #: modules/StockManagement.class.php:607
-#, fuzzy
 msgid "Units in stock"
-msgstr "Anfagsbestand"
+msgstr "Lagerbestand auf Lage"
 
 # @ tcp
 #: modules/StockManagement.class.php:611
-#, fuzzy
 msgid "Initial stock"
-msgstr "Anfagsbestand"
+msgstr "Lagerbestand zu Beginn"
 
 #: modules/StockManagement.class.php:648
 #: modules/StockManagement.class.php:651
@@ -6724,7 +6722,7 @@ msgstr "Für unlimitierte Downloads setzen Sie diesen Wert auf -1."
 # @ tcp
 #: classes/DownloadableProducts.class.php:112
 msgid "Days to expire"
-msgstr "Tage bis Ablauf"
+msgstr "Tage bis Laufzeitende"
 
 # @ tcp
 #: classes/DownloadableProducts.class.php:114

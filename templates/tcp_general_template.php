@@ -767,8 +767,8 @@ function tcp_register_form( $args = array() ) {
  * Displays/returns the current author's profile
  * @since 1.2.8
  */
-function tcp_author_profile() {
-	$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
+function tcp_author_profile( $current_user = false) {
+	//$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
 	if ( $current_user == false ) {
 		global $current_user;
 		global $user_level;

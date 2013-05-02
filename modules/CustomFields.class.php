@@ -216,7 +216,7 @@ function tcp_edit_custom_fields( $post_id, $post_type = false ) {
 			<?php else : ?>
 				<?php if ( $custom_field['type'] == TCP_CUSTOM_FIELD_TYPE_FILE ) : ?>
 					<?php if ( isset( $value['url'] ) ) : ?>
-					<?php _e( 'File', 'tcp' ); ?>: <a href="<?php echo $value['url']; ?>" target="_blank""><?php echo $value['type']; ?></a>
+					<?php _e( 'File', 'tcp' ); ?>: <a href="<?php echo $value['url']; ?>" target="_blank"><?php echo $value['type']; ?></a>
 					<br/><label><?php _e( 'Remove file', 'tcp' ); ?>: <input type="checkbox" name="<?php echo $custom_field['id']?>-remove" value="yes" /></label>
 					<?php endif; ?>
 					<p><?php _e( 'If you upload a new file, existing one will be deleted', 'tcp' ); ?></p>
@@ -227,7 +227,7 @@ function tcp_edit_custom_fields( $post_id, $post_type = false ) {
 			<?php endif; ?>
 			<?php $desc = tcp_string( 'TheCartPress', 'custom_field_' . $custom_field['id'] . '-desc', isset( $custom_field['desc'] ) ? $custom_field['desc'] : '' );
 			if ( strlen( $desc ) > 0 ) : ?>
-				<br/><span class="description"><?php echo $custom_field['desc']; ?></span>
+				<br/><span class="description"><?php echo $desc; ?></span>
 			<?php endif; ?>
 			</td>
 		</tr>

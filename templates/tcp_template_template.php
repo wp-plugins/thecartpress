@@ -39,21 +39,24 @@ function tcp_do_template_excerpt( $template_class, $echo = true ) {
 
 function tcp_do_template( $template_class, $echo = true, $excerpt = false ) {
 	$args = array(
-		'post_type'			=> TemplateCustomPostType::$TEMPLATE,
-		'posts_per_page'	=> -1,
-		//'suppress_filters'	=> false,
-		'meta_query'		=> array(
+		'post_type' => TemplateCustomPostType::$TEMPLATE,
+		'posts_per_page' => -1,
+		//'suppress_filters' => false,
+		'meta_query' => array(
 			array(
-				'key'			=> 'tcp_template_class',
-				'value'			=> $template_class,
-				'compare	'	=> '='
+				'key' => 'tcp_template_class',
+				'value' => $template_class,
+				'compare' => '='
 			)
-		)
+		),
+		'fields' => 'ids',
 	);
 	$posts = get_posts( $args );
 	$html = '';
 	remove_filter( 'get_the_excerpt', 'twentyeleven_custom_excerpt_more' );
-	foreach( $posts as $post ) {
+	foreach( $posts as $post_id ) {
+		$post_id = tcp_get_current_id( $post_id );
+		$post = get_post( $post_id );
 		if ( $excerpt ) $html .= apply_filters( 'the_excerpt', $post->post_excerpt ); //get_the_excerpt();
 		else $html .= apply_filters( 'the_content', $post->post_content );
 	}
