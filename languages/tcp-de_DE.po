@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TheCartPress v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 07:51+0100\n"
-"PO-Revision-Date: 2013-04-30 11:52+0100\n"
+"POT-Creation-Date: 2013-05-06 12:11+0100\n"
+"PO-Revision-Date: 2013-05-06 12:49+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -4927,7 +4927,7 @@ msgstr "Zeige Login- und Gast-Option"
 
 # @ tcp
 #: checkout/TCPSigninBox.class.php:100
-#: modules/LoginRegister.class.php:251
+#: modules/LoginRegister.class.php:253
 msgid "Login"
 msgstr "Login"
 
@@ -4982,7 +4982,7 @@ msgid "Easy access to yours orders history and status"
 msgstr "Einfacher Zugriff auf Ihre Bestellungen"
 
 #: checkout/TCPSigninBox.class.php:136
-#: modules/LoginRegister.class.php:258
+#: modules/LoginRegister.class.php:260
 msgid "Register"
 msgstr "Registrieren"
 
@@ -5380,13 +5380,13 @@ msgid "User name exists"
 msgstr "Benutzername existiert schon"
 
 # @ tcp
-#: modules/LoginRegister.class.php:267
+#: modules/LoginRegister.class.php:269
 #, fuzzy
 msgid "See all addresses"
 msgstr "Rechnungsanschrift auswählen:"
 
 # @ tcp
-#: modules/LoginRegister.class.php:271
+#: modules/LoginRegister.class.php:273
 #, fuzzy
 msgid "See all orders"
 msgstr "Aufgeschobene Bestellungen"
@@ -5395,6 +5395,25 @@ msgstr "Aufgeschobene Bestellungen"
 #: modules/CopyOrder.class.php:51
 msgid "Copy to Shopping Cart"
 msgstr "In den Warenkorb kopieren"
+
+# @ tcp
+#: modules/Miranda.class.php:155
+msgid "Activate miranda"
+msgstr "Miranda aktivieren"
+
+#: modules/Miranda.class.php:159
+msgid "Activate miranda for the next generation of Graphical Interface."
+msgstr "Aktiviert Miranda als nächste Generation der grafischen Benutzeroberfläche."
+
+# @ tcp
+#: modules/Miranda.class.php:319
+msgid "Default Settings"
+msgstr "Standard-Einstellungen"
+
+# @ tcp
+#: modules/Miranda.class.php:320
+msgid "Payments"
+msgstr "Zahlungen"
 
 # @ tcp
 #: modules/UIImprovements.class.php:60
@@ -5427,19 +5446,20 @@ msgstr "Download-Bereich"
 msgid "Child of TheCartPress"
 msgstr "Unterelement von TheCartPress"
 
-#: modules/WishList.class.php:68
-msgid "Enabled Wish List"
-msgstr "Wunschliste aktivieren"
-
-#: modules/WishList.class.php:85
+#: modules/WishList.class.php:67
+#: modules/WishList.class.php:89
 msgid "WishList"
 msgstr "Wunschliste"
 
-#: modules/WishList.class.php:85
+#: modules/WishList.class.php:72
+msgid "Enabled Wish List"
+msgstr "Wunschliste aktivieren"
+
+#: modules/WishList.class.php:89
 msgid "My wish List"
 msgstr "Meine Wunschliste"
 
-#: modules/WishList.class.php:95
+#: modules/WishList.class.php:99
 msgid "Add to Wish list"
 msgstr "Zur Wunschliste hinzuf&uuml;gen"
 
@@ -6933,47 +6953,47 @@ msgid "SKU:"
 msgstr "Artikel-Nr.:"
 
 # @ tcp
-#: templates/tcp_template.php:107
-#: templates/tcp_template.php:205
+#: templates/tcp_template.php:109
+#: templates/tcp_template.php:207
 #, php-format
 msgid "%1$s%2$s (%3$s)"
 msgstr "%1$s%2$s (%3$s) "
 
-#: templates/tcp_template.php:557
+#: templates/tcp_template.php:559
 msgid "(Inc. Tax)"
 msgstr "(inkl. Mwst.)"
 
-#: templates/tcp_template.php:558
+#: templates/tcp_template.php:560
 msgid "(No inc. Tax)"
 msgstr "(exkl. Mwst.)"
 
 # @ tcp
-#: templates/tcp_template.php:959
+#: templates/tcp_template.php:961
 msgid "Completed"
 msgstr "Abgeschlossen"
 
 # @ tcp
-#: templates/tcp_template.php:966
+#: templates/tcp_template.php:968
 msgid "Processing"
 msgstr "In Bearbeitung"
 
 # @ tcp
-#: templates/tcp_template.php:972
+#: templates/tcp_template.php:974
 msgid "Pending"
 msgstr "Ausstehend"
 
 # @ tcp
-#: templates/tcp_template.php:978
+#: templates/tcp_template.php:980
 msgid "Cancelled"
 msgstr "Storniert"
 
 # @ tcp
-#: templates/tcp_template.php:985
+#: templates/tcp_template.php:987
 msgid "Suspended"
 msgstr "Suspendiert"
 
 # @ tcp
-#: templates/tcp_template.php:1065
+#: templates/tcp_template.php:1067
 msgid "Simple"
 msgstr "Einfach"
 
@@ -7008,7 +7028,6 @@ msgstr "Wähle %s"
 
 # @ tcp
 #: templates/tcp_general_template.php:296
-#: themes-templates/tcp_shopping_cart_email.php:263
 msgid "Modify"
 msgstr "Ändern"
 
@@ -7016,7 +7035,6 @@ msgstr "Ändern"
 #: templates/tcp_general_template.php:305
 #: templates/tcp_general_template.php:332
 #: templates/tcp_general_template.php:394
-#: themes-templates/tcp_shopping_cart_email.php:306
 msgid "Discount"
 msgstr "Rabatt"
 
@@ -7412,31 +7430,37 @@ msgstr "Zeige den dritten benutzerdefinierten Bereich"
 
 # @ tcp
 #: themes-templates/tcp_shopping_cart_email.php:126
+#: themes-templates/tcp_shopping_cart.php:139
 msgid "Shipping and Billing address"
 msgstr "Liefer- und Rechnungsanschrift"
 
 # @ tcp
 #: themes-templates/tcp_shopping_cart_email.php:191
+#: themes-templates/tcp_shopping_cart.php:34
 msgid "Payment notice"
 msgstr "Zahlungshinweis"
 
 # @ tcp
 #: themes-templates/tcp_shopping_cart_email.php:201
+#: themes-templates/tcp_shopping_cart.php:40
 msgid "Shipping notice"
 msgstr "Versandhinweis"
 
 #: themes-templates/tcp_shopping_cart_email.php:220
+#: themes-templates/tcp_shopping_cart.php:188
 msgid "Sku"
 msgstr "SKU"
 
 # @ tcp
-#: themes-templates/tcp_shopping_cart_email.php:249
+#: themes-templates/tcp_shopping_cart_email.php:250
+#: themes-templates/tcp_shopping_cart.php:217
 #, php-format
 msgid "Discount %s"
 msgstr "Rabatt %s"
 
 # @ tcp
-#: themes-templates/tcp_shopping_cart_email.php:300
+#: themes-templates/tcp_shopping_cart_email.php:301
+#: themes-templates/tcp_shopping_cart.php:268
 msgid "Subtotal"
 msgstr "Zwischensumme"
 
@@ -7524,16 +7548,16 @@ msgstr "<b>1</b> Bewertung"
 msgid "<b>%</b> Reviews"
 msgstr "<b>%</b> Bewertungen"
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgid "Reply"
 msgstr "Antworten"
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "1"
 msgstr "1"
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "%"
 msgstr "%"
@@ -7620,19 +7644,6 @@ msgstr "Über %s"
 #~ "Um das Video abzuspielen, müssen Sie Ihren Browser aktualisieren oder "
 #~ "installieren Sie die aktuellste Version des <a href=\"http://get.adobe."
 #~ "com/flashplayer/\" target=\"_blank\">Flash-Plugins</a> herunter."
-# @ tcp
-#~ msgid "Activate miranda"
-#~ msgstr "Miranda aktivieren"
-#~ msgid "Activate miranda for the next generation of Graphical Interface."
-#~ msgstr ""
-#~ "Aktiviert Miranda als nächste Generation der grafischen "
-#~ "Benutzeroberfläche."
-# @ tcp
-#~ msgid "Default Settings"
-#~ msgstr "Standard-Einstellungen"
-# @ tcp
-#~ msgid "Payments"
-#~ msgstr "Zahlungen"
 # @ tcp
 #~ msgid "Out of stock."
 #~ msgstr "Ausverkauft."

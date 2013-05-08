@@ -20,7 +20,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 	function ShoppingCartSummaryWidget() {
 		$widget = array(
 			'classname'		=> 'shoppingcartsummary',
-			'description'	=> __( 'Use this widget to add a Shopping cart summary', 'tcp' ),
+			'description'	=> __( 'Use this widget to add a Shopping Cart summary', 'tcp' ),
 		);
 		$control = array(
 			'width'		=> 300,
@@ -71,7 +71,8 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'tcp' )?>:</label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
-		</p><p>
+		</p>
+		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_if_empty' ); ?>"<?php checked( $hide_if_empty ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>"><?php _e( 'Hide if empty', 'tcp' ); ?></label>
 		<br />

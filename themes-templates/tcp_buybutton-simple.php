@@ -53,7 +53,7 @@ else $action = '';
 			<?php tcp_the_add_to_cart_items_in_the_cart( $post_id ); ?>
 		</div>
 	<?php endif; ?>
-	<?php if ( function_exists( 'tcp_the_tier_price' ) ) tcp_the_tier_price(); ?>
+	<?php if ( function_exists( 'tcp_the_tier_price' ) ) tcp_the_tier_price( $post_id ); ?>
 </div>
 <?php do_action( 'tcp_buy_button_bottom', $post_id ); ?>
 </form>

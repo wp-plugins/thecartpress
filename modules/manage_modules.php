@@ -33,7 +33,6 @@ require_once( 'GroupedProducts.class.php' );
 //require_once( 'JPlayer.class.php' );
 require_once( 'LastLogin.class.php' );
 require_once( 'LoginRegister.class.php' );
-require_once( 'PriceUpdate.class.php' );
 require_once( 'StockManagement.class.php' );
 require_once( 'TaxonomyImages.class.php' );
 require_once( 'TopSellers.class.php' );

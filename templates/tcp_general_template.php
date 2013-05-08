@@ -557,21 +557,20 @@ function tcp_attribute_list( $taxonomies = false ) {
 	global $post;
 	if ( $taxonomies === false ) $taxonomies = get_object_taxonomies( $post->post_type );
 	if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) : ?>
-		<table class="tcp_attribute_list">
-		<tbody>
+		<dl class="tcp_attribute_list">
 		<?php $par = true;
 		foreach( $taxonomies as $tax ) :
 			$taxonomy = get_taxonomy( $tax );
 			$terms = wp_get_post_terms( $post->ID, $tax );
 			if ( count( $terms ) > 0 ) : ?>
-			<tr <?php if ( $par ) echo 'class="tcp_odd"'; $par = !$par; ?>>
-				<th scope="row"><?php echo $taxonomy->labels->name; ?></th>
-				<td><?php foreach( $terms as $term ) echo $term->name . '&nbsp;'; ?></td>
-			</tr>
+				<dt><?php echo $taxonomy->labels->name; ?></dt>
+				<dd><?php $first = true; foreach( $terms as $term ) : if ( $first ) $first = false; else echo ' | ';
+					?><a href="<?php echo get_term_link( $term->slug, $tax ); ?>"><?php echo $term->name;?></a><?php
+					endforeach; ?>
+				</dd>
 			<?php endif; ?>
 		<?php endforeach; ?>
-		</tbody>
-		</table>
+		</dl>
 	<?php endif;
 }
 
@@ -639,7 +638,7 @@ function tcp_login_form( $args = array() ) {
 			<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary tcp_checkout_button" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
 			<?php $redirect = $args['redirect'];
 			if ( strlen( $redirect ) == 0 ) $redirect = isset( $_REQUEST['redirect'] ) ? $_REQUEST['redirect'] : ''; ?>
-			<input type="hidden" value="<?php echo esc_attr( $redirect ); ?>" name="tcp_redirect_to" />
+			<input type="hidden" value="<?php echo esc_attr(  remove_query_arg( 'tcp_register_error', $redirect ) ); ?>" name="tcp_redirect_to" />
 		</div>
 		<div class="tcp_login_remember">
 			<input id="<?php echo esc_attr( $args['id_remember'] ); ?>" type="checkbox" value="forever" name="tcp_rememberme" <?php echo $args['value_remember'] ? ' checked="checked"' : ''; ?>/>
@@ -690,11 +689,11 @@ function tcp_register_form( $args = array() ) {
 		'locked'		=> false,
 		'login'			=> true,
 		'form_id'		=> 'loginform',
-		'label_username'=> __( 'Username' ),
-		'label_password'=> __( 'Password' ),
-		'label_repeat_password'=> __( 'Repeat password' ), //'&nbsp;',
-		'label_remember'=> __( 'Remember Me' ),
-		'label_log_in'	=> __( 'Log In' ),
+		'label_username'=> __( 'Username', 'tcp' ),
+		'label_password'=> __( 'Password', 'tcp' ),
+		'label_repeat_password'=> __( 'Repeat password', 'tcp' ), //'&nbsp;',
+		'label_remember'=> __( 'Remember Me', 'tcp' ),
+		'label_log_in'	=> __( 'Log In', 'tcp' ),
 		'id_username'	=> 'user_login',
 		'id_password'	=> 'user_pass',
 		'id_remember'	=> 'rememberme',

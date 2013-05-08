@@ -293,6 +293,11 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+= 1.2.9 =
+* Shipping cost minor bug fixed
+* Attribute List Widget improvement
+* Full internationalization support
+
 = 1.2.8.1 =
 * Custom Javascript: Allows to add Javascript
 * Template for email: tcp_print_order.php & tcp_shopping_cart_email.php

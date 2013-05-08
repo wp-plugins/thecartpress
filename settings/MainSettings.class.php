@@ -86,11 +86,11 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 </tr>
 <tr valign="top">
 	<th scope="row">
-		<label for="disable_shopping_cart"><?php _e( 'Disable Shopping cart', 'tcp' ); ?></label>
+		<label for="disable_shopping_cart"><?php _e( 'Disable Shopping Cart', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="disable_shopping_cart" name="disable_shopping_cart" value="yes" <?php checked( true, $disable_shopping_cart ); ?> />
-		<span class="description"><?php _e( 'To use TheCartPress as a catalog, disabling the Shopping cart and the Checkout.', 'tcp' ); ?></span>
+		<span class="description"><?php _e( 'To use TheCartPress as a catalog, disabling the Shopping Cart and the Checkout.', 'tcp' ); ?></span>
 	</td>
 </tr>
 <tr valign="top">
@@ -99,7 +99,7 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 	</th>
 	<td>
 		<input type="text" id="continue_url" name="continue_url" value="<?php echo $continue_url; ?>" size="50" maxlength="255" />
-		<p class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping cart page.', 'tcp' ); ?></p>
+		<p class="description"><?php _e( 'This value is used in the Continue shopping link into the Shopping Cart page.', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'If the value is left to blank then the "home url" will be used.', 'tcp' ); ?></p>
 	</td>
 </tr>
@@ -155,14 +155,14 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_main_settings' );
 		$settings = get_option( 'tcp_settings' );
-		$settings['disable_ecommerce']		= isset( $_POST['disable_ecommerce'] );// ? $_POST['disable_ecommerce'] == 'yes' : false;
+		$settings['disable_ecommerce'] = isset( $_POST['disable_ecommerce'] );// ? $_POST['disable_ecommerce'] == 'yes' : false;
 		if ( $settings['disable_ecommerce'] ) $settings['disable_shopping_cart'] = true;
 		else $settings['disable_shopping_cart']	= isset( $_POST['disable_shopping_cart'] );// ? $_POST['disable_shopping_cart'] == 'yes' : false;
-		$settings['continue_url']			= isset( $_POST['continue_url'] ) ? wp_filter_nohtml_kses( $_POST['continue_url'] ) : '';
-		$settings['after_add_to_cart']		= isset( $_POST['after_add_to_cart'] ) ? $_POST['after_add_to_cart'] : '';
-		$settings['hide_downloadable_menu']	= isset( $_POST['hide_downloadable_menu'] );// ? $_POST['hide_downloadable_menu'] == 'yes' : false;
-		$settings['downloadable_path']		= isset( $_POST['downloadable_path'] ) ? wp_filter_nohtml_kses( $_POST['downloadable_path'] ) : '';
-		$settings['hide_visibles']			= isset( $_POST['hide_visibles'] );// ? $_POST['hide_visibles'] == 'yes' : false;
+		$settings['continue_url'] = isset( $_POST['continue_url'] ) ? wp_filter_nohtml_kses( $_POST['continue_url'] ) : '';
+		$settings['after_add_to_cart'] = isset( $_POST['after_add_to_cart'] ) ? $_POST['after_add_to_cart'] : '';
+		$settings['hide_downloadable_menu'] = isset( $_POST['hide_downloadable_menu'] );// ? $_POST['hide_downloadable_menu'] == 'yes' : false;
+		$settings['downloadable_path'] = isset( $_POST['downloadable_path'] ) ? wp_filter_nohtml_kses( $_POST['downloadable_path'] ) : '';
+		$settings['hide_visibles'] = isset( $_POST['hide_visibles'] );// ? $_POST['hide_visibles'] == 'yes' : false;
 		$settings = apply_filters( 'tcp_main_settings_action', $settings );
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;

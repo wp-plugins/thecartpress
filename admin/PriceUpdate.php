@@ -16,58 +16,59 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TCPPriceUpdate {
+$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
+$taxonomy = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
+$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
+$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
+$update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
+$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+$round_price = isset( $_REQUEST['round_price'] );
 
-	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 41 );
+if ( isset( $_REQUEST['tcp_update_price'] ) ) {
+/*	$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
+	$taxonomy = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
+	$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
+	$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
+	$update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
+	$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+	$round_price = isset( $_REQUEST['round_price'] );*/
+	$args = array(
+		'post_type' => $post_type,
+		$taxonomy => $cat_slug ,
+		'posts_per_page' => -1,//TODO Pagination?
+		'fields' => 'ids',
+	);
+	$args = apply_filters( 'tcp_update_price_query_args', $args );
+	$posts = get_posts( $args );
+	$current_user = wp_get_current_user();
+	foreach( $posts as $post_id ) {
+		if ( ! current_user_can( 'tcp_edit_others_products' ) ) {
+			$post = get_post( $post_id );
+			if ( $post->post_author != $current_user->ID ) {
+				die( __( 'This product cannot be modified by the user ', 'tcp' ) );
+			}
+		}
+		if ( isset( $_REQUEST['tcp_new_price_' . $post_id] ) ) {
+			//$new_price = (float)$_REQUEST['tcp_new_price_' . $post_id];
+			$new_price = $_REQUEST['tcp_new_price_' . $post_id];
+			$new_price = tcp_input_number( $new_price );
+			update_post_meta( $post_id, 'tcp_price', $new_price );
+		}
+		do_action( 'tcp_update_price', $post_id );
 	}
-
-	function admin_menu() {
-		if ( ! current_user_can( 'tcp_edit_products' ) && ! current_user_can( 'tcp_edit_product' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base();
-		$page = add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', 'price-update', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
-	}
-
-	function admin_load() {
-		get_current_screen()->add_help_tab( array(
-			'id'	  => 'overview',
-			'title'   => __( 'Overview' ),
-			'content' =>
-				'<p>' . __( 'You can execute large process to change Prices.', 'tcp' ) . '</p>'
-		) );
-
-		get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __( 'For more information:', 'tcp' ) . '</strong></p>' .
-			'<p>' . __( '<a href="http://thecartpress.com" target="_blank">Documentation on TheCartPress</a>', 'tcp' ) . '</p>' .
-			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>' .
-			'<p>' . __( '<a href="http://extend.thecartpress.com/" target="_blank">Extend site</a>', 'tcp' ) . '</p>'
-		);
-		//wp_enqueue_script('custom-background');
-		//wp_enqueue_style('farbtastic');
-	}
-
-	function admin_page() { 
-		$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
-		$taxonomy = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
-		$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
-		$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
-		$update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
-		$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
-		$round_price = isset( $_REQUEST['round_price'] ); ?>
+	$updated = true;
+} ?>
 <div class="wrap">
 
-<h2><?php _e( 'Prices Update', 'tcp' );?></h2>
+<h2><?php _e( 'Update Prices', 'tcp' );?></h2>
 
-<?php if ( !empty( $this->updated ) ) : ?>
+<?php if ( ! empty( $updated ) ) : ?>
 	<div id="message" class="updated">
 		<p><?php _e( 'Prices updated', 'tcp' ); ?></p>
 	</div>
 <?php endif; ?>
 
-<form method="post">
+<form method="post" >
 
 	<h3><?php _e( '1. Search fields', 'tcp' );?></h3>
 	<p class="description"><?php _e( 'First, you have to search for products to change. You can set rules to add (or subtract) an amount to the price. "Search" button doesn\'t change prices.', 'tcp' ); ?></p>
@@ -132,7 +133,7 @@ class TCPPriceUpdate {
 				<label for="round_price"><?php _e( 'Prices rounded', 'tcp' );?></label>
 			</th>
 			<td>
-				<label><input type="checkbox" name="round_price" id="round_price" value="yes" <?php checked( $round_price ); ?> />
+				<label><input type="checkbox" name="round_price" id="round_price" value="yes" <?php checked( $round_price ); ?> /></label>
 				<span class="description"><?php _e( 'Only for percentage prices', 'tcp' ); ?></span>
 			</td>
 		</tr>
@@ -140,12 +141,11 @@ class TCPPriceUpdate {
 		</tbody>
 		</table>
 	</div><!-- #search -->
-	<?php wp_nonce_field( 'tcp_update_prices' ); ?>
 	<p class="submit">
 		<input type="submit" id="tcp_search" name="tcp_search" class="button-secondary" value="<?php _e( 'Search', 'tcp' ) ?>" />
 	</p>
-
 <?php if ( isset( $_REQUEST['tcp_search'] ) ) {
+	wp_nonce_field( 'tcp_update_prices' );
 	$args = array(
 		'post_type' => $post_type,
 		$taxonomy => $cat_slug ,
@@ -202,47 +202,4 @@ class TCPPriceUpdate {
 		<p><?php _e( 'No products to update', 'tcp' ); ?></p>
 	<?php endif; ?>
 <?php } ?>
-</form><?php
-	}
-
-	function admin_action() {
-		if ( empty( $_POST ) ) return;
-		if ( isset( $_REQUEST['tcp_update_price'] ) ) {
-			check_admin_referer( 'tcp_update_prices' );
-			$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
-			$taxonomy = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
-			$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
-			$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
-			$update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
-			$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
-			$round_price = isset( $_REQUEST['round_price'] );
-			$args = array(
-				'post_type' => $post_type,
-				$taxonomy => $cat_slug ,
-				'posts_per_page' => -1,//TODO Pagination?
-				'fields' => 'ids',
-			);
-			$args = apply_filters( 'tcp_update_price_query_args', $args );
-			$posts = get_posts( $args );
-			$current_user = wp_get_current_user();
-			foreach( $posts as $post_id ) {
-				if ( ! current_user_can( 'tcp_edit_others_products' ) ) {
-					$post = get_post( $post_id );
-					if ( $post->post_author != $current_user->ID ) {
-						die( __( 'This product cannot be modified by the user ', 'tcp' ) );
-					}
-				}
-				if ( isset( $_REQUEST['tcp_new_price_' . $post_id] ) ) {
-					//$new_price = (float)$_REQUEST['tcp_new_price_' . $post_id];
-					$new_price = $_REQUEST['tcp_new_price_' . $post_id];
-					$new_price = tcp_input_number( $new_price );
-					update_post_meta( $post_id, 'tcp_price', $new_price );
-				}
-				do_action( 'tcp_update_price', $post_id );
-			}
-			$this->updated = true;
-		}
-	}
-}
-
-new TCPPriceUpdate();
+</form>

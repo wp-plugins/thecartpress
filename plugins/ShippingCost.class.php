@@ -72,7 +72,7 @@ class ShippingCost extends TCP_Plugin {
 			</p></div>
 			<?php $stored_data = false;
 		} elseif ( isset( $_REQUEST['tcp_insert_range'] ) && isset( $_REQUEST['tcp_insert_range_value'] ) ) {
-			$new_range = (int)$_REQUEST['tcp_insert_range_value'];
+			$new_range = tcp_input_number( $_REQUEST['tcp_insert_range_value'] );
 			foreach( $zones as $z => $zone )
 				$new_cost[] = 0;
 			$new_ranges = array();
@@ -186,10 +186,10 @@ class ShippingCost extends TCP_Plugin {
 		<tr>
 			<th scope="row">
 				<?php printf( __( 'Range %d, less or equal than', 'tcp' ), $r ); ?>: 
-				<input type="text" name="ranges[]" value="<?php echo $range; ?>" size="5" maxlength="10"/>&nbsp;<?php tcp_the_unit_weight(); ?>
+				<input type="text" name="ranges[]" value="<?php echo tcp_number_format( $range ); ?>" size="5" maxlength="10"/>&nbsp;<?php tcp_the_unit_weight(); ?>
 			</th>
 			<?php foreach( $zones as $z => $zone ) : ?>
-			<td><input type="text" name="cost-<?php echo $r; ?>[]" value="<?php echo isset( $costs[$r][$z] ) ? $costs[$r][$z] : ''; ?>" size="6" maxlength="13"/>&nbsp;<?php tcp_the_currency(); ?></td>
+			<td><input type="text" name="cost-<?php echo $r; ?>[]" value="<?php echo isset( $costs[$r][$z] ) ? tcp_number_format( $costs[$r][$z] ) : ''; ?>" size="6" maxlength="13"/>&nbsp;<?php tcp_the_currency(); ?></td>
 			<?php endforeach; ?>
 			<td>
 			<?php if ( $stored_data ) : ?>
@@ -322,17 +322,19 @@ jQuery(document).ready(function() {
 	function saveEditFields( $data ) {
 		$zones = isset( $_REQUEST['zones'] ) ? $_REQUEST['zones'] : array();
 		$ranges = isset( $_REQUEST['ranges'] ) ? $_REQUEST['ranges'] : array();
+		$ranges = array();
+		if ( isset( $_REQUEST['ranges'] ) ) foreach( $_REQUEST['ranges'] as $r => $range )
+			$ranges[$r] = tcp_input_number( $range );
+
 		$costs = array();
 		foreach( $zones as $z => $zone )
 			foreach( $ranges as $r => $range )
-				$costs[$r][] = isset( $_REQUEST['cost-' . $r][$z] ) ? (float)$_REQUEST['cost-' . $r][$z] : 0;
+				$costs[$r][] = isset( $_REQUEST['cost-' . $r][$z] ) ? tcp_input_number( $_REQUEST['cost-' . $r][$z] ) : 0;
 		$new_zones = array();
 		$z = 0;
 		foreach( $zones as $zone )
-			if ( isset( $_REQUEST['zones_isos_' . $zone] ) )
-				$new_zones[$z++] = $_REQUEST['zones_isos_' . $zone];
-			else
-				$new_zones[$z++] = array();
+			if ( isset( $_REQUEST['zones_isos_' . $zone] ) ) $new_zones[$z++] = $_REQUEST['zones_isos_' . $zone];
+			else $new_zones[$z++] = array();
 		$data['zones']	= $new_zones;
 		$data['ranges']	= $ranges;
 		$data['costs']	= $costs;

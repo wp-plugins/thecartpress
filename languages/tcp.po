@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 07:51+0100\n"
+"POT-Creation-Date: 2013-05-06 15:16+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -4168,7 +4168,7 @@ msgid "See Login & Guest options"
 msgstr ""
 
 #: thecartpress/checkout/TCPSigninBox.class.php:100
-#: thecartpress/modules/LoginRegister.class.php:251
+#: thecartpress/modules/LoginRegister.class.php:253
 msgid "Login"
 msgstr ""
 
@@ -4213,7 +4213,7 @@ msgid "Easy access to yours orders history and status"
 msgstr ""
 
 #: thecartpress/checkout/TCPSigninBox.class.php:136
-#: thecartpress/modules/LoginRegister.class.php:258
+#: thecartpress/modules/LoginRegister.class.php:260
 msgid "Register"
 msgstr ""
 
@@ -4249,10 +4249,6 @@ msgstr ""
 
 #: thecartpress/checkout/TCPCheckoutManager.class.php:204
 msgid "Purchase"
-msgstr ""
-
-#: thecartpress/checkout/TCPCheckoutManager.class.php:560
-msgid "Please continue checking out using your chosen payment method."
 msgstr ""
 
 #: thecartpress/checkout/TCPCheckoutManager.class.php:615
@@ -4553,16 +4549,32 @@ msgstr ""
 msgid "User name exists"
 msgstr ""
 
-#: thecartpress/modules/LoginRegister.class.php:267
+#: thecartpress/modules/LoginRegister.class.php:269
 msgid "See all addresses"
 msgstr ""
 
-#: thecartpress/modules/LoginRegister.class.php:271
+#: thecartpress/modules/LoginRegister.class.php:273
 msgid "See all orders"
 msgstr ""
 
 #: thecartpress/modules/CopyOrder.class.php:51
 msgid "Copy to Shopping Cart"
+msgstr ""
+
+#: thecartpress/modules/Miranda.class.php:155
+msgid "Activate miranda"
+msgstr ""
+
+#: thecartpress/modules/Miranda.class.php:159
+msgid "Activate miranda for the next generation of Graphical Interface."
+msgstr ""
+
+#: thecartpress/modules/Miranda.class.php:319
+msgid "Default Settings"
+msgstr ""
+
+#: thecartpress/modules/Miranda.class.php:320
+msgid "Payments"
 msgstr ""
 
 #: thecartpress/modules/UIImprovements.class.php:60
@@ -4590,19 +4602,20 @@ msgstr ""
 msgid "Child of TheCartPress"
 msgstr ""
 
-#: thecartpress/modules/WishList.class.php:68
-msgid "Enabled Wish List"
-msgstr ""
-
-#: thecartpress/modules/WishList.class.php:85
+#: thecartpress/modules/WishList.class.php:67
+#: thecartpress/modules/WishList.class.php:89
 msgid "WishList"
 msgstr ""
 
-#: thecartpress/modules/WishList.class.php:85
+#: thecartpress/modules/WishList.class.php:72
+msgid "Enabled Wish List"
+msgstr ""
+
+#: thecartpress/modules/WishList.class.php:89
 msgid "My wish List"
 msgstr ""
 
-#: thecartpress/modules/WishList.class.php:95
+#: thecartpress/modules/WishList.class.php:99
 msgid "Add to Wish list"
 msgstr ""
 
@@ -5856,41 +5869,41 @@ msgstr ""
 msgid "SKU:"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:107
-#: thecartpress/templates/tcp_template.php:205
+#: thecartpress/templates/tcp_template.php:109
+#: thecartpress/templates/tcp_template.php:207
 #, php-format
 msgid "%1$s%2$s (%3$s)"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:557
+#: thecartpress/templates/tcp_template.php:559
 msgid "(Inc. Tax)"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:558
+#: thecartpress/templates/tcp_template.php:560
 msgid "(No inc. Tax)"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:959
+#: thecartpress/templates/tcp_template.php:961
 msgid "Completed"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:966
+#: thecartpress/templates/tcp_template.php:968
 msgid "Processing"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:972
+#: thecartpress/templates/tcp_template.php:974
 msgid "Pending"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:978
+#: thecartpress/templates/tcp_template.php:980
 msgid "Cancelled"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:985
+#: thecartpress/templates/tcp_template.php:987
 msgid "Suspended"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1065
+#: thecartpress/templates/tcp_template.php:1067
 msgid "Simple"
 msgstr ""
 
@@ -5921,14 +5934,12 @@ msgid "Select %s"
 msgstr ""
 
 #: thecartpress/templates/tcp_general_template.php:296
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:263
 msgid "Modify"
 msgstr ""
 
 #: thecartpress/templates/tcp_general_template.php:305
 #: thecartpress/templates/tcp_general_template.php:332
 #: thecartpress/templates/tcp_general_template.php:394
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:306
 msgid "Discount"
 msgstr ""
 
@@ -5972,81 +5983,81 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:651
+#: thecartpress/templates/tcp_general_template.php:650
 msgid "Password Lost and Found"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:651
+#: thecartpress/templates/tcp_general_template.php:650
 msgid "Lost your password?"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:668
-#: thecartpress/templates/tcp_general_template.php:756
+#: thecartpress/templates/tcp_general_template.php:667
+#: thecartpress/templates/tcp_general_template.php:755
 msgid "Error"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:695
+#: thecartpress/templates/tcp_general_template.php:694
 msgid "Repeat password"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:714
+#: thecartpress/templates/tcp_general_template.php:713
 msgid "Error has occurred while registering"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:717
+#: thecartpress/templates/tcp_general_template.php:716
 msgid "Registration data has been saved."
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:739
+#: thecartpress/templates/tcp_general_template.php:738
 msgid "Type your new password again."
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:742
+#: thecartpress/templates/tcp_general_template.php:741
 msgid "E-mail"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:759
+#: thecartpress/templates/tcp_general_template.php:758
 msgid "The user is already logged"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:826
+#: thecartpress/templates/tcp_general_template.php:825
 msgid "Home"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:889
+#: thecartpress/templates/tcp_general_template.php:888
 #, php-format
 msgid "Search results for \"%s\""
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:893
+#: thecartpress/templates/tcp_general_template.php:892
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:899
+#: thecartpress/templates/tcp_general_template.php:898
 #, php-format
 msgid "Articles posted by %s"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:903
+#: thecartpress/templates/tcp_general_template.php:902
 msgid "Error 404"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:908
+#: thecartpress/templates/tcp_general_template.php:907
 msgid "Page"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:958
+#: thecartpress/templates/tcp_general_template.php:957
 #, php-format
 msgid "Posts by %s"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:1068
+#: thecartpress/templates/tcp_general_template.php:1067
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:1077
+#: thecartpress/templates/tcp_general_template.php:1076
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr ""
@@ -6272,27 +6283,33 @@ msgid "See Third Custom Area"
 msgstr ""
 
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:126
+#: thecartpress/themes-templates/tcp_shopping_cart.php:139
 msgid "Shipping and Billing address"
 msgstr ""
 
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:191
+#: thecartpress/themes-templates/tcp_shopping_cart.php:34
 msgid "Payment notice"
 msgstr ""
 
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:201
+#: thecartpress/themes-templates/tcp_shopping_cart.php:40
 msgid "Shipping notice"
 msgstr ""
 
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:220
+#: thecartpress/themes-templates/tcp_shopping_cart.php:188
 msgid "Sku"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:249
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:250
+#: thecartpress/themes-templates/tcp_shopping_cart.php:217
 #, php-format
 msgid "Discount %s"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:300
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:301
+#: thecartpress/themes-templates/tcp_shopping_cart.php:268
 msgid "Subtotal"
 msgstr ""
 
@@ -6372,16 +6389,16 @@ msgstr ""
 msgid "<b>%</b> Reviews"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgid "Reply"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "1"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "%"
 msgstr ""

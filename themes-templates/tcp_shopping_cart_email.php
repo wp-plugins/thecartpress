@@ -237,7 +237,8 @@ if ( $source->has_order_details() ) :
 			</td>
 		<?php endif; ?>
 		<td class="tcp_cart_name" style="padding:4px 4px 4px 4px;">
-		<?php $name = $order_detail->get_name();
+		<?php $name = tcp_get_the_title( $order_detail->get_post_id(), $order_detail->get_option_1_id(), $order_detail->get_option_2_id() );
+		if ( strlen( $name ) == 0 ) $name = $order_detail->get_name();
 		$name = apply_filters( 'tcp_cart_table_title_item', $name, $order_detail );
 		if ( $source->see_product_link() ) {
 			$name = '<a href="' . tcp_get_permalink( tcp_get_current_id( $order_detail->get_post_id(), get_post_type( $order_detail->get_post_id() ) ) ). '">' . $name . '</a>';

@@ -481,7 +481,7 @@ $query->set( 'meta_query', $meta_query );
 			add_submenu_page( $base, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressesList.php' );
 			add_submenu_page( $base, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', TCP_ADMIN_FOLDER . 'TaxesList.php' );
 			add_submenu_page( $base, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'RelatedCats.php' );
-			//add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
+			add_submenu_page( $base, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
 			add_submenu_page( 'tcpml', __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'OrderEdit.php' );
 			add_submenu_page( 'tcpml', __( 'list of Assigned products', 'tcp' ), __( 'list of Assigned products', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedProductsList.php' );
 			add_submenu_page( 'tcpml', __( 'list of Assigned categories', 'tcp' ), __( 'list of Assigned categories', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedCategoriesList.php' );
@@ -509,7 +509,7 @@ $query->set( 'meta_query', $meta_query );
 			global $post;
 			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
 			$suffix = '-' . $post->post_type;
-if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
+			if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
 			$see_buy_button_in_content	= $this->get_setting( 'see_buy_button_in_content' . $suffix, true );
 			$align_buy_button_in_content= $this->get_setting( 'align_buy_button_in_content' . $suffix, 'north' );
 			$see_price_in_content		= $this->get_setting( 'see_price_in_content' . $suffix );
@@ -756,7 +756,7 @@ if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === fa
 			'comment_status' => 'closed',
 			'post_content' => '[tcp_shopping_cart]',
 			'post_status' => 'publish',
-			'post_title' => __( 'Shopping cart', 'tcp' ),
+			'post_title' => __( 'Shopping Cart', 'tcp' ),
 			'post_type' => 'page',
 		);
 		$shopping_cart_page_id = wp_insert_post( $post );

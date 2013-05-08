@@ -731,7 +731,8 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 				$image_attributes = wp_get_attachment_image_src( $thumbnail_id, 'full' ); //$image_size );
 				$href = $image_attributes[0];
 			} else {//None, or Post URL
-				$href = tcp_get_permalink( $post_id );
+				//$href = tcp_get_permalink( $post_id );
+				$href = tcp_get_permalink( $thumbnail_id );
 				//$href = get_permalink( $thumbnail_id );
 			}
 			$html = '<a href="' . $href . '"';
@@ -1140,7 +1141,6 @@ function tcp_number_format( $number, $decimals = 2 ) {
  */
 function tcp_input_number( $input ) {
 	global $thecartpress;
-
 	$aux = str_replace( $thecartpress->get_setting( 'thousands_separator', ',' ), '', $input );
 	$aux = str_replace( $thecartpress->get_setting( 'decimal_point', '.' ), '.', $aux );
 	return (float)$aux;

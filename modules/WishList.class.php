@@ -62,15 +62,19 @@ class TCPWishList {
 	function tcp_main_settings_page() {
 		global $thecartpress;
 		$enabled_wish_list = $thecartpress->get_setting( 'enabled_wish_list', false ); ?>
-	
-	<tr valign="top">
-		<th scope="row">
+<tr valign="top">
+	<th colspan="2">
+		<h3><?php _e( 'WishList', 'tcp' ); ?></h3>
+	</th>
+</tr>
+<tr valign="top">
+	<th scope="row">
 		<label for="enabled_wish_list"><?php _e( 'Enabled Wish List', 'tcp' ); ?></label>
-		</th>
-		<td>
+	</th>
+	<td>
 		<input type="checkbox" id="enabled_wish_list" name="enabled_wish_list" value="yes" <?php checked( true, $enabled_wish_list ); ?> />
-		</td>
-	</tr><?php
+	</td>
+</tr><?php
 	}
 	
 	function tcp_main_settings_action( $settings ) {
