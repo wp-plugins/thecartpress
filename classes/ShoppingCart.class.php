@@ -150,6 +150,31 @@ class ShoppingCart {
 	}
 
 	/**
+	 * Add an item
+	 * @since 1.2.9
+	 */
+	function addItem( $item, $shopping_cart_id = false ) {
+		if ( $shopping_cart_id === false ) {
+			$this->shopping_cart_items[] = $item;
+		} else {
+			if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
+				$sci = $this->shopping_cart_items[$shopping_cart_id];
+				$sci->add( $item->getUnits() );
+			} else {
+				$this->shopping_cart_items[$shopping_cart_id] = $item;
+			}
+		}
+	}
+
+	/**
+	 * Add items
+	 * @since 1.2.9
+	 */
+	function setItems( $items ) {
+		$this->shopping_cart_items = $items;
+	}
+
+	/**
 	 * Returns the total amount in the cart
 	 * @see getTotalForShipping()
 	 */
@@ -240,11 +265,16 @@ class ShoppingCart {
 
 	/**
 	 * Return true if anyone of the products in the cart is downloadable
+	 * @since 1.2.9 support filter 'tcp_has_downloadable'
 	 */
 	function hasDownloadable() {
+		$has_downloadable = false;
 		foreach( $this->shopping_cart_items as $item )
-			if ( $item->isDownloadable() ) return true;
-		return false;
+			if ( $item->isDownloadable() ) {
+				$has_downloadable = true;
+				break;
+			}
+		return apply_filters( 'tcp_has_downloadable', $has_downloadable );
 	}
 
 	/**
@@ -376,8 +406,16 @@ class ShoppingCart {
 			$this->other_costs[$id] = new ShoppingCartOtherCost( $cost, $desc, $order );
 	}
 
-	function deleteOtherCost( $id ) {
-		if ( isset( $this->other_costs[$id] ) ) unset( $this->other_costs[$id] );
+	function deleteOtherCost( $id, $starts = false ) {
+		if ( $starts ) {
+			foreach( $this->other_costs as $cost_id => $cost ) {
+				if ( ! strncmp( $cost_id, $id, strlen( $id ) ) ) {
+					unset( $this->other_costs[$cost_id] );
+				}
+			}
+		} else {
+			if ( isset( $this->other_costs[$id] ) ) unset( $this->other_costs[$id] );
+		}
 	}
 
 	function getOtherCosts() {

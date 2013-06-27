@@ -25,12 +25,18 @@ $paged		= isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : '';
 $new_status = isset( $_REQUEST['new_status'] ) ? $_REQUEST['new_status'] : '';
 
 if ( isset( $_REQUEST['tcp_order_edit'] ) && current_user_can( 'tcp_edit_orders' ) ) {
-	Orders::edit( $order_id, $new_status, $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
+	try {
+		Orders::edit( $order_id, $new_status, $_REQUEST['code_tracking'],  $_REQUEST['comment'], $_REQUEST['comment_internal'] );
 	do_action( 'tcp_admin_order_editor_save', $order_id ); ?>
 	<div id="message" class="updated">
 		<p><?php _e( 'Order saved', 'tcp' ); ?></p>
 	</div>
-<?php } elseif ( isset( $_REQUEST['tcp_order_delete'] ) && current_user_can( 'tcp_edit_orders' ) ) {
+	<?php } catch ( Exception $e ) { ?>
+		<div id="message" class="error">
+			<p><?php echo $e->getMessage(); ?></p>
+		</div>
+	<?php }
+	} elseif ( isset( $_REQUEST['tcp_order_delete'] ) && current_user_can( 'tcp_edit_orders' ) ) {
 	Orders::delete( $order_id );
 	do_action( 'tcp_admin_order_editor_delete', $order_id ); ?>
 	<div id="message" class="updated">

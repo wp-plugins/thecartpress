@@ -20,11 +20,12 @@ require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 class TCPShippingBox extends TCPCheckoutBox {
-	private $errors = array();
+	protected $errors = array();
 
 	function __construct() {
 		parent::__construct();
-		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+		//add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+		add_action( 'states_footer', 'tcp_states_footer_scripts' );
 	}
 
 	function get_title() {
@@ -298,19 +299,19 @@ class TCPShippingBox extends TCPCheckoutBox {
 				<ul>
 					<li>
 						<label for="shipping_firstname"><?php _e( 'First name', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="50" />
+						<input type="text" id="shipping_firstname" name="shipping_firstname" value="<?php echo $firstname;?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_firstname' );?>
 					</li>
 
 					<li>
 						<label for="shipping_lastname"><?php _e( 'Last name', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>" size="40" maxlength="100" />
+						<input type="text" id="shipping_lastname" name="shipping_lastname" value="<?php echo $lastname;?>" size="40" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_lastname' );?>
 					</li>
 
 					<li>
 						<label for="shipping_company"><?php _e( 'Company', 'tcp' );?>:</label>
-						<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="50" />
+						<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_company' );?>
 					</li>
 					<li>
@@ -347,7 +348,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 						</select>
 						<input type="hidden" id="shipping_region_selected_id" value="<?php echo $region_id;?>"/>
 						<?php $this->showErrorMsg( 'shipping_region_id' );?>
-						<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
+						<input type="text" id="shipping_region" name="shipping_region" value="<?php echo $region;?>" size="20" maxlength="255" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"';?>/>
 						<?php $this->showErrorMsg( 'shipping_region' );?>
 					</li>
 					<li id="li_shipping_city_id">
@@ -362,13 +363,13 @@ class TCPShippingBox extends TCPCheckoutBox {
 							</select>
 							<?php $this->showErrorMsg( 'shipping_city_id' );?>
 						<?php else : ?>
-							<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="50" />
+							<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="255" />
 							<?php $this->showErrorMsg( 'shipping_city' );?>
 						<?php endif;?>
 					</li>
 					<li>
 						<label for="shipping_street"><?php _e( 'Address', 'tcp' );?>:<em>*</em></label>
-						<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="50" />
+						<input type="text" id="shipping_street" name="shipping_street" value="<?php echo $street;?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_street' );?>
 					</li>
 					<li>
@@ -399,6 +400,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				</ul>
 			</div> <!-- new_shipping_area -->
 			<?php do_action( 'tcp_checkout_shipping' );?>
+			<?php do_action( 'states_footer' ); ?>
 		</div><!-- shipping_layer_info --><?php
 		return true;
 	}

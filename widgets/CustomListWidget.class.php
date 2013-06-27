@@ -20,7 +20,7 @@ require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 
 class CustomListWidget extends TCPParentWidget {
 
-	function CustomListWidget( $name, $description, $title, $width = 300 ) {
+	function CustomListWidget( $name = 'CustomListWidget', $description = 'CustomListWidget', $title = 'Custom List', $width = 300 ) {
 		parent::__construct( $name, $description, $title, $width );
 	}
 

@@ -133,7 +133,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		$amount			= number_format( $paymentAmount, 2, '.', '' );
 		$notify_url		= plugins_url( 'thecartpress/plugins/authorize.net/notify.php' );//?orderid=' . $order_id . '&status=' . $new_status );
 		$order			= Orders::get( $order_id );
-		require_once dirname( __FILE__ ) . '/anet_php_sdk/AuthorizeNet.php'; // Include the SDK you downloaded in Step 2
+		if ( ! class_exists( 'AuthorizeNetException' ) ) require_once dirname( __FILE__ ) . '/anet_php_sdk/AuthorizeNet.php'; // Include the SDK you downloaded in Step 2
 		$fp_timestamp	= time();
 		$fp_sequence	= $order_id . time(); // Enter an invoice or other unique number.
 		$amount			= apply_filters( 'tcp_authorized_net_amount', $amount, $order, $data );

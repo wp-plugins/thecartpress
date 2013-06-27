@@ -20,12 +20,14 @@ class TCPCustomTemplates {
 
 	function __construct() {
 		if ( is_admin() ) new TCPCustomTemplateMetabox();
-		add_filter( 'single_template', array( $this, 'single_template' ) );
-		add_filter( 'taxonomy_template', array( $this, 'taxonomy_template' ) );
-		add_filter( 'archive_template', array( $this, 'archive_template' ) );
+		add_filter( 'single_template', array( __CLASS__, 'single_template' ) );
+		add_filter( 'page_template', array( __CLASS__, 'single_template' ) );
+		add_filter( 'taxonomy_template', array( __CLASS__, 'taxonomy_template' ) );
+		add_filter( 'category_template', array( __CLASS__, 'taxonomy_template' ) );
+		add_filter( 'archive_template', array( __CLASS__, 'archive_template' ) );
 	}
 
-	function single_template( $single_template ) {
+	static function single_template( $single_template ) {
 		global $post;
 		$template = tcp_get_custom_template( $post->ID );
 		if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_single_template', $template );
@@ -34,21 +36,22 @@ class TCPCustomTemplates {
 		return apply_filters( 'tcp_single_template', $single_template );
 	}
 
-	function taxonomy_template( $taxonomy_template ) {
+	static function taxonomy_template( $taxonomy_template ) {
 		if ( function_exists( 'get_queried_object' ) ) {
 			$term = get_queried_object();
 			if ( $term ) {
+			$taxonomy = $term->taxonomy;
 				$template = tcp_get_custom_template_by_term( $term->term_id );
 				if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_taxonomy_template', $template );
 			}
 		}
-		global $taxonomy;
+		if ( empty( $taxonomy ) ) global $taxonomy;
 		$template = tcp_get_custom_template_by_taxonomy( $taxonomy );
 		if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_taxonomy_template', $template );
 		return apply_filters( 'tcp_taxonomy_template', $taxonomy_template );
 	}
 
-	function archive_template( $archive_template ) {
+	static function archive_template( $archive_template ) {
 		global $post;
 		if ( ! $post ) return;
 		//$template = tcp_get_custom_template_by_post_type( $post->post_type );
@@ -111,8 +114,8 @@ class TCPCustomTemplateMetabox {
 		$post_id = tcp_get_default_id( $post_id, $post->post_type );
 		$template = isset( $_POST['tcp_custom_template'] ) ? $_POST['tcp_custom_template'] : '';
 		tcp_set_custom_template( $post_id, $template );
-		$template = isset( $_POST['tcp_custom_post_type_template'] ) ? $_POST['tcp_custom_post_type_template'] : '';
-		tcp_set_custom_template_by_post_type( $post->post_type, $template );
+		//$template = isset( $_POST['tcp_custom_post_type_template'] ) ? $_POST['tcp_custom_post_type_template'] : false;
+		//if ( $template !== false ) tcp_set_custom_template_by_post_type( $post->post_type, $template );
 		do_action( 'tcp_custom_template_metabox_save', $post );
 	}
 
@@ -201,7 +204,7 @@ function tcp_set_custom_archive_by_post_type( $post_type, $archive = '') {
 		}
 		update_option( 'tcp_post_type_archives', $templates );
 	} else {
-		update_option( 'tcp_post_type_archives', array( $post_type => $template ) );
+		update_option( 'tcp_post_type_archives', array( $post_type => $templates ) );
 	}
 }
 

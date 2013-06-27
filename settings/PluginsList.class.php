@@ -130,17 +130,14 @@ if ( is_array( $plugins ) ) :
 		} ?>
 		<tr <?php echo $tr_class;?>>
 			<td>
-			<?php $icon = $plugin->getIcon();
-			if ( $icon ) : ?>
-				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php echo $plugin->getTitle(); ?>" class="tcp_payment_title">
-				<img src="<?php echo $icon; ?>" height="32px" />
+				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php printf( __( 'Edit %s', 'tcp' ), $plugin->getTitle() ); ?>" class="tcp_payment_title">
+				<?php $icon = $plugin->getIcon();
+				if ( $icon ) : ?>
+					<img src="<?php echo $icon; ?>" height="48px" />
+				<?php else : ?>
+					<span style="font-weight:bold;"><?php echo $plugin->getTitle(); ?></span>
+				<?php endif; ?>
 				</a>
-				<div class="tcp_plugins_edit" style="display: inline;">
-			<?php else : ?>
-				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php _e( 'Edit', 'tcp' ); ?>" class="tcp_payment_title"><span style="font-weight:bold;"><?php echo $plugin->getTitle(); ?></span></a>
-				<div class="tcp_plugins_edit">
-			<?php endif; ?>
-				<a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>"><?php _e( 'edit', 'tcp' ); ?></a></div>
 			</td>
 			<td><?php echo $plugin->getDescription(); ?></td>
 			<td><?php echo $out;?></td>

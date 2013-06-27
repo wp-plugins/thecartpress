@@ -16,6 +16,7 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+//$source is type of TCP_ICartSource
 if ( ! isset( $source ) ) return; ?>
 	<table id="tcp_order_id" width="100%" cellpading="0" cellspacing="0">
 		<tr valign="top">
@@ -217,7 +218,7 @@ if ( ! isset( $source ) ) return; ?>
 		<th class="tcp_cart_name" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Name', 'tcp' ); ?></th>
 		<th class="tcp_cart_price" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Price', 'tcp' ); ?></th>
 		<th class="tcp_cart_units" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Units', 'tcp' ); ?></th>
-		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Sku', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'SKU', 'tcp' ); ?></th><?php endif; ?>
 		<?php if ( $source->see_weight() ) : ?><th class="tcp_cart_weight" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Weight', 'tcp' ); ?></th><?php endif; ?>
 		<?php if ( $source->see_tax() ) : ?><th class="tcp_cart_tax" style="text-align: left; padding:4px 4px 4px 4px;"><?php _e( 'Tax', 'tcp' ); ?></th><?php endif; ?>
 		<th class="tcp_cart_total" style="text-align: right; padding:4px 4px 4px 4px;"><?php _e( 'Total', 'tcp' ); ?></th>

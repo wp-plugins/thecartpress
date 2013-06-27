@@ -20,11 +20,12 @@ require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 
 class TCPBillingExBox extends TCPCheckoutBox {
-	private $errors = array();
+	protected $errors = array();
 
 	function __construct() {
 		parent::__construct();
-		add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+		//add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+		add_action( 'states_footer', 'tcp_states_footer_scripts' );
 	}
 
 	function get_title() {
@@ -444,19 +445,19 @@ class TCPBillingExBox extends TCPCheckoutBox {
 				<ul>
 					<li>
 						<label for="billing_firstname"><?php _e( 'First name', 'tcp' ); ?>:<em>*</em></label>
-						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname; ?>" size="20" maxlength="50" />
+						<input type="text" id="billing_firstname" name="billing_firstname" value="<?php echo $firstname; ?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_firstname' ); ?>
 					</li>
 					<li>
 						<label for="billing_lastname"><?php _e( 'Last name', 'tcp' ); ?>:<em>*</em></label>
-						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname; ?>" size="40" maxlength="100" />
+						<input type="text" id="billing_lastname" name="billing_lastname" value="<?php echo $lastname; ?>" size="40" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_lastname' ); ?>
 					</li>
 				<?php if ( $see_company ) :?>
 					<li>
 						<label for="billing_company"><?php _e( 'Company', 'tcp' ); ?>:
 						<?php if ( $req_company ) :?><em>*</em><?php endif; ?></label>
-						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company; ?>" size="20" maxlength="50" />
+						<input type="text" id="billing_company" name="billing_company" value="<?php echo $company; ?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_company' ); ?>
 					</li>
 				<?php endif; ?>
@@ -499,7 +500,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 						</select>
 						<input type="hidden" id="billing_region_selected_id" value="<?php echo $region_id; ?>"/>
 						<?php $this->showErrorMsg( 'billing_region_id' ); ?>
-						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region; ?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
+						<input type="text" id="billing_region" name="billing_region" value="<?php echo $region; ?>" size="20" maxlength="255" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
 						<?php $this->showErrorMsg( 'billing_region' ); ?>
 					</li>
 				<?php endif; ?>
@@ -515,13 +516,13 @@ class TCPBillingExBox extends TCPCheckoutBox {
 							</select>
 							<?php $this->showErrorMsg( 'billing_city_id' ); ?>
 						<?php else : ?>
-							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city; ?>" size="20" maxlength="50" />
+							<input type="text" id="billing_city" name="billing_city" value="<?php echo $city; ?>" size="20" maxlength="255" />
 							<?php $this->showErrorMsg( 'billing_city' ); ?>
 						<?php endif; ?>
 					</li>
 					<li>
 						<label for="billing_street"><?php _e( 'Address', 'tcp' ); ?>:<em>*</em></label>
-						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street; ?>" size="20" maxlength="50" />
+						<input type="text" id="billing_street" name="billing_street" value="<?php echo $street; ?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'billing_street' ); ?>
 					</li>
 					<li>
@@ -562,6 +563,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 			</div> <!-- new_billing_area -->
 			<?php tcp_do_template( 'tcp_checkout_billing_notice' ); ?>
 			<?php do_action( 'tcp_checkout_billing' ); ?>
+			<?php do_action( 'states_footer' ); ?>
 		</div><!-- billing_layer_info -->
 		<?php return true;
 	}

@@ -43,6 +43,7 @@ class TCPStockManagement {
 				add_action( 'tcp_show_shopping_cart_summary_widget_params', array( &$this, 'tcp_show_shopping_cart_summary_widget_params' ) );
 
 				add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 10, 2 );
+
 				add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
 
 				add_filter( 'tcp_apply_filters_for_saleables', array( &$this, 'tcp_apply_filters_for_saleables' ) );
@@ -147,7 +148,8 @@ class TCPStockManagement {
 	}
 
 	function tcp_dynamic_options_option_to_save( $option, $id, $data ) {
-		$option['stock'] = trim( $data['tcp_stock'][$id] );
+		if ( isset( $data['tcp_stock'][$id] ) ) $option['stock'] = sanitize_text_field( $data['tcp_stock'][$id] );
+		else $option['stock'] = -1;
 		return $option;
 	}
 
@@ -205,24 +207,41 @@ class TCPStockManagement {
 	 */
 	static function stockAdjust( $order_id, $decrement = true ) {
 		$orderDetails = OrdersDetails::getDetails( $order_id );
-		$no_stock_enough = false;  // Seed off by assume it is all ok
-		if ( $decrement ) foreach ( $orderDetails as $ordersDetail ) {
+		//$no_stock_enough = false;  // Seed off by assume it is all ok
+		/*if ( $decrement ) foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );		
 //echo 'Checking to decrement stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
-			if ( $stock > -1 && $stock < $ordersDetail->qty_ordered ) return true;
-		}
+			if ( $stock > -1 && $stock < $ordersDetail->qty_ordered ) {
+				//if ( apply_filters( 'tcp_stock_adjust_throw_exception', false ) ) {
+				//	throw new Exception( __( 'Stock has not been adjusted. One or more products have not enough stock.', 'tcp' ) );
+				//} else {
+					return true;
+				//}
+			}
+			//when decrementing if one of the products has not enough stock the process is stopped
+			//if the order is suspended then all quantities are incremented and this is an error
+		}*/
 
 		foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
-			if ( $stock == -1 ) {
-			} elseif ( ! $decrement ) {  /* if here then we ADD the stock back to the */
-//echo 'Add stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $ordersDetail->qty_ordered, '<br>';
-				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock + $ordersDetail->qty_ordered );
-			} elseif ( $stock >= $ordersDetail->qty_ordered ) {
+			if ( $stock == -1 ) return false;
+			if ( ! $decrement ) {  /* if here then we ADD the stock back to the */
+				$stock_to_add = tcp_get_order_detail_meta( $ordersDetail->order_detail_id, 'tcp_stock', true );
+				if ( $stock_to_add == '' ) $stock_to_add = $ordersDetail->qty_ordered;
+//echo 'Add stock ', $ordersDetail->post_id, ' stock=', $stock, ' + ', $stock_to_add, '<br>';
+				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock + $stock_to_add );
+			} else {
+				if ( $stock >= $ordersDetail->qty_ordered ) {
 //echo 'Remove stock ', $ordersDetail->post_id, ' stock=', $stock, ' - ', $ordersDetail->qty_ordered, '<br>';
-				tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock - $ordersDetail->qty_ordered );
+					tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, $stock - $ordersDetail->qty_ordered );
+					tcp_delete_order_detail_meta( $ordersDetail->order_detail_id, 'tcp_stock' );
+				} else { //more units to decrement than units in stock
+//echo 'Remove stock completely', $ordersDetail->post_id, ' stock=', $stock, ' - ', $stock, '<br>';
+					tcp_update_order_detail_meta( $ordersDetail->order_detail_id, 'tcp_stock', $stock );
+					tcp_set_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id, 0 );
+				}
 			}
 		}
 		return false;
@@ -239,11 +258,11 @@ class TCPStockManagement {
 
 	function tcp_main_settings_page() {
 		global $thecartpress;
-		$stock_management		= $thecartpress->get_setting( 'stock_management', false );
-		$stock_adjustment		= $thecartpress->get_setting( 'stock_adjustment', 1 );  /* we set stock_adjustment to 1 because that is the TCP default before I started to add functionilty */
-		$stock_status_to_adjust	= $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
-		$stock_limit			= $thecartpress->get_setting( 'stock_limit', 10 );
-		$hide_out_of_stock		= $thecartpress->get_setting( 'hide_out_of_stock', false ); ?>
+		$stock_management = $thecartpress->get_setting( 'stock_management', false );
+		$stock_adjustment = $thecartpress->get_setting( 'stock_adjustment', 1 );  /* we set stock_adjustment to 1 because that is the TCP default before I started to add functionilty */
+		$stock_status_to_adjust = $thecartpress->get_setting( 'stock_status_to_adjust', Orders::$ORDER_COMPLETED );
+		$stock_limit = $thecartpress->get_setting( 'stock_limit', 10 );
+		$hide_out_of_stock = $thecartpress->get_setting( 'hide_out_of_stock', false ); ?>
 <tr valign="top">
 	<th colspan="2">
 		<h3><?php _e( 'Stock', 'tcp' ); ?></h3>
@@ -320,7 +339,8 @@ function show_hide_stock_management() {
 		jQuery('#hide_out_of_stock').parent().parent().hide();
 	}
 }
-</script><?php
+</script>
+<?php do_action( 'tcp_main_settings_page_stock' );
 	}
 
 	function tcp_main_settings_action( $settings ) {
@@ -437,7 +457,7 @@ function show_hide_stock_management() {
 	}
 
 	function tcp_shopping_cart_widget_form( $widget, $instance ) {
-		$see_stock_notice	= isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false; ?>
+		$see_stock_notice = isset( $instance['see_stock_notice'] ) ? (bool)$instance['see_stock_notice'] : false; ?>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $widget->get_field_id( 'see_stock_notice' ); ?>" name="<?php echo $widget->get_field_name( 'see_stock_notice' ); ?>"<?php checked( $see_stock_notice ); ?> />
 			<label for="<?php echo $widget->get_field_id( 'see_stock_notice' ); ?>"><?php _e( 'See stock notices', 'tcp' ); ?></label>
@@ -451,7 +471,7 @@ function show_hide_stock_management() {
 
 	function tcp_shopping_cart_widget_units( $item, $instance ) {
 		global $thecartpress;
-		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
+		$stock_management = $thecartpress->get_setting( 'stock_management', false );
 		if ( $stock_management ) {
 			$see_stock_notice = isset( $instance['see_stock_notice'] ) ? $instance['see_stock_notice'] : false;
 			if ( $see_stock_notice ) {
@@ -460,29 +480,31 @@ function show_hide_stock_management() {
 				if ( $stock != -1 && $stock < $item->getCount() ) : ?>
 					<span class="tcp_no_stock_enough">
 					<?php if ( $stock > 0 ) : ?>
-						<?php printf( __( 'No enough stock for this product. Only %s items available.', 'tcp' ), $stock ); ?>
+						<?php printf( __( 'No enough stock for this product. Only %s available items.', 'tcp' ), $stock ); ?>
 					<?php else : ?>
 						<?php _e( 'Out of stock', 'tcp' ); ?>
 					<?php endif; ?>
 					</span>
 				<?php endif;
-				echo ob_get_clean();
+				echo apply_filters( 'tcp_stock_shopping_cart_widget_units', ob_get_clean(), $item->getPostId() );
 			}
 		}
 	}
 
 	function tcp_cart_units( $item ) {
 		global $thecartpress;
-		$stock_management = isset( $thecartpress->settings['stock_management'] ) ? $thecartpress->settings['stock_management'] : false;
+		$stock_management = $thecartpress->get_setting( 'stock_management', false );
 		if ( $stock_management ) {
 			$stock = tcp_get_the_stock( $item->get_post_id(), $item->get_option_1_id(), $item->get_option_2_id() );
+			ob_start();
 			if ( $stock == 0 ) : ?>
 				<span class="tcp_no_stock"><?php _e( 'Out of stock', 'tcp' ); ?></span>
 			<?php elseif ( $stock != -1 && $stock < $item->get_qty_ordered() ) : ?>
 				<span class="tcp_no_stock_enough">
-				<?php printf( __( 'No enough stock. Only %s items available.', 'tcp' ), $stock ); ?>
+				<?php printf( __( 'No enough stock. Only %s available items.', 'tcp' ), $stock ); ?>
 				</span>
 			<?php endif;
+			echo apply_filters( 'tcp_stock_cart_units', ob_get_clean(), $item->get_post_id() );
 		}
 	}
 
@@ -743,6 +765,8 @@ function show_hide_stock_management() {
 }
 
 $stock_management = new TCPStockManagement();
+global $thecartpress;
+if ( $thecartpress ) $thecartpress->addGlobalVariable( 'stock_management', $stock_management );
 
 require_once( TCP_WIDGETS_FOLDER . 'StockSummaryDashboard.class.php' );
 
@@ -755,7 +779,7 @@ function tcp_the_stock( $before = '', $after = '', $echo = true ) {
 }
 
 function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
-	if ( $option_2_id > 0) {
+	if ( $option_2_id > 0 ) {
 		$stock = tcp_get_the_meta( 'tcp_stock', $option_2_id );
 		if ( $stock == -1 )
 			$stock = tcp_get_the_stock( $post_id, $option_1_id );
@@ -775,7 +799,7 @@ function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 }
 
 /**
- * Equal to 'tcp_get_the_stock' but return blamk if -1
+ * Equal to 'tcp_get_the_stock' but return blank if -1
  */
 function tcp_get_the_stock_label( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 	$stock = tcp_get_the_stock( $post_id, $option_1_id, $option_2_id );

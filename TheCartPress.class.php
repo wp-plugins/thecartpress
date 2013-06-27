@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: TheCartPress (Multi language support)
-Version: 1.2.8.1
+Version: 1.2.9
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 License: GPL
@@ -53,11 +53,11 @@ class TheCartPress {
 	public $settings = array();
 
 	private $saleable_post_types = array();
+	private $globals = array();
 
 	function __construct() {
 		require_once( TCP_TEMPLATES_FOLDER . 'manage_templates.php' );
 		$this->load_settings();
-		require_once( TCP_MODULES_FOLDER . 'manage_modules.php' );
 		require_once( TCP_CLASSES_FOLDER . 'ShoppingCart.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'TCP_Plugin.class.php' );
 		require_once( TCP_CHECKOUT_FOLDER . 'tcp_checkout_template.php' );
@@ -499,7 +499,6 @@ $query->set( 'meta_query', $meta_query );
 		add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
 		add_submenu_page( $base, __( 'Manage post types', 'tcp' ), __( 'Manage post types', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeList.php' );
 		add_submenu_page( $base, __( 'Manage taxonomies', 'tcp' ), __( 'Manage taxonomies', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyList.php' );
-		//add_submenu_page( $base, __( 'Admin Bar Config', 'tcp' ), __( 'Admin Bar Config', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'AdminBarConfig.php' );
 		add_submenu_page( 'tcpml', __( 'Post Type Editor', 'tcp' ), __( 'Post Type Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeEdit.php' );
 		add_submenu_page( 'tcpml', __( 'Taxonomy Editor', 'tcp' ), __( 'Taxonomy Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyEdit.php' );
 	}
@@ -525,12 +524,6 @@ $query->set( 'meta_query', $meta_query );
 				$args = apply_filters( 'tcp_get_image_in_content_args', $args, $post->ID );
 				$image = tcp_get_the_thumbnail_with_permalink( $post->ID, $args, false );
 				$image = apply_filters( 'tcp_get_image_in_content', $image, $post->ID, $args );
-				/*$thumbnail_post = get_post( $thumbnail_id );
-				if ( ! empty( $thumbnail_post->post_excerpt ) ) {
-					$image_attributes = wp_get_attachment_image_src( $thumbnail_id, $args['size'] );
-					$width = $image_attributes[1];
-					$image = '[caption id="attachment_' . $thumbnail_id . '" align="' . $image_align . ' tcp_featured_single_caption" width="' . $width  . '" caption="' . $thumbnail_post->post_excerpt  . '"]' . $image . '[/caption]';
-				}*/
 				$content = $image . $content;
 			}
 			$html = '';
@@ -808,6 +801,7 @@ $query->set( 'meta_query', $meta_query );
 	static function createExampleData() {
 		$products = wp_count_posts( 'tcp_product' );
 		if ( $products->publish + $products->draft == 0 ) {
+			require_once( ABSPATH . 'wp-admin/includes/taxonomy.php' );
 			$args = array(
 				'cat_name' => __( 'Category One', 'tcp' ),
 				'category_description' => __( 'Category One for Product One', 'tcp' ),
@@ -831,10 +825,13 @@ $query->set( 'meta_query', $meta_query );
 			add_post_meta( $post_id, 'tcp_order', 10 );
 			add_post_meta( $post_id, 'tcp_sku', 'SKU_ONE' );
 			add_post_meta( $post_id, 'tcp_stock', -1 ); //No stock
-			$category_id = term_exists( 'Category One', 'tcp_product_category' );
-			if ( ! $category_id ) $category_id = wp_insert_term( 'Category One', 'tcp_product_category' );
-			if ( isset( $category_id->term_id ) ) wp_set_object_terms( $post_id, (int)$category_id->term_id, 'tcp_product_category' );
-			else wp_set_object_terms( $post_id, (int)$category_id, 'tcp_product_category' );
+			$term_id = term_exists( 'Category One', 'tcp_product_category' );
+			if ( $term_id == 0 ) {
+				$term = wp_insert_term( __( 'Category One', 'tcp' ), 'tcp_product_category' );
+				if ( ! is_wp_error( $term ) ) wp_set_object_terms( $post_id, (int)$term['term_id'], 'tcp_product_category' );
+			} else {
+				wp_set_object_terms( $post_id, (int)$term_id, 'tcp_product_category' );
+			}
 		}
 	}
 
@@ -852,6 +849,22 @@ $query->set( 'meta_query', $meta_query );
 
 	function load_settings() {
 		$this->settings = get_option( 'tcp_settings', array() );
+	}
+
+	/**
+	 * Allows to add global variables from modules or plugins
+	 * @since 1.2.9
+	 */
+	function addGlobalVariable( $key, $object ) {
+		$this->globals[$key] = $object;
+	}
+
+	/**
+	 * Allows to get a global variable from modules or plugins
+	 * @since 1.2.9
+	 */
+	function getGlobalVariable( $key ) {
+		return isset( $this->globals[$key] ) ? $this->globals[$key] : false;
 	}
 
 	function after_setup_theme() {
@@ -913,8 +926,8 @@ $query->set( 'meta_query', $meta_query );
 						'singular_name' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-singular_name', $taxonomy['singular_name'] ),
 						'search_items' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-search_items', $taxonomy['search_items'] ),
 						'all_items' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-all_items', $taxonomy['all_items'] ),
-						'parent_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item', $taxonomy['parent_item'] ),
-						'parent_item_colon' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item_colon', $taxonomy['parent_item_colon'] ),
+						'parent_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item', isset( $taxonomy['parent_item'] ) ? $taxonomy['parent_item'] : '' ),
+						'parent_item_colon' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item_colon', isset( $taxonomy['parent_item_colon'] ) ? $taxonomy['parent_item_colon'] : ''),
 						'edit_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-edit_item', $taxonomy['edit_item'] ),
 						'update_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-update_item', $taxonomy['update_item'] ),
 						'add_new_item' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-add_new_item', $taxonomy['add_new_item'] ),
@@ -973,4 +986,7 @@ require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'ProductCustomPostType.class.php' );
 require_once( TCP_CUSTOM_POST_TYPE_FOLDER . 'TemplateCustomPostType.class.php' );
 
 $thecartpress = new TheCartPress();
+
+require_once( TCP_MODULES_FOLDER . 'manage_modules.php' );
+
 ?>

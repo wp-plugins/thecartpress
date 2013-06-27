@@ -199,11 +199,9 @@ table.tcp_products_list .tcp_buy_button .tcp-buy-dynamic-options .tcp_dynamic_op
 
 /* TIER PRICES 
 */
-div.tcp_tier_price {
-	float: none;
-}
-.single-tcp_product div.tcp_tier_price {
-	float:left;
+div.tcp_tier_price,
+div.tcp_delivery_date {
+	margin: 3px 0 3px 0;
 }
 a.tcp_view_tier_price {
 	text-decoration:none !important;

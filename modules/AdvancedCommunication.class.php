@@ -137,7 +137,7 @@ class TCPAdvancedCommunication {
 		} );
 		</script>
 		<div class="tcp-email-subject">
-			<label><?php _e( 'Subject', 'tcp' ); ?>: <input type="text" name="tcp_notice_subject" id="tcp_notice_subject" maxlength="50" class="widefat" value="<?php printf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id ); ?>" />
+			<label><?php _e( 'Subject', 'tcp' ); ?>: <input type="text" name="tcp_notice_subject" id="tcp_notice_subject" maxlength="255" class="widefat" value="<?php printf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id ); ?>" />
 			<label><?php _e( 'Send a copy to me', 'tcp' ); ?> <input type="checkbox" name="tcp_copy_to_me" id="tcp_copy_to_me" value="yes"/></label>
 		</div>
 		<div class="tcp-email-modify-text">

@@ -92,15 +92,15 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 	$tcp_col = $number_of_columns - $column + 1;
 	$class = array(  'tcp_' . $number_of_columns . '_cols', 'tcp_col_' . $tcp_col, 'span' . $bs_span  );
 	//$td_class = 'class="' . join( ' ', get_post_class( $class ) ) . '"'; ?>
-	<div id="td-post-<?php the_ID(); ?>" class="tcp_col <?php echo implode( ' ', $class ); ?>">
+	<div class="td-post-<?php the_ID(); ?> tcp_col <?php echo implode( ' ', $class ); ?>">
 	<?php $column--;?>
-		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+		<div <?php post_class(); ?>>
 
 			<?php if (has_post_thumbnail()) :  ?>
 				<?php if ( $see_image ) : ?>
 					<div class="wrapper-entry-post-thumbnail">
 						<div class="entry-post-thumbnail">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( $image_size ); ?></a>
+							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
 						</div><!-- .entry-post-thumbnail -->
 					</div><!-- .wrapper-entry-post-thumbnail -->
 				<?php endif; ?>
@@ -108,7 +108,7 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 				<?php if ( $see_image ) : ?>
 					<div class="wrapper-entry-post-thumbnail">
 						<div class="entry-post-thumbnail tcp-no-image">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><img src="<?php echo get_stylesheet_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="" width="" height="" /></a>
+							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><img src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="" width="" height="" /></a>
 						</div><!-- .entry-post-thumbnail -->
 					</div><!-- .wrapper-entry-post-thumbnail -->
 				<?php endif; ?>
@@ -133,10 +133,10 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 								<span class="loop-discount">-<?php tcp_the_discount_value(); ?></span>
 							<?php endif; ?>
 						<?php endif; ?>
-						<?php if ( function_exists( 'tcp_get_the_stock' )) : ?>
+						<?php if ( function_exists( 'tcp_get_the_stock' ) ) : ?>
 							<?php $stock = tcp_get_the_stock( get_the_ID() );
 							if ( $stock == 0 ) : ?>
-								<span class="loop-out-stock"><?php _e( 'Out of stock', 'tcp' ); ?></span>
+								<span class="loop-out-stock"><?php _e( 'Out of stock', 'tcp-bootstrap-ecommerce' ); ?></span>
 							<?php endif; ?>
 						<?php endif; ?>
 					<?php endif;?>
@@ -161,6 +161,14 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 			<?php endif;?>
 		<?php endif;?>
 
+		<?php if ( $see_third_custom_area ) : ?>
+			<?php if ( is_active_sidebar( 'sidebar-loop-details' ) ) : ?>
+				<div class="loop-customvalues clearfix">
+				  <?php dynamic_sidebar( 'sidebar-loop-details' ); ?>
+				</div>
+			<?php endif; ?>
+		<?php endif;?>
+
 		<?php if ( $see_first_custom_area ) : ?>
 			<?php if ( function_exists( 'sharing_display' ) ) echo sharing_display(); ?>
 		<?php endif;?>
@@ -171,9 +179,6 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 			<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'tcp' ), 'after' => '</div>' ) ); ?>
 		</div><!-- .entry-content -->
 		<?php endif; ?>
-
-		<?php if ( $see_third_custom_area ) : ?>
-		<?php endif;?>
 
 		<div class="wrapper-bsegrid-bottom">
 
@@ -195,14 +200,13 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 			<div class="entry-utilities clearfix">
 
 			<?php if ( comments_open() ) : ?>
-			<?php if ( isset( $show_sep) && $show_sep ) : ?>
-			<span class="sep"> | </span>
-			<?php endif; // End if $show_sep ?>
-			<span class="comments-link"><?php comments_popup_link( '<span class="leave-reply">' . __( 'Leave a review', 'tcp-bootstrap-ecommerce' ) . '</span>', __( '<b>1</b> Review', 'tcp-bootstrap-ecommerce' ), __( '<b>%</b> Reviews', 'tcp-bootstrap-ecommerce' ) ); ?></span>
-			<?php endif; // End if comments_open() ?>
+				<?php if ( isset( $show_sep) && $show_sep ) : ?>
+				<span class="sep"> | </span>
+				<?php endif; // End if $show_sep ?>
+				<span class="comments-link"><?php comments_popup_link( '<span class="leave-reply">' . __( 'Leave a review', 'tcp-bootstrap-ecommerce' ) . '</span>', __( '<b>1</b> Review', 'tcp' ), __( '<b>%</b> Reviews', 'tcp' ) ); ?></span>
+				<?php endif; // End if comments_open() ?>
 
-			<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="edit-link">', '</span>' ); ?>
-
+				<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="edit-link">', '</span>' ); ?>
 			</div><!-- .entry-utility -->
 		<?php endif; ?>
 
@@ -241,4 +245,3 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 
 <?php /* Display pagination */
 if ( $see_pagination ) tcp_get_the_pagination(); ?>
-

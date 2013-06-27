@@ -41,7 +41,7 @@ class OrderPage {
 		if ( $current_user->ID == 0 ) {
 			global $thecartpress;
 			if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) {
-				return;
+				return ;
 			}
 		} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
 			$thecartpress = dirname( dirname( __FILE__ ) );

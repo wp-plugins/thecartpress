@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 07:57+0100\n"
+"POT-Creation-Date: 2013-06-27 12:49+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -88,6 +88,10 @@ msgstr "Impuestos"
 msgid "Related Categories"
 msgstr "Categorías relacionadas"
 
+#: TheCartPress.class.php:484
+msgid "Update Prices"
+msgstr "Actualizar Precios"
+
 #: TheCartPress.class.php:485
 msgid "Order"
 msgstr "Pedido"
@@ -148,55 +152,57 @@ msgstr "Administrador de Tipos de entradas"
 msgid "Manage taxonomies"
 msgstr "Editor de taxonomías"
 
-#: TheCartPress.class.php:503
+#: TheCartPress.class.php:502
 msgid "Post Type Editor"
 msgstr "Editor de tipos de Post"
 
-#: TheCartPress.class.php:504
+#: TheCartPress.class.php:503
 msgid "Taxonomy Editor"
 msgstr "Editor de Taxonomías"
 
-#: TheCartPress.class.php:646
+#: TheCartPress.class.php:639
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress requiere la versión de WordPress 3.0 o superior."
 
-#: TheCartPress.class.php:673
+#: TheCartPress.class.php:666
 msgid "Free transport"
 msgstr "Transporte gratuito"
 
-#: TheCartPress.class.php:684
+#: TheCartPress.class.php:677
 msgid "Cash on delivery"
 msgstr "Contrareembolso"
 
-#: TheCartPress.class.php:724
+#: TheCartPress.class.php:717
 msgid "Checkout notice"
 msgstr "Aviso de compra"
 
-#: TheCartPress.class.php:759
-msgid "Shopping cart"
-msgstr "Carrito"
+#: TheCartPress.class.php:752
+#: widgets/ShoppingCartWidget.class.php:65
+msgid "Shopping Cart"
+msgstr "Carrito de compra"
 
-#: TheCartPress.class.php:772
+#: TheCartPress.class.php:765
 msgid "Checkout"
 msgstr "Pasar por Caja"
 
-#: TheCartPress.class.php:787
+#: TheCartPress.class.php:780
 msgid "My Account"
 msgstr "Mi Cuenta"
 
-#: TheCartPress.class.php:800
+#: TheCartPress.class.php:793
 msgid "Catalogue"
 msgstr "Catálogo"
 
-#: TheCartPress.class.php:812
+#: TheCartPress.class.php:806
+#: TheCartPress.class.php:830
 msgid "Category One"
 msgstr "Categoría Uno"
 
-#: TheCartPress.class.php:813
+#: TheCartPress.class.php:807
 msgid "Category One for Product One"
 msgstr "Categría Uno para Producto Uno"
 
-#: TheCartPress.class.php:820
+#: TheCartPress.class.php:814
 msgid "Product One"
 msgstr "Producto Uno"
 
@@ -397,7 +403,7 @@ msgid "Number of comments to show:"
 msgstr "Número de comentarios a mostrar:"
 
 #: widgets/CommentsCustomPostTypeWidget.class.php:92
-#: widgets/CustomPostTypeListWidget.class.php:106
+#: widgets/CustomPostTypeListWidget.class.php:108
 #: widgets/TaxonomyTreesPostTypeWidget.class.php:133
 #: widgets/TaxonomyCloudsPostTypeWidget.class.php:83
 msgid "Post type"
@@ -407,52 +413,52 @@ msgstr "Tipo de post"
 msgid "Allow to create Custom Post Type Lists"
 msgstr "Permite crear listas de Tipos de Entradas Personalizadas"
 
-#: widgets/CustomPostTypeListWidget.class.php:65
+#: widgets/CustomPostTypeListWidget.class.php:67
 msgid "Custom Post type"
 msgstr "Tipo entrada personalizada"
 
-#: widgets/CustomPostTypeListWidget.class.php:112
-#: widgets/CustomPostTypeListWidget.class.php:127
+#: widgets/CustomPostTypeListWidget.class.php:114
+#: widgets/CustomPostTypeListWidget.class.php:129
 #: widgets/TaxonomyCloudsPostTypeWidget.class.php:92
 msgid "Press save to load the next list"
 msgstr "Pulsa Guardar para cargar la siguiente lista"
 
-#: widgets/CustomPostTypeListWidget.class.php:116
+#: widgets/CustomPostTypeListWidget.class.php:118
 msgid "Use Taxonomy"
 msgstr "Utilizar Taxonomía"
 
-#: widgets/CustomPostTypeListWidget.class.php:120
+#: widgets/CustomPostTypeListWidget.class.php:122
 #: widgets/TaxonomyTreesPostTypeWidget.class.php:143
 #: widgets/TaxonomyCloudsPostTypeWidget.class.php:94
 msgid "Taxonomy"
 msgstr "Taxonomía"
 
-#: widgets/CustomPostTypeListWidget.class.php:122
-#: widgets/CustomPostTypeListWidget.class.php:148
+#: widgets/CustomPostTypeListWidget.class.php:124
+#: widgets/CustomPostTypeListWidget.class.php:150
 msgid "all"
 msgstr "todos"
 
-#: widgets/CustomPostTypeListWidget.class.php:130
+#: widgets/CustomPostTypeListWidget.class.php:132
 msgid "Term"
 msgstr "Términos"
 
-#: widgets/CustomPostTypeListWidget.class.php:146
+#: widgets/CustomPostTypeListWidget.class.php:148
 msgid "Included"
 msgstr "Incluído"
 
-#: widgets/CustomPostTypeListWidget.class.php:171
+#: widgets/CustomPostTypeListWidget.class.php:173
 #: widgets/BrothersListWidget.class.php:108
 #: widgets/AuthorsWidget.class.php:97
 msgid "Order by"
 msgstr "Ordenar por"
 
-#: widgets/CustomPostTypeListWidget.class.php:180
+#: widgets/CustomPostTypeListWidget.class.php:182
 #: widgets/BrothersListWidget.class.php:117
 #: widgets/AuthorsWidget.class.php:110
 msgid "Asc."
 msgstr "Asc."
 
-#: widgets/CustomPostTypeListWidget.class.php:182
+#: widgets/CustomPostTypeListWidget.class.php:184
 #: widgets/BrothersListWidget.class.php:119
 #: widgets/AuthorsWidget.class.php:111
 msgid "Desc."
@@ -461,10 +467,6 @@ msgstr "Desc."
 #: widgets/ShoppingCartWidget.class.php:23
 msgid "Use this widget to add the shopping cart viewer"
 msgstr "Utilizar este widget para añadir el visor del carrito de compra"
-
-#: widgets/ShoppingCartWidget.class.php:65
-msgid "Shopping Cart"
-msgstr "Carrito de compra"
 
 #: widgets/ShoppingCartWidget.class.php:90
 msgid "Hide if empty"
@@ -982,10 +984,14 @@ msgid "Allow to view the Checkout info (for debugging purpose)"
 msgstr "Permitir ver información de compra (sólo para desarrolladores)"
 
 #: widgets/ShoppingCartSummaryWidget.class.php:23
-msgid "Use this widget to add a Shopping cart summary"
+msgid "Use this widget to add a Shopping Cart summary"
 msgstr "Utilizar este widget para añadir un resumen del Carrito de la compra"
 
-#: widgets/ShoppingCartSummaryWidget.class.php:79
+#: widgets/ShoppingCartSummaryWidget.class.php:60
+msgid "Shopping cart"
+msgstr "Carrito"
+
+#: widgets/ShoppingCartSummaryWidget.class.php:80
 msgid "See product count"
 msgstr "Mostrar recuento de productos"
 
@@ -2965,107 +2971,107 @@ msgstr "El listado de impuestos está vacío"
 msgid "Do you really want to delete this tax?"
 msgstr "¿Desea eliminar este impuesto?"
 
-#: admin/OrderEdit.php:31
+#: admin/OrderEdit.php:32
 msgid "Order saved"
 msgstr "Pedido guardado"
 
-#: admin/OrderEdit.php:37
+#: admin/OrderEdit.php:43
 msgid "Order deleted"
 msgstr "Pedido eliminado"
 
-#: admin/OrderEdit.php:39
+#: admin/OrderEdit.php:45
 msgid "return to the list"
 msgstr "volver al listado"
 
-#: admin/OrderEdit.php:49
+#: admin/OrderEdit.php:55
 msgid "Mail sent"
 msgstr "Correo enviado"
 
-#: admin/OrderEdit.php:67
-#: admin/OrderEdit.php:81
+#: admin/OrderEdit.php:73
+#: admin/OrderEdit.php:87
 msgid "Order ID"
 msgstr "Id de pedido"
 
-#: admin/OrderEdit.php:69
+#: admin/OrderEdit.php:75
 msgid "Shipping Address"
 msgstr "Dirección de envío"
 
-#: admin/OrderEdit.php:70
+#: admin/OrderEdit.php:76
 msgid "Billing Address"
 msgstr "Dirección de facturación"
 
-#: admin/OrderEdit.php:72
+#: admin/OrderEdit.php:78
 msgid "Order details"
 msgstr "Detalle de pedidos"
 
-#: admin/OrderEdit.php:73
+#: admin/OrderEdit.php:79
 msgid "Order Setup"
 msgstr "Estado del pedido"
 
-#: admin/OrderEdit.php:85
+#: admin/OrderEdit.php:91
 msgid "Created at"
 msgstr "Creado el"
 
-#: admin/OrderEdit.php:139
-#: admin/OrderEdit.php:200
+#: admin/OrderEdit.php:145
+#: admin/OrderEdit.php:206
 msgid "Telephones"
 msgstr "Teléfonos"
 
-#: admin/OrderEdit.php:237
+#: admin/OrderEdit.php:243
 msgid "User email"
 msgstr "eMail del usuario"
 
-#: admin/OrderEdit.php:243
+#: admin/OrderEdit.php:249
 #, php-format
 msgid "%s&lt;%s&gt; (registered)"
 msgstr "%s&lt;%s&gt; (registrado)"
 
-#: admin/OrderEdit.php:244
+#: admin/OrderEdit.php:250
 #, php-format
 msgid "%s (unregistered)"
 msgstr "%s (sin registrar)"
 
-#: admin/OrderEdit.php:249
+#: admin/OrderEdit.php:255
 msgid "Shipping method"
 msgstr "Métodosde envío"
 
-#: admin/OrderEdit.php:252
+#: admin/OrderEdit.php:258
 msgid "Payment method"
 msgstr "Métodos de pago"
 
-#: admin/OrderEdit.php:261
+#: admin/OrderEdit.php:267
 msgid "Transaction id"
 msgstr "Identificador de transacción"
 
-#: admin/OrderEdit.php:286
+#: admin/OrderEdit.php:292
 msgid "Code tracking"
 msgstr "Código de seguimiento"
 
-#: admin/OrderEdit.php:294
+#: admin/OrderEdit.php:300
 msgid "Customer's comment"
 msgstr "Comentarios del cliente"
 
-#: admin/OrderEdit.php:302
+#: admin/OrderEdit.php:308
 msgid "Internal comment"
 msgstr "Comentario interno"
 
-#: admin/OrderEdit.php:318
+#: admin/OrderEdit.php:324
 msgid "Do you really want to delete this order?"
 msgstr "¿Desea eliminar este pedido?"
 
-#: admin/OrderEdit.php:338
+#: admin/OrderEdit.php:344
 msgid "Send email to billing email"
 msgstr "Enviar correo a la dirección de facturación"
 
-#: admin/OrderEdit.php:342
+#: admin/OrderEdit.php:348
 msgid "Send email to shipping email"
 msgstr "Enviar correo a la dirección de envío"
 
-#: admin/OrderEdit.php:346
+#: admin/OrderEdit.php:352
 msgid "Print"
 msgstr "Imprimir"
 
-#: admin/OrderEdit.php:350
+#: admin/OrderEdit.php:356
 msgid "Send email to me"
 msgstr "Enviarme el  correo"
 
@@ -3515,6 +3521,56 @@ msgstr "Mostrar taxonomías"
 msgid "save"
 msgstr "guardar"
 
+#: admin/PriceUpdate.php:48
+msgid "This product cannot be modified by the user "
+msgstr "Este producto no puede ser modificado por el usuario"
+
+#: admin/PriceUpdate.php:67
+msgid "Prices updated"
+msgstr "Actualización de precios"
+
+#: admin/PriceUpdate.php:73
+msgid "1. Search fields"
+msgstr "1. Buscar campos"
+
+#: admin/PriceUpdate.php:74
+msgid "First, you have to search for products to change. You can set rules to add (or subtract) an amount to the price. \"Search\" button doesn't change prices."
+msgstr "Primero, ebe buscar que productos cambiar. Puede añadir reglas para sumar (o restar) una cantidad a los precios. El botón \"Buscar\" no reemplaza precios."
+
+#: admin/PriceUpdate.php:116
+msgid "Calculate new price"
+msgstr "Calcular nuevo precio"
+
+#: admin/PriceUpdate.php:127
+msgid "fix value"
+msgstr "ajustar valor"
+
+#: admin/PriceUpdate.php:133
+msgid "Prices rounded"
+msgstr "Precios redondeados"
+
+#: admin/PriceUpdate.php:137
+msgid "Only for percentage prices"
+msgstr "Solo para precio por porcentage"
+
+#: admin/PriceUpdate.php:160
+msgid "In this area, you could set new prices. Then, press on \"Update\" button to set these new prices."
+msgstr "En esta zona puede añadir los nuevos precios. Después, pulse en el botón  \"Actualizar\" para cambiar los precios."
+
+#: admin/PriceUpdate.php:165
+#: admin/PriceUpdate.php:173
+msgid "Current Price"
+msgstr "Precio actual"
+
+#: admin/PriceUpdate.php:166
+#: admin/PriceUpdate.php:174
+msgid "New Price"
+msgstr "Nuevo precio"
+
+#: admin/PriceUpdate.php:202
+msgid "No products to update"
+msgstr "Sin productos para actualizar"
+
 #: admin/TaxonomyList.php:30
 msgid "Taxonomy deleted"
 msgstr "Taxonomía eliminada"
@@ -3650,7 +3706,7 @@ msgid "Set Currency settings to use along the Store"
 msgstr "Seleccione las opciones de moneda a usar a lo largo del comercio"
 
 #: settings/FirstTimeSetup.class.php:174
-#: settings/CurrencyCountrySettings.class.php:105
+#: settings/CurrencyCountrySettings.class.php:106
 msgid "Currency layouts"
 msgstr "Diseño Moneda"
 
@@ -3735,28 +3791,48 @@ msgstr "Cponfigure la unidad de peso a usar en todo su sitio Web."
 msgid "You can customize Countries to use across your installation."
 msgstr "Personalizar los países a utilizar en toda la instalación."
 
-#: settings/CurrencyCountrySettings.class.php:84
+#: settings/CurrencyCountrySettings.class.php:85
 msgid "Currency Settings"
 msgstr "Configuración de Moneda"
 
-#: settings/CurrencyCountrySettings.class.php:119
+#: settings/CurrencyCountrySettings.class.php:120
 #, php-format
 msgid "If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files), looking for the literal \"%1$s%2$s (%3$s).\""
 msgstr "Si este valor es dejado en blanco, TheCartPress cogerá el diseño de la configuración de idiomas (ficheros mo), busque el texto \"%1$s%2$s (%3$s).\""
 
-#: settings/CurrencyCountrySettings.class.php:148
+#: settings/CurrencyCountrySettings.class.php:149
 msgid "Use weight"
 msgstr "Usar peso"
 
-#: settings/CurrencyCountrySettings.class.php:152
+#: settings/CurrencyCountrySettings.class.php:153
 msgid "Allows to show or hide weight values in the store"
 msgstr "Permite mostrar u ocultar los valores de peso en toda la tienda"
 
-#: settings/CurrencyCountrySettings.class.php:192
+#: settings/CurrencyCountrySettings.class.php:193
+msgid "Date Settings"
+msgstr "Configuración de Fechas"
+
+#: settings/CurrencyCountrySettings.class.php:201
+msgid "Date format"
+msgstr "Formato de fecha"
+
+#: settings/CurrencyCountrySettings.class.php:204
+msgid "Default format"
+msgstr "Formato por defecto"
+
+#: settings/CurrencyCountrySettings.class.php:216
+msgid "Custom format"
+msgstr "Formato personalizada"
+
+#: settings/CurrencyCountrySettings.class.php:224
+msgid "Format: Y - Year (4 digits), y -> year (2 digits), M - Month (2 digits), d (days)"
+msgstr ""
+
+#: settings/CurrencyCountrySettings.class.php:232
 msgid "Countries Settings"
 msgstr "Configuración de Países"
 
-#: settings/CurrencyCountrySettings.class.php:213
+#: settings/CurrencyCountrySettings.class.php:253
 msgid "Allowed billing countries"
 msgstr "Países de Facturación permitidos"
 
@@ -3784,8 +3860,16 @@ msgid "Set the different URLs for TheCartPress actions"
 msgstr "Establezca las diferentes URLs  para las acciones de TheCartPress"
 
 #: settings/MainSettings.class.php:89
-msgid "Disable Shopping cart"
+msgid "Disable Shopping Cart"
 msgstr "Deshabilitar Carrito"
+
+#: settings/MainSettings.class.php:93
+msgid "To use TheCartPress as a catalog, disabling the Shopping Cart and the Checkout."
+msgstr "Para utilizar TheCartPress como un catálogo, deshabilite el carrito y el Pasar por Caja."
+
+#: settings/MainSettings.class.php:102
+msgid "This value is used in the Continue shopping link into the Shopping Cart page."
+msgstr "Este valor es usado en el botón de 'Continuar comprando' dentro de la página del Carrito de la compra."
 
 #: settings/MainSettings.class.php:113
 msgid "Show the Shopping Cart"
@@ -3829,7 +3913,12 @@ msgstr "Plugin"
 msgid "Instances"
 msgstr "Instancias"
 
-#: settings/PluginsList.class.php:151
+#: settings/PluginsList.class.php:133
+#, php-format
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: settings/PluginsList.class.php:148
 msgid "No plugins"
 msgstr "Sin Plugins"
 
@@ -3846,112 +3935,95 @@ msgstr "Herramientas eMarketing"
 msgid "You can customize eMarketing Tools (BETA)."
 msgstr "Personalice las herramientas de eMarketing (BETA)"
 
-#: checkout/ActiveCheckout.class.php:40
+#: checkout/ActiveCheckout.class.php:43
 msgid "The cart is empty"
 msgstr "El carrito está vacío"
 
-#: checkout/ActiveCheckout.class.php:58
+#: checkout/ActiveCheckout.class.php:61
 msgid "The order has been completed successfully."
 msgstr "El pedido ha sido realizado."
 
-#: checkout/ActiveCheckout.class.php:76
-#: checkout/ActiveCheckout.class.php:80
+#: checkout/ActiveCheckout.class.php:79
+#: checkout/ActiveCheckout.class.php:83
 msgid "Transaction Error. The order has been canceled"
 msgstr "Errores en la transacción. El pedido ha sido cancelado"
 
-#: checkout/ActiveCheckout.class.php:82
+#: checkout/ActiveCheckout.class.php:85
 #, php-format
 msgid "Retry the <a href=\"%s\">checkout process</a>"
 msgstr "Intentar de nuevo <a href=\"%s\">el proceso de pago</a>"
 
-#: checkout/ActiveCheckout.class.php:126
+#: checkout/ActiveCheckout.class.php:129
 #, php-format
 msgid "Order from %s, Order ID: %s"
 msgstr "Compra desde %s (Número de pedido %s)."
 
-#: checkout/TCPBillingBox.class.php:31
-#: checkout/TCPBillingExBox.class.php:31
+#: checkout/TCPBillingBox.class.php:32
 msgid "Billing options"
 msgstr "Datos de Facturación"
 
-#: checkout/TCPBillingBox.class.php:46
-#: checkout/TCPBillingExBox.class.php:60
+#: checkout/TCPBillingBox.class.php:47
 msgid "The billing First name field must be completed"
 msgstr "Debe introducir el campo Nombre de facturación"
 
-#: checkout/TCPBillingBox.class.php:48
-#: checkout/TCPBillingExBox.class.php:63
+#: checkout/TCPBillingBox.class.php:49
 msgid "The billing Last name field must be completed"
 msgstr "Debe introducir el campo Apellido de facturación"
 
-#: checkout/TCPBillingBox.class.php:50
-#: checkout/TCPBillingExBox.class.php:74
+#: checkout/TCPBillingBox.class.php:51
 msgid "The billing Street field must be completed"
 msgstr "Debe de introducir el campo Dirección de facturación"
 
-#: checkout/TCPBillingBox.class.php:52
-#: checkout/TCPBillingExBox.class.php:77
+#: checkout/TCPBillingBox.class.php:53
 msgid "The billing City field must be completed"
 msgstr "El campo ciudad de facturación debe estar completado"
 
-#: checkout/TCPBillingBox.class.php:54
-#: checkout/TCPBillingExBox.class.php:81
+#: checkout/TCPBillingBox.class.php:55
 msgid "The billing Region field must be completed"
 msgstr "Debe introducir el campo Provincia de facturación"
 
-#: checkout/TCPBillingBox.class.php:59
-#: checkout/TCPBillingBox.class.php:75
-#: checkout/TCPBillingExBox.class.php:87
-#: checkout/TCPBillingExBox.class.php:116
+#: checkout/TCPBillingBox.class.php:60
+#: checkout/TCPBillingBox.class.php:76
 msgid "The billing Country is not allowed"
 msgstr "El país de facturación no está permitido"
 
-#: checkout/TCPBillingBox.class.php:63
-#: checkout/TCPBillingExBox.class.php:91
+#: checkout/TCPBillingBox.class.php:64
 msgid "The billing Postcode field must be completed"
 msgstr "Debeintroducir el campo Código postal de facturación"
 
-#: checkout/TCPBillingBox.class.php:65
-#: checkout/TCPBillingExBox.class.php:106
+#: checkout/TCPBillingBox.class.php:66
 msgid "The billing eMail field must be completed"
 msgstr "Debe introducir el campo Email de facturación"
 
-#: checkout/TCPBillingBox.class.php:67
-#: checkout/TCPBillingExBox.class.php:108
+#: checkout/TCPBillingBox.class.php:68
 msgid "The billing eMail field must be a valid email"
 msgstr "Debe introducir un correo válido en el campo Email de facturación"
 
-#: checkout/TCPBillingBox.class.php:139
-#: checkout/TCPBillingExBox.class.php:303
+#: checkout/TCPBillingBox.class.php:140
 msgid "Select billing address:"
 msgstr "Selecciona dirección de facturación:"
 
-#: checkout/TCPBillingBox.class.php:150
-#: checkout/TCPBillingExBox.class.php:314
+#: checkout/TCPBillingBox.class.php:151
 msgid "Billing to the address selected"
 msgstr "Facturar a la dirección seleccionada"
 
-#: checkout/TCPBillingBox.class.php:156
-#: checkout/TCPBillingExBox.class.php:320
+#: checkout/TCPBillingBox.class.php:157
 msgid "New billing address"
 msgstr "Nueva dirección de facturación"
 
-#: checkout/TCPBillingBox.class.php:282
-#: checkout/TCPBillingExBox.class.php:446
+#: checkout/TCPBillingBox.class.php:283
 msgid "First name"
 msgstr "Nombre"
 
-#: checkout/TCPBillingBox.class.php:287
-#: checkout/TCPBillingExBox.class.php:451
+#: checkout/TCPBillingBox.class.php:288
 msgid "Last name"
 msgstr "Apellido"
 
-#: checkout/TCPBillingBox.class.php:297
+#: checkout/TCPBillingBox.class.php:298
 msgid "Tax ID number"
 msgstr "CIF/NIF"
 
-#: checkout/TCPBillingBox.class.php:372
-#: checkout/TCPBillingExBox.class.php:557
+#: checkout/TCPBillingBox.class.php:373
 msgid "Email"
 msgstr "eMail"
 
@@ -3976,19 +4048,23 @@ msgstr "Método de envío: %s"
 msgid "Sending methods"
 msgstr "Métodos de envío"
 
-#: checkout/TCPShippingMethodsBox.class.php:85
+#: checkout/TCPShippingMethodsBox.class.php:97
 msgid "You must select a shipping method"
 msgstr "Debe seleccionar un método de envío"
 
-#: checkout/TCPShippingMethodsBox.class.php:135
+#: checkout/TCPShippingMethodsBox.class.php:147
 msgid "Drag the Shippings plugins to sort them"
 msgstr "Arrastre los métodos de envío para ordenarlos"
 
-#: checkout/TCPShippingMethodsBox.class.php:151
+#: checkout/TCPShippingMethodsBox.class.php:164
+msgid "Hide box, displaying only header, if only one method is applicable"
+msgstr "Ocultar la caja, mostrando únicamente la cabecera, si solo un método es aplicable"
+
+#: checkout/TCPShippingMethodsBox.class.php:165
 msgid "Hide box if only one method is applicable"
 msgstr "Ocultar la caja si únicamente un método es aplicable"
 
-#: checkout/TCPShippingMethodsBox.class.php:221
+#: checkout/TCPShippingMethodsBox.class.php:231
 msgid "There is not applicable methods"
 msgstr "No hay métodos para aplicar"
 
@@ -4049,19 +4125,19 @@ msgstr "Peso"
 msgid "%s (Discount %s)"
 msgstr "%s (Descuentos %s)"
 
-#: checkout/TCPCartBox.class.php:269
+#: checkout/TCPCartBox.class.php:271
 msgid "Discounts"
 msgstr "Descuentos"
 
-#: checkout/TCPCartBox.class.php:284
+#: checkout/TCPCartBox.class.php:287
 msgid "Shipping cost"
 msgstr "Coste de envío"
 
-#: checkout/TCPCartBox.class.php:296
+#: checkout/TCPCartBox.class.php:299
 msgid "Payment cost"
 msgstr "Coste de pago"
 
-#: checkout/TCPCartBox.class.php:303
+#: checkout/TCPCartBox.class.php:306
 msgid "Free shipping"
 msgstr "envío gratuito"
 
@@ -4073,83 +4149,83 @@ msgstr "Contraseña incorrecta"
 msgid "Invalid email"
 msgstr "Dirección de correo incorrecta"
 
-#: checkout/TCPBillingExBox.class.php:67
+#: checkout/TCPBillingExBox.class.php:68
 msgid "The billing company field must be completed"
 msgstr "El campo compañía de facturación debe estar completado"
 
-#: checkout/TCPBillingExBox.class.php:71
+#: checkout/TCPBillingExBox.class.php:72
 msgid "The billing tax id number field must be completed"
 msgstr "El campo de NIF de facturación debe ser completado"
 
-#: checkout/TCPBillingExBox.class.php:95
+#: checkout/TCPBillingExBox.class.php:96
 msgid "The billing telephone 1 field must be completed"
 msgstr "El campo teléfono 1 de facturación debe estar completado"
 
-#: checkout/TCPBillingExBox.class.php:99
+#: checkout/TCPBillingExBox.class.php:100
 msgid "The billing telephone 2 field must be completed"
 msgstr "El campo teléfono 2 de facturación debe estar completado"
 
-#: checkout/TCPBillingExBox.class.php:103
+#: checkout/TCPBillingExBox.class.php:104
 msgid "The billing fax field must be completed"
 msgstr "El campo fax de facturación debe estar completado"
 
-#: checkout/TCPBillingExBox.class.php:178
+#: checkout/TCPBillingExBox.class.php:179
 msgid "Display billing company"
 msgstr "Mostrar compañía de facturación"
 
-#: checkout/TCPBillingExBox.class.php:182
+#: checkout/TCPBillingExBox.class.php:183
 msgid "Required billing company"
 msgstr "Requerir compañía de facturación"
 
-#: checkout/TCPBillingExBox.class.php:186
+#: checkout/TCPBillingExBox.class.php:187
 msgid "Display billing tax id number"
 msgstr "Mostrar el campo NIF de facturación"
 
-#: checkout/TCPBillingExBox.class.php:190
+#: checkout/TCPBillingExBox.class.php:191
 msgid "Required billing tax id number"
 msgstr "Requerir el campo NIF de facturación"
 
-#: checkout/TCPBillingExBox.class.php:194
+#: checkout/TCPBillingExBox.class.php:195
 msgid "Display billing region"
 msgstr "Mostrar región de facturación"
 
-#: checkout/TCPBillingExBox.class.php:198
+#: checkout/TCPBillingExBox.class.php:199
 msgid "Required billing region"
 msgstr "Requerir región de facturación"
 
-#: checkout/TCPBillingExBox.class.php:202
+#: checkout/TCPBillingExBox.class.php:203
 msgid "Display billing telephone 1"
 msgstr "Mostrar teléfono 1 de facturación"
 
-#: checkout/TCPBillingExBox.class.php:206
+#: checkout/TCPBillingExBox.class.php:207
 msgid "Required billing telephone 1"
 msgstr "Requerir teléfono 1 de facturación"
 
-#: checkout/TCPBillingExBox.class.php:210
+#: checkout/TCPBillingExBox.class.php:211
 msgid "Display billing telephone 2"
 msgstr "Mostrar teléfono 2 de facturación"
 
-#: checkout/TCPBillingExBox.class.php:214
+#: checkout/TCPBillingExBox.class.php:215
 msgid "Required billing telephone 2"
 msgstr "Requerir teléfono 2 de facturación"
 
-#: checkout/TCPBillingExBox.class.php:218
+#: checkout/TCPBillingExBox.class.php:219
 msgid "Display billing fax"
 msgstr "Mostrar fax de facturación"
 
-#: checkout/TCPBillingExBox.class.php:222
+#: checkout/TCPBillingExBox.class.php:223
 msgid "Required billing fax"
 msgstr "Requerir fax de facturación"
 
-#: checkout/TCPBillingExBox.class.php:226
+#: checkout/TCPBillingExBox.class.php:227
 msgid "Use as shipping"
 msgstr "Usar igual que envío"
 
-#: checkout/TCPBillingExBox.class.php:228
+#: checkout/TCPBillingExBox.class.php:229
 msgid "This option only must be activated if the shipping box is not used"
 msgstr "Esta opción únicamente debe ser activada si la caja de envío  no es usada"
 
-#: checkout/TCPBillingExBox.class.php:285
+#: checkout/TCPBillingExBox.class.php:286
 msgid "This data will be used also as Shipping."
 msgstr "Esta información será usada también para el envío"
 
@@ -4170,7 +4246,7 @@ msgid "See Login & Guest options"
 msgstr "Ver opciones de Registro y Acceso"
 
 #: checkout/TCPSigninBox.class.php:100
-#: modules/LoginRegister.class.php:251
+#: modules/LoginRegister.class.php:253
 msgid "Login"
 msgstr "Acceder"
 
@@ -4215,7 +4291,7 @@ msgid "Easy access to yours orders history and status"
 msgstr "Fácil acceso a su historial y estado de pedidos"
 
 #: checkout/TCPSigninBox.class.php:136
-#: modules/LoginRegister.class.php:258
+#: modules/LoginRegister.class.php:260
 msgid "Register"
 msgstr "Registrar"
 
@@ -4236,7 +4312,7 @@ msgid "If you prefer this way then press the continue button"
 msgstr "Si prefieres esta modalidad, pulsa el botón siguiente"
 
 #: checkout/TCPSigninBox.class.php:159
-#: checkout/TCPCheckoutManager.class.php:202
+#: checkout/TCPCheckoutManager.class.php:204
 msgid "Continue"
 msgstr "Continuar"
 
@@ -4244,24 +4320,24 @@ msgstr "Continuar"
 msgid "User registration is required. Please, log in or register. "
 msgstr "Es necesario el registro de usuario. Por favor, accede o regístrate."
 
-#: checkout/TCPCheckoutManager.class.php:195
 #: checkout/TCPCheckoutManager.class.php:197
+#: checkout/TCPCheckoutManager.class.php:199
 msgid "Back"
 msgstr "Atrás"
 
-#: checkout/TCPCheckoutManager.class.php:204
+#: checkout/TCPCheckoutManager.class.php:206
 msgid "Purchase"
 msgstr "Comprar"
 
-#: checkout/TCPCheckoutManager.class.php:560
+#: checkout/TCPCheckoutManager.class.php:569
 msgid "Please continue checking out using your chosen payment method."
 msgstr "Por favor, continúe el proceso de compra usando el método de pago seleccionado"
 
-#: checkout/TCPCheckoutManager.class.php:615
+#: checkout/TCPCheckoutManager.class.php:624
 msgid "billing address"
 msgstr "Dirección de facturación"
 
-#: checkout/TCPCheckoutManager.class.php:642
+#: checkout/TCPCheckoutManager.class.php:651
 msgid "shipping address"
 msgstr "Dirección de envío"
 
@@ -4270,15 +4346,15 @@ msgstr "Dirección de envío"
 msgid "Payment method: %s"
 msgstr "Método de pago: %s"
 
-#: checkout/TCPPaymentMethodsBox.class.php:80
+#: checkout/TCPPaymentMethodsBox.class.php:92
 msgid "You must select a payment method"
 msgstr "Debe seleccionar un método de pago"
 
-#: checkout/TCPPaymentMethodsBox.class.php:128
+#: checkout/TCPPaymentMethodsBox.class.php:140
 msgid "Drag the payments plugins to sort them"
 msgstr "Arrastre los métidos de pago para ordenarlos"
 
-#: checkout/TCPCheckoutBox.class.php:39
+#: checkout/TCPCheckoutBox.class.php:48
 msgid "No config settings"
 msgstr "Sin opciones de configuración"
 
@@ -4307,60 +4383,60 @@ msgstr "Enviar Mail de la venta"
 msgid "Allows to send an email to Merchant when customers click on Purchase button."
 msgstr "Permite enviar un correo electrónico al Vendedor cuando los clientes hagan \"Clic\" sobre el botón Comprar."
 
-#: checkout/TCPShippingBox.class.php:31
+#: checkout/TCPShippingBox.class.php:32
 msgid "Shipping options"
 msgstr "Datos de Envío"
 
-#: checkout/TCPShippingBox.class.php:56
+#: checkout/TCPShippingBox.class.php:57
 msgid "The shipping First name field must be completed"
 msgstr "Has de introducir el campo Nombre de envío"
 
-#: checkout/TCPShippingBox.class.php:58
+#: checkout/TCPShippingBox.class.php:59
 msgid "The shipping Last name field must be completed"
 msgstr "Has de introducir el campo Apellido de envío"
 
-#: checkout/TCPShippingBox.class.php:60
+#: checkout/TCPShippingBox.class.php:61
 msgid "The shipping Street field must be completed"
 msgstr "Has de introducir el campo Dirección de envío"
 
-#: checkout/TCPShippingBox.class.php:62
+#: checkout/TCPShippingBox.class.php:63
 msgid "The shipping City field must be completed"
 msgstr "Has de introducir el campo Ciudad de envío"
 
-#: checkout/TCPShippingBox.class.php:64
+#: checkout/TCPShippingBox.class.php:65
 msgid "The shipping Region field must be completed"
 msgstr "Has de introducir el campo Provincia de envío"
 
-#: checkout/TCPShippingBox.class.php:69
-#: checkout/TCPShippingBox.class.php:84
+#: checkout/TCPShippingBox.class.php:70
+#: checkout/TCPShippingBox.class.php:85
 msgid "The shipping Country is not allowed"
 msgstr "El país de envío no está permitido"
 
-#: checkout/TCPShippingBox.class.php:73
+#: checkout/TCPShippingBox.class.php:74
 msgid "The shipping Postcode field must be completed"
 msgstr "Has de introducir el campo Código postal de envío"
 
-#: checkout/TCPShippingBox.class.php:75
+#: checkout/TCPShippingBox.class.php:76
 msgid "The shipping eMail field must be completed"
 msgstr "El mail de envío debe estar completado"
 
-#: checkout/TCPShippingBox.class.php:77
+#: checkout/TCPShippingBox.class.php:78
 msgid "The shipping eMail field must be a valid email"
 msgstr "Has de introducir un correo válido en el campo Email de envío"
 
-#: checkout/TCPShippingBox.class.php:153
+#: checkout/TCPShippingBox.class.php:154
 msgid "Select shipping address:"
 msgstr "Selecciona la dirección de envío:"
 
-#: checkout/TCPShippingBox.class.php:164
+#: checkout/TCPShippingBox.class.php:165
 msgid "Shipping to the address selected"
 msgstr "Enviar a la dirección seleccionada"
 
-#: checkout/TCPShippingBox.class.php:171
+#: checkout/TCPShippingBox.class.php:172
 msgid "Use billing address"
 msgstr "Utilizar dirección de facturación"
 
-#: checkout/TCPShippingBox.class.php:178
+#: checkout/TCPShippingBox.class.php:179
 msgid "New shipping address"
 msgstr "Nueva dirección de envío"
 
@@ -4370,8 +4446,8 @@ msgid "Checkout Editor"
 msgstr "Editor de Caja"
 
 #: checkout/CheckoutEditor.class.php:53
-msgid "You can customize Checkout Steps."
-msgstr "Puede personalizar los pasos del proceso de Caja"
+msgid "Customize your Checkout Steps."
+msgstr "Personalice los pasos del proceso de Caja"
 
 #: checkout/CheckoutEditor.class.php:88
 msgid "Restore default values"
@@ -4382,7 +4458,7 @@ msgid "Activated boxes"
 msgstr "Cajas activadas"
 
 #: checkout/CheckoutEditor.class.php:103
-#: checkout/CheckoutEditor.class.php:139
+#: checkout/CheckoutEditor.class.php:138
 msgid "open"
 msgstr "abrir"
 
@@ -4390,75 +4466,13 @@ msgstr "abrir"
 msgid "Drag and drop to reorder"
 msgstr "Arrastre y suelte para reordenar"
 
-#: checkout/CheckoutEditor.class.php:133
+#: checkout/CheckoutEditor.class.php:132
 msgid "Deactivated boxes"
 msgstr "Desactivas cajas"
 
-#: checkout/CheckoutEditor.class.php:158
+#: checkout/CheckoutEditor.class.php:157
 msgid "Drag and drop to Activated Box area"
 msgstr "Arrastre y suelte para activar una caja"
-
-#: modules/PriceUpdate.class.php:29
-msgid "Update Prices"
-msgstr "Actualizar Precios"
-
-#: modules/PriceUpdate.class.php:39
-msgid "You can execute large process to change Prices."
-msgstr "Ejecutar procesos largos para cambiar precios."
-
-#: modules/PriceUpdate.class.php:62
-msgid "Prices Update"
-msgstr "Actualización de precios"
-
-#: modules/PriceUpdate.class.php:66
-msgid "Prices updated"
-msgstr "Actualización de precios"
-
-#: modules/PriceUpdate.class.php:72
-msgid "1. Search fields"
-msgstr "1. Buscar campos"
-
-#: modules/PriceUpdate.class.php:73
-msgid "First, you have to search for products to change. You can set rules to add (or subtract) an amount to the price. \"Search\" button doesn't change prices."
-msgstr "Primero, ebe buscar que productos cambiar. Puede añadir reglas para sumar (o restar) una cantidad a los precios. El botón \"Buscar\" no reemplaza precios."
-
-#: modules/PriceUpdate.class.php:115
-msgid "Calculate new price"
-msgstr "Calcular nuevo precio"
-
-#: modules/PriceUpdate.class.php:126
-msgid "fix value"
-msgstr "ajustar valor"
-
-#: modules/PriceUpdate.class.php:132
-msgid "Prices rounded"
-msgstr "Precios redondeados"
-
-#: modules/PriceUpdate.class.php:136
-msgid "Only for percentage prices"
-msgstr "Solo para precio por porcentage"
-
-#: modules/PriceUpdate.class.php:160
-msgid "In this area, you could set new prices. Then, press on \"Update\" button to set these new prices."
-msgstr "En esta zona puede añadir los nuevos precios. Después, pulse en el botón  \"Actualizar\" para cambiar los precios."
-
-#: modules/PriceUpdate.class.php:165
-#: modules/PriceUpdate.class.php:173
-msgid "Current Price"
-msgstr "Precio actual"
-
-#: modules/PriceUpdate.class.php:166
-#: modules/PriceUpdate.class.php:174
-msgid "New Price"
-msgstr "Nuevo precio"
-
-#: modules/PriceUpdate.class.php:202
-msgid "No products to update"
-msgstr "Sin productos para actualizar"
-
-#: modules/PriceUpdate.class.php:232
-msgid "This product cannot be modified by the user "
-msgstr "Este producto no puede ser modificado por el usuario"
 
 #: modules/JPlayer.class.php:59
 #: modules/JPlayer.class.php:84
@@ -4555,36 +4569,69 @@ msgstr "El email del Usuario es necesario"
 msgid "User name exists"
 msgstr "El Usuario ya existe"
 
-#: modules/LoginRegister.class.php:267
+#: modules/LoginRegister.class.php:269
 msgid "See all addresses"
 msgstr "Ver todas las direcciones"
 
-#: modules/LoginRegister.class.php:271
+#: modules/LoginRegister.class.php:273
 msgid "See all orders"
 msgstr "Ver todos los pedidos"
 
-#: modules/CopyOrder.class.php:51
+#: modules/Reports.class.php:31
+#: modules/Reports.class.php:54
+msgid "Reports"
+msgstr ""
+
+#: modules/Reports.class.php:40
+msgid "Displys Reports."
+msgstr "Mostrar gráficas"
+
+#: modules/Reports.class.php:70
+msgid "Sales By Month"
+msgstr "Ventas mensuales"
+
+#: modules/CopyOrder.class.php:55
 msgid "Copy to Shopping Cart"
 msgstr "Copiar al Carrito "
 
-#: modules/UIImprovements.class.php:60
+#: modules/CopyOrder.class.php:59
+msgid "Actions"
+msgstr "Acciones"
+
+#: modules/Miranda.class.php:155
+msgid "Activate miranda"
+msgstr "Activadar miranda"
+
+#: modules/Miranda.class.php:159
+msgid "Activate miranda for the next generation of Graphical Interface."
+msgstr "Activar Miranda, la próxima generación de Interfaces gráficos"
+
+#: modules/Miranda.class.php:319
+msgid "Default Settings"
+msgstr "Configuración por defecto"
+
+#: modules/Miranda.class.php:320
+msgid "Payments"
+msgstr "Pagos"
+
+#: modules/UIImprovements.class.php:61
 #, php-format
 msgid "Powered by %s."
 msgstr "Powered by %s."
 
-#: modules/UIImprovements.class.php:70
+#: modules/UIImprovements.class.php:71
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Powered by TheCartPress, eCommerce platform for WordPress"
 
-#: modules/UIImprovements.class.php:78
+#: modules/UIImprovements.class.php:79
 msgid "TheCartPress blog"
 msgstr "El Blog de TheCartPress"
 
-#: modules/UIImprovements.class.php:161
+#: modules/UIImprovements.class.php:162
 msgid "Shopping"
 msgstr "De Compras"
 
-#: modules/UIImprovements.class.php:178
+#: modules/UIImprovements.class.php:179
 msgid "Download area"
 msgstr "Zona de descargas"
 
@@ -4592,190 +4639,191 @@ msgstr "Zona de descargas"
 msgid "Child of TheCartPress"
 msgstr "Hijo de TheCartPress"
 
-#: modules/WishList.class.php:68
-msgid "Enabled Wish List"
-msgstr "Activar Lista de Preferidos"
-
-#: modules/WishList.class.php:85
+#: modules/WishList.class.php:67
+#: modules/WishList.class.php:89
 msgid "WishList"
 msgstr "Lista de preferidos"
 
-#: modules/WishList.class.php:85
+#: modules/WishList.class.php:72
+msgid "Enabled Wish List"
+msgstr "Activar Lista de Preferidos"
+
+#: modules/WishList.class.php:89
 msgid "My wish List"
 msgstr "Mi lista de preferidos"
 
-#: modules/WishList.class.php:95
+#: modules/WishList.class.php:99
 msgid "Add to Wish list"
 msgstr "Añadir a preferidos"
 
-#: modules/CustomTemplates.class.php:69
+#: modules/CustomTemplates.class.php:72
 msgid "Custom templates"
 msgstr "Plantillas personalizadas"
 
-#: modules/CustomTemplates.class.php:83
+#: modules/CustomTemplates.class.php:86
 msgid "Custom Template"
 msgstr "Plantilla personalizada"
 
-#: modules/CustomTemplates.class.php:85
-#: modules/CustomTemplates.class.php:97
+#: modules/CustomTemplates.class.php:88
+#: modules/CustomTemplates.class.php:100
 msgid "Default Template"
 msgstr "Plantilla por defecto"
 
-#: modules/CustomTemplates.class.php:95
+#: modules/CustomTemplates.class.php:98
 #, php-format
 msgid "Custom Template for <strong>%s</strong>"
 msgstr "Plantillas personalizadas para <strong>%s</strong>"
 
-#: modules/CustomTemplates.class.php:104
+#: modules/CustomTemplates.class.php:107
 msgid "No templates"
 msgstr "Sin plantillas"
 
-#: modules/CustomTemplates.class.php:272
+#: modules/CustomTemplates.class.php:275
 msgid "parent theme"
 msgstr "Tema padre"
 
-#: modules/StockManagement.class.php:118
-#: modules/StockManagement.class.php:130
-#: modules/StockManagement.class.php:140
-#: modules/StockManagement.class.php:249
-#: modules/StockManagement.class.php:362
-#: modules/StockManagement.class.php:396
-#: modules/StockManagement.class.php:619
+#: modules/StockManagement.class.php:119
+#: modules/StockManagement.class.php:131
+#: modules/StockManagement.class.php:141
+#: modules/StockManagement.class.php:268
+#: modules/StockManagement.class.php:382
+#: modules/StockManagement.class.php:416
+#: modules/StockManagement.class.php:641
 msgid "Stock"
 msgstr "Stock"
 
-#: modules/StockManagement.class.php:236
+#: modules/StockManagement.class.php:255
 msgid "Update Stock"
 msgstr "Actualizar Stock"
 
-#: modules/StockManagement.class.php:255
+#: modules/StockManagement.class.php:274
 msgid "Stock management"
 msgstr "Gestión de stock"
 
-#: modules/StockManagement.class.php:259
+#: modules/StockManagement.class.php:278
 msgid "Activates the stock management tools"
 msgstr "Activa la herramienta de administración del Stock"
 
-#: modules/StockManagement.class.php:264
+#: modules/StockManagement.class.php:283
 msgid "When is stock adjusted"
 msgstr "Cuadno el stock es ajustado"
 
-#: modules/StockManagement.class.php:268
+#: modules/StockManagement.class.php:287
 msgid "Never automatically adjusted"
 msgstr "Nunca ajustar automaticamente"
 
-#: modules/StockManagement.class.php:270
+#: modules/StockManagement.class.php:289
 msgid "On checkout (default)"
 msgstr "En la Caja (por defecto)"
 
-#: modules/StockManagement.class.php:272
+#: modules/StockManagement.class.php:291
 msgid "On OK from payment gateway"
 msgstr "Cuando el método de pago se realice correctamente"
 
-#: modules/StockManagement.class.php:274
+#: modules/StockManagement.class.php:293
 msgid "Order status set to "
 msgstr "Cambiar el Estado del pedido a"
 
-#: modules/StockManagement.class.php:286
+#: modules/StockManagement.class.php:305
 msgid "Stock limit"
 msgstr "Límite de Stock"
 
-#: modules/StockManagement.class.php:290
+#: modules/StockManagement.class.php:309
 msgid "Sets the upper limit to send emails for low stock"
 msgstr "Establezca el limite superior para enviar email por stock bajo"
 
-#: modules/StockManagement.class.php:295
+#: modules/StockManagement.class.php:314
 msgid "Hide out of stock products"
 msgstr "Ocultar productos fuera de Stock"
 
-#: modules/StockManagement.class.php:299
+#: modules/StockManagement.class.php:318
 msgid "Allows to hide out of Stock products"
 msgstr "Permite ocultar productos fuera de Stock"
 
-#: modules/StockManagement.class.php:356
+#: modules/StockManagement.class.php:376
 msgid " Low Stock"
 msgstr "Stock bajo"
 
-#: modules/StockManagement.class.php:383
+#: modules/StockManagement.class.php:403
 msgid "Low Stock Notice"
 msgstr "Aviso de stock bajo"
 
-#: modules/StockManagement.class.php:389
+#: modules/StockManagement.class.php:409
 msgid "This notice will be showed when the client is going to pay and there is no stock of any product in the cart."
 msgstr "Esta aviso será mostrado cuando el cliente va a pagar y no hay suficientes productos en el stock"
 
-#: modules/StockManagement.class.php:399
-#: modules/StockManagement.class.php:414
+#: modules/StockManagement.class.php:419
+#: modules/StockManagement.class.php:434
 #, php-format
 msgid "Stock management is disabled. See the <a href=\"%s\">settings</a> page to change this value."
 msgstr "La edición de Stock está deshabilitada. visite <a href=\"%s\">la página de configuración</a> para cambiar este valor."
 
-#: modules/StockManagement.class.php:406
+#: modules/StockManagement.class.php:426
 msgid "Use value -1 (or left blank) for stores/products with no stock management."
 msgstr "Use el valor -1 (o deje en blanco) para tiendas o productos sin uso de stock"
 
-#: modules/StockManagement.class.php:411
+#: modules/StockManagement.class.php:431
 msgid "Initial Stock"
 msgstr "Stock inicial"
 
-#: modules/StockManagement.class.php:443
+#: modules/StockManagement.class.php:463
 msgid "See stock notices"
 msgstr "Mostrar avisos de stock"
 
-#: modules/StockManagement.class.php:463
+#: modules/StockManagement.class.php:483
 #, php-format
-msgid "No enough stock for this product. Only %s items available."
+msgid "No enough stock for this product. Only %s available items."
 msgstr "No hay suficiente stock de este producto. Sólo hay disponibles %s artículos."
 
-#: modules/StockManagement.class.php:465
-#: modules/StockManagement.class.php:480
-#: modules/StockManagement.class.php:693
+#: modules/StockManagement.class.php:485
+#: modules/StockManagement.class.php:501
+#: modules/StockManagement.class.php:715
 msgid "Out of stock"
 msgstr "Agotado"
 
-#: modules/StockManagement.class.php:483
+#: modules/StockManagement.class.php:504
 #, php-format
-msgid "No enough stock. Only %s items available."
-msgstr "No hay suficiente stock. Únicamente quedan %s unidades"
+msgid "No enough stock. Only %s available items."
+msgstr "No hay suficiente stock. Únicamente quedan %s unidades."
 
-#: modules/StockManagement.class.php:493
+#: modules/StockManagement.class.php:515
 msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
 msgstr "Usted está intentando pasar por caja, pero en este momento no hay stock para algunos de los productos. Por favor, revise la lista de productos."
 
-#: modules/StockManagement.class.php:521
+#: modules/StockManagement.class.php:543
 msgid "Not enough stock in order at check-out"
 msgstr "No hay suficiente stock para el pedido"
 
-#: modules/StockManagement.class.php:524
+#: modules/StockManagement.class.php:546
 msgid "There was an error when creating the order. Please contact with the seller."
 msgstr "Se ha producido un error al crear el pedido. Póngase en contacto con el vendedor."
 
-#: modules/StockManagement.class.php:546
+#: modules/StockManagement.class.php:568
 msgid "No stock after payment for:"
 msgstr "Sin Stock despues de pagar por:"
 
-#: modules/StockManagement.class.php:576
+#: modules/StockManagement.class.php:598
 msgid "There was an error when creating the order. Seller will contact you regarding your order."
 msgstr "Se ha producido un error al crear el pedido. Póngase en contacto con el vendedor."
 
-#: modules/StockManagement.class.php:607
+#: modules/StockManagement.class.php:629
 msgid "Units in stock"
 msgstr "Unidades en el stock"
 
-#: modules/StockManagement.class.php:611
+#: modules/StockManagement.class.php:633
 msgid "Initial stock"
 msgstr "Stock inicial"
 
-#: modules/StockManagement.class.php:648
-#: modules/StockManagement.class.php:651
+#: modules/StockManagement.class.php:670
+#: modules/StockManagement.class.php:673
 msgid "N/A"
 msgstr "N/A"
 
-#: modules/StockManagement.class.php:671
+#: modules/StockManagement.class.php:693
 msgid "See stock notice"
 msgstr "Ver avisos de stock"
 
-#: modules/StockManagement.class.php:682
+#: modules/StockManagement.class.php:704
 #, php-format
 msgid "No enough stock for some products. Visit the <a href=\"%s\">Shopping Cart</a> to see more details."
 msgstr "No hay suficiente stock para algunos de los productos. Visite el <a href=\"%s\">Carrito</a> para ver más detalles."
@@ -5126,13 +5174,13 @@ msgid "Minimun amount"
 msgstr "Mínima cantidad"
 
 #: plugins/NoCostPayment.class.php:39
-#: plugins/Transference.class.php:32
+#: plugins/Transference.class.php:33
 #: plugins/Remboursement.class.php:32
 msgid "Notice"
 msgstr "Aviso"
 
 #: plugins/NoCostPayment.class.php:46
-#: plugins/Transference.class.php:88
+#: plugins/Transference.class.php:124
 #: plugins/authorize.net/TCPAuthorizeNet.class.php:50
 msgid "Redirect automatically"
 msgstr "Redirigir automaticamente"
@@ -5142,7 +5190,7 @@ msgid "If checked, Checkout page will completed the order. Customers will not ne
 msgstr "Si se marca, la página de Caja completará el pedido. El cliente no necesitará pulsar sobre el botón de \"Fin\"."
 
 #: plugins/NoCostPayment.class.php:72
-#: plugins/Transference.class.php:144
+#: plugins/Transference.class.php:189
 #: plugins/Remboursement.class.php:110
 msgid "Finish"
 msgstr "Finalizar"
@@ -5151,32 +5199,50 @@ msgstr "Finalizar"
 msgid "Local pick up"
 msgstr "Recoger en local"
 
-#: plugins/Transference.class.php:39
-#: plugins/Transference.class.php:128
+#: plugins/Transference.class.php:40
+#: plugins/Transference.class.php:170
 msgid "Owner"
 msgstr "Propietario"
 
-#: plugins/Transference.class.php:46
-#: plugins/Transference.class.php:129
+#: plugins/Transference.class.php:47
+#: plugins/Transference.class.php:171
 msgid "Bank"
 msgstr "Banco"
 
-#: plugins/Transference.class.php:53
-#: plugins/Transference.class.php:130
+#: plugins/Transference.class.php:55
+msgid "Bank account format"
+msgstr ""
+
+#: plugins/Transference.class.php:58
+msgid "Two Fields"
+msgstr "Dos campos"
+
+#: plugins/Transference.class.php:59
+msgid "Four Fields"
+msgstr "Cuatro campos"
+
+#: plugins/Transference.class.php:74
+#: plugins/Transference.class.php:173
+msgid "Bank code"
+msgstr "Código de Banco"
+
+#: plugins/Transference.class.php:81
+#: plugins/Transference.class.php:89
+#: plugins/Transference.class.php:175
 msgid "Account"
 msgstr "Cuenta"
 
-#: plugins/Transference.class.php:74
-#: plugins/Transference.class.php:131
+#: plugins/Transference.class.php:110
+#: plugins/Transference.class.php:176
 msgid "IBAN"
 msgstr "IBAN"
 
-#: plugins/Transference.class.php:81
-#: plugins/Transference.class.php:132
+#: plugins/Transference.class.php:117
+#: plugins/Transference.class.php:177
 msgid "SWIFT"
 msgstr "SWIFT"
 
-#: plugins/Transference.class.php:92
+#: plugins/Transference.class.php:128
 msgid "If checked, Checkout page will redirect automatically to Checkout Ok page. Otherwise, customers must click on \"Finish\" button."
 msgstr "Si se marca, la página de Caja se redirigirá automáticamente a la página de compara realizada con éxito. En caso contrario, el cliente deberá hacer clic en el botón de Finalizar."
 
@@ -5444,57 +5510,57 @@ msgid "Credit card holder"
 msgstr "Titular de la tarjeta"
 
 #: plugins/CardOffLine/CardOffLine.class.php:82
-#: plugins/CardOffLine/CardOffLine.class.php:210
+#: plugins/CardOffLine/CardOffLine.class.php:217
 msgid "Card number"
 msgstr "Número de tarjeta"
 
-#: plugins/CardOffLine/CardOffLine.class.php:94
-#: plugins/CardOffLine/CardOffLine.class.php:217
+#: plugins/CardOffLine/CardOffLine.class.php:98
+#: plugins/CardOffLine/CardOffLine.class.php:224
 msgid "cvc"
 msgstr "cvc"
 
-#: plugins/CardOffLine/CardOffLine.class.php:100
-#: plugins/CardOffLine/CardOffLine.class.php:223
+#: plugins/CardOffLine/CardOffLine.class.php:107
+#: plugins/CardOffLine/CardOffLine.class.php:230
 msgid "Expiration date"
 msgstr "Fecha de caducidad"
 
-#: plugins/CardOffLine/CardOffLine.class.php:103
+#: plugins/CardOffLine/CardOffLine.class.php:110
 msgid "Month"
 msgstr "Mes"
 
-#: plugins/CardOffLine/CardOffLine.class.php:110
+#: plugins/CardOffLine/CardOffLine.class.php:117
 msgid "Year"
 msgstr "Año"
 
-#: plugins/CardOffLine/CardOffLine.class.php:121
+#: plugins/CardOffLine/CardOffLine.class.php:128
 msgid "Card type"
 msgstr "Tipo de tarjeta"
 
-#: plugins/CardOffLine/CardOffLine.class.php:164
+#: plugins/CardOffLine/CardOffLine.class.php:171
 msgid "Wrong Card number"
 msgstr "Número de tarjeta erróneo"
 
-#: plugins/CardOffLine/CardOffLine.class.php:170
+#: plugins/CardOffLine/CardOffLine.class.php:177
 msgid "The field Card Holder must be completed"
 msgstr "Has de rellenar el campo Titular de la tarjeta"
 
-#: plugins/CardOffLine/CardOffLine.class.php:179
+#: plugins/CardOffLine/CardOffLine.class.php:186
 msgid "Send"
 msgstr "Enviar"
 
-#: plugins/CardOffLine/CardOffLine.class.php:191
+#: plugins/CardOffLine/CardOffLine.class.php:198
 msgid "The data from the customer's credit card has been permanently removed"
 msgstr "Se han eliminado definitivamente los datos de la tarjeta de crédito del cliente"
 
-#: plugins/CardOffLine/CardOffLine.class.php:201
+#: plugins/CardOffLine/CardOffLine.class.php:208
 msgid "Credit Card Holder"
 msgstr "Titular de la tarjeta"
 
-#: plugins/CardOffLine/CardOffLine.class.php:234
+#: plugins/CardOffLine/CardOffLine.class.php:241
 msgid "Credit Card Type"
 msgstr "Tipo de tarjeta de crédito"
 
-#: plugins/CardOffLine/CardOffLine.class.php:238
+#: plugins/CardOffLine/CardOffLine.class.php:245
 msgid "Delete card data"
 msgstr "Eliminar datos de tarjeta"
 
@@ -5658,45 +5724,45 @@ msgstr "La propiedad del motor de búsqueda TheCartPress está desactivada"
 msgid "This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s"
 msgstr "Este aviso se añadirá proceso de pago y a los email que se envina a los clientes con la información  relativa a %s"
 
-#: classes/DownloadableProducts.class.php:62
+#: classes/DownloadableProducts.class.php:64
 #, php-format
 msgid "The product is in your <a href=\"%s\">cart</a>"
 msgstr "El producto ya está en su <a href=\"%s\">carrito</a>"
 
-#: classes/DownloadableProducts.class.php:81
-#: classes/DownloadableProducts.class.php:95
+#: classes/DownloadableProducts.class.php:83
+#: classes/DownloadableProducts.class.php:97
 msgid "file upload"
 msgstr "subir archivo"
 
-#: classes/DownloadableProducts.class.php:83
+#: classes/DownloadableProducts.class.php:85
 msgid "files"
 msgstr "archivos"
 
-#: classes/DownloadableProducts.class.php:89
+#: classes/DownloadableProducts.class.php:91
 msgid "Is downloadable"
 msgstr "Es descargable"
 
-#: classes/DownloadableProducts.class.php:106
+#: classes/DownloadableProducts.class.php:104
 msgid "Max. downloads"
 msgstr "Max. de descargas"
 
-#: classes/DownloadableProducts.class.php:108
+#: classes/DownloadableProducts.class.php:106
 msgid "If you don't want to set a number of maximun downloads, set this value to -1."
 msgstr "Si no deseas establecer un número máximo de descargas, introducir valor -1."
 
-#: classes/DownloadableProducts.class.php:112
+#: classes/DownloadableProducts.class.php:110
 msgid "Days to expire"
 msgstr "Días de caducidad"
 
-#: classes/DownloadableProducts.class.php:114
+#: classes/DownloadableProducts.class.php:112
 msgid "Days to expire from the buying day. You can use -1 value."
 msgstr "Días en que caducará a partir del día de compra. Se puede utilizar el valor -1."
 
-#: classes/DownloadableProducts.class.php:170
+#: classes/DownloadableProducts.class.php:172
 msgid "Downloadable files"
 msgstr "Ficheros descargables"
 
-#: classes/DownloadableProducts.class.php:188
+#: classes/DownloadableProducts.class.php:190
 #, php-format
 msgid "Please, to download products visit <a href=\"%s\">My Downloads</a> page (login required)."
 msgstr "Por favor, para descargar los productos visite <a href=\"%s\">Mis descargas</a> (se requiere contraseña)."
@@ -5712,7 +5778,6 @@ msgid "Notice"
 msgstr "Aviso"
 
 #: customposttypes/TemplateCustomPostType.class.php:35
-#: customposttypes/ProductCustomPostType.class.php:56
 msgctxt "product"
 msgid "Add New"
 msgstr "Añadir nuevo"
@@ -5745,154 +5810,154 @@ msgstr "Ningúno encontrado en la papelera"
 msgid "Notices"
 msgstr "Avisos"
 
-#: customposttypes/ProductCustomPostType.class.php:52
+#: customposttypes/ProductCustomPostType.class.php:53
 msgctxt "post type general name"
 msgid "Products"
 msgstr "Productos"
 
-#: customposttypes/ProductCustomPostType.class.php:53
+#: customposttypes/ProductCustomPostType.class.php:54
 msgid "Default post type for TheCartPress"
 msgstr "Tipo de post por defecto para TheCartPress"
 
-#: customposttypes/ProductCustomPostType.class.php:55
+#: customposttypes/ProductCustomPostType.class.php:56
 msgctxt "post type singular name"
 msgid "Product"
 msgstr "Producto"
 
-#: customposttypes/ProductCustomPostType.class.php:58
+#: customposttypes/ProductCustomPostType.class.php:59
 msgid "Edit Product"
 msgstr "Editar producto"
 
-#: customposttypes/ProductCustomPostType.class.php:59
+#: customposttypes/ProductCustomPostType.class.php:60
 msgid "New Product"
 msgstr "Nuevo producto"
 
-#: customposttypes/ProductCustomPostType.class.php:60
+#: customposttypes/ProductCustomPostType.class.php:61
 msgid "View Product"
 msgstr "Ver producto"
 
-#: customposttypes/ProductCustomPostType.class.php:61
+#: customposttypes/ProductCustomPostType.class.php:62
 msgid "Search Products"
 msgstr "Buscar productos"
 
-#: customposttypes/ProductCustomPostType.class.php:62
+#: customposttypes/ProductCustomPostType.class.php:63
 msgid "No products found"
 msgstr "No se han encontrado productos"
 
-#: customposttypes/ProductCustomPostType.class.php:63
+#: customposttypes/ProductCustomPostType.class.php:64
 msgid "No products found in Trash"
 msgstr "Ningún producto en la papelera"
 
-#: customposttypes/ProductCustomPostType.class.php:80
+#: customposttypes/ProductCustomPostType.class.php:81
 msgctxt "taxonomy general name"
 msgid "Categories"
 msgstr "Categorías"
 
-#: customposttypes/ProductCustomPostType.class.php:81
+#: customposttypes/ProductCustomPostType.class.php:82
 msgid "Categories for products"
 msgstr "Categorías para productos"
 
-#: customposttypes/ProductCustomPostType.class.php:83
+#: customposttypes/ProductCustomPostType.class.php:84
 msgctxt "taxonomy singular name"
 msgid "Category"
 msgstr "Categoría"
 
-#: customposttypes/ProductCustomPostType.class.php:102
+#: customposttypes/ProductCustomPostType.class.php:103
 msgid "Products Tags"
 msgstr "Etiquetas de productos"
 
-#: customposttypes/ProductCustomPostType.class.php:103
+#: customposttypes/ProductCustomPostType.class.php:104
 msgid "Tags for products"
 msgstr "Tag para productos"
 
-#: customposttypes/ProductCustomPostType.class.php:105
+#: customposttypes/ProductCustomPostType.class.php:106
 msgid "Products"
 msgstr "Productos"
 
-#: customposttypes/ProductCustomPostType.class.php:106
+#: customposttypes/ProductCustomPostType.class.php:107
 msgid "Search Tags"
 msgstr "Buscar Tags"
 
-#: customposttypes/ProductCustomPostType.class.php:107
+#: customposttypes/ProductCustomPostType.class.php:108
 msgid "All Tags"
 msgstr "Todas los tags"
 
-#: customposttypes/ProductCustomPostType.class.php:108
 #: customposttypes/ProductCustomPostType.class.php:109
+#: customposttypes/ProductCustomPostType.class.php:110
 msgid "Parent Tag"
 msgstr "Tag padre"
 
-#: customposttypes/ProductCustomPostType.class.php:110
+#: customposttypes/ProductCustomPostType.class.php:111
 msgid "Edit Tag"
 msgstr "Editar etiqueta"
 
-#: customposttypes/ProductCustomPostType.class.php:111
+#: customposttypes/ProductCustomPostType.class.php:112
 msgid "Update Tag"
 msgstr "Actualizar etiqueta"
 
-#: customposttypes/ProductCustomPostType.class.php:112
+#: customposttypes/ProductCustomPostType.class.php:113
 msgid "Add New Tag"
 msgstr "Añadir nueva etiqueta"
 
-#: customposttypes/ProductCustomPostType.class.php:113
+#: customposttypes/ProductCustomPostType.class.php:114
 msgid "New Tag Name"
 msgstr "Nombre de la nueva etiqueta"
 
-#: customposttypes/ProductCustomPostType.class.php:116
+#: customposttypes/ProductCustomPostType.class.php:117
 msgid "Tag"
 msgstr "Etiqueta"
 
-#: customposttypes/ProductCustomPostType.class.php:188
+#: customposttypes/ProductCustomPostType.class.php:189
 msgid "Price - Type"
 msgstr "Precio -  Tipo"
 
-#: customposttypes/ProductCustomPostType.class.php:238
+#: customposttypes/ProductCustomPostType.class.php:239
 msgid "View all categories"
 msgstr "Ver todas las categorías"
 
-#: customposttypes/ProductCustomPostType.class.php:248
+#: customposttypes/ProductCustomPostType.class.php:249
 msgid "type:"
 msgstr "tipo:"
 
-#: customposttypes/ProductCustomPostType.class.php:256
+#: customposttypes/ProductCustomPostType.class.php:257
 msgid "SKU:"
 msgstr ""
 
-#: templates/tcp_template.php:107
-#: templates/tcp_template.php:205
+#: templates/tcp_template.php:109
+#: templates/tcp_template.php:207
 #, php-format
 msgid "%1$s%2$s (%3$s)"
-msgstr "%2$s %1$s"
+msgstr "%1$s%2$s (%3$s)"
 
-#: templates/tcp_template.php:557
+#: templates/tcp_template.php:568
 msgid "(Inc. Tax)"
 msgstr "(Inc. Impuestos)"
 
-#: templates/tcp_template.php:558
+#: templates/tcp_template.php:569
 msgid "(No inc. Tax)"
 msgstr "(No inc. Impuestos)"
 
-#: templates/tcp_template.php:959
+#: templates/tcp_template.php:979
 msgid "Completed"
 msgstr "Completado"
 
-#: templates/tcp_template.php:966
+#: templates/tcp_template.php:986
 msgid "Processing"
 msgstr "Procesando"
 
-#: templates/tcp_template.php:972
+#: templates/tcp_template.php:992
 msgid "Pending"
 msgstr "Pendiente"
 
-#: templates/tcp_template.php:978
+#: templates/tcp_template.php:998
 msgid "Cancelled"
 msgstr "Cancelado"
 
-#: templates/tcp_template.php:985
+#: templates/tcp_template.php:1005
 msgid "Suspended"
 msgstr "Suspendido"
 
-#: templates/tcp_template.php:1065
+#: templates/tcp_template.php:1085
 msgid "Simple"
 msgstr "Simple"
 
@@ -5900,7 +5965,7 @@ msgstr "Simple"
 #, php-format
 msgctxt "calendar caption"
 msgid "%1$s %2$s"
-msgstr "%1$s  %2$s"
+msgstr "%1$s %2$s"
 
 #: templates/tcp_calendar_template.php:131
 #: templates/tcp_calendar_template.php:140
@@ -5917,138 +5982,136 @@ msgstr "Añadir al carrito"
 msgid "<span class=\"tcp_units\">%s</span> unit(s) <a href=\"%s\">in your cart</a>"
 msgstr "<span class=\"tcp_units\">%s</span> unidad(es) <a href=\"%s\">en su carrito</a>"
 
-#: templates/tcp_general_template.php:127
+#: templates/tcp_general_template.php:134
 #, php-format
 msgid "Select %s"
 msgstr "Seleccione %s"
 
-#: templates/tcp_general_template.php:296
-#: themes-templates/tcp_shopping_cart_email.php:263
+#: templates/tcp_general_template.php:304
 msgid "Modify"
 msgstr "Cambiar"
 
-#: templates/tcp_general_template.php:305
-#: templates/tcp_general_template.php:332
-#: templates/tcp_general_template.php:394
-#: themes-templates/tcp_shopping_cart_email.php:306
+#: templates/tcp_general_template.php:313
+#: templates/tcp_general_template.php:340
+#: templates/tcp_general_template.php:402
 msgid "Discount"
 msgstr "Descuentos"
 
-#: templates/tcp_general_template.php:321
+#: templates/tcp_general_template.php:329
 msgid "Delete item"
 msgstr "Eliminar artículo"
 
-#: templates/tcp_general_template.php:340
+#: templates/tcp_general_template.php:348
 msgid "shopping cart"
 msgstr "carrito de compra"
 
-#: templates/tcp_general_template.php:345
+#: templates/tcp_general_template.php:353
 msgid "checkout"
 msgstr "comprar"
 
-#: templates/tcp_general_template.php:405
+#: templates/tcp_general_template.php:413
 msgid "N<sup>o</sup> products"
 msgstr "N<sup>o</sup> de productos"
 
-#: templates/tcp_general_template.php:413
+#: templates/tcp_general_template.php:421
 msgid "Weigth"
 msgstr "Peso"
 
-#: templates/tcp_general_template.php:492
+#: templates/tcp_general_template.php:500
 msgid "Unordered"
 msgstr "Sin ordenar"
 
-#: templates/tcp_general_template.php:496
+#: templates/tcp_general_template.php:504
 msgid "Suggested"
 msgstr "Sugerido"
 
-#: templates/tcp_general_template.php:516
+#: templates/tcp_general_template.php:524
 msgid "Popular"
 msgstr "Popular"
 
-#: templates/tcp_general_template.php:520
+#: templates/tcp_general_template.php:528
 msgid "Random"
 msgstr "Aleatorio"
 
-#: templates/tcp_general_template.php:550
+#: templates/tcp_general_template.php:558
 msgid "Sort"
 msgstr "Ordenar"
 
-#: templates/tcp_general_template.php:651
+#: templates/tcp_general_template.php:658
 msgid "Password Lost and Found"
 msgstr "Contraseña perdida y encontrada"
 
-#: templates/tcp_general_template.php:651
+#: templates/tcp_general_template.php:658
 msgid "Lost your password?"
 msgstr "¿No recuerda su Password?"
 
-#: templates/tcp_general_template.php:668
-#: templates/tcp_general_template.php:756
+#: templates/tcp_general_template.php:675
+#: templates/tcp_general_template.php:763
 msgid "Error"
 msgstr ""
 
-#: templates/tcp_general_template.php:695
+#: templates/tcp_general_template.php:702
 msgid "Repeat password"
 msgstr "Repita la contraseña"
 
-#: templates/tcp_general_template.php:714
+#: templates/tcp_general_template.php:721
 msgid "Error has occurred while registering"
 msgstr "Un error ha ocurrido mientras se registraba"
 
-#: templates/tcp_general_template.php:717
+#: templates/tcp_general_template.php:724
 msgid "Registration data has been saved."
 msgstr "Los datos de registro han sido grabados"
 
-#: templates/tcp_general_template.php:739
+#: templates/tcp_general_template.php:746
 msgid "Type your new password again."
 msgstr "Escriba su clave de nuevo"
 
-#: templates/tcp_general_template.php:742
+#: templates/tcp_general_template.php:749
 msgid "E-mail"
 msgstr "eMail"
 
-#: templates/tcp_general_template.php:759
+#: templates/tcp_general_template.php:766
 msgid "The user is already logged"
 msgstr "El usuario está ya \"Logeado\""
 
-#: templates/tcp_general_template.php:826
+#: templates/tcp_general_template.php:833
 msgid "Home"
 msgstr "Inicio"
 
-#: templates/tcp_general_template.php:889
+#: templates/tcp_general_template.php:896
 #, php-format
 msgid "Search results for \"%s\""
 msgstr "Buscar resultados para  \"%s\""
 
-#: templates/tcp_general_template.php:893
+#: templates/tcp_general_template.php:900
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr "Entradas con la etiqueta  \"%s\""
 
-#: templates/tcp_general_template.php:899
+#: templates/tcp_general_template.php:906
 #, php-format
 msgid "Articles posted by %s"
 msgstr "Artículo publicado por %s"
 
-#: templates/tcp_general_template.php:903
+#: templates/tcp_general_template.php:910
 msgid "Error 404"
 msgstr ""
 
-#: templates/tcp_general_template.php:908
+#: templates/tcp_general_template.php:915
 msgid "Page"
 msgstr "Página"
 
-#: templates/tcp_general_template.php:958
+#: templates/tcp_general_template.php:965
 #, php-format
 msgid "Posts by %s"
 msgstr "Publicado por %s"
 
-#: templates/tcp_general_template.php:1068
+#: templates/tcp_general_template.php:1037
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\">Publicado el </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 
-#: templates/tcp_general_template.php:1077
+#: templates/tcp_general_template.php:1046
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">por </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
@@ -6273,28 +6336,29 @@ msgstr "Mostrar Segunda Área Personalizada"
 msgid "See Third Custom Area"
 msgstr "Mostrar Tercer Área Personalizada"
 
-#: themes-templates/tcp_shopping_cart_email.php:126
+#: themes-templates/tcp_shopping_cart_email.php:127
+#: themes-templates/tcp_shopping_cart.php:139
 msgid "Shipping and Billing address"
 msgstr "Dirección de Envío y Facturación"
 
-#: themes-templates/tcp_shopping_cart_email.php:191
+#: themes-templates/tcp_shopping_cart_email.php:192
+#: themes-templates/tcp_shopping_cart.php:34
 msgid "Payment notice"
 msgstr "Aviso de pago"
 
-#: themes-templates/tcp_shopping_cart_email.php:201
+#: themes-templates/tcp_shopping_cart_email.php:202
+#: themes-templates/tcp_shopping_cart.php:40
 msgid "Shipping notice"
 msgstr "Aviso de envío"
 
-#: themes-templates/tcp_shopping_cart_email.php:220
-msgid "Sku"
-msgstr "SKU"
-
-#: themes-templates/tcp_shopping_cart_email.php:249
+#: themes-templates/tcp_shopping_cart_email.php:251
+#: themes-templates/tcp_shopping_cart.php:217
 #, php-format
 msgid "Discount %s"
 msgstr "Descuentos %s"
 
-#: themes-templates/tcp_shopping_cart_email.php:300
+#: themes-templates/tcp_shopping_cart_email.php:302
+#: themes-templates/tcp_shopping_cart.php:268
 msgid "Subtotal"
 msgstr "Subtotal"
 
@@ -6335,67 +6399,70 @@ msgid "%s"
 msgstr ""
 
 #: themes-templates/tcp-twentyeleven/archive-tcp_product.php:46
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:35
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:34
 #: themes-templates/tcp-twentyeleven/taxonomy.php:47
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:33
 #: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:33
 msgid "Nothing Found"
 msgstr "No se ha encontrado nada"
 
 #: themes-templates/tcp-twentyeleven/archive-tcp_product.php:49
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:38
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:39
 #: themes-templates/tcp-twentyeleven/taxonomy.php:51
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:37
 #: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:38
-#: themes-templates/tcp-twentyten/loop-tcp-grid.php:33
 msgid "Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post."
 msgstr "Disculpa, pero no se han encontrado resultados para el archivo solicitado. Tal vez la búsqueda te ayude a encontrar un artículo relacionado."
 
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:146
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:170
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:150
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:163
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:178
 msgid "More <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Más <span class=\"meta-nav\">&rarr;</span>"
 
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:167
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:171
 #, php-format
 msgid "View all products by %s <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Ver todas los productos por %s <span class=\"meta-nav\">&rarr;</span>"
 
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
 msgid "Leave a review"
 msgstr "Dejar un comentario"
 
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
 msgid "<b>1</b> Review"
 msgstr "<b>1</b>  Revisión"
 
-#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
 msgid "<b>%</b> Reviews"
 msgstr "<b>%</b> Revisiones"
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgid "Reply"
 msgstr "Repetir"
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "1"
 msgstr ""
 
-#: themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgctxt "comments number"
 msgid "%"
 msgstr ""
 
 #: themes-templates/tcp-twentytwelve/archive-tcp_product.php:32
-#: themes-templates/tcp-twentyten/archive-tcp_product.php:40
 msgctxt "monthly archives date format"
 msgid "F Y"
 msgstr ""
 
 #: themes-templates/tcp-twentytwelve/archive-tcp_product.php:34
-#: themes-templates/tcp-twentyten/archive-tcp_product.php:42
 msgctxt "yearly archives date format"
 msgid "Y"
 msgstr ""
@@ -6426,6 +6493,15 @@ msgstr "Archivos de Categorías: %s"
 msgid "About %s"
 msgstr "Sobre %s"
 
+#~ msgid "You can execute large process to change Prices."
+#~ msgstr "Ejecutar procesos largos para cambiar precios."
+
+#~ msgid "Prices Update"
+#~ msgstr "Actualización de precios"
+
+#~ msgid "Sku"
+#~ msgstr "SKU"
+
 #~ msgid "Address deleted"
 #~ msgstr "Dirección eliminada"
 
@@ -6455,18 +6531,6 @@ msgstr "Sobre %s"
 #~ "Para escuchar/ver el contenido multimedianecesitará actualizar el "
 #~ "navegador a una versión más reciente o actualice su <a href=\"http://get."
 #~ "adobe.com/flashplayer/\" target=\"_blank\">plugin de Flash</a>."
-
-#~ msgid "Activate miranda"
-#~ msgstr "Activadar miranda"
-
-#~ msgid "Activate miranda for the next generation of Graphical Interface."
-#~ msgstr "Activar Miranda, la próxima generación de Interfaces gráficos"
-
-#~ msgid "Default Settings"
-#~ msgstr "Configuración por defecto"
-
-#~ msgid "Payments"
-#~ msgstr "Pagos"
 #~ msgctxt "min_price to max_price"
 
 #~ msgid "%s to %s"
@@ -6662,9 +6726,6 @@ msgstr "Sobre %s"
 
 #~ msgid "list of Options"
 #~ msgstr "Lista de Opciones"
-
-#~ msgid "options"
-#~ msgstr "opciones"
 
 #~ msgid "Manage options"
 #~ msgstr "Editar opciones"

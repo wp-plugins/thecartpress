@@ -24,7 +24,6 @@
  * @since 1.1.3
  */
 ?>
-
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 
 <?php /* If there are no products to display, such as an empty archive page */ ?>
@@ -34,8 +33,11 @@
 		<header class="entry-header">
 			<h1 class="entry-title"><?php _e( 'Nothing Found', 'twentyeleven' ); ?></h1>
 		</header><!-- .entry-header -->
+
 		<div class="entry-content">
-			<p><?php _e( 'Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'twentyeleven' ); ?></p>
+			<p>
+				<?php _e( 'Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'twentyeleven' ); ?>
+			</p>
 			<?php get_search_form(); ?>
 		</div><!-- .entry-content -->
 	</article><!-- #post-0 -->
@@ -51,6 +53,7 @@ $title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag
 $see_image				= isset( $instance['see_image' . $suffix] ) ? $instance['see_image' . $suffix] : true;
 $image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'thumbnail';
 $see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : true;
+$excerpt_length			= isset( $instance['excerpt_length' . $suffix] ) ? $instance['excerpt_length' . $suffix] : false;
 $see_content			= isset( $instance['see_content' . $suffix] ) ? $instance['see_content' . $suffix] : false;
 $see_price				= isset( $instance['see_price' . $suffix] ) ? $instance['see_price' . $suffix] : false;
 $see_buy_button			= isset( $instance['see_buy_button' . $suffix] ) ? $instance['see_buy_button' . $suffix] : true;
@@ -76,7 +79,7 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 	$title_end_tag = '';
 } ?>
 
-<?php if ( $see_sorting_panel ) cp_the_sort_panel(); ?>
+<?php if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 
 <?php if ( $see_az ) {
 	$see_az_name = isset( $args['widget_id']) ? 'tcp_az_' . $args['widget_id'] : 'tcp_az';
@@ -87,8 +90,9 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 
 <table class="tcp_products_list">
 <tr class="tcp_first-row">
-<?php $tcp_col = 0;
-while ( have_posts() ) : the_post();
+
+<?php $tcp_col = 0; ?>
+<?php while ( have_posts() ) : the_post();
 	if ( $column == 0 ) : $column = $number_of_columns ?>
 	</tr>
 	<tr>

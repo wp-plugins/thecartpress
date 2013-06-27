@@ -35,6 +35,15 @@ class TCPCheckoutBox {
 		return get_class( $this );
 	}
 
+	/**
+	 * To hide the box in the checkout
+	 *
+	 * @since 1.2.9
+	 */
+	function is_hidden() {
+		return false;
+	}
+
 	function show_config_settings() { ?>
 		<p><?php _e( 'No config settings', 'tcp' );?></p><?php
 		return false;

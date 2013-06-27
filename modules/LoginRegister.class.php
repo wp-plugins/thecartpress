@@ -192,24 +192,26 @@ class TCPLoginRegister {
 		} elseif ( ! is_email( $user_email ) ) {
 			$error_msg = __( 'Invalid email', 'tcp' );
 		} else {
-			$error_msg = '';
-			$sanitized_user_login = sanitize_user( $user_name );			
-			$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );
-			if ( is_wp_error( $user_id ) ) {
-				$error_msg = $user_id->get_error_message();
-			} else {
-				$user = new WP_User( $user_id );
-				foreach( $roles as $role )
-					$user->add_role( $role );
-				do_action( 'tcp_register_and_login', $user_id );
-				if ( $locked ) tcp_set_user_locked( $user_id );
-				if ( $redirect && $login && ! $locked ) {
-					$user = wp_signon( array(
-						'user_login'	=> $user_name,
-						'user_password'	=> $user_pass,
-						'remember'		=> false,
-					), false );
-					if ( is_wp_error( $user ) ) $error_msg = $user->get_error_message();
+			$sanitized_user_login = sanitize_user( $user_name );
+			$error_msg = apply_filters( 'tcp_registration_errors', '', $sanitized_user_login, $user_email );
+			if ( strlen( $error_msg ) == 0 ) {
+				$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );
+				if ( is_wp_error( $user_id ) ) {
+					$error_msg = $user_id->get_error_message();
+				} else {
+					$user = new WP_User( $user_id );
+					foreach( $roles as $role )
+						$user->add_role( $role );
+					do_action( 'tcp_register_and_login', $user_id );
+					if ( $locked ) tcp_set_user_locked( $user_id );
+					if ( $redirect && $login && ! $locked ) {
+						$user = wp_signon( array(
+							'user_login'	=> $user_name,
+							'user_password'	=> $user_pass,
+							'remember'		=> false,
+						), false );
+						if ( is_wp_error( $user ) ) $error_msg = $user->get_error_message();
+					}
 				}
 			}
 		}

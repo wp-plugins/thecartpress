@@ -30,9 +30,11 @@ class TCPDownloadableProducts {
 		add_filter( 'tcp_add_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
 		add_filter( 'tcp_modify_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
 		add_filter( 'tcp_shopping_cart_page_units', array( &$this, 'tcp_shopping_cart_page_units' ), 10, 2 );
+		add_action( 'tcp_checkout_end', array( &$this, 'tcp_checkout_end' ), 10, 2 );
 		add_filter( 'tcp_send_order_mail_to_customer_message', array( &$this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
 		add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 		add_action( 'tcp_checkout_ok_footer', array( &$this, 'tcp_checkout_ok_footer' ) );
+		
 	}
 
 	function admin_init() {
@@ -96,12 +98,8 @@ class TCPDownloadableProducts {
 			<?php endif;?>
 			</td>
 		</tr>
-		<?php
-		if ( tcp_is_downloadable( $post_id ) )
-			$style = '';
-		else
-			$style = 'style="display:none;"';
-		?>
+		<?php if ( tcp_is_downloadable( $post_id ) ) $style = '';
+		else $style = 'style="display:none;"'; ?>
 		<tr valign="top" class="tcp_is_downloadable" <?php echo $style;?>>
 			<th scope="row"><label for="tcp_max_downloads"><?php _e( 'Max. downloads', 'tcp' );?>:</label></th>
 			<td><input name="tcp_max_downloads" id="tcp_max_downloads" value="<?php echo (int)get_post_meta( $post_id, 'tcp_max_downloads', true );?>" class="regular-text tcp_count_min" type="text" min="-1" style="width:4em" maxlength="4" />
@@ -142,6 +140,10 @@ class TCPDownloadableProducts {
 	function tcp_shopping_cart_page_units( $html, $order_detail ) {
 		if ( tcp_is_downloadable( $order_detail->get_post_id() ) ) return '1&nbsp;';
 		return $html;
+	}
+
+	function tcp_checkout_end( $order_id, $ok = false ) {
+		if ( $ok ) echo $this->tcp_send_order_mail_to_customer_message( '', $order_id );
 	}
 
 	function tcp_send_order_mail_to_customer_message( $message, $order_id ) {

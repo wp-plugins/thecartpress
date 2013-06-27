@@ -401,6 +401,15 @@ function tcp_get_the_tax_type( $post_id = 0 ) {
 }
 
 /**
+ * Returns the default country
+ * @since 1.2.9
+ */
+function tcp_get_default_country() {
+	global $thecartpress;
+	return $thecartpress->get_setting( 'country', false );
+}
+
+/**
  * Returns the default country to calculate tax
  * @since 1.0.9
  */
@@ -611,6 +620,13 @@ function tcp_the_weight( $before = '', $after = '', $echo = true ) {
 	else return $weight;
 }
 
+/**
+ * @sonce 1.2.9
+ */
+function tcp_get_the_weight_label( $post_id = 0 ) {
+	return sprintf( '%s %s', tcp_get_the_weight( $post_id ), tcp_get_the_unit_weight() );
+}
+
 function tcp_get_the_order( $post_id = 0 ) {
 	return (int)tcp_get_the_meta( 'tcp_order', $post_id );
 }
@@ -712,6 +728,7 @@ function tcp_get_the_thumbnail_src( $post_id = 0, $image_size = 'full' ) {
 function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
 	if ( has_post_thumbnail( $post_id ) ) {
 		$image_size = isset( $args['size'] ) ? $args['size'] : 'thumbnail';
+		 if ( is_array( $image_size ) ) $image_size = $image_size[0];
 		$image_align = isset( $args['align'] ) ? $args['align'] : '';
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
 		$attr = array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
@@ -1129,9 +1146,22 @@ function tcp_checked_multiple( $values, $value, $echo = true ) {
  * @param $number
  * @param $decimals
  * @since 1.0.7
+ * @deprecated
  */
 function tcp_number_format( $number, $decimals = 2 ) {
+	return tcp_format_number( $number, $decimals );
+}
+
+/**
+ * Formats a float number to a string number to show in the screen
+ * 
+ * @param $number
+ * @param $decimals
+ * @since 1.2.9
+ */
+function tcp_format_number( $number, $decimals = 2 ) {
 	global $thecartpress;
+	if ( ! $thecartpress ) return;
 	return number_format( (float)$number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
 }
 
@@ -1141,9 +1171,25 @@ function tcp_number_format( $number, $decimals = 2 ) {
  */
 function tcp_input_number( $input ) {
 	global $thecartpress;
+	if ( ! $thecartpress ) return;
 	$aux = str_replace( $thecartpress->get_setting( 'thousands_separator', ',' ), '', $input );
 	$aux = str_replace( $thecartpress->get_setting( 'decimal_point', '.' ), '.', $aux );
 	return (float)$aux;
+}
+
+/**
+ * Returns a date into the current format
+ * @param $date, date in format y-m-d (default format)
+ * @since 1.2.9
+ */
+function tcp_format_date( $date, $format = false ) {
+	if ( $format === false ) {
+		global $thecartpress;
+		if ( ! $thecartpress ) return;
+		$format = $thecartpress->get_setting( 'date_format', 'y-m-d' );
+	}
+	$date = DateTime::createFromFormat( 'Y-m-d', $date );
+	return $date->format( $format );
 }
 
 /**

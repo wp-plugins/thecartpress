@@ -29,6 +29,7 @@ class ProductCustomPostType {
 
 	function __construct() {
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_filter( 'tcp_custom_values_get_other_values', array( &$this, 'tcp_custom_values_get_other_values' ) );//Supports Custom Values Widget
 	}
 
 	function admin_init() {
@@ -216,8 +217,8 @@ class ProductCustomPostType {
 				if ( strlen( trim( $sku ) ) == 0 ) $sku = __( 'N/A', 'tcp' );
 				echo $sku;
 			} elseif ( 'price' == $column_name ) {
-				//$price = tcp_get_the_price( $post->ID );
-				$price = $post->tcp_price;
+				$price = tcp_get_the_price( $post->ID );
+				//$price = $post->tcp_price;
 				if ( $price > 0 ) echo '<strong>', tcp_format_the_price( $price ), '</strong>';
 				$product_type = tcp_get_the_product_type( $post->ID );
 				$types = tcp_get_product_types();
@@ -324,6 +325,23 @@ class ProductCustomPostType {
 			) );
 		}
 		return $vars;
+	}
+
+	function tcp_custom_values_get_other_values( $other_values ) {
+		$other_values['tcp_price'] = array(
+			'label' => __( 'Price', 'tcp' ),
+			'callback' => 'tcp_get_the_price_label',
+		);
+		$other_values['tcp_sku'] = array(
+			'label' => __( 'SKU', 'tcp' ),
+			'callback' => 'tcp_get_the_SKU',
+		);
+		$other_values['tcp_weight'] = array(
+			'label' => __( 'Weight', 'tcp' ),
+			'callback' => 'tcp_get_the_weight_label',
+		);
+		
+		return $other_values;
 	}
 }
 

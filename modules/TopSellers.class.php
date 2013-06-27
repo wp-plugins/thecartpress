@@ -20,7 +20,7 @@ class TCPTopSellers {
 
 	function __construct() {
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		//add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
 		add_shortcode( 'tcp_total_sales', array( &$this, 'tcp_total_sales' ) );
 	}
 
@@ -35,11 +35,11 @@ class TCPTopSellers {
 		}
 	}
 
-	/*function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
+	function tcp_checkout_create_order_insert_detail( $order_id, $orders_details_id, $post_id, $ordersDetails ) {
 		$n = tcp_get_the_total_sales( $post_id );
 		$n += $ordersDetails['qty_ordered'];
 		update_post_meta( $post_id, 'tcp_total_sales', $n++ );
-	}*/
+	}
 
 	function tcp_total_sales( $atts ) {
 		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );

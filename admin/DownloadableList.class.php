@@ -59,7 +59,7 @@ if ( is_array( $orders ) && count( $orders ) > 0 ) {
 	<table class="tcp_my_downloads">
 	<tbody>
 	<?php foreach( $orders as $order ) : ?>
-		<?php $url = $path;
+		<?php //$url = $path;
 		//$url = add_query_arg( 'order_detail_id', $order->order_detail_id, $url );
 		//$script = "tcp_refresh( '$url' );" ?>
 		<tr>

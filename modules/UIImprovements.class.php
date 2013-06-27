@@ -53,6 +53,7 @@ class UIImprovements {
 		elseif ( $currency == 'VEB' ) return 'BsF';
 		elseif ( $currency == 'IDR' ) return 'Rp.';
 		elseif ( $currency == 'DZD' ) return 'د.ج';
+		elseif ( $currency == 'ILS' ) return '₪';
 		else return $currency;
 	}
 

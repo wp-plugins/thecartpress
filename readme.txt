@@ -3,8 +3,8 @@ Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
-Tested up to: 3.5.1
-Stable Tag: 1.2.8.1
+Tested up to: 3.5.2
+Stable Tag: 1.2.9
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -294,8 +294,15 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 = 1.2.9 =
+* Checkout: Shipping and Payment Methods boxes are able to be hidden if only one method is available (new setting)
 * Shipping cost minor bug fixed
-* Attribute List Widget improvement
+* Attribute List Widget improvements
+* Large shipping and billing fields
+* Download products: the last checkout page display links to downloads products for non registered users
+* Transference: allows two modes: two fields or four fields
+* Custom Templates issue: Templates of categories
+* Front-end support: Copy orders to shopping cart
+* Custom fields: Supports templates. Copy from themes-templates/tcp_custom_field.php to your theme, and modified it.
 * Full internationalization support
 
 = 1.2.8.1 =

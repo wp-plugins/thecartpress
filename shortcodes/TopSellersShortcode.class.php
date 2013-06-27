@@ -15,17 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
-class TopSellersWidget extends CustomListWidget {
+class TCPTopSellersShortcode {
 
-	function TopSellersWidget() {
-		parent::__construct( 'topsellers', __( 'Allow to display Top Sellers', 'tcp' ), 'TCP Top Sellers' );
-	}
-
-	function widget( $args, $instance ) {
-		extract( $args );
+	static function show( $atts ) {
+		$atts = shortcode_atts( array( 'id' => '', 'before_widget' => '', 'after_widget' => '' ), $atts );
 		global $wp_query;
 		$paged = isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
 		$loop_args = array(
@@ -39,15 +33,15 @@ class TopSellersWidget extends CustomListWidget {
 		if ( $see_pagination ) {
 			$loop_args['paged'] = $paged;
 		}
-		$loop_args = apply_filters( 'tcp_top_sellers_widget', $loop_args, $instance );
+		$loop_args = apply_filters( 'tcp_top_sellers_shortcode', $loop_args, $loop_args );
 		$instance['order_type'] = '';
 		$instance['order_desc'] = '';
-		parent::widget( $args, $loop_args, $instance );
-	}
-
-	function form( $instance, $title = '' ) {
-		parent::form( $instance, __( 'Top Seller!', 'tcp') );
-		parent::show_post_type_form( $instance );
+		$customListWidget = new CustomListWidget();
+		ob_start();
+		$customListWidget->widget( $atts, $loop_args, $instance );
+		return ob_get_clean();
 	}
 }
+
+add_shortcode( 'tcp_top_sellers', 'TCPTopSellersShortcode::show' );
 ?>

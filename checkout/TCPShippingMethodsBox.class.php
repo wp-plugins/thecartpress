@@ -42,6 +42,18 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 		return 'shipping-methods';
 	}
 
+	function is_hidden() {
+		$settings = get_option( 'tcp_' . get_class( $this ), array() );
+		$hide_box = isset( $settings['hide_box'] ) ? $settings['hide_box'] : false;
+		if ( count( $this->applicable_sending_plugins ) == 1 ) {
+			$hidden_if_unique = isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false;
+			if ( $hidden_if_unique && $hide_box) return true;
+		} elseif ( count( $this->applicable_sending_plugins ) == 0 && $hide_box ) {
+			return true;
+		}
+		return false;
+	}
+
 	function before_action() {
 		$shoppingCart = TheCartPress::getShoppingCart();		
 		if ( $shoppingCart->isDownloadable() ) {
@@ -146,17 +158,20 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 				<li class="tcp_shipping_item" id="<?php echo $id; ?>"><?php echo $tcp_shipping_plugin->getName(); ?></li>
 		<?php endforeach; ?>
 		</ul>
-		<?php $tcp_hidden_if_unique	= isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false; ?>
+		<?php $tcp_hidden_if_unique	= isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false;
+		$tcp_hide_box = isset( $settings['hide_box'] ) ? $settings['hide_box'] : false; ?>
 		<ul>
-			<li><label><input type="checkbox" value="yes" name="tcp_hidden_if_unique" <?php checked( $tcp_hidden_if_unique ); ?>/> <?php _e( 'Hide box if only one method is applicable', 'tcp' ); ?></label></li>
+			<li><label><input type="checkbox" value="yes" name="tcp_hidden_if_unique" <?php checked( $tcp_hidden_if_unique ); ?>/> <?php _e( 'Hide box, displaying only header, if only one method is applicable', 'tcp' ); ?></label></li>
+			<li><label><input type="checkbox" value="yes" name="tcp_hide_box" <?php checked( $tcp_hide_box ); ?>/> <?php _e( 'Hide box if only one method is applicable', 'tcp' ); ?></label></li>
 		</ul>
 		<?php return true;
 	}
 
 	function save_config_settings() {
 		$settings = array(
-			'sorting'			=> isset( $_REQUEST['tcp_shipping_sorting'] ) ? explode( ',', $_REQUEST['tcp_shipping_sorting'] ) : '',
-			'hidden_if_unique'	=> isset( $_REQUEST['tcp_hidden_if_unique'] ),
+			'sorting' => isset( $_REQUEST['tcp_shipping_sorting'] ) ? explode( ',', $_REQUEST['tcp_shipping_sorting'] ) : '',
+			'hidden_if_unique' => isset( $_REQUEST['tcp_hidden_if_unique'] ),
+			'hide_box' => isset( $_REQUEST['tcp_hide_box'] ),
 		);
 		update_option( 'tcp_' . get_class( $this ), $settings );
 		return true;
@@ -177,11 +192,6 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			$shipping_country = Addresses::getCountryId( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] );
 		}
 		if ( ! $shipping_country ) $shipping_country = '';
-		/*$applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart );
-		$settings = get_option( 'tcp_' . get_class( $this ), array() );
-		$hidden_if_unique = isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false;
-		if ( $hidden_if_unique && count( $this->applicable_sending_plugins ) == 1 ) return true;
-		$this->shipping_sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : '';*/
 		if ( is_array( $this->shipping_sorting ) && count( $this->shipping_sorting ) > 0 ) {
 			usort( $this->applicable_sending_plugins, array( $this, 'sort_plugins' ) );
 		} ?>

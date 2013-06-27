@@ -17,14 +17,18 @@
  */
 
 class TCPCopyOrder {
-	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
+	static function initModule() {
+		add_action( 'init', array( __CLASS__, 'init' ) );
 		if ( is_admin() ) {
-			add_action( 'tcp_admin_order_submit_area', array( &$this, 'tcp_admin_order_submit_area' ) );
+			add_action( 'tcp_admin_order_submit_area', array( __CLASS__, 'tcp_admin_order_submit_area' ) );
 		}
+		//Front end support
+		add_filter( 'tcp_front_end_orders_columns', array( __CLASS__, 'tcp_front_end_orders_columns' ) );
+		add_action( 'tcp_front_end_orders_cells', array( __CLASS__, 'tcp_front_end_orders_cells' ) );
+		add_action( 'tcp_front_end_orders_order_view', array( __CLASS__, 'tcp_front_end_orders_cells' ) );
 	}
 
-	function init() {
+	static function init() {
 		if ( isset( $_REQUEST['tcp_copy_order_to_shopping_cart'] ) ) {
 			$order_id = isset( $_REQUEST['tcp_copy_order_order_id'] ) ? $_REQUEST['tcp_copy_order_order_id'] : 0;
 			$current_user = wp_get_current_user();
@@ -46,11 +50,24 @@ class TCPCopyOrder {
 		}
 	}
 
-	function tcp_admin_order_submit_area( $order_id ) { ?>
+	static function tcp_admin_order_submit_area( $order_id ) { ?>
 		<input type="hidden" name="tcp_copy_order_order_id" value="<?php echo $order_id; ?>" />
-		<input name="tcp_copy_order_to_shopping_cart" value="<?php _e( 'Copy to Shopping Cart', 'tcp' ); ?>" type="submit" class="button-secondary" />
+		<input name="tcp_copy_order_to_shopping_cart" value="<?php _e( 'Copy to Shopping Cart', 'tcp' ); ?>" type="submit" class="btn btn-success" />
+	<?php }
+
+	static function tcp_front_end_orders_columns( $cols ) {
+		$cols[] = __( 'Actions', 'tcp-fe' );
+		return $cols;
+	}
+
+	static function tcp_front_end_orders_cells( $order_id) { ?>
+		<td class="tcp_copy_order">
+		<form method="post" action="<?php tcp_the_shopping_cart_url(); ?>">
+		<?php TCPCopyOrder::tcp_admin_order_submit_area( $order_id ); ?>
+		</form>
+		</td>
 	<?php }
 }
 
-new TCPCopyOrder();
+TCPCopyOrder::initModule();
 ?>

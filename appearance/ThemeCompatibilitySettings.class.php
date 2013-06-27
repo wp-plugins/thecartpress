@@ -245,7 +245,7 @@ $image_link_excerpt		= $thecartpress->get_setting( 'image_link_excerpt' . $suffi
 			<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
 			<?php if ( $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, false ) !== false ) : ?> style="font-weight: bold;"<?php endif; ?>
 			>
-			<?php echo $post_type->labels->singular_name; ?>
+			<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
 			</option>
 			<?php endforeach; ?>
 		</select>

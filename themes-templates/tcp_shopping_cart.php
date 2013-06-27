@@ -20,7 +20,7 @@ if ( ! isset( $source ) ) return;
 
 if ( $source->see_address() ) : ?>
 	<div class="row-fluid">
-		<dl id="tcp_order_id" class="dl-horizontal span5 well">
+		<dl id="tcp_order_id" class="dl-horizontal span12 well">
 			<dt class="tcp_order_id_row" scope="row" ><?php _e( 'Order ID', 'tcp' ); ?>:</dt>
 			<dd class="tcp_order_id_value tcp_order_id"><?php echo $source->get_order_id(); ?></dd>
 			<dt class="tcp_order_id_row" scope="row" ><?php _e( 'Created at', 'tcp' ); ?>:</dt>
@@ -185,7 +185,7 @@ if ( $source->see_address() ) : ?>
 		<th class="tcp_cart_name" ><?php _e( 'Name', 'tcp' ); ?></th>
 		<th class="tcp_cart_price" ><?php _e( 'Price', 'tcp' ); ?></th>
 		<th class="tcp_cart_units" ><?php _e( 'Units', 'tcp' ); ?></th>
-		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku" ><?php _e( 'Sku', 'tcp' ); ?></th><?php endif; ?>
+		<?php if ( $source->see_sku() ) : ?><th class="tcp_cart_sku" ><?php _e( 'SKU', 'tcp' ); ?></th><?php endif; ?>
 		<?php if ( $source->see_weight() ) : ?><th class="tcp_cart_weight" ><?php _e( 'Weight', 'tcp' ); ?></th><?php endif; ?>
 		<?php if ( $source->see_tax() ) : ?><th class="tcp_cart_tax" ><?php _e( 'Tax', 'tcp' ); ?></th><?php endif; ?>
 		<th class="tcp_cart_total" ><?php _e( 'Total', 'tcp' ); ?></th>

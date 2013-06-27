@@ -327,6 +327,18 @@ class TCP_DetailSourceDB implements TCP_IDetailSource {
 		$this->detail = $detail;
 	}
 
+	//Since 1.2.9
+	public function get_order_id() {
+		if ( $this->detail ) return $this->detail->order_id;
+		else return false;
+	}
+
+	//Since 1.2.9
+	public function get_order_detail_id() {
+		if ( $this->detail ) return $this->detail->order_detail_id;
+		else return false;
+	}
+
 	public function get_post_id() {
 		if ( $this->detail ) return $this->detail->post_id;
 		else return false;

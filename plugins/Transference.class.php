@@ -26,7 +26,8 @@ class Transference extends TCP_Plugin {
 		return 'Transference payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function showEditFields( $data ) { ?>
+	function showEditFields( $data ) { 
+		$bank_format = isset( $data['bank_format'] ) ? $data['bank_format'] : 'four-fields'; ?>
 	<tr valign="top">
 		<th scope="row">
 			<label for="notice"><?php _e( 'Notice', 'tcp' ); ?>:</label>
@@ -48,7 +49,42 @@ class Transference extends TCP_Plugin {
 			<input type="text" id="bank" name="bank" size="40" maxlength="50" value="<?php echo isset( $data['bank'] ) ? $data['bank'] : ''; ?>" />
 		</td>
 	</tr>
+
 	<tr valign="top">
+		<th scope="row">
+			<label for="bank_format"><?php _e( 'Bank account format', 'tcp' ); ?>:</label>
+		</th><td>
+			<select id="bank_format" name="bank_format">
+				<option value="two-fields" <?php selected( $bank_format, 'two-fields' ); ?> ><?php _e( 'Two Fields', 'tcp' ); ?></option>
+				<option value="four-fields" <?php selected( $bank_format, 'four-fields' ); ?> ><?php _e( 'Four Fields', 'tcp' ); ?></option>
+			</select>
+			<script>
+			jQuery( '#bank_format' ).on( 'change', function() {
+				var sel = jQuery( '#bank_format' ).val();
+				jQuery( '.bank-fields' ).hide();
+				jQuery( '.' + sel ).show( 200 );
+				return false;
+			});
+			</script>
+		</td>
+	</tr>
+
+	<tr valign="top" class="bank-fields two-fields" <?php if ( $bank_format == 'four-fields' ) : ?>style="display:none;"<?php endif; ?>>
+		<th scope="row">
+			<label for="bank_code"><?php _e( 'Bank code', 'tcp' ); ?>:</label>
+		</th><td>
+			<input type="text" id="bank_code" name="bank_code" size="20" maxlength="20" value="<?php echo isset( $data['bank_code'] ) ? $data['bank_code'] : ''; ?>" />	
+		</td>
+	</tr>
+	<tr valign="top" class="bank-fields two-fields" <?php if ( $bank_format == 'four-fields' ) : ?>style="display:none;"<?php endif; ?>>
+		<th scope="row">
+			<label for="account"><?php _e( 'Account', 'tcp' ); ?>:</label>
+		</th><td>
+			<input type="text" id="account" name="account" size="20" maxlength="20" value="<?php echo isset( $data['account'] ) ? $data['account'] : ''; ?>" />	
+		</td>
+	</tr>
+
+	<tr valign="top" class="bank-fields four-fields" <?php if ( $bank_format == 'two-fields' ) : ?>style="display:none;"<?php endif; ?>>
 		<th scope="row">
 			<label for="account"><?php _e( 'Account', 'tcp' ); ?>:</label>
 		</th><td><?php
@@ -98,12 +134,18 @@ class Transference extends TCP_Plugin {
 		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
 		tcp_register_string( 'TheCartPress', 'pay_Transference-notice', $data['notice'] );
 		$data['owner'] = isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
+		$data['bank_format'] = isset( $_REQUEST['bank_format'] ) ? $_REQUEST['bank_format'] : 'four-fields';
+		$data['bank_code'] = isset( $_REQUEST['bank_code'] ) ? $_REQUEST['bank_code'] : '';
 		$data['bank'] = isset( $_REQUEST['bank'] ) ? $_REQUEST['bank'] : '';
-		$account1 = isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
-		$account2 = isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
-		$account3 = isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
-		$account4 = isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
-		$data['account'] = $account1 . $account2 . $account3 . $account4;
+		if ( $data['bank_format'] == 'four-fields' ) {
+			$account1 = isset( $_REQUEST['account1'] ) ? $_REQUEST['account1'] : '';
+			$account2 = isset( $_REQUEST['account2'] ) ? $_REQUEST['account2'] : '';
+			$account3 = isset( $_REQUEST['account3'] ) ? $_REQUEST['account3'] : '';
+			$account4 = isset( $_REQUEST['account4'] ) ? $_REQUEST['account4'] : '';
+			$data['account'] = $account1 . $account2 . $account3 . $account4;
+		} else {
+			$data['account'] = isset( $_REQUEST['account'] ) ? $_REQUEST['account'] : '';;
+		}
 		$data['iban'] = isset( $_REQUEST['iban'] ) ? $_REQUEST['iban'] : '';
 		$data['swift'] = isset( $_REQUEST['swift'] ) ? $_REQUEST['swift'] : '';
 		$data['redirect'] = isset( $_REQUEST['redirect'] );
@@ -127,9 +169,12 @@ class Transference extends TCP_Plugin {
 		<table class="tcp-bank-account">
 			<tr><th scope="row"><?php _e( 'Owner', 'tcp' ); ?>: </th><td><?php echo $data['owner']; ?></td></tr>
 			<tr><th scope="row"><?php _e( 'Bank', 'tcp' ); ?>: </th><td><?php echo $data['bank']; ?></td></tr>
+			<?php if ( $data['bank_format'] == 'two-fields' ) : ?>
+			<tr><th scope="row"><?php _e( 'Bank code', 'tcp' ); ?>: </th><td><?php echo $data['bank_code']; ?></td></tr>
+			<?php endif; ?>
 			<tr><th scope="row"><?php _e( 'Account', 'tcp' ); ?>: </th><td><?php echo $data['account']; ?></td></tr>
-			<tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr>
-			<tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr>
+			<?php if ( strlen( $data['iban'] ) > 0 ) : ?><tr><th scope="row"><?php _e( 'IBAN', 'tcp' ); ?>: </th><td><?php echo $data['iban']; ?></td></tr><?php endif; ?>
+			<?php if ( strlen( $data['swift'] ) > 0 ) : ?><tr><th scope="row"><?php _e( 'SWIFT', 'tcp' ); ?>: </th><td><?php echo $data['swift']; ?></td></tr><?php endif; ?>
 		</table>
 		<?php return ob_get_clean();
 	}

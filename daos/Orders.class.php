@@ -52,13 +52,13 @@ class Orders {
 			`comment`				text				NOT NULL,
 			`comment_internal`		text				NOT NULL default \'\',
 			`code_tracking`			varchar(50)			NOT NULL,
-			`shipping_firstname`	varchar(100)		NOT NULL,
-			`shipping_lastname`		varchar(100)		NOT NULL,
-			`shipping_company`		varchar(100)		NOT NULL,
-			`shipping_street`		varchar(100)		NOT NULL,
-			`shipping_city`			varchar(100)		NOT NULL,
+			`shipping_firstname`	varchar(255)		NOT NULL,
+			`shipping_lastname`		varchar(255)		NOT NULL,
+			`shipping_company`		varchar(255)		NOT NULL,
+			`shipping_street`		varchar(255)		NOT NULL,
+			`shipping_city`			varchar(255)		NOT NULL,
 			`shipping_city_id`		char(4)				NOT NULL DEFAULT \'\',
-			`shipping_region`		varchar(100)		NOT NULL,
+			`shipping_region`		varchar(255)		NOT NULL,
 			`shipping_region_id`	char(2)				NOT NULL DEFAULT \'\',
 			`shipping_postcode`		char(10)			NOT NULL,
 			`shipping_country`		varchar(50)			NOT NULL,
@@ -67,17 +67,17 @@ class Orders {
 			`shipping_telephone_2`	varchar(50)			NOT NULL,
 			`shipping_fax`			varchar(50)			NOT NULL,
 			`shipping_email`		varchar(255)		NOT NULL,
-			`billing_firstname`		varchar(50)			NOT NULL,
-			`billing_lastname`		varchar(100)		NOT NULL,
-			`billing_company`		varchar(50)			NOT NULL,
+			`billing_firstname`		varchar(255)			NOT NULL,
+			`billing_lastname`		varchar(255)		NOT NULL,
+			`billing_company`		varchar(255)			NOT NULL,
 			`billing_tax_id_number`	varchar(15)			NOT NULL,
-			`billing_street`		varchar(100)		NOT NULL,
-			`billing_city`			varchar(100)		NOT NULL default 0,
+			`billing_street`		varchar(255)		NOT NULL,
+			`billing_city`			varchar(255)		NOT NULL default 0,
 			`billing_city_id`		char(4)				NOT NULL DEFAULT \'\',
-			`billing_region`		varchar(100)		NOT NULL,
+			`billing_region`		varchar(255)		NOT NULL,
 			`billing_region_id`		char(2)				NOT NULL DEFAULT \'\',
 			`billing_postcode`		char(10)			NOT NULL,
-			`billing_country`		varchar(50)			NOT NULL,
+			`billing_country`		varchar(255)			NOT NULL,
 			`billing_country_id`	char(2)				NOT NULL,
 			`billing_telephone_1`	varchar(50)			NOT NULL,
 			`billing_telephone_2`	varchar(50)			NOT NULL,
@@ -255,6 +255,7 @@ class Orders {
 	static function quickEdit( $order_id, $new_status, $new_code_tracking ) {
 		$order_id = apply_filters( 'tcp_order_quick_edit_before', $order_id, $new_status, $new_code_tracking );
 		if ( $order_id === false ) return false;
+		do_action( 'tcp_order_quick_edit', $order_id, $new_status, $new_code_tracking );
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
@@ -264,45 +265,47 @@ class Orders {
 			array(
 				'order_id'		=> $order_id,
 			), 
-			array( '%s', '%s', '%s' ), array( '%d' ) );
-		do_action( 'tcp_order_quick_edit', $order_id, $new_status, $new_code_tracking );
+			array( '%s', '%s', '%s' ), array( '%d' )
+		);
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
 	static function edit( $order_id, $new_status, $new_code_tracking, $comment, $internal_comment ) {
 		$order_id = apply_filters( 'tcp_order_edit_before', $order_id, $new_status, $new_code_tracking, $comment, $internal_comment );
 		if ( $order_id === false ) return false;
+		do_action( 'tcp_order_edit_after', $order_id, $new_status, $new_code_tracking, $comment, $internal_comment );
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
-				'status'			=> $new_status,
-				'code_tracking'		=> $new_code_tracking,
-				'comment'			=> $comment,
-				'comment_internal'	=> $internal_comment,
+				'status' => $new_status,
+				'code_tracking' => $new_code_tracking,
+				'comment' => $comment,
+				'comment_internal' => $internal_comment,
 			),
 			array(
-				'order_id'		=> $order_id,
+				'order_id' => $order_id,
 			), 
-			array( '%s', '%s', '%s', '%s', ), array( '%d' ) );
-		do_action( 'tcp_order_edit_after', $order_id, $new_status, $new_code_tracking, $comment, $internal_comment );
+			array( '%s', '%s', '%s', '%s', ), array( '%d' )
+		);
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
 	static function editStatus( $order_id, $new_status, $transaction_id = '', $internal_comment = '' ) {
 		$order_id = apply_filters( 'tcp_order_edit_status_before', $order_id, $new_status, $transaction_id, $internal_comment );
 		if ( $order_id === false ) return false;
+		do_action( 'tcp_order_edit_status_after', $order_id, $new_status, $transaction_id, $internal_comment );
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_orders',
 			array(
-				'status'			=> $new_status,
-				'transaction_id'	=> $transaction_id,
-				'comment_internal'	=> $internal_comment,
+				'status' => $new_status,
+				'transaction_id' => $transaction_id,
+				'comment_internal' => $internal_comment,
 			),
 			array(
-				'order_id'		=> $order_id,
+				'order_id' => $order_id,
 			), 
-			array( '%s', '%s', '%s' ), array( '%d' ) );
-		do_action( 'tcp_order_edit_status_after', $order_id, $new_status, $transaction_id, $internal_comment );
+			array( '%s', '%s', '%s' ), array( '%d' )
+		);
 		Orders::edit_downloadable_details( $order_id, $new_status );
 	}
 
@@ -505,6 +508,22 @@ class Orders {
 		} else {
 			return false;
 		}
+	}
+
+	//Reports
+	static function getOrdersByYear( $year ) {
+		global $wpdb;
+		$sql = 'select o.order_id, od.order_detail_id, created_at, price, tax,
+				qty_ordered, shipping_amount, discount_amount,
+				payment_amount from ' . $wpdb->prefix . 'tcp_orders o left join ' .
+				$wpdb->prefix . 'tcp_orders_details od on o.order_id = od.order_id where 1=1
+				and status = \'COMPLETED\'';
+				if ( strlen( $year ) > 0 ) {
+					$sql .= $wpdb->prepare( ' and o.created_at >= %s', $year . '-01-01' );
+					$sql .= $wpdb->prepare( ' and o.created_at <= %s', $year . '-12-31' );
+				}
+		$sql .= ' order by created_at desc';
+		return apply_filters( 'tcp_getOrdersByMonth', $wpdb->get_results( $sql ), $year );
 	}
 }
 ?>

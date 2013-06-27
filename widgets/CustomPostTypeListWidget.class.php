@@ -36,6 +36,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
 			$taxonomy = ( $instance['taxonomy'] == 'category' ) ? 'category_name' : $instance['taxonomy'];
 			if ( strlen( $taxonomy ) > 0 ) {
+				$term = get_term_by( 'slug', $instance['term'], $instance['taxonomy'] );
+				$instance['term'] = $term->slug;
 				$loop_args[$taxonomy] = $instance['term'];
 			}
 		} else {

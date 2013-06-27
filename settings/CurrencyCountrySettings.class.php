@@ -68,16 +68,17 @@ class TCPCurrencyCountrySettings {
 <?php endif; ?>
 
 <?php global $thecartpress;
-$currency			= $thecartpress->get_setting( 'currency', 'EUR' );
-$currency_layout	= $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$s)' );
-$decimal_currency	= $thecartpress->get_setting( 'decimal_currency', 2 );
-$decimal_point		= $thecartpress->get_setting( 'decimal_point', '.' );
+$currency = $thecartpress->get_setting( 'currency', 'EUR' );
+$currency_layout = $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$s)' );
+$decimal_currency = $thecartpress->get_setting( 'decimal_currency', 2 );
+$decimal_point = $thecartpress->get_setting( 'decimal_point', '.' );
 $thousands_separator= $thecartpress->get_setting( 'thousands_separator', ',' );
-$use_weight			= $thecartpress->get_setting( 'use_weight', true );
-$unit_weight		= $thecartpress->get_setting( 'unit_weight', 'gr' );
-$country			= $thecartpress->get_setting( 'country', '' );
-$billing_isos		= $thecartpress->get_setting( 'billing_isos', array() );
-$shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
+$use_weight = $thecartpress->get_setting( 'use_weight', true );
+$unit_weight = $thecartpress->get_setting( 'unit_weight', 'gr' );
+$date_format = $thecartpress->get_setting( 'date_format', 'y-m-d' );
+$country = $thecartpress->get_setting( 'country', '' );
+$billing_isos = $thecartpress->get_setting( 'billing_isos', array() );
+$shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 <form method="post" action="">
 
@@ -189,6 +190,45 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 </div>
 
+<h3><?php _e( 'Date Settings', 'tcp'); ?></h3>
+
+<div id="excerpt_content" class="postbox">
+
+<table class="form-table">
+<tbody>
+<tr valign="top">
+	<th scope="row">
+		<label for="date_format"><?php _e( 'Date format', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<label><?php _e( 'Default format', 'tcp' ); ?>: <select id="date_format_predesign">
+		<?php $date_format_predesigns = array(
+			'Y-m-d' => 'Y-m-d',
+			'd-m-Y' => 'd-m-Y',
+			'd-M-Y' => 'd-M-Y',
+			'M d, Y' => 'M d, Y',
+		);
+		foreach( $date_format_predesigns as $key => $date_format_predesign ) : ?>
+			<option value="<?php echo $key; ?>" <?php selected( $key, $date_format ); ?>><?php echo $date_format_predesign; ?></option>
+		<?php endforeach; ?>
+		</select></label>
+		<br/>
+		<label><?php _e( 'Custom format', 'tcp' ); ?>: <input type="text" id="date_format" name="date_format" class="input-medium" value="<?php echo $date_format; ?>"/></label>
+		<script>
+		jQuery( '#date_format_predesign' ).on( 'change', function( e ) {
+			var format = jQuery( this ).val();
+			jQuery( '#date_format' ).val( format );
+			return false;
+		} );
+		</script>
+		<p class="description"><?php _e( 'Format: Y - Year (4 digits), y -> year (2 digits), M - Month (2 digits), d (days)', 'tcp' ); ?></p>
+	</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
 <h3><?php _e( 'Countries Settings', 'tcp'); ?></h3>
 
 <div id="excerpt_content" class="postbox">
@@ -294,13 +334,14 @@ $shipping_isos		= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_currency_settings' );
 		$settings = get_option( 'tcp_settings' );
-		$settings['currency']				= isset( $_POST['currency'] ) ? $_POST['currency'] : 'EUR';		
-		$settings['currency_layout']		= isset( $_POST['currency_layout'] ) ? $_POST['currency_layout'] : '%1$s%2$s (%3$s)';
-		$settings['decimal_currency']		= isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
-		$settings['decimal_point']			= isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
-		$settings['thousands_separator']	= isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
-		$settings['use_weight']				= isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;
-		$settings['unit_weight']			= isset( $_POST['unit_weight'] ) ? $_POST['unit_weight'] : 'gr';
+		$settings['currency'] = isset( $_POST['currency'] ) ? $_POST['currency'] : 'EUR';		
+		$settings['currency_layout'] = isset( $_POST['currency_layout'] ) ? $_POST['currency_layout'] : '%1$s%2$s (%3$s)';
+		$settings['decimal_currency'] = isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
+		$settings['decimal_point'] = isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
+		$settings['thousands_separator'] = isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
+		$settings['use_weight'] = isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;
+		$settings['unit_weight'] = isset( $_POST['unit_weight'] ) ? $_POST['unit_weight'] : 'gr';
+		$settings['date_format'] = isset( $_POST['date_format'] ) ? $_POST['date_format'] : 'y-m-d';
 		if ( isset( $_POST['all_shipping_isos'] ) && $_POST['all_shipping_isos'] == 'yes' ) $settings['shipping_isos'] = array();
 		else $settings['shipping_isos'] = isset( $_POST['shipping_isos'] ) ? $_POST['shipping_isos'] : array();
 		if ( isset( $_POST['all_billing_isos'] ) && $_POST['all_billing_isos'] == 'yes' ) $settings['billing_isos'] = array();

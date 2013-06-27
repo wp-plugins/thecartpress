@@ -50,7 +50,7 @@ class TCPCheckoutEditor {
 			'id'      => 'overview',
 			'title'   => __( 'Overview' ),
 			'content' =>
-				'<p>' . __( 'You can customize Checkout Steps.', 'tcp' ) . '</p>'
+				'<p>' . __( 'Customize your Checkout Steps.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
@@ -126,8 +126,7 @@ class TCPCheckoutEditor {
 
 	<?php $order_steps = TCPCheckoutManager::get_steps();
 	foreach( $order_steps as $class_name )
-		if ( isset( $tcp_checkout_boxes[$class_name] ) )
-			unset( $tcp_checkout_boxes[$class_name] );
+		if ( isset( $tcp_checkout_boxes[$class_name] ) ) unset( $tcp_checkout_boxes[$class_name] );    
 	$order_steps = array_diff( (array)$tcp_checkout_boxes, $order_steps ); ?>
 
 	<h3><?php _e( 'Deactivated boxes', 'tcp' ); ?></h3>

@@ -25,9 +25,12 @@ class ActiveCheckout {//shortcode
 		global $thecartpress;
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : 0;
-		if ( isset( $_REQUEST['order_id'] ) ) $order_id = $_REQUEST['order_id'];
-		else $order_id = $shoppingCart->getOrderId();
-
+		if ( isset( $_REQUEST['order_id'] ) ) {
+			$order_id = $_REQUEST['order_id'];
+			$shoppingCart->setOrderId( $order_id );
+		} else {
+			$order_id = $shoppingCart->getOrderId();
+		}
 		if ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ok' ) {
 			$order_status = Orders::getStatus( $order_id );//We have to check if the order wasn't cancelled
 			$cancelled = tcp_get_cancelled_order_status();
@@ -143,6 +146,7 @@ class ActiveCheckout {//shortcode
 				if ( strlen( $order->billing_email ) > 0 && $order->shipping_email != $order->billing_email ) $customer_email[] = $order->billing_email;
 				$to_customer = implode( ',', $customer_email );
 				$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
+//echo $message_to_customer;
 				wp_mail( $to_customer, $subject, $message_to_customer , $headers );
 				do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
 			}
@@ -150,6 +154,7 @@ class ActiveCheckout {//shortcode
 				$to = $thecartpress->get_setting( 'emails', '' );
 				if ( strlen( $to ) ) {
 					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant_message', $message, $order_id );
+//echo $message_to_merchant;
 					wp_mail( $to, $subject, $message_to_merchant, $headers );
 					do_action( 'tcp_send_order_mail_to_merchant', $to, $subject, $message_to_merchant, $headers, $order_id );
 				}

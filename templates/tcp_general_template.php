@@ -92,6 +92,12 @@ function tcp_the_my_account_url( $echo = true ) {
 function tcp_get_the_my_account_url() {
 	return tcp_the_my_account_url( false );
 }
+
+
+function tcp_term_link_filter( $termlink, $term, $taxonomy ) {
+	return $termlink;
+}
+
 /**
  * Display Taxonomy Tree.
  *
@@ -110,6 +116,7 @@ function tcp_get_the_my_account_url() {
  * @param boolean $echo Default to echo and not return the form.
  */
 function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $after = '' ) {
+	add_filter( 'term_link', 'tcp_term_link_filter', 10, 3 );
 	do_action( 'tcp_get_taxonomy_tree' );
 	$args = wp_parse_args( $args, array(
 		'style'			=> 'list',
@@ -150,6 +157,7 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 	?>
 <ul class="tcp_navigation_tree"><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
 	<?php endif;
+	remove_filter( 'term_link', 'tcp_term_link_filter', 10, 3 );
 	$tree = ob_get_clean();
 	$tree = apply_filters( 'tcp_get_taxonomy_tree', $tree );
 	if ( $args['collapsible'] ) add_action ( 'wp_footer', 'tcp_get_taxonomy_tree_add_collapsible_behaviour' );
@@ -1014,50 +1022,12 @@ function tcp_display_custom_values( $post_id = 0, $instance ) {
 	);
 	$instance = wp_parse_args( (array)$instance, $defaults );
 	$field_ids = explode( ',', $instance['selected_custom_fields'] );
-	if ( is_array( $field_ids ) && count( $field_ids ) > 0 ) :
-		$other_values = apply_filters( 'tcp_custom_values_get_other_values', array() ); ?>
-<dl>
-	<?php foreach( $field_ids as $id ) {
-		if ( $id == '' ) continue;
-		if ( substr( $id, 0, 12 ) == 'custom_field' ) {
-			$field_id = substr( $id, 13 );
-			$value = get_post_meta( $post_id, $field_id, true );
-			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
-			if ( $value == '' ) $value == '&nbsp;';
-			if ( $instance['see_label'] ) {
-				$field_def = tcp_get_custom_field_def( $field_id );
-				$label = tcp_string( 'TheCartPress', 'custom_field_' . $field_id . '-label', $field_def['label'] );
-			}
-		} elseif ( substr( $id, 0, 3 ) == 'tax' ) {
-			$tax_id = substr( $id, 4 );
-			$value = '';
-			$term_list = wp_get_post_terms( $post_id, $tax_id, array( 'fields' => 'names' ) );
-			if ( is_array( $term_list ) && count( $term_list ) > 0 ) {
-				foreach( $term_list as $term )
-					$value .= $term . ', ';
-				$value = substr( $value, 0, -2 );
-			}
-			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
-			if ( $instance['see_label'] ) {
-				$tax = get_taxonomy( $tax_id );
-				$label = $tax->labels->name;
-				$label = tcp_string( 'TheCartPress', 'custom_tax_' . $tax->labels->post_type . '_' . $tax_id . '-name', $label );
-			}
-		} elseif ( substr( $id, 0, 3 ) == 'o_v' ) {
-			$ov_id = substr( $id, 4 );
-			if ( ! isset( $other_values[$ov_id] ) ) continue;
-			if ( function_exists( $other_values[$ov_id]['callback'] ) ) $value = $other_values[$ov_id]['callback']();
-			else $value = '';
-			if ( $value == '' && $instance['hide_empty_fields'] ) continue;
-			if ( $instance['see_label'] ) {
-				$label = isset( $other_values[$ov_id]['label'] ) ? $other_values[$ov_id]['label'] : false;
-			}
-		} ?>
-	<?php if ( $instance['see_label'] ) : ?><dt><?php echo $label; ?></dt><?php endif; ?>
-	<dd><?php echo $value; ?></dd>
-	<?php } ?>
-</dl>
-	<?php endif;
+	if ( is_array( $field_ids ) && count( $field_ids ) > 0 )  {
+		$other_values = apply_filters( 'tcp_custom_values_get_other_values', array() );
+		$template = locate_template( 'tcp_custom_fields.php' );
+		if ( strlen( $template ) == 0 ) $template = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_custom_fields.php';
+		include ( $template );
+	}
 }
 
 //

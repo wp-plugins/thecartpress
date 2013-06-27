@@ -180,6 +180,16 @@ function tcp_update_custom_post_type( $post_type, $post_type_def ) {
 	$post_type_defs = tcp_get_custom_post_types();
 	$post_type_defs[$post_type] = $post_type_def;
 	tcp_set_custom_post_types( $post_type_defs );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-name', $post_type_def['name'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type:' . $post_type . '_' . $post_type . '-singular_name', $post_type_def['singular_name'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-add_new', $post_type_def['add_new'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-add_new_item', $post_type_def['add_new_item'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-edit_item', $post_type_def['edit_item'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-new_item', $post_type_def['new_item'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-view_item', $post_type_def['view_item'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-search_items', $post_type_def['search_items'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-not_found', $post_type_def['not_found'] );
+	tcp_register_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-not_found_in_trash', $post_type_def['not_found_in_trash'] );
 }
 
 /**
@@ -190,6 +200,16 @@ function tcp_delete_custom_post_type( $post_type ) {
 	$post_type_defs = tcp_get_custom_post_types();
 	unset( $post_type_defs[$post_type] );
 	tcp_set_custom_post_types( $post_type_defs );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-name' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type:' . $post_type . '_' . $post_type . '-singular_name' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-add_new' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-add_new_item' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-edit_item' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-new_item' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-view_item' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-search_items' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-not_found' );
+	tcp_unregister_string( 'TheCartPress', 'custom_post_type_' . $post_type . '_' . $post_type . '-not_found_in_trash' );
 }
 
 /**

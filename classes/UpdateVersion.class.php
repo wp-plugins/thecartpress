@@ -148,12 +148,12 @@ class TCPUpdateVersion {
 		}
 		if ( $version < 127.1 ) {
 			$customer = get_role( 'customer' );
-			$customer->remove_cap( 'tcp_edit_addresses' );
-			$customer->add_cap( 'tcp_edit_address' );
+			if ( $customer ) $customer->remove_cap( 'tcp_edit_addresses' );
+			if ( $customer ) $customer->add_cap( 'tcp_edit_address' );
 			$merchant = get_role( 'merchant' );
-			$merchant->add_cap( 'tcp_edit_address' );
+			if ( $merchant ) $merchant->add_cap( 'tcp_edit_address' );
 			$administrator = get_role( 'administrator' );
-			$administrator->add_cap( 'tcp_edit_address' );
+			if ( $administrator ) $administrator->add_cap( 'tcp_edit_address' );
 		}
 		if ( $version < 128 ) {
 			global $wpdb;
@@ -161,6 +161,38 @@ class TCPUpdateVersion {
 			$wpdb->query( $sql );
 		}
 		update_option( 'tcp_version', 128 );
+		if ( $version < 129 ) {
+			global $wpdb;
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_firstname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_lastname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_company` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_street` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_city` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_region` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_country` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_firstname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_lastname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_company` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_street` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_city` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_region` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_country` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+		}
+		update_option( 'tcp_version', 129 );
 	}
 }
 ?>
