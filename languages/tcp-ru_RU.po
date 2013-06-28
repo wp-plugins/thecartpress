@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TCP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-30 07:56+0100\n"
-"PO-Revision-Date: 2013-04-30 07:56+0100\n"
+"POT-Creation-Date: 2013-06-28 08:32+0100\n"
+"PO-Revision-Date: 2013-06-28 08:32+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: russian <ru@li.org>\n"
 "Language: russian\n"
@@ -91,6 +91,10 @@ msgstr "Налоги"
 msgid "Related Categories"
 msgstr "Связанные категории"
 
+#: thecartpress/TheCartPress.class.php:484
+msgid "Update Prices"
+msgstr "Изменение цен"
+
 #: thecartpress/TheCartPress.class.php:485
 msgid "Order"
 msgstr "Заказ"
@@ -151,55 +155,57 @@ msgstr "Управление записями"
 msgid "Manage taxonomies"
 msgstr "Управление таксономией"
 
-#: thecartpress/TheCartPress.class.php:503
+#: thecartpress/TheCartPress.class.php:502
 msgid "Post Type Editor"
 msgstr "Редактор записей"
 
-#: thecartpress/TheCartPress.class.php:504
+#: thecartpress/TheCartPress.class.php:503
 msgid "Taxonomy Editor"
 msgstr "Редактор таксономий"
 
-#: thecartpress/TheCartPress.class.php:646
+#: thecartpress/TheCartPress.class.php:639
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress требует WordPredd версии 3.0 или новее."
 
-#: thecartpress/TheCartPress.class.php:673
+#: thecartpress/TheCartPress.class.php:666
 msgid "Free transport"
 msgstr "Бесплатная доставка"
 
-#: thecartpress/TheCartPress.class.php:684
+#: thecartpress/TheCartPress.class.php:677
 msgid "Cash on delivery"
 msgstr "Расчёт при доставке"
 
-#: thecartpress/TheCartPress.class.php:724
+#: thecartpress/TheCartPress.class.php:717
 msgid "Checkout notice"
 msgstr "Уведомление о ходе платежа"
 
-#: thecartpress/TheCartPress.class.php:759
-msgid "Shopping cart"
+#: thecartpress/TheCartPress.class.php:752
+#: thecartpress/widgets/ShoppingCartWidget.class.php:65
+msgid "Shopping Cart"
 msgstr "Корзина"
 
-#: thecartpress/TheCartPress.class.php:772
+#: thecartpress/TheCartPress.class.php:765
 msgid "Checkout"
 msgstr "Расчёт"
 
-#: thecartpress/TheCartPress.class.php:787
+#: thecartpress/TheCartPress.class.php:780
 msgid "My Account"
 msgstr "Моя страница"
 
-#: thecartpress/TheCartPress.class.php:800
+#: thecartpress/TheCartPress.class.php:793
 msgid "Catalogue"
 msgstr "Каталог"
 
-#: thecartpress/TheCartPress.class.php:812
+#: thecartpress/TheCartPress.class.php:806
+#: thecartpress/TheCartPress.class.php:830
 msgid "Category One"
 msgstr "Она категория"
 
-#: thecartpress/TheCartPress.class.php:813
+#: thecartpress/TheCartPress.class.php:807
 msgid "Category One for Product One"
 msgstr "Одна категория для одного товара"
 
-#: thecartpress/TheCartPress.class.php:820
+#: thecartpress/TheCartPress.class.php:814
 msgid "Product One"
 msgstr "Один товар"
 
@@ -400,7 +406,7 @@ msgid "Number of comments to show:"
 msgstr "Показывать количество комментариев:"
 
 #: thecartpress/widgets/CommentsCustomPostTypeWidget.class.php:92
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:106
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:108
 #: thecartpress/widgets/TaxonomyTreesPostTypeWidget.class.php:133
 #: thecartpress/widgets/TaxonomyCloudsPostTypeWidget.class.php:83
 msgid "Post type"
@@ -410,52 +416,52 @@ msgstr "Запись"
 msgid "Allow to create Custom Post Type Lists"
 msgstr "Вывести в Сайд-бар список товаров по заданному в таксономии критерию"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:65
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:67
 msgid "Custom Post type"
 msgstr "Пользовательская запись"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:112
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:127
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:114
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:129
 #: thecartpress/widgets/TaxonomyCloudsPostTypeWidget.class.php:92
 msgid "Press save to load the next list"
 msgstr "Пожалуйста, сохранитесь для загрузки следующего списка"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:116
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:118
 msgid "Use Taxonomy"
 msgstr "Использовать таксономии"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:120
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:122
 #: thecartpress/widgets/TaxonomyTreesPostTypeWidget.class.php:143
 #: thecartpress/widgets/TaxonomyCloudsPostTypeWidget.class.php:94
 msgid "Taxonomy"
 msgstr "Таксономия"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:122
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:148
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:124
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:150
 msgid "all"
 msgstr "все"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:130
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:132
 msgid "Term"
 msgstr "Терм"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:146
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:148
 msgid "Included"
 msgstr "Включая"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:171
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:173
 #: thecartpress/widgets/BrothersListWidget.class.php:108
 #: thecartpress/widgets/AuthorsWidget.class.php:97
 msgid "Order by"
 msgstr "Выстроить"
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:180
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:182
 #: thecartpress/widgets/BrothersListWidget.class.php:117
 #: thecartpress/widgets/AuthorsWidget.class.php:110
 msgid "Asc."
 msgstr "Возр."
 
-#: thecartpress/widgets/CustomPostTypeListWidget.class.php:182
+#: thecartpress/widgets/CustomPostTypeListWidget.class.php:184
 #: thecartpress/widgets/BrothersListWidget.class.php:119
 #: thecartpress/widgets/AuthorsWidget.class.php:111
 msgid "Desc."
@@ -464,10 +470,6 @@ msgstr "Уб."
 #: thecartpress/widgets/ShoppingCartWidget.class.php:23
 msgid "Use this widget to add the shopping cart viewer"
 msgstr "Корзина в Сайд-баре"
-
-#: thecartpress/widgets/ShoppingCartWidget.class.php:65
-msgid "Shopping Cart"
-msgstr "Корзина"
 
 #: thecartpress/widgets/ShoppingCartWidget.class.php:90
 msgid "Hide if empty"
@@ -992,10 +994,15 @@ msgid "Allow to view the Checkout info (for debugging purpose)"
 msgstr "Показывать информацию о ходе расчёта (для режима отладки)"
 
 #: thecartpress/widgets/ShoppingCartSummaryWidget.class.php:23
-msgid "Use this widget to add a Shopping cart summary"
+#, fuzzy
+msgid "Use this widget to add a Shopping Cart summary"
 msgstr "Показывать в Сайд-баре суммарные итоги корзины"
 
-#: thecartpress/widgets/ShoppingCartSummaryWidget.class.php:79
+#: thecartpress/widgets/ShoppingCartSummaryWidget.class.php:60
+msgid "Shopping cart"
+msgstr "Корзина"
+
+#: thecartpress/widgets/ShoppingCartSummaryWidget.class.php:80
 msgid "See product count"
 msgstr "Показывать счётчик количества единиц товара"
 
@@ -2918,111 +2925,111 @@ msgstr "Список ставок пуст"
 msgid "Do you really want to delete this tax?"
 msgstr "Действительно хотите удалить эту ставку???"
 
-#: thecartpress/admin/OrderEdit.php:31
+#: thecartpress/admin/OrderEdit.php:32
 msgid "Order saved"
 msgstr "Заказ сохранён"
 
-#: thecartpress/admin/OrderEdit.php:37
+#: thecartpress/admin/OrderEdit.php:43
 msgid "Order deleted"
 msgstr "Заказ удалён"
 
-#: thecartpress/admin/OrderEdit.php:39
+#: thecartpress/admin/OrderEdit.php:45
 msgid "return to the list"
 msgstr "возврат к списку"
 
-#: thecartpress/admin/OrderEdit.php:49
+#: thecartpress/admin/OrderEdit.php:55
 msgid "Mail sent"
 msgstr "Письмо отослано"
 
-#: thecartpress/admin/OrderEdit.php:67
-#: thecartpress/admin/OrderEdit.php:81
+#: thecartpress/admin/OrderEdit.php:73
+#: thecartpress/admin/OrderEdit.php:87
 msgid "Order ID"
 msgstr "ID заказа"
 
-#: thecartpress/admin/OrderEdit.php:69
+#: thecartpress/admin/OrderEdit.php:75
 #, fuzzy
 msgid "Shipping Address"
 msgstr "Адрес для доставки"
 
-#: thecartpress/admin/OrderEdit.php:70
+#: thecartpress/admin/OrderEdit.php:76
 #, fuzzy
 msgid "Billing Address"
 msgstr "Адрес Плательщика"
 
-#: thecartpress/admin/OrderEdit.php:72
+#: thecartpress/admin/OrderEdit.php:78
 #, fuzzy
 msgid "Order details"
 msgstr "По возрастанию"
 
-#: thecartpress/admin/OrderEdit.php:73
+#: thecartpress/admin/OrderEdit.php:79
 #, fuzzy
 msgid "Order Setup"
 msgstr "Тип сортировки:"
 
-#: thecartpress/admin/OrderEdit.php:85
+#: thecartpress/admin/OrderEdit.php:91
 msgid "Created at"
 msgstr "Создано "
 
-#: thecartpress/admin/OrderEdit.php:139
-#: thecartpress/admin/OrderEdit.php:200
+#: thecartpress/admin/OrderEdit.php:145
+#: thecartpress/admin/OrderEdit.php:206
 msgid "Telephones"
 msgstr "Телефоны"
 
-#: thecartpress/admin/OrderEdit.php:237
+#: thecartpress/admin/OrderEdit.php:243
 msgid "User email"
 msgstr "E-mail пользователя"
 
-#: thecartpress/admin/OrderEdit.php:243
+#: thecartpress/admin/OrderEdit.php:249
 #, php-format
 msgid "%s&lt;%s&gt; (registered)"
 msgstr "%s&lt;%s&gt; (зарегистрировано)"
 
-#: thecartpress/admin/OrderEdit.php:244
+#: thecartpress/admin/OrderEdit.php:250
 #, php-format
 msgid "%s (unregistered)"
 msgstr "(незарегистрировано)"
 
-#: thecartpress/admin/OrderEdit.php:249
+#: thecartpress/admin/OrderEdit.php:255
 msgid "Shipping method"
 msgstr "Метод доставки"
 
-#: thecartpress/admin/OrderEdit.php:252
+#: thecartpress/admin/OrderEdit.php:258
 msgid "Payment method"
 msgstr "Вариант оплаты"
 
-#: thecartpress/admin/OrderEdit.php:261
+#: thecartpress/admin/OrderEdit.php:267
 msgid "Transaction id"
 msgstr "ID транзакции"
 
-#: thecartpress/admin/OrderEdit.php:286
+#: thecartpress/admin/OrderEdit.php:292
 msgid "Code tracking"
 msgstr "Отслеживание"
 
-#: thecartpress/admin/OrderEdit.php:294
+#: thecartpress/admin/OrderEdit.php:300
 msgid "Customer's comment"
 msgstr "Комментарий пользователя"
 
-#: thecartpress/admin/OrderEdit.php:302
+#: thecartpress/admin/OrderEdit.php:308
 msgid "Internal comment"
 msgstr "Внутренний комментарий"
 
-#: thecartpress/admin/OrderEdit.php:318
+#: thecartpress/admin/OrderEdit.php:324
 msgid "Do you really want to delete this order?"
 msgstr "Действительно хотите удалить этот заказ?"
 
-#: thecartpress/admin/OrderEdit.php:338
+#: thecartpress/admin/OrderEdit.php:344
 msgid "Send email to billing email"
 msgstr "Отправить e-mail на адрес Плательщика"
 
-#: thecartpress/admin/OrderEdit.php:342
+#: thecartpress/admin/OrderEdit.php:348
 msgid "Send email to shipping email"
 msgstr "Отправить e-mail на адрес Получателя"
 
-#: thecartpress/admin/OrderEdit.php:346
+#: thecartpress/admin/OrderEdit.php:352
 msgid "Print"
 msgstr "Печать"
 
-#: thecartpress/admin/OrderEdit.php:350
+#: thecartpress/admin/OrderEdit.php:356
 msgid "Send email to me"
 msgstr "Слать мне письма"
 
@@ -3465,6 +3472,61 @@ msgstr "Показать таксономию"
 msgid "save"
 msgstr "сохранить"
 
+#: thecartpress/admin/PriceUpdate.php:48
+msgid "This product cannot be modified by the user "
+msgstr "Данный продукт запрещено изменять пользователю"
+
+#: thecartpress/admin/PriceUpdate.php:67
+#, fuzzy
+msgid "Prices updated"
+msgstr "Обновление цен"
+
+#: thecartpress/admin/PriceUpdate.php:73
+#, fuzzy
+msgid "1. Search fields"
+msgstr "Искать позицию"
+
+#: thecartpress/admin/PriceUpdate.php:74
+msgid "First, you have to search for products to change. You can set rules to add (or subtract) an amount to the price. \"Search\" button doesn't change prices."
+msgstr ""
+
+#: thecartpress/admin/PriceUpdate.php:116
+#, fuzzy
+msgid "Calculate new price"
+msgstr "Подсчитано "
+
+#: thecartpress/admin/PriceUpdate.php:127
+msgid "fix value"
+msgstr "фикс. значение"
+
+#: thecartpress/admin/PriceUpdate.php:133
+msgid "Prices rounded"
+msgstr "Цены округлены"
+
+#: thecartpress/admin/PriceUpdate.php:137
+msgid "Only for percentage prices"
+msgstr "Только для процентов"
+
+#: thecartpress/admin/PriceUpdate.php:160
+msgid "In this area, you could set new prices. Then, press on \"Update\" button to set these new prices."
+msgstr ""
+
+#: thecartpress/admin/PriceUpdate.php:165
+#: thecartpress/admin/PriceUpdate.php:173
+#, fuzzy
+msgid "Current Price"
+msgstr "Валюта"
+
+#: thecartpress/admin/PriceUpdate.php:166
+#: thecartpress/admin/PriceUpdate.php:174
+#, fuzzy
+msgid "New Price"
+msgstr "Новая цена"
+
+#: thecartpress/admin/PriceUpdate.php:202
+msgid "No products to update"
+msgstr "Позиции для обновления отсутствуют"
+
 #: thecartpress/admin/TaxonomyList.php:30
 msgid "Taxonomy deleted"
 msgstr "Таксономия удалена"
@@ -3600,7 +3662,7 @@ msgid "Set Currency settings to use along the Store"
 msgstr "Пожалуйста, установите валюту магазина"
 
 #: thecartpress/settings/FirstTimeSetup.class.php:174
-#: thecartpress/settings/CurrencyCountrySettings.class.php:105
+#: thecartpress/settings/CurrencyCountrySettings.class.php:106
 msgid "Currency layouts"
 msgstr "Разметка цены"
 
@@ -3686,28 +3748,52 @@ msgstr "Установить вес единицы."
 msgid "You can customize Countries to use across your installation."
 msgstr "Вы можете кастомизировать настройки TCP для Вашей страны в дальнейшем."
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:84
+#: thecartpress/settings/CurrencyCountrySettings.class.php:85
 msgid "Currency Settings"
 msgstr "Настройки валют"
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:119
+#: thecartpress/settings/CurrencyCountrySettings.class.php:120
 #, php-format
 msgid "If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files), looking for the literal \"%1$s%2$s (%3$s).\""
 msgstr "Если оставить это значение пустым, то TheCartPress возьмёт образец для формата вывода валюты из конфигурационного файла .mo вот так: \"%1$s%2$s (%3$s).\""
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:148
+#: thecartpress/settings/CurrencyCountrySettings.class.php:149
 msgid "Use weight"
 msgstr "Использовать веса"
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:152
+#: thecartpress/settings/CurrencyCountrySettings.class.php:153
 msgid "Allows to show or hide weight values in the store"
 msgstr "Разрешить показ или сокрытие значение веса в магазине"
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:192
+#: thecartpress/settings/CurrencyCountrySettings.class.php:193
+#, fuzzy
+msgid "Date Settings"
+msgstr "Параметры по умолчанию"
+
+#: thecartpress/settings/CurrencyCountrySettings.class.php:201
+#, fuzzy
+msgid "Date format"
+msgstr "Показывать формат"
+
+#: thecartpress/settings/CurrencyCountrySettings.class.php:204
+#, fuzzy
+msgid "Default format"
+msgstr "Базовый шаблон"
+
+#: thecartpress/settings/CurrencyCountrySettings.class.php:216
+#, fuzzy
+msgid "Custom format"
+msgstr "Пользовательский шаблон"
+
+#: thecartpress/settings/CurrencyCountrySettings.class.php:224
+msgid "Format: Y - Year (4 digits), y -> year (2 digits), M - Month (2 digits), d (days)"
+msgstr ""
+
+#: thecartpress/settings/CurrencyCountrySettings.class.php:232
 msgid "Countries Settings"
 msgstr "Настройки страны"
 
-#: thecartpress/settings/CurrencyCountrySettings.class.php:213
+#: thecartpress/settings/CurrencyCountrySettings.class.php:253
 msgid "Allowed billing countries"
 msgstr "Оплата принимается из стран"
 
@@ -3735,8 +3821,19 @@ msgid "Set the different URLs for TheCartPress actions"
 msgstr "Установите различные URL для различных событий"
 
 #: thecartpress/settings/MainSettings.class.php:89
-msgid "Disable Shopping cart"
+#, fuzzy
+msgid "Disable Shopping Cart"
 msgstr "Отключить Корзину"
+
+#: thecartpress/settings/MainSettings.class.php:93
+#, fuzzy
+msgid "To use TheCartPress as a catalog, disabling the Shopping Cart and the Checkout."
+msgstr "Использовать TheCartPress в качестве каталога, отключив  Корзину и Расчёт."
+
+#: thecartpress/settings/MainSettings.class.php:102
+#, fuzzy
+msgid "This value is used in the Continue shopping link into the Shopping Cart page."
+msgstr "Данное значение используется для перехода по ссылке \"Продолжить покупки\" на странице Корзины."
 
 #: thecartpress/settings/MainSettings.class.php:113
 msgid "Show the Shopping Cart"
@@ -3780,7 +3877,12 @@ msgstr "Модуль"
 msgid "Instances"
 msgstr "Экземпляры"
 
-#: thecartpress/settings/PluginsList.class.php:151
+#: thecartpress/settings/PluginsList.class.php:133
+#, fuzzy, php-format
+msgid "Edit %s"
+msgstr "Правка"
+
+#: thecartpress/settings/PluginsList.class.php:148
 msgid "No plugins"
 msgstr "Плагины отсутствуют"
 
@@ -3797,112 +3899,95 @@ msgstr "eMarketing "
 msgid "You can customize eMarketing Tools (BETA)."
 msgstr "Вы можете кастомизировать Панель инструментов eMarketing (BETA)."
 
-#: thecartpress/checkout/ActiveCheckout.class.php:40
+#: thecartpress/checkout/ActiveCheckout.class.php:43
 msgid "The cart is empty"
 msgstr "Ваша Корзина пуста"
 
-#: thecartpress/checkout/ActiveCheckout.class.php:58
+#: thecartpress/checkout/ActiveCheckout.class.php:61
 msgid "The order has been completed successfully."
 msgstr "Заказ сформирован."
 
-#: thecartpress/checkout/ActiveCheckout.class.php:76
-#: thecartpress/checkout/ActiveCheckout.class.php:80
+#: thecartpress/checkout/ActiveCheckout.class.php:79
+#: thecartpress/checkout/ActiveCheckout.class.php:83
 msgid "Transaction Error. The order has been canceled"
 msgstr "Ошибка при перечислении средств. Заказ приостановлен."
 
-#: thecartpress/checkout/ActiveCheckout.class.php:82
+#: thecartpress/checkout/ActiveCheckout.class.php:85
 #, php-format
 msgid "Retry the <a href=\"%s\">checkout process</a>"
 msgstr "Повторить <a href=\"%s\">процесс оплаты</a>"
 
-#: thecartpress/checkout/ActiveCheckout.class.php:126
+#: thecartpress/checkout/ActiveCheckout.class.php:129
 #, php-format
 msgid "Order from %s, Order ID: %s"
 msgstr "Заказ для %s, ID заказа: %s"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:31
-#: thecartpress/checkout/TCPBillingExBox.class.php:31
+#: thecartpress/checkout/TCPBillingBox.class.php:32
 msgid "Billing options"
 msgstr "Тонкости платежа"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:46
-#: thecartpress/checkout/TCPBillingExBox.class.php:60
+#: thecartpress/checkout/TCPBillingBox.class.php:47
 msgid "The billing First name field must be completed"
 msgstr "Поле с именем должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:48
-#: thecartpress/checkout/TCPBillingExBox.class.php:63
+#: thecartpress/checkout/TCPBillingBox.class.php:49
 msgid "The billing Last name field must be completed"
 msgstr "Поле с фамилией должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:50
-#: thecartpress/checkout/TCPBillingExBox.class.php:74
+#: thecartpress/checkout/TCPBillingBox.class.php:51
 msgid "The billing Street field must be completed"
 msgstr "Поле с адресом Плательшика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:52
-#: thecartpress/checkout/TCPBillingExBox.class.php:77
+#: thecartpress/checkout/TCPBillingBox.class.php:53
 msgid "The billing City field must be completed"
 msgstr "Поле с городом Плательщика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:54
-#: thecartpress/checkout/TCPBillingExBox.class.php:81
+#: thecartpress/checkout/TCPBillingBox.class.php:55
 msgid "The billing Region field must be completed"
 msgstr "Необходимо заполнить поле Регион Плательщика"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:59
-#: thecartpress/checkout/TCPBillingBox.class.php:75
-#: thecartpress/checkout/TCPBillingExBox.class.php:87
-#: thecartpress/checkout/TCPBillingExBox.class.php:116
+#: thecartpress/checkout/TCPBillingBox.class.php:60
+#: thecartpress/checkout/TCPBillingBox.class.php:76
 msgid "The billing Country is not allowed"
 msgstr "Платежи из данной страны, скорее всего, запрещены."
 
-#: thecartpress/checkout/TCPBillingBox.class.php:63
-#: thecartpress/checkout/TCPBillingExBox.class.php:91
+#: thecartpress/checkout/TCPBillingBox.class.php:64
 msgid "The billing Postcode field must be completed"
 msgstr "Поле с почтовым кодом Плательщика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:65
-#: thecartpress/checkout/TCPBillingExBox.class.php:106
+#: thecartpress/checkout/TCPBillingBox.class.php:66
 msgid "The billing eMail field must be completed"
 msgstr "Необходимо заполнить поле E-mail Плательщика"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:67
-#: thecartpress/checkout/TCPBillingExBox.class.php:108
+#: thecartpress/checkout/TCPBillingBox.class.php:68
 msgid "The billing eMail field must be a valid email"
 msgstr "Необходимо заполнить поле E-mail Плательшика правильно"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:139
-#: thecartpress/checkout/TCPBillingExBox.class.php:303
+#: thecartpress/checkout/TCPBillingBox.class.php:140
 msgid "Select billing address:"
 msgstr "Выберите адрес плательшика"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:150
-#: thecartpress/checkout/TCPBillingExBox.class.php:314
+#: thecartpress/checkout/TCPBillingBox.class.php:151
 msgid "Billing to the address selected"
 msgstr "Адрес уже указан"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:156
-#: thecartpress/checkout/TCPBillingExBox.class.php:320
+#: thecartpress/checkout/TCPBillingBox.class.php:157
 msgid "New billing address"
 msgstr "Ввести новый адрес"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:282
-#: thecartpress/checkout/TCPBillingExBox.class.php:446
+#: thecartpress/checkout/TCPBillingBox.class.php:283
 msgid "First name"
 msgstr "Имя"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:287
-#: thecartpress/checkout/TCPBillingExBox.class.php:451
+#: thecartpress/checkout/TCPBillingBox.class.php:288
 msgid "Last name"
 msgstr "Фамилия"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:297
+#: thecartpress/checkout/TCPBillingBox.class.php:298
 msgid "Tax ID number"
 msgstr "Налоговый идентификатор"
 
-#: thecartpress/checkout/TCPBillingBox.class.php:372
-#: thecartpress/checkout/TCPBillingExBox.class.php:557
+#: thecartpress/checkout/TCPBillingBox.class.php:373
 msgid "Email"
 msgstr "Адрес электронной почты"
 
@@ -3927,19 +4012,24 @@ msgstr "Метод пересылки: %s"
 msgid "Sending methods"
 msgstr "Как осуществляется доставка"
 
-#: thecartpress/checkout/TCPShippingMethodsBox.class.php:85
+#: thecartpress/checkout/TCPShippingMethodsBox.class.php:97
 msgid "You must select a shipping method"
 msgstr "Вам обязательно нужно выбрать метод доставки"
 
-#: thecartpress/checkout/TCPShippingMethodsBox.class.php:135
+#: thecartpress/checkout/TCPShippingMethodsBox.class.php:147
 msgid "Drag the Shippings plugins to sort them"
 msgstr "Перетаскивайте модули для того, чтобы выстроить нужный порядок."
 
-#: thecartpress/checkout/TCPShippingMethodsBox.class.php:151
+#: thecartpress/checkout/TCPShippingMethodsBox.class.php:164
+#, fuzzy
+msgid "Hide box, displaying only header, if only one method is applicable"
+msgstr "Прятать бокс, если доступен только один метод"
+
+#: thecartpress/checkout/TCPShippingMethodsBox.class.php:165
 msgid "Hide box if only one method is applicable"
 msgstr "Прятать бокс, если доступен только один метод"
 
-#: thecartpress/checkout/TCPShippingMethodsBox.class.php:221
+#: thecartpress/checkout/TCPShippingMethodsBox.class.php:231
 msgid "There is not applicable methods"
 msgstr "Отсутствуют подходящие варианты"
 
@@ -4000,19 +4090,19 @@ msgstr "Вес"
 msgid "%s (Discount %s)"
 msgstr "\"%s (Скидка %s)\""
 
-#: thecartpress/checkout/TCPCartBox.class.php:269
+#: thecartpress/checkout/TCPCartBox.class.php:271
 msgid "Discounts"
 msgstr "Скидки"
 
-#: thecartpress/checkout/TCPCartBox.class.php:284
+#: thecartpress/checkout/TCPCartBox.class.php:287
 msgid "Shipping cost"
 msgstr "Стоимость доставки"
 
-#: thecartpress/checkout/TCPCartBox.class.php:296
+#: thecartpress/checkout/TCPCartBox.class.php:299
 msgid "Payment cost"
 msgstr "Размер оплаты"
 
-#: thecartpress/checkout/TCPCartBox.class.php:303
+#: thecartpress/checkout/TCPCartBox.class.php:306
 msgid "Free shipping"
 msgstr "Бесплатная доставка"
 
@@ -4024,83 +4114,83 @@ msgstr "Ошибка в пароле"
 msgid "Invalid email"
 msgstr "Ошибка в адресе электронной почты"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:67
+#: thecartpress/checkout/TCPBillingExBox.class.php:68
 msgid "The billing company field must be completed"
 msgstr "Поле с компанией Плательшика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:71
+#: thecartpress/checkout/TCPBillingExBox.class.php:72
 msgid "The billing tax id number field must be completed"
 msgstr "Поле с налоговым индетификатором должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:95
+#: thecartpress/checkout/TCPBillingExBox.class.php:96
 msgid "The billing telephone 1 field must be completed"
 msgstr "Поле с телефоном №1 Плательщика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:99
+#: thecartpress/checkout/TCPBillingExBox.class.php:100
 msgid "The billing telephone 2 field must be completed"
 msgstr "Поле с телефоном №2 Плательщика должно быть заполнено"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:103
+#: thecartpress/checkout/TCPBillingExBox.class.php:104
 msgid "The billing fax field must be completed"
 msgstr "Необходимо заполнить поле Факс Плательшика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:178
+#: thecartpress/checkout/TCPBillingExBox.class.php:179
 msgid "Display billing company"
 msgstr "Показывать компанию Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:182
+#: thecartpress/checkout/TCPBillingExBox.class.php:183
 msgid "Required billing company"
 msgstr "Обязательно указать компанию Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:186
+#: thecartpress/checkout/TCPBillingExBox.class.php:187
 msgid "Display billing tax id number"
 msgstr "Показывать налоговый идентификатор"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:190
+#: thecartpress/checkout/TCPBillingExBox.class.php:191
 msgid "Required billing tax id number"
 msgstr "Обязательно указывать  налоговый ID Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:194
+#: thecartpress/checkout/TCPBillingExBox.class.php:195
 msgid "Display billing region"
 msgstr "Показывать регион Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:198
+#: thecartpress/checkout/TCPBillingExBox.class.php:199
 msgid "Required billing region"
 msgstr "Обязательно указывать регион Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:202
+#: thecartpress/checkout/TCPBillingExBox.class.php:203
 msgid "Display billing telephone 1"
 msgstr "Показывать Тел. № 1 Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:206
+#: thecartpress/checkout/TCPBillingExBox.class.php:207
 msgid "Required billing telephone 1"
 msgstr "Обязательно указывать Тел. № 1 Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:210
+#: thecartpress/checkout/TCPBillingExBox.class.php:211
 msgid "Display billing telephone 2"
 msgstr "Показывать Тел. № 2 Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:214
+#: thecartpress/checkout/TCPBillingExBox.class.php:215
 msgid "Required billing telephone 2"
 msgstr "Обязательно указывать Тел. № 2 Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:218
+#: thecartpress/checkout/TCPBillingExBox.class.php:219
 msgid "Display billing fax"
 msgstr "Показывать номер факса Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:222
+#: thecartpress/checkout/TCPBillingExBox.class.php:223
 msgid "Required billing fax"
 msgstr "Обязательно указывать номер факса Плательщика"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:226
+#: thecartpress/checkout/TCPBillingExBox.class.php:227
 msgid "Use as shipping"
 msgstr "Так же и доставка"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:228
+#: thecartpress/checkout/TCPBillingExBox.class.php:229
 msgid "This option only must be activated if the shipping box is not used"
 msgstr "Данная опция может быть активирована только в том случае, если отключён раздел доставки"
 
-#: thecartpress/checkout/TCPBillingExBox.class.php:285
+#: thecartpress/checkout/TCPBillingExBox.class.php:286
 msgid "This data will be used also as Shipping."
 msgstr "Данная информация будет использована и при доставке."
 
@@ -4121,7 +4211,7 @@ msgid "See Login & Guest options"
 msgstr "Видеть настройки входа и опции Гостя"
 
 #: thecartpress/checkout/TCPSigninBox.class.php:100
-#: thecartpress/modules/LoginRegister.class.php:251
+#: thecartpress/modules/LoginRegister.class.php:253
 msgid "Login"
 msgstr "Вход"
 
@@ -4166,7 +4256,7 @@ msgid "Easy access to yours orders history and status"
 msgstr "Быстрый доступ к истории Ваших заказов"
 
 #: thecartpress/checkout/TCPSigninBox.class.php:136
-#: thecartpress/modules/LoginRegister.class.php:258
+#: thecartpress/modules/LoginRegister.class.php:260
 msgid "Register"
 msgstr "Регистрация"
 
@@ -4187,7 +4277,7 @@ msgid "If you prefer this way then press the continue button"
 msgstr "Если Вы предпочитаете данный путь, пожалуйста, жмите кнопку \"Продолжить\""
 
 #: thecartpress/checkout/TCPSigninBox.class.php:159
-#: thecartpress/checkout/TCPCheckoutManager.class.php:202
+#: thecartpress/checkout/TCPCheckoutManager.class.php:204
 msgid "Continue"
 msgstr "Продолжить"
 
@@ -4195,24 +4285,24 @@ msgstr "Продолжить"
 msgid "User registration is required. Please, log in or register. "
 msgstr "Требуется авторизованный вход. Пожалуйста, авторизуйтесь или зарегистрируйтесь."
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:195
 #: thecartpress/checkout/TCPCheckoutManager.class.php:197
+#: thecartpress/checkout/TCPCheckoutManager.class.php:199
 msgid "Back"
 msgstr "Назад"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:204
+#: thecartpress/checkout/TCPCheckoutManager.class.php:206
 msgid "Purchase"
 msgstr "Покупка"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:560
+#: thecartpress/checkout/TCPCheckoutManager.class.php:569
 msgid "Please continue checking out using your chosen payment method."
 msgstr "Пожалуйста, продолжайте проверять, используя выбранный метод оплаты."
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:615
+#: thecartpress/checkout/TCPCheckoutManager.class.php:624
 msgid "billing address"
 msgstr "адрес Плательщика"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:642
+#: thecartpress/checkout/TCPCheckoutManager.class.php:651
 msgid "shipping address"
 msgstr "адрес для доставки"
 
@@ -4221,15 +4311,15 @@ msgstr "адрес для доставки"
 msgid "Payment method: %s"
 msgstr "Метод оплаты %s"
 
-#: thecartpress/checkout/TCPPaymentMethodsBox.class.php:80
+#: thecartpress/checkout/TCPPaymentMethodsBox.class.php:92
 msgid "You must select a payment method"
 msgstr "Вам обязательно нужно выбрать метод оплаты"
 
-#: thecartpress/checkout/TCPPaymentMethodsBox.class.php:128
+#: thecartpress/checkout/TCPPaymentMethodsBox.class.php:140
 msgid "Drag the payments plugins to sort them"
 msgstr "Перетаскивайте модули для того, чтобы выстроить нужный порядок."
 
-#: thecartpress/checkout/TCPCheckoutBox.class.php:39
+#: thecartpress/checkout/TCPCheckoutBox.class.php:48
 msgid "No config settings"
 msgstr "Всё уже настроено"
 
@@ -4258,60 +4348,60 @@ msgstr "Отправка почтой"
 msgid "Allows to send an email to Merchant when customers click on Purchase button."
 msgstr "Разрешить слать электронные письма продавцу, когда покупатели нажимают на кнопки продаж."
 
-#: thecartpress/checkout/TCPShippingBox.class.php:31
+#: thecartpress/checkout/TCPShippingBox.class.php:32
 msgid "Shipping options"
 msgstr "Варианты доставки"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:56
+#: thecartpress/checkout/TCPShippingBox.class.php:57
 msgid "The shipping First name field must be completed"
 msgstr "Необходимо заполнить поле Имя получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:58
+#: thecartpress/checkout/TCPShippingBox.class.php:59
 msgid "The shipping Last name field must be completed"
 msgstr "Необходимо заполнить поле Фамилия Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:60
+#: thecartpress/checkout/TCPShippingBox.class.php:61
 msgid "The shipping Street field must be completed"
 msgstr "Необходимо заполнить поле Улица Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:62
+#: thecartpress/checkout/TCPShippingBox.class.php:63
 msgid "The shipping City field must be completed"
 msgstr "Необходимо заполнить поле Город Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:64
+#: thecartpress/checkout/TCPShippingBox.class.php:65
 msgid "The shipping Region field must be completed"
 msgstr "Необходимо заполнить поле Регион Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:69
-#: thecartpress/checkout/TCPShippingBox.class.php:84
+#: thecartpress/checkout/TCPShippingBox.class.php:70
+#: thecartpress/checkout/TCPShippingBox.class.php:85
 msgid "The shipping Country is not allowed"
 msgstr "В эту страну доставка не осуществляется."
 
-#: thecartpress/checkout/TCPShippingBox.class.php:73
+#: thecartpress/checkout/TCPShippingBox.class.php:74
 msgid "The shipping Postcode field must be completed"
 msgstr "Необходимо заполнить поле Почтовый код Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:75
+#: thecartpress/checkout/TCPShippingBox.class.php:76
 msgid "The shipping eMail field must be completed"
 msgstr "Необходимо заполнить поле E-mail Получателя"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:77
+#: thecartpress/checkout/TCPShippingBox.class.php:78
 msgid "The shipping eMail field must be a valid email"
 msgstr "Необходимо заполнить поле E-mail Получателя правильно"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:153
+#: thecartpress/checkout/TCPShippingBox.class.php:154
 msgid "Select shipping address:"
 msgstr "Выберите адрес для доставки:"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:164
+#: thecartpress/checkout/TCPShippingBox.class.php:165
 msgid "Shipping to the address selected"
 msgstr "Выбрать адрес из списка"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:171
+#: thecartpress/checkout/TCPShippingBox.class.php:172
 msgid "Use billing address"
 msgstr "Доставка на адрес Плательщика"
 
-#: thecartpress/checkout/TCPShippingBox.class.php:178
+#: thecartpress/checkout/TCPShippingBox.class.php:179
 msgid "New shipping address"
 msgstr "Ввести новый адрес"
 
@@ -4321,7 +4411,8 @@ msgid "Checkout Editor"
 msgstr "Настройка оплаты"
 
 #: thecartpress/checkout/CheckoutEditor.class.php:53
-msgid "You can customize Checkout Steps."
+#, fuzzy
+msgid "Customize your Checkout Steps."
 msgstr "Вы можете кастомизировать порядок расчёта."
 
 #: thecartpress/checkout/CheckoutEditor.class.php:88
@@ -4333,7 +4424,7 @@ msgid "Activated boxes"
 msgstr "Активированные зоны"
 
 #: thecartpress/checkout/CheckoutEditor.class.php:103
-#: thecartpress/checkout/CheckoutEditor.class.php:139
+#: thecartpress/checkout/CheckoutEditor.class.php:138
 msgid "open"
 msgstr "открыть"
 
@@ -4341,80 +4432,13 @@ msgstr "открыть"
 msgid "Drag and drop to reorder"
 msgstr "Перетаскивайте элементы для установки их в нужном порядке"
 
-#: thecartpress/checkout/CheckoutEditor.class.php:133
+#: thecartpress/checkout/CheckoutEditor.class.php:132
 msgid "Deactivated boxes"
 msgstr "Отключённые зоны"
 
-#: thecartpress/checkout/CheckoutEditor.class.php:158
+#: thecartpress/checkout/CheckoutEditor.class.php:157
 msgid "Drag and drop to Activated Box area"
 msgstr "Перетащить в нужное место"
-
-#: thecartpress/modules/PriceUpdate.class.php:29
-msgid "Update Prices"
-msgstr "Изменение цен"
-
-#: thecartpress/modules/PriceUpdate.class.php:39
-msgid "You can execute large process to change Prices."
-msgstr ""
-
-#: thecartpress/modules/PriceUpdate.class.php:62
-msgid "Prices Update"
-msgstr "Обновление цен"
-
-#: thecartpress/modules/PriceUpdate.class.php:66
-#, fuzzy
-msgid "Prices updated"
-msgstr "Обновление цен"
-
-#: thecartpress/modules/PriceUpdate.class.php:72
-#, fuzzy
-msgid "1. Search fields"
-msgstr "Искать позицию"
-
-#: thecartpress/modules/PriceUpdate.class.php:73
-msgid "First, you have to search for products to change. You can set rules to add (or subtract) an amount to the price. \"Search\" button doesn't change prices."
-msgstr ""
-
-#: thecartpress/modules/PriceUpdate.class.php:115
-#, fuzzy
-msgid "Calculate new price"
-msgstr "Подсчитано "
-
-#: thecartpress/modules/PriceUpdate.class.php:126
-msgid "fix value"
-msgstr "фикс. значение"
-
-#: thecartpress/modules/PriceUpdate.class.php:132
-msgid "Prices rounded"
-msgstr "Цены округлены"
-
-#: thecartpress/modules/PriceUpdate.class.php:136
-msgid "Only for percentage prices"
-msgstr "Только для процентов"
-
-#: thecartpress/modules/PriceUpdate.class.php:160
-msgid "In this area, you could set new prices. Then, press on \"Update\" button to set these new prices."
-msgstr ""
-
-#: thecartpress/modules/PriceUpdate.class.php:165
-#: thecartpress/modules/PriceUpdate.class.php:173
-#, fuzzy
-msgid "Current Price"
-msgstr "Валюта"
-
-#: thecartpress/modules/PriceUpdate.class.php:166
-#: thecartpress/modules/PriceUpdate.class.php:174
-#, fuzzy
-msgid "New Price"
-msgstr "Новая цена"
-
-#: thecartpress/modules/PriceUpdate.class.php:202
-msgid "No products to update"
-msgstr "Позиции для обновления отсутствуют"
-
-#: thecartpress/modules/PriceUpdate.class.php:232
-msgid "This product cannot be modified by the user "
-msgstr "Данный продукт запрещено изменять пользователю"
 
 #: thecartpress/modules/JPlayer.class.php:59
 #: thecartpress/modules/JPlayer.class.php:84
@@ -4512,36 +4536,72 @@ msgstr "Электронный адрес обязателен"
 msgid "User name exists"
 msgstr "Такое имя уже существует"
 
-#: thecartpress/modules/LoginRegister.class.php:267
+#: thecartpress/modules/LoginRegister.class.php:269
 msgid "See all addresses"
 msgstr "Видеть все адреса"
 
-#: thecartpress/modules/LoginRegister.class.php:271
+#: thecartpress/modules/LoginRegister.class.php:273
 msgid "See all orders"
 msgstr "Видеть все заказы"
 
-#: thecartpress/modules/CopyOrder.class.php:51
+#: thecartpress/modules/Reports.class.php:31
+#: thecartpress/modules/Reports.class.php:54
+msgid "Reports"
+msgstr ""
+
+#: thecartpress/modules/Reports.class.php:40
+#, fuzzy
+msgid "Displys Reports."
+msgstr "Показывать формат"
+
+#: thecartpress/modules/Reports.class.php:70
+#, fuzzy
+msgid "Sales By Month"
+msgstr "Уровень продаж"
+
+#: thecartpress/modules/CopyOrder.class.php:55
 msgid "Copy to Shopping Cart"
 msgstr "Копировать в Корзину"
 
-#: thecartpress/modules/UIImprovements.class.php:60
+#: thecartpress/modules/CopyOrder.class.php:59
+#, fuzzy
+msgid "Actions"
+msgstr "Активный"
+
+#: thecartpress/modules/Miranda.class.php:155
+msgid "Activate miranda"
+msgstr "Активировать Миранду"
+
+#: thecartpress/modules/Miranda.class.php:159
+msgid "Activate miranda for the next generation of Graphical Interface."
+msgstr "Активировать Miranda при следующей обработке графического интерфейса"
+
+#: thecartpress/modules/Miranda.class.php:319
+msgid "Default Settings"
+msgstr "Параметры по умолчанию"
+
+#: thecartpress/modules/Miranda.class.php:320
+msgid "Payments"
+msgstr "Платежи"
+
+#: thecartpress/modules/UIImprovements.class.php:61
 #, php-format
 msgid "Powered by %s."
 msgstr "Программный модуль %s."
 
-#: thecartpress/modules/UIImprovements.class.php:70
+#: thecartpress/modules/UIImprovements.class.php:71
 msgid "Powered by TheCartPress, eCommerce platform for WordPress"
 msgstr "Программный модуль TheCartPress, электронный магазин для CMS WordPress"
 
-#: thecartpress/modules/UIImprovements.class.php:78
+#: thecartpress/modules/UIImprovements.class.php:79
 msgid "TheCartPress blog"
 msgstr "Блог разработчиков TheCartPress"
 
-#: thecartpress/modules/UIImprovements.class.php:161
+#: thecartpress/modules/UIImprovements.class.php:162
 msgid "Shopping"
 msgstr "Покупки"
 
-#: thecartpress/modules/UIImprovements.class.php:178
+#: thecartpress/modules/UIImprovements.class.php:179
 msgid "Download area"
 msgstr "Территория виртуальных товаров"
 
@@ -4549,193 +4609,194 @@ msgstr "Территория виртуальных товаров"
 msgid "Child of TheCartPress"
 msgstr "В дополнение к TheCartPress"
 
-#: thecartpress/modules/WishList.class.php:68
-msgid "Enabled Wish List"
-msgstr "Разрешён Лист Желаний"
-
-#: thecartpress/modules/WishList.class.php:85
+#: thecartpress/modules/WishList.class.php:67
+#: thecartpress/modules/WishList.class.php:89
 msgid "WishList"
 msgstr "Лист желаний"
 
-#: thecartpress/modules/WishList.class.php:85
+#: thecartpress/modules/WishList.class.php:72
+msgid "Enabled Wish List"
+msgstr "Разрешён Лист Желаний"
+
+#: thecartpress/modules/WishList.class.php:89
 msgid "My wish List"
 msgstr "Лист желаний"
 
-#: thecartpress/modules/WishList.class.php:95
+#: thecartpress/modules/WishList.class.php:99
 msgid "Add to Wish list"
 msgstr "Добавить в Лист желаний"
 
-#: thecartpress/modules/CustomTemplates.class.php:69
+#: thecartpress/modules/CustomTemplates.class.php:72
 msgid "Custom templates"
 msgstr "Пользовательские шаблоны"
 
-#: thecartpress/modules/CustomTemplates.class.php:83
+#: thecartpress/modules/CustomTemplates.class.php:86
 msgid "Custom Template"
 msgstr "Пользовательский шаблон"
 
-#: thecartpress/modules/CustomTemplates.class.php:85
-#: thecartpress/modules/CustomTemplates.class.php:97
+#: thecartpress/modules/CustomTemplates.class.php:88
+#: thecartpress/modules/CustomTemplates.class.php:100
 msgid "Default Template"
 msgstr "Базовый шаблон"
 
-#: thecartpress/modules/CustomTemplates.class.php:95
+#: thecartpress/modules/CustomTemplates.class.php:98
 #, php-format
 msgid "Custom Template for <strong>%s</strong>"
 msgstr "Пользовательский шаблон для <strong>%s</strong>"
 
-#: thecartpress/modules/CustomTemplates.class.php:104
+#: thecartpress/modules/CustomTemplates.class.php:107
 msgid "No templates"
 msgstr "Нет шаблонов"
 
-#: thecartpress/modules/CustomTemplates.class.php:272
+#: thecartpress/modules/CustomTemplates.class.php:275
 #, fuzzy
 msgid "parent theme"
 msgstr "Родительская тема"
 
-#: thecartpress/modules/StockManagement.class.php:118
-#: thecartpress/modules/StockManagement.class.php:130
-#: thecartpress/modules/StockManagement.class.php:140
-#: thecartpress/modules/StockManagement.class.php:249
-#: thecartpress/modules/StockManagement.class.php:362
-#: thecartpress/modules/StockManagement.class.php:396
-#: thecartpress/modules/StockManagement.class.php:619
+#: thecartpress/modules/StockManagement.class.php:119
+#: thecartpress/modules/StockManagement.class.php:131
+#: thecartpress/modules/StockManagement.class.php:141
+#: thecartpress/modules/StockManagement.class.php:268
+#: thecartpress/modules/StockManagement.class.php:382
+#: thecartpress/modules/StockManagement.class.php:416
+#: thecartpress/modules/StockManagement.class.php:641
 msgid "Stock"
 msgstr "Склад"
 
-#: thecartpress/modules/StockManagement.class.php:236
+#: thecartpress/modules/StockManagement.class.php:255
 msgid "Update Stock"
 msgstr "Изменение остатков"
 
-#: thecartpress/modules/StockManagement.class.php:255
+#: thecartpress/modules/StockManagement.class.php:274
 msgid "Stock management"
 msgstr "Управление остатками"
 
-#: thecartpress/modules/StockManagement.class.php:259
+#: thecartpress/modules/StockManagement.class.php:278
 msgid "Activates the stock management tools"
 msgstr "Активировать управление остатками на складе."
 
-#: thecartpress/modules/StockManagement.class.php:264
+#: thecartpress/modules/StockManagement.class.php:283
 msgid "When is stock adjusted"
 msgstr "После того, как настроено управление остатками"
 
-#: thecartpress/modules/StockManagement.class.php:268
+#: thecartpress/modules/StockManagement.class.php:287
 msgid "Never automatically adjusted"
 msgstr "Оставить остатки неизменяемыми"
 
-#: thecartpress/modules/StockManagement.class.php:270
+#: thecartpress/modules/StockManagement.class.php:289
 msgid "On checkout (default)"
 msgstr "Изменить в процессе расчёта (по умолчанию)"
 
-#: thecartpress/modules/StockManagement.class.php:272
+#: thecartpress/modules/StockManagement.class.php:291
 msgid "On OK from payment gateway"
 msgstr "Изменять после подтверждения от платёжной системы"
 
-#: thecartpress/modules/StockManagement.class.php:274
+#: thecartpress/modules/StockManagement.class.php:293
 msgid "Order status set to "
 msgstr "Статус заказа установлен в "
 
-#: thecartpress/modules/StockManagement.class.php:286
+#: thecartpress/modules/StockManagement.class.php:305
 msgid "Stock limit"
 msgstr "Лимит остатка на складе"
 
-#: thecartpress/modules/StockManagement.class.php:290
+#: thecartpress/modules/StockManagement.class.php:309
 msgid "Sets the upper limit to send emails for low stock"
 msgstr "Установить верхний предел, при выходе за который будет отослано электронное письмо с оповещением о низком остатке."
 
-#: thecartpress/modules/StockManagement.class.php:295
+#: thecartpress/modules/StockManagement.class.php:314
 msgid "Hide out of stock products"
 msgstr "Убрать позиции с нулевыми остатками из показа"
 
-#: thecartpress/modules/StockManagement.class.php:299
+#: thecartpress/modules/StockManagement.class.php:318
 msgid "Allows to hide out of Stock products"
 msgstr "Скрывать позиции с нулевыми остатками."
 
-#: thecartpress/modules/StockManagement.class.php:356
+#: thecartpress/modules/StockManagement.class.php:376
 msgid " Low Stock"
 msgstr "Низкий уровень остатков"
 
-#: thecartpress/modules/StockManagement.class.php:383
+#: thecartpress/modules/StockManagement.class.php:403
 msgid "Low Stock Notice"
 msgstr "Уведомлять при малом остатке"
 
-#: thecartpress/modules/StockManagement.class.php:389
+#: thecartpress/modules/StockManagement.class.php:409
 msgid "This notice will be showed when the client is going to pay and there is no stock of any product in the cart."
 msgstr "Это сообщение будет показано тогда, когда покупатель попытается оплатить заказ с превышением остатка на складе."
 
-#: thecartpress/modules/StockManagement.class.php:399
-#: thecartpress/modules/StockManagement.class.php:414
+#: thecartpress/modules/StockManagement.class.php:419
+#: thecartpress/modules/StockManagement.class.php:434
 #, php-format
 msgid "Stock management is disabled. See the <a href=\"%s\">settings</a> page to change this value."
 msgstr "Управление остатками отключено. Для изменения ситуации Вы можете посетить страницу <a href=\"%s\">настроек</a>."
 
-#: thecartpress/modules/StockManagement.class.php:406
+#: thecartpress/modules/StockManagement.class.php:426
 msgid "Use value -1 (or left blank) for stores/products with no stock management."
 msgstr "Для того, чтобы отключить контроль за остатками данной позиции, установите значение данного поля -1 или оставьте пустым."
 
-#: thecartpress/modules/StockManagement.class.php:411
+#: thecartpress/modules/StockManagement.class.php:431
 msgid "Initial Stock"
 msgstr "Начальный остаток"
 
-#: thecartpress/modules/StockManagement.class.php:443
+#: thecartpress/modules/StockManagement.class.php:463
 msgid "See stock notices"
 msgstr "Видеть складсие уведомления"
 
-#: thecartpress/modules/StockManagement.class.php:463
-#, php-format
-msgid "No enough stock for this product. Only %s items available."
+#: thecartpress/modules/StockManagement.class.php:483
+#, fuzzy, php-format
+msgid "No enough stock for this product. Only %s available items."
 msgstr "Выход за предел складского запаса. Доступно только %s единиц для заказа."
 
-#: thecartpress/modules/StockManagement.class.php:465
-#: thecartpress/modules/StockManagement.class.php:480
-#: thecartpress/modules/StockManagement.class.php:693
+#: thecartpress/modules/StockManagement.class.php:485
+#: thecartpress/modules/StockManagement.class.php:501
+#: thecartpress/modules/StockManagement.class.php:715
 msgid "Out of stock"
 msgstr "Превышение остатка"
 
-#: thecartpress/modules/StockManagement.class.php:483
-#, php-format
-msgid "No enough stock. Only %s items available."
+#: thecartpress/modules/StockManagement.class.php:504
+#, fuzzy, php-format
+msgid "No enough stock. Only %s available items."
 msgstr "Превышения остатка на складе. Текущий остаток - %s шт."
 
-#: thecartpress/modules/StockManagement.class.php:493
+#: thecartpress/modules/StockManagement.class.php:515
 msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
 msgstr "В данный момент на складе отсутствует запрашиваемое количество заказанный Вами товаров, пожалуйста, пересмотрите Ваш заказ, согласовав количество с остатками на нашем складе."
 
-#: thecartpress/modules/StockManagement.class.php:521
+#: thecartpress/modules/StockManagement.class.php:543
 msgid "Not enough stock in order at check-out"
 msgstr "Отсутствует запрашиваемое количество товара"
 
-#: thecartpress/modules/StockManagement.class.php:524
+#: thecartpress/modules/StockManagement.class.php:546
 msgid "There was an error when creating the order. Please contact with the seller."
 msgstr "Возникли ошибкм при формировании заказа, пожалуйста, свяжитесь с администрацией магазина"
 
-#: thecartpress/modules/StockManagement.class.php:546
+#: thecartpress/modules/StockManagement.class.php:568
 msgid "No stock after payment for:"
 msgstr "По окончании оплаты закончились запасы "
 
-#: thecartpress/modules/StockManagement.class.php:576
+#: thecartpress/modules/StockManagement.class.php:598
 msgid "There was an error when creating the order. Seller will contact you regarding your order."
 msgstr "При создании заказа произошла ошибка. Извините. Спасибо, что заходите на наш сайт."
 
-#: thecartpress/modules/StockManagement.class.php:607
+#: thecartpress/modules/StockManagement.class.php:629
 #, fuzzy
 msgid "Units in stock"
 msgstr "Начальный остаток"
 
-#: thecartpress/modules/StockManagement.class.php:611
+#: thecartpress/modules/StockManagement.class.php:633
 #, fuzzy
 msgid "Initial stock"
 msgstr "Начальный остаток"
 
-#: thecartpress/modules/StockManagement.class.php:648
-#: thecartpress/modules/StockManagement.class.php:651
+#: thecartpress/modules/StockManagement.class.php:670
+#: thecartpress/modules/StockManagement.class.php:673
 msgid "N/A"
 msgstr "нет"
 
-#: thecartpress/modules/StockManagement.class.php:671
+#: thecartpress/modules/StockManagement.class.php:693
 msgid "See stock notice"
 msgstr "Показывать складские данные"
 
-#: thecartpress/modules/StockManagement.class.php:682
+#: thecartpress/modules/StockManagement.class.php:704
 #, php-format
 msgid "No enough stock for some products. Visit the <a href=\"%s\">Shopping Cart</a> to see more details."
 msgstr "Отсутствует требуемое количество заказанных товаров. Пожалуйста, посетите страницу <a href=\"%s\">Корзины</a> для получения более подробной информации."
@@ -5111,13 +5172,13 @@ msgid "Minimun amount"
 msgstr "Минимальное значение"
 
 #: thecartpress/plugins/NoCostPayment.class.php:39
-#: thecartpress/plugins/Transference.class.php:32
+#: thecartpress/plugins/Transference.class.php:33
 #: thecartpress/plugins/Remboursement.class.php:32
 msgid "Notice"
 msgstr "Уведомление"
 
 #: thecartpress/plugins/NoCostPayment.class.php:46
-#: thecartpress/plugins/Transference.class.php:88
+#: thecartpress/plugins/Transference.class.php:124
 #: thecartpress/plugins/authorize.net/TCPAuthorizeNet.class.php:50
 msgid "Redirect automatically"
 msgstr "Автоматический редирект"
@@ -5128,7 +5189,7 @@ msgid "If checked, Checkout page will completed the order. Customers will not ne
 msgstr "Если отметить, то Страница расчёта автоматически перенаправит покупателя на Страницу подтверждения заказа и подтвердит заказ . В ином случае, покупатель должен будет самостоятельно нажать соответствующую кнопку."
 
 #: thecartpress/plugins/NoCostPayment.class.php:72
-#: thecartpress/plugins/Transference.class.php:144
+#: thecartpress/plugins/Transference.class.php:189
 #: thecartpress/plugins/Remboursement.class.php:110
 msgid "Finish"
 msgstr "Готово"
@@ -5137,32 +5198,53 @@ msgstr "Готово"
 msgid "Local pick up"
 msgstr "Забрать на месте"
 
-#: thecartpress/plugins/Transference.class.php:39
-#: thecartpress/plugins/Transference.class.php:128
+#: thecartpress/plugins/Transference.class.php:40
+#: thecartpress/plugins/Transference.class.php:170
 msgid "Owner"
 msgstr "Владелец"
 
-#: thecartpress/plugins/Transference.class.php:46
-#: thecartpress/plugins/Transference.class.php:129
+#: thecartpress/plugins/Transference.class.php:47
+#: thecartpress/plugins/Transference.class.php:171
 msgid "Bank"
 msgstr "Банк"
 
-#: thecartpress/plugins/Transference.class.php:53
-#: thecartpress/plugins/Transference.class.php:130
+#: thecartpress/plugins/Transference.class.php:55
+msgid "Bank account format"
+msgstr ""
+
+#: thecartpress/plugins/Transference.class.php:58
+#, fuzzy
+msgid "Two Fields"
+msgstr "Добвочные поля"
+
+#: thecartpress/plugins/Transference.class.php:59
+#, fuzzy
+msgid "Four Fields"
+msgstr "Добвочные поля"
+
+#: thecartpress/plugins/Transference.class.php:74
+#: thecartpress/plugins/Transference.class.php:173
+#, fuzzy
+msgid "Bank code"
+msgstr "Банк"
+
+#: thecartpress/plugins/Transference.class.php:81
+#: thecartpress/plugins/Transference.class.php:89
+#: thecartpress/plugins/Transference.class.php:175
 msgid "Account"
 msgstr "Аккаунт"
 
-#: thecartpress/plugins/Transference.class.php:74
-#: thecartpress/plugins/Transference.class.php:131
+#: thecartpress/plugins/Transference.class.php:110
+#: thecartpress/plugins/Transference.class.php:176
 msgid "IBAN"
 msgstr "IBAN"
 
-#: thecartpress/plugins/Transference.class.php:81
-#: thecartpress/plugins/Transference.class.php:132
+#: thecartpress/plugins/Transference.class.php:117
+#: thecartpress/plugins/Transference.class.php:177
 msgid "SWIFT"
 msgstr "SWIFT"
 
-#: thecartpress/plugins/Transference.class.php:92
+#: thecartpress/plugins/Transference.class.php:128
 msgid "If checked, Checkout page will redirect automatically to Checkout Ok page. Otherwise, customers must click on \"Finish\" button."
 msgstr "Если отметить, то Страница расчёта автоматически перенаправит покупателя на Страницу подтверждения заказа и подтвердит заказ . В ином случае, покупатель должен будет самостоятельно нажать соответствующую кнопку."
 
@@ -5434,57 +5516,57 @@ msgid "Credit card holder"
 msgstr "Держатель кредитной карточки"
 
 #: thecartpress/plugins/CardOffLine/CardOffLine.class.php:82
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:210
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:217
 msgid "Card number"
 msgstr "Номер кредитной карточки"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:94
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:217
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:98
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:224
 msgid "cvc"
 msgstr "cvc"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:100
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:223
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:107
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:230
 msgid "Expiration date"
 msgstr "Карточка действительна до"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:103
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:110
 msgid "Month"
 msgstr "Месяц"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:110
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:117
 msgid "Year"
 msgstr "Год"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:121
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:128
 msgid "Card type"
 msgstr "Тип карты"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:164
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:171
 msgid "Wrong Card number"
 msgstr "Номер карточки представляется нам ошибочным"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:170
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:177
 msgid "The field Card Holder must be completed"
 msgstr "Нужно заполнить данные о держателе кредитной карточки"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:179
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:186
 msgid "Send"
 msgstr "Выслать"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:191
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:198
 msgid "The data from the customer's credit card has been permanently removed"
 msgstr "Данные о кредитной карточке покупателя удалены"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:201
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:208
 msgid "Credit Card Holder"
 msgstr "Держатель кредитной карточки"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:234
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:241
 msgid "Credit Card Type"
 msgstr "Тип кредитной карточки"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:238
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:245
 msgid "Delete card data"
 msgstr "Удалить данные о карте"
 
@@ -5637,45 +5719,45 @@ msgstr "Поисковая оптимизация TheCartPress отключен�
 msgid "This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s"
 msgstr "Данное сообщение будет показано  в процессе расчёта и добалено в электронное письмо, получаемое покупателем и связанное с  информацией о %s."
 
-#: thecartpress/classes/DownloadableProducts.class.php:62
+#: thecartpress/classes/DownloadableProducts.class.php:64
 #, php-format
 msgid "The product is in your <a href=\"%s\">cart</a>"
 msgstr "Товар в Вашей <a href=\"%s\">Корзине</a>"
 
-#: thecartpress/classes/DownloadableProducts.class.php:81
-#: thecartpress/classes/DownloadableProducts.class.php:95
+#: thecartpress/classes/DownloadableProducts.class.php:83
+#: thecartpress/classes/DownloadableProducts.class.php:97
 msgid "file upload"
 msgstr "файл загружен"
 
-#: thecartpress/classes/DownloadableProducts.class.php:83
+#: thecartpress/classes/DownloadableProducts.class.php:85
 msgid "files"
 msgstr "файлы"
 
-#: thecartpress/classes/DownloadableProducts.class.php:89
+#: thecartpress/classes/DownloadableProducts.class.php:91
 msgid "Is downloadable"
 msgstr "Виртуальный товар"
 
-#: thecartpress/classes/DownloadableProducts.class.php:106
+#: thecartpress/classes/DownloadableProducts.class.php:104
 msgid "Max. downloads"
 msgstr "Максимальное количество загрузок"
 
-#: thecartpress/classes/DownloadableProducts.class.php:108
+#: thecartpress/classes/DownloadableProducts.class.php:106
 msgid "If you don't want to set a number of maximun downloads, set this value to -1."
 msgstr "Если вы не хотите устанавливать максимальное число загрузок, впишите сюда -1."
 
-#: thecartpress/classes/DownloadableProducts.class.php:112
+#: thecartpress/classes/DownloadableProducts.class.php:110
 msgid "Days to expire"
 msgstr "Количество дней до истечения срока"
 
-#: thecartpress/classes/DownloadableProducts.class.php:114
+#: thecartpress/classes/DownloadableProducts.class.php:112
 msgid "Days to expire from the buying day. You can use -1 value."
 msgstr "Количество дней ожидания оплаты. Можете установить так же -1."
 
-#: thecartpress/classes/DownloadableProducts.class.php:170
+#: thecartpress/classes/DownloadableProducts.class.php:172
 msgid "Downloadable files"
 msgstr "Загружаемые файлы"
 
-#: thecartpress/classes/DownloadableProducts.class.php:188
+#: thecartpress/classes/DownloadableProducts.class.php:190
 #, php-format
 msgid "Please, to download products visit <a href=\"%s\">My Downloads</a> page (login required)."
 msgstr ""
@@ -5710,134 +5792,134 @@ msgstr "Отсутствуют уведомления в Корзине"
 msgid "Notices"
 msgstr "Уведомления"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:53
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:54
 msgid "Default post type for TheCartPress"
 msgstr "Заданный тип записи для TheCartPress"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:58
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:59
 msgid "Edit Product"
 msgstr "Изменить товар"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:59
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:60
 msgid "New Product"
 msgstr "Новый товар"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:60
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:61
 msgid "View Product"
 msgstr "Просмотр информации о товаре"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:61
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:62
 msgid "Search Products"
 msgstr "Поиск товара"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:62
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:63
 msgid "No products found"
 msgstr "Товаров нет"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:63
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:64
 msgid "No products found in Trash"
 msgstr "В корзине такого товара нет"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:81
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:82
 msgid "Categories for products"
 msgstr "Разделы для товаров"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:102
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:103
 msgid "Products Tags"
 msgstr "Метки для товаров"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:103
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:104
 msgid "Tags for products"
 msgstr "Метки для товаров"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:105
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:106
 msgid "Products"
 msgstr "Товары"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:106
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:107
 msgid "Search Tags"
 msgstr "Поиск меток"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:107
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:108
 msgid "All Tags"
 msgstr "Все метки"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:108
 #: thecartpress/customposttypes/ProductCustomPostType.class.php:109
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:110
 msgid "Parent Tag"
 msgstr "Родительская метка"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:110
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:111
 msgid "Edit Tag"
 msgstr "Изменить Метку"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:111
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:112
 msgid "Update Tag"
 msgstr "Обновить Метку"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:112
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:113
 msgid "Add New Tag"
 msgstr "Добавить новую Метку"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:113
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:114
 msgid "New Tag Name"
 msgstr "Название новой Метки"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:116
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:117
 msgid "Tag"
 msgstr "Метка"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:188
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:189
 msgid "Price - Type"
 msgstr "Цена - тип"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:238
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:239
 msgid "View all categories"
 msgstr "Просмотреть все разделы"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:248
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:249
 msgid "type:"
 msgstr "тип:"
 
-#: thecartpress/customposttypes/ProductCustomPostType.class.php:256
+#: thecartpress/customposttypes/ProductCustomPostType.class.php:257
 msgid "SKU:"
 msgstr "SKU:"
 
-#: thecartpress/templates/tcp_template.php:107
-#: thecartpress/templates/tcp_template.php:205
+#: thecartpress/templates/tcp_template.php:109
+#: thecartpress/templates/tcp_template.php:207
 #, php-format
 msgid "%1$s%2$s (%3$s)"
 msgstr "%1$s%2$s (%3$s)"
 
-#: thecartpress/templates/tcp_template.php:557
+#: thecartpress/templates/tcp_template.php:568
 msgid "(Inc. Tax)"
 msgstr "(Налоги включ.)"
 
-#: thecartpress/templates/tcp_template.php:558
+#: thecartpress/templates/tcp_template.php:569
 msgid "(No inc. Tax)"
 msgstr "(Налоги НЕ включ.)"
 
-#: thecartpress/templates/tcp_template.php:959
+#: thecartpress/templates/tcp_template.php:979
 msgid "Completed"
 msgstr "Выполнено"
 
-#: thecartpress/templates/tcp_template.php:966
+#: thecartpress/templates/tcp_template.php:986
 msgid "Processing"
 msgstr "Обработано"
 
-#: thecartpress/templates/tcp_template.php:972
+#: thecartpress/templates/tcp_template.php:992
 msgid "Pending"
 msgstr "Запланировано"
 
-#: thecartpress/templates/tcp_template.php:978
+#: thecartpress/templates/tcp_template.php:998
 msgid "Cancelled"
 msgstr "Отменено"
 
-#: thecartpress/templates/tcp_template.php:985
+#: thecartpress/templates/tcp_template.php:1005
 msgid "Suspended"
 msgstr "Приостановлено"
 
-#: thecartpress/templates/tcp_template.php:1065
+#: thecartpress/templates/tcp_template.php:1085
 msgid "Simple"
 msgstr "Простой"
 
@@ -5856,138 +5938,136 @@ msgstr "в Корзину"
 msgid "<span class=\"tcp_units\">%s</span> unit(s) <a href=\"%s\">in your cart</a>"
 msgstr "<span class=\"tcp_units\">%s</span> ед. <a href=\"%s\">уже в Вашей Корзине</a>"
 
-#: thecartpress/templates/tcp_general_template.php:127
+#: thecartpress/templates/tcp_general_template.php:134
 #, php-format
 msgid "Select %s"
 msgstr "Выберите %s"
 
-#: thecartpress/templates/tcp_general_template.php:296
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:263
+#: thecartpress/templates/tcp_general_template.php:304
 msgid "Modify"
 msgstr "Изменить"
 
-#: thecartpress/templates/tcp_general_template.php:305
-#: thecartpress/templates/tcp_general_template.php:332
-#: thecartpress/templates/tcp_general_template.php:394
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:306
+#: thecartpress/templates/tcp_general_template.php:313
+#: thecartpress/templates/tcp_general_template.php:340
+#: thecartpress/templates/tcp_general_template.php:402
 msgid "Discount"
 msgstr "Скидка"
 
-#: thecartpress/templates/tcp_general_template.php:321
+#: thecartpress/templates/tcp_general_template.php:329
 msgid "Delete item"
 msgstr "Удалить элемент"
 
-#: thecartpress/templates/tcp_general_template.php:340
+#: thecartpress/templates/tcp_general_template.php:348
 msgid "shopping cart"
 msgstr "корзина"
 
-#: thecartpress/templates/tcp_general_template.php:345
+#: thecartpress/templates/tcp_general_template.php:353
 msgid "checkout"
 msgstr "расчёт"
 
-#: thecartpress/templates/tcp_general_template.php:405
+#: thecartpress/templates/tcp_general_template.php:413
 msgid "N<sup>o</sup> products"
 msgstr "№"
 
-#: thecartpress/templates/tcp_general_template.php:413
+#: thecartpress/templates/tcp_general_template.php:421
 msgid "Weigth"
 msgstr "Вес"
 
-#: thecartpress/templates/tcp_general_template.php:492
+#: thecartpress/templates/tcp_general_template.php:500
 msgid "Unordered"
 msgstr "Без сортировки"
 
-#: thecartpress/templates/tcp_general_template.php:496
+#: thecartpress/templates/tcp_general_template.php:504
 msgid "Suggested"
 msgstr "Размещено"
 
-#: thecartpress/templates/tcp_general_template.php:516
+#: thecartpress/templates/tcp_general_template.php:524
 msgid "Popular"
 msgstr "Популярность"
 
-#: thecartpress/templates/tcp_general_template.php:520
+#: thecartpress/templates/tcp_general_template.php:528
 msgid "Random"
 msgstr "Случайным образом"
 
-#: thecartpress/templates/tcp_general_template.php:550
+#: thecartpress/templates/tcp_general_template.php:558
 msgid "Sort"
 msgstr "Сортировка"
 
-#: thecartpress/templates/tcp_general_template.php:651
+#: thecartpress/templates/tcp_general_template.php:658
 msgid "Password Lost and Found"
 msgstr "Восстановление пароля"
 
-#: thecartpress/templates/tcp_general_template.php:651
+#: thecartpress/templates/tcp_general_template.php:658
 msgid "Lost your password?"
 msgstr "Утерян Ваш пароль?"
 
-#: thecartpress/templates/tcp_general_template.php:668
-#: thecartpress/templates/tcp_general_template.php:756
+#: thecartpress/templates/tcp_general_template.php:675
+#: thecartpress/templates/tcp_general_template.php:763
 msgid "Error"
 msgstr "Ошибка"
 
-#: thecartpress/templates/tcp_general_template.php:695
+#: thecartpress/templates/tcp_general_template.php:702
 msgid "Repeat password"
 msgstr "Повтор пароля"
 
-#: thecartpress/templates/tcp_general_template.php:714
+#: thecartpress/templates/tcp_general_template.php:721
 msgid "Error has occurred while registering"
 msgstr "В процессе регистрации произошла ошибка"
 
-#: thecartpress/templates/tcp_general_template.php:717
+#: thecartpress/templates/tcp_general_template.php:724
 msgid "Registration data has been saved."
 msgstr "Регистрационные данные сохранены"
 
-#: thecartpress/templates/tcp_general_template.php:739
+#: thecartpress/templates/tcp_general_template.php:746
 msgid "Type your new password again."
 msgstr "Пожалуйста, введите пароль ещё раз"
 
-#: thecartpress/templates/tcp_general_template.php:742
+#: thecartpress/templates/tcp_general_template.php:749
 msgid "E-mail"
 msgstr "E-mail"
 
-#: thecartpress/templates/tcp_general_template.php:759
+#: thecartpress/templates/tcp_general_template.php:766
 msgid "The user is already logged"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:826
+#: thecartpress/templates/tcp_general_template.php:833
 msgid "Home"
 msgstr "Наверх"
 
-#: thecartpress/templates/tcp_general_template.php:889
+#: thecartpress/templates/tcp_general_template.php:896
 #, php-format
 msgid "Search results for \"%s\""
 msgstr "Результаты поиска «%s»"
 
-#: thecartpress/templates/tcp_general_template.php:893
+#: thecartpress/templates/tcp_general_template.php:900
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr "Запись помечена \"%s\""
 
-#: thecartpress/templates/tcp_general_template.php:899
+#: thecartpress/templates/tcp_general_template.php:906
 #, php-format
 msgid "Articles posted by %s"
 msgstr "Статья размещена %s"
 
-#: thecartpress/templates/tcp_general_template.php:903
+#: thecartpress/templates/tcp_general_template.php:910
 msgid "Error 404"
 msgstr "Ошибка 404"
 
-#: thecartpress/templates/tcp_general_template.php:908
+#: thecartpress/templates/tcp_general_template.php:915
 msgid "Page"
 msgstr "Страница"
 
-#: thecartpress/templates/tcp_general_template.php:958
+#: thecartpress/templates/tcp_general_template.php:965
 #, php-format
 msgid "Posts by %s"
 msgstr "Запись от %s"
 
-#: thecartpress/templates/tcp_general_template.php:1068
+#: thecartpress/templates/tcp_general_template.php:1037
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\">Размещено </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a>.</span>"
 
-#: thecartpress/templates/tcp_general_template.php:1077
+#: thecartpress/templates/tcp_general_template.php:1046
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">Автор: </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
@@ -6213,28 +6293,29 @@ msgstr "Показывать 2-ю доп. зону"
 msgid "See Third Custom Area"
 msgstr "Показывать 3-ю доп. зону"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:126
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:127
+#: thecartpress/themes-templates/tcp_shopping_cart.php:139
 msgid "Shipping and Billing address"
 msgstr "Выбрать адрес из списка"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:191
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:192
+#: thecartpress/themes-templates/tcp_shopping_cart.php:34
 msgid "Payment notice"
 msgstr "Уведомление о платеже"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:201
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:202
+#: thecartpress/themes-templates/tcp_shopping_cart.php:40
 msgid "Shipping notice"
 msgstr "Уведомление о доставке"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:220
-msgid "Sku"
-msgstr "№ кат."
-
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:249
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:251
+#: thecartpress/themes-templates/tcp_shopping_cart.php:217
 #, php-format
 msgid "Discount %s"
 msgstr "Скдидка %s"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:300
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:302
+#: thecartpress/themes-templates/tcp_shopping_cart.php:268
 msgid "Subtotal"
 msgstr "Промежуточный итог"
 
@@ -6275,46 +6356,51 @@ msgid "%s"
 msgstr "%s"
 
 #: thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php:46
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:35
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:34
 #: thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php:47
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:33
 #: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:33
 msgid "Nothing Found"
 msgstr "Данных нет"
 
 #: thecartpress/themes-templates/tcp-twentyeleven/archive-tcp_product.php:49
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:38
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:39
 #: thecartpress/themes-templates/tcp-twentyeleven/taxonomy.php:51
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:37
 #: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:38
-#: thecartpress/themes-templates/tcp-twentyten/loop-tcp-grid.php:33
 msgid "Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post."
 msgstr "Поиск в архивах результатов не дал."
 
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:146
-#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:170
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:150
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:163
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:178
 msgid "More <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Далее <span class=\"meta-nav\">&rarr;</span>"
 
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:167
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:171
 #, php-format
 msgid "View all products by %s <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Смотреть все записи от %s <span class=\"meta-nav\">&rarr;</span>"
 
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "Leave a review"
 msgstr "Оставить комментарий"
 
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "<b>1</b> Review"
 msgstr "<b>1</b> Обзор"
 
-#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:196
-#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:201
+#: thecartpress/themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
+#: thecartpress/themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "<b>%</b> Reviews"
 msgstr "<b>%</b> Обзоры"
 
-#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:22
+#: thecartpress/themes-templates/tcp-twentyeleven/content-single-product.php:21
 msgid "Reply"
 msgstr "Ответить"
 
@@ -6343,6 +6429,12 @@ msgstr "Архивы разделов: %s"
 #, php-format
 msgid "About %s"
 msgstr "О программе %s"
+
+#~ msgid "Prices Update"
+#~ msgstr "Обновление цен"
+
+#~ msgid "Sku"
+#~ msgstr "№ кат."
 
 #~ msgid "Notice:Random"
 #~ msgstr "Случайным образом"
@@ -6648,19 +6740,6 @@ msgstr "О программе %s"
 #~ "Для того, что бы Вы увидели данный медиа-контент, возможно, придётся "
 #~ "обновить Ваш броузер иди <a href=\"http://get.adobe.com/flashplayer/\" "
 #~ "target=\"_blank\">флеш-плагин</a> броузера."
-
-#~ msgid "Activate miranda"
-#~ msgstr "Активировать Миранду"
-
-#~ msgid "Activate miranda for the next generation of Graphical Interface."
-#~ msgstr ""
-#~ "Активировать Miranda при следующей обработке графического интерфейса"
-
-#~ msgid "Default Settings"
-#~ msgstr "Параметры по умолчанию"
-
-#~ msgid "Payments"
-#~ msgstr "Платежи"
 
 #~ msgid "Manual on order status set to "
 #~ msgstr "Вручную по присвоению заказу статуса"

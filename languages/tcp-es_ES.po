@@ -130,11 +130,11 @@ msgstr "Proceso de TheCartPress"
 
 #: TheCartPress.class.php:496
 msgid "TCP Settings"
-msgstr "TCP Configuraciones"
+msgstr "Configuración"
 
 #: TheCartPress.class.php:498
 msgid "TCP Tools"
-msgstr "TCP Herramientas"
+msgstr "Herramientas"
 
 #: TheCartPress.class.php:499
 msgid "Shortcodes Generator"
@@ -6118,7 +6118,7 @@ msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">por </span> <span clas
 
 #: appearance/ThemeCompatibilitySettings.class.php:33
 msgid "TCP Look&Feel"
-msgstr "TCP Apariencia"
+msgstr "Apariencia"
 
 #: appearance/ThemeCompatibilitySettings.class.php:34
 #: appearance/ThemeCompatibilitySettings.class.php:59

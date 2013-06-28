@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TheCartPress v1.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-26 08:34+0100\n"
-"PO-Revision-Date: 2013-06-26 10:14+0100\n"
+"POT-Creation-Date: 2013-06-27 14:50+0100\n"
+"PO-Revision-Date: 2013-06-27 14:50+0100\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -4894,22 +4894,22 @@ msgid "%s (Discount %s)"
 msgstr "%s (Rabatt %s)"
 
 # @ tcp
-#: checkout/TCPCartBox.class.php:269
+#: checkout/TCPCartBox.class.php:271
 msgid "Discounts"
 msgstr "Rabatte"
 
 # @ tcp
-#: checkout/TCPCartBox.class.php:285
+#: checkout/TCPCartBox.class.php:287
 msgid "Shipping cost"
 msgstr "Versandkosten"
 
 # @ tcp
-#: checkout/TCPCartBox.class.php:297
+#: checkout/TCPCartBox.class.php:299
 msgid "Payment cost"
 msgstr "Gebühren"
 
 # @ tcp
-#: checkout/TCPCartBox.class.php:304
+#: checkout/TCPCartBox.class.php:306
 msgid "Free shipping"
 msgstr "Kostenloser Versand"
 
@@ -5546,168 +5546,168 @@ msgstr "Übergeordnetes Thema"
 #: modules/StockManagement.class.php:119
 #: modules/StockManagement.class.php:131
 #: modules/StockManagement.class.php:141
-#: modules/StockManagement.class.php:267
-#: modules/StockManagement.class.php:381
-#: modules/StockManagement.class.php:415
-#: modules/StockManagement.class.php:638
+#: modules/StockManagement.class.php:268
+#: modules/StockManagement.class.php:382
+#: modules/StockManagement.class.php:416
+#: modules/StockManagement.class.php:641
 msgid "Stock"
 msgstr "Bestand"
 
 # @ tcp
-#: modules/StockManagement.class.php:254
+#: modules/StockManagement.class.php:255
 msgid "Update Stock"
 msgstr "Bestand aktualisieren"
 
 # @ tcp
-#: modules/StockManagement.class.php:273
+#: modules/StockManagement.class.php:274
 msgid "Stock management"
 msgstr "Bestände verwalten"
 
-#: modules/StockManagement.class.php:277
+#: modules/StockManagement.class.php:278
 msgid "Activates the stock management tools"
 msgstr "Aktiviert die Lagerverwaltungs-Werkzeuge"
 
-#: modules/StockManagement.class.php:282
+#: modules/StockManagement.class.php:283
 msgid "When is stock adjusted"
 msgstr "Wann wird der Lagerbestand aktualisiert"
 
-#: modules/StockManagement.class.php:286
+#: modules/StockManagement.class.php:287
 msgid "Never automatically adjusted"
 msgstr "Nie automatisch aktualisieren"
 
-#: modules/StockManagement.class.php:288
+#: modules/StockManagement.class.php:289
 msgid "On checkout (default)"
 msgstr "Beim Checkout (Standard)"
 
-#: modules/StockManagement.class.php:290
+#: modules/StockManagement.class.php:291
 msgid "On OK from payment gateway"
 msgstr "Bei OK des Zahlungsmoduls"
 
 # @ tcp
-#: modules/StockManagement.class.php:292
+#: modules/StockManagement.class.php:293
 msgid "Order status set to "
 msgstr "Order status setzen zu"
 
 # @ tcp
-#: modules/StockManagement.class.php:304
+#: modules/StockManagement.class.php:305
 msgid "Stock limit"
 msgstr "Bestands Limit"
 
-#: modules/StockManagement.class.php:308
+#: modules/StockManagement.class.php:309
 msgid "Sets the upper limit to send emails for low stock"
 msgstr "Bestimmt das Bestandslimit, ab dem Emails für niedrigen Lagerbestand versendet werden."
 
 # @ tcp
-#: modules/StockManagement.class.php:313
+#: modules/StockManagement.class.php:314
 msgid "Hide out of stock products"
 msgstr "Ausverkaufte Artikel verbergen"
 
 # @ tcp
-#: modules/StockManagement.class.php:317
+#: modules/StockManagement.class.php:318
 msgid "Allows to hide out of Stock products"
 msgstr "Erlaubt es, ausverkaufte Produkt zu verbergen"
 
 # @ tcp
-#: modules/StockManagement.class.php:375
+#: modules/StockManagement.class.php:376
 msgid " Low Stock"
 msgstr "Mindestbestand"
 
 # @ tcp
-#: modules/StockManagement.class.php:402
+#: modules/StockManagement.class.php:403
 msgid "Low Stock Notice"
 msgstr "Zeige Mindestbestandshinweis"
 
-#: modules/StockManagement.class.php:408
+#: modules/StockManagement.class.php:409
 msgid "This notice will be showed when the client is going to pay and there is no stock of any product in the cart."
 msgstr "Diese Mitteilung wird gezeigt, wenn der Kunde zahlt und es gibt keinen Vorrat für die Produkte im Warenkorb."
 
 # @ tcp
-#: modules/StockManagement.class.php:418
-#: modules/StockManagement.class.php:433
+#: modules/StockManagement.class.php:419
+#: modules/StockManagement.class.php:434
 #, php-format
 msgid "Stock management is disabled. See the <a href=\"%s\">settings</a> page to change this value."
 msgstr "Die Lagerverwaltung ist deaktiviert. Sehen Sie sich die <a href=\"%s\">Einstellungen</a> an, um dies zu &auml;ndern."
 
 # @ tcp
-#: modules/StockManagement.class.php:425
+#: modules/StockManagement.class.php:426
 msgid "Use value -1 (or left blank) for stores/products with no stock management."
 msgstr "Geben Sie -1 ein (oder lassen Sie das Feld leer) für Shops / Produkte ohne Lagerhaltung."
 
 # @ tcp
-#: modules/StockManagement.class.php:430
+#: modules/StockManagement.class.php:431
 msgid "Initial Stock"
 msgstr "Anfagsbestand"
 
 # @ tcp
-#: modules/StockManagement.class.php:462
+#: modules/StockManagement.class.php:463
 msgid "See stock notices"
 msgstr "Zeige Bestandshinweise"
 
 # @ tcp
-#: modules/StockManagement.class.php:482
+#: modules/StockManagement.class.php:483
 #, php-format
 msgid "No enough stock for this product. Only %s available items."
 msgstr "Nicht genügend Bestand für dieses Produkt. Nur %s Stück verfügbar."
 
 # @ tcp
-#: modules/StockManagement.class.php:484
-#: modules/StockManagement.class.php:499
-#: modules/StockManagement.class.php:712
+#: modules/StockManagement.class.php:485
+#: modules/StockManagement.class.php:501
+#: modules/StockManagement.class.php:715
 msgid "Out of stock"
 msgstr "ausverkauft"
 
 # @ tcp
-#: modules/StockManagement.class.php:502
+#: modules/StockManagement.class.php:504
 #, php-format
 msgid "No enough stock. Only %s available items."
 msgstr "Nicht genug auf Lager. Nur %s Stück verfügbar."
 
 # @ tcp
-#: modules/StockManagement.class.php:512
+#: modules/StockManagement.class.php:515
 msgid "You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products."
 msgstr "Zur Zeit sind leider nicht genug Artikel auf Lager. Bitte überprüfen Sie die Liste der Produkte."
 
 # @ tcp
-#: modules/StockManagement.class.php:540
+#: modules/StockManagement.class.php:543
 msgid "Not enough stock in order at check-out"
 msgstr "Nicht genügend Artikel auf Lager"
 
 # @ tcp
-#: modules/StockManagement.class.php:543
+#: modules/StockManagement.class.php:546
 msgid "There was an error when creating the order. Please contact with the seller."
 msgstr "Es gab einen Fehler beim Erstellen der Bestellung. Bitte nehmen Sie mit uns Kontakt auf."
 
-#: modules/StockManagement.class.php:565
+#: modules/StockManagement.class.php:568
 msgid "No stock after payment for:"
 msgstr "Kein Bestand nach der Zahlung f&uuml;r:"
 
 # @ tcp
-#: modules/StockManagement.class.php:595
+#: modules/StockManagement.class.php:598
 msgid "There was an error when creating the order. Seller will contact you regarding your order."
 msgstr "Es gab einen Fehler beim Erstellen der Bestellung. Bitte nehmen Sie mit uns Kontakt auf."
 
 # @ tcp
-#: modules/StockManagement.class.php:626
+#: modules/StockManagement.class.php:629
 msgid "Units in stock"
 msgstr "Lagerbestand"
 
 # @ tcp
-#: modules/StockManagement.class.php:630
+#: modules/StockManagement.class.php:633
 msgid "Initial stock"
 msgstr "Lagerbestand zu Beginn"
 
-#: modules/StockManagement.class.php:667
 #: modules/StockManagement.class.php:670
+#: modules/StockManagement.class.php:673
 msgid "N/A"
 msgstr "nicht verfügbar"
 
 # @ tcp
-#: modules/StockManagement.class.php:690
+#: modules/StockManagement.class.php:693
 msgid "See stock notice"
 msgstr "Zeige Bestandshinweis"
 
 # @ tcp
-#: modules/StockManagement.class.php:701
+#: modules/StockManagement.class.php:704
 #, php-format
 msgid "No enough stock for some products. Visit the <a href=\"%s\">Shopping Cart</a> to see more details."
 msgstr "Wir haben von einigen Produkten nicht genügend auf Lager. Besuchen Sie Ihren <a href=\"%s\">Warenkorb</a> , um mehr Details zu sehen."
@@ -7092,154 +7092,154 @@ msgstr "in den Warenkorb"
 msgid "<span class=\"tcp_units\">%s</span> unit(s) <a href=\"%s\">in your cart</a>"
 msgstr "<span class=\"tcp_units\">%s</span> Stück <a href=\"%s\">im Warenkorb</a>"
 
-#: templates/tcp_general_template.php:127
+#: templates/tcp_general_template.php:134
 #, php-format
 msgid "Select %s"
 msgstr "Wähle %s"
 
 # @ tcp
-#: templates/tcp_general_template.php:296
+#: templates/tcp_general_template.php:304
 msgid "Modify"
 msgstr "Ändern"
 
 # @ tcp
-#: templates/tcp_general_template.php:305
-#: templates/tcp_general_template.php:332
-#: templates/tcp_general_template.php:394
+#: templates/tcp_general_template.php:313
+#: templates/tcp_general_template.php:340
+#: templates/tcp_general_template.php:402
 msgid "Discount"
 msgstr "Rabatt"
 
 # @ tcp
-#: templates/tcp_general_template.php:321
+#: templates/tcp_general_template.php:329
 msgid "Delete item"
 msgstr "Element löschen"
 
 # @ tcp
-#: templates/tcp_general_template.php:340
+#: templates/tcp_general_template.php:348
 msgid "shopping cart"
 msgstr "Warenkorb"
 
 # @ tcp
-#: templates/tcp_general_template.php:345
+#: templates/tcp_general_template.php:353
 msgid "checkout"
 msgstr "Kasse"
 
 # @ tcp
-#: templates/tcp_general_template.php:405
+#: templates/tcp_general_template.php:413
 msgid "N<sup>o</sup> products"
 msgstr "Anzahl Produkte"
 
 # @ tcp
-#: templates/tcp_general_template.php:413
+#: templates/tcp_general_template.php:421
 msgid "Weigth"
 msgstr "Gewicht"
 
 # @ tcp
-#: templates/tcp_general_template.php:492
+#: templates/tcp_general_template.php:500
 msgid "Unordered"
 msgstr "unsortiert"
 
-#: templates/tcp_general_template.php:496
+#: templates/tcp_general_template.php:504
 msgid "Suggested"
 msgstr "Empfohlen"
 
 # @ tcp
-#: templates/tcp_general_template.php:516
+#: templates/tcp_general_template.php:524
 msgid "Popular"
 msgstr "Beliebtheit"
 
 # @ tcp
-#: templates/tcp_general_template.php:520
+#: templates/tcp_general_template.php:528
 msgid "Random"
 msgstr "zufällig"
 
-#: templates/tcp_general_template.php:550
+#: templates/tcp_general_template.php:558
 msgid "Sort"
 msgstr "Sortieren"
 
-#: templates/tcp_general_template.php:650
+#: templates/tcp_general_template.php:658
 msgid "Password Lost and Found"
 msgstr "Password verloren"
 
 # @ tcp
-#: templates/tcp_general_template.php:650
+#: templates/tcp_general_template.php:658
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
 
-#: templates/tcp_general_template.php:667
-#: templates/tcp_general_template.php:755
+#: templates/tcp_general_template.php:675
+#: templates/tcp_general_template.php:763
 msgid "Error"
 msgstr "Fehler"
 
 # @ tcp
-#: templates/tcp_general_template.php:694
+#: templates/tcp_general_template.php:702
 msgid "Repeat password"
 msgstr "Passwort wiederholen"
 
-#: templates/tcp_general_template.php:713
+#: templates/tcp_general_template.php:721
 msgid "Error has occurred while registering"
 msgstr "Während der Registrierung ist ein Fehler aufgetreten."
 
 # @ tcp
-#: templates/tcp_general_template.php:716
+#: templates/tcp_general_template.php:724
 msgid "Registration data has been saved."
 msgstr "Registrierung wurde abgeschlossen."
 
-#: templates/tcp_general_template.php:738
+#: templates/tcp_general_template.php:746
 msgid "Type your new password again."
 msgstr "Geben Sie das neue Passwort erneut ein."
 
 # @ tcp
-#: templates/tcp_general_template.php:741
+#: templates/tcp_general_template.php:749
 msgid "E-mail"
 msgstr "E-mail"
 
-#: templates/tcp_general_template.php:758
+#: templates/tcp_general_template.php:766
 msgid "The user is already logged"
 msgstr ""
 
-#: templates/tcp_general_template.php:825
+#: templates/tcp_general_template.php:833
 msgid "Home"
 msgstr "Home"
 
 # @ tcp
-#: templates/tcp_general_template.php:888
+#: templates/tcp_general_template.php:896
 #, php-format
 msgid "Search results for \"%s\""
 msgstr "Suchergebnisse für \"%s\""
 
-#: templates/tcp_general_template.php:892
+#: templates/tcp_general_template.php:900
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr "Posts mit  \"%s\" verschlagwortet"
 
-#: templates/tcp_general_template.php:898
+#: templates/tcp_general_template.php:906
 #, php-format
 msgid "Articles posted by %s"
 msgstr "Artikel von %s geschrieben"
 
-#: templates/tcp_general_template.php:902
+#: templates/tcp_general_template.php:910
 msgid "Error 404"
 msgstr "Fehler 404"
 
 # @ twentyten
 # @ tcp
-#: templates/tcp_general_template.php:907
+#: templates/tcp_general_template.php:915
 msgid "Page"
 msgstr "Seite"
 
 # @ tcp
-#: templates/tcp_general_template.php:957
+#: templates/tcp_general_template.php:965
 #, php-format
 msgid "Posts by %s"
 msgstr "Posts nach %s"
 
-#: templates/tcp_general_template.php:1029
+#: templates/tcp_general_template.php:1037
 #, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\">Veröffentlicht am </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 
-#: templates/tcp_general_template.php:1038
+#: templates/tcp_general_template.php:1046
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">von </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
@@ -7603,19 +7603,19 @@ msgstr "Zeige alle Produkte von %s <span class=\"meta-nav\">&rarr;</span> "
 # @ tcp
 #: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
 #: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "Leave a review"
 msgstr "Bewertung schreiben"
 
 #: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
 #: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "<b>1</b> Review"
 msgstr "<b>1</b> Bewertung"
 
 #: themes-templates/tcp-twentyeleven/loop-tcp-grid.php:200
 #: themes-templates/tcp-twentytwelve/loop-tcp-list.php:192
-#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:207
+#: themes-templates/tcp-twentytwelve/loop-tcp-grid.php:206
 msgid "<b>%</b> Reviews"
 msgstr "<b>%</b> Bewertungen"
 
