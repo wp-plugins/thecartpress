@@ -199,9 +199,23 @@ ul.tcp_sc_links li a{
   color: #ffffff;
 }
 
-/* Buttons from Bootstrap 2.2.6*/
 
-.btn {
+#shopping_cart a.btn {
+  color: #333333;
+}
+#shopping_cart a.btn:hover {
+  color: #333333;
+}
+#shopping_cart a.btn.btn-primary {
+  color: #ffffff;
+}
+#shopping_cart a.btn.btn-primary:hover {
+  color: #ffffff;
+}
+
+
+/* Buttons from Bootstrap 2.2.6*/
+.btn, input[type="submit"].btn, input[type="button"].btn {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -241,18 +255,27 @@ ul.tcp_sc_links li a{
   -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
 }
+
+a.btn:hover,
 .btn:hover,
+input.btn[type="submit"]:hover,
+input.btn[type="button"]:hover,
 .btn:active,
 .btn.active,
 .btn.disabled,
 .btn[disabled] {
   color: #333333;
+  background: #e6e6e6;
   background-color: #e6e6e6;
   *background-color: #d9d9d9;
 }
 .btn:active,
-.btn.active {
+.btn.active,
+input.btn[type="submit"]:active,
+input.btn[type="button"]:active {
   background-color: #cccccc \9;
+  padding: 4px 12px;
+
 }
 .btn:first-child {
   *margin-left: 0;
@@ -271,8 +294,13 @@ ul.tcp_sc_links li a{
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
+
+input.btn[type="submit"]:focus,
+input.btn[type="button"]:focus,
 .btn.active,
-.btn:active {
+.btn:active,
+input.btn[type="submit"]:active,
+input.btn[type="button"]:active {
   background-image: none;
   outline: 0;
   -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
@@ -306,18 +334,28 @@ input.btn.btn-primary[type="submit"],
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#shopping_cart a.btn.btn-primary:hover,
 input.btn.btn-primary[type="submit"]:hover,
 .btn-primary:hover,
 .btn-primary.active {
   color: #ffffff;
+  background: #0044cc;
   background-color: #0044cc;
   *background-color: #003bb3;
+  background-position: 0 -15px;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
 }
 input.btn.btn-primary[type="submit"]:active,
 .btn-primary:active,
 .btn-primary.active {
   background-color: #003399 \9;
 }
+
+
+
 
 /* widgets */
 .tcp_resumen_subtotal_li,

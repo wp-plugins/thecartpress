@@ -89,5 +89,4 @@ function tcp_wp_dashboard_setup() {
 		$wp_meta_boxes['dashboard']['normal']['core'] = $sorted_dashboard;
 	//}
 }
-
 ?>

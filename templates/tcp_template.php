@@ -659,15 +659,27 @@ function tcp_get_the_sku( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
  * @since 1.2.5
  */
 function tcp_get_product_by_sku( $sku, $object = false ) {
-	$args = array(
-		'numberposts'	=> 1,
-		'post_type'		=> tcp_get_saleable_post_types(),
-		'status'		=> array( 'publish', 'draft' ),//TODO
+	global $wpdb;
+	$post_id = $wpdb->get_var( $wpdb->prepare( "select post_id from {$wpdb->prefix}postmeta where meta_key='tcp_sku' and meta_value=%s limit 0, 1", $sku ) );
+	if ( $post_id ) {
+		$post_id = tcp_get_default_id( $post_id );
+		if ( $object ) {
+			return get_post( $post_id );
+		} else {
+			return $post_id;
+		}
+	} else {
+		return false;
+	}
+	/*$args = array(
+		'numberposts' => 1,
+		'post_type' => tcp_get_saleable_post_types(),
+		'status' => array( 'publish', 'draft' ),//TODO
 		'meta_query' => array(
 			array(
-				'key'		=> 'tcp_sku',
-				'value'		=> $sku,
-				'compare'	=> '='
+				'key' => 'tcp_sku',
+				'value' => $sku,
+				'compare' => '='
 			),
 		),
 	);
@@ -679,7 +691,7 @@ function tcp_get_product_by_sku( $sku, $object = false ) {
 	} else {
 		$post_id = false;
 	}
-	return $post_id;
+	return $post_id;*/
 }
 
 function tcp_is_downloadable( $post_id = 0 ) {
@@ -1328,6 +1340,11 @@ function tcp_debug_trace( $object = false, $args = false ) {
 	<?php endforeach; ?>
 	</ul>
 <?php }
+
+function tcp_update_premium_plugin( $plugin_file ) {
+	require_once ( TCP_CLASSES_FOLDER . 'AutoUpdate.class.php' );
+	if ( class_exists( 'TCPAutoUpdate' ) ) new TCPAutoUpdate( $plugin_file );
+}
 
 /**
  * @since 1.2.9

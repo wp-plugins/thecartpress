@@ -42,7 +42,7 @@ if ( ! isset( $source ) ) return; ?>
 					<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?>
 				</td>
 			</tr>
-		<?php if ( strlen( $source->get_shipping_company() ) > 0 && strlen( $source->get_billing_company() ) > 0 ) : ?>
+		<?php if ( strlen( $source->get_shipping_company() ) > 0 || strlen( $source->get_billing_company() ) > 0 ) : ?>
 			<tr valign="top">
 				<td class="shipping_info">
 					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>

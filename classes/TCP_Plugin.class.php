@@ -76,7 +76,6 @@ class TCP_Plugin {
 
 	/**
 	 * Returns if the plugin is applicable
-	 * Must be implemented
 	 */
 	function isApplicable( $shippingCountry, $shoppingCart, $data ) {
 		return true;
@@ -270,22 +269,22 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 	return $applicable_plugins;
 }
 
-function tcp_get_shipping_plugin_data( $plugin_name, $instance = 0 ) {
-	return tcp_get_plugin_data( 'shi_' . $plugin_name, $instance );
+function tcp_get_shipping_plugin_data( $plugin_name, $instance = 0, $order_id = false ) {
+	return tcp_get_plugin_data( 'shi_' . $plugin_name, $instance, $order_id );
 }
 
-function tcp_get_payment_plugin_data( $plugin_name, $instance = 0 ) {
-	return tcp_get_plugin_data( 'pay_' . $plugin_name, $instance );
+function tcp_get_payment_plugin_data( $plugin_name, $instance = 0, $order_id = false ) {
+	return tcp_get_plugin_data( 'pay_' . $plugin_name, $instance, $order_id );
 }
 
-function tcp_get_plugin_data( $plugin_id, $instance = -1 ) {
-	$plugin_data = get_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id ), array() );
+function tcp_get_plugin_data( $plugin_id, $instance = -1, $order_id = false ) {
+	$plugin_data = get_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id, $order_id ), array() );
 	if ( $instance == -1 ) return $plugin_data;
 	else return isset( $plugin_data[$instance] ) ? $plugin_data[$instance] : false;
 }
 
 function tcp_update_plugin_data( $plugin_id, $plugin_data ) {
-	update_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id ), $plugin_data );
+	update_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id, false ), $plugin_data );
 }
 
 ?>

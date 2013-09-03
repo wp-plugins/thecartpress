@@ -19,14 +19,14 @@
 class FreeTrans extends TCP_Plugin {
 
 	function getTitle() {
-		return 'Free Trans';
+		return __( 'Free Trans', 'tcp' );
 	}
 
 	function getDescription() {
-		return 'Free transport for orders with cost greater than an editable minimun.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
+		return sprintf( __( 'Free transport for orders with cost greater than an editable minimun. <br>Author: <a href="%s" target="_blank">TheCartPress team</a>', 'tcp' ), 'http://thecartpress.com' );
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="minimun"><?php _e( 'Minimun amount', 'tcp' ); ?>:</label>
@@ -38,7 +38,7 @@ class FreeTrans extends TCP_Plugin {
 		<?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['minimun'] = isset( $_REQUEST['minimun'] ) ? $_REQUEST['minimun'] : '0';
 		return $data;
 	}
@@ -48,10 +48,14 @@ class FreeTrans extends TCP_Plugin {
 		return $shoppingCart->getTotal() >= $minimun_amount;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : __( 'Free transport', 'tcp' );
-		return tcp_string( 'TheCartPress', 'shi_FreeTrans-title', $title );
+		if ( isset( $data['title'] ) ) {
+			//return tcp_string( 'TheCartPress', 'shi_FreeTrans-title', $title );
+			return tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'shi_FreeTrans-title-' . $instance ), $data['title'] );
+		} else {
+			return __( 'Free transport', 'tcp' );
+		}
 	}
 }
 ?>

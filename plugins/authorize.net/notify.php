@@ -27,7 +27,7 @@ require_once( $thecartpress_path . 'checkout/ActiveCheckout.class.php' );
 $plugin_path = dirname( dirname( dirname( __FILE__ ) ) )  . '/classes/TCP_Plugin.class.php';
 require_once( $plugin_path );
 $instance = $_REQUEST['instance'];
-$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
+$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance, $order_id );
 
 $api_login_id	= $data['api_login_id'];
 $md5_hash		= $data['md5_hash'];
@@ -54,12 +54,12 @@ if ( $fingerprint == $x_md5_hash ) {
 		Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
 		ActiveCheckout::sendMails( $order_id, $error );
 	}
-	$redirect = tcp_get_the_checkout_ok_url();
+	$redirect = tcp_get_the_checkout_ok_url( $order_id );
 } else {
 	$error = __( 'Error notifiying Authorize.net payment', 'tcp' );
 	$error .= ' fp=' . $fingerprint . ', md5=' . $x_md5_hash;
 	Orders::editStatus( $order_id, $cancelled_status, $x_trans_id, $error );
-	$redirect = tcp_get_the_checkout_ko_url();
+	$redirect = tcp_get_the_checkout_ko_url( $order_id );
 } ?>
 <html>
 <head>

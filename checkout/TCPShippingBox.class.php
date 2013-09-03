@@ -106,7 +106,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 					'shipping_firstname'		=> isset( $_REQUEST['shipping_firstname'] ) ? $_REQUEST['shipping_firstname'] : '',
 					'shipping_lastname'			=> isset( $_REQUEST['shipping_lastname'] ) ? $_REQUEST['shipping_lastname'] : '',
 					'shipping_company'			=> isset( $_REQUEST['shipping_company'] ) ? $_REQUEST['shipping_company'] : '',
-					'shipping_tax_id_number'	=> isset( $_REQUEST['shipping_tax_id_number'] ) ? $_REQUEST['shipping_tax_id_number'] : '',
+					//'shipping_tax_id_number'	=> isset( $_REQUEST['shipping_tax_id_number'] ) ? $_REQUEST['shipping_tax_id_number'] : '',
 					'shipping_country'			=> isset( $_REQUEST['shipping_country'] ) ? $_REQUEST['shipping_country'] : '',
 					'shipping_country_id'		=> isset( $_REQUEST['shipping_country_id'] ) ? $_REQUEST['shipping_country_id'] : 0,
 					'shipping_region'			=> isset( $_REQUEST['shipping_region'] ) ? $_REQUEST['shipping_region'] : '',
@@ -208,13 +208,13 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} else {
 				$company = $default_address ? stripslashes( $default_address->company ) : '';
 			}
-			if ( isset( $_REQUEST['shipping_tax_id_number'] ) ) {
+			/*if ( isset( $_REQUEST['shipping_tax_id_number'] ) ) {
 				$tax_id_number = $_REQUEST['shipping_tax_id_number'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_lastname'] ) ) {
 				$tax_id_number = $_SESSION['tcp_checkout']['shipping']['shipping_tax_id_number'];
 			} else {
 				$tax_id_number = $default_address ? $default_address->tax_id_number : '';
-			}
+			}*/
 			if ( isset( $_REQUEST['shipping_street'] ) ) {
 				$street = $_REQUEST['shipping_street'];
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_street'] ) ) {
@@ -314,11 +314,11 @@ class TCPShippingBox extends TCPCheckoutBox {
 						<input type="text" id="shipping_company" name="shipping_company" value="<?php echo $company;?>" size="20" maxlength="255" />
 						<?php $this->showErrorMsg( 'shipping_company' );?>
 					</li>
-					<li>
+					<!--<li>
 						<label for="shipping_tax_id_number"><?php _e( 'Tax ID number', 'tcp' );?>:</label>
 						<input type="text" id="shipping_tax_id_number" name="shipping_tax_id_number" value="<?php echo $tax_id_number;?>" size="20" maxlength="30" />
 						<?php $this->showErrorMsg( 'shipping_tax_id_number' );?>
-					</li>
+					</li>-->
 					<li>
 						<label for="shipping_country_id"><?php _e( 'Country', 'tcp' );?>:<em>*</em></label>
 						<?php global $thecartpress;

@@ -76,22 +76,22 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_if_empty' ); ?>"<?php checked( $hide_if_empty ); ?> />
 			<label for="<?php echo $this->get_field_id( 'hide_if_empty' ); ?>"><?php _e( 'Hide if empty', 'tcp' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count ' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_product_count' ); ?>" name="<?php echo $this->get_field_name( 'see_product_count' ); ?>"<?php checked( $see_product_count ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_product_count' ); ?>"><?php _e( 'See product count', 'tcp ' ); ?></label>
 	<?php global $thecartpress;
 	if ( $thecartpress && $thecartpress->get_setting( 'use_weight', true ) ) : ?>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight ' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_weight' ); ?>" name="<?php echo $this->get_field_name( 'see_weight' ); ?>"<?php checked( $see_weight ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_weight' ); ?>"><?php _e( 'See weigth', 'tcp ' ); ?></label>
 	<?php endif; ?>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_delete_all ' ); ?>" name="<?php echo $this->get_field_name( 'see_delete_all' ); ?>"<?php checked( $see_delete_all ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_delete_all' ); ?>" name="<?php echo $this->get_field_name( 'see_delete_all' ); ?>"<?php checked( $see_delete_all ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_delete_all' ); ?>"><?php _e( 'See delete button', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_shopping_cart ' ); ?>" name="<?php echo $this->get_field_name( 'see_shopping_cart' ); ?>"<?php checked( $see_shopping_cart ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_shopping_cart' ); ?>" name="<?php echo $this->get_field_name( 'see_shopping_cart' ); ?>"<?php checked( $see_shopping_cart ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_shopping_cart' ); ?>"><?php _e( 'See shopping cart link', 'tcp ' ); ?></label>
 		<br />
-			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_checkout ' ); ?>" name="<?php echo $this->get_field_name( 'see_checkout' ); ?>"<?php checked( $see_checkout ); ?> />
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_checkout' ); ?>" name="<?php echo $this->get_field_name( 'see_checkout' ); ?>"<?php checked( $see_checkout ); ?> />
 			<label for="<?php echo $this->get_field_id( 'see_checkout' ); ?>"><?php _e( 'See checkout link', 'tcp ' ); ?></label>
 		<?php do_action( 'tcp_shopping_cart_summary_widget_form', $this, $instance ); ?>
 		</p><?php

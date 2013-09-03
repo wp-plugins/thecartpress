@@ -64,6 +64,10 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		$this->see_thumbnail	= $see_thumbnail;
 	}
 
+	public function __set( $name, $value ) {
+		if ( isset( $this->$name ) ) $this->$name = $value;
+	}
+
 	public function get_order_id() {
 		return false;
 	}

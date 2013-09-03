@@ -564,9 +564,9 @@ class TCPCheckoutManager {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		ob_start(); ?>
 		<div class="tcp_payment_area">
+
 		<?php do_action( 'tcp_checkout_ok', $order_id ); ?>
 
-		<p><?php echo apply_filters( 'tcp_checkout_ok_message', __( 'Please continue checking out using your chosen payment method.', 'tcp' ), $order_id ); ?></p>
 		<?php if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) :
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
 			$pmi = explode( '#', $pmi );
@@ -579,9 +579,16 @@ class TCPCheckoutManager {
 				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id );
 			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
+			<div class="tcp_plugin_notice">
+				<?php $msg = tcp_do_template( 'tcp_payment_plugins_' . $class, false );
+				if ( strlen( $msg ) > 0 ) {
+					echo $msg;
+				} else {
+					echo apply_filters( 'tcp_checkout_ok_message', __( 'Please continue checking out using your chosen payment method.', 'tcp' ), $order_id );
+				} ?>
+			</div>
 			<div class="tcp_pay_form">
 				<?php $payment_method->showPayForm( $instance, $shipping_country, $shoppingCart, $order_id ); ?>
-				<div class="tcp_plugin_notice"><?php tcp_do_template( 'tcp_payment_plugins_' . $class ); ?></div>
 			</div>
 		<?php endif; ?>
 		<?php OrderPage::show( $order_id, array( 'see_sku' => true ) ); ?>

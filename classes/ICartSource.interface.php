@@ -27,7 +27,9 @@ interface TCP_ICartSource {
 	public function see_product_link();
 	public function see_comment();
 	public function see_thumbnail();
-	
+
+	public function __set( $name, $value );
+
 	public function get_order_id();
 	public function get_created_at();
 	public function get_payment_method();

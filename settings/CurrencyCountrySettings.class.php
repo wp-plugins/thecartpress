@@ -70,7 +70,7 @@ class TCPCurrencyCountrySettings {
 <?php global $thecartpress;
 $currency = $thecartpress->get_setting( 'currency', 'EUR' );
 $currency_layout = $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$s)' );
-$decimal_currency = $thecartpress->get_setting( 'decimal_currency', 2 );
+$decimal_currency = (int)$thecartpress->get_setting( 'decimal_currency', 2 );
 $decimal_point = $thecartpress->get_setting( 'decimal_point', '.' );
 $thousands_separator= $thecartpress->get_setting( 'thousands_separator', ',' );
 $use_weight = $thecartpress->get_setting( 'use_weight', true );
@@ -336,7 +336,7 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		$settings = get_option( 'tcp_settings' );
 		$settings['currency'] = isset( $_POST['currency'] ) ? $_POST['currency'] : 'EUR';		
 		$settings['currency_layout'] = isset( $_POST['currency_layout'] ) ? $_POST['currency_layout'] : '%1$s%2$s (%3$s)';
-		$settings['decimal_currency'] = isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
+		$settings['decimal_currency'] = (int)isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
 		$settings['decimal_point'] = isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
 		$settings['thousands_separator'] = isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
 		$settings['use_weight'] = isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;

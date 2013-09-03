@@ -40,7 +40,8 @@ class LastVisitedWidget extends CustomListWidget {
 			'post_type'			=> tcp_get_saleable_post_types(), //TCP_PRODUCT_POST_TYPE,
 			'posts_per_page'	=> $limit
 		);
-		parent::widget( $args, $loop_args, $instance );
+		$instance['loop_args'] = $loop_args;
+		parent::widget( $args, $instance );
 	}
 
 	function form( $instance ) {

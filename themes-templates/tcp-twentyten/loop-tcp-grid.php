@@ -135,6 +135,9 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 				<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 			</div><!-- .entry-content -->
 		<?php endif; ?>
+
+		<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
+
 		<?php if ( $see_first_custom_area ) :?>
 		<?php endif;?>
 		<?php if ( $see_second_custom_area ) :?>
@@ -142,17 +145,17 @@ if ( $column == 0 ) : $column = $number_of_columns ?>
 		<?php if ( $see_third_custom_area ) :?>
 		<?php endif;?>
 		<?php if ( $see_author ) :?>
-		<?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
-			<div id="entry-author-info">
-				<div id="author-avatar">
-					<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) ); ?>
-				</div><!-- #author-avatar -->
-				<div id="author-description">
-					<h2><?php printf( esc_attr__( 'About %s', 'twentyten' ), get_the_author_meta() ); ?></h2>
-					<?php the_author_meta( 'description'); ?>
-				</div><!-- #author-description -->
-			</div><!-- #entry-author-info -->
-		<?php endif; ?>
+			<?php if ( get_the_author_meta( 'description') ) : // If a user has filled out their description, show a bio on their products  ?>
+				<div id="entry-author-info">
+					<div id="author-avatar">
+						<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) ); ?>
+					</div><!-- #author-avatar -->
+					<div id="author-description">
+						<h2><?php printf( esc_attr__( 'About %s', 'twentyten' ), get_the_author_meta() ); ?></h2>
+						<?php the_author_meta( 'description'); ?>
+					</div><!-- #author-description -->
+				</div><!-- #entry-author-info -->
+			<?php endif; ?>
 		<?php endif; ?>
 			<div class="entry-utility">
 			<?php if ( $see_taxonomies ) : ?>

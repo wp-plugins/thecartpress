@@ -151,6 +151,9 @@ if ( isset( $instance['title_tag' . $suffix] ) && $instance['title_tag' . $suffi
 				<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'tcp' ), 'after' => '</div>' ) ); ?>
 			</div><!-- .entry-content -->
 			<?php endif; ?>
+
+			<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
+
 			<?php if ( $see_first_custom_area ) : ?>
 			<?php endif;?>
 			<?php if ( $see_second_custom_area ) : ?>

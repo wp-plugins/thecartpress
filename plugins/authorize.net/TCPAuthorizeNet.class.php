@@ -30,13 +30,14 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		return 'authorize.net payment method.<br>Author: <a href="http://thecartpress.com">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
-		return tcp_string( 'TheCartPress', 'pay_TCPAuthorizeNet-title', $title );
+		//return tcp_string( 'TheCartPress', 'pay_TCPAuthorizeNet-title', $title );
+		return tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_TCPAuthorizeNet-title-' . $instance ), $title );
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="test_mode"><?php _e( 'Test mode', 'tcp' );?>:</label>
@@ -109,7 +110,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		</tr><?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['api_login_id']	= isset( $_REQUEST['api_login_id'] ) ? $_REQUEST['api_login_id'] : '';
 		$data['transaction_key']= isset( $_REQUEST['transaction_key'] ) ? $_REQUEST['transaction_key'] : '';
 		$data['test_mode']		= isset( $_REQUEST['test_mode'] );
@@ -119,8 +120,8 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		return $data;
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 		$api_login_id	= $data['api_login_id'];
 		$transaction_key= $data['transaction_key'];
 		$new_status		= $data['new_status'];

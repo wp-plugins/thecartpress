@@ -40,7 +40,7 @@ class TCPCustomFields {
 	}
 	
 	static function registerMetaBox() {
-		add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
+		//add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
 		$post_types = get_post_types();
 		foreach( $post_types as $post_type )
 			add_meta_box( 'tcp-custom-fields', __( 'TCP Custom fields', 'tcp' ), array( __CLASS__, 'show' ), $post_type, 'normal', 'high' );
@@ -48,9 +48,9 @@ class TCPCustomFields {
 		add_action( 'delete_post', array( __CLASS__, 'delete_post' ) );
 	}
 
-	static function post_edit_form_tag() {
+	/*static function post_edit_form_tag() {
 		echo ' enctype="multipart/form-data"';
-	}
+	}*/
 
 	static function show() { 
 		global $post; ?>

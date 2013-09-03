@@ -91,7 +91,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		$see_price = isset( $settings['see_price'] ) ? $settings['see_price'] : true;
 		$see_sku = isset( $settings['see_sku'] ) ? $settings['see_sku'] : true;
 		$see_units = isset( $settings['see_units'] ) ? $settings['see_units'] : true;
-		//$see_weight = isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
+		$see_weight = isset( $settings['see_weight'] ) ? $settings['see_weight'] : true;
 		$see_tax = isset( $settings['see_tax'] ) ? $settings['see_tax'] : true;
 		$see_tax_detail	= isset( $settings['see_tax_detail'] ) ? $settings['see_tax_detail'] : true;
 		$see_comment = isset( $settings['see_comment'] ) ? $settings['see_comment'] : true;
@@ -152,7 +152,7 @@ class TCPCartBox extends TCPCheckoutBox {
 		return true;
 	}
 
-	private function show_order_cart( $shipping_country, $args = array() ) {
+	protected function show_order_cart( $shipping_country, $args = array() ) {
 		do_action( 'tcp_checkout_create_order_cart', $args );
 		$see_price = isset( $args['see_price'] ) ? $args['see_price'] : true;
 		$see_units = isset( $args['see_units'] ) ? $args['see_units'] : true;

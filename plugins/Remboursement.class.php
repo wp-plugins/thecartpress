@@ -22,11 +22,15 @@ class TCPRemboursement extends TCP_Plugin {
 		return __( 'Cash on delivery', 'tcp' );
 	}
 
+	function getIcon() {
+		return plugins_url( 'thecartpress/images/cash-on-delivery.png' );
+	}
+
 	function getDescription() {
 		return __( 'Cash on delivery payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>', 'tcp' );
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
@@ -51,9 +55,10 @@ class TCPRemboursement extends TCP_Plugin {
 		</tr><?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['notice']		= isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
-		tcp_register_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] );
+		//tcp_register_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] );
+		tcp_register_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_TCPRemboursement-notice-' . $instance ), $data['notice'] );
 		$data['percentage']	= isset( $_REQUEST['percentage'] ) ? (float)$_REQUEST['percentage'] : '0';
 		$data['fix']		= isset( $_REQUEST['fix'] ) ? (float)$_REQUEST['fix'] : '0';
 		return $data;
@@ -63,23 +68,26 @@ class TCPRemboursement extends TCP_Plugin {
 		return false;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$title = tcp_string( 'TheCartPress', 'pay_TCPRemboursement-title', $title );
+		//$title = tcp_string( 'TheCartPress', 'pay_TCPRemboursement-title', $title );
+		$title = tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_TCPRemboursement-title-' . $instance ), $title );
 		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		//return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 		ob_start(); ?>
 		<?php if ( $cost > 0 ) printf( __( '%s, Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 		else echo $title; ?>
 		<?php if ( false && strlen( trim( $data['notice'] ) ) > 0 ) : ?>
-			<p><?php echo tcp_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] ); ?></p>
+			<p><?php //echo tcp_string( 'TheCartPress', 'pay_TCPRemboursement-notice', $data['notice'] ); ?>
+			<?php echo tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_TCPRemboursement-notice-' . $instance ), $data['notice'] ); ?></p>
+			pay_TCPRemboursement
 		<?php endif; ?>
 		<?php return ob_get_clean();
 	}
 
 	function getCost( $instance, $shippingCountry, $shoppingCart = false ) {
-		$data		= tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$percentage	= isset( $data['percentage'] ) ? $data['percentage'] : 0;
 		if ( $percentage > 0 ) {
 			if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
@@ -95,9 +103,9 @@ class TCPRemboursement extends TCP_Plugin {
 		return isset( $data['notice'] ) ? $data['notice'] : '';
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
 		global $thecartpress;
-		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 		$title	= isset( $data['title'] ) ? $data['title'] : '';
 		$redirect = true;
 		$cost	= $this->getCost( $instance, $shippingCountry, $shoppingCart );

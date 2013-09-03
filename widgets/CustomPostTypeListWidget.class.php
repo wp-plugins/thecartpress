@@ -31,6 +31,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 			'post_type' => isset( $instance['post_type'] ) ? $instance['post_type'] : TCP_PRODUCT_POST_TYPE,
 			'posts_per_page' => isset( $instance['limit'] ) ? $instance['limit'] : -1,
 		);
+
 		$see_pagination = isset( $instance['see_pagination'] ) ? $instance['see_pagination'] : false;
 		if ( $see_pagination ) $loop_args['paged'] = isset( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
 		if ( isset( $instance['use_taxonomy'] ) && $instance['use_taxonomy'] ) {
@@ -46,7 +47,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 			}
 		}
 		$loop_args = apply_filters( 'tcp_custom_post_type_list_widget', $loop_args, $instance, $args );
-		parent::widget( $args, $loop_args, $instance );
+		$instance['loop_args'] = $loop_args;
+		parent::widget( $args, $instance );
 	}
 
 	function update( $new_instance, $old_instance ) {
@@ -64,7 +66,8 @@ class CustomPostTypeListWidget extends CustomListWidget {
 	}
 
 	function form( $instance ) {
-		parent::form( $instance, __( 'Custom Post type', 'tcp' ) );
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Custom Post type', 'tcp');
+		parent::form( $instance );
 		$defaults = array(
 			'post_type' => TCP_PRODUCT_POST_TYPE,
 			'taxonomy' => true,

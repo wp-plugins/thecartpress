@@ -24,11 +24,12 @@ class CustomListWidget extends TCPParentWidget {
 		parent::__construct( $name, $description, $title, $width );
 	}
 
-	function widget( $args, $loop_args, $instance ) {
+	function widget( $args, $instance ) {
 		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		$order_type = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
 		$order_desc = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
+		$loop_args = isset( $instance['loop_args'] ) ? $instance['loop_args'] : array();
 		if ( $order_type == 'price' ) {
 			$loop_args['orderby'] = 'meta_value_num';
 			$loop_args['meta_key'] = 'tcp_price';
@@ -40,7 +41,6 @@ class CustomListWidget extends TCPParentWidget {
 		}
 		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
 		//$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
-
 		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) {
 			$loop_args['meta_query'][] = array(
 				'key' => 'tcp_is_visible',
@@ -64,6 +64,7 @@ class CustomListWidget extends TCPParentWidget {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;
 			if ( $columns < 1 ) $this->show_list( $instance, $args );
 			else $this->show_grid( $instance, $args );
+			do_action( 'tcp_after_loop_wishlist' );
 		}
 		wp_reset_postdata();
 		wp_reset_query();
@@ -105,7 +106,7 @@ class CustomListWidget extends TCPParentWidget {
 				<?php endif;?>
 				<?php if ( isset( $instance['see_price'] ) && $instance['see_price'] ) : ?>
 				<div class="entry-product_custom">
-					<p class="entry_tcp_price"><span class="entry_tcp_price_label"><?php echo __( 'price', 'tcp' );?>:&nbsp;</span><?php tcp_the_price_label();?></p>
+					<p class="entry_tcp_price"><span class="entry_tcp_price_label"><?php _e( 'price', 'tcp' );?>:&nbsp;</span><?php tcp_the_price_label();?></p>
 				</div>
 				<?php endif;?>
 				<?php if ( isset( $instance['see_buy_button'] ) && $instance['see_buy_button'] ) : ?>
@@ -119,7 +120,7 @@ class CustomListWidget extends TCPParentWidget {
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">'.__( 'Pages:', 'tcp' ), 'after' => '</div>')); ?>
 				</div>
 				<?php endif;?>
-				<?php if ( isset( $instance['see_meta_utilities'] ) && $instance['see_meta_utilities'] ) : ?>
+				<?php if ( isset( $instance['see_meta_utilities'] ) && $instance['see_meta_utilities'] ) { ?>
 				<div class="entry-utility">
 					<?php if ( count( get_the_category() ) ): ?>
 					<span class="cat-links">
@@ -128,18 +129,17 @@ class CustomListWidget extends TCPParentWidget {
 					<span class="meta-sep">|</span>
 					<?php endif;
 					$tags_list = get_the_tag_list( '', ', ' );
-					if ( $tags_list ): ?>
+					if ( $tags_list ) { ?>
 					<span class="tag-links">
 						<?php printf( __( '<span class="%1$s">Tagged</span> %2$s', 'tcp' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
 					</span>
 					<span class="meta-sep">|</span>
-				<?php endif; ?>
+					<?php } ?>
 				<span class="comments-link"><?php comments_popup_link( __( 'Leave a comment', 'tcp' ), __( '1 Comment', 'tcp' ), __( '% Comments', 'tcp' ) ); ?></span>
 				<?php edit_post_link( __( 'Edit', 'tcp' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-				<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() );?>
 				</div>
-				<?php do_action( 'tcp_after_loop_tcp_grid' );?>
-				<?php endif;?>
+				<?php } ?>
+				<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
 			</div>
 		<?php endwhile;
 	}
@@ -184,8 +184,9 @@ class CustomListWidget extends TCPParentWidget {
 		return $instance;
 	}
 
-	function form( $instance, $title = '' ) {
-		$instance = parent::form( $instance, $title );
+	function form( $instance ) {
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Top Seller!', 'tcp');
+		$instance = parent::form( $instance );
 	}
 
 	protected function show_post_type_form( $instance ) {
@@ -199,6 +200,7 @@ class CustomListWidget extends TCPParentWidget {
 			'image_size' => 'thumbnail',
 			'see_content' => false,
 			'see_excerpt' => false,
+			'see_author' => false,
 			'see_posted_on' => false,
 			'see_price' => true,
 			'see_buy_button' => false,

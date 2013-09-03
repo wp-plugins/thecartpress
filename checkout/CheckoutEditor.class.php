@@ -125,10 +125,10 @@ class TCPCheckoutEditor {
 	<p class="description"><?php _e( 'Drag and drop to reorder', 'tcp' ); ?></p>
 
 	<?php $order_steps = TCPCheckoutManager::get_steps();
-	foreach( $order_steps as $class_name )
+	foreach( $order_steps as $class_name ) {
 		if ( isset( $tcp_checkout_boxes[$class_name] ) ) unset( $tcp_checkout_boxes[$class_name] );    
-	$order_steps = array_diff( (array)$tcp_checkout_boxes, $order_steps ); ?>
-
+	}
+	//$order_steps = array_diff( $tcp_checkout_boxes, $order_steps ); ?>
 	<h3><?php _e( 'Deactivated boxes', 'tcp' ); ?></h3>
 	<ul class="tcp_deactivated_boxes">
 	<?php if ( count( $order_steps ) > 0 ) :

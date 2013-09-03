@@ -3,8 +3,8 @@ Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
-Tested up to: 3.5.2
-Stable Tag: 1.2.9
+Tested up to: 3.6
+Stable Tag: 1.3.0
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,6 +293,16 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+
+= 1.3.0
+* Messages for "Auto Update" for premium plugins
+* Admin top bar menu for eCommerce
+* Payment methods list: New Icons, and direct links to manage Notices
+* Checkout, Payments Box: Displays excerpt of the notices associated to each Payments
+* Wish list: improvements
+* Shipping cost UI improvements
+* Fixed minor bug in retry checkout when using a notice in tcp_checkout_ko
+
 = 1.2.9 =
 * Checkout: Shipping and Payment Methods boxes are able to be hidden if only one method is available (new setting)
 * Shipping cost minor bug fixed

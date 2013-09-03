@@ -342,6 +342,25 @@ div.tcp_checkout_box_edit {
 	font-weight: bold;
 }
 
+.tcp-label {
+	display: block;
+}
+
+.tcp-attachment-image {
+	float: left;
+	padding-right: 2em;
+}
+
+.tcp-attachment {
+	clear:both;
+	padding: 1em;
+	border-bottom: solid #dfdfdf 1px;
+}
+
+.tcp-attachment-width-height {
+	color: grey;
+}
+
 div#icon-tcp-localize {
 	background: url('../images/miranda/localize_settings_32.png') no-repeat center;
 }

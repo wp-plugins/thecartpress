@@ -80,6 +80,11 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 }
 if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 
+<?php if ( $see_az ) {
+	$see_az_name = isset( $args['widget_id']) ? 'tcp_az_' . $args['widget_id'] : 'tcp_az';
+	tcp_the_az_panel( $see_az_name );
+} ?>
+
 <?php /* Start the Loop.*/ ?>
 
 <div class="tcp_products_list tcp_products_list_bsegrid">
@@ -142,6 +147,8 @@ if ( $see_sorting_panel ) tcp_the_sort_panel(); ?>
 					<?php endif;?>
 				</div><!-- .wrapper-prices -->
 			<?php endif; ?>
+
+		<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
 
 		<?php if ( function_exists( 'sharing_display' ) ) remove_filter( 'the_content', 'sharing_display', 19 ); ?>
 		<?php if ( function_exists( 'sharing_display' ) ) remove_filter( 'the_excerpt', 'sharing_display', 19 ); ?>

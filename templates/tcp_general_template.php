@@ -45,14 +45,16 @@ function tcp_get_the_checkout_url() {
 	return tcp_the_checkout_url( false );
 }
 
-function tcp_get_the_checkout_ok_url() {
+function tcp_get_the_checkout_ok_url( $order_id = false ) {
 	$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
+	if ( $order_id !== false ) $url = add_query_arg( 'order_id', $order_id, $url );
 	$url = apply_filters( 'tcp_get_the_checkout_ok_url', $url );
 	return $url;
 }
 
-function tcp_get_the_checkout_ko_url() {
+function tcp_get_the_checkout_ko_url( $order_id = false ) {
 	$url = add_query_arg( 'tcp_checkout', 'ko', tcp_get_the_checkout_url() );
+	if ( $order_id !== false ) $url = add_query_arg( 'order_id', $order_id, $url );
 	$url = apply_filters( 'tcp_get_the_checkout_ko_url', $url );
 	return $url;
 }
@@ -185,7 +187,8 @@ class TCPWalker_CategoryDropdown extends Walker {
 	var $tree_type = 'category';
 	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id');
 	
-	function start_el( &$output, $category, $depth, $args ) {
+	//function start_el( &$output, $category, $depth, $args ) {
+	function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
 		$pad = str_repeat( '&nbsp;', $depth * 3 );
 		$cat_name = apply_filters( 'list_cats', $category->name, $category );
 		$link = get_term_link( (int)$category->term_id, $category->taxonomy );
@@ -274,7 +277,8 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 <div id="<?php echo $widget_id; ?>">
 	<ul class="tcp_shopping_cart">
 	<?php $shoppingCart = TheCartPress::getShoppingCart();
-	foreach( $shoppingCart->getItems() as $item ) : ?>
+	$items = $shoppingCart->getItems();
+	foreach( $items as $item ) : ?>
 		<li class="tcp_widget_cart_detail_item_<?php echo $item->getPostId(); ?>">
 		<form method="post">
 			<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
@@ -353,7 +357,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 			<a href="<?php tcp_the_checkout_url(); ?>"><?php _e( 'checkout', 'tcp' ); ?></a>
 		</li>
 	<?php endif; ?>
-	<?php if ( $see_delete_all ) : ?>
+	<?php if ( $see_delete_all && count( $items ) > 0 ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
 			<form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'delete', 'tcp' ); ?>"/></form>
 		</li>
@@ -1052,4 +1056,11 @@ function tcp_posted_by() {
 //
 //End for themes
 //
+
+function tcp_the_feedback_image( $class, $html = false ) { ?>
+<span class="<?php echo $class; ?>" style="display: none;">
+	<img src="<?php echo admin_url( 'images/loading.gif' ); ?>" />
+	<?php if ( $html !== false ) echo $html; ?>
+</span>
+<?php }
 ?>

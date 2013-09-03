@@ -20,70 +20,6 @@ class TCPUpdateVersion {
 
 	function update( $thecartpress ) {
 		$version = (float)get_option( 'tcp_version' );
-		if ( $version < 113 ) {
-			$administrator = get_role( 'administrator' );
-			if ( $administrator ) $administrator->add_cap( 'tcp_edit_wish_list' );
-			$merchant = get_role( 'merchant' );
-			if ( $merchant ) $merchant->add_cap( 'tcp_edit_wish_list' );
-			$customer = get_role( 'customer' );
-			if ( $customer ) $customer->add_cap( 'tcp_edit_wish_list' );
-			$thecartpress->settings['use_default_loop']	= 'only_settings';
-			update_option( 'tcp_settings', $thecartpress->settings );
-			//
-			//TODO Deprecated 1.2.3
-			//
-		}
-		if ( $version < 117 ) {
-			require_once( TCP_DAOS_FOLDER . 'OrdersDetailsMeta.class.php' );
-			OrdersDetailsMeta::createTable();
-			$new_post_types = array();
-			$post_types = tcp_get_custom_post_types();
-			foreach( $post_types as $id => $post_type ) {
-				if ( isset( $post_type['name_id'] ) ) {
-					$id = $post_type['name_id'];
-					unset( $post_type['name_id'] );
-				}
-				$new_post_types[$id] = $post_type;
-			}
-			tcp_set_custom_post_types($new_post_types);
-
-			$new_taxonomies = array();
-			$taxonomies = tcp_get_custom_taxonomies();
-			foreach( $taxonomies as $id => $taxonomy ) {
-				if ( isset( $taxonomy['name_id'] ) ) {
-					$id = $taxonomy['name_id'];
-					unset( $taxonomy['name_id'] );
-				}
-				$new_taxonomies[$id] = $taxonomy;
-			}
-			tcp_set_custom_taxonomies( $new_taxonomies );
-
-			$post_type_defs = tcp_get_custom_post_types();
-			if ( isset( $post_type_defs[TCP_PRODUCT_POST_TYPE] ) ) {
-				$rewrite = $thecartpress->get_setting( 'product_rewrite', '' );
-				if ( strlen( $rewrite ) > 0 ) $post_type_defs[TCP_PRODUCT_POST_TYPE]['rewrite'] = $rewrite;
-			}
-			tcp_set_custom_post_types( $post_type_defs );
-
-			$taxonomy_defs = tcp_get_custom_taxonomies();
-			if ( isset( $taxonomy_defs[TCP_PRODUCT_CATEGORY] ) ) {
-				$rewrite = $thecartpress->get_setting( 'category_rewrite', '' );
-				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_PRODUCT_CATEGORY]['rewrite'] = array( 'slug' => $rewrite );
-			}
-			if ( isset( $taxonomy_defs[TCP_PRODUCT_TAG] ) ) {
-				$rewrite = $thecartpress->get_setting( 'tag_rewrite', '' );
-				if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_PRODUCT_TAG]['rewrite'] = array( 'slug' => $rewrite );
-			}
-			//if ( isset( $taxonomy_defs[TCP_SUPPLIER_TAG] ) ) {
-			//	$rewrite = $thecartpress->get_setting( 'supplier_rewrite', '' );
-			//	if ( strlen( $rewrite ) > 0 ) $taxonomy_defs[TCP_SUPPLIER_TAG]['rewrite'] = array( 'slug' => $rewrite );
-			//}
-			tcp_set_custom_taxonomies( $taxonomy_defs );
-			update_option( 'tcp_version', 117 );
-			//
-			//TODO Deprecated 1.2.7
-			//
-		}
 		if ( $version < 118 ) {
 			global $wpdb;
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders_details MODIFY COLUMN `name` CHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;';
@@ -160,7 +96,6 @@ class TCPUpdateVersion {
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders_details MODIFY COLUMN `weight` double NOT NULL;';
 			$wpdb->query( $sql );
 		}
-		update_option( 'tcp_version', 128 );
 		if ( $version < 129 ) {
 			global $wpdb;
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `shipping_firstname` varchar(255) NOT NULL;';
@@ -191,8 +126,8 @@ class TCPUpdateVersion {
 			$wpdb->query( $sql );
 			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `billing_country` varchar(255) NOT NULL;';
 			$wpdb->query( $sql );
+			update_option( 'tcp_version', 129 );
 		}
-		update_option( 'tcp_version', 129 );
 	}
 }
 ?>

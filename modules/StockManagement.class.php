@@ -133,7 +133,7 @@ class TCPStockManagement {
 
 	function tcp_dynamic_options_lists_row_new( $parent ) { ?>
 		<td class="tcp_do_stock">
-			<input type="number" min="0" step="any" name="tcp_stock[]" class="tcp_stock" size="5" maxlength="9" />
+			<input type="number" min="-1" step="any" name="tcp_stock[]" class="tcp_stock" size="5" maxlength="9" />
 		</td><?php
 	}
 
@@ -143,7 +143,7 @@ class TCPStockManagement {
 
 	function tcp_dynamic_options_lists_row( $post_id ) { ?>
 		<td class="tcp_do_stock">
-			<input type="number" min="0" step="any" name="tcp_stock[]" class="tcp_stock" size="5" maxlength="9" value="<?php echo tcp_get_the_stock( $post_id ); ?>" />
+			<input type="number" min="-1" step="any" name="tcp_stock[]" class="tcp_stock" size="5" maxlength="9" value="<?php echo tcp_get_the_stock( $post_id ); ?>" />
 		</td><?php
 	}
 
@@ -511,8 +511,7 @@ function show_hide_stock_management() {
 	function tcp_checkout_manager( $html ) {
 		if ( ! tcp_is_stock_in_shopping_cart() ) {
 			require_once( TCP_SHORTCODES_FOLDER . 'ShoppingCartPage.class.php' );
-			$shoppingCartPage = new TCPShoppingCartPage();
-			return $shoppingCartPage->show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please review the list of products.', 'tcp' ) );
+			return TCPShoppingCartPage::show( __( 'You are trying to check out your order but, at this moment, there are not enough stock of some products. Please, review the list of products.', 'tcp' ) );
 		}
 	}
 
@@ -796,6 +795,20 @@ function tcp_get_the_stock( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
 			$stock = -1;
 	}
 	return apply_filters( 'tcp_get_the_stock', $stock, $post_id, $option_1_id, $option_2_id );
+}
+
+/**
+ * Returns the current stock.
+ * Current store is the stock of the product minus possible units of the same product in the shopping cart
+ *
+ * @since 1.3.0
+ */
+function tcp_get_the_current_stock( $post_id = 0 ) {
+	$stock = tcp_get_the_stock( $post_id );
+	$sc = TheCartPress::getShoppingCart();
+	$item = $sc->getItem( $post_id );
+	if ( $item !== false && $item->getUnits() > $stock ) $stock = 0;
+	return $stock;
 }
 
 /**

@@ -16,10 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function tcp_the_feedback_image( $class ) { ?>
-<img src="<?php echo admin_url( 'images/loading.gif' ); ?>" class="<?php echo $class; ?>" style="display: none;" />
-<?php }
-
 class TCPAjax {
 	function __construct() {
 		add_action( 'init', array( &$this, 'init' ) );
@@ -555,8 +551,7 @@ function tcp_items_in_the_cart_<?php echo $post_id; ?>() {
 			exit( tcp_the_total() );
 		case 'tcp_shopping_cart_page' :
 			require_once( TCP_SHORTCODES_FOLDER . 'ShoppingCartPage.class.php' );
-			$shoppingCartPage = new TCPShoppingCartPage();
-			exit( $shoppingCartPage->show() );
+			exit( TCPShoppingCartPage::show() );
 		case 'get_items_in_the_cart' :
 			$post_id = $_REQUEST['post_id'];
 			tcp_return_jsonp( tcp_the_add_to_cart_items_in_the_cart( $post_id, false ) );

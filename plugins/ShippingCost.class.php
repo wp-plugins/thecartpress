@@ -28,15 +28,22 @@ class ShippingCost extends TCP_Plugin {
 		return __( 'Calculate the shipping cost using a table of weights ranges and zones.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>', 'tcp' );
 	}
 	
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$title = tcp_string( 'TheCartPress', 'shi_ShippingCost-title', $title );
+		//$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
+		//$title = tcp_string( 'TheCartPress', 'shi_ShippingCost-title', $title );
+		
+		if ( isset( $data['title'] ) ) {
+			//$title = tcp_string( 'TheCartPress', 'shi_FlatRateShipping-title', $title );
+			$title = tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'shi_ShippingCost-title-' . $instance ), $data['title'] );
+		} else {
+			$title = $this->getTitle();
+		}
 		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
-	function showEditFields( $data ) {
+	function showEditFields( $data, $instance = 0 ) {
 		add_action( 'admin_footer', 'tcp_states_footer_scripts' );
 
 		$stored_data = isset( $data['costs'] );
@@ -219,14 +226,14 @@ class ShippingCost extends TCP_Plugin {
 		<thead>
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
-			<th class="manage-column" colspan="2"><?php printf( __( 'Zone %s', 'tcp' ), $z ); ?></th>
+			<th class="manage-column" colspan="1"><?php printf( __( 'Zone %s', 'tcp' ), $z ); ?></th>
 		<?php endforeach; ?>
 		</tr>
 		</thead>
 		<tfoot>
 		<tr>
 		<?php foreach( $zones as $z => $isos ) : ?>
-			<th class="manage-column" colspan="2"><?php printf( __( 'Zone %s', 'tcp' ), $z ); ?></th>
+			<th class="manage-column" colspan="1"><?php printf( __( 'Zone %s', 'tcp' ), $z ); ?></th>
 		<?php endforeach; ?>
 		</tr>
 		</tfoot>
@@ -248,58 +255,75 @@ class ShippingCost extends TCP_Plugin {
 					<?php endforeach;
 				}?>
 				</select>
-			</td>
-			<td>
+			<br/>
 			<?php //if ( count( $data['countries'] ) != 1 ) :?>
-				<input type="button" value="<?php _e( 'EU', 'tcp'); ?>" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>" onclick="tcp_select_eu('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'NAFTA', 'tcp'); ?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' ); ?>" onclick="tcp_select_nafta('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'CARICOM', 'tcp'); ?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' ); ?>" onclick="tcp_select_caricom('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'MERCASUR', 'tcp'); ?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' ); ?>" onclick="tcp_select_mercasur('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'CAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' ); ?>" onclick="tcp_select_can('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>				
-				<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>				
-				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'Toggle', 'tcp'); ?>" title="<?php _e( 'Toggle the selected ones', 'tcp' ); ?>" onclick="tcp_select_toggle('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'All', 'tcp'); ?>" title="<?php _e( 'Select all', 'tcp' ); ?>" onclick="tcp_select_all('zones_isos_<?php echo $z; ?>');" class="button-secondary"/>
-				<br/>
+				<select class="tcp_select_countries" zone_isos="<?php echo $z; ?>">
+					<option value="none"><?php _e( 'None', 'tcp'); ?></option>
+					<option value="eu" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>"><?php _e( 'EU', 'tcp'); ?></option>
+					<option value="nafta"><?php _e( 'NAFTA', 'tcp'); ?></option>
+					<option value="caricom"><?php _e( 'CARICOM', 'tcp'); ?></option>
+					<option value="mercasur"><?php _e( 'MERCASUR', 'tcp'); ?></option>
+					<option value="can"><?php _e( 'CAN', 'tcp'); ?></option>
+					<option value="au"><?php _e( 'AU', 'tcp'); ?></option>
+					<option value="apec"><?php _e( 'APEC', 'tcp'); ?></option>
+					<option value="asean"><?php _e( 'ASEAN', 'tcp'); ?></option>
+					<option value="toggle"><?php _e( 'Toggle', 'tcp'); ?></option>
+					<option value="all"><?php _e( 'All', 'tcp'); ?></option>
+				</select>
+				
 			<?php //endif; ?>
 				<?php if ( $stored_data && count( $zones ) > 1) : ?>
 				<input type="submit" name="tcp_delete_def_zone-<?php echo $z; ?>" id="tcp_delete_def_zone" value="<?php _e( 'delete zone', 'tcp'); ?>" title="<?php _e( 'To delete a defined zone', 'tcp' ); ?>" class="button-<?php if ( count( $data['countries'] ) == 1 ):?>primary<?php else:; ?>secondary<?php endif; ?>"/>
 				<?php endif; ?>
 			</td>
 		<?php endforeach; ?>
+
 <?php if ( isset( $data['countries'] ) && count( $data['countries'] ) == 1 ) :
 	$zones_states = $data['zones']; ?>
 <script>
 jQuery(document).ready(function() {
-<?php echo 'var sel_states = new Array();', "\n";
-foreach( $zones_states as $i => $states ) {
-	echo 'sel_states[', $i, '] = new Array();' , "\n";
-	foreach( $states as $j => $state ) {
-		echo 'sel_states[', $i, '][', $j, '] = \'', $state, '\';', "\n";
-	}
-}?>
-	var selects = jQuery('.tcp_zones');
-	if (selects) {
-		//var i = 0;
-		jQuery.each(selects, function(i, region_select) {
-			region_select = jQuery('#' + region_select.id);
-			var states = countries['<?php echo $data['countries'][0]; ?>'];
-			if (states) {
-				if (region_select) {
-					jQuery.each(states, function(key, title) {
-						region_select.append(jQuery('<option></option>').attr('value', key).text(title));
-					});
-					if (sel_states) region_select.val(sel_states[i++]);
+	<?php echo 'var sel_states = new Array();', "\n";
+	foreach( $zones_states as $i => $states ) {
+		echo 'sel_states[', $i, '] = new Array();' , "\n";
+		foreach( $states as $j => $state ) {
+			echo 'sel_states[', $i, '][', $j, '] = \'', $state, '\';', "\n";
+		}
+	}?>
+		var selects = jQuery('.tcp_zones');
+		if (selects) {
+			//var i = 0;
+			jQuery.each(selects, function(i, region_select) {
+				region_select = jQuery('#' + region_select.id);
+				var states = countries['<?php echo $data['countries'][0]; ?>'];
+				if (states) {
+					if (region_select) {
+						jQuery.each(states, function(key, title) {
+							region_select.append(jQuery('<option></option>').attr('value', key).text(title));
+						});
+						if (sel_states) region_select.val(sel_states[i++]);
+					}
 				}
-			}
-		});
-	}
+			});
+		}
 });
 </script>
 <?php endif; ?>
 <script>
+jQuery( '.tcp_select_countries' ).on( 'change', function() {
+	var org = jQuery( this ).val();
+	var zones_isos = 'zones_isos_' + jQuery( this ).attr( 'zone_isos' );
+	if ( org == 'eu' ) tcp_select_eu( zones_isos );
+	else if ( org == 'nafta' ) tcp_select_nafta( zones_isos );
+	else if ( org == 'caricom' ) tcp_select_caricom( zones_isos );
+	else if ( org == 'mercasur' ) tcp_select_mercasur( zones_isos );
+	else if ( org == 'can' ) tcp_select_can( zones_isos );
+	else if ( org == 'au' ) tcp_select_au( zones_isos );
+	else if ( org == 'apec' ) tcp_select_apec( zones_isos );
+	else if ( org == 'asean' ) tcp_select_asean( zones_isos );
+	else if ( org == 'toggle' ) tcp_select_toggle( zones_isos );
+	else if ( org == 'none' ) tcp_select_none( zones_isos );
+	else if ( org == 'all' ) tcp_select_all( zones_isos );
+} );
 jQuery(document).ready(function() {
 	<?php foreach( $zones as $z => $isos ) : ?>
 	jQuery('#zones_isos_<?php echo $z; ?>').tcp_convert_multiselect();
@@ -319,7 +343,7 @@ jQuery(document).ready(function() {
 	<?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$zones = isset( $_REQUEST['zones'] ) ? $_REQUEST['zones'] : array();
 		$ranges = isset( $_REQUEST['ranges'] ) ? $_REQUEST['ranges'] : array();
 		$ranges = array();

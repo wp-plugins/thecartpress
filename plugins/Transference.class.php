@@ -22,11 +22,15 @@ class Transference extends TCP_Plugin {
 		return 'Transference';
 	}
 
+	function getIcon() {
+		return plugins_url( 'thecartpress/images/transference.png' );
+	}
+
 	function getDescription() {
 		return 'Transference payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function showEditFields( $data ) { 
+	function showEditFields( $data, $instace = 0 ) { 
 		$bank_format = isset( $data['bank_format'] ) ? $data['bank_format'] : 'four-fields'; ?>
 	<tr valign="top">
 		<th scope="row">
@@ -130,7 +134,7 @@ class Transference extends TCP_Plugin {
 	</tr><?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instace = 0 ) {
 		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
 		tcp_register_string( 'TheCartPress', 'pay_Transference-notice', $data['notice'] );
 		$data['owner'] = isset( $_REQUEST['owner'] ) ? $_REQUEST['owner'] : '';
@@ -156,7 +160,7 @@ class Transference extends TCP_Plugin {
 		return false;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( 'Transference', $instance );
 		return tcp_string( 'TheCartPress', 'pay_Transference-title', isset( $data['title'] ) ? $data['title'] : $this->getTitle() );
 	}
@@ -179,9 +183,9 @@ class Transference extends TCP_Plugin {
 		<?php return ob_get_clean();
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$url = add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
-		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
+		$url = tcp_get_the_checkout_ok_url( $order_id );
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 		$redirect = isset( $data['redirect'] ) ? $data['redirect'] : false;
 		$additional = $this->getNotice( $instance, $shippingCountry, $shoppingCart, $order_id );
 		echo $additional;

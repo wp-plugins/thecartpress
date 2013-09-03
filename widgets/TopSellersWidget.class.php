@@ -35,6 +35,7 @@ class TopSellersWidget extends CustomListWidget {
 			'orderby' => 'meta_value_num',
 			'order' => 'desc',
 		);
+		$instance['loop_args'] = $loop_args;
 		$see_pagination = isset( $instance['pagination'] ) ? $instance['pagination'] : false;
 		if ( $see_pagination ) {
 			$loop_args['paged'] = $paged;
@@ -42,11 +43,12 @@ class TopSellersWidget extends CustomListWidget {
 		$loop_args = apply_filters( 'tcp_top_sellers_widget', $loop_args, $instance );
 		$instance['order_type'] = '';
 		$instance['order_desc'] = '';
-		parent::widget( $args, $loop_args, $instance );
+		parent::widget( $args, $instance );
 	}
 
-	function form( $instance, $title = '' ) {
-		parent::form( $instance, __( 'Top Seller!', 'tcp') );
+	function form( $instance ) {
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Top Seller!', 'tcp');
+		parent::form( $instance );
 		parent::show_post_type_form( $instance );
 	}
 }

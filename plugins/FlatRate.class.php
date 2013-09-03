@@ -26,15 +26,19 @@ class FlatRateShipping extends TCP_Plugin {
 		return 'Calculate the shipping cost by a flat or percentual formula.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
-		$data	= tcp_get_shipping_plugin_data( get_class( $this ), $instance );
-		$title	= isset( $data['title'] ) ? $data['title'] : '';
-		$title = tcp_string( 'TheCartPress', 'shi_FlatRateShipping-title', $title );
-		$cost	= tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
+		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
+		if ( isset( $data['title'] ) ) {
+			//$title = tcp_string( 'TheCartPress', 'shi_FlatRateShipping-title', $title );
+			$title = tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'shi_FlatRateShipping-title-' . $instance ), $data['title'] );
+		} else {
+			$title = $this->getTitle();
+		}
+		$cost = tcp_get_the_shipping_cost_to_show( $this->getCost( $instance, $shippingCountry, $shoppingCart ) );
 		return sprintf( __( '%s. Cost: %s', 'tcp' ), $title, tcp_format_the_price( $cost ) );
 	}
 
-	function showEditFields( $data ) {
+	function showEditFields( $data, $instance = 0 ) {
 		$calculate_by = isset( $data['calculate_by'] ) ? $data['calculate_by'] : 'per'; ?>
 		<tr valign="top">
 			<th scope="row">
@@ -105,7 +109,7 @@ class FlatRateShipping extends TCP_Plugin {
 		<?php do_action( 'tcp_shipping_flat_rate_edit_fields', $calculate_by );
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['calculate_by']	= isset( $_REQUEST['calculate_by'] ) ? $_REQUEST['calculate_by'] : '';
 		$data['fixed_cost']		= isset( $_REQUEST['fixed_cost'] ) ? tcp_input_number( $_REQUEST['fixed_cost'] ) : 0;
 		$data['percentage']		= isset( $_REQUEST['percentage'] ) ? tcp_input_number( $_REQUEST['percentage'] ) : 0;

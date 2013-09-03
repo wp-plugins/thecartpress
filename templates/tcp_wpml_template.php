@@ -16,9 +16,9 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//
 //WPML Multilanguage support
-
-
+//
 function tcp_get_current_language_iso() {
 	if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
 		return ICL_LANGUAGE_CODE;
@@ -123,6 +123,4 @@ function tcp_string( $context, $name, $value ) {
 	if ( function_exists( 'icl_t' ) ) return nl2br( icl_t( $context, $name, $value ) );
 	else return $value;
 }
-
-//end Multilanguage
 ?>

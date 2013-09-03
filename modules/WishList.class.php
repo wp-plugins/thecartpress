@@ -56,6 +56,16 @@ class TCPWishList {
 			$shoppingCart = TheCartPress::getShoppingCart();
 			$shoppingCart->deleteWishList();
 			do_action( 'tcp_delete_wish_list' );
+		} elseif ( isset( $_REQUEST['tcp_copy_wish_list_to_shopping_cart'] ) ) {
+			$shoppingCart = TheCartPress::getShoppingCart();
+			$wishList = $shoppingCart->getWishList();
+			foreach( $wishList as $post_id => $qty ) {
+				$unit_price = tcp_get_the_product_price( $post_id );
+				$unit_weight = tcp_get_the_weight( $post_id );
+				$shoppingCart->add( $post_id, 0, 0, $qty, $unit_price, $unit_weight );
+			}
+			//do_action( 'tcp_add_shopping_cart' );
+			//wp_redirect( tcp_get_the_shopping_cart_url() );
 		}
 	}
 
@@ -86,7 +96,7 @@ class TCPWishList {
 		global $thecartpress;
 		if ( ! $thecartpress->get_setting( 'enabled_wish_list', false ) ) return;
 		$base = $thecartpress->get_base();
-		add_submenu_page( $base, __( 'WishList', 'tcp' ), __( 'My wish List', 'tcp' ), 'tcp_edit_wish_list', TCP_ADMIN_FOLDER . 'WishList.php' );
+		add_submenu_page( $base, __( 'Wish List', 'tcp' ), __( 'My wish List', 'tcp' ), 'tcp_edit_wish_list', TCP_ADMIN_FOLDER . 'WishList.php' );
 	}
 
 	function tcp_the_add_to_cart_button( $out, $post_id ) {

@@ -21,19 +21,27 @@ class NoCostPayment extends TCP_Plugin {
 		return 'No Payment';
 	}
 
+	function getIcon() {
+		return plugins_url( 'thecartpress/images/no-payment.png' );
+	}
+
 	function getDescription() {
 		return 'No payment method.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		//if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$title = tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title );
-		return $title; //__( 'No payment.', 'tcp' );// . ': ' . $shoppingCart->getTotal();
+		if ( isset( $data['title'] ) ) {
+			//$title = tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title );
+			$title = tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_NoCostPayment-title-' . $instance ), $data['title'] );
+		} else {
+			$title = __( 'No payment.', 'tcp' );
+		}
+		return $title;
 	}
 
-	function showEditFields( $data ) {?>
+	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
@@ -52,7 +60,7 @@ class NoCostPayment extends TCP_Plugin {
 		</tr><?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
 		$data['redirect'] = isset( $_REQUEST['redirect'] );
 		return $data;
@@ -62,9 +70,9 @@ class NoCostPayment extends TCP_Plugin {
 		return false;
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		$url = add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
+		$url = tcp_get_the_checkout_ok_url( $order_id );
 		$title = isset( $data['title'] ) ? $data['title'] : '';
 		$redirect = isset( $data['redirect'] ) ? $data['redirect'] : false; ?>
 		<p><?php echo tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title ); ?></p>

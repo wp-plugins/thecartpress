@@ -159,7 +159,7 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 		$settings['user_registration'] = isset( $_POST['user_registration'] );// ? $_POST['user_registration'] == 'yes' : false;
 		$settings['emails']			= $_POST['emails'];
 		$settings['from_email']		= $_POST['from_email'];
-		$settings['send_email']		= $_POST['send_email'] == 'yes';
+		$settings['send_email']		= isset( $_POST['send_email'] );
 		$settings['legal_notice']	= $_POST['legal_notice'];
 		$settings['checkout_successfully_message']	= $_POST['checkout_successfully_message'];
 		$settings = apply_filters( 'tcp_checkout_settings_action', $settings );

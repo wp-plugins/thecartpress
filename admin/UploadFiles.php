@@ -43,8 +43,8 @@ function tcp_upload_file( $post_id, $file ) {
 		if ( move_uploaded_file( $_FILES['upload_file']['tmp_name'], $file_path ) ) {
 			$stat = stat( dirname( $file_path ));
 			$perms = $stat['mode'] & 0000666;
-			@ chmod( $file_path, $perms );
-			do_action( 'tcp_uploaded_file', $file_path );
+			@chmod( $file_path, $perms );
+			do_action( 'tcp_uploaded_file', $file_path, $post_id );
 			return true;
 		} else {
 			$error_upload = sprintf( __( 'Error uploading the file to "%s".', 'tcp' ), $file_path );

@@ -30,7 +30,7 @@ class TCPFreeProducts extends TCP_Plugin {
 		return 'Free Products. <br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart = false ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : __( 'Free products', 'tcp' );
 		return tcp_string( 'TheCartPress', 'shi_TCPFreeProducts-title', $title );
@@ -44,10 +44,10 @@ class TCPFreeProducts extends TCP_Plugin {
 		return $shoppingCart->getTotal() == 0;
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
 		if ( $shoppingCart->getTotal() == 0 ) {
 			$url	= add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
-			$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance );
+			$data	= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			Orders::editStatus( $order_id, $data['new_status'] );
 			require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );

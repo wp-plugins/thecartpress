@@ -21,18 +21,22 @@ require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 class CustomValuesWidget extends TCPParentWidget {
 
 	function CustomValuesWidget() {
-		parent::__construct( 'customvalues', __( 'Allow to create Custom Values Lists', 'tcp' ), 'TCP Custom Values' );
+		parent::__construct( 'customvalues', __( 'Allows to create Custom Values Lists', 'tcp' ), 'TCP Custom Values' );
 	}
 
 	function widget( $args, $instance ) {
 		if ( ! parent::widget( $args, $instance ) ) return;
 		extract( $args );
-
-		echo $before_widget;
-		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
-		if ( $title ) echo $before_title, $title, $after_title;
+		ob_start();
 		tcp_display_custom_values( 0, $instance );
-		echo $after_widget;
+		$html = ob_get_clean();
+		if ( strlen( $html ) > 0 ) {
+			echo $before_widget;
+			$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
+			if ( $title ) echo $before_title, $title, $after_title;
+			echo $html;
+			echo $after_widget;
+		}
 	}
 
 	function update( $new_instance, $old_instance ) {

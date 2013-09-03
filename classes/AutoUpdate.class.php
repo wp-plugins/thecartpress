@@ -18,8 +18,7 @@
 
 //Code based on https://github.com/omarabid/Self-Hosted-WordPress-Plugin-repository/blob/master/wp_autoupdate.php
 
-class TCPAutoUpdate
-{
+class TCPAutoUpdate {
 	/**
 	 * The plugin current version
 	 * @var string
@@ -51,16 +50,15 @@ class TCPAutoUpdate
 	 * @param string $plugin_slug
 	 * @change by TCP, the order of the parameters
 	 */
-	function __construct( $current_version, $plugin, $update_path = 'http://extend.thecartpress.com/xmlrpc.php' ) {
-		// Set the class public variables
-		$this->current_version = $current_version;
+	function __construct( $plugin_file, $update_path = 'http://extend.thecartpress.com/xmlrpc.php' ) {
+		$plugin_data = get_plugin_data( $plugin_file );
+		$this->current_version = $plugin_data['Version'];
 		$this->update_path = $update_path;
+		$plugin = plugin_basename( $plugin_file );
 		$this->plugin_slug = $plugin;
 		list ($t1, $t2) = explode('/', $plugin);
 		$this->slug = str_replace('.php', '', $t2);
-		// define the alternative API for updating checking
 		add_filter( 'pre_set_site_transient_update_plugins', array( &$this, 'check_update') );
-		// Define the alternative response for information checking
 		add_filter( 'plugins_api', array( &$this, 'check_info' ), 10, 3 );
 	}
 
@@ -74,7 +72,6 @@ class TCPAutoUpdate
 		if ( empty( $transient->checked ) ) {
 			return $transient;
 		}
-		// Get the remote version
 		$remote_version = $this->getRemote_version();
 		// If a newer version is available, add the update
 		if ( version_compare( $this->current_version, $remote_version, '<' ) ) {
@@ -132,10 +129,11 @@ class TCPAutoUpdate
 		$request = $this->get_remote_post( 'tcp.getPluginLicense' );
 		return $request;
 	}
-	
+
 	public function get_remote_post( $method ) {
 		if ( function_exists ( 'xmlrpc_encode_request' ) ) {
-			$xml = xmlrpc_encode_request( $method, array( 'plugin_slug' => $this->slug ) );
+			//$xml = xmlrpc_encode_request( $method, array( 'plugin_slug' => $this->slug ) );
+			$xml = xmlrpc_encode_request( $method, array( 'plugin_slug' => $this->plugin_slug ) );
 			$curl_hdl = curl_init();
 			curl_setopt( $curl_hdl, CURLOPT_URL, $this->update_path );
 			curl_setopt( $curl_hdl, CURLOPT_HEADER, 0 ); 
@@ -149,5 +147,60 @@ class TCPAutoUpdate
 			return $result;
 		}
 	}
+
+	static function tcp_uploaded_file( $file_path, $post_id ) {
+		$temp_dir = tempnam( sys_get_temp_dir(), '' );
+		if ( file_exists( $temp_dir ) ) unlink( $temp_dir );
+		mkdir( $temp_dir );
+		function __tcp_return_direct() { return 'direct'; }
+		add_filter( 'filesystem_method', '__tcp_return_direct' );
+		WP_Filesystem();
+		remove_filter( 'filesystem_method', '__tcp_return_direct' );
+		if ( is_dir( $temp_dir ) && unzip_file( $file_path, $temp_dir ) === true ) {
+			$files = TCPAutoUpdate::get_files_from_plugin( $temp_dir );
+			if ( is_array( $files ) && count ( $files ) > 0 ) {
+				$plugin_data = reset( $files );
+				$plugin_slug = key( $files );
+				update_post_meta( $post_id, 'tcp_plugin_slug', $plugin_slug );
+				update_post_meta( $post_id, 'tcp_plugin_new_version', $plugin_data['Version'] ); //1.1
+				//update_post_meta( $post_id, 'tcp_plugin_requires', $plugin_data['tcp_plugin_requires'] );//3.1
+				//update_post_meta( $post_id, 'tcp_plugin_tested', $plugin_data['tcp_plugin_tested'] ); //3.5.1
+				update_post_meta( $post_id, 'tcp_plugin_last_updated', $hoy = date( 'Y-m-d' ) );//'2012-01-12'
+			}
+		}
+	}
+
+	static function get_files_from_plugin( $plugins_dir ) {
+		$plugins = array();
+		$plugin_files = array();
+		$pdir = @opendir( $plugins_dir );
+		if ( $pdir ) {
+			while ( ( $file = readdir( $pdir ) ) !== false ) {
+				if ( substr( $file, 0, 1) == '.' ) continue;
+				if ( is_dir( $plugins_dir . '/' . $file ) ) {
+					$plugins_subdir = @ opendir( $plugins_dir . '/' . $file );
+					if ( $plugins_subdir ) {
+						while ( ( $subfile = readdir( $plugins_subdir ) ) !== false ) {
+							if ( substr($subfile, 0, 1) == '.' ) continue;
+							if ( substr($subfile, -4) == '.php' ) $plugin_files[] = "$file/$subfile";
+						}
+						closedir( $plugins_subdir );
+					}
+				} else {
+					if ( substr($file, -4) == '.php' ) $plugin_files[] = $file;
+				}
+			}
+			closedir( $pdir );
+		}
+		foreach ( $plugin_files as $plugin_file ) {
+			if ( ! is_readable( "$plugins_dir/$plugin_file" ) ) continue;
+			$plugin_data = get_plugin_data( "$plugins_dir/$plugin_file", false, false ); //Do not apply markup/translate as it'll be cached.
+			if ( empty ( $plugin_data['Name'] ) ) continue;
+			$plugins[plugin_basename( $plugin_file )] = $plugin_data;
+		}
+		return $plugins;
+	}
 }
+
+add_action( 'tcp_uploaded_file', array( 'TCPAutoUpdate', 'tcp_uploaded_file' ), 10, 2 );
 ?>

@@ -70,8 +70,6 @@ class TCPPluginsList {
 
 <form method="post">
 
-<form method="post">
-
 <div class="tablenav">
 	<p class="search-box">
 	<label for="plugin_type"><?php _e( 'Plugin type', 'tcp' ); ?>:</label>
@@ -90,7 +88,7 @@ class TCPPluginsList {
 <thead>
 <tr>
 	<th scope="col" class="manage-column"><?php _e( 'Plugin', 'tcp' ); ?></th>
-	<th scope="col" class="manage-column"><?php _e( 'Description', 'tcp' ); ?></th>
+	<th scope="col" class="manage-column" style="width:50%"><?php _e( 'Description', 'tcp' ); ?></th>
 	<th scope="col" class="manage-column"><?php _e( 'Instances', 'tcp' ); ?></th>
 </tr>
 </thead>
@@ -139,8 +137,23 @@ if ( is_array( $plugins ) ) :
 				<?php endif; ?>
 				</a>
 			</td>
-			<td><?php echo $plugin->getDescription(); ?></td>
-			<td><?php echo $out;?></td>
+			<td>
+				<?php echo $plugin->getDescription(); ?>
+				<?php $plugin_class = get_class( $plugin );
+				$template_id = tcp_template_get_post_id( 'tcp_payment_plugins_' . $plugin_class );
+				$template = tcp_do_template( 'tcp_payment_plugins_' . $plugin_class, false ); ?>
+				<div>
+				<?php if ( strlen( $template ) > 0 ) { ?>
+					<div class="tcp_template_div" id="tcp_template_div-<?php echo $plugin_class; ?>" style="display: none;"><?php echo $template; ?></div>
+					<?php _e( 'Notice', 'tcp' ); ?>: <a href="post.php?post=<?php echo $template_id; ?>&action=edit"><?php _e( 'Edit', 'tcp' ); ?></a> | <a href="#" class="tcp_div_show_hide" plugin_class="<?php echo $plugin_class; ?>"><?php _e( 'Show/Hide', 'tcp' ); ?></a>
+				<?php } else { ?>
+					<?php printf( __( 'This method has not a notice associated. Create one using <a href="%s">Notices menu</a>', 'tcp' ), 'edit.php?post_type=tcp_template' ); ?>
+				<?php } ?>
+				</div>
+			</td>
+			<td>
+				<?php echo $out;?> | <a href="<?php echo TCP_ADMIN_PATH; ?>PluginEdit.php&plugin_id=<?php echo $id;?>&plugin_type=<?php echo $this->plugin_type;?>" title="<?php printf( __( 'Edit %s', 'tcp' ), $plugin->getTitle() ); ?>" class="tcp_payment_title"><?php _e( 'Edit', 'tcp' ); ?></a>
+			</td>
 		</tr>
 	<?php endforeach;
 else : ?>
@@ -149,6 +162,14 @@ else : ?>
 		</tr>
 <?php endif; ?>
 </tbody></table>
+<script>
+jQuery( '.tcp_div_show_hide' ).click( function( e ) {
+	var pc = jQuery( this ).attr( 'plugin_class' );
+	jQuery( '#tcp_template_div-' + pc ).toggle(  );
+	e.stopPropagation();
+	return false;
+} );
+</script>
 </div> <!-- end wrap -->
 <?php
 	}

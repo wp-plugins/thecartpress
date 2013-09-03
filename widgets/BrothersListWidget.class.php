@@ -36,10 +36,10 @@ class BrothersListWidget extends CustomListWidget {
 			$brother_taxonomies = isset( $instance['brother_taxonomies'] ) ? $instance['brother_taxonomies'] : array();
 			$tcp_brother_multiple = isset( $instance['brother_multiple'] ) ? $instance['brother_multiple'] : 'OR';
 			$loop_args = array(
-				'post_type'			=> $post->post_type,
-				'posts_per_page'	=> $instance['limit'],
-				'post__not_in'		=> array( $post->ID, ),
-				'tax_query'			=> array(
+				'post_type'		=> $post->post_type,
+				'posts_per_page'=> $instance['limit'],
+				'post__not_in'	=> array( $post->ID, ),
+				'tax_query'		=> array(
 					'relation'	=> $tcp_brother_multiple,
 				),
 			);
@@ -63,7 +63,8 @@ class BrothersListWidget extends CustomListWidget {
 				);
 			}
 			$instance['title'] .= ': ' . implode( ', ', $titles );
-			parent::widget( $args, $loop_args, $instance );
+			$instance['loop_args'] = $loop_args;
+			parent::widget( $args, $instance );
 		}
 	}
 
@@ -76,7 +77,8 @@ class BrothersListWidget extends CustomListWidget {
 	}
 
 	function form( $instance ) {
-		parent::form( $instance, __( 'Brothers list', 'tcp' ) );
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Brothers list', 'tcp');
+		parent::form( $instance );
 		$post_types = get_post_types( array(), 'objects');
 		$tcp_brother_taxonomies = isset( $instance['brother_taxonomies'] ) ? $instance['brother_taxonomies'] : array();
 		$tcp_brother_multiple = isset( $instance['brother_multiple'] ) ? $instance['brother_multiple'] : 'OR';
@@ -113,9 +115,10 @@ class BrothersListWidget extends CustomListWidget {
 				<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
 				<?php endforeach; ?>
 			</select>
-			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="asc" <?php checked( $instance['order_desc'], 'asc' ); ?>/>
+
+			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="asc" <?php checked( $order_desc, 'asc' ); ?>/>
 			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Asc.', 'tcp' ); ?></label>
-			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="desc" <?php checked( $instance['order_desc'], 'desc' ); ?>/>
+			<input type="radio" name="<?php echo $this->get_field_name( 'order_desc' ); ?>" id="<?php echo $this->get_field_id( 'order_desc' ); ?>" value="desc" <?php checked( $order_desc, 'desc' ); ?>/>
 			<label for="<?php echo $this->get_field_id( 'order_desc' ); ?>"><?php _e( 'Desc.', 'tcp' ); ?></label>
 		</p>
 	<?php parent::show_post_type_form( $instance );

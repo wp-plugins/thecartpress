@@ -22,11 +22,15 @@ class TCPCardOffLine extends TCP_Plugin {
 		return 'Card off-line payment';
 	}
 
-	function getDescription() {
-		return 'card off line payment.<br/>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
+	function getIcon() {
+		return plugins_url( 'thecartpress/images/offline.png' );
 	}
 
-	function showEditFields( $data ) {?>
+	function getDescription() {
+		return 'Card off line payment.<br/>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
+	}
+
+	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 		<th scope="row">
 			<label for="notice"><?php _e( 'Notice', 'tcp' );?>:</label>
@@ -42,24 +46,24 @@ class TCPCardOffLine extends TCP_Plugin {
 		</td></tr><?php
 	}
 
-	function saveEditFields( $data ) {
+	function saveEditFields( $data, $instance = 0 ) {
 		$data['notice'] = isset( $_REQUEST['notice'] ) ? $_REQUEST['notice'] : '';
 		$data['store_part_number'] = isset( $_REQUEST['store_part_number'] ) ? $_REQUEST['store_part_number'] == 'yes': false;
 		return $data;
 	}
 
-	function getCheckoutMethodLabel( $instance, $shippingCountry, $shoppingCart ) {
+	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_payment_plugin_data( 'TCPCardOffLine', $instance );
 		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
 		return tcp_string( 'TheCartPress', 'pay_TCPCardOffLine-title', $title );
 	}
 
-	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id ) {
-		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance );
+	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
+		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 		$notify_url			= plugins_url( 'thecartpress/plugins/CardOffLine/notify.php' );
-		$return_url			= add_query_arg( 'order_id', $order_id, tcp_get_the_checkout_ok_url() );
+		$return_url			= tcp_get_the_checkout_ok_url( $order_id );
 		$store_part_number	= isset( $data['store_part_number'] ) ? $data['store_part_number'] : false;
-		$new_status			= $data['new_status'];?>
+		$new_status			= $data['new_status']; ?>
 		<p><?php _e( 'Off line payment:', 'tcp' );?></p>
 		<?php if ( isset( $data['notice'] ) ) echo '<p>', $data['notice'], '</p>'; ?>
 		<form name="tcp_offline_payment" id="tcp_offline_payment" action="<?php echo $notify_url;?>" method="post">
@@ -165,14 +169,14 @@ class TCPCardOffLine extends TCP_Plugin {
 		function tcp_checkCard() {
 			var errors = 0;
 			jQuery(".error").hide();
-			<?php if ( ! $store_part_number ) : ?>
+			<?php if ( ! $store_part_number ) { ?>
 			var card_number = jQuery('#card_number_1').val() + "" + jQuery('#card_number_2').val() + "" + jQuery('#card_number_3').val() + "" + jQuery('#card_number_4').val();
 			if ( ! card_number.luhnCheck() ) {
 				jQuery("#tcp_error_offline").html("<?php _e( 'Wrong Card number', 'tcp' );?>");
 				jQuery("#tcp_error_offline").show();
 				errors++;
 			}
-			<?php endif; ?>
+			<?php } ?>
 			if ( jQuery('#card_holder').val().length < 4 ) {
 				jQuery("#tcp_error_card_holder").html("<?php _e( 'The field Card Holder must be completed', 'tcp' );?>");
 				jQuery("#tcp_error_card_holder").show();
@@ -202,7 +206,6 @@ class TCPCardOffLine extends TCP_Plugin {
 		<?php else :
 			$offline = tcp_get_order_meta( $order_id, 'tcp_card_offlines' );
 			if ( $offline ) : ?>
-
 			<tr valign="top">
 			<th scope="row">
 				<label for="card_holder"><?php _e( 'Credit Card Holder', 'tcp' );?>:</label>
@@ -211,7 +214,6 @@ class TCPCardOffLine extends TCP_Plugin {
 				<input type="text" name="card_holder" id="card_holder" size="40" maxlength="150" value="<?php echo $offline['card_holder'];?>" readonly />
 			</td>
 			</tr>
-
 			<tr valign="top">
 			<th scope="row">
 				<label for="card_number"><?php _e( 'Card number', 'tcp' );?>:</label>
@@ -224,7 +226,6 @@ class TCPCardOffLine extends TCP_Plugin {
 				<label><?php _e( 'cvc', 'tcp' );?>: </label><input type="text" id="cvc" name="cvc" size="4" maxlength="4" value="<?php echo $offline['cvc'];?>" readonly />
 			</td>
 			</tr>
-
 			<tr valign="top">
 			<th scope="row">
 				<label for="expiration_month"><?php _e( 'Expiration date', 'tcp' );?>:</label>:
@@ -235,7 +236,6 @@ class TCPCardOffLine extends TCP_Plugin {
 				<input type="text" name="expiration_year" id="expiration_year" size="2" maxlength="2" value="<?php echo $offline['expiration_year'];?>" readonly />
 			</td>
 			</tr>
-
 			<tr valign="top">
 			<th scope="row">
 				<label for="card_type"><?php _e( 'Credit Card Type', 'tcp' );?>:</label>
@@ -266,14 +266,14 @@ class TCPCardOffLine extends TCP_Plugin {
 				$res = $wpdb->get_results( $sql );
 				foreach( $res  as $row ) {
 					tcp_update_order_meta( $row->order_id, 'tcp_card_offlines', array(
-						'order_id'				=> $row->order_id,
-						'card_holder'			=> $row->card_holder,
-						'card_number'			=> $row->card_number,
-						'cvc'					=> $row->cvc,
-						'expiration_month'		=> $row->expiration_month,
-						'expiration_year'		=> $row->expiration_year,
-						'card_type'				=> $row->card_type,
-						'created_at'			=> $row->created_at,
+						'order_id'			=> $row->order_id,
+						'card_holder'		=> $row->card_holder,
+						'card_number'		=> $row->card_number,
+						'cvc'				=> $row->cvc,
+						'expiration_month'	=> $row->expiration_month,
+						'expiration_year'	=> $row->expiration_year,
+						'card_type'			=> $row->card_type,
+						'created_at'		=> $row->created_at,
 					) );
 				}
 				$sql = 'DELETE FROM `' . $wpdb->prefix . 'tcp_offlines`';

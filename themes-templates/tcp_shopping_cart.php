@@ -53,7 +53,7 @@ if ( $source->see_address() ) : ?>
 				<li class="shipping_info">
 					<?php echo $source->get_shipping_firstname(); ?> <?php echo $source->get_shipping_lastname(); ?>
 				</li>
-				<?php if ( strlen( $source->get_shipping_company() ) > 0 && strlen( $source->get_billing_company() ) > 0 ) : ?>
+				<?php if ( strlen( $source->get_shipping_company() ) > 0 || strlen( $source->get_billing_company() ) > 0 ) : ?>
 						<li class="shipping_info">
 							<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>
 								<?php echo $source->get_shipping_company(); ?>
@@ -174,9 +174,9 @@ if ( $source->see_address() ) : ?>
 			</ul>
 		</div>
 	<?php endif; ?>
-
 <?php endif; ?>
-<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table table table-striped" width="100%" cellpading="0" cellspacing="0">
+
+<table id="tcp_shopping_cart_table" class="tcp_shopping_cart_table table" width="100%" cellpading="0" cellspacing="0">
 <thead>
 	<tr class="tcp_cart_title_row">
 		<?php if ( $source->see_thumbnail() ) : ?>
@@ -221,7 +221,7 @@ if ( $source->has_order_details() ) :
 		<?php if ( ! $source->is_editing_units() ) : ?>
 			<?php echo tcp_number_format( $order_detail->get_qty_ordered(), 0 ); ?>
 		<?php else : ?>
-			<form method="post">
+			<form method="post" action="<?php tcp_the_shopping_cart_url(); ?>">
 				<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
 				<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
 				<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />

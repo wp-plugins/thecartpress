@@ -23,11 +23,11 @@
 class TemplateCustomPostType {
 	public static $TEMPLATE = 'tcp_template';
 	
-	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
+	static function initPlugin() {
+		add_action( 'init', array( __CLASS__, 'init' ) );
 	}
 	
-	function init() {
+	static function init() {
 		//global $thecartpress;
 		$labels = array(
 			'name'					=> _x( 'Notices', 'post type general name', 'tcp' ),
@@ -65,5 +65,5 @@ class TemplateCustomPostType {
 	}
 }
 
-new TemplateCustomPostType();
+TemplateCustomPostType::initPlugin();
 ?>

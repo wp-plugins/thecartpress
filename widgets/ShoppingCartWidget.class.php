@@ -17,6 +17,7 @@
  */
 
 class ShoppingCartWidget extends WP_Widget {
+
 	function ShoppingCartWidget() {
 		$widget = array(
 			'classname'		=> 'shoppingcart',

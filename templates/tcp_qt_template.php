@@ -46,11 +46,13 @@ function tcp_get_all_translations( $post_id, $post_type = false ) {
 }
 
 function tcp_get_default_language() {
-	return $this->tcp_get_current_language_iso();
+	return tcp_get_current_language_iso();
+	//return $this->tcp_get_current_language_iso();
 }
 
 function tcp_get_current_language() {
-	return $this->tcp_get_current_language_iso();
+	return tcp_get_current_language_iso();
+	//return $this->tcp_get_current_language_iso();
 }
 
 /**
@@ -80,7 +82,7 @@ function tcp_unregister_string( $context, $name ) {
  * Returns the translation of a string identified by $context and $name
  */
 function tcp_string( $context, $name, $value ) {
-	return $value;
+	return __( $value );
 }
 
 ?>

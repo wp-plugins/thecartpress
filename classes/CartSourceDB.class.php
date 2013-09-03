@@ -66,6 +66,10 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 		$this->see_other_costs	= $see_other_costs;
 	}
 
+	public function __set( $name, $value ) {
+		if ( isset( $this->$name ) ) $this->$name = $value;
+	}
+
 	public function get_order_id() {
 		return $this->order ? $this->order->order_id : false;
 	}

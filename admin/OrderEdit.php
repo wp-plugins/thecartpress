@@ -96,6 +96,7 @@ function tcp_order_id_metabox() {
 		<?php $order_status = tcp_get_order_status(); ?>
 		<td class="tcp_status_<?php echo $order->status; ?>"><?php echo $order_status[$order->status]['name']; ?></td>
 	</tr>
+	<?php do_action( 'tcp_order_id_metabox', $order_id, $order ); ?>
 </table>
 <?php }
 
@@ -107,7 +108,7 @@ function tcp_order_shipping_metabox() {
 			<?php echo $order->shipping_firstname; ?> <?php echo $order->shipping_lastname; ?>
 		</td>
 	</tr>
-<?php if ( strlen( $order->shipping_company ) > 0 && strlen( $order->billing_company ) > 0 ) : ?>
+<?php if ( strlen( $order->shipping_company ) > 0 || strlen( $order->billing_company ) > 0 ) : ?>
 	<tr valign="top">
 		<td class="shipping_info">
 			<?php if ( strlen( $order->shipping_company ) > 0 ) : ?>
@@ -155,6 +156,7 @@ function tcp_order_shipping_metabox() {
 			<?php if ( strlen( $order->shipping_email ) > 0 ) : echo $order->shipping_email; ?><?php endif; ?>
 		</td>
 	</tr>
+	<?php do_action( 'tcp_order_shipping_metabox', $order_id, $order ); ?>
 </table>
 <?php }
 
@@ -166,7 +168,7 @@ function tcp_order_billing_metabox() {
 			<?php echo $order->billing_firstname;?> <?php echo $order->billing_lastname; ?>
 		</td>
 	</tr>
-<?php if ( strlen( $order->shipping_company ) > 0 && strlen( $order->billing_company ) > 0 ) : ?>
+<?php if ( strlen( $order->shipping_company ) > 0 || strlen( $order->billing_company ) > 0 ) : ?>
 	<tr valign="top">
 		<td class="billing_info">
 			<?php if ( strlen( $order->billing_company ) > 0 ) : ?>
@@ -216,6 +218,7 @@ function tcp_order_billing_metabox() {
 			<?php if ( strlen( $order->billing_email ) > 0 ) : echo $order->billing_email; ?><br/><?php endif; ?>
 		</td>
 	</tr>
+	<?php do_action( 'tcp_order_billing_metabox', $order_id, $order ); ?>
 </table>
 <?php }
 
@@ -237,14 +240,12 @@ function tcp_order_setup_metabox() {
 
 	<table class="form-table">
 	<tbody>
-		<?php do_action( 'tcp_admin_order_before_editor', $order_id ); ?>
+		<?php do_action( 'tcp_admin_order_before_editor', $order_id, $order ); ?>
 		<tr valign="top">
-			<th scope="col" colspan="2">
+			<th scope="col">
 				<label style="font-weight:bold;"><?php _e( 'User email', 'tcp' ); ?></label>
 			</th>
-		</tr>
-		<tr valign="top">
-			<td colspan="2">
+			<td>
 				<?php $user_data = get_userdata( $order->customer_id );
 				if ( $user_data ) printf( __( '%s&lt;%s&gt; (registered)', 'tcp' ), $user_data->user_nicename, $user_data->user_email );
 				else printf( __( '%s (unregistered)', 'tcp' ), $order->billing_email ); ?>
@@ -312,21 +313,23 @@ function tcp_order_setup_metabox() {
 			</td>
 		</tr>
 		<?php do_action( 'tcp_admin_order_after_editor', $order_id, $order ); ?>
+		<tr>
+			<th colspan="2" class="_submit" style="text-align: right;">
+				<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
+				<?php do_action( 'tcp_admin_order_submit_area', $order_id ); ?>
+				<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
+					<a href="#" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' ); ?></a>
+					<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
+						<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
+						<p><?php _e( 'Do you really want to delete this order?', 'tcp' ); ?></p>
+						<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' ); ?>" type="submit" class="button-secondary" />
+						<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+					</div>
+				<?php endif; ?>
+			</td>
+		</tr><!-- .submit -->
 	</tbody>
 	</table>
-	<p class="submit">
-		<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
-		<?php do_action( 'tcp_admin_order_submit_area', $order_id ); ?>
-		<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
-			<a href="#" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' ); ?></a>
-			<div id="delete_order" style="display:none; border: 1px dotted orange; padding: 2px">
-				<input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
-				<p><?php _e( 'Do you really want to delete this order?', 'tcp' ); ?></p>
-				<input name="tcp_order_delete" value="<?php _e( 'Yes', 'tcp' ); ?>" type="submit" class="button-secondary" />
-				<a href="" onclick="jQuery('#delete_order').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
-			</div>
-		<?php endif; ?>
-	</p><!-- .submit -->
 </form>
 </div>
 	<?php endif;

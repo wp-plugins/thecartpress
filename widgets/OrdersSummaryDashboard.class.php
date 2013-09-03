@@ -84,7 +84,8 @@ class OrdersSummaryDashboard {
 </div>
 <div class="tcp_dashboard_links">
 	<p><a class="tcp_link_to_tcp" href="http://thecartpress.com/" target="_blank" title="<?php _e( 'link to TheCartPress site', 'tcp'); ?>"><?php _e( 'Visit TheCartPress site', 'tcp'); ?></a>
-	| <a class="tcp_link_to_tcp" href="http://community.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress community', 'tcp'); ?>"><?php _e( 'Visit TheCartPress community', 'tcp'); ?></a></p>
+	| <a class="tcp_link_to_tcp" href="http://community.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress community', 'tcp'); ?>"><?php _e( 'Visit our community', 'tcp'); ?></a>
+	| <a class="tcp_link_to_tcp" href="http://extend.thecartpress.com/forums/" target="_blank" title="<?php _e( 'link to TheCartPress extend site', 'tcp'); ?>"><?php _e( 'Visit the Extend site', 'tcp'); ?></a></p>
 </div>
 	<?php }
 }

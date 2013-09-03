@@ -28,7 +28,10 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 	if ( ! $plugin_data ) $plugin_data = array();
 	$plugin_data[$instance] = array();
 	$plugin_data[$instance]['title'] = isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : '';
-	tcp_register_string( 'TheCartPress', $plugin_id . '-title', $plugin_data[$instance]['title'] );
+	
+	tcp_register_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', $plugin_id . '-title-' . $instance ), $plugin_data[$instance]['title'] );
+	//tcp_unregister_string( 'TheCartPress', $plugin_id . '-title' );
+	
 	if ( strlen($plugin_data[$instance]['title'] ) > 0 ) {
 		$plugin_data[$instance]['active'] = isset( $_REQUEST['active'] );
 		$plugin_data[$instance]['not_for_downloadable'] = isset( $_REQUEST['not_for_downloadable'] );
@@ -119,7 +122,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<label for="title"><?php _e( 'Title', 'tcp' ); ?>:</label>
 		</th>
 		<td>
-			<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" />
+			<input type="text" name="title" id="title" value="<?php echo isset( $data['title'] ) ? $data['title'] : '';?>" size="40"/>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -189,7 +192,7 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 				</select>
 			</div>
 			<script >
-				jQuery('#countries').tcp_convert_multiselect();
+				jQuery( '#countries' ).tcp_convert_multiselect();
 			</script>
 			<div>
 				<input type="button" value="<?php _e( 'EU', 'tcp'); ?>" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>

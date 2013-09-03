@@ -86,7 +86,7 @@ $align_buy_button_in_content = $thecartpress->get_setting( 'align_buy_button_in_
 $see_price_in_content	= $thecartpress->get_setting( 'see_price_in_content' . $suffix );
 $image_size_grouped_by_button = $thecartpress->get_setting( 'image_size_grouped_by_button' . $suffix, 'thumbnail' );
 $see_image_in_content	= $thecartpress->get_setting( 'see_image_in_content' . $suffix );
-$image_size_content		= $thecartpress->get_setting( 'image_size_content', 'thumbnail' );
+$image_size_content		= $thecartpress->get_setting( 'image_size_content' . $suffix, 'thumbnail' );
 $image_align_content	= $thecartpress->get_setting( 'image_align_content' . $suffix );
 $image_link_content		= $thecartpress->get_setting( 'image_link_content' . $suffix );
 $see_buy_button_in_excerpt	= $thecartpress->get_setting( 'see_buy_button_in_excerpt' . $suffix );
@@ -241,20 +241,20 @@ $image_link_excerpt		= $thecartpress->get_setting( 'image_link_excerpt' . $suffi
 
 		<select id="current_post_type" name="current_post_type">
 			<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
-			<?php foreach( $post_types as $i => $post_type ) : ?>
+			<?php foreach( $post_types as $i => $post_type ) : 
+				$existe = $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, 'false' ) !== 'false'; ?>
 			<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
-			<?php if ( $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, false ) !== false ) : ?> style="font-weight: bold;"<?php endif; ?>
+			<?php if ( $existe ) : ?> style="font-weight: bold;"<?php endif; ?>
 			>
 			<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
+			<?php if ( $existe ) : ?> *<?php endif; ?>
 			</option>
 			<?php endforeach; ?>
 		</select>
 
 		<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
 		<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
-
 		<p class="description"><?php _e( 'Allows to create different configuration for each Post Type.', 'tcp' ); ?></p>
-
 		<span class="description"><?php _e( 'Options in bold have a specific configuration.', 'tcp' ); ?>
 		<?php _e( 'Remember to save the changes before to load new post type settings.', 'tcp' ); ?>
 		</span>

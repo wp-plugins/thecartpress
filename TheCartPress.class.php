@@ -2,10 +2,12 @@
 /*
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
-Description: TheCartPress (Multi language support)
-Version: 1.2.9
+Description: Professional WordPress eCommerce Plugin. Use it as Chopping Cart, Catalog or Framework.
+Version: 1.3.0
 Author: TheCartPress team
 Author URI: http://thecartpress.com
+Text Domain: tcp
+Domain Path: /languages/
 License: GPL
 Parent: thecartpress
 */
@@ -26,6 +28,7 @@ Parent: thecartpress
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if ( !defined( 'ABSPATH' ) ) exit;
 
 define ( 'DONOTCACHEPAGE', 'TCP' ); //WPSuperCache
 
@@ -99,15 +102,15 @@ class TheCartPress {
 			new TemplateCustomPostType();
 			$this->loading_default_checkout_boxes();
 			//feed: http://<site>/?feed=tcp-products
-			add_filter( 'the_content', array( &$this, 'the_content' ) );
-			add_filter( 'the_content', array( &$this, 'the_excerpt' ) );
-			add_action( 'pre_get_posts', array( &$this, 'pre_get_posts' ) );
-			add_filter( 'get_pagenum_link', array( &$this, 'get_pagenum_link' ) );
 			add_filter( 'tcp_get_saleable_post_types', array( &$this, 'tcp_get_saleable_post_types' ) );
 			//add_action( 'user_register', array( $this, 'user_register' ) );
 			require_once( TCP_CHECKOUT_FOLDER	. 'ActiveCheckout.class.php' );
 			require_once( TCP_ADMIN_FOLDER . 'PrintOrder.class.php' );
 		}
+		add_filter( 'the_content', array( &$this, 'the_content' ) );
+		add_filter( 'the_content', array( &$this, 'the_excerpt' ) );
+		add_action( 'pre_get_posts', array( &$this, 'pre_get_posts' ) );
+		add_filter( 'get_pagenum_link', array( &$this, 'get_pagenum_link' ) );
 		if ( $this->get_setting( 'load_default_loop_style', true ) ) {
 			$use_default_loop = $this->get_setting( 'use_default_loop' );
 			if ( $use_default_loop == 'yes' || $use_default_loop == 'yes_2010' ) {
@@ -115,8 +118,7 @@ class TheCartPress {
 			} else {//if ( $use_default_loop == 'yes_2012' ) {
 				wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/themes-templates/tcp-twentytwelve/css/tcp_loop.css' ) );
 			}
-		}		
-		$this->update_version();
+		}
 	}
 
 	function last_init() {
@@ -142,6 +144,7 @@ class TheCartPress {
 			tcp_add_template_class( 'tcp_checkout_billing_notice', __( 'This notice will be showed at Billing address in Checkout', 'tcp' ) );
 			add_filter( 'tcp_get_default_roles', array( &$this, 'tcp_get_default_roles' ) );
 		}
+		$this->update_version();
 	}
 
 	function update_version() {
@@ -155,6 +158,8 @@ class TheCartPress {
 			unset( $_REQUEST['tcp_add_to_shopping_cart'] );
 			if ( ! isset( $_REQUEST['tcp_post_id'] ) ) return;
 			$shoppingCart = TheCartPress::getShoppingCart();
+			if ( ! is_array( $_REQUEST['tcp_post_id'] ) ) $_REQUEST['tcp_post_id'] = (array)$_REQUEST['tcp_post_id'];
+			if ( ! is_array( $_REQUEST['tcp_count'] ) ) $_REQUEST['tcp_count'] = (array)$_REQUEST['tcp_count'];
 			do_action( 'tcp_before_add_shopping_cart', $_REQUEST['tcp_post_id'] );
 			for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 				$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
@@ -395,7 +400,7 @@ $query->set( 'meta_query', $meta_query );
 						$query->set( $tax, '' );
 						foreach( $layers as $layer ) {
 							if ( $layer['type'] == 'taxonomy' ) {
-								$query->set( $tax, get_query_var( $tax ) . $layer['term'] . ',' );
+								$query->set( $tax, get_query_var( $tax ) . $layer['term'] );// . ',' );
 							} elseif ( $layer['type'] == 'dynamic_options' ) {
 								$query->set( 'post__in', $layer['post__in'] );
 							} else { //custom_field_def
@@ -506,12 +511,17 @@ $query->set( 'meta_query', $meta_query );
 	function the_content( $content ) {
 		if ( is_single() ) {
 			global $post;
-			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
 			$suffix = '-' . $post->post_type;
-			if ( $this->get_setting( 'align_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
-			$see_buy_button_in_content	= $this->get_setting( 'see_buy_button_in_content' . $suffix, true );
-			$align_buy_button_in_content= $this->get_setting( 'align_buy_button_in_content' . $suffix, 'north' );
-			$see_price_in_content		= $this->get_setting( 'see_price_in_content' . $suffix );
+			if ( $this->get_setting( 'see_buy_button_in_content' . $suffix, false ) === false ) $suffix = '';
+			if ( tcp_is_saleable_post_type( $post->post_type ) ) {
+				$see_buy_button_in_content = $this->get_setting( 'see_buy_button_in_content' . $suffix, true );
+				$align_buy_button_in_content = $this->get_setting( 'align_buy_button_in_content' . $suffix, 'north' );
+				$see_price_in_content = $this->get_setting( 'see_price_in_content' . $suffix );
+			} else {
+				$see_buy_button_in_content = false;
+				$align_buy_button_in_content = 'north';
+				$see_price_in_content = false;
+			}
 			if ( ! function_exists( 'has_post_thumbnail' ) ) $see_image_in_content = false;
 			else $see_image_in_content	= $this->get_setting( 'see_image_in_content'  . $suffix );
 			if ( $see_image_in_content ) {
@@ -549,10 +559,15 @@ $query->set( 'meta_query', $meta_query );
 			$use_default_loop = $this->get_setting( 'use_default_loop', 'only_settings' );
 			if ( $use_default_loop != 'none' ) return $content;
 			global $post;
-			if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $content;
-			$see_buy_button_in_excerpt	= $this->get_setting( 'see_buy_button_in_excerpt' );
-			$align_buy_button_in_excerpt= $this->get_setting( 'align_buy_button_in_excerpt', 'north' );
-			$see_price_in_excerpt		= $this->get_setting( 'see_price_in_excerpt', true );
+			if ( tcp_is_saleable_post_type( $post->post_type ) ) {
+				$see_buy_button_in_excerpt = $this->get_setting( 'see_buy_button_in_excerpt' . $suffix, true );
+				$align_buy_button_in_excerpt = $this->get_setting( 'align_buy_button_in_excerpt' . $suffix, 'north' );
+				$see_price_in_excerpt = $this->get_setting( 'see_price_in_excerpt' . $suffix );
+			} else {
+				$see_buy_button_in_excerpt = false;
+				$align_buy_button_in_excerpt = 'north';
+				$see_price_in_excerpt = false;
+			}
 			if ( ! function_exists( 'has_post_thumbnail' ) ) $see_image_in_excerpt = false;
 			else $see_image_in_excerpt = $this->get_setting( 'see_image_in_excerpt' );
 			$html = '';
@@ -883,26 +898,38 @@ $query->set( 'meta_query', $meta_query );
 	function load_custom_post_types_and_custom_taxonomies() {
 		$post_types = tcp_get_custom_post_types();
 		if ( is_array( $post_types ) && count( $post_types ) > 0 ) {
-			foreach( $post_types as $id => $post_type ) {
-				if ( $post_type['activate'] ) {
+			foreach( $post_types as $id => $post_type_def ) {
+				if ( $post_type_def['activate'] ) {
+					$labels = array(
+						'name'			=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-name', $post_type_def['name'] ),
+						'singular_name'	=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-singular_name', $post_type_def['singular_name'] ),
+						'add_new'		=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-add_new', $post_type_def['add_new'] ),
+						'add_new_item'	=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-add_new_item', $post_type_def['add_new_item'] ),
+						'edit_item'		=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-edit_item', $post_type_def['edit_item'] ),
+						'new_item'		=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-new_item', $post_type_def['new_item'] ),
+						'view_item'		=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-view_item', $post_type_def['view_item'] ),
+						'search_items'	=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-search_items', $post_type_def['search_items'] ),
+						'not_found'		=> tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-not_found', $post_type_def['not_found'] ),
+						'not_found_in_trash' => tcp_string( 'TheCartPress', 'custom_post_type_' . $id . '_' . $id . '-not_found_in_trash', $post_type_def['not_found_in_trash'] ),
+					);
 					$register = array(
-						'labels' => $post_type,
-						'public' => isset( $post_type['public'] ) ? $post_type['public'] : true,
-						'show_ui' => isset( $post_type['show_ui'] ) ? $post_type['show_ui'] : true,
-						'show_in_menu' => isset( $post_type['show_in_menu'] ) ? $post_type['show_in_menu'] : true,
-						'can_export' => isset( $post_type['can_export'] ) ? $post_type['can_export'] : true,
-						'show_in_nav_menus'	=> isset( $post_type['show_in_nav_menus'] ) ? $post_type['show_in_nav_menus'] : true,
-						'_builtin' => false,
-						'_edit_link' => 'post.php?post=%d',
+						'labels'		=> $labels,
+						'public'		=> isset( $post_type_def['public'] ) ? $post_type_def['public'] : true,
+						'show_ui'		=> isset( $post_type_def['show_ui'] ) ? $post_type_def['show_ui'] : true,
+						'show_in_menu'	=> isset( $post_type_def['show_in_menu'] ) ? $post_type_def['show_in_menu'] : true,
+						'can_export'	=> isset( $post_type_def['can_export'] ) ? $post_type_def['can_export'] : true,
+						'show_in_nav_menus'	=> isset( $post_type_def['show_in_nav_menus'] ) ? $post_type_def['show_in_nav_menus'] : true,
+						'_builtin'		=> false,
+						'_edit_link'	=> 'post.php?post=%d',
 						'capability_type' => 'post',
-						'hierarchical' => false,
-						'query_var' => isset( $post_type['query_var'] ) ? $post_type['query_var'] : true,
-						'supports' => isset( $post_type['supports'] ) ? $post_type['supports'] : array(),
-						'rewrite' => strlen( $post_type['rewrite'] ) > 0 ? array( 'slug' => _x( $post_type['rewrite'], 'URL slug', 'tcp' ) ) : false,
-						'has_archive' => strlen( $post_type['has_archive'] ) > 0 ? $post_type['has_archive'] : false,
+						'hierarchical'	=> false,
+						'query_var'		=> isset( $post_type_def['query_var'] ) ? $post_type_def['query_var'] : true,
+						'supports'		=> isset( $post_type_def['supports'] ) ? $post_type_def['supports'] : array(),
+						'rewrite'		=> strlen( $post_type_def['rewrite'] ) > 0 ? array( 'slug' => _x( $post_type_def['rewrite'], 'URL slug', 'tcp' ) ) : false,
+						'has_archive'	=> strlen( $post_type_def['has_archive'] ) > 0 ? $post_type_def['has_archive'] : false,
 					);
 					register_post_type( $id, $register );
-					$is_saleable = isset( $post_type['is_saleable'] ) ? $post_type['is_saleable'] : false;
+					$is_saleable = isset( $post_type_def['is_saleable'] ) ? $post_type_def['is_saleable'] : false;
 					if ( $is_saleable ) {
 						$this->register_saleable_post_type( $id );
 						//if ( $register['has_archive'] ) ProductCustomPostType::register_post_type_archives( $id, $register['has_archive'] );
@@ -913,7 +940,7 @@ $query->set( 'meta_query', $meta_query );
 							add_filter( 'request', array( &$productcustomposttype, 'price_column_orderby' ) );
 						}
 					}
-					do_action( 'tcp_load_custom_post_types', $id, $post_type );
+					do_action( 'tcp_load_custom_post_types', $id, $post_type_def );
 				}
 			}
 		}

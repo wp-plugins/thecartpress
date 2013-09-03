@@ -73,7 +73,7 @@ class TCPParentWidget extends WP_Widget {
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'private' ); ?>" name="<?php echo $this->get_field_name( 'private' ); ?>" value="yes" <?php checked( $private ); ?> />
-			<label for="<?php echo $this->get_field_id( 'see_title' ); ?>"><?php _e( 'Private', 'tcp' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'private' ); ?>"><?php _e( 'Private', 'tcp' ); ?></label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'roles' ); ?>"><?php _e( 'Roles', 'tcp' ); ?>:</label>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TCPLoginWidget extends  WP_Widget {
+class TCPLoginWidget extends WP_Widget {
 
 	function TCPLoginWidget() {
 		$widget_settings = array(
@@ -59,8 +59,8 @@ class TCPLoginWidget extends  WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'redirect' ); ?>"><?php _e( 'Redirect', 'tcp' )?>:</label>
-		<input type="text" name="<?php echo $this->get_field_name( 'redirect' ); ?>" id="<?php echo $this->get_field_id( 'redirect' ); ?>" class="widefat" value="<?php echo esc_attr( $instance['redirect'] ); ?>">
+			<label for="<?php echo $this->get_field_id( 'redirect' ); ?>"><?php _e( 'Redirect', 'tcp' )?>:</label>
+			<input type="text" name="<?php echo $this->get_field_name( 'redirect' ); ?>" id="<?php echo $this->get_field_id( 'redirect' ); ?>" class="widefat" value="<?php echo esc_attr( $instance['redirect'] ); ?>">
 		</p><?php
 	}
 }

@@ -72,22 +72,22 @@ class ActiveCheckout {//shortcode
 			<?php do_action( 'tcp_checkout_end', $order_id, true );
 			return ob_get_clean();
 		} elseif  ( isset( $_REQUEST['tcp_checkout'] ) && $_REQUEST['tcp_checkout'] == 'ko' ) {
-			$html = tcp_do_template( 'tcp_checkout_end_ko', false );
-			if ( strlen( $html ) == 0 ) : ob_start(); ?>
-				<div class="tcp_payment_area">
-					<div class="tcp_order_unsuccessfully">
-					<?php $checkout_unsuccessfully_message = __( 'Transaction Error. The order has been canceled', 'tcp' );
-					if ( strlen( $checkout_unsuccessfully_message ) > 0 ) : ?>
-						<p><?php echo str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message ); ?></p>
-					<?php else : ?>
-						<span class="tcp_checkout_ko"><?php _e( 'Transaction Error. The order has been canceled', 'tcp' ); ?></span>
-					<?php endif; ?>
-					<br/><?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() ); ?>
-					</div><!-- .tcp_payment_area -->
+			$checkout_unsuccessfully_message = tcp_do_template( 'tcp_checkout_end_ko', false );
+			ob_start(); ?>
+			<div class="tcp_payment_area">
+				<div class="tcp_order_unsuccessfully">
+				<?php if ( strlen( $checkout_unsuccessfully_message ) > 0 )  {
+					//echo str_replace ( "\n" , '<p></p>', $checkout_unsuccessfully_message );
+					echo $checkout_unsuccessfully_message;
+				} else { ?>
+					<span class="tcp_checkout_ko"><?php _e( 'Transaction Error. The order has been canceled', 'tcp' ); ?></span>
+				<?php } ?>
 				</div><!-- .tcp_order_unsuccessfully -->
-			<?php endif;
+				<?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() ); ?>
+			</div><!-- .tcp_payment_area -->
+			<?php $html = ob_get_clean();
 			do_action( 'tcp_checkout_end', $order_id, false );
-			return ob_get_clean();
+			return $html;
 		} else {
 			$param = array(
 				'validate'	=> true,
@@ -96,8 +96,7 @@ class ActiveCheckout {//shortcode
 			$param = apply_filters( 'tcp_checkout_validate_before_enter', $param );
 			if ( ! $param['validate'] ) {
 				require_once( TCP_SHORTCODES_FOLDER .'ShoppingCartPage.class.php' );
-				$shoppingCartPage = new TCPShoppingCartPage();
-				return $shoppingCartPage->show( $param['msg'] );
+				return TCPShoppingCartPage::show( $param['msg'] );
 			} else {
 				require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
 				$checkoutManager = new TCPCheckoutManager();
