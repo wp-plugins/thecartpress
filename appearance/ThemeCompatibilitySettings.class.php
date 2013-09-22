@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPThemeCompatibilitySettings' ) ) {
+	
 class TCPThemeCompatibilitySettings {
 
 	private $updated = false;
@@ -30,7 +35,7 @@ class TCPThemeCompatibilitySettings {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
-		add_menu_page( '', __( 'TCP Look&Feel', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 42 );
+		add_menu_page( '', __( 'Look&Feel', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 42 );
 		$page = add_submenu_page( $base, __( 'Theme Compatibility Settings', 'tcp' ), __( 'Theme Compatibility', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );
@@ -554,4 +559,4 @@ function show_excerpt() {
 }
 
 new TCPThemeCompatibilitySettings();
-?>
+} // class_exists check

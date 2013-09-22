@@ -175,7 +175,7 @@ class Addresses {
 		return $wpdb->insert_id;
 	}
 
-	public function update( $address ) {
+	static public function update( $address ) {
 		global $wpdb;
 		$wpdb->update( $wpdb->prefix . 'tcp_addresses', array(
 				'customer_id'		=> $address['customer_id'],
@@ -207,9 +207,9 @@ class Addresses {
 		return $wpdb->insert_id;
 	}
 
-	public function delete( $address_id ) {
+	static public function delete( $address_id ) {
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_addresses where address_id = %d', $address_id ) );
 	}
 }
-?>
+

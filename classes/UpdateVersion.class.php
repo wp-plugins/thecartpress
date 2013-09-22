@@ -128,6 +128,12 @@ class TCPUpdateVersion {
 			$wpdb->query( $sql );
 			update_option( 'tcp_version', 129 );
 		}
+		if ( $version < 131 ) {
+			$post_type_defs = tcp_get_custom_post_types();
+			$post_type_defs['tcp_product']['menu_icon'] = plugins_url( '/images/tcp.png', dirname( __FILE__ ) );
+			tcp_update_custom_post_type( 'tcp_product', $post_type_defs['tcp_product'] );
+			update_option( 'tcp_version', 131 );
+		}
 	}
 }
 ?>

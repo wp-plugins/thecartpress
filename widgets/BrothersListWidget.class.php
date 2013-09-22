@@ -24,7 +24,7 @@ require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 class BrothersListWidget extends CustomListWidget {
 
 	function BrothersListWidget() {
-		parent::CustomListWidget( 'tcpbrotherslist', __( 'Allow to create brothers lists', 'tcp' ), 'TCP Brothers List' );
+		parent::CustomListWidget( 'tcpbrotherslist', __( 'Allow to create brother product lists', 'tcp' ), 'TCP Brothers List' );
 	}
 
 	function widget( $args, $instance ) {

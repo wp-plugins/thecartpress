@@ -33,7 +33,7 @@ class TCPLoginRegister {
 	function init() {
 		if ( ! is_admin() ) {
 			global $thecartpress;
-			if ( $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ) ) {
+			if ( $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ) !== false ) {
 				add_filter( 'login_url', array( &$this, 'login_url' ), 10, 2 );
 				add_filter( 'logout_url', array( &$this, 'logout_url' ), 10, 2 );
 			}
@@ -52,7 +52,8 @@ class TCPLoginRegister {
 
 	function tcp_main_settings_page() {
 		global $thecartpress;
-		$my_account_as_login_page = $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ); ?>
+		if ( ! $thecartpress ) return;
+		$my_account_as_login_page = $thecartpress->get_setting( 'my_account_as_login_page', false ); ?>
 <tr valign="top">
 	<th colspan="2">
 		<h3><?php _e( 'Custom Login', 'tcp' ); ?></h3>
@@ -60,17 +61,28 @@ class TCPLoginRegister {
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="my_account_as_login_page"><?php _e( 'Use "My Account" as login', 'tcp' ); ?></label>
+	<label for="my_account_as_login_page"><?php _e( 'Select your login page', 'tcp' ); ?></label>
 	</th>
 	<td>
-		<input type="checkbox" id="my_account_as_login_page" name="my_account_as_login_page" value="yes" <?php checked( $my_account_as_login_page ); ?> />
-		<span class="description"><?php _e( 'Allows to change the default login panel for My Account page.', 'tcp' ); ?></span>
+		<span class="description"><?php _e( 'Allows to change the default login panel for ', 'tcp' ); ?></span>
+		<?php $pages = get_posts( array( 'fields' => 'ids', 'post_type' => 'page', 'numberposts' => -1 ) ); ?>
+		<select name="my_account_as_login_page">
+			<option value="" ><?php _e( 'Default One', 'tcp' ) ?></option>
+		<?php foreach( $pages as $page_id ) : ?>
+			<option value="<?php echo $page_id; ?>" <?php selected( $my_account_as_login_page, $page_id ); ?>><?php echo get_the_title( $page_id ); ?></option>
+		<?php endforeach; ?>
+		</select>
+		<p class="description"><?php _e( 'You can use the shortcode [tcp_my_account] in your login page, or any other type of login procedure.', 'tcp' ); ?></p>
+		<!--<input type="checkbox" id="my_account_as_login_page" name="my_account_as_login_page" value="yes" <?php checked( $my_account_as_login_page ); ?> />-->
 	</td>
 </tr>
 <?php }
 
 	function tcp_main_settings_action( $settings ) {
-		$settings['my_account_as_login_page'] = isset( $_POST['my_account_as_login_page'] );
+		//$settings['my_account_as_login_page'] = isset( $_POST['my_account_as_login_page'] );
+		$my_account_as_login_page = isset( $_POST['my_account_as_login_page'] ) ? $_POST['my_account_as_login_page'] : false;
+		if ( $my_account_as_login_page == '' ) $my_account_as_login_page = false;
+		$settings['my_account_as_login_page'] = $my_account_as_login_page;
 		return $settings;
 	}
 
@@ -137,7 +149,7 @@ class TCPLoginRegister {
 		return $columns;
 	}
 
-	function manage_users_custom_column( $custom_column, $column_name, $user_id ) {
+	function manage_users_custom_column( $value, $column_name, $user_id ) {
 		if( $column_name == 'tcp_locked' ) {
 			$locked = tcp_is_user_locked( $user_id, 'tcp_locked', true );
 			if ( $locked === '' ) {
@@ -154,7 +166,7 @@ class TCPLoginRegister {
 				return apply_filters( 'tcp_users_locked_column', $out, $user_id );
 			}
 		}
-		return $custom_column . ' - ' . $column_name;
+		return $value;
 	}
 
 	function tcp_register_and_login_ajax() {
@@ -237,7 +249,15 @@ class TCPLoginRegister {
 		/*$login_url = remove_query_arg( 'redirect_to', $login_url );
 		$login_url = add_query_arg( 'redirect_to', tcp_get_the_my_account_url(), $login_url );
 		return $login_url;*/
-		return add_query_arg( 'redirect_to', get_permalink(), tcp_get_the_my_account_url() );
+		global $thecartpress;
+		if ( ! $thecartpress ) return $login_url;
+		$page_id = $thecartpress->get_setting( 'my_account_as_login_page', false );
+		if ( $page_id !== false ) {
+			$url = get_permalink( $page_id );
+			$url = add_query_arg( 'redirect_to', get_permalink(), $url );	
+			return $url;
+		}
+		return $login_url; //add_query_arg( 'redirect_to', get_permalink(), tcp_get_the_my_account_url() );
 	}
 
 	function logout_url( $logout_url, $redirect ) {

@@ -3,8 +3,8 @@ Contributors: thecartpress
 Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpress/
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 Requires at least: 3.3
-Tested up to: 3.6
-Stable Tag: 1.3.0
+Tested up to: 3.6.1
+Stable Tag: 1.3.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -293,6 +293,21 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
+= 1.3.1 =
+* New Translations updates German and Italian: thanks to the community
+* WishList styles
+* Address List: fix minor bug
+* Catalogue page: add it to default pages check-list
+* Custom Fields: UI improvements
+* Payment and Shipping method List: UI improvements
+* Payment and Shipping method Editor: UI improvements
+* Custom Post Type Engine: UI improvement
+* Checkout: Adding 'tcp_' prefix to steps
+* Login: Allowinf to select any page for login
+* Stock: Fix minor bug
+* Menus UI Improvement
+* First Time Setup: UI Improvement
+* Author tempalte Improvement
 
 = 1.3.0
 * Messages for "Auto Update" for premium plugins

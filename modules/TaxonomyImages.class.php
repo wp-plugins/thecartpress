@@ -191,4 +191,3 @@ function tcp_the_taxonomy_list( $args = array(), $before = '', $after = '', $ech
 	if ( $echo ) echo $out;
 	else return $out;
 }
-?>

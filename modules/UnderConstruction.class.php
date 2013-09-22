@@ -25,7 +25,7 @@ class TCPUnderConstruction {
 	function admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
-		$base = $thecartpress->get_base_appearance();
+		$base = $thecartpress->get_base_tools();
 		$page = add_submenu_page( $base, __( 'Under Construction', 'tcp' ), __( 'Under Construction', 'tcp' ), 'tcp_edit_settings', 'under_construction_settings', array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );

@@ -1319,13 +1319,16 @@ function tcp_redirect_302( $url ) {
 }
 
 /**
+ * Loads a template from an specific location. If not, it attempts to load it from the theme
+ *
  * @since 1.2.6
+ * @uses get_template_part
  */
 function tcp_get_template_part( $path, $slug, $name = '' ) {
 	$template = $path . '/' . $slug;
 	$template .= ( $name != '' ) ? '-' . $name : '';
 	$template .= '.php';
-	if ( file_exists( $template ) ) require_once( $template );
+	if ( file_exists( $template ) ) require( $template );
 	else get_template_part( $slug, $name );
 }
 
@@ -1354,7 +1357,6 @@ function tcp_session_start( $time = 3600, $session_name = 'tcp' ) {
 	session_set_cookie_params( $time );
 	session_name( $session_name );*/
 	if ( ! session_id() ) session_start();
-
 /*	if ( isset( $_COOKIE[$session_name] ) ) {
 		setcookie( $session_name, $_COOKIE[$session_name], time() + $time, null, null, true );
 		setcookie( $session_name, $_COOKIE[$session_name], time() + $time, null, null, false );

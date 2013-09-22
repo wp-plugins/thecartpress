@@ -522,7 +522,7 @@ function tcp_items_in_the_cart_<?php echo $post_id; ?>() {
 		} ).done( function( response ) {
 			jQuery( '.tcp_added_product_title_<?php echo $post_id; ?>' ).replaceWith( response );
 		} ).fail( function( error ) {
-			alert( error.responseText );
+			//alert( error.responseText );
 		} );
 }
 </script><!-- HOLA -->

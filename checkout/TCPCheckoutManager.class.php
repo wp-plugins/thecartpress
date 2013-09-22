@@ -53,7 +53,7 @@ class TCPCheckoutManager {
 	function show() {
 		$html = apply_filters( 'tcp_checkout_manager', '' );
 		if ( strlen( $html ) > 0 ) return $html;
-		$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 0;
+		$step = isset( $_REQUEST['tcp_step'] ) ? $_REQUEST['tcp_step'] : 0;
 		$box = $this->get_box( $step );
 		if ( ! $box) {
 			$step = 0;
@@ -204,10 +204,10 @@ class TCPCheckoutManager {
 							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
 						<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
 							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
-							<input type="hidden" name="step" value="<?php echo count( $this->steps ) - 1; ?>" />
+							<input type="hidden" name="tcp_step" value="<?php echo count( $this->steps ) - 1; ?>" />
 						<?php endif;
 					endif; ?>
-					<input type="hidden" name="step" value="<?php echo $step; ?>" />
+					<input type="hidden" name="tcp_step" value="<?php echo $step; ?>" />
 					<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step );
 					if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
 					if ( strlen( $html ) > 0 ) : ?>
@@ -234,7 +234,7 @@ class TCPCheckoutManager {
 				<?php if ( $s < $step ) {
 					$b = $this->get_box( $s );
 					if ( defined( 'TCP_CHECKOUT' ) ) $url = get_site_url() . '/' . TCP_CHECKOUT .'/' . $b->get_name();
-					else $url = add_query_arg( 'step', $s, get_permalink() ); ?>
+					else $url = add_query_arg( 'tcp_step', $s, get_permalink() ); ?>
 				<li class="tcp_ckeckout_step">
 					<a href="<?php echo $url; ?>"><?php echo $b->get_title(); ?></a>
 				</li>
@@ -252,7 +252,7 @@ class TCPCheckoutManager {
 					$b = $this->get_box( $s );
 					if ( ! $b->is_hidden() ) {
 						if ( defined( 'TCP_CHECKOUT' ) ) $url = get_site_url() . '/' . TCP_CHECKOUT .'/' . $b->get_name();
-						else $url = add_query_arg( 'step', $s, get_permalink() ); ?>
+						else $url = add_query_arg( 'tcp_step', $s, get_permalink() ); ?>
 						<div class="<?php echo $b->get_class(); ?>" id="<?php echo $b->get_class(); ?>">
 							<h3 class="tcp_ckeckout_step"><a href="<?php echo $url; ?>" tcp_step="<?php echo $s; ?>"><?php echo $step_number++; ?>. <?php echo $b->get_title(); ?></a></h3>
 						</div>

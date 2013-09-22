@@ -26,19 +26,24 @@ $disable_shopping_cart = $thecartpress->get_setting( 'disable_shopping_cart', fa
 if ( ! $disable_shopping_cart ) :
 	$warnings_msg = array();
 	$shopping_cart_page_id = get_option( 'tcp_shopping_cart_page_id' );
-	if ( ! $shopping_cart_page_id || ! get_page( $shopping_cart_page_id ) ) {
+	if ( ! $shopping_cart_page_id || ! get_post( $shopping_cart_page_id ) ) {
 		$shopping_cart_page_id = TheCartPress::createShoppingCartPage();
 		$warnings_msg[] = __( 'Shopping Cart page has been created', 'tcp' );
 	}
 	$page_id = get_option( 'tcp_checkout_page_id' );
-	if ( ! $page_id || ! get_page( $page_id ) ) {
+	if ( ! $page_id || ! get_post( $page_id ) ) {
 		TheCartPress::createCheckoutPage( $shopping_cart_page_id );
 		$warnings_msg[] = __( 'Checkout page has been created', 'tcp' );
 	}
 	$page_id = get_option( 'tcp_my_account_page_id' );
-	if ( ! $page_id || ! get_page( $page_id ) ) {
+	if ( ! $page_id || ! get_post( $page_id ) ) {
 		TheCartPress::create_my_account_page();
 		$warnings_msg[] = __( 'My Account page has been created', 'tcp' );
+	}
+	$page_id = get_option( 'tcp_catalogue_page_id' );
+	if ( ! $page_id || ! get_post( $page_id ) ) {
+		TheCartPress::createCataloguePage();
+		$warnings_msg[] = __( 'Catalogue page has been created', 'tcp' );
 	}
 	$warnings_msg = apply_filters( 'tcp_checking_pages', $warnings_msg, $shopping_cart_page_id );
 	if ( count( $warnings_msg ) > 0 ) : ?>

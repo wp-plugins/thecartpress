@@ -20,7 +20,7 @@ class TCPTemplateMetabox {
 
 	static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'register_metabox' ) );
-		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 50 );
+		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 20 );
 	}
 
 	static function register_metabox() {
@@ -96,4 +96,3 @@ class TCPTemplateMetabox {
 }
 
 TCPTemplateMetabox::init();
-?>

@@ -1,7 +1,7 @@
 <?php
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+/*require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
-require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
+require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );*/
 
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
@@ -78,14 +78,15 @@ class AddressesListTable extends WP_List_Table {
 
 	function column_adress_name( $item ) {
 		echo $item->address_id, ' ', $item->name; ?>
-		<div><a href="<?php echo add_query_arg( 'address_id', $item->address_id, $this->admin_path ); ?>"><?php _e( 'edit', 'tcp' ); ?></a> | <a href="#" onclick="jQuery('.delete_address').hide();jQuery('#delete_<?php echo $item->address_id; ?>').show();return false;" class="delete"><?php _e( 'delete', 'tcp' ); ?></a></div>
+		<div>
+			<a href="<?php echo add_query_arg( 'address_id', $item->address_id, $this->admin_path ); ?>"><?php _e( 'edit', 'tcp' ); ?></a> | <a href="#" onclick="jQuery('div.delete_address').hide();jQuery('#delete_<?php echo $item->address_id; ?>').show();return false;" class="delete"><?php _e( 'delete', 'tcp' ); ?></a>
+		</div>
 		<div id="delete_<?php echo $item->address_id; ?>" class="delete_address" style="display:none; border: 1px dotted orange; padding: 2px">
-			<form method="post" name="frm_delete_<?php echo $item->address_id; ?>">
-			<input type="hidden" name="address_id" value="<?php echo $item->address_id; ?>" />
-			<input type="hidden" name="tcp_delete_address" value="y" />
-			<p><?php _e( 'Do you really want to delete this address?', 'tcp' ); ?></p>
-			<a href="javascript:document.frm_delete_<?php echo $item->address_id; ?>.submit();" class="delete"><?php _e( 'Yes' , 'tcp' ); ?></a> |
-			<a href="#" onclick="jQuery('#delete_<?php echo $item->address_id; ?>').hide();return false;"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+			<form method="post" name="frm_delete_address_<?php echo $item->address_id; ?>" action="">
+				
+				<p><?php _e( 'Do you really want to delete this address?', 'tcp' ); ?></p>
+				<a href="#" class="delete_address" id="<?php echo $item->address_id; ?>"><?php _e( 'Yes' , 'tcp' ); ?></a> |
+				<a href="#" class="hide_delete_panel" id="<?php echo $item->address_id; ?>"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
 			</form>
 		</div><?php
 	}
@@ -127,29 +128,47 @@ class AddressesListTable extends WP_List_Table {
 		<?php do_action( 'tcp_restrict_manage_addresses' );
 		submit_button( __( 'Filter' ), 'secondary', false, false, array( 'id' => 'address-query-submit' ) );
 	}
-
-	private function get_inline_data( $order_id ) { ?>
-		<div class="hidden" id="inline_<?php echo $order_id; ?>">
-		<?php $out = OrderPage::show( $order_id );
-		echo apply_filters( 'tcp_orders_list_get_inline_data', $out, $order_id ); ?>
-		</div><?php
- 	}
 }
 
 class TCPAddressesList {
 	function show( $echo = true ) {
+		if ( isset( $_POST['tcp_delete_address'] ) && isset( $_POST['address_id'] ) ) {
+			$address_id = $_POST['address_id'];
+			Addresses::delete( $address_id );
+		}
 		$admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
 		ob_start();
 		$listTable = new AddressesListTable();
 		$listTable->prepare_items(); ?>
+<form method="post" name="frm_delete_address" action="">
+	<input type="hidden" name="address_id" value="" />
+	<input type="hidden" name="tcp_delete_address" value="yes" />
+</form>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
+
+				
 <div class="wrap">
 	<h2><?php _e( 'Addresses', 'tcp' );?></h2>
 	<p><a href="<?php echo $admin_path; ?>"><?php _e( 'Create new address', 'tcp' ); ?></a></p>
 	<div class="clear"></div>
 	<?php //$listTable->search_box( __( 'Search Orders', 'tcp' ), 'order' ); ?>
 	<?php $listTable->display(); ?>
+	<script>
+		jQuery( 'a.delete_address' ).click( function( e ) {
+			var id = jQuery( this ).attr( 'id' );
+			jQuery( "input[name='address_id']" ).val( id );
+			jQuery( "form[name='frm_delete_address']" ).submit();
+			e.stopPropagation();
+			return false;
+		} );
+		jQuery( 'a.hide_delete_panel' ).click( function( e ) {
+			var id = jQuery( this ).attr( 'id' );
+			jQuery( 'div#delete_' + id ).hide();
+			e.stopPropagation();
+			return false;
+		} );
+	</script>
 </div>
 </form>
 		<?php $out = ob_get_clean();

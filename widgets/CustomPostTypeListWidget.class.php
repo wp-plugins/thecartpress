@@ -21,7 +21,7 @@ require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 class CustomPostTypeListWidget extends CustomListWidget {
 
 	function CustomPostTypeListWidget() {
-		parent::__construct( 'customposttypelist', __( 'Allow to create Custom Post Type Lists', 'tcp' ), 'TCP Custom Post Type List' );
+		parent::__construct( 'customposttypelist', __( 'Allow to create Product Lists', 'tcp' ), 'TCP Product List' );
 	}
 
 	function widget( $args, $instance ) {

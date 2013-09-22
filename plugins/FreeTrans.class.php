@@ -26,6 +26,10 @@ class FreeTrans extends TCP_Plugin {
 		return sprintf( __( 'Free transport for orders with cost greater than an editable minimun. <br>Author: <a href="%s" target="_blank">TheCartPress team</a>', 'tcp' ), 'http://thecartpress.com' );
 	}
 
+	function getIcon() {
+		return plugins_url( 'images/freedelivery.png', __FILE__ );
+	}
+
 	function showEditFields( $data, $instance = 0 ) {?>
 		<tr valign="top">
 			<th scope="row">

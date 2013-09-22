@@ -99,59 +99,60 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 <h3><?php $post_type_object = get_post_type_object( $post_type ); printf( __( 'New Custom Field definition for "%s"', 'tcp' ), $post_type_object->labels->name ) ;?></h3>
 
 <!--<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>-->
+<div class="postbox">
+	<table class="form-table">
+	<tr valign="top">
+		<th scope="row">
+			<label for="label"><?php _e( 'Label', 'tcp' );?>: </label>
+		</th>
+		<td>
+			<input type="text" name="label" id="label" size="20" />
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label for="type"><?php _e( 'Type', 'tcp' );?>: </label>
+		</th>
+		<td>
+			<select id="type" name="type">
+				<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_TEXT; ?>"><?php _e( 'Text', 'tcp' );?></option>
+				<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_NUMBER; ?>"><?php _e( 'Number', 'tcp' );?></option>
+				<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_LIST; ?>"><?php _e( 'Select List', 'tcp' );?></option>
+				<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_RADIO; ?>"><?php _e( 'Radio list', 'tcp' );?></option>
+				<!--<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_CHECK; ?>"><?php _e( 'Check box', 'tcp' );?></option>-->
+				<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_FILE; ?>"><?php _e( 'File', 'tcp' );?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label for="values"><?php _e( 'Possible values', 'tcp' );?></label>:
+		</th>
+		<td>
+			<input type="text" id="values" name="values" size="40"/><p class="description"><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></p>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label for="public"><?php _e( 'Public', 'tcp' );?></label>:
+		</th>
+		<td>
+			<input type="checkbox" id="public" name="public" />
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<label for="desc"><?php _e( 'Description', 'tcp' );?></label>:
+		</th>
+		<td>
+			<input type="text" id="desc" name="desc" size="40"/>
+		</td>
+	</tr>
+	</table>
 
-<table class="form-table">
-<tr valign="top">
-	<th scope="row">
-		<label for="label"><?php _e( 'Label', 'tcp' );?>: </label>
-	</th>
-	<td>
-		<input type="text" name="label" id="label" size="20" />
-	</td>
-</tr>
-<tr>
-	<th>
-		<label for="type"><?php _e( 'Type', 'tcp' );?>: </label>
-	</th>
-	<td>
-		<select id="type" name="type">
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_TEXT; ?>"><?php _e( 'Text', 'tcp' );?></option>
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_NUMBER; ?>"><?php _e( 'Number', 'tcp' );?></option>
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_LIST; ?>"><?php _e( 'Select List', 'tcp' );?></option>
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_RADIO; ?>"><?php _e( 'Radio list', 'tcp' );?></option>
-			<!--<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_CHECK; ?>"><?php _e( 'Check box', 'tcp' );?></option>-->
-			<option value="<?php echo TCP_CUSTOM_FIELD_TYPE_FILE; ?>"><?php _e( 'File', 'tcp' );?></option>
-		</select>
-	</td>
-</tr>
-<tr>
-	<th>
-		<label for="values"><?php _e( 'Possible values', 'tcp' );?></label>:
-	</th>
-	<td>
-		<input type="text" id="values" name="values" size="40"/><p class="description"><?php _e( 'For fields of type \'List\', enter a list of possible values separated by comma', 'tcp' );?></p>
-	</td>
-</tr>
-<tr>
-	<th>
-		<label for="public"><?php _e( 'Public', 'tcp' );?></label>:
-	</th>
-	<td>
-		<input type="checkbox" id="public" name="public" />
-	</td>
-</tr>
-<tr>
-	<th>
-		<label for="desc"><?php _e( 'Description', 'tcp' );?></label>:
-	</th>
-	<td>
-		<input type="text" id="desc" name="desc" size="40"/>
-	</td>
-</tr>
-</table>
-
-<p><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" /></p>
-
+	<p style="padding-left: 1em;"><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" /></p>
+	
+</div><!-- .postbox -->
 </form>
 
 <h3><?php printf( __( 'Current Custom Fields defined for "%s"', 'tcp' ), $post_type_object->labels->name ) ;?></h3>

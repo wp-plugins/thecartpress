@@ -119,7 +119,6 @@ function tcp_term_link_filter( $termlink, $term, $taxonomy ) {
  */
 function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $after = '' ) {
 	add_filter( 'term_link', 'tcp_term_link_filter', 10, 3 );
-	do_action( 'tcp_get_taxonomy_tree' );
 	$args = wp_parse_args( $args, array(
 		'style'			=> 'list',
 		'show_count'	=> true,
@@ -130,6 +129,7 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 		'dropdown'		=> false,
 		'by_author'		=> false,
 	) );
+	do_action( 'tcp_taxonomy_tree', $args );
 	ob_start();
 	if ( $args['dropdown'] ) :
 		$taxonomy = get_taxonomy( $args['taxonomy'] );
@@ -157,10 +157,13 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 			$args['include'] = $terms;
 		}
 	?>
-<ul class="tcp_navigation_tree"><?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?></ul>
+<ul class="tcp_navigation_tree">
+	<?php echo wp_list_categories( apply_filters( 'tcp_widget_taxonomy_tree_args', $args ) ); ?>
+</ul>
 	<?php endif;
 	remove_filter( 'term_link', 'tcp_term_link_filter', 10, 3 );
 	$tree = ob_get_clean();
+	do_action( 'tcp_taxonomy_tree_before', $args );
 	$tree = apply_filters( 'tcp_get_taxonomy_tree', $tree );
 	if ( $args['collapsible'] ) add_action ( 'wp_footer', 'tcp_get_taxonomy_tree_add_collapsible_behaviour' );
 	if ( $echo ) echo $before, $tree, $after;
@@ -803,7 +806,10 @@ function tcp_the_total( $echo = true ) {
 }
 
 /**
- * Since 1.1.7
+ * Displays or returns a pagination bar
+ *
+ * @param $echo, if true (default) the pagination bar is displayed.
+ * @since 1.1.7
  */
 function tcp_get_the_pagination( $echo = true ) {
 	ob_start();

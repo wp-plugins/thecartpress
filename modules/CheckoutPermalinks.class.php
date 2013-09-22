@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 if ( get_option( 'permalink_structure' ) == '' ) return;
 
 define( 'TCP_CHECKOUT', 'checkout' );
@@ -23,6 +26,8 @@ define( 'TCP_CHECKOUT_PURCHASE', 'purchase' );
 define( 'TCP_CHECKOUT_PURCHASE_OK', 'purchase-ok' );
 define( 'TCP_CHECKOUT_PURCHASE_KO', 'purchase-ko' );
 
+if ( ! class_exists( 'TCPCheckoutPermalinks' ) ) {
+	
 class TCPCheckoutPermalinks {
 
 	function __construct() {
@@ -80,7 +85,7 @@ class TCPCheckoutPermalinks {
 				$step = TCPCheckoutManager::get_step_by_permalink( $permalink );
 				if ( $step !== false ) {
 					if ( isset( $_REQUEST['tcp_continue'] ) ) $step = $step > 1 ? $step - 1 : 0;
-					$_REQUEST['step'] = $step;
+					$_REQUEST['tcp_step'] = $step;
 				}
 			}
 			global $wp_query;
@@ -105,4 +110,4 @@ class TCPCheckoutPermalinks {
 }
 
 new TCPCheckoutPermalinks();
-?>
+} // class_exists check

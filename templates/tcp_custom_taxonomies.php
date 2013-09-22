@@ -239,6 +239,7 @@ function tcp_delete_custom_post_type( $post_type ) {
  *		'rewrite'			=> string,
  *		'has_archive'		=> string/true/false,
  *		'is_saleable'		=> true/false,
+ *		'menu_icon'			=> url
  * @since 1.1.7
  */
 function tcp_create_custom_post_type( $post_type, $post_type_def = array() ) {

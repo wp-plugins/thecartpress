@@ -226,7 +226,7 @@ class TCPStockManagement {
 		foreach ( $orderDetails as $ordersDetail ) {
 			$stock = tcp_get_the_stock( $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
 			$stock = apply_filters( 'tcp_checkout_stock', $stock, $ordersDetail->post_id, $ordersDetail->option_1_id, $ordersDetail->option_2_id );
-			if ( $stock == -1 ) return false;
+			if ( $stock == -1 ) continue;//return false;
 			if ( ! $decrement ) {  /* if here then we ADD the stock back to the */
 				$stock_to_add = tcp_get_order_detail_meta( $ordersDetail->order_detail_id, 'tcp_stock', true );
 				if ( $stock_to_add == '' ) $stock_to_add = $ordersDetail->qty_ordered;

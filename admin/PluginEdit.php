@@ -66,10 +66,10 @@ if ( isset( $_REQUEST['tcp_plugin_save'] ) ) {
 		<?php _e( 'Instance deleted', 'tcp' ); ?>
 	</p></div><?php
 }
-$plugin = tcp_get_plugin( $plugin_id );
-$plugin_type = tcp_get_plugin_type( $plugin_id );
-$plugin_data = tcp_get_plugin_data( $plugin_id );
-$instance_href = TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
+$plugin			= tcp_get_plugin( $plugin_id );
+$plugin_type	= tcp_get_plugin_type( $plugin_id );
+$plugin_data	= tcp_get_plugin_data( $plugin_id );
+$instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
 
 <div class="wrap">
 <h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle(); ?></h2>
@@ -195,16 +195,35 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 				jQuery( '#countries' ).tcp_convert_multiselect();
 			</script>
 			<div>
-				<input type="button" value="<?php _e( 'EU', 'tcp'); ?>" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>" onclick="tcp_select_eu('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'NAFTA', 'tcp'); ?>" title="<?php _e( 'To select countries from the NAFTA', 'tcp' ); ?>" onclick="tcp_select_nafta('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'CARICOM', 'tcp'); ?>" title="<?php _e( 'To select countries from CARICOM', 'tcp' ); ?>" onclick="tcp_select_caricom('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'MERCASUR', 'tcp'); ?>" title="<?php _e( 'To select countries from MERCASUR', 'tcp' ); ?>" onclick="tcp_select_mercasur('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'CAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Andean Comunity', 'tcp' ); ?>" onclick="tcp_select_can('countries');" class="button-secondary"/>				
-				<input type="button" value="<?php _e( 'AU', 'tcp'); ?>" title="<?php _e( 'To select countries from African Union', 'tcp' ); ?>" onclick="tcp_select_au('countries');" class="button-secondary"/>				
-				<input type="button" value="<?php _e( 'APEC', 'tcp'); ?>" title="<?php _e( 'To select countries from Asia-Pacific Economic Cooperation', 'tcp' ); ?>" onclick="tcp_select_apec('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'ASEAN', 'tcp'); ?>" title="<?php _e( 'To select countries from Association of Southeast Asian Nations', 'tcp' ); ?>" onclick="tcp_select_asean('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'Toggle', 'tcp'); ?>" title="<?php _e( 'Toggle the selected ones', 'tcp' ); ?>" onclick="tcp_select_toggle('countries');" class="button-secondary"/>
-				<input type="button" value="<?php _e( 'None', 'tcp'); ?>" title="<?php _e( 'Deselect all', 'tcp' ); ?>" onclick="tcp_select_none('countries');" class="button-secondary"/>
+				<select class="tcp_main_select_countries">
+					<option value="none"><?php _e( 'None', 'tcp'); ?></option>
+					<option value="eu" title="<?php _e( 'To select countries from the European Union', 'tcp' ); ?>"><?php _e( 'EU', 'tcp'); ?></option>
+					<option value="nafta"><?php _e( 'NAFTA', 'tcp'); ?></option>
+					<option value="caricom"><?php _e( 'CARICOM', 'tcp'); ?></option>
+					<option value="mercasur"><?php _e( 'MERCASUR', 'tcp'); ?></option>
+					<option value="can"><?php _e( 'CAN', 'tcp'); ?></option>
+					<option value="au"><?php _e( 'AU', 'tcp'); ?></option>
+					<option value="apec"><?php _e( 'APEC', 'tcp'); ?></option>
+					<option value="asean"><?php _e( 'ASEAN', 'tcp'); ?></option>
+					<option value="toggle"><?php _e( 'Toggle', 'tcp'); ?></option>
+					<option value="all"><?php _e( 'All', 'tcp'); ?></option>
+				</select>
+				<script>
+				jQuery( '.tcp_main_select_countries' ).on( 'change', function() {
+					var org = jQuery( this ).val();
+					if ( org == 'eu' ) tcp_select_eu( 'countries' );
+					else if ( org == 'nafta' ) tcp_select_nafta( 'countries' );
+					else if ( org == 'caricom' ) tcp_select_caricom( 'countries' );
+					else if ( org == 'mercasur' ) tcp_select_mercasur( 'countries' );
+					else if ( org == 'can' ) tcp_select_can( 'countries' );
+					else if ( org == 'au' ) tcp_select_au( 'countries' );
+					else if ( org == 'apec' ) tcp_select_apec( 'countries' );
+					else if ( org == 'asean' ) tcp_select_asean( 'countries' );
+					else if ( org == 'toggle' ) tcp_select_toggle( 'countries' );
+					else if ( org == 'none' ) tcp_select_none( 'countries' );
+					else if ( org == 'all' ) tcp_select_all( 'countries' );
+				} );
+				</script>
 			</div>
 		</td>
 	</tr>

@@ -19,7 +19,7 @@
 class TCPCustomJavascript {
 	function __construct() {
 		//add_filter( 'body_class', array( &$this, 'body_classes' ) );
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 50 );
 		add_action( 'wp_head', array( &$this, 'wp_head' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Custom Javascript', 'tcp' ), false, array( 'TCPCustomJavascript', __FILE__ ), plugins_url( 'thecartpress/images/miranda/customjavascript_settings_48.png' ) );

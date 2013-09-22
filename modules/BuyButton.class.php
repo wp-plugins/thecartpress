@@ -16,24 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPBuyButton' ) ) {
 class TCPBuyButton {
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+		//WordPress hooks
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 30 );
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		//TheCartPress hooks
 		add_filter( 'tcp_get_buybutton_template', array( &$this, 'tcp_get_buybutton_template' ), 10, 2 );
 	}
 
 	function admin_init() {
+		//Attach this new setting to the default metabox
 		add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
 		add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
 		add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
 	}
 
+	/**
+	 * Allows to display the buy buttoin of the given product id
+	 * 
+	 * @param number $post_id
+	 * @param string $echo
+	 * @return string
+	 */
 	static function show( $post_id = 0, $echo = true  ) {
+		//loads the template of the given product 
 		$template = TCPBuyButton::get_template( $post_id );
+		//Allows to change the template by a third plugin or theme
 		$custom_template = apply_filters( 'tcp_get_buybutton_template', $template, $post_id );
 		if ( file_exists( $custom_template ) )  $template = $custom_template;
+		//Runs the template
 		ob_start();
 		if ( $template ) include( $template );
 		$out = ob_get_clean();
@@ -41,10 +58,18 @@ class TCPBuyButton {
 		else return $out;
 	}
 
-	static private function get_template( $post_id ) {
+	/**
+	 * Returns the template for the given product
+	 * 
+	 * @param number $post_id
+	 * @return string|boolean
+	 */
+	static private function get_template( $post_id = 0 ) {
+		//if no post id, then get the current post id
 		if ( $post_id == 0 ) $post_id = get_the_ID();
 		$post_type = get_post_type( $post_id );
-		$product_type = strtolower( tcp_get_the_product_type( $post_id ) );
+		$product_type = strtolower( tcp_get_the_product_type( $post_id ) );//Simple, Grouped, etc.
+		//TODO old implementation of locate_template
 		$file_name_post_type = 'tcp_buybutton-' . $product_type . '-' . $post_type . '.php';
 		$file_name = 'tcp_buybutton-' . $product_type . '.php';
 		// child theme folder
@@ -73,7 +98,7 @@ class TCPBuyButton {
 		$disable_ecommerce = $thecartpress->get_setting( 'disable_ecommerce' );
 		if ( ! $disable_ecommerce ) {
 			$base = $thecartpress->get_base_appearance();
-			add_submenu_page( $base, __( 'Buy buttons', 'tcp' ), __( 'Buy buttons', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'BuyButtonList.class.php' );
+			add_submenu_page( $base, __( 'Buy Buttons', 'tcp' ), __( 'Buy Buttons', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'BuyButtonList.class.php' );
 		}
 	}
 
@@ -107,6 +132,11 @@ class TCPBuyButton {
 		return $buy_buttons;
 	}
 
+	/**
+	 * Allows to add a dropdown list to select the buy button template to display this product 
+	 * 
+	 * @param $post_id, given product id
+	 */
 	function tcp_product_metabox_custom_fields( $post_id ) {
 		$selected_buy_button = get_post_meta( $post_id, 'tcp_selected_buybutton', true ); ?>
 		
@@ -146,4 +176,4 @@ class TCPBuyButton {
 }
 
 new TCPBuyButton();
-?>
+} // class_exists check

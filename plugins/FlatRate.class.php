@@ -26,6 +26,10 @@ class FlatRateShipping extends TCP_Plugin {
 		return 'Calculate the shipping cost by a flat or percentual formula.<br>Author: <a href="http://thecartpress.com" target="_blank">TheCartPress team</a>';
 	}
 
+	function getIcon() {
+		return plugins_url( 'images/flatrate.png', __FILE__ ); 
+	}
+
 	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
 		$data = tcp_get_shipping_plugin_data( get_class( $this ), $instance );
 		if ( isset( $data['title'] ) ) {

@@ -32,7 +32,7 @@ class TCPUnitsInBuyButton {
 		add_action( 'tcp_localize_settings_page', array( __CLASS__, 'tcp_localize_settings_page' ) );
 		add_filter( 'tcp_localize_settings_action', array( __CLASS__, 'tcp_localize_settings_action' ) );
 		//CSV Loader
-		add_filter( 'tcp_csvl_option_columns', array( __CLASS__, 'tcp_csvl_option_columns' ) );
+		add_filter( 'tcp_csvl_option_columns', array( __CLASS__, 'tcp_csvl_option_columns' ), 10, 2 );
 		add_action( 'tcp_csv_loader_row', array( __CLASS__, 'tcp_csv_loader_row' ), 10, 2 );
 	}
 
@@ -110,7 +110,7 @@ class TCPUnitsInBuyButton {
 		return $settings;
 	}
 	
-	static function tcp_csvl_option_columns( $options ) {
+	static function tcp_csvl_option_columns( $options, $col ) {
 		$options[] = array( 'tcp_product_unit', strtoupper( $col ) == 'PRODUCT-UNIT', __( 'Product unit', 'tcp' ) );
 		return $options;
 	}

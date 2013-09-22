@@ -75,6 +75,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			if ( ! $shipping_country ) $shipping_country = '';
 			$this->applicable_sending_plugins = tcp_get_applicable_shipping_plugins( $shipping_country, $shoppingCart );
 			$settings = get_option( 'tcp_' . get_class( $this ), array() );
+			//If hidden if unique (not display the box opened) and the numbers of applucable methos is one
 			$hidden_if_unique = isset( $settings['hidden_if_unique'] ) ? $settings['hidden_if_unique'] : false;
 			if ( $hidden_if_unique && count( $this->applicable_sending_plugins ) == 1 ) {
 				$plugin_data = $this->applicable_sending_plugins[0];

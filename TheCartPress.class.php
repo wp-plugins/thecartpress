@@ -2,8 +2,8 @@
 /*
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
-Description: Professional WordPress eCommerce Plugin. Use it as Chopping Cart, Catalog or Framework.
-Version: 1.3.0
+Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
+Version: 1.3.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -28,6 +28,8 @@ Parent: thecartpress
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
 define ( 'DONOTCACHEPAGE', 'TCP' ); //WPSuperCache
@@ -49,6 +51,8 @@ define( 'TCP_CUSTOM_POST_TYPE_FOLDER', TCP_FOLDER . 'customposttypes/' );
 define( 'TCP_THEMES_TEMPLATES_FOLDER', TCP_FOLDER . 'themes-templates/' );
 
 define( 'TCP_ADMIN_PATH', 'admin.php?page=' . plugin_basename( TCP_FOLDER ) . '/admin/' );
+
+if ( ! class_exists( 'TheCartPress' ) ) {
 
 class TheCartPress {
 
@@ -126,8 +130,8 @@ class TheCartPress {
 	}
 
 	function admin_init() {
-		wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-sortable' );
+		//wp_enqueue_script( 'jquery-ui-core' );
+		//wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'tcp_scripts' );
 		wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'thecartpress/css/tcp_dashboard.css' ) );
 		$disable_ecommerce = $this->get_setting( 'disable_ecommerce', false );
@@ -326,6 +330,9 @@ class TheCartPress {
 		$page_id = get_option( 'tcp_my_account_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) )
 			$warnings[] = __( 'My Account page has been deleted', 'tcp' );
+		$page_id = get_option( 'tcp_catalogue_page_id' );
+		if ( ! $page_id || ! get_page( $page_id ) )
+			$warnings[] = __( 'Catalogue page has been deleted', 'tcp' );
 		$warnings = apply_filters( 'tcp_check_the_plugin', $warnings );
 		if ( count( $warnings ) > 0 ) : 
 			$checking_path = TCP_ADMIN_PATH . 'Checking.php'; ?>
@@ -368,7 +375,6 @@ $query->set( 'meta_query', $meta_query );
 			unset($post_types['page']);
 			$query->set( 'post_type', $post_types );
 		}
-
 
 		if ( ! $apply_filters && isset( $query->tax_query ) ) {
 			foreach ( $query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
@@ -498,9 +504,9 @@ $query->set( 'meta_query', $meta_query );
 			add_submenu_page( 'tcpml', __( 'TheCartPress checking', 'tcp' ), __( 'TheCartPress checking', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'Checking.php' );
 		}
 		$base = $this->get_base_settings();
-		add_menu_page( '', __( 'TCP Settings', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 41 );
+		add_menu_page( '', __( 'Settings', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 41 );
 		$base = $this->get_base_tools();
-		add_menu_page( '', __( 'TCP Tools', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( '/images/tcp.png', __FILE__ ), 43 );
+		add_menu_page( '', __( 'Tools', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( '/images/tcp.png', __FILE__ ), 43 );
 		add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
 		add_submenu_page( $base, __( 'Manage post types', 'tcp' ), __( 'Manage post types', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeList.php' );
 		add_submenu_page( $base, __( 'Manage taxonomies', 'tcp' ), __( 'Manage taxonomies', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyList.php' );
@@ -927,6 +933,7 @@ $query->set( 'meta_query', $meta_query );
 						'supports'		=> isset( $post_type_def['supports'] ) ? $post_type_def['supports'] : array(),
 						'rewrite'		=> strlen( $post_type_def['rewrite'] ) > 0 ? array( 'slug' => _x( $post_type_def['rewrite'], 'URL slug', 'tcp' ) ) : false,
 						'has_archive'	=> strlen( $post_type_def['has_archive'] ) > 0 ? $post_type_def['has_archive'] : false,
+						'menu_icon'		=> isset( $post_type_def['menu_icon'] ) ? $post_type_def['menu_icon'] : null,
 					);
 					register_post_type( $id, $register );
 					$is_saleable = isset( $post_type_def['is_saleable'] ) ? $post_type_def['is_saleable'] : false;
@@ -1016,4 +1023,4 @@ $thecartpress = new TheCartPress();
 
 require_once( TCP_MODULES_FOLDER . 'manage_modules.php' );
 
-?>
+} // class_exists check

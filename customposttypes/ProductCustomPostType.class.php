@@ -16,14 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define( 'TCP_PRODUCT_POST_TYPE'	, 'tcp_product' );
-define( 'TCP_PRODUCT_CATEGORY'	, 'tcp_product_category' );
-define( 'TCP_PRODUCT_TAG'		, 'tcp_product_tag' );
-//define( 'TCP_SUPPLIER_TAG'		, 'tcp_product_supplier' );
+define( 'TCP_PRODUCT_POST_TYPE',	'tcp_product' );
+define( 'TCP_PRODUCT_CATEGORY',		'tcp_product_category' );
+define( 'TCP_PRODUCT_TAG',			'tcp_product_tag' );
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'ProductCustomPostType' ) ) {
 
 /**
- * This class defines the post type 'tcp_product'
- * @author sensei
+ * Defines the default post type 'tcp_product'
+ * 
+ * @since 1.0
  */
 class ProductCustomPostType {
 
@@ -33,18 +38,22 @@ class ProductCustomPostType {
 	}
 
 	function admin_init() {
+		add_action( 'admin_head', array( &$this, 'plugin_header') );
 		add_filter( 'post_row_actions', array( &$this, 'postRowActions' ) );
 		add_action( 'manage_posts_custom_column', array( &$this, 'manage_posts_custom_column' ) );
 		add_action( 'restrict_manage_posts', array( &$this, 'restrictManagePosts' ) );
 		add_filter( 'parse_query', array( &$this, 'parse_query' ) );
-		add_action( 'load-edit.php', array( &$this, 'load_edit' ) );
 		//for quick edit
 		//add_action('quick_edit_custom_box', array( $this, 'quickEditCustomBox' ), 10, 2 );
 	}
 
-	function load_edit() {
-		//wp_enqueue_script( 'thickbox' );
-		//wp_enqueue_style( 'thickbox' );
+	function plugin_header() {
+		global $post_type;
+		if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == TCP_PRODUCT_POST_TYPE ) || ( $post_type == TCP_PRODUCT_POST_TYPE ) ) { ?>
+<style>
+#icon-edit { background:transparent url('<?php echo plugins_url( '/images/tcp_icon_32.png', dirname( __FILE__ ) ); ?>') no-repeat; }
+</style><?php
+		}
 	}
 
 	static function create_default_custom_post_type_and_taxonomies() {
@@ -72,6 +81,7 @@ class ProductCustomPostType {
 				'rewrite'				=> 'product',
 				'has_archive'			=> 'product',
 				'is_saleable'			=> true,
+				'menu_icon'				=> plugins_url( '/images/tcp.png', dirname( __FILE__ ) ), // 16px16
 			);
 			tcp_create_custom_post_type( TCP_PRODUCT_POST_TYPE, $def );
 		}
@@ -346,4 +356,5 @@ class ProductCustomPostType {
 }
 
 $productcustomposttype = new ProductCustomPostType();
-?>
+
+} // class_exists check

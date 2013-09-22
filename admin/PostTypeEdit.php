@@ -200,7 +200,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="text" id="singular_name" name="singular_name" value="<?php echo $singular_name;?>" size="20" maxlength="50" />
-			<p class="description"><?php _e( 'Name for one object of this post type', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Name for one object of this post type', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -274,7 +274,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="public" name="public" value="y" <?php checked( $public );?> />
-			<p class="description"><?php _e( 'Whether a post type is intended to be used publicly either via the admin interface or by front-end users.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether a post type is intended to be used publicly either via the admin interface or by front-end users.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -283,7 +283,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="show_ui" name="show_ui" value="y" <?php checked( $show_ui );?> />
-			<p class="description"><?php _e( 'Whether to generate a default UI for managing this post type in the admin.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether to generate a default UI for managing this post type in the admin.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -292,7 +292,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="publicly_queryable" name="publicly_queryable" value="y" <?php checked( $publicly_queryable );?> />
-			<p class="description"><?php _e( 'Whether queries can be performed on the front end as part of parse_request().', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether queries can be performed on the front end as part of parse_request().', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -301,7 +301,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="exclude_from_search" name="exclude_from_search" value="y" <?php checked( $exclude_from_search );?> />
-			<p class="description"><?php _e( 'Whether to exclude posts with this post type from front end search results.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether to exclude posts with this post type from front end search results.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -310,7 +310,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="show_in_menu" name="show_in_menu" value="y" <?php checked( $show_in_menu );?> />
-			<p class="description"><?php _e( 'Where to show the post type in the admin menu. "Show UI" must be true.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Where to show the post type in the admin menu. "Show UI" must be true.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 
@@ -320,7 +320,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="show_in_admin_bar" name="show_in_admin_bar" value="y" <?php checked( $show_in_admin_bar );?> />
-			<p class="description"><?php _e( 'Whether to make this post type available in the WordPress admin bar.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether to make this post type available in the WordPress admin bar.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -359,7 +359,7 @@ if ( ! isset( $post_type_def ) ) {
 		</th>
 		<td>
 			<input type="checkbox" id="show_in_nav_menus" name="show_in_nav_menus" value="y" <?php checked( $show_in_nav_menus );?> />
-			<p class="description"><?php _e( 'Whether post_type is available for selection in navigation menus.', 'tcp' ); ?></p>
+			<span class="description"><?php _e( 'Whether post_type is available for selection in navigation menus.', 'tcp' ); ?></span>
 		</td>
 	</tr>
 

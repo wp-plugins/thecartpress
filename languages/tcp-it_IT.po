@@ -4358,7 +4358,7 @@ msgstr "Visualizza colonna Totale"
 
 #: thecartpress/checkout/TCPCartBox.class.php:175
 msgid "SKU"
-msgstr "Ref."
+msgstr "COD."
 
 #: thecartpress/checkout/TCPCartBox.class.php:181
 msgid "Units"

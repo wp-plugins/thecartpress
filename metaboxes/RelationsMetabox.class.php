@@ -164,5 +164,4 @@ if ( is_array( $options ) && count( $options ) > 0 ) :
 	}
 }
 
-new RelationsMetabox();
-?>
+//new RelationsMetabox();

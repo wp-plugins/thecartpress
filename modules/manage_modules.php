@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( 'AdminBarMenu.class.php' );
 require_once( 'AdvancedCommunication.class.php' );
 require_once( 'Ajax.class.php' );

@@ -21,7 +21,7 @@ require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 class TopSellersWidget extends CustomListWidget {
 
 	function TopSellersWidget() {
-		parent::__construct( 'topsellers', __( 'Allow to display Top Sellers', 'tcp' ), 'TCP Top Sellers' );
+		parent::__construct( 'topsellers', __( 'Allow to display Top Sellers', 'tcp' ), 'TCP Best Sellers' );
 	}
 
 	function widget( $args, $instance ) {

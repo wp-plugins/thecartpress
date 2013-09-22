@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
+
+if ( ! class_exists( 'TCPFirstTimeSetup' ) ) {
 
 class TCPFirstTimeSetup {
 
@@ -52,7 +57,7 @@ class TCPFirstTimeSetup {
 			'id'	  => 'overview',
 			'title'   => __( 'Overview' ),
 			'content' =>
-				'<p>' . __( 'You can customize TheCartPress behaviour using this few steps.', 'tcp' ) . '</p>'
+				'<p>' . __( 'Customize TheCartPress behaviour using those few steps.', 'tcp' ) . '</p>'
 		) );
 
 		get_current_screen()->set_help_sidebar(
@@ -61,8 +66,6 @@ class TCPFirstTimeSetup {
 			'<p>' . __( '<a href="http://community.thecartpress.com/" target="_blank">Support Forums</a>', 'tcp' ) . '</p>' .
 			'<p>' . __( '<a href="http://extend.thecartpress.com/" target="_blank">Extend site</a>', 'tcp' ) . '</p>'
 		);
-		//wp_enqueue_script('custom-background');
-		//wp_enqueue_style('farbtastic');
 	}
 
 	function admin_page() { ?>
@@ -78,7 +81,7 @@ class TCPFirstTimeSetup {
 
 	<p><?php _e( 'Congratulations! You have finished to setup your eCommerce software.', 'tcp' ); ?></p>
 
-	<p><?php _e( 'The eCommerce has actived following shipping and payments methods:', 'tcp' ); ?></p>
+	<p><?php _e( 'Your eCommerce has actived the next Shipping and Payments methods:', 'tcp' ); ?></p>
 
 	<h3><?php _e( 'Shipping methods', 'tcp' ); ?></h3>
 
@@ -119,27 +122,28 @@ class TCPFirstTimeSetup {
 		<h3><?php _e( 'Step One', 'tcp' ); ?></h3>
 
 		<p class="description"><?php _e( 'Set base country for your eCommerce', 'tcp' ); ?></p>
-
-		<table class="form-table">
-		<tbody>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="country"><?php _e( 'Base country', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<select id="country" name="country">
-				<?php $countries = Countries::getAll();
-				foreach( $countries as $item ) : ?>
-					<option value="<?php echo $item->iso; ?>" <?php selected( $item->iso, $country ); ?>><?php echo $item->name; ?></option>
-				<?php endforeach; ?>
-				</select>
-			</td>
-		</tr>
-
-		</tbody>
-		</table>
-
+		
+		<div class="postbox">
+			<table class="form-table">
+			<tbody>
+	
+			<tr valign="top">
+				<th scope="row">
+					<label for="country"><?php _e( 'Base country', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<select id="country" name="country">
+					<?php $countries = Countries::getAll();
+					foreach( $countries as $item ) : ?>
+						<option value="<?php echo $item->iso; ?>" <?php selected( $item->iso, $country ); ?>><?php echo $item->name; ?></option>
+					<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+	
+			</tbody>
+			</table>
+		</div><!-- .postbox -->
 		<p>
 			<input class="tcp_next_step button-secondary" type="button" value="<?php _e( 'Next step', 'tcp' ); ?>" onclick="tcp_show_step('step_two');" />
 		</p>
@@ -152,72 +156,74 @@ class TCPFirstTimeSetup {
 
 		<p class="description"><?php _e( 'Set Currency settings to use along the Store', 'tcp' ); ?></p>
 
-		<table class="form-table">
-		<tbody>
+		<div class="postbox">
+			<table class="form-table">
+			<tbody>
+	
+			<tr valign="top">
+				<th scope="row">
+					<label for="currency"><?php _e( 'Currency', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<select id="currency" name="currency">
+					<?php $currencies = Currencies::getAll();
+					foreach( $currencies as $currency_row ) : ?>
+						<option value="<?php echo $currency_row->iso; ?>" <?php selected( $currency_row->iso, $currency ); ?>><?php echo $currency_row->currency; ?></option>
+					<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
 
-		<tr valign="top">
-			<th scope="row">
-				<label for="currency"><?php _e( 'Currency', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<select id="currency" name="currency">
-				<?php $currencies = Currencies::getAll();
-				foreach( $currencies as $currency_row ) : ?>
-					<option value="<?php echo $currency_row->iso; ?>" <?php selected( $currency_row->iso, $currency ); ?>><?php echo $currency_row->currency; ?></option>
-				<?php endforeach; ?>
-				</select>
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-			<label for="tcp_custom_layouts"><?php _e( 'Currency layouts', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<p><label for="tcp_custom_layouts"><?php _e( 'Default layouts', 'tcp' ); ?>:</label>
-				<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
-					<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' ); ?></option>
-					<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' ); ?></option>
-					<option value="%2$s %1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' ); ?></option>
-				</select>
-				</p>
-				<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
-				<input type="text" id="currency_layout" name="currency_layout" value="<?php echo $currency_layout; ?>" size="20" maxlength="25" />
-				<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' ); ?></p>
-				<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' ); ?></p>
-				<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="decimal_currency"><?php _e( 'Currency decimals', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="text" id="decimal_currency" name="decimal_currency" value="<?php echo $decimal_currency; ?>" size="1" maxlength="1" class="tcp_count"/>
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="decimal_point"><?php _e( 'Decimal point separator', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="text" id="decimal_point" name="decimal_point" value="<?php echo $decimal_point; ?>" size="1" maxlength="1" />
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="continue_url"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo $thousands_separator; ?>" size="1" maxlength="1" />
-			</td>
-		</tr>
-
-		</tbody>
-		</table>
+			<tr valign="top">
+				<th scope="row">
+				<label for="tcp_custom_layouts"><?php _e( 'Currency layouts', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<p><label for="tcp_custom_layouts"><?php _e( 'Default layouts', 'tcp' ); ?>:</label>
+					<select id="tcp_custom_layouts" onchange="jQuery('#currency_layout').val(jQuery('#tcp_custom_layouts').val());">
+						<option value="%1$s%2$s %3$s" <?php selected( '%1$s%2$s %3$s', $currency_layout); ?>><?php _e( 'Currency sign left, Currency ISO right: $100 USD', 'tcp' ); ?></option>
+						<option value="%1$s%2$s" <?php selected( '%1$s%2$s', $currency_layout); ?>><?php _e( 'Currency sign left: $100', 'tcp' ); ?></option>
+						<option value="%2$s %1$s" <?php selected( '%2$s %1$s', $currency_layout); ?>><?php _e( 'Currency sign right: 100 &euro;', 'tcp' ); ?></option>
+					</select>
+					</p>
+					<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
+					<input type="text" id="currency_layout" name="currency_layout" value="<?php echo $currency_layout; ?>" size="20" maxlength="25" />
+					<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' ); ?></p>
+					<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' ); ?></p>
+					<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
+				</td>
+			</tr>
+	
+			<tr valign="top">
+				<th scope="row">
+					<label for="decimal_currency"><?php _e( 'Currency decimals', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="decimal_currency" name="decimal_currency" value="<?php echo $decimal_currency; ?>" size="1" maxlength="1" class="tcp_count"/>
+				</td>
+			</tr>
+	
+			<tr valign="top">
+				<th scope="row">
+					<label for="decimal_point"><?php _e( 'Decimal point separator', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="decimal_point" name="decimal_point" value="<?php echo $decimal_point; ?>" size="1" maxlength="1" />
+				</td>
+			</tr>
+	
+			<tr valign="top">
+				<th scope="row">
+					<label for="continue_url"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo $thousands_separator; ?>" size="1" maxlength="1" />
+				</td>
+			</tr>
+	
+			</tbody>
+			</table>
+		</div><!-- .postbox -->
 
 		<p>
 			<input class="tcp_prev_step button-secondary" type="button" value="<?php _e( 'Previuos step', 'tcp' ); ?>" onclick="tcp_show_step('step_one');" />
@@ -231,44 +237,43 @@ class TCPFirstTimeSetup {
 		<h3><?php _e( 'Step Three', 'tcp' ); ?></h3>
 
 		<p class="description"><?php _e( 'Set Checkout options', 'tcp' ); ?></p>
+		<div class="postbox">
+			<table class="form-table">
+			<tbody>
 	
-		<table class="form-table">
-		<tbody>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="user_registration"><?php _e( 'User registration required', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="checkbox" id="user_registration" name="user_registration" value="yes" <?php checked( true, $user_registration ); ?> />
-				<p class="description"><?php _e( 'Indicates if the clients should be or not registered to buy.', 'tcp' ); ?></p>
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-			<label for="emails"><?php _e( '@mails to send orders', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="text" id="emails" name="emails" value="<?php echo $emails; ?>" size="40" maxlength="2550" />
-				<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' ); ?></span>
-				<p class="description"><?php _e( 'These emails will receive orders notifications.', 'tcp' ); ?></p>
-			</td>
-		</tr>
-
-		<tr valign="top">
-			<th scope="row">
-			<label for="from_email"><?php _e( 'From email', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="text" id="from_email" name="from_email" value="<?php echo $from_email; ?>" size="40" maxlength="255" />
-				<p class="description"><?php _e( 'Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com', 'tcp' ); ?></p>		
-			</td>
-		</tr>
-
-		</tbody>
-		</table>
-
+			<tr valign="top">
+				<th scope="row">
+					<label for="user_registration"><?php _e( 'User registration required', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="checkbox" id="user_registration" name="user_registration" value="yes" <?php checked( true, $user_registration ); ?> />
+					<p class="description"><?php _e( 'Indicates if the clients should be or not registered to buy.', 'tcp' ); ?></p>
+				</td>
+			</tr>
+	
+			<tr valign="top">
+				<th scope="row">
+				<label for="emails"><?php _e( '@mails to send orders', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="emails" name="emails" value="<?php echo $emails; ?>" size="40" maxlength="2550" />
+					<span class="description"><?php _e( 'Comma (,) separated mails', 'tcp' ); ?></span>
+					<p class="description"><?php _e( 'These emails will receive orders notifications.', 'tcp' ); ?></p>
+				</td>
+			</tr>
+	
+			<tr valign="top">
+				<th scope="row">
+				<label for="from_email"><?php _e( 'From email', 'tcp' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="from_email" name="from_email" value="<?php echo $from_email; ?>" size="40" maxlength="255" />
+					<p class="description"><?php _e( 'Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com', 'tcp' ); ?></p>		
+				</td>
+			</tr>
+			</tbody>
+			</table>
+		</div><!-- .postbox -->
 		<p>
 			<input class="tcp_prev_step button-secondary" type="button" value="<?php _e( 'Previuos step', 'tcp' ); ?>" onclick="tcp_show_step('step_two');" />
 			<input class="tcp_next_step button-secondary" type="button" value="<?php _e( 'Next step', 'tcp' ); ?>" onclick="tcp_show_step('step_four');" />
@@ -329,7 +334,7 @@ class TCPFirstTimeSetup {
 
 	</form>
 
-	</div>
+</div><!-- .wrap -->
 
 	<script>
 	function tcp_show_step( id ) {
@@ -376,8 +381,8 @@ class TCPFirstTimeSetup {
 		ob_start();
 		$total_active = 0;
 		if ( is_array( $plugins ) && count( $plugins ) > 0 ) : ?>
-
-			<table width="50%" style="padding-left: 5em;border: 1px lightgrey solid" border="0">
+		<div class="postbox">
+			<table class="form-table">
 
 			<?php foreach( $plugins as $id => $plugin ) : ?>
 				<tr>
@@ -397,16 +402,17 @@ class TCPFirstTimeSetup {
 				</td>
 				</tr>
 			<?php endforeach; ?>
-
 			</table>
 
 			<?php if ( $total_active == 0 ) : ?>
-				<p><strong style="color:red"><?php _e( 'NOTICE: None is active!', 'tcp' ); ?></strong></p>
+				<strong style="color:red"><?php _e( 'NOTICE: None is active!', 'tcp' ); ?></strong>
 			<?php endif; ?>
+		</div><!-- .postbox -->
 		<?php endif;
 		return ob_get_clean();
 	}
 }
 
 new TCPFirstTimeSetup();
-?>
+
+} // class_exists check
