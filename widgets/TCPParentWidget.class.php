@@ -63,7 +63,7 @@ class TCPParentWidget extends WP_Widget {
 		return apply_filters( 'tcp_parent_widget_update', $instance, $new_instance );
 	}
 
-	function form( $instance, $title = '' ) {
+	function form( $instance ) {
 		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : $title;
 		$private = isset( $instance['private'] ) ? $instance['private'] : false;
 		$roles = isset( $instance['roles'] ) ? $instance['roles'] : array(); ?>
