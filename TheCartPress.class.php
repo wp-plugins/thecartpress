@@ -1,16 +1,16 @@
 <?php
-/*
-Plugin Name: TheCartPress
-Plugin URI: http://thecartpress.com
-Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.2
-Author: TheCartPress team
-Author URI: http://thecartpress.com
-Text Domain: tcp
-Domain Path: /languages/
-License: GPL
-Parent: thecartpress
-*/
+/**
+ * Plugin Name: TheCartPress
+ * Plugin URI: http://thecartpress.com
+ * Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
+ * Version: 1.3.2
+ * Author: TheCartPress team
+ * Author URI: http://thecartpress.com
+ * Text Domain: tcp
+ * Domain Path: /languages/
+ * License: GPL
+ * Parent: thecartpress
+ */
 
 /**
  * The TheCartPress Plugin
