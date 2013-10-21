@@ -1,5 +1,14 @@
 <?php
 /**
+ * Top Sellers
+ *
+ * Widget to display the top sellers products
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify

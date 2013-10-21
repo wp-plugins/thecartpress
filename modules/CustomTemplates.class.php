@@ -1,5 +1,14 @@
 <?php
 /**
+ * Custom Template
+ *
+ * Allows to set templates to the different WordPress parts of a site: archives, single, taxonomyes, terms, etc.
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -20,19 +29,21 @@ class TCPCustomTemplates {
 
 	function __construct() {
 		if ( is_admin() ) new TCPCustomTemplateMetabox();
-		add_filter( 'single_template', array( __CLASS__, 'single_template' ) );
-		add_filter( 'page_template', array( __CLASS__, 'single_template' ) );
-		add_filter( 'taxonomy_template', array( __CLASS__, 'taxonomy_template' ) );
-		add_filter( 'category_template', array( __CLASS__, 'taxonomy_template' ) );
-		add_filter( 'archive_template', array( __CLASS__, 'archive_template' ) );
+		add_filter( 'single_template'	, array( __CLASS__, 'single_template' ) );
+		add_filter( 'page_template'		, array( __CLASS__, 'single_template' ) );
+		add_filter( 'taxonomy_template'	, array( __CLASS__, 'taxonomy_template' ) );
+		add_filter( 'category_template'	, array( __CLASS__, 'taxonomy_template' ) );
+		add_filter( 'archive_template'	, array( __CLASS__, 'archive_template' ) );
 	}
 
 	static function single_template( $single_template ) {
 		global $post;
 		$template = tcp_get_custom_template( $post->ID );
 		if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_single_template', $template );
+
 		$template = tcp_get_custom_template_by_post_type( $post->post_type );
 		if ( $template && file_exists( $template ) ) return apply_filters( 'tcp_single_template', $template );
+
 		return apply_filters( 'tcp_single_template', $single_template );
 	}
 
@@ -70,14 +81,15 @@ class TCPCustomTemplateMetabox {
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
 				add_meta_box( 'tcp-custom-templates', __( 'Custom templates', 'tcp' ), array( $this, 'show' ), $post_type, 'side' );
-		add_action( 'save_post', array( $this, 'save' ), 1, 2 );
-		add_action( 'delete_post', array( $this, 'delete' ) );
+		add_action( 'save_post'		, array( $this, 'save' ), 1, 2 );
+		add_action( 'delete_post'	, array( $this, 'delete' ) );
 	}
 
 	function show() {
 		global $post;
 		$post_id = tcp_get_default_id( $post->ID, get_post_type( $post->ID ) );
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
 		$templates			= tcp_get_custom_templates();
 		$custom_template	= tcp_get_custom_template( $post_id );
 		if ( is_array( $templates ) && count( $templates ) > 0 ) : ?>

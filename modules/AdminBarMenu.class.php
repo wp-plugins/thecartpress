@@ -1,5 +1,14 @@
 <?php
 /**
+ * Admin Bar Menu
+ *
+ * Adds an Ecommerce Bar Menu in the Admin Bar, only for administrators
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.	If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPAdminBarMenu' ) ) {
 
 class TCPAdminBarMenu {
 
@@ -68,4 +82,4 @@ class TCPAdminBarMenu {
 }
 
 add_action( 'admin_bar_menu', array( 'TCPAdminBarMenu', 'customize_admin_bar' ), 35 );
-?>
+} // class_exists check

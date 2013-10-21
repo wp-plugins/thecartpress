@@ -1,5 +1,14 @@
 <?php
 /**
+ * Taxonomy Images
+ *
+ * Allows to add an image to taxonomy
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,26 +24,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPTaxonomyImages' ) ) {
+
 class TCPTaxonomyImages {
 
 	function __construct() {
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
-		add_shortcode( 'tcp_the_taxonomy_list', array( &$this, 'tcp_the_taxonomy_list_shortcode' ) );
+		add_action( 'admin_init'				, array( $this, 'admin_init' ) );
+		add_shortcode( 'tcp_the_taxonomy_list'	, array( $this, 'tcp_the_taxonomy_list_shortcode' ) );
 	}
 
 	function admin_init() {
-		add_action( 'admin_print_scripts-edit-tags.php', array( &$this, 'admin_print_scripts_edit_tags' ) );
-		add_action( 'admin_print_styles-edit-tags.php', array( &$this, 'admin_print_styles_edit_tags' ) );
-		add_action( 'admin_print_scripts-media-upload-popup', array( &$this, 'admin_print_scripts_media_upload_popup' ) );
+		add_action( 'admin_print_scripts-edit-tags.php'			, array( $this, 'admin_print_scripts_edit_tags' ) );
+		add_action( 'admin_print_styles-edit-tags.php'			, array( $this, 'admin_print_styles_edit_tags' ) );
+		add_action( 'admin_print_scripts-media-upload-popup'	, array( $this, 'admin_print_scripts_media_upload_popup' ) );
 		$taxonomies = get_taxonomies( array( 'public' => true ), 'names' );
 		foreach ( $taxonomies as $taxonomy ) {
-			add_filter( 'manage_edit-' . $taxonomy . '_columns', array( &$this, 'manages_edit_columns' ) );
-			add_filter( 'manage_' . $taxonomy . '_custom_column', array( &$this, 'manage_custom_columns' ), 20, 3 );
+			add_filter( 'manage_edit-' . $taxonomy . '_columns'		, array( $this, 'manages_edit_columns' ) );
+			add_filter( 'manage_' . $taxonomy . '_custom_column'	, array( $this, 'manage_custom_columns' ), 20, 3 );
 			//add_action( $taxonomy . '_edit_form_fields', array( &$this, 'edit_form_fields' ), 10, 2 );
 		}
-		add_action( 'wp_ajax_tcp_taxonomy_image_add', array( &$this, 'tcp_taxonomy_image_add' ) );
-		add_action( 'wp_ajax_tcp_taxonomy_image_remove', array( &$this, 'tcp_taxonomy_image_remove' ) );
-		add_filter( 'attachment_fields_to_edit', array( &$this, 'attachment_fields_to_edit' ), 20, 2 );
+		add_action( 'wp_ajax_tcp_taxonomy_image_add'	, array( $this, 'tcp_taxonomy_image_add' ) );
+		add_action( 'wp_ajax_tcp_taxonomy_image_remove'	, array( $this, 'tcp_taxonomy_image_remove' ) );
+		add_filter( 'attachment_fields_to_edit'			, array( $this, 'attachment_fields_to_edit' ), 20, 2 );
 	}
 
 	function tcp_the_taxonomy_list_shortcode( $atts ) {
@@ -52,8 +67,8 @@ class TCPTaxonomyImages {
 		wp_enqueue_style( 'thickbox' );
 	}
 
-	function admin_print_scripts_media_upload_popup() {
-?><script>
+	function admin_print_scripts_media_upload_popup() { ?>
+<script>
 	var tcp_ajax_url = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
 	var tcp_icon_gray_image = '<?php echo plugins_url( 'images/tcp_icon_gray.png', dirname( __FILE__ ) ); ?>';
 </script><?php
@@ -136,7 +151,6 @@ class TCPTaxonomyImages {
 		}
 		return $fields;
 	}
-
 }
 
 new TCPTaxonomyImages();
@@ -161,7 +175,7 @@ function tcp_get_taxonomy_image( $term_id, $default = false ) {
 function tcp_get_taxonomy_image_id( $term_id ) {
 	$images = get_option( 'tcp_taxonomy_images', array() );
 	if ( isset( $images[$term_id] ) ) return $images[$term_id];
-	return 0;
+	return false;
 }
 
 function tcp_delete_taxonomy_image( $term_id ) {
@@ -191,3 +205,4 @@ function tcp_the_taxonomy_list( $args = array(), $before = '', $after = '', $ech
 	if ( $echo ) echo $out;
 	else return $out;
 }
+} // class_exists check

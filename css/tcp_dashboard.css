@@ -390,7 +390,100 @@ div#icon-tcp-loop-settings {
 div#icon-tcp-custom-styles {
 	background: url('../images/miranda/customstyles_settings_32.png') no-repeat center;
 }
-
 div#icon-tcp-underconstruction {
 	background: url('../images/miranda/under_construction_32.png') no-repeat center;
+}
+div#icon-tcp-download-list {
+	background: url('../images/miranda/download_32.png') no-repeat center;
+}
+div#icon-tcp-custom-javascript {
+	background: url('../images/miranda/js_32.png') no-repeat center;
+}
+
+.icon32-posts-tcp_template,
+div#icon-tcp-default,
+div#icon-tcp-shortcode-generator,
+div#icon-tcp-plugins-list,
+div#icon-tcp-custom-templates,
+div#icon-tcp-shortcode-generator,
+div#icon-tcp-post-type-editor,
+div#icon-tcp-post-type-list,
+div#icon-tcp-buybuttons-templates,
+div#icon-tcp-orders-list,
+div#icon-tcp-wish-list,
+div#icon-tcp-stock-update,
+div#icon-tcp-price-update,
+div#icon-tcp-related-cats,
+div#icon-tcp-taxes-list,
+div#icon-tcp-addresses-list,
+div#icon-tcp-discounts-by-roles {
+	background: url('../images/tcp_icon_32.png') no-repeat center;	
+}
+/**
+ * Extend
+ */
+.tcp-inner-product {
+	width: 100%;
+	padding: 10px;
+	line-height:1.625em;
+	text-decoration: none;
+	-moz-border-radius: 0px;
+	-khtml-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	vertical-align: top;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	margin-bottom: 20px;
+	position: relative;
+}
+.tcp-inner-product a:hover {
+	text-decoration: none;
+}
+.tcp-inner-product img {
+	text-decoration: none;
+	margin-bottom: 10px;
+}
+.tcp-inner-product .tcp-product-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: normal;
+	line-height: 1.5em;
+}
+/* tcp-product-caption */
+.tcp-product-caption {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.75);
+	padding: 10px;
+}
+.tcp-product-caption h3 {
+}
+.tcp-product-caption h3 {
+	font-size: 18px;
+	margin: 10px;
+	color: #fff;
+}
+.tcp-product-caption p {
+	font-size: .95em;
+	line-height: 1.5em;
+	margin: 0 10px 15px;
+	color: #ccc;
+}
+.tcp-product-caption a.tcp-learn-more {
+	padding: 5px 10px;
+	background: #08c;
+	color: #fff;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	font-weight: bold;
+	text-decoration: none;
+}
+.tcp-product-caption a.tcp-learn-more:hover {
+	background: #fff;
+	color: #08c;
 }

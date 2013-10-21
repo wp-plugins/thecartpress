@@ -31,8 +31,8 @@ class TCPAuthorizeNet extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
-		$data = tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
-		$title = isset( $data['title'] ) ? $data['title'] : $this->getTitle();
+		$data	= tcp_get_payment_plugin_data( 'TCPAuthorizeNet', $instance );
+		$title	= isset( $data['title'] ) ? $data['title'] : $this->getTitle();
 		//return tcp_string( 'TheCartPress', 'pay_TCPAuthorizeNet-title', $title );
 		return tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_TCPAuthorizeNet-title-' . $instance ), $title );
 	}
@@ -203,9 +203,21 @@ class TCPAuthorizeNet extends TCP_Plugin {
 //			'x_version'			=> '',
 			'x_zip'				=> $order->billing_postcode,
 		);
-		$form = new AuthorizeNetSIM_Form( $fields ); ?>
+		$form = new AuthorizeNetSIM_Form( $fields );
+		// //To Add
+		// $x_line_items = array();
+		// foreach( $shoppingCart->getItems() as $item ) {
+		// 	$title			= strip_tags( html_entity_decode( $item->getTitle(), ENT_QUOTES ) );
+		// 	$discount		= (float)number_format( $item->getDiscount() / $item->getUnits(), 2, '.', '' );
+		// 	$amount			= (float)number_format( $item->getUnitPrice(), 2, '.', '' );
+		// 	$amount			= number_format( $amount - $discount, 2, '.', '' );
+		// 	$x_line_items[]	= array( $item->getSKU(), $title, '', $item->getUnits(), $amount, 'Y' );
+		// } ?>
 		<form method="post" name="authorizednet_form" action="<?php echo $url; ?>">
-			<?php echo $form->getHiddenFieldString(); ?>
+			<?php echo $form->getHiddenFieldString();
+			//foreach( $x_line_items as $x_line_item ) {
+				//echo '<input type="hidden" name="x_line_item" value="<?php implode( '|', $x_line_item );?>" />'
+			//} ?>
 			<input type="hidden" name="order_id" value="<?php echo $order_id;?>" />
 			<input type="hidden" name="new_status" value="<?php echo $new_status;?>" />
 			<input type="hidden" name="instance" value="<?php echo $instance;?>" />

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER		. 'Orders.class.php' );
 require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 
 $order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : '';
@@ -70,13 +69,12 @@ th, td {
 
 <?php
 
-add_meta_box( 'tcp_order_id_metabox', __( 'Order ID', 'tcp' ), 'tcp_order_id_metabox' , 'tcp-order-edit', 'side', 'default' );
+add_meta_box( 'tcp_order_id_metabox'			, __( 'Order ID', 'tcp' ), 'tcp_order_id_metabox' , 'tcp-order-edit', 'side', 'default' );
 if ( strlen( $order->shipping_firstname ) &&  strlen( $order->shipping_lastname ) )
-	add_meta_box( 'tcp_order_shipping_metabox', __( 'Shipping Address', 'tcp' ), 'tcp_order_shipping_metabox' , 'tcp-order-edit', 'side', 'default' );
-add_meta_box( 'tcp_order_billing_metabox', __( 'Billing Address', 'tcp' ), 'tcp_order_billing_metabox' , 'tcp-order-edit', 'side', 'default' );
-
-add_meta_box( 'tcp_order_details_metabox', __( 'Order details', 'tcp' ), 'tcp_order_details_metabox' , 'tcp-order-edit', 'normal', 'default' );
-add_meta_box( 'tcp_order_setup_metabox', __( 'Order Setup', 'tcp' ), 'tcp_order_setup_metabox' , 'tcp-order-edit', 'normal', 'default' );
+	add_meta_box( 'tcp_order_shipping_metabox'	, __( 'Shipping Address', 'tcp' ), 'tcp_order_shipping_metabox' , 'tcp-order-edit', 'side', 'default' );
+add_meta_box( 'tcp_order_billing_metabox'		, __( 'Billing Address', 'tcp' ), 'tcp_order_billing_metabox' , 'tcp-order-edit', 'side', 'default' );
+add_meta_box( 'tcp_order_details_metabox'		, __( 'Order details', 'tcp' ), 'tcp_order_details_metabox' , 'tcp-order-edit', 'normal', 'default' );
+add_meta_box( 'tcp_order_setup_metabox'			, __( 'Order Setup', 'tcp' ), 'tcp_order_setup_metabox' , 'tcp-order-edit', 'normal', 'default' );
 
 do_action( 'tcp_order_edit_metaboxes', $order_id, $order );
 
@@ -131,12 +129,18 @@ function tcp_order_shipping_metabox() {
 	</tr>
 	<tr valign="top">
 		<td class="shipping_info">
-			<?php echo $order->shipping_postcode . ', ' . $order->shipping_city; ?><br/>
+			<?php $out = array();
+			if ( strlen( $order->shipping_postcode ) > 0 ) $out[] = $order->shipping_postcode;
+			if ( strlen( $order->shipping_city ) > 0 ) $out[] = $order->shipping_city;
+			echo implode( ', ', $out ); ?><br/>
 		</td>
 	</tr>
 	<tr valign="top">
 		<td class="shipping_info">
-			<?php echo $order->shipping_region . ', ' . $order->shipping_country; ?><br/>
+			<?php $out = array();
+			if ( strlen( $order->shipping_region ) > 0 ) $out[] = $order->shipping_region;
+			if ( strlen( $order->shipping_country ) > 0 ) $out[] = $order->shipping_country;
+			echo implode( ', ', $out ); ?><br/>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -193,12 +197,18 @@ function tcp_order_billing_metabox() {
 	</tr>
 	<tr valign="top">
 		<td class="billing_info">
-			<?php echo $order->billing_postcode; ?>, <?php echo $order->billing_city; ?>
+			<?php $out = array();
+			if ( strlen( $order->billing_postcode ) > 0 ) $out[] = $order->billing_postcode;
+			if ( strlen( $order->billing_city ) > 0 ) $out[] = $order->billing_city;
+			echo implode( ', ', $out ); ?>
 		</td>
 	</tr>
 	<tr valign="top">
 		<td class="billing_info">
-			<?php echo $order->billing_region; ?>, <?php echo $order->billing_country; ?>
+			<?php $out = array();
+			if ( strlen( $order->billing_region ) > 0 ) $out[] = $order->billing_region;
+			if ( strlen( $order->billing_country ) > 0 ) $out[] = $order->billing_country;
+			echo implode( ', ', $out ); ?>
 		</td>
 	</tr>
 	<tr valign="top">

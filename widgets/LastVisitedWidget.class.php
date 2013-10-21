@@ -16,6 +16,11 @@
  * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'LastVisitedWidget' ) ) {
+
 require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
 class LastVisitedWidget extends CustomListWidget {
@@ -45,7 +50,8 @@ class LastVisitedWidget extends CustomListWidget {
 	}
 
 	function form( $instance ) {
-		parent::form( $instance, __( 'Last Visited', 'tcp' ) );
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Last Visited', 'tcp' );
+		parent::form( $instance );
 		parent::show_post_type_form( $instance );
 	}
 
@@ -61,4 +67,4 @@ class LastVisitedWidget extends CustomListWidget {
 		}
 	}
 }
-?>
+} // class_exists check

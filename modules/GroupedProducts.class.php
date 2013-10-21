@@ -1,5 +1,14 @@
 <?php
 /**
+ * Grouped Products
+ *
+ * Adds this new products types. Grouped alows to add products as child of other products.
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPGroupedProducts' ) ) {
 
 require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 
@@ -141,4 +155,4 @@ class TCPGroupedProducts {
 }
 
 new TCPGroupedProducts();
-?>
+} // class_exists check

@@ -1,5 +1,14 @@
 <?php
 /**
+ * Downloadable Products
+ *
+ * Defines the behaviour of Downloadable products
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +25,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPDownloadableProducts' ) ) {
+
 class TCPDownloadableProducts {
 
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'tcp_init'	, array( $this, 'tcp_init' ) );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 
-	function init() {
-		add_filter( 'tcp_the_add_to_cart_unit_field', array( &$this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
-		add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
-		add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 1, 2 );
-		add_filter( 'tcp_add_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
-		add_filter( 'tcp_modify_to_shopping_cart', array( &$this, 'tcp_add_to_shopping_cart' ) );
-		add_filter( 'tcp_shopping_cart_page_units', array( &$this, 'tcp_shopping_cart_page_units' ), 10, 2 );
-		add_action( 'tcp_checkout_end', array( &$this, 'tcp_checkout_end' ), 10, 2 );
-		add_filter( 'tcp_send_order_mail_to_customer_message', array( &$this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
-		add_action( 'tcp_checkout_create_order_insert_detail', array( &$this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
-		add_action( 'tcp_checkout_ok_footer', array( &$this, 'tcp_checkout_ok_footer' ) );
-		
+	function tcp_init() {
+		add_filter( 'tcp_the_add_to_cart_unit_field'			, array( $this, 'tcp_the_add_to_cart_unit_field' ), 1, 2 );
+		add_filter( 'tcp_the_add_to_cart_items_in_the_cart'		, array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 1, 2 );
+		add_filter( 'tcp_the_add_to_cart_button'				, array( $this, 'tcp_the_add_to_cart_button' ), 1, 2 );
+		add_filter( 'tcp_add_to_shopping_cart'					, array( $this, 'tcp_add_to_shopping_cart' ) );
+		add_filter( 'tcp_modify_to_shopping_cart'				, array( $this, 'tcp_add_to_shopping_cart' ) );
+		add_filter( 'tcp_shopping_cart_page_units'				, array( $this, 'tcp_shopping_cart_page_units' ), 10, 2 );
+		add_action( 'tcp_checkout_end'							, array( $this, 'tcp_checkout_end' ), 10, 2 );
+		add_filter( 'tcp_send_order_mail_to_customer_message'	, array( $this, 'tcp_send_order_mail_to_customer_message' ), 10, 2 );
+		add_action( 'tcp_checkout_create_order_insert_detail'	, array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		add_action( 'tcp_checkout_ok_footer'					, array( $this, 'tcp_checkout_ok_footer' ) );
 	}
 
 	function admin_init() {
-		add_action( 'tcp_product_metabox_toolbar', array( &$this, 'tcp_product_metabox_toolbar') );
-		add_action( 'tcp_product_metabox_custom_fields', array( &$this, 'tcp_product_metabox_custom_fields' ) );
-		add_action( 'tcp_product_metabox_save_custom_fields', array( &$this, 'tcp_product_metabox_save_custom_fields' ) );
-		add_action( 'tcp_product_metabox_delete_custom_fields', array( &$this, 'tcp_product_metabox_delete_custom_fields' ) );			
+		//add_action( 'tcp_product_metabox_toolbar'				, array( $this, 'tcp_product_metabox_toolbar') );//before 1.3.2
+		add_filter( 'tcp_product_custom_fields_links'			, array( $this, 'tcp_product_custom_fields_links' ), 10, 3 );//since 1.3.2
+		//add_action( 'tcp_product_metabox_custom_fields'			, array( $this, 'tcp_product_metabox_custom_fields' ) );//before 1.3.2
+		add_filter( 'tcp_product_custom_fields_tabs'			, array( $this, 'tcp_product_custom_fields_tabs' ) );//since 1.3.2
+		add_action( 'tcp_product_metabox_custom_tabs'			, array( $this, 'tcp_product_metabox_custom_tabs' ) );//since 1.3.2
+		add_action( 'tcp_product_metabox_save_custom_fields'	, array( $this, 'tcp_product_metabox_save_custom_fields' ) );
+		add_action( 'tcp_product_metabox_delete_custom_fields'	, array( $this, 'tcp_product_metabox_delete_custom_fields' ) );			
 	}
 
 	function tcp_the_add_to_cart_unit_field( $out, $post_id ) {
@@ -77,13 +93,24 @@ class TCPDownloadableProducts {
 		return $out;
 	}
 
-	function tcp_product_metabox_toolbar( $post_id ) {
+	/*function tcp_product_metabox_toolbar( $post_id ) {
 		if ( tcp_is_downloadable( $post_id ) ) : ?>
 			<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>UploadFiles.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'file upload', 'tcp' ); ?></a></li>
 			<!--<li>|</li>
 			<li><a href="<?php echo TCP_ADMIN_PATH; ?>FilesList.php&post_id=<?php echo $post_id; ?>"><?php echo __( 'files', 'tcp' ); ?></a></li>-->
 		<?php endif;
+	}*/
+
+	function tcp_product_custom_fields_links( $links, $post_id, $post ) {
+		if ( tcp_is_downloadable( $post_id ) ) {
+			$links[] = array(
+				'url'	=> TCP_ADMIN_PATH . 'UploadFiles.php&post_id=' . $post_id,
+				'title'	=> '',
+				'label'	=> __( 'Upload File', 'tcp-do' )
+			);
+		}
+		return $links;
 	}
 
 	function tcp_product_metabox_custom_fields( $post_id ) { ?>
@@ -112,7 +139,22 @@ class TCPDownloadableProducts {
 			<span class="description"><?php _e( 'Days to expire from the buying day. You can use -1 value.', 'tcp' );?></span>
 			</td>
 		</tr>
-	<?php }	
+	<?php }
+
+	function tcp_product_custom_fields_tabs( $tabs ) {
+		$tabs['tcp-downloadable-options'] = __( 'Downloadable', 'tcp' );
+		return $tabs;
+	}
+
+	function tcp_product_metabox_custom_tabs( $post_id ) { ?>
+<div id="tcp-downloadable-options" style="display: none;">
+	<table class="form-table">
+		<tbody>
+		<?php $this->tcp_product_metabox_custom_fields( $post_id ); ?>
+		</tbody>
+	</table>
+</div><!-- #tcp-advanced-options -->
+	<?php }
 
 	function tcp_product_metabox_save_custom_fields( $post_id ) {
 		update_post_meta( $post_id, 'tcp_is_downloadable', isset( $_POST['tcp_is_downloadable'] ) ? $_POST['tcp_is_downloadable'] == 'yes' : false );
@@ -209,4 +251,4 @@ function tcp_get_download_area_url() {
 	$url = home_url( 'wp-admin/admin.php?page=thecartpress/admin/DownloadableList.php' );
 	return apply_filters( 'tcp_get_download_area_url', $url );
 }
-?>
+} // class_exists check

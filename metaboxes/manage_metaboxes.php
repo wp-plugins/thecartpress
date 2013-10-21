@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+
 require_once( 'PostMetabox.class.php' );
 require_once( 'ProductCustomFieldsMetabox.class.php' );
 require_once( 'RelationsMetabox.class.php' );
 require_once( 'TemplateMetabox.class.php' );
-?>

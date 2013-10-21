@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'FreeTrans' ) ) {
+
 class FreeTrans extends TCP_Plugin {
 
 	function getTitle() {
@@ -62,4 +67,4 @@ class FreeTrans extends TCP_Plugin {
 		}
 	}
 }
-?>
+} // class_exists check

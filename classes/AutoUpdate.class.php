@@ -1,4 +1,13 @@
-<?php 
+<?php
+/**
+ * AutoUpdate
+ *
+ * Manage Extend Plugin updates (Beta version)
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
 /**
  * This file is part of TheCartPress.
  * 

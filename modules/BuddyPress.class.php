@@ -1,5 +1,14 @@
 <?php
 /**
+ * BuddyPress supports. It's in progess
+ *
+ * Adds email features to Orders edit, allowing to send, and saved, predefined emails
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify

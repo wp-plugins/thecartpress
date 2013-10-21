@@ -1,5 +1,14 @@
 <?php
 /**
+ * Cart Source DB
+ *
+ * Allows to fill a Cart using the Shopping Cart
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -305,7 +314,7 @@ class TCPCartSourceSession implements TCP_ICartSource {
 	}
 
 	public function get_comment() {
-		return false;
+		return '';
 	}
 
 	public function has_orders_costs() {

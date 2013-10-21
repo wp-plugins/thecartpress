@@ -46,8 +46,9 @@ if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
 	}
 }
 ?>
-<ul class="subsubsub">
-</ul>
+<p><?php _e( 'Create tax percentages for Countries/States', 'tcp' ); ?></p>
+
+<ul class="subsubsub"></ul>
 <div class="clear"></div>
 
 <table class="widefat fixed" cellspacing="0">

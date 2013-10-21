@@ -1,5 +1,14 @@
 <?php
 /**
+ * Flat rate
+ *
+ * Allows to calculate the shipping cost using flat rates
+ *
+ * @package TheCartPress
+ * @subpackage Plugins
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'FlatRateShipping' ) ) {
 
 class FlatRateShipping extends TCP_Plugin {
 
@@ -110,7 +124,15 @@ class FlatRateShipping extends TCP_Plugin {
 				</select>
 			</td>
 		</tr>
-		<?php do_action( 'tcp_shipping_flat_rate_edit_fields', $calculate_by );
+		<!--<tr valign="top" class="tcp_type">
+			<th scope="row">
+				<label for="two_or_more"><?php _e( 'Applicable only if two or more items', 'tcp' );?>:</label>
+			</th>
+			<td>
+				<input type="checkbox" id="two_or_more" name="two_or_more" value="yes" <?php checked( isset( $data['two_or_more'] ) ? $data['two_or_more'] : false ); ?> />
+			</td>
+		</tr>-->
+		<?php do_action( 'tcp_shipping_flat_rate_edit_fields', $calculate_by, $data );
 	}
 
 	function saveEditFields( $data, $instance = 0 ) {
@@ -119,9 +141,24 @@ class FlatRateShipping extends TCP_Plugin {
 		$data['percentage']		= isset( $_REQUEST['percentage'] ) ? tcp_input_number( $_REQUEST['percentage'] ) : 0;
 		$data['minimum']		= isset( $_REQUEST['minimum'] ) ? tcp_input_number( $_REQUEST['minimum'] ) : 0;
 		$data['calculate_type']	= isset( $_REQUEST['calculate_type'] ) ? $_REQUEST['calculate_type'] : '';
-		do_action( 'tcp_shipping_flat_rate_save_edit_fields', $data );
+		//$data['two_or_more']	= isset( $_REQUEST['two_or_more'] );
+		$data = apply_filters( 'tcp_shipping_flat_rate_save_edit_fields', $data );
 		return $data;
 	}
+
+	/**
+	 * Returns if the plugin is applicable
+	 *
+	 * @since 1.3.2
+	 */
+	// function isApplicable( $shippingCountry, $shoppingCart, $data ) {
+	// 	$two_or_more = isset( $data['two_or_more'] ) ? $data['two_or_more'] : false;
+	// 	if ( $two_or_more ) {
+	// 		return $shoppingCart->getCount() > 1;
+	// 	} else {
+	// 		return true;
+	// 	}
+	// }
 
 	function getCost( $instance, $shippingCountry, $shoppingCart = false ) {
 		if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
@@ -142,4 +179,4 @@ class FlatRateShipping extends TCP_Plugin {
 		return apply_filters( 'tcp_shipping_flat_rate_get_cost', $total, $data, $shippingCountry, $shoppingCart );
 	}
 }
-?>
+} // class_exists check

@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'TCPLocalPickUp' ) ) {
+
 class TCPLocalPickUp extends TCP_Plugin {
 
 	function getTitle() {
@@ -37,4 +42,4 @@ class TCPLocalPickUp extends TCP_Plugin {
 		//return tcp_string( 'TheCartPress', 'shi_TCPLocalPickUp-title', $title );
 	}
 }
-?>
+} // class_exists check

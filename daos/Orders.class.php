@@ -40,6 +40,8 @@ class Orders {
 			`weight`				int(11)				NOT NULL default 0,
 			`shipping_notice`		text				NOT NULL,
 			`shipping_method`		text				NOT NULL,
+			`shipping_class`		varchar(255)		NOT NULL,
+			`shipping_instance`		int					NOT NULL,
 			`status`				varchar(50)			NOT NULL,
 			`order_currency_code`	char(3)				NOT NULL,
 			`shipping_amount`		decimal(13, 2)		NOT NULL default 0,
@@ -56,6 +58,7 @@ class Orders {
 			`shipping_lastname`		varchar(255)		NOT NULL,
 			`shipping_company`		varchar(255)		NOT NULL,
 			`shipping_street`		varchar(255)		NOT NULL,
+			`shipping_street_2`		varchar(255)		NOT NULL,
 			`shipping_city`			varchar(255)		NOT NULL,
 			`shipping_city_id`		char(4)				NOT NULL DEFAULT \'\',
 			`shipping_region`		varchar(255)		NOT NULL,
@@ -72,6 +75,7 @@ class Orders {
 			`billing_company`		varchar(255)		NOT NULL,
 			`billing_tax_id_number`	varchar(15)			NOT NULL,
 			`billing_street`		varchar(255)		NOT NULL,
+			`billing_street_2`		varchar(255)		NOT NULL,
 			`billing_city`			varchar(255)		NOT NULL default 0,
 			`billing_city_id`		char(4)				NOT NULL DEFAULT \'\',
 			`billing_region`		varchar(255)		NOT NULL,
@@ -152,6 +156,8 @@ class Orders {
 			'weight'				=> $order['weight'],
 			'shipping_method'		=> $order['shipping_method'],
 			'shipping_notice'		=> $order['shipping_notice'],
+			'shipping_class'		=> $order['shipping_class'],
+			'shipping_instance'		=> $order['shipping_instance'],
 			'status'				=> $order['status'],
 			'order_currency_code'	=> $order['order_currency_code'],
 			'shipping_amount'		=> $order['shipping_amount'],
@@ -168,6 +174,7 @@ class Orders {
 			'shipping_lastname'		=> $order['shipping_lastname'],
 			'shipping_company'		=> $order['shipping_company'],
 			'shipping_street'		=> $order['shipping_street'],
+			'shipping_street_2'		=> isset( $order['shipping_street_2'] ) ? $order['shipping_street_2'] : '',
 			'shipping_city'			=> $order['shipping_city'],
 			'shipping_city_id'		=> $order['shipping_city_id'],
 			'shipping_region'		=> $order['shipping_region'],
@@ -184,6 +191,7 @@ class Orders {
 			'billing_company'		=> $order['billing_company'],
 			'billing_tax_id_number'	=> $order['billing_tax_id_number'],
 			'billing_street'		=> $order['billing_street'],
+			'billing_street_2'		=> isset( $order['billing_street'] ) ? $order['billing_street'] : '',
 			'billing_city'			=> $order['billing_city'],
 			'billing_city_id'		=> $order['billing_city_id'],
 			'billing_region'		=> $order['billing_region'],
@@ -195,10 +203,10 @@ class Orders {
 			'billing_telephone_2'	=> $order['billing_telephone_2'],
 			'billing_fax'			=> $order['billing_fax'],
 			'billing_email'			=> $order['billing_email'],
-		), array( '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
+		), array( '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%s', '%s', '%f', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s', '%s',  '%s' )
+				 '%s', '%s', '%s', '%s', '%s',  '%s', '%s',  '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -245,6 +253,19 @@ class Orders {
 		$sql = apply_filters( 'get_orders_ex_sql', $sql, $paged, $per_page, $status, $customer_id );
 		return $wpdb->get_results( $sql );
 	}
+
+	static function getOrdersExDetails( $status, $from, $to, $customer_id = -1 ) {
+		global $wpdb;
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details od on (o.order_id = od.order_id) where 1=1';
+		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
+		$sql .= $wpdb->prepare( ' and created_at >= %s', $from );
+		$sql .= $wpdb->prepare( ' and created_at <= %s', $to );
+		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
+		$sql .= ' order by created_at desc';
+		$sql = apply_filters( 'get_orders_ex_details_sql', $sql, $status, $from, $to, $customer_id );
+		return $wpdb->get_results( $sql );
+	}
+
 
 	static function getOrderByTransactionId( $payment_method, $transaction_id ) {
 		global $wpdb;
@@ -454,6 +475,7 @@ class Orders {
 			array(
 			'shipping_firstname'	=> $newaddresses['shipping_firstname'],
 			'shipping_street'		=> $newaddresses['shipping_street'],
+			'shipping_street_2'		=> isset( $newaddresses['shipping_street_2'] ) ? $newaddresses['shipping_street_2'] : '',
 			'shipping_lastname'		=> $newaddresses['shipping_lastname'],
 			'shipping_company'		=> $newaddresses['shipping_company'],			
 			'shipping_city'			=> $newaddresses['shipping_city'],
@@ -472,6 +494,7 @@ class Orders {
 			'billing_company'		=> $newaddresses['billing_company'],
 			'billing_tax_id_number'	=> $newaddresses['billing_tax_id_number'],
 			'billing_street'		=> $newaddresses['billing_street'],
+			'billing_street_2'		=> isset( $newaddresses['billing_street_2'] ) ? $newaddresses['billing_street_2'] : '',
 			'billing_city'			=> $newaddresses['billing_city'],
 			'billing_city_id'		=> $newaddresses['billing_city_id'],
 			'billing_region'		=> $newaddresses['billing_region'],
@@ -489,7 +512,7 @@ class Orders {
 			), 
 			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 				 '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-				 '%s', '%s', '%s', '%s', '%s' ), array( '%d' ) ); 
+				 '%s', '%s', '%s', '%s', '%s', '%s', '%s' ), array( '%d' ) ); 
 		return $result;
 	}  /* editAddresses */
 

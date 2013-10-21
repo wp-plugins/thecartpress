@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPTemplateMetabox' ) ) {
+
 class TCPTemplateMetabox {
 
 	static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'register_metabox' ) );
-		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 20 );
+		add_action( 'tcp_admin_menu', array( __CLASS__, 'tcp_admin_menu' ), 20 );
 	}
 
 	static function register_metabox() {
@@ -29,9 +34,8 @@ class TCPTemplateMetabox {
 		add_action( 'delete_post', array( __CLASS__, 'delete' ) );
 	}
 
-	static function admin_menu() {
-		global $thecartpress;
-		$base = $thecartpress->get_base_appearance();
+	static function tcp_admin_menu() {
+		$base = thecartpress()->get_base_appearance();
 		add_submenu_page( $base, __( 'Notices, eMails', 'tcp' ), __( 'Notices, eMails', 'tcp' ), 'tcp_edit_orders', 'edit.php?post_type=tcp_template' );
 	}
 
@@ -96,3 +100,4 @@ class TCPTemplateMetabox {
 }
 
 TCPTemplateMetabox::init();
+} // class_exists check

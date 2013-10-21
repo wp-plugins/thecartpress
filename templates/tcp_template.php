@@ -1,5 +1,14 @@
 <?php
 /**
+ * Common template-functions
+ *
+ * Defines common template-functions
+ *
+ * @package TheCartPress
+ * @subpackage Templates
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -141,10 +150,8 @@ function tcp_the_unit_weight( $echo = true ) {
 	global $thecartpress;
 	$unit_weight = $thecartpress->get_setting( 'unit_weight', 'gr' );
 	$unit_weight = apply_filters( 'tcp_the_unit_weight', $unit_weight );
-	if ( $echo )
-		echo $unit_weight;
-	else
-		return $unit_weight;
+	if ( $echo ) echo $unit_weight;
+	else return $unit_weight;
 }
 
 function tcp_get_the_unit_weight() {
@@ -918,9 +925,14 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 }
 
 //
-//Saleable post type
+//Saleable post types
 //
 /**
+ * Returns all saleable post types
+ * But is importat to remask that you would prefer to uses "tcp_get_product_post_types"
+ * because it returns all saleable products (removing options, for example)
+ *
+ * @see tcp_get_product_post_types
  * @since 1.1.0
  */
 function tcp_get_saleable_post_types( $one_more = false ) {
@@ -1331,6 +1343,21 @@ function tcp_get_template_part( $path, $slug, $name = '' ) {
 	if ( file_exists( $template ) ) require( $template );
 	else get_template_part( $slug, $name );
 }
+
+/*
+ * Loads the default TheCartPress loop
+ * First, it attempts to load the file from the theme (child or parent theme),
+ * if not it loads the loop availabe in the core
+ *
+ * @since 1.3.1
+ * @uses locate_template, tcp_get_template_part, plugins_url, apply_filters (called using 'tcp_the_loop')
+ *
+function tcp_the_loop() {
+	if ( ! locate_template( 'loop-tcp-grid.php', true ) ) {
+		$url = plugins_url( dirname( __FILE__ ), 'themes-templates/loop-tcp-grid.php';
+		tcp_get_template_part( apply_filters( 'tcp_the_loop', $url ) );
+	}
+}*/
 
 /**
  * @since 1.2.7

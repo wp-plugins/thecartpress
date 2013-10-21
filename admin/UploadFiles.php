@@ -1,5 +1,14 @@
 <?php
 /**
+ * Upload File
+ *
+ * Allows to upload a file to a downloadable product
+ *
+ * @package TheCartPress
+ * @subpackage Admin
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * TheCartPress is free software: you can redistribute it and/or modify
@@ -15,6 +24,9 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 
 $post_id  = isset( $_REQUEST['post_id'] )  ? $_REQUEST['post_id']  : 0;
 $error_upload = '';
@@ -97,7 +109,7 @@ if ( $post_id ) {
 	$post = get_post( $post_id );
 	if ( $post ) : ?>
 		<div class="wrap">
-			<h2><?php echo __( 'Upload file for', 'tcp' );?>&nbsp;<i><?php echo $post->post_title;?></i></h2>
+			<?php screen_icon( 'tcp-download-list' ); ?><h2><?php echo __( 'Upload file for', 'tcp' );?>&nbsp;<i><?php echo $post->post_title;?></i></h2>
 			<ul class="subsubsub">
 				<li><a href="post.php?action=edit&post=<?php echo $post_id;?>"><?php _e( 'Return to the product', 'tcp' );?></a></li>
 			</ul><!-- subsubsub -->

@@ -1,5 +1,14 @@
 <?php
 /**
+ * Cart Source DB
+ *
+ * Allows to fill a Cart using an Order from the database
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -303,12 +312,12 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 
 	public function get_discount() {
 		if ( $this->order ) return $this->order->discount_amount;
-		else return false;
+		else return 0;
 	}
 
 	public function get_comment() {
 		if ( $this->order ) return stripslashes( $this->order->comment );
-		else return false;
+		else return '';
 	}
 
 	public function has_orders_costs() {

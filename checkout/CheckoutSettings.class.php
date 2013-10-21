@@ -16,23 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCheckoutSettings' ) ) {
+
 class TCPCheckoutSettings {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Checkout', 'tcp' ), false, array( 'TCPCheckoutSettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/checkout_settings_48.png' ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_settings();
+		$base = thecartpress()->get_base_settings();
 		$page = add_submenu_page( $base, __( 'Checkout Settings', 'tcp' ), __( 'Checkout', 'tcp' ), 'tcp_edit_settings', 'checkout_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -171,4 +175,4 @@ $checkout_successfully_message	= $thecartpress->get_setting( 'checkout_successfu
 }
 
 new TCPCheckoutSettings();
-?>
+} // class_exists check

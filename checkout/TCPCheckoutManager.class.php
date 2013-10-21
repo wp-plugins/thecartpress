@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCheckoutManager' ) ) {
+
 require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
@@ -23,7 +28,7 @@ require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class TCPCheckoutManager {
 
-	public static $TOP_BAR = 'TOP_BAR';
+	public static $TOP_BAR	 = 'TOP_BAR';
 	public static $ACCORDION = 'ACCORDION';
 
 	protected $checkout_type;
@@ -55,7 +60,7 @@ class TCPCheckoutManager {
 		if ( strlen( $html ) > 0 ) return $html;
 		$step = isset( $_REQUEST['tcp_step'] ) ? $_REQUEST['tcp_step'] : 0;
 		$box = $this->get_box( $step );
-		if ( ! $box) {
+		if ( !$box ) {
 			$step = 0;
 			$box = $this->get_box( $step );
 		}
@@ -161,10 +166,11 @@ class TCPCheckoutManager {
 
 	protected function show_box( $box, $step = 0 ) {
 		global $thecartpress;
-		$user_registration = $thecartpress->get_setting( 'user_registration', false );
+		$user_registration	= $thecartpress->get_setting( 'user_registration', false );
+		$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
-<div class="checkout" id="checkout">
+<div class="checkout tcp-tcpf" id="checkout">
 	<?php $last_step_number = $this->show_header( $box, $step );
 	if ( $step == count( $this->steps ) ) { //last step, no return
 		if ( in_the_loop() ) {
@@ -194,21 +200,21 @@ class TCPCheckoutManager {
 					if ( ! $box->is_form_encapsulated() ) : ?><form method="post" action="<?php echo $action; ?>"><?php endif;
 					if ( $step > 0 ) : 
 						if ( defined( 'TCP_CHECKOUT' ) ) : ?>
-						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="btn tcp_checkout_button btn"><?php _e( 'Back', 'tcp' ); ?></a>
+						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp-btn tcp_checkout_button"><?php _e( 'Back', 'tcp' ); ?></a>
 						<?php else : ?>
-						<input type="submit" name="tcp_back" id="tcp_back" value="<?php _e( 'Back', 'tcp' ); ?>" class="btn tcp_checkout_button" />
+						<button type="submit" name="tcp_back" id="tcp_back" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_back_button_title', __( 'Back', 'tcp' ), $step, $this->steps ); ?></button>
 						<?php endif;
 					endif;
 					if ( $see_continue_button ) :
 						if ( $step < count( $this->steps ) - 1 ) : ?>
-							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
+							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_continue_button_title', __( 'Continue', 'tcp' ), $step, $this->steps ); ?></button>
 						<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
-							<input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Purchase', 'tcp' ); ?>" class="tcp_checkout_button btn btn-primary" />
+							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_purchase_button_title', __( 'Purchase', 'tcp' ), $step, $this->steps ); ?></button>
 							<input type="hidden" name="tcp_step" value="<?php echo count( $this->steps ) - 1; ?>" />
 						<?php endif;
 					endif; ?>
 					<input type="hidden" name="tcp_step" value="<?php echo $step; ?>" />
-					<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step );
+					<?php $html = apply_filters( 'tcp_show_box_back_continue', ob_get_clean(), $step, $this->steps );
 					if ( ! $box->is_form_encapsulated() ) $html .= '</form>';
 					if ( strlen( $html ) > 0 ) : ?>
 						<span class="tcp_back_continue"><?php echo $html; ?></span>
@@ -308,9 +314,9 @@ class TCPCheckoutManager {
 		$order['comment'] = isset( $_SESSION['tcp_checkout']['cart']['comment'] ) ? $_SESSION['tcp_checkout']['cart']['comment'] : '';
 		$order['order_currency_code'] = tcp_get_the_currency_iso();
 		/* 
-		*  Set order billing address related fields to blanks so we avoid any errors later on 
-		*  if we use payment gateway to fill these fields and not the local wordpress form
-		*/
+		 *  Set order billing address related fields to blanks so we avoid any errors later on 
+		 *  if we use payment gateway to fill these fields and not the local wordpress form
+		 */
 		$order['billing_firstname'] = '';
 		$order['billing_lastname'] = '';
 		$order['billing_company'] = '';
@@ -337,6 +343,7 @@ class TCPCheckoutManager {
 			$order['billing_company']		= $address->company;
 			$order['billing_tax_id_number']	= $address->tax_id_number;
 			$order['billing_street']		= $address->street;
+			$order['billing_street_2']		= $address->street_2;
 			$order['billing_city']			= $address->city;
 			$order['billing_city_id']		= $address->city_id;
 			$order['billing_region']		= $address->region;
@@ -355,6 +362,7 @@ class TCPCheckoutManager {
 			$order['billing_company']		= $_SESSION['tcp_checkout']['billing']['billing_company'];
 			$order['billing_tax_id_number']	= $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'];
 			$order['billing_street']		= $_SESSION['tcp_checkout']['billing']['billing_street'];
+			$order['billing_street_2']		= $_SESSION['tcp_checkout']['billing']['billing_street_2'];
 			$order['billing_city']			= $_SESSION['tcp_checkout']['billing']['billing_city'];
 			$order['billing_city_id']		= isset( $_SESSION['tcp_checkout']['billing']['billing_city_id'] ) ? $_SESSION['tcp_checkout']['billing']['billing_city_id'] : '';
 			$order['billing_region']		= isset( $_SESSION['tcp_checkout']['billing']['billing_region'] ) ? $_SESSION['tcp_checkout']['billing']['billing_region'] : '';
@@ -374,6 +382,7 @@ class TCPCheckoutManager {
 			$order['shipping_lastname']		= $address->lastname;
 			$order['shipping_company']		= $address->company;
 			$order['shipping_street']		= $address->street;
+			$order['shipping_street_2']		= $address->street_2;
 			$order['shipping_city']			= $address->city;
 			$order['shipping_city_id']		= $address->city_id;
 			$order['shipping_region']		= $address->region;
@@ -391,6 +400,7 @@ class TCPCheckoutManager {
 			$order['shipping_lastname']		= $order['billing_lastname'];
 			$order['shipping_company']		= $order['billing_company'];
 			$order['shipping_street']		= $order['billing_street'];
+			$order['shipping_street_2']		= $order['billing_street_2'];
 			$order['shipping_city']			= $order['billing_city'];
 			$order['shipping_city_id']		= $order['billing_city_id'];
 			$order['shipping_region']		= $order['billing_region'];
@@ -408,6 +418,7 @@ class TCPCheckoutManager {
 			$order['shipping_lastname']		= $_SESSION['tcp_checkout']['shipping']['shipping_lastname'];
 			$order['shipping_company']		= $_SESSION['tcp_checkout']['shipping']['shipping_company'];
 			$order['shipping_street']		= $_SESSION['tcp_checkout']['shipping']['shipping_street'];
+			$order['shipping_street_2']		= $_SESSION['tcp_checkout']['shipping']['shipping_street_2'];
 			$order['shipping_city']			= $_SESSION['tcp_checkout']['shipping']['shipping_city'];
 			$order['shipping_city_id']		= isset( $_SESSION['tcp_checkout']['shipping']['shipping_city_id'] ) ? $_SESSION['tcp_checkout']['shipping']['shipping_city_id'] : '';
 			$order['shipping_region']		= isset( $_SESSION['tcp_checkout']['shipping']['shipping_region'] ) ? $_SESSION['tcp_checkout']['shipping']['shipping_region'] : '';
@@ -425,6 +436,7 @@ class TCPCheckoutManager {
 			$order['shipping_lastname'] = '';
 			$order['shipping_company'] = '';
 			$order['shipping_street'] = '';
+			$order['shipping_street_2'] = '';
 			$order['shipping_city'] = '';
 			$order['shipping_city_id'] = '';
 			$order['shipping_region'] = '';
@@ -448,20 +460,24 @@ class TCPCheckoutManager {
 		$shoppingCart = apply_filters( 'tcp_checkout_create_order_get_shopping_cart', TheCartPress::getShoppingCart() );
 		$shipping_country = $this->get_shipping_country();
 		if ( isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'] ) ) { //sending
-			$smi = $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];
-			$smi = explode( '#', $smi );
-			$class = $smi[0];
-			$instance = $smi[1];
+			$smi		= $_SESSION['tcp_checkout']['shipping_methods']['shipping_method_id'];
+			$smi		= explode( '#', $smi );
+			$class		= $smi[0];
+			$instance	= $smi[1];
 			$shipping_method = new $class();
 			$shipping_amount = $shipping_method->getCost( $instance, $shipping_country, $shoppingCart );
 			$shoppingCart->addOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID, $shipping_amount, __( 'Shipping cost', 'tcp' ) );
-			$order['shipping_amount'] = 0;
-			$order['shipping_method'] = strip_tags( $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) );// . ' [' . $class . ']';
-			$order['shipping_notice'] = $shipping_method->getNotice( $instance, $shipping_country, $shoppingCart );
+			$order['shipping_amount']	= 0;
+			$order['shipping_method']	= strip_tags( $shipping_method->getCheckoutMethodLabel( $instance, $shipping_country, $shoppingCart ) );// . ' [' . $class . ']';
+			$order['shipping_notice']	= $shipping_method->getNotice( $instance, $shipping_country, $shoppingCart );
+			$order['shipping_class']	= $class;
+			$order['shipping_instance']	= $instance;
 		} else {
-			$order['shipping_amount'] = 0;
-			$order['shipping_method'] = '';//isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_label'] ) ? $_SESSION['tcp_checkout']['shipping_methods']['shipping_label'] : '';
-			$order['shipping_notice'] = '';
+			$order['shipping_amount']	= 0;
+			$order['shipping_method']	= '';//isset( $_SESSION['tcp_checkout']['shipping_methods']['shipping_label'] ) ? $_SESSION['tcp_checkout']['shipping_methods']['shipping_label'] : '';
+			$order['shipping_notice']	= '';
+			$order['shipping_class']	= '';
+			$order['shipping_instance']	= 0;
 		}
 		if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) ) {
 			$pmi = $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'];
@@ -634,6 +650,7 @@ class TCPCheckoutManager {
 			$address['company']		= $order['billing_company'];
 			$address['tax_id_number']	= $order['billing_tax_id_number'];
 			$address['street']		= $order['billing_street'];
+			$address['street_2']	= $order['billing_street_2'];
 			$address['city']		= $order['billing_city'];
 			$address['city_id']		= $order['billing_city_id'];
 			$address['region_id']	= $order['billing_region_id'];
@@ -652,27 +669,28 @@ class TCPCheckoutManager {
 	function createNewShippingAddress( $order ) {
 		if ( $order['customer_id'] > 0 ) {
 			$address = array();
-			$address['customer_id'] = $order['customer_id'];
-			$address['default_shipping'] = 'Y';
-			$address['default_billing'] = 'N';
-			$address['name'] = __( 'shipping address', 'tcp' );
-			$address['firstname'] = $order['shipping_firstname'];
-			$address['lastname'] = $order['shipping_lastname'];
-			$address['company'] = $order['shipping_company'];
-			$address['street'] = $order['shipping_street'];
-			$address['city'] = $order['shipping_city'];
-			$address['city_id'] = $order['shipping_city_id'];
-			$address['region_id'] = $order['shipping_region_id'];
-			$address['region'] = $order['shipping_region'];
-			$address['postcode'] = $order['shipping_postcode'];
-			$address['country'] = $order['shipping_country'];
-			$address['country_id'] = $order['shipping_country_id'];
-			$address['telephone_1'] = $order['shipping_telephone_1'];
-			$address['telephone_2'] = $order['shipping_telephone_2'];
-			$address['fax'] = $order['shipping_fax'];
-			$address['email'] = $order['shipping_email'];
+			$address['customer_id']			= $order['customer_id'];
+			$address['default_shipping']	= 'Y';
+			$address['default_billing']		= 'N';
+			$address['name']				= __( 'shipping address', 'tcp' );
+			$address['firstname']			= $order['shipping_firstname'];
+			$address['lastname']			= $order['shipping_lastname'];
+			$address['company']				= $order['shipping_company'];
+			$address['street']				= $order['shipping_street'];
+			$address['street_2']				= $order['shipping_street_2'];
+			$address['city']				= $order['shipping_city'];
+			$address['city_id']				= $order['shipping_city_id'];
+			$address['region_id']			= $order['shipping_region_id'];
+			$address['region']				= $order['shipping_region'];
+			$address['postcode']			= $order['shipping_postcode'];
+			$address['country']				= $order['shipping_country'];
+			$address['country_id']			= $order['shipping_country_id'];
+			$address['telephone_1']			= $order['shipping_telephone_1'];
+			$address['telephone_2']			= $order['shipping_telephone_2'];
+			$address['fax']					= $order['shipping_fax'];
+			$address['email']				= $order['shipping_email'];
 			Addresses::save( $address );
 		}
 	}
 }
-?>
+} // class_exists check

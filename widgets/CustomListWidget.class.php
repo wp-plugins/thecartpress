@@ -16,6 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'CustomListWidget' ) ) {
+
 require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 
 class CustomListWidget extends TCPParentWidget {
@@ -147,19 +152,8 @@ class CustomListWidget extends TCPParentWidget {
 	function show_grid( $instance, $args ) {
 		if ( isset( $instance['pagination'] ) && $instance['pagination'] ) $instance['see_pagination'] = $instance['pagination'];
 		$loop = locate_template( 'loop-tcp-grid.php' );
-		if ( strlen( $loop ) ) {
-			include( $loop );
-		} else {
-			global $thecartpress;
-			$use_default_loop = $thecartpress->get_setting( 'use_default_loop', 'yes' );
-			if ( $use_default_loop == 'yes' ) { //2011	
-				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyeleven/loop-tcp-grid.php' );
-			} elseif ( $use_default_loop == 'yes_2010' ) {
-				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentyten/loop-tcp-grid.php' );
-			} else { //if ( $use_default_loop == 'yes_2012' ) {
-				include( TCP_THEMES_TEMPLATES_FOLDER . 'tcp-twentytwelve/loop-tcp-grid.php' );
-			}
-		}
+		if ( strlen( $loop ) == 0 ) $loop = TCP_THEMES_TEMPLATES_FOLDER . 'loop-tcp-grid.php';
+		include( $loop );
 	}
 
 	function update( $new_instance, $old_instance ) {
@@ -167,6 +161,9 @@ class CustomListWidget extends TCPParentWidget {
 		$instance['limit'] = (int)$new_instance['limit'];
 		$instance['loop'] = $new_instance['loop'];
 		$instance['columns'] = (int)$new_instance['columns'];
+		$instance['columns_xs'] = (int)$new_instance['columns_xs'];
+		$instance['columns_sm'] = (int)$new_instance['columns_sm'];
+		$instance['columns_lg'] = (int)$new_instance['columns_lg'];
 		$instance['see_title'] = $new_instance['see_title'] == 'yes';
 		$instance['title_tag'] = $new_instance['title_tag'];
 		$instance['see_image'] = $new_instance['see_image'] == 'yes';
@@ -193,7 +190,10 @@ class CustomListWidget extends TCPParentWidget {
 		$instance = wp_parse_args( (array)$instance, array(
 			'limit' =>  5,
 			'loop' => '',
+			'columns_xs' => 2,
+			'columns_sm' => 2,
 			'columns' => 2,
+			'columns_lg' => 2,
 			'see_title' => true,
 			'title_tag' => '',
 			'see_image' => false,
@@ -248,8 +248,20 @@ class CustomListWidget extends TCPParentWidget {
 		</p>
 		<div id="<?php echo $advanced_id; ?>" style="display:none;">
 			<p>
-				<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
+				<label for="<?php echo $this->get_field_id( 'columns_xs' ); ?>"><?php _e( 'N<sup>o</sup> columns for Extra Small Devices (Tablets)', 'tcp' ); ?>:</label>
+				<input id="<?php echo $this->get_field_id( 'columns_xs' ); ?>" name="<?php echo $this->get_field_name( 'columns_xs' ); ?>" type="text" value="<?php echo $instance['columns_xs']; ?>" size="3" />
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'columns_sm' ); ?>"><?php _e( 'N<sup>o</sup> columns for Small Devices (Tablets)', 'tcp' ); ?>:</label>
+				<input id="<?php echo $this->get_field_id( 'columns_sm' ); ?>" name="<?php echo $this->get_field_name( 'columns_sm' ); ?>" type="text" value="<?php echo $instance['columns_sm']; ?>" size="3" />
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'N<sup>o</sup> columns for Medium Devices (Desktop)', 'tcp' ); ?>:</label>
 				<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $instance['columns']; ?>" size="3" />
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'columns_lg' ); ?>"><?php _e( 'N<sup>o</sup> columns for Large Devices (Large Desktop)', 'tcp' ); ?>:</label>
+				<input id="<?php echo $this->get_field_id( 'columns_lg' ); ?>" name="<?php echo $this->get_field_name( 'columns_lg' ); ?>" type="text" value="<?php echo $instance['columns_lg']; ?>" size="3" />
 			</p>
 			<p>
 				<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id( 'see_title' ); ?>" name="<?php echo $this->get_field_name( 'see_title' ); ?>" value="yes" <?php checked( $instance['see_title'] ); ?> />
@@ -326,4 +338,4 @@ class CustomListWidget extends TCPParentWidget {
 		</div><?php
 	}
 }
-?>
+} // class_exists check

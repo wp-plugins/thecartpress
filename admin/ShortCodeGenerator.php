@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+?>
+<div class="wrap">
+<?php
 $shortcodes_data = get_option( 'tcp_shortcodes_data' );
 $shortcode_id = isset( $_REQUEST['shortcode_id'] ) ? $_REQUEST['shortcode_id'] : -1;
 
@@ -61,6 +63,11 @@ if ( isset( $_REQUEST['tcp_shortcode_save'] ) ) {
 			'order_type'			=> isset( $_REQUEST['order_type'] ) ? $_REQUEST['order_type'] : 'date',
 			'order_desc'			=> isset( $_REQUEST['order_desc'] ) ? 'desc' : 'asc',
 			'columns'				=> isset( $_REQUEST['columns'] ) ? (int)$_REQUEST['columns'] : 2,
+
+			'columns_xs'			=> isset( $_REQUEST['columns_xs'] ) ? (int)$_REQUEST['columns_xs'] : 2,
+			'columns_sm'			=> isset( $_REQUEST['columns_sm'] ) ? (int)$_REQUEST['columns_sm'] : 4,
+			'columns_lg'			=> isset( $_REQUEST['columns_lg'] ) ? (int)$_REQUEST['columns_lg'] : 6,
+
 			'see_title'				=> isset( $_REQUEST['see_title'] ),// ? $_REQUEST['see_title'] == 'yes' : false,
 			'title_tag'				=> isset( $_REQUEST['title_tag'] ) ? $_REQUEST['title_tag'] : '',
 			'see_image'				=> isset( $_REQUEST['see_image'] ),// ? $_REQUEST['see_image'] == 'yes' : false,
@@ -109,8 +116,7 @@ if ( $shortcode_id == -1 ) {
 }
 $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 
-<div class="wrap">
-	<h2><?php _e( 'ShortCode Generator', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-shortcode-generator' ); ?><h2><?php _e( 'ShortCode Generator', 'tcp' ); ?></h2>
 	<ul class="subsubsub">
 	</ul><!-- subsubsub -->
 	<div class="clear"></div>
@@ -144,6 +150,11 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 	$see_order_panel		= isset( $shortcode_data['see_order_panel'] ) ? $shortcode_data['see_order_panel'] : false;
 	$loop					= isset( $shortcode_data['loop'] ) ? $shortcode_data['loop'] : '';
 	$columns				= isset( $shortcode_data['columns'] ) ? $shortcode_data['columns'] : 2;
+
+	$columns_xs				= isset( $shortcode_data['columns_xs'] ) ? $shortcode_data['columns_xs'] : 2;
+	$columns_sm				= isset( $shortcode_data['columns_sm'] ) ? $shortcode_data['columns_sm'] : 2;
+	$columns_lg				= isset( $shortcode_data['columns_lg'] ) ? $shortcode_data['columns_lg'] : 2;
+
 	$order_type				= isset( $shortcode_data['order_type'] ) ? $shortcode_data['order_type'] : 'date';
 	$order_desc				= isset( $shortcode_data['order_desc'] ) ? $shortcode_data['order_desc'] : 'desc';
 	$see_title				= isset( $shortcode_data['see_title'] ) ? $shortcode_data['see_title'] == 'yes' : true;
@@ -384,8 +395,20 @@ $shortcode_href = TCP_ADMIN_PATH . 'ShortCodeGenerator.php&shortcode_id='; ?>
 		</p>
 	<div id="advanced" style="display:none;">
 		<p>
-			<label for="columns"><?php _e( 'N<sup>o</sup> columns', 'tcp' ); ?>:</label>
+			<label for="columns_xs"><?php _e( 'N<sup>o</sup> columns for Extra Small Devices (Phones)', 'tcp' ); ?>:</label>
+			<input id="columns_xs" name="columns_xs" type="text" value="<?php echo $columns_xs; ?>" size="3" />
+		</p>
+		<p>
+			<label for="columns_sm"><?php _e( 'N<sup>o</sup> columns for Small Devices (Tablets)', 'tcp' ); ?>:</label>
+			<input id="columns_sm" name="columns_sm" type="text" value="<?php echo $columns_sm; ?>" size="3" />
+		</p>
+		<p>
+			<label for="columns"><?php _e( 'N<sup>o</sup> columns for Medium Devices (Desktop)', 'tcp' ); ?>:</label>
 			<input id="columns" name="columns" type="text" value="<?php echo $columns; ?>" size="3" />
+		</p>
+		<p>
+			<label for="columns_lg"><?php _e( 'N<sup>o</sup> columns for Large Devices (Large Desktop)', 'tcp' ); ?>:</label>
+			<input id="columns_lg" name="columns_lg" type="text" value="<?php echo $columns_lg; ?>" size="3" />
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="see_title" name="see_title" value="yes" <?php checked( $see_title ); ?> />

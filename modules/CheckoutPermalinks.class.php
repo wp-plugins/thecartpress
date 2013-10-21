@@ -1,5 +1,15 @@
 <?php
 /**
+ * Checkout Permalinks
+ *
+ * Adds a permalink to each step of the checkout. This feature is not compatible with ajax.
+ * By default it's disabled, and must be activated modifying manage_modules.php
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,6 +29,8 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+if ( ! class_exists( 'TCPCheckoutPermalinks' ) ) {
+
 if ( get_option( 'permalink_structure' ) == '' ) return;
 
 define( 'TCP_CHECKOUT', 'checkout' );
@@ -26,23 +38,21 @@ define( 'TCP_CHECKOUT_PURCHASE', 'purchase' );
 define( 'TCP_CHECKOUT_PURCHASE_OK', 'purchase-ok' );
 define( 'TCP_CHECKOUT_PURCHASE_KO', 'purchase-ko' );
 
-if ( ! class_exists( 'TCPCheckoutPermalinks' ) ) {
-	
 class TCPCheckoutPermalinks {
 
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ), 9 );
-		add_filter( 'rewrite_rules_array', array( &$this, 'rewrite_rules_array' ) );
-		add_filter( 'tcp_get_the_checkout_ok_url', array( &$this, 'tcp_get_the_checkout_ok_url' ) );
-		add_filter( 'tcp_get_the_checkout_ko_url', array( &$this, 'tcp_get_the_checkout_ko_url' ) );
-		register_activation_hook( __FILE__, array( &$this, 'activate_plugin' ) );
-		register_deactivation_hook( __FILE__, array( &$this, 'deactivate_plugin' ) );
+		add_action( 'init'							, array( $this, 'init' ), 9 );
+		add_filter( 'rewrite_rules_array'			, array( $this, 'rewrite_rules_array' ) );
+		add_filter( 'tcp_get_the_checkout_ok_url'	, array( $this, 'tcp_get_the_checkout_ok_url' ) );
+		add_filter( 'tcp_get_the_checkout_ko_url'	, array( $this, 'tcp_get_the_checkout_ko_url' ) );
+		register_activation_hook( __FILE__			, array( $this, 'activate_plugin' ) );
+		register_deactivation_hook( __FILE__		, array( $this, 'deactivate_plugin' ) );
 	}
 
 	function init() {
-		add_filter( 'tcp_the_checkout_url', array( &$this, 'tcp_the_checkout_url' ) );
-		add_filter( 'query_vars', array( &$this, 'query_vars' ) );
-		add_action( 'template_redirect', array( &$this, 'template_redirect' ) );
+		add_filter( 'tcp_the_checkout_url'	, array( $this, 'tcp_the_checkout_url' ) );
+		add_filter( 'query_vars'			, array( $this, 'query_vars' ) );
+		add_action( 'template_redirect'		, array( $this, 'template_redirect' ) );
 	}
 
 	function tcp_the_checkout_url( $url ) {

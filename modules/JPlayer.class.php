@@ -1,5 +1,14 @@
 <?php
 /**
+ * JPlayer
+ *
+ * JPlayer, for music files attached to products.
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -25,16 +34,16 @@
 class TCPJPlayer {
 
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ), 20 );
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 90 );
+		add_action( 'tcp_init'		, array( $this, 'tcp_init' ), 20 );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ), 90 );
 	}
 
-	function init() {
+	function tcp_init() {
 		//add_filter( 'the_content', array( &$this, 'the_content' ) );
+		wp_register_script( 'tcp_jplayer'			,  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js', 'jquery' );
+		wp_register_script( 'tcp_jplayer_playlist'	,  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js', 'jquery' );
 
-		wp_register_script( 'tcp_jplayer',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/jquery.jplayer.min.js', 'jquery' );
 		wp_enqueue_script( 'tcp_jplayer' );
-		wp_register_script( 'tcp_jplayer_playlist',  WP_PLUGIN_URL . '/thecartpress/js/jquery.jplayer/add-on/jplayer.playlist.min.js', 'jquery' );
 		wp_enqueue_script( 'tcp_jplayer_playlist' );
 		global $thecartpress;
 		if ( $thecartpress ) {
@@ -52,7 +61,7 @@ class TCPJPlayer {
 		return $content . $out;
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
@@ -154,7 +163,7 @@ $jplayer_skin = $thecartpress->get_setting( 'jplayer_skin', 'tcp.black' ); ?>
 		$uri = $this->get_url( $post_id );
 		if ( strlen( $uri ) > 0 ) {
 			$playlists = $this->get_playlists( $post_id );
-	var_dump($playlists);
+	//var_dump($playlists);
 			ob_start(); ?>
 <script type="text/javascript">
 jQuery(document).ready(function(){

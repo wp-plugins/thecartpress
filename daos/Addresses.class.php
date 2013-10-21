@@ -32,7 +32,8 @@ class Addresses {
 			`company`			varchar(50)		NOT NULL,
 			`tax_id_number`		varchar(30)		NOT NULL,
 			`company_id`		varchar(30)		NOT NULL,
-			`street`			varchar(100)	NOT NULL,
+			`street`			varchar(255)	NOT NULL,
+			`street_2`			varchar(255)	NOT NULL,
 			`city`				varchar(100)	NOT NULL,
 			`city_id`			char(4)			NOT NULL,
 			`region`			varchar(100)	NOT NULL,
@@ -159,6 +160,7 @@ class Addresses {
 				'tax_id_number'		=> isset( $address['tax_id_number'] ) ? $address['tax_id_number'] : '',
 				'company_id'		=> isset( $address['company_id'] ) ? $address['company_id'] : 0,
 				'street'			=> $address['street'],
+				'street_2'			=> isset( $address['street_2'] ) ? $address['street_2'] : '',
 				'city'				=> $address['city'],
 				'city_id'			=> $address['city_id'],
 				'region'			=> $address['region'],
@@ -170,7 +172,7 @@ class Addresses {
 				'fax'				=> $address['fax'],
 				'email'				=> $address['email'],
 			),
-			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -189,6 +191,7 @@ class Addresses {
 				'tax_id_number'		=> $address['tax_id_number'],
 				'company_id'		=> isset( $address['company_id'] ) ? $address['company_id'] : 0,
 				'street'			=> $address['street'],
+				'street_2'			=> isset( $address['street_2'] ) ? $address['street_2'] : '',
 				'city'				=> $address['city'],
 				'city_id'			=> $address['city_id'],
 				'region'			=> $address['region'],
@@ -201,7 +204,7 @@ class Addresses {
 				'email'				=> $address['email'],
 			),
 			array( 'address_id' =>  $address['address_id']),
-			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			array ( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s', '%s', '%s', '%s', '%s' ),
 			array ( '%d' )
 		);
 		return $wpdb->insert_id;
@@ -212,4 +215,3 @@ class Addresses {
 		$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'tcp_addresses where address_id = %d', $address_id ) );
 	}
 }
-

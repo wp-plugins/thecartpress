@@ -249,3 +249,30 @@ jQuery.fn.tcp_convert_multiselect = function( n_selected_title ) {
 	select.after( div );
 	select.remove();
 };
+
+/**
+ * For tabs
+ *
+ * @since 1.3.2
+ * @see ProductsCustomFieldsMetaBox.class.php
+ */
+jQuery( function() {
+	jQuery('.tcp-nav-tab').click( function ( event ) {
+		event.stopPropagation();
+		var sel_tab = jQuery( this );
+		var sel_target = sel_tab.attr( 'target' );
+		var parent = sel_tab.parent();
+		parent.find( '.tcp-nav-tab' ).each( function() {
+			var tab = jQuery( this );
+			var target = tab.attr( 'target' );
+			if (target == sel_target ) {
+				tab.addClass( 'nav-tab-active' );
+				jQuery( '#' + target).show();
+			} else {
+				tab.removeClass( 'nav-tab-active' );
+				jQuery( '#' + target).hide();
+			}
+		} );
+		return false;
+	} );
+} );

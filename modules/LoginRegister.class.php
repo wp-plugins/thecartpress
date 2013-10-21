@@ -1,5 +1,15 @@
 <?php
 /**
+ * Login/Register
+ *
+ * Adds powerful functionality to Login/Register as:
+ *  Lock user until administrator unlock
+ *  Select a custom page for Login
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,49 +26,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPLoginRegister' ) ) {
+
 class TCPLoginRegister {
+
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
-		add_action( 'wp_ajax_tcp_register_and_login', array( &$this, 'tcp_register_and_login' ) );
-		add_action( 'wp_ajax_nopriv_tcp_register_and_login', array( &$this, 'tcp_register_and_login' ) );
-		add_action( 'wp_ajax_tcp_register_and_login_ajax', array( &$this, 'tcp_register_and_login_ajax' ) );
-		add_action( 'wp_ajax_nopriv_tcp_register_and_login_ajax', array( &$this, 'tcp_register_and_login_ajax' ) );
-		add_action( 'user_register', array( &$this, 'user_register' ) );
-		add_filter( 'wp_authenticate_user', array( &$this, 'wp_authenticate_user' ), 1 );
-		add_action( 'admin_menu', array( &$this, 'admin_menus' ) );
-		add_shortcode( 'tcp_my_account', array( &$this, 'tcp_my_account' ) );
+		add_action( 'tcp_init'									, array( $this, 'tcp_init' ) );
+		add_action( 'admin_init'								, array( $this, 'admin_init' ) );
+		add_action( 'wp_ajax_tcp_register_and_login'			, array( $this, 'tcp_register_and_login' ) );
+		add_action( 'wp_ajax_nopriv_tcp_register_and_login'		, array( $this, 'tcp_register_and_login' ) );
+		add_action( 'wp_ajax_tcp_register_and_login_ajax'		, array( $this, 'tcp_register_and_login_ajax' ) );
+		add_action( 'wp_ajax_nopriv_tcp_register_and_login_ajax', array( $this, 'tcp_register_and_login_ajax' ) );
+		add_action( 'user_register'								, array( $this, 'user_register' ) );
+		add_action( 'tcp_admin_menu'							, array( $this, 'tcp_admin_menus' ) );
+
+		add_filter( 'wp_authenticate_user'						, array( $this, 'wp_authenticate_user' ), 1 );
+
+		add_shortcode( 'tcp_my_account'							, array( $this, 'tcp_my_account' ) );
 	}
 
-	function init() {
+	function tcp_init() {
 		if ( ! is_admin() ) {
-			global $thecartpress;
-			if ( $thecartpress && $thecartpress->get_setting( 'my_account_as_login_page', false ) !== false ) {
-				add_filter( 'login_url', array( &$this, 'login_url' ), 10, 2 );
-				add_filter( 'logout_url', array( &$this, 'logout_url' ), 10, 2 );
+			if ( thecartpress()->get_setting( 'my_account_as_login_page', false ) !== false ) {
+				add_filter( 'login_url'	, array( $this, 'login_url' ), 10, 2 );
+				add_filter( 'logout_url', array( $this, 'logout_url' ), 10, 2 );
 			}
 		}
 	}
 
 	function admin_init() {
-		add_action( 'tcp_main_settings_page', array( $this, 'tcp_main_settings_page' ) );
-		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
+		add_action( 'tcp_main_settings_after_page'	, array( $this, 'tcp_main_settings_after_page' ) );
+		add_action( 'edit_user_profile'				, array( $this, 'edit_user_profile' ), 10 );
+		add_action( 'edit_user_profile_update'		, array( $this, 'edit_user_profile_update' ) );
 
-		add_action( 'edit_user_profile', array( &$this, 'edit_user_profile' ), 10 );
-		add_action( 'edit_user_profile_update', array( &$this, 'edit_user_profile_update' ) );
-		add_filter( 'manage_users_columns', array( &$this, 'manage_users_columns' ) );
-		add_filter( 'manage_users_custom_column', array( &$this, 'manage_users_custom_column' ), 10, 3 );
+		add_filter( 'tcp_main_settings_action'		, array( $this, 'tcp_main_settings_action' ) );
+		add_filter( 'manage_users_columns'			, array( $this, 'manage_users_columns' ) );
+		add_filter( 'manage_users_custom_column'	, array( $this, 'manage_users_custom_column' ), 10, 3 );
 	}
 
-	function tcp_main_settings_page() {
+	function tcp_main_settings_after_page() {
 		global $thecartpress;
 		if ( ! $thecartpress ) return;
 		$my_account_as_login_page = $thecartpress->get_setting( 'my_account_as_login_page', false ); ?>
-<tr valign="top">
-	<th colspan="2">
-		<h3><?php _e( 'Custom Login', 'tcp' ); ?></h3>
-	</th>
-</tr>
+
+<h3><?php _e( 'Custom Login', 'tcp' ); ?></h3>
+
+<div class="postbox">
+<table class="form-table">
+<tbody>
 <tr valign="top">
 	<th scope="row">
 	<label for="my_account_as_login_page"><?php _e( 'Select your login page', 'tcp' ); ?></label>
@@ -76,7 +94,10 @@ class TCPLoginRegister {
 		<!--<input type="checkbox" id="my_account_as_login_page" name="my_account_as_login_page" value="yes" <?php checked( $my_account_as_login_page ); ?> />-->
 	</td>
 </tr>
-<?php }
+</tbody>
+</table>
+</div><!-- .postbox --><?php
+	}
 
 	function tcp_main_settings_action( $settings ) {
 		//$settings['my_account_as_login_page'] = isset( $_POST['my_account_as_login_page'] );
@@ -86,7 +107,7 @@ class TCPLoginRegister {
 		return $settings;
 	}
 
-	function admin_menus() {
+	function tcp_admin_menus() {
 		global $menu;
 
 		$wp_user_search = new WP_User_Query( array(
@@ -296,4 +317,4 @@ class TCPLoginRegister {
 }
 
 new TCPLoginRegister();
-?>
+} // class_exists check

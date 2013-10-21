@@ -16,6 +16,9 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 if ( ! isset( $source ) ) return;
 
 if ( $source->see_address() ) : ?>
@@ -70,10 +73,16 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_shipping_street(); ?>
 				</li>
 				<li class="shipping_info">
-					<?php echo $source->get_shipping_postcode() . ', ' . $source->get_shipping_city(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_shipping_postcode() ) > 0 ) $out[] = $source->get_shipping_postcode();
+					if ( strlen( $source->get_shipping_city() ) > 0 ) $out[] = $source->get_shipping_city();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="shipping_info">
-					<?php echo $source->get_shipping_region() . ', ' . $source->get_shipping_country(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_shipping_region() ) > 0 ) $out[] = $source->get_shipping_region();
+					if ( strlen( $source->get_shipping_country() ) > 0 ) $out[] = $source->get_shipping_country();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="shipping_info">
 					<?php $telephone = $source->get_shipping_telephone_1();
@@ -92,7 +101,7 @@ if ( $source->see_address() ) : ?>
 			<ul class="span7 unstyled">
 				<li class="billing_info divider" ><h3><?php _e( 'Billing address', 'tcp' ); ?></h3></li>
 				<li class="billing_info">
-					<?php echo $source->get_billing_firstname();?> <?php echo $source->get_billing_lastname(); ?>
+					<?php echo $source->get_billing_firstname(); ?> <?php echo $source->get_billing_lastname(); ?>
 				</li>
 				<?php if ( strlen( $source->get_shipping_company() ) > 0 && strlen( $source->get_billing_company() ) > 0 ) : ?>
 						<li class="billing_info">
@@ -113,10 +122,16 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_street(); ?>
 				</li>
 				<li class="billing_info">
-					<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_postcode() ) > 0 ) $out[] = $source->get_billing_postcode();
+					if ( strlen( $source->get_billing_city() ) > 0 ) $out[] = $source->get_billing_city();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="billing_info">
-					<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_region() ) > 0 ) $out[] = $source->get_billing_region();
+					if ( strlen( $source->get_billing_country() ) > 0 ) $out[] = $source->get_billing_country();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="billing_info">
 					<?php $telephone = $source->get_billing_telephone_1();
@@ -154,10 +169,16 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_billing_street(); ?>
 				</li>
 				<li class="billing_info">
-					<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_postcode() ) > 0 ) $out[] = $source->get_billing_postcode();
+					if ( strlen( $source->get_billing_city() ) > 0 ) $out[] = $source->get_billing_city();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="billing_info">
-					<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_region() ) > 0 ) $out[] = $source->get_billing_region();
+					if ( strlen( $source->get_billing_country() ) > 0 ) $out[] = $source->get_billing_country();
+					echo implode( ', ', $out ); ?>
 				</li>
 				<li class="billing_info">
 					<?php $telephone = $source->get_billing_telephone_1();
@@ -280,7 +301,7 @@ if ( $source->has_order_details() ) :
 		if ( $source->has_orders_costs() ) :
 			foreach( $source->get_orders_costs() as $order_cost ) : ?>
 				<tr class="tcp_cart_other_costs_row">
-				<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo htmlspecialchars( $order_cost->get_description() ); ?></td>
+				<td colspan="<?php echo $colspan; ?>" class="tcp_cart_other_costs_title"><?php echo $order_cost->get_description(); ?></td>
 				<td class="tcp_cart_other_costs"><?php echo tcp_format_the_price( $order_cost->get_cost() ); ?></td>
 				<?php $tax = $order_cost->get_cost() * ( $order_cost->get_tax() / 100 );
 				$total_tax += $tax;

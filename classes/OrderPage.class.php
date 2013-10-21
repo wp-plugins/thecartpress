@@ -1,5 +1,14 @@
 <?php
 /**
+ * Cart Table
+ *
+ * Allows to create an order summary from the data base, to print or email
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +25,10 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'OrderPage' ) ) {
 /**
  * Shows an Order
  * It's used in the cart area (into checkout), in print pages and in email pages
@@ -56,4 +69,4 @@ class OrderPage {
 		return $cart_table->show( new TCP_CartSourceDB( $order_id, $args ), $echo, $email );
 	}
 }
-?>
+} // class_exists check

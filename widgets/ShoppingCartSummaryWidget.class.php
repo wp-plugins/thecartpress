@@ -32,7 +32,7 @@ class ShoppingCartSummaryWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		$hide_if_empty = isset( $instance['hide_if_empty'] ) ? $instance['hide_if_empty'] : false;
-		if ( $hide_if_empty && $shoppingCart->isEmpty() ) return;//TODO
+		if ( $hide_if_empty && $shoppingCart->isEmpty() ) return;
 		extract( $args );
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : ' ' );
 		echo $before_widget;

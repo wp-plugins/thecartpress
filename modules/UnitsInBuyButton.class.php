@@ -1,5 +1,14 @@
 <?php
 /**
+ * Units in Buy button
+ *
+ * Allows to define units label for products
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,21 +28,21 @@
 class TCPUnitsInBuyButton {
 
 	static function initModule() {
-		if ( is_admin() ) add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
-		add_filter( 'tcp_get_the_price_label', array( __CLASS__, 'tcp_the_price_label' ), 50, 3 );
+		if ( is_admin() ) add_action( 'admin_init'	, array( __CLASS__, 'admin_init' ) );
+		add_filter( 'tcp_get_the_price_label'		, array( __CLASS__, 'tcp_the_price_label' ), 50, 3 );
 	}
 
 	static function admin_init() {
 		//Product metabox
-		add_action( 'tcp_product_metabox_custom_fields', array( __CLASS__, 'tcp_product_metabox_custom_fields' ) );
-		add_action( 'tcp_product_metabox_save_custom_fields', array( __CLASS__, 'tcp_product_metabox_save_custom_fields' ) );
-		add_action( 'tcp_product_metabox_delete_custom_fields', array( __CLASS__, 'tcp_product_metabox_delete_custom_fields' ) );
+		add_action( 'tcp_product_metabox_custom_fields'			, array( __CLASS__, 'tcp_product_metabox_custom_fields' ) );
+		add_action( 'tcp_product_metabox_save_custom_fields'	, array( __CLASS__, 'tcp_product_metabox_save_custom_fields' ) );
+		add_action( 'tcp_product_metabox_delete_custom_fields'	, array( __CLASS__, 'tcp_product_metabox_delete_custom_fields' ) );
 		//Localize settings
-		add_action( 'tcp_localize_settings_page', array( __CLASS__, 'tcp_localize_settings_page' ) );
-		add_filter( 'tcp_localize_settings_action', array( __CLASS__, 'tcp_localize_settings_action' ) );
+		add_action( 'tcp_localize_settings_page'				, array( __CLASS__, 'tcp_localize_settings_page' ) );
+		add_filter( 'tcp_localize_settings_action'				, array( __CLASS__, 'tcp_localize_settings_action' ) );
 		//CSV Loader
-		add_filter( 'tcp_csvl_option_columns', array( __CLASS__, 'tcp_csvl_option_columns' ), 10, 2 );
-		add_action( 'tcp_csv_loader_row', array( __CLASS__, 'tcp_csv_loader_row' ), 10, 2 );
+		add_filter( 'tcp_csvl_option_columns'					, array( __CLASS__, 'tcp_csvl_option_columns' ), 10, 2 );
+		add_action( 'tcp_csv_loader_row'						, array( __CLASS__, 'tcp_csv_loader_row' ), 10, 2 );
 	}
 
 	static function tcp_the_price_label( $label, $post_id, $price ) {
@@ -102,7 +111,7 @@ class TCPUnitsInBuyButton {
 </tbody>
 </table>
 
-</div>
+</div><!-- .postbox -->
 	<?php }
 
 	static function tcp_localize_settings_action( $settings ) {

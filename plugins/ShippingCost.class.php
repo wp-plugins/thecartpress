@@ -16,6 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'ShippingCost' ) ) {
+
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 
 class ShippingCost extends TCP_Plugin {
@@ -440,4 +445,4 @@ jQuery(document).ready( function() {
 		return $shipping_region;
 	}
 }
-?>
+} // class_exists check

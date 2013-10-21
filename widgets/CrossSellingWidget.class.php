@@ -15,7 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 
+if ( ! class_exists( 'CrossSellingWidget' ) ) {
+	
 require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
 
 class CrossSellingWidget extends CustomListWidget {
@@ -46,4 +50,4 @@ class CrossSellingWidget extends CustomListWidget {
 		parent::show_post_type_form( $instance );
 	}
 }
-?>
+} // class_exists check

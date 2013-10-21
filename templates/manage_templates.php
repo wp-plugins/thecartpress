@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( 'tcp_buybutton_template.php' );
 require_once( 'tcp_calendar_template.php' );
 require_once( 'tcp_custom_taxonomies.php' );
@@ -28,4 +32,3 @@ require_once( 'tcp_template_template.php' );
 require_once( 'tcp_template_login.php' );
 
 require_once( TCP_CHECKOUT_FOLDER	. 'tcp_checkout_template.php' );
-?>

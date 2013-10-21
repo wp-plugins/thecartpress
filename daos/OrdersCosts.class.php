@@ -42,6 +42,12 @@ class OrdersCosts {
 		return $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d order by cost_order', $order_id ) );
 	}
 
+	/**
+	 * Returns the total costs associated to an order
+	 *
+	 * @param int $order_id, id of the order
+	 * @param double $total, inital total
+	 */
 	static function getTotalCost( $order_id, $total = 0 ) {
 		global $wpdb;
 		$res = $wpdb->get_results( $wpdb->prepare( 'select order_cost_id, cost, tax from ' . $wpdb->prefix . 'tcp_orders_costs where order_id = %d', $order_id ) );

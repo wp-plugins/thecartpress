@@ -16,23 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPTaxSettings' ) ) {
+
 class TCPTaxSettings {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Tax', 'tcp' ), false, array( 'TCPTaxSettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/tax_settings_48.png' ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_settings();
+		$base = thecartpress()->get_base_settings();
 		$page = add_submenu_page( $base, __( 'Tax Settings', 'tcp' ), __( 'Tax', 'tcp' ), 'tcp_edit_settings', 'tax_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -185,4 +189,4 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 }
 
 new TCPTaxSettings();
-?>
+} // class_exists check

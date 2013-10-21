@@ -1,5 +1,14 @@
 <?php
 /**
+ * Ajax features
+ *
+ * Adds ajax features to the store: to Add button, to Remove, Update button in Shopping Cart and to Checkout process
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,41 +25,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPAjax' ) ) {
+
 class TCPAjax {
 	function __construct() {
-		add_action( 'init', array( &$this, 'init' ) );
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'tcp_init'	, array( $this, 'tcp_init' ) );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 
-	function init() {
-		global $thecartpress;
-		if ( $thecartpress && $thecartpress->get_setting( 'activate_ajax', true ) ) {
-			add_action( 'wp_footer', 'tcp_states_footer_scripts' );
+	function tcp_init() {
+		if ( thecartpress()->get_setting( 'activate_ajax', true ) ) {
+			add_action( 'wp_footer'									, 'tcp_states_footer_scripts' );
 
-			add_action( 'wp_ajax_tcp_shopping_cart_actions', array( &$this, 'tcp_shopping_cart_actions' ) );
-			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions', array( &$this, 'tcp_shopping_cart_actions' ) );
-			add_action( 'wp_ajax_tcp_checkout', array( &$this, 'tcp_checkout' ) );
-			add_action( 'wp_ajax_nopriv_tcp_checkout', array( &$this, 'tcp_checkout' ) );
+			add_action( 'wp_ajax_tcp_shopping_cart_actions'			, array( $this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_nopriv_tcp_shopping_cart_actions'	, array( $this, 'tcp_shopping_cart_actions' ) );
+			add_action( 'wp_ajax_tcp_checkout'						, array( $this, 'tcp_checkout' ) );
+			add_action( 'wp_ajax_nopriv_tcp_checkout'				, array( $this, 'tcp_checkout' ) );
 
-			add_action( 'wp_print_scripts', array( &$this, 'wp_enqueue_scripts' ) );
-			add_filter( 'tcp_the_add_to_cart_button', array( &$this, 'tcp_the_add_to_cart_button' ), 10, 2 );
-			add_filter( 'tcp_the_add_to_cart_items_in_the_cart', array( &$this, 'tcp_the_add_to_cart_items_in_the_cart' ), 99, 2 );
-			add_action( 'wp_head', array( &$this, 'wp_head' ) );
-			add_filter( 'tcp_get_shopping_cart_summary', array( &$this, 'tcp_get_shopping_cart_summary' ), 10, 2 );
-			add_action( 'tcp_get_shopping_cart_widget', array( &$this, 'tcp_get_shopping_cart_widget' ) );
-			add_action( 'ecommerce_twentyeleven_header_total', array( &$this, 'ecommerce_twentyeleven_header_total' ) );
-			add_action( 'tcp_shopping_cart_after', array( &$this, 'tcp_shopping_cart_after' ) );
-			//add_filter( 'tcp_ckeckout_current_title', array( &$this, 'tcp_ckeckout_current_title' ), 10, 2 );
-			add_filter( 'tcp_show_box_back_continue', array( &$this, 'tcp_ckeckout_current_title' ), 10, 2 );
-			add_action( 'tcp_show_box', array( &$this, 'tcp_show_box' ) );
-			add_filter( 'tcp_get_the_thumbnail_with_permalink', array( &$this, 'tcp_get_the_thumbnail_with_permalink' ), 10, 3 );
-			add_filter( 'tcp_get_the_thumbnail', array( &$this, 'tcp_get_the_thumbnail_with_permalink' ), 10, 3 );
+			add_action( 'wp_print_scripts'							, array( $this, 'wp_enqueue_scripts' ) );
+			add_filter( 'tcp_the_add_to_cart_button'				, array( $this, 'tcp_the_add_to_cart_button' ), 10, 2 );
+			add_filter( 'tcp_the_add_to_cart_items_in_the_cart'		, array( $this, 'tcp_the_add_to_cart_items_in_the_cart' ), 99, 2 );
+			add_action( 'wp_head'									, array( $this, 'wp_head' ) );
+			add_filter( 'tcp_get_shopping_cart_summary'				, array( $this, 'tcp_get_shopping_cart_summary' ), 10, 2 );
+			add_action( 'tcp_get_shopping_cart_widget'				, array( $this, 'tcp_get_shopping_cart_widget' ) );
+			add_action( 'ecommerce_twentyeleven_header_total'		, array( $this, 'ecommerce_twentyeleven_header_total' ) );
+			add_action( 'tcp_shopping_cart_after'					, array( $this, 'tcp_shopping_cart_after' ) );
+			//add_filter( 'tcp_ckeckout_current_title'				, array( $this, 'tcp_ckeckout_current_title' ), 10, 2 );
+			add_filter( 'tcp_show_box_back_continue'				, array( $this, 'tcp_ckeckout_current_title' ), 10, 2 );
+			add_action( 'tcp_show_box'								, array( $this, 'tcp_show_box' ) );
+			add_filter( 'tcp_get_the_thumbnail_with_permalink'		, array( $this, 'tcp_get_the_thumbnail_with_permalink' ), 10, 3 );
+			add_filter( 'tcp_get_the_thumbnail'						, array( $this, 'tcp_get_the_thumbnail_with_permalink' ), 10, 3 );
 		}
 	}
 
 	function admin_init() {
-		add_action( 'tcp_main_settings_page', array( &$this, 'tcp_main_settings_page' ) );
-		add_filter( 'tcp_main_settings_action', array( &$this, 'tcp_main_settings_action' ) );
+		add_action( 'tcp_main_settings_after_page'	, array( $this, 'tcp_main_settings_after_page' ) );
+		add_filter( 'tcp_main_settings_action'	, array( $this, 'tcp_main_settings_action' ) );
 	}
 
 	function wp_enqueue_scripts() {
@@ -74,23 +87,26 @@ class TCPAjax {
 		<?php return $image . ob_get_clean();
 	}
 
-	function tcp_main_settings_page() {
+	function tcp_main_settings_after_page() {
 		global $thecartpress;
 		$activate_ajax = $thecartpress->get_setting( 'activate_ajax', true ); ?>
-		<tr valign="top">
-			<th colspan="2">
-				<h3><?php _e( 'Ajax', 'tcp' ); ?></h3>
-			</th>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="checkbox" id="activate_ajax" name="activate_ajax" value="yes" <?php checked( true, $activate_ajax ); ?> />
-				<span class="description"><?php _e( 'Activate Ajax in the buy buttons, Shopping Cart and Checkout pages.', 'tcp' ); ?></span>
-			</td>
-		</tr><?php
+<h3><?php _e( 'Ajax', 'tcp' ); ?></h3>
+
+<div class="postbox">
+<table class="form-table">
+<tbody>
+<tr valign="top">
+	<th scope="row">
+		<label for="activate_ajax"><?php _e( 'Activate ajax', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" id="activate_ajax" name="activate_ajax" value="yes" <?php checked( true, $activate_ajax ); ?> />
+		<span class="description"><?php _e( 'Activate Ajax in the buy buttons, Shopping Cart and Checkout pages.', 'tcp' ); ?></span>
+	</td>
+</tr>
+</tbody>
+</table>
+</div><!-- .postbox --> <?php
 	}
 
 	function tcp_main_settings_action( $settings ) {
@@ -568,4 +584,4 @@ function tcp_items_in_the_cart_<?php echo $post_id; ?>() {
 }
 
 new TCPAjax();
-?>
+} // class_exists check

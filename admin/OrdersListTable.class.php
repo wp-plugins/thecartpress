@@ -1,7 +1,25 @@
 <?php
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
-require_once( TCP_DAOS_FOLDER . 'OrdersCosts.class.php' );
+/**
+ * This file is part of TheCartPress.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'OrdersListTable' ) ) {
 
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
@@ -151,7 +169,7 @@ class TCPOrdersList {
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
 <div class="wrap">
-	<h2><?php _e( 'Orders', 'tcp' );?></h2>
+	<?php screen_icon( 'tcp-orders-list' ); ?><h2><?php _e( 'Orders', 'tcp' );?></h2>
 	<div class="clear"></div>
 	<?php $ordersListTable->search_box( __( 'Search Orders', 'tcp' ), 'order' ); ?>
 	<?php $ordersListTable->display(); ?>
@@ -162,4 +180,4 @@ class TCPOrdersList {
 		return $out;
 	}
 }
-?>
+} // class_exists check
