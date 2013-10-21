@@ -1,5 +1,13 @@
 <?php
 /**
+ * M3Playes
+ *
+ * Old implementation for music Files. Not in use
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+return;//not in use
 /**
  * 
  * Shows a mp3 player based on HTML5 or flash

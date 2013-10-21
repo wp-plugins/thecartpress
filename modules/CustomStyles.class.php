@@ -1,5 +1,14 @@
 <?php
 /**
+ * Custom Style
+ *
+ * Allows to add a custom Css Style editor to add css code to the header of the site
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,11 +25,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCustomStyles' ) ) {
+
 class TCPCustomStyles {
 	function __construct() {
-		add_filter( 'body_class', array( &$this, 'body_classes' ) );
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ), 40 );
-		add_action( 'wp_head', array( &$this, 'wp_head' ) );
+		add_filter( 'body_class'		, array( $this, 'body_classes' ) );
+		add_action( 'tcp_admin_menu'	, array( $this, 'tcp_admin_menu' ), 40 );
+		add_action( 'wp_head'			, array( $this, 'wp_head' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Custom Styles', 'tcp' ), false, array( 'TCPCustomStyles', __FILE__ ), plugins_url( 'thecartpress/images/miranda/customstyles_settings_48.png' ) );
 	}
@@ -53,13 +67,12 @@ class TCPCustomStyles {
 		<?php endif;
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_appearance();
+		$base = thecartpress()->get_base_appearance();
 		$page = add_submenu_page( $base, __( 'Custom Style', 'tcp' ), __( 'Custom Styles', 'tcp' ), 'tcp_edit_settings', 'custom_style_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -91,29 +104,29 @@ class TCPCustomStyles {
 <div class="clear"></div>
 
 <form method="post">
-<?php $tcp_custom_style_activate = get_option( 'tcp_custom_style_activate', false ); ?>
-<label for="tcp_custom_style_activate"><input type="checkbox" name="tcp_custom_style_activate" id="tcp_custom_style_activate" value="yes" <?php checked( $tcp_custom_style_activate ); ?>/>&nbsp;<?php _e( 'Activate next Styles', 'tcp' ); ?></label>
-<br/>
-<textarea name="tcp_custom_style" id="tcp_custom_style" cols="60" rows="30">
-<?php echo stripslashes( get_option( 'tcp_custom_style', '' ) ); ?>
-</textarea>
+	<?php $tcp_custom_style_activate = get_option( 'tcp_custom_style_activate', false ); ?>
+	<label for="tcp_custom_style_activate"><input type="checkbox" name="tcp_custom_style_activate" id="tcp_custom_style_activate" value="yes" <?php checked( $tcp_custom_style_activate ); ?>/>&nbsp;<?php _e( 'Activate next Styles', 'tcp' ); ?></label>
+	<br/>
+	<textarea name="tcp_custom_style" id="tcp_custom_style" cols="60" rows="30">
+	<?php echo stripslashes( get_option( 'tcp_custom_style', '' ) ); ?>
+	</textarea>
 
-<?php $templates = tcp_get_custom_templates(); ?>
-<?php wp_nonce_field( 'tcp_custom_style_settings' ); ?>
-<?php submit_button( null, 'primary', 'save-custom_styles-settings' ); ?>
+	<?php $templates = tcp_get_custom_templates(); ?>
+	<?php wp_nonce_field( 'tcp_custom_style_settings' ); ?>
+	<?php submit_button( null, 'primary', 'save-custom_styles-settings' ); ?>
 </form>
-</div>
+</div><!-- .wrap -->
 <?php
 	}
 
 	function admin_action() {
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_custom_style_settings' );
-		update_option( 'tcp_custom_style_activate', isset( $_POST['tcp_custom_style_activate'] ) );
-		update_option( 'tcp_custom_style', $_POST['tcp_custom_style'] );
+		update_option( 'tcp_custom_style_activate'	, isset( $_POST['tcp_custom_style_activate'] ) );
+		update_option( 'tcp_custom_style'			, $_POST['tcp_custom_style'] );
 		$this->updated = true;
 	}
 }
 
 new TCPCustomStyles();
-?>
+} // class_exists check

@@ -44,9 +44,11 @@ if ( isset( $_REQUEST['tcp_edit_tax'] ) ) {
 $taxes = Taxes::getAll();
 ?>
 <div class="wrap">
-<h2><?php _e( 'List of taxes', 'tcp' );?></h2>
-<ul class="subsubsub">
-</ul>
+<?php screen_icon( 'tcp-taxes-list' ); ?><h2><?php _e( 'List of taxes', 'tcp' );?></h2>
+
+<p><?php _e( 'Add taxes to apply to products', 'tcp' ); ?></p>
+
+<ul class="subsubsub"></ul>
 <div class="clear"></div>
 
 <?php if ( isset( $error_tax ) && count( $error_tax ) > 0 ) : ?>

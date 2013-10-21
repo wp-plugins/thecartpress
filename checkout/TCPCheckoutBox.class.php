@@ -1,5 +1,14 @@
 <?php
 /**
+ * Checkout Box
+ *
+ * The Parent of all checkout Boxes, also called "Steps"
+ *
+ * @package TheCartPress
+ * @subpackage Checkout
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCheckoutBox' ) ) {
 
 /**
  * Parent class for all boxes for the checkout
@@ -85,5 +99,14 @@ class TCPCheckoutBox {
 	function show() {
 		return '';
 	}
+
+	/**
+	 * Outputs any message associated with an id. It's for forms.
+	 *
+	 * @since 1.3.2
+	 */ 
+	protected function showErrorMsg( $id ) {
+		return '';
+	}
 }
-?>
+} // class_exists check

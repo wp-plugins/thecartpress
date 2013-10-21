@@ -1,5 +1,15 @@
 <?php
 /**
+ * Plugins panel
+ *
+ * Allows to add a filter in the Plugins panel, to see only the TheCartPress plugins
+ * Those plugins must have a label called parent, with value "TheCartPress"
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
 * This file is part of TheCartPress.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -20,11 +30,11 @@ class TCPWPPluginsAdminPanel {
 
 	function __construct() {
 		if ( is_admin() ) {
-			add_filter( 'extra_plugin_headers', array( $this, 'extra_plugin_headers' ) );
-			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ) , 10, 4 );
-			add_filter( 'views_plugins', array( $this, 'views_plugins' ) );
-			add_filter( 'all_plugins', array( $this, 'all_plugins' ) );
-			add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
+			add_filter( 'extra_plugin_headers'	, array( $this, 'extra_plugin_headers' ) );
+			add_filter( 'plugin_row_meta'		, array( $this, 'plugin_row_meta' ) , 10, 4 );
+			add_filter( 'views_plugins'			, array( $this, 'views_plugins' ) );
+			add_filter( 'all_plugins'			, array( $this, 'all_plugins' ) );
+			add_filter( 'plugin_action_links'	, array( $this, 'plugin_action_links' ), 10, 2 );
 		}
 	}
 

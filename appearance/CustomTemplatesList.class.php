@@ -16,13 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCustomTemplatesList' ) ) {
+
 class TCPCustomTemplatesList {
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( &$this, 'tcp_admin_menu' ), 60 );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
@@ -49,8 +54,8 @@ class TCPCustomTemplatesList {
 
 	function admin_page() { ?>
 <div class="wrap">
-	<?php screen_icon(); ?><h2><?php _e( 'Custom Templates', 'tcp' ); ?></h2>
-
+	<?php screen_icon( 'tcp-custom-templates' ); ?><h2><?php _e( 'Custom Templates', 'tcp' ); ?></h2>
+	<p><?php _e( 'This screen allows to set which templates to use in case to show the different elements of your site.', 'tcp' ); ?></p>
 <?php if ( ! empty( $this->updated ) ) : ?>
 <div id="message" class="updated">
 <p><?php _e( 'Settings updated', 'tcp' ); ?></p>
@@ -206,4 +211,4 @@ endforeach; ?>
 }
 
 new TCPCustomTemplatesList();
-?>
+} // class_exists check

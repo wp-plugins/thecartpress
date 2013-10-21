@@ -48,7 +48,11 @@ class TCPSigninBox extends TCPCheckoutBox {
 
 	function show_config_settings() {
 		$settings	= get_option( 'tcp_' . get_class( $this ), array() );
-		$display	= isset( $settings['display'] ) ? $settings['display'] : 'all'; ?>
+		if ( isset( $settings['display'] ) && $settings['display'] == 'all' ) {
+			$display = array( 'guest', 'login', 'register' );
+		} else {
+			$display = isset( $settings['display'] ) ? (array)$settings['display'] : array( 'guest', 'login', 'register' );
+		} ?>
 		<table class="form-table">
 			<tbody>
 				<tr valign="top">
@@ -56,7 +60,7 @@ class TCPSigninBox extends TCPCheckoutBox {
 						<label for="display_guest"><?php _e( 'See Guest option', 'tcp' );?>:</label>
 					</th>
 					<td>
-						<input type="radio" name="display" id="display_guest" value="guest" <?php checked( 'guest', $display );?>/>
+						<input type="checkbox" name="tcp_display[]" id="display_guest" value="guest" <?php checked( in_array( 'guest', $display ) );?>/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -64,15 +68,15 @@ class TCPSigninBox extends TCPCheckoutBox {
 						<label for="display_login"><?php _e( 'See Login option', 'tcp' );?>:</label>
 					</th>
 					<td>
-						<input type="radio" name="display" id="display_login" value="login" <?php checked( 'login', $display );?>/>
+						<input type="checkbox" name="tcp_display[]" id="display_login" value="login" <?php checked( in_array( 'login', $display ) );?>/>
 					</td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">
-						<label for="display_all"><?php _e( 'See Login & Guest options', 'tcp' );?>:</label>
+						<label for="display_register"><?php _e( 'See Register option', 'tcp' );?>:</label>
 					</th>
 					<td>
-						<input type="radio" name="display" id="display_all" value="all" <?php checked( 'all', $display );?>/>
+						<input type="checkbox" name="tcp_display[]" id="display_register" value="register" <?php checked( in_array( 'register', $display ) );?>/>
 					</td>
 				</tr>
 			</tbody>
@@ -81,8 +85,10 @@ class TCPSigninBox extends TCPCheckoutBox {
 	}
 
 	function save_config_settings() {
+		$display = isset( $_REQUEST['tcp_display'] ) ? $_REQUEST['tcp_display'] : array( 'guest' );
+		if ( in_array( 'register', $display ) && ! in_array( 'login', $display ) ) $display[] = 'login';
 		$settings = array(
-			'display'	=> isset( $_REQUEST['display'] ) ? $_REQUEST['display'] : 'all',
+			'display' => $display,
 		);
 		update_option( 'tcp_' . get_class( $this ), $settings );
 		return true;
@@ -91,11 +97,11 @@ class TCPSigninBox extends TCPCheckoutBox {
 	function show() {?>
 <div class="checkout_info clearfix" id="identify_layer_info">
 	<?php $settings		= get_option( 'tcp_' . get_class( $this ), array() );
-	$display			= isset( $settings['display'] ) ? $settings['display'] : 'all';
+	$display			= isset( $settings['display'] ) ? $settings['display'] : array( 'guest', 'login', 'register' );
 	global $thecartpress;
 	$user_registration	= $thecartpress->get_setting( 'user_registration', false ); ?>
-	<?php if ( ! is_user_logged_in() ) : ?>
-		<?php if ( 'all' == $display || 'login' == $display ) : ?>
+	<?php if ( ! is_user_logged_in() ) { ?>
+		<?php if ( in_array( 'login', $display ) ) { ?>
 			<div id="login_form">
 				<h4><?php _e( 'Login', 'tcp' ); ?></h4>
 				<?php if ( ! $user_registration ) : ?>
@@ -120,11 +126,11 @@ class TCPSigninBox extends TCPCheckoutBox {
 				);
 				tcp_login_form( $args ); ?>
 			</div><!--login_form -->
-		<?php endif; ?>
+		<?php } ?>
 
-		<?php if ( 'all' == $display || 'guest' == $display ) : ?>
+		<?php if ( in_array( 'guest', $display ) || in_array( 'register', $display ) ) { ?>
 			<div id="login_guess">
-				<?php if ( get_option( 'users_can_register' ) ) : ?>
+				<?php if ( get_option( 'users_can_register' ) && in_array( 'register', $display ) ) { ?>
 					<?php if ( ! $user_registration ) : ?>
 						<h4><?php _e( 'Checkout as registered', 'tcp' ); ?></h4>
 					<?php endif;?>
@@ -140,14 +146,14 @@ class TCPSigninBox extends TCPCheckoutBox {
 						</li>
 					</ul>
 					<?php echo apply_filters( 'tcp_checkout_siginbox_registered', ob_get_clean() ); ?>
-				<?php endif; ?>
+				<?php } ?>
 				<?php do_action( 'tcp_checkout_identify' ); ?>
-				<?php if ( ! $user_registration ) : ?>
+				<?php if ( ! $user_registration && in_array( 'guest', $display ) ) { ?>
 					<?php ob_start(); ?>
 					<h4><?php _e( 'Checkout as a guest', 'tcp' ); ?></h4>
 					<p><strong>
 					<?php if ( get_option( 'users_can_register' ) ) : ?>
-						<?php _e( 'Or you can make as a guest.', 'tcp' ); ?>
+						<?php //_e( 'Or you can make as a guest.', 'tcp' ); ?>
 					<?php else : ?>
 						<?php _e( 'You can make as a guest.', 'tcp' ); ?>
 					<?php endif; ?>
@@ -157,12 +163,12 @@ class TCPSigninBox extends TCPCheckoutBox {
 					</ul>
 					<?php echo apply_filters( 'tcp_checkout_siginbox_as_guest', ob_get_clean() ); ?>
 					<!--<p><input type="submit" name="tcp_continue" id="tcp_continue" value="<?php _e( 'Continue', 'tcp' ); ?>" /></p>-->
-				<?php else : ?>
+				<?php } else { ?>
 					 <p style="clear: both;"><strong><?php _e( 'User registration is required. Please, log in or register. ', 'tcp' ); ?></strong></p>
-				<?php endif; ?>
+				<?php } ?>
 			</div><!-- login_guess -->
-		<?php endif; ?>
-	<?php endif; ?>
+		<?php } ?>
+	<?php } ?>
 </div> <!-- identify_layer_info -->
 		<?php return ! $user_registration;
 	}

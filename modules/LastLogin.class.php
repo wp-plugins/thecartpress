@@ -1,5 +1,14 @@
 <?php
 /**
+ * Last Login
+ *
+ * Save info about the date of the last login of a customer. This date eill be displayed in the profile section of FrontEnd
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPLastLogin' ) ) {
 
 class TCPLastLogin {
 
@@ -52,3 +66,4 @@ function tcp_the_last_login( $user_id = 0, $echo = true ) {
     if ( $echo ) echo $out;
 	else return $out;
 }
+} // class_exists check

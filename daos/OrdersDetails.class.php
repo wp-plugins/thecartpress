@@ -74,6 +74,22 @@ class OrdersDetails {
 		return round( $total, $decimals );
 	}
 
+	/**
+	 * Returns the total weight of an order
+	 *
+	 * @param $order_id
+	 * @param $weight, initial weight
+	 * @since 1.3.2
+	 */
+	static function getTotalWeight( $order_id, $weight = 0 ) {
+		global $wpdb;
+		$res =  $wpdb->get_results( $wpdb->prepare( 'select weight, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		foreach( $res as $row ) {
+			$weight += $row->weight * $row->qty_ordered;
+		}
+		return $weight;
+	}
+
 	static function getTotalDetailed( $order_id ) {
 		$detailed = array(
 			'amount'	=> 0,

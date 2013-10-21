@@ -1,5 +1,14 @@
 <?php
 /**
+ * Product custom fields Metabox
+ *
+ * Ouputs the fields associated to a product, as price, SKU, etc.
+ *
+ * @package TheCartPress
+ * @subpackage Metaboxes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +25,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'ProductCustomFieldsMetabox' ) ) {
+
 require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
 	
@@ -30,8 +44,8 @@ class ProductCustomFieldsMetabox {
 		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
 			foreach( $saleable_post_types as $post_type )
 				add_meta_box( 'tcp-product-custom-fields', __( 'Product setup', 'tcp' ), array( &$this, 'show' ), $post_type, 'normal', 'high' );
-		add_action( 'save_post', array( &$this, 'save' ), 10, 2 );
-		add_action( 'delete_post', array( &$this, 'delete' ) );
+		add_action( 'save_post'		, array( $this, 'save' ), 10, 2 );
+		add_action( 'delete_post'	, array( $this, 'delete' ) );
 	}
 
 	function show() {
@@ -56,73 +70,108 @@ class ProductCustomFieldsMetabox {
 			if ( $post_id > 0 )
 				$tcp_product_parent_id = RelEntities::getParent( $post_id );
 		}
-		if ( $post->post_type == TCP_PRODUCT_POST_TYPE ) : ?>
+		if ( tcp_is_saleable_post_type( $post->post_type ) ) { 
+			$links = array();
+			$count = RelEntities::count( $post_id, 'PROD-PROD' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = '';
+			$links[] = array(
+				'url'	=> TCP_ADMIN_PATH . 'AssignedProductsList.php&post_id=' . $post_id . '&post_type_to=' . $post->post_type . '&rel_type=PROD-PROD"',
+				'title'	=> __( 'For crossing sell, adds products to the current product', 'tcp' ),
+				'label'	=> __( 'Related Products', 'tcp' ) . $count
+			);
 
+			$count = RelEntities::count( $post_id, 'PROD-POST' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = '';
+			$links[] = array(
+				'url'	=> TCP_ADMIN_PATH . 'AssignedProductsList.php&post_id=' . $post_id . '&post_type_to=post&rel_type=PROD-POST',
+				'title'	=> __( 'For crossing sell, adds Post to the current product', 'tcp' ),
+				'label'	=> __( 'Related Posts', 'tcp' ) . $count
+			);
+
+			$count = RelEntities::count( $post_id, 'PROD-CAT_POST' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = '';
+			$links[] = array(
+				'url'	=> TCP_ADMIN_PATH . 'AssignedCategoriesList.php&post_id=' . $post_id . '&rel_type=PROD-CAT_POST',
+				'title'	=> __( 'For crossing sell, adds Categories of Post to the current product', 'tcp' ),
+				'label'	=> __( 'Related Cat. of Posts', 'tcp' ) . $count
+			);
+
+			$count = RelEntities::count( $post_id, 'PROD-CAT_PROD' );
+			if ( $count > 0 ) $count = ' (' . $count . ')';
+			else $count = '';
+			$links[] = array(
+				'url'	=> TCP_ADMIN_PATH . 'AssignedCategoriesList.php&post_id=' . $post_id . '&rel_type=PROD-CAT_PROD',
+				'title'	=> __( 'For crossing sell, adds Post to the current product', 'tcp' ),
+				'label'	=> __( 'Related Cat. of Products', 'tcp' ) . $count
+			);
+			$links = apply_filters( 'tcp_product_custom_fields_links', $links, $post_id, $post );
+			?>
 <ul class="subsubsub">
-	<?php $count = RelEntities::count( $post_id, 'PROD-PROD' );
-	if ( $count > 0 ) $count = ' (' . $count . ')';
-	else $count = ''; ?>
-
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>AssignedProductsList.php&post_id=<?php echo $post_id; ?>&post_type_to=tcp_product&rel_type=PROD-PROD" title="<?php _e( 'For crossing sell, adds products to the current product', 'tcp' ); ?>"><?php _e( 'related products', 'tcp' ); ?> <?php echo $count; ?></a></li>
-
-	<?php $count = RelEntities::count( $post_id, 'PROD-POST' );
-	if ( $count > 0 ) $count = ' (' . $count . ')';
-	else $count = ''; ?>
-
-	<li>|</li>
-
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>AssignedProductsList.php&post_id=<?php echo $post_id; ?>&post_type_to=post&rel_type=PROD-POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related posts', 'tcp' ); ?> <?php echo $count; ?></a></li>
-
-	<?php $count = RelEntities::count( $post_id, 'PROD-CAT_POST' );
-	if ( $count > 0 ) $count = ' (' . $count . ')';
-	else $count = ''; ?>
-
-	<li>|</li>
-
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>AssignedCategoriesList.php&post_id=<?php echo $post_id; ?>&rel_type=PROD-CAT_POST"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of posts', 'tcp' ); ?> <?php echo $count; ?></a></li>
-
-	<?php $count = RelEntities::count( $post_id, 'PROD-CAT_PROD' );
-	if ( $count > 0 ) $count = ' (' . $count . ')';
-	else $count = ''; ?>
-
-	<li>|</li>
-
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>AssignedCategoriesList.php&post_id=<?php echo $post_id; ?>&rel_type=PROD-CAT_PROD"  title="<?php _e( 'For crossing sell, adds post to the current product', 'tcp' ); ?>"><?php _e( 'related cat. of products', 'tcp' ); ?> <?php echo $count; ?></a></li>
-	<!--<li>|</li>
-	<li><a href="<?php echo TCP_ADMIN_PATH; ?>CopyProduct.php&post_id=<?php echo $post_id; ?>"><?php _e( 'copy product', 'tcp' ); ?></a></li>
-	-->
+<?php $separator = '';
+foreach( $links as $link ) {
+	echo $separator; ?>
+	<li><a href="<?php echo $link['url']; ?>" title="<?php echo $link['title']; ?>"><?php echo $link['label']; ?></a></li>
+	<?php if ( $separator == '' ) $separator = '<li>|</li>';
+} ?>
 </ul>
 <div class="clear"></div>
 
-<?php endif; ?>
+<?php } ?>
 
-<ul class="subsubsub">
-<?php do_action( 'tcp_product_metabox_toolbar', $post_id ); ?>
+<!--<ul class="subsubsub">
+<?php //do_action( 'tcp_product_metabox_toolbar', $post_id ); ?>
 </ul>
+<div class="clear"></div>-->
 
 <?php if ( $create_grouped_relation ): ?>
 	<input type="hidden" name="tcp_product_parent_id" value="<?php echo $tcp_product_parent_id; ?>" />
 	<input type="hidden" name="tcp_rel_type" value="<?php echo $tcp_rel_type; ?>" />
 <?php endif; ?>
 
-<div class="form-wrap">
+<?php $tabs = array(
+	'tcp-price-options' => __( 'Prices', 'tcp' ),
+	'tcp-advanced-options' => __( 'Advanced', 'tcp' ),
+);
+$tabs = apply_filters( 'tcp_product_custom_fields_tabs', $tabs );
+?>
+<div class="wrap">
 
+<h4 class="nav-tab-wrapper">
+<?php $active = ' nav-tab-active';
+foreach( $tabs  as $tab_id => $tab ) { ?>
+	<a href="#" class="nav-tab tcp-nav-tab<?php echo $active; ?>" target="<?php echo $tab_id; ?>"><?php echo $tab; ?></a>
+	<?php $active = '';
+} ?>
+</h4>
+
+<div class="form-wrap">
 	<?php wp_nonce_field( 'tcp_noncename', 'tcp_noncename' ); ?>
 
+<div id="tcp-price-options">
 	<table class="form-table">
 	<tbody>
-
 	<tr valign="top">
-		<th scope="row"><label for="tcp_type"><?php _e( 'Type', 'tcp' ); ?>:</label></th>
-		<td><?php $types_for = array();
-		foreach( tcp_get_product_types() as $id => $type ) $types_for[$id] = $type['label'];
-		tcp_html_select( 'tcp_type', $types_for, tcp_get_the_product_type( $post_id ) ); ?></td>
+		<th scope="row">
+			<label for="tcp_type"><?php _e( 'Type', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<?php $types_for = array();
+			foreach( tcp_get_product_types() as $id => $type ) $types_for[$id] = $type['label'];
+			tcp_html_select( 'tcp_type', $types_for, tcp_get_the_product_type( $post_id ) ); ?>
+		</td>
 	</tr>
 
 	<tr valign="top">
-		<th scope="row"><label for="tcp_price"><?php _e( 'Price', 'tcp' ); ?>:</label></th>
-		<td><input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id, false ) ); ?>" class="regular-text" style="width:12em !important" />&nbsp;<?php tcp_the_currency(); ?> <?php tcp_price_include_tax_message(); ?>
-		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
+		<th scope="row">
+			<label for="tcp_price"><?php _e( 'Price', 'tcp' ); ?>:</label>
+		</th>
+		<td>
+			<input type="text" min="0" step="any" placeholder="<?php tcp_get_number_format_example(); ?>" name="tcp_price" id="tcp_price" value="<?php echo tcp_number_format( tcp_get_the_price( $post_id, false ) ); ?>" class="regular-text" style="width:12em !important" />&nbsp;<?php tcp_the_currency(); ?> <?php tcp_price_include_tax_message(); ?>
+			<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p>
+		</td>
 	</tr>
 
 	<?php do_action( 'tcp_product_metabox_custom_fields_after_price', $post_id ); ?>
@@ -141,11 +190,29 @@ class ProductCustomFieldsMetabox {
 			<a href="admin.php?page=thecartpress/admin/TaxesList.php"><?php _e( 'Taxes', 'tcp' ); ?></a>
 		</td>
 	</tr>
+	</tbody>
+	</table>
+</div><!-- #tcp-price-options -->
+
+<div id="tcp-advanced-options" style="display:none;">
+	<table class="form-table">
+	<tbody>
+
+	<tr valign="top">
+		<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' ); ?>:</label></th>
+		<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_sku', true ) ); ?>" class="regular-text" type="text" style="width:12em"></td>
+	</tr>
 
 	<tr valign="top">
 		<th scope="row"><label for="tcp_weight"><?php _e( 'Weight', 'tcp' ); ?>:</label></th>
 		<td><input type="text" min="0" step="0.01" placeholder="<?php tcp_number_format_example(); ?>" name="tcp_weight" id="tcp_weight" value="<?php echo tcp_number_format( (float)tcp_get_the_weight( $post_id ) ); ?>" class="regular-text" style="width:12em" />&nbsp;<?php tcp_the_unit_weight(); ?>
-		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></p></td>
+		<span class="description"><?php printf( __( 'Current number format is %s', 'tcp'), tcp_get_number_format_example( 9999.99, false ) ); ?></span></td>
+	</tr>
+
+	<tr valign="top">
+		<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' ); ?>:</label></th>
+		<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) ); ?>" class="regular-text" type="text" style="width:4em">
+		<span class="description"><?php _e( 'Numerical position to sort the product in lists of products.', 'tcp' ); ?></span></td>
 	</tr>
 
 	<tr valign="top">
@@ -157,13 +224,13 @@ class ProductCustomFieldsMetabox {
 	<tr valign="top">
 		<th scope="row"><label for="tcp_is_visible"><?php _e( 'Is visible (in loops/catalogue)', 'tcp' ); ?>:</label></th>
 		<td>
-			<?php if ( $create_grouped_relation )
+			<?php if ( $create_grouped_relation ) {
 				$is_visible = false;
-			elseif ( tcp_get_the_product_type( $post_id ) == '' )
+			} elseif ( tcp_get_the_product_type( $post_id ) == '' ) {
 				$is_visible = true; //by default
-			else
+			} else {
 				$is_visible = tcp_is_visible( $post_id );
-			?>
+			} ?>
 			<input type="checkbox" name="tcp_is_visible" id="tcp_is_visible" value="yes" <?php checked( $is_visible, true ); ?> />
 		</td>
 	</tr>
@@ -180,27 +247,20 @@ class ProductCustomFieldsMetabox {
 		<th scope="row"><label for="tcp_exclude_range"><?php _e( 'Exclude for range prices', 'tcp' ); ?>:</label></th>
 		<td>
 			<input type="checkbox" name="tcp_exclude_range" id="tcp_exclude_range" value="yes" <?php checked( $tcp_exclude_range, true ); ?> />
-			<span class="description"><?php _e( 'If the product is assigned to a Grouped product, this options exclude the product from the range price of the parent product.', 'tcp' ); ?></span>
+			<span class="description"><?php _e( 'If the product is assigned to a Grouped product, this option excludes the product from the range price of the parent product.', 'tcp' ); ?></span>
 		</td>
-	</tr>
-
-	<tr valign="top">
-		<th scope="row"><label for="tcp_order"><?php _e( 'Order (in loops/catalogue)', 'tcp' ); ?>:</label></th>
-		<td><input name="tcp_order" id="tcp_order" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_order', true ) ); ?>" class="regular-text" type="text" style="width:4em">
-		<span class="description"><?php _e( 'Numerical position to sort the product in lists of products.', 'tcp' ); ?></span></td>
-	</tr>
-
-	<tr valign="top">
-		<th scope="row"><label for="tcp_sku"><?php _e( 'SKU', 'tcp' ); ?>:</label></th>
-		<td><input name="tcp_sku" id="tcp_sku" value="<?php echo htmlspecialchars( get_post_meta( $post_id, 'tcp_sku', true ) ); ?>" class="regular-text" type="text" style="width:12em"></td>
 	</tr>
 
 	<?php do_action( 'tcp_product_metabox_custom_fields', $post_id ); ?>
 
 	</tbody>
 	</table>
+</div><!-- #tcp-advanced-options -->
+
+<?php do_action( 'tcp_product_metabox_custom_tabs', $post_id ); ?>
 
 </div> <!-- form-wrap -->
+</div> <!-- wrap -->
 		<?php
 	}
 
@@ -316,4 +376,4 @@ class ProductCustomFieldsMetabox {
 }
 
 new ProductCustomFieldsMetabox();
-?>
+} // class_exists check

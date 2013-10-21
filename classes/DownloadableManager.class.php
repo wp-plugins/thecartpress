@@ -15,6 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPDownloadableManager' ) ) {
+
 require_once( dirname( __FILE__ ) . '/IDownloadableManager.interface.php' );
 
 class TCPDownloadableManager implements IDownloadableManager {
@@ -128,4 +134,4 @@ class TCPDownloadableManager implements IDownloadableManager {
 		}
 	}
 }
-?>
+} // class_exists check

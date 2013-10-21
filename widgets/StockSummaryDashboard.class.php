@@ -1,5 +1,13 @@
 <?php
 /**
+ * Stock Summary
+ *
+ * Allows to display the stock summary in the dashboard
+ *
+ * @package TheCartPress
+ * @subpackage Widgets
+ */
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +24,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'StockSummaryDashboard' ) ) {
+
 class StockSummaryDashboard {
 
 	function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init'				, array( $this, 'init' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 	}
 
@@ -114,4 +127,4 @@ class StockSummaryDashboard {
 }
 
 new StockSummaryDashboard();
-?>
+} // class_exists check

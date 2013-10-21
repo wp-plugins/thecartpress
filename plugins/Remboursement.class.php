@@ -16,6 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'TCPRemboursement' ) ) {
+
 class TCPRemboursement extends TCP_Plugin {
 
 	function getTitle() {
@@ -129,4 +134,4 @@ class TCPRemboursement extends TCP_Plugin {
 		</script><?php endif;
 	}
 }
-?>
+} // class_exists check

@@ -16,19 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 
+if ( ! class_exists( 'TCPCurrencyCountrySettings' ) ) {
 class TCPCurrencyCountrySettings {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Localize', 'tcp' ), false, array( 'TCPCurrencyCountrySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/localize_settings_48.png' ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
@@ -356,4 +360,4 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 }
 
 new TCPCurrencyCountrySettings();
-?>
+} // class_exists check

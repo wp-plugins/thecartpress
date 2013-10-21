@@ -1,5 +1,14 @@
 <?php
 /**
+ * Plugin
+ *
+ * Parent Class for all payments or shipping methods
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCP_Plugin' ) ) {
 
 /**
  * All the checkout plugins must implement this class
@@ -269,6 +283,13 @@ function tcp_get_applicable_plugins( $shipping_country, $shoppingCart, $type = '
 	return $applicable_plugins;
 }
 
+/**
+ * Returns the data saved for a shipping method
+ *
+ * @param String plugin_name, plugin class
+ * @param int instance, each shipping method could have more than one shipping instance
+ * @param int order id
+ */
 function tcp_get_shipping_plugin_data( $plugin_name, $instance = 0, $order_id = false ) {
 	return tcp_get_plugin_data( 'shi_' . $plugin_name, $instance, $order_id );
 }
@@ -287,4 +308,4 @@ function tcp_update_plugin_data( $plugin_id, $plugin_data ) {
 	update_option( apply_filters( 'tcp_plugin_data_get_option_key', 'tcp_plugins_data_' . $plugin_id, false ), $plugin_data );
 }
 
-?>
+} // class_exists check

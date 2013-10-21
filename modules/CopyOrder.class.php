@@ -1,5 +1,14 @@
 <?php
 /**
+ * Copy Order
+ *
+ * Adds a copy to Shopping cart button to the FrontEnd module.
+  *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,17 +27,17 @@
 
 class TCPCopyOrder {
 	static function initModule() {
-		add_action( 'init', array( __CLASS__, 'init' ) );
-		if ( is_admin() ) {
-			add_action( 'tcp_admin_order_submit_area', array( __CLASS__, 'tcp_admin_order_submit_area' ) );
-		}
+		add_action( 'tcp_init'							, array( __CLASS__, 'tcp_init' ) );
 		//Front end support
-		add_filter( 'tcp_front_end_orders_columns', array( __CLASS__, 'tcp_front_end_orders_columns' ) );
-		add_action( 'tcp_front_end_orders_cells', array( __CLASS__, 'tcp_front_end_orders_cells' ) );
-		add_action( 'tcp_front_end_orders_order_view', array( __CLASS__, 'tcp_front_end_orders_cells' ) );
+		add_filter( 'tcp_front_end_orders_columns'		, array( __CLASS__, 'tcp_front_end_orders_columns' ) );
+		add_action( 'tcp_front_end_orders_cells'		, array( __CLASS__, 'tcp_front_end_orders_cells' ) );
+		add_action( 'tcp_front_end_orders_order_view'	, array( __CLASS__, 'tcp_front_end_orders_cells' ) );
+		if ( is_admin() ) {
+			add_action( 'tcp_admin_order_submit_area'	, array( __CLASS__, 'tcp_admin_order_submit_area' ) );
+		}
 	}
 
-	static function init() {
+	static function tcp_init() {
 		if ( isset( $_REQUEST['tcp_copy_order_to_shopping_cart'] ) ) {
 			$order_id = isset( $_REQUEST['tcp_copy_order_order_id'] ) ? $_REQUEST['tcp_copy_order_order_id'] : 0;
 			$current_user = wp_get_current_user();

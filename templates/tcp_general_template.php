@@ -388,8 +388,6 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
  * @param boolean $echo Default to echo and not return the form.
  */
 function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
-	ob_start();
-	do_action( 'tcp_get_shopping_cart_before_summary', $args );
 	$args = wp_parse_args( $args, array(
 		'see_total'			=> true,
 		'see_discount'		=> true,
@@ -398,8 +396,12 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 		'see_delete_all'	=> false,
 		'see_shopping_cart'	=> true,
 		'see_checkout'		=> true,
+		'hide_if_empty'		=> false,
 	) );
 	$shoppingCart = TheCartPress::getShoppingCart();
+	if ( $args['hide_if_empty'] && $shoppingCart->isEmpty() ) return;
+	ob_start();
+	do_action( 'tcp_get_shopping_cart_before_summary', $args );
 	$widget_id = isset( $args['widget_id'] ) ? str_replace( '-', '_', $args['widget_id'] ) : 'shopping_cart_summary'; ?>
 <div id="tcp_<?php echo $widget_id; ?>"> 
 	<ul class="tcp_shopping_cart_resume">
@@ -650,7 +652,7 @@ function tcp_login_form( $args = array() ) {
 		</div>
 		<?php apply_filters( 'login_form_middle', '', $args ); ?>
 		<div class="tcp_login_submit">
-			<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="button-primary tcp_checkout_button" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
+			<input id="<?php echo esc_attr( $args['id_submit'] ); ?>" class="tcp_checkout_button tcp-btn tcp-btn-default" type="submit" value="<?php echo esc_html( $args['label_log_in'] ); ?>" name="tcp_submit" />
 			<?php $redirect = $args['redirect'];
 			if ( strlen( $redirect ) == 0 ) $redirect = isset( $_REQUEST['redirect'] ) ? $_REQUEST['redirect'] : ''; ?>
 			<input type="hidden" value="<?php echo esc_attr(  remove_query_arg( 'tcp_register_error', $redirect ) ); ?>" name="tcp_redirect_to" />
@@ -818,12 +820,16 @@ function tcp_get_the_pagination( $echo = true ) {
 	} else {
 		global $wp_query;
 		$big = 999999999; // need an unlikely integer
-		echo paginate_links( array(
+		$args = apply_filters( 'tcp_get_the_pagination_args',  array(
 			'base'		=> str_replace( $big, '%#%', get_pagenum_link( $big ) ),
 			//'format'	=> '?paged=%#%',
 			'current'	=> max( 1, get_query_var('paged') ),
-			'total'		=> $wp_query->max_num_pages
+			'total'		=> $wp_query->max_num_pages,
+			'type'		=> 'list'
 		) );
+		$out = paginate_links( $args );
+		$out = str_replace( '<ul class=\'page-numbers\'>', '<ul class="page-numbers tcp-pagination">', $out );
+		echo '<div class="tcp-tcpf">', $out, '</div>';
 	}
 	$out = ob_get_clean();
 	if ( $echo ) echo $out;

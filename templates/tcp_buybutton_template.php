@@ -29,13 +29,17 @@ function tcp_get_the_buy_button( $post_id = 0 ) {
 
 /**
  * Displays a buy button
+ *
  * @since 1.1.8
  */
 function tcp_the_add_to_cart_button( $post_id, $title = '', $echo = true ) {
+	global $thecartpress;
+	$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
+	$buy_button_size	= $thecartpress->get_setting( 'buy_button_size' );
 	ob_start(); ?>
 	<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
-	<?php if ( strlen( $title ) == 0 ) $title = __( 'Add to cart', 'tcp' ); ?>
-	<input type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="btn tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?>" value="<?php echo $title; ?>" target="<?php echo $post_id; ?>"/>
+	<?php if ( strlen( $title ) == 0 ) $title = apply_filters( 'tcp_the_add_to_cart_button_title', __( 'Add to cart', 'tcp' ), $post_id ); ?>
+	<button type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?> <?php echo $buy_button_color, ' ', $buy_button_size; ?>" target="<?php echo $post_id; ?>"><?php echo $title; ?></button>
 	<?php $out = apply_filters( 'tcp_the_add_to_cart_button', ob_get_clean(), $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
@@ -43,6 +47,7 @@ function tcp_the_add_to_cart_button( $post_id, $title = '', $echo = true ) {
 
 /**
  * Displays the unit field add to cart
+ *
  * @since 1.1.8
  */
 function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $hidden = false, $echo = true ) {
@@ -57,6 +62,7 @@ function tcp_the_add_to_cart_unit_field( $post_id, $units = 1, $hidden = false, 
 
 /**
  * Displays the text x items in the cart
+ *
  * @param unknown_type $post_id
  * @since 1.1.8
  */

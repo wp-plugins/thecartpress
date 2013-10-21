@@ -18,7 +18,7 @@
 
 ?>
 <div class="wrap">
-<h2><?php _e( 'Post types', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-post-type-list' ); ?><h2><?php _e( 'Post types', 'tcp' ); ?></h2>
 <ul class="subsubsub">
 	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PostTypeEdit.php"><?php _e( 'Add new post type', 'tcp' ); ?></a></li>
 </ul>

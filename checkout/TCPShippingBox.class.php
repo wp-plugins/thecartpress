@@ -1,5 +1,15 @@
 <?php
 /**
+ * Shipping Box
+ *
+ * Shipping step for the Checkout
+ *
+ * @deprecated
+ * @package TheCartPress
+ * @subpackage Checkout
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +26,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
-require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPShippingBox' ) ) {
+
+require_once( TCP_CHECKOUT_FOLDER	. 'TCPCheckoutBox.class.php' );
+require_once( TCP_DAOS_FOLDER		. 'Countries.class.php' );
 
 class TCPShippingBox extends TCPCheckoutBox {
 	protected $errors = array();
@@ -405,7 +420,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 		return true;
 	}
 	
-	private function showErrorMsg( $field_name ) {
+	public function showErrorMsg( $field_name ) {
 		if ( isset( $this->errors[$field_name] ) ) : ?>
 			<br/><span class="error"><?php echo $this->errors[$field_name];?></span>
 		<?php endif;
@@ -417,4 +432,4 @@ class TCPShippingBox extends TCPCheckoutBox {
 		return true;
 	}
 }
-?>
+} // class_exists check

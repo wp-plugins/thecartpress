@@ -143,7 +143,7 @@ if ( ! isset( $post_type_def ) ) {
 }
 ?>
 <div class="wrap">
-<h2><?php _e( 'Post type', 'tcp' );?></h2>
+<?php screen_icon( 'tcp-post-type-editor' ); ?><h2><?php _e( 'Post type', 'tcp' );?></h2>
 <ul class="subsubsub">
 	<li><a href="<?php echo TCP_ADMIN_PATH; ?>PostTypeList.php"><?php _e( 'Return to the list', 'tcp' );?></a></li>
 </ul>
@@ -153,8 +153,9 @@ if ( ! isset( $post_type_def ) ) {
 	<?php if ( strlen( $post_type ) > 0 ) : ?>
 	<input type="hidden" name="edit" value="yes" />
 	<?php endif; ?>
-
+	<div class="postbox">
 	<table class="form-table">
+	<tbody>
 	<tr valign="top">
 		<th scope="row">
 			<label for="name"><?php _e( 'Post type name', 'tcp' );?>:<span class="compulsory">(*)</span></label>
@@ -194,6 +195,14 @@ if ( ! isset( $post_type_def ) ) {
 			<textarea id="desc" name="desc" cols="40" rows="4"><?php echo $desc;?></textarea>
 		</td>
 	</tr>
+	</tbody>
+	</table>
+	</div><!-- .postbox -->
+
+	<h3><?php _e( 'Labels', 'tcp' ); ?></h3>
+	<div class="postbox">
+	<table class="form-table">
+	<tbody>
 	<tr valign="top">
 		<th scope="row">
 			<label for="singular_name"><?php _e( 'Singular name', 'tcp' );?>:</label>
@@ -267,7 +276,18 @@ if ( ! isset( $post_type_def ) ) {
 			<input type="text" id="not_found_in_trash" name="not_found_in_trash" value="<?php echo $not_found_in_trash;?>" size="20" maxlength="50" />
 		</td>
 	</tr>
+	</tbody>
+	</table>
+	</div><!-- .postbox -->
 
+	<p class="submit">
+		<input type="submit" name="save_post_type" id="save_post_type" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" />
+	</p>
+
+	<h3><?php _e( 'Properties', 'tcp' ); ?></h3>
+	<div class="postbox">
+	<table class="form-table">
+	<tbody>
 	<tr valign="top">
 		<th scope="row">
 			<label for="public"><?php _e( 'Public', 'tcp' );?>:</label>
@@ -433,6 +453,7 @@ if ( ! isset( $post_type_def ) ) {
 	</tr>
 	<?php endif; ?>
 	</table>
+	</div><!-- .postbox -->
 
 	<p class="submit">
 		<input type="submit" name="save_post_type" id="save_post_type" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" />

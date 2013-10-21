@@ -1,5 +1,14 @@
 <?php
 /**
+ * Shopping Cart
+ *
+ * The Shopping Cart of TheCartPress
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +25,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'ShoppingCart' ) ) {
 /**
  * Session Shopping Cart
  */
@@ -24,13 +37,13 @@ class ShoppingCart {
 	public static $OTHER_COST_SHIPPING_ID	= 'shipping';
 	public static $OTHER_COST_PAYMENT_ID	= 'payment';
 
-	private $visited_post_ids = array();
-	private $wish_list_post_ids = array();
-	private $shopping_cart_items = array();
-	private $other_costs = array();
-	private $freeShipping = false;
-	private $discounts = array();
-	private $order_id = 0;
+	private $visited_post_ids		= array();
+	private $wish_list_post_ids		= array();
+	private $shopping_cart_items	= array();
+	private $other_costs			= array();
+	private $freeShipping			= false;
+	private $discounts				= array();
+	private $order_id				= 0;
 
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
@@ -119,7 +132,7 @@ class ShoppingCart {
 			return $this->shopping_cart_items[$shopping_cart_id];
 		} elseif ( $option_1_id == 0 && $option_2_id == 0) {
 			foreach( $this->shopping_cart_items as $item ) {
-				if ( $item->getPostId() == $post_id ) {
+				if ( $item && $item->getPostId() == $post_id ) {
 					return $item;
 				}
 			}
@@ -203,7 +216,7 @@ class ShoppingCart {
 	function getTotalToShow( $otherCosts = false ) {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item )
-			$total += $shopping_cart_item->getTotalToShow();
+			if ( $shopping_cart_item ) $total += $shopping_cart_item->getTotalToShow();
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
 		$total -= $this->getCartDiscountsTotal();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total_to_show', $total );
@@ -453,8 +466,9 @@ class ShoppingCart {
 	 */
 	function getCartDiscountsTotal() {
 		$discount = 0;
-		foreach( $this->discounts as $discount_item )
+		foreach( $this->discounts as $discount_item ) {
 			$discount += $discount_item->getDiscount();
+		}
 		$discount = (float)apply_filters( 'tcp_shopping_cart_get_cart_discounts', $discount );
 		return $discount;
 	}
@@ -500,7 +514,7 @@ class ShoppingCart {
 	function getAllDiscounts() {
 		$discount = $this->getCartDiscountsTotal();
 		foreach( $this->shopping_cart_items as $item )
-			$discount += $item->getDiscount();
+			if ( $item ) $discount += $item->getDiscount();
 		return apply_filters( 'tcp_get_all_discounts', $discount );
 	}
 
@@ -510,8 +524,7 @@ class ShoppingCart {
 	function deleteAllDiscounts() {
 		foreach( $this->shopping_cart_items as $item )
 			$item->setDiscount( 0 );
-		unset( $this->discounts );
-		$this->discounts = array();
+		$this->deleteAllCartDiscounts();
 	}
 }
 
@@ -772,4 +785,4 @@ class ShoppingCartDiscount {
 		return $this->desc . ': ' . $this->discount;
 	}
 }
-?>
+} // class_exists check

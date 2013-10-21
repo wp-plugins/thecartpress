@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$post_type = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
-$taxonomy = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
-$per = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
-$fix = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
+$post_type	 = isset( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : TCP_PRODUCT_POST_TYPE;
+$taxonomy	 = isset( $_REQUEST['taxonomy'] ) ? $_REQUEST['taxonomy'] : TCP_PRODUCT_CATEGORY;
+$per		 = isset( $_REQUEST['per'] ) ? (int)$_REQUEST['per'] : 0;
+$fix		 = isset( $_REQUEST['fix'] ) ? (int)$_REQUEST['fix'] : 0;
 $update_type = isset( $_REQUEST['update_type'] ) ? $_REQUEST['update_type'] : 'per';
-$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
+$cat_slug	 = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
 $round_price = isset( $_REQUEST['round_price'] );
 
 if ( isset( $_REQUEST['tcp_update_price'] ) ) {
@@ -33,10 +33,10 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 	$cat_slug = isset( $_REQUEST['category_slug'] ) ? $_REQUEST['category_slug'] : '';
 	$round_price = isset( $_REQUEST['round_price'] );*/
 	$args = array(
-		'post_type' => $post_type,
-		$taxonomy => $cat_slug ,
+		'post_type'		 => $post_type,
+		$taxonomy		 => $cat_slug ,
 		'posts_per_page' => -1,//TODO Pagination?
-		'fields' => 'ids',
+		'fields'		 => 'ids',
 	);
 	$args = apply_filters( 'tcp_update_price_query_args', $args );
 	$posts = get_posts( $args );
@@ -60,7 +60,7 @@ if ( isset( $_REQUEST['tcp_update_price'] ) ) {
 } ?>
 <div class="wrap">
 
-<h2><?php _e( 'Update Prices', 'tcp' );?></h2>
+<?php screen_icon( 'tcp-price-update' ); ?><h2><?php _e( 'Update Prices', 'tcp' );?></h2>
 
 <?php if ( ! empty( $updated ) ) : ?>
 	<div id="message" class="updated">

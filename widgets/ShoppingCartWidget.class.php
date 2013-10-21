@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'ShoppingCartWidget' ) ) {
+
 class ShoppingCartWidget extends WP_Widget {
 
 	function ShoppingCartWidget() {
@@ -128,4 +133,4 @@ class ShoppingCartWidget extends WP_Widget {
 		<?php do_action( 'tcp_shopping_cart_widget_form', $this, $instance );
 	}
 }
-?>
+} // class_exists check

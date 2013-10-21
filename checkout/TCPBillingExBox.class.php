@@ -1,5 +1,15 @@
 <?php
 /**
+ * Billing Ex Box
+ *
+ * Billing address Extended box
+ *
+ * @deprecated
+ * @package TheCartPress
+ * @subpackage Checkout
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +25,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPBillingExBox' ) ) {
 
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
@@ -235,19 +250,19 @@ class TCPBillingExBox extends TCPCheckoutBox {
 
 	function save_config_settings() {
 		$settings = array(
-			'see_company'		=> isset( $_REQUEST['see_company'] ),// ? $_REQUEST['see_company'] == 'yes' : false,
-			'req_company'		=> isset( $_REQUEST['req_company'] ),// ? $_REQUEST['req_company'] == 'yes' : false,
-			'see_tax_id_number'	=> isset( $_REQUEST['see_tax_id_number'] ),// ? $_REQUEST['see_tax_id_number'] == 'yes' : false,
-			'req_tax_id_number'	=> isset( $_REQUEST['req_tax_id_number'] ),// ? $_REQUEST['req_tax_id_number'] == 'yes' : false,
-			'see_region'		=> isset( $_REQUEST['see_region'] ),// ? $_REQUEST['see_region'] == 'yes' : false,
-			'req_region'		=> isset( $_REQUEST['req_region'] ),// ? $_REQUEST['req_region'] == 'yes' : false,
-			'see_telephone_1'	=> isset( $_REQUEST['see_telephone_1'] ),// ? $_REQUEST['see_telephone_1'] == 'yes' : false,
-			'req_telephone_1'	=> isset( $_REQUEST['req_telephone_1'] ),// ? $_REQUEST['req_telephone_1'] == 'yes' : false,
-			'see_telephone_2'	=> isset( $_REQUEST['see_telephone_2'] ),// ? $_REQUEST['see_telephone_2'] == 'yes' : false,
-			'req_telephone_2'	=> isset( $_REQUEST['req_telephone_2'] ),// ? $_REQUEST['req_telephone_2'] == 'yes' : false,
-			'see_fax'			=> isset( $_REQUEST['see_fax'] ),// ? $_REQUEST['see_fax'] == 'yes' : false,
-			'req_fax'			=> isset( $_REQUEST['req_fax'] ),// ? $_REQUEST['req_fax'] == 'yes' : false,
-			'use_as_shipping'	=> isset( $_REQUEST['use_as_shipping'] ),// ? $_REQUEST['use_as_shipping'] == 'yes' : false,
+			'see_company'		=> isset( $_REQUEST['see_company'] ),
+			'req_company'		=> isset( $_REQUEST['req_company'] ),
+			'see_tax_id_number'	=> isset( $_REQUEST['see_tax_id_number'] ),
+			'req_tax_id_number'	=> isset( $_REQUEST['req_tax_id_number'] ),
+			'see_region'		=> isset( $_REQUEST['see_region'] ),
+			'req_region'		=> isset( $_REQUEST['req_region'] ),
+			'see_telephone_1'	=> isset( $_REQUEST['see_telephone_1'] ),
+			'req_telephone_1'	=> isset( $_REQUEST['req_telephone_1'] ),
+			'see_telephone_2'	=> isset( $_REQUEST['see_telephone_2'] ),
+			'req_telephone_2'	=> isset( $_REQUEST['req_telephone_2'] ),
+			'see_fax'			=> isset( $_REQUEST['see_fax'] ),
+			'req_fax'			=> isset( $_REQUEST['req_fax'] ),
+			'use_as_shipping'	=> isset( $_REQUEST['use_as_shipping'] ),
 		);
 		if ( ! $settings['see_company'] ) $settings['req_company'] = false;
 		if ( ! $settings['see_tax_id_number'] ) $settings['req_tax_id_number'] = false;
@@ -568,7 +583,7 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		<?php return true;
 	}
 	
-	private function showErrorMsg( $field_name ) {
+	public function showErrorMsg( $field_name ) {
 		if ( isset( $this->errors[$field_name] ) ) : ?>
 			<br/><span class="error"><?php echo $this->errors[$field_name]; ?></span>
 		<?php endif;
@@ -580,4 +595,4 @@ class TCPBillingExBox extends TCPCheckoutBox {
 		return true;
 	}
 }
-?>
+} // class_exists check

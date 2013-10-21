@@ -1,5 +1,14 @@
 <?php
 /**
+ * UI Improvements
+ *
+ * Improvements to User Interfce
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +25,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'UIImprovements' ) ) {
+
 class UIImprovements {
 
 	function __construct() {
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
-		add_action( 'init', array( &$this, 'init' ) );
+		add_action( 'admin_init'	, array( $this, 'admin_init' ) );
+		add_action( 'tcp_init'		, array( $this, 'tcp_init' ) );
 	}
-	function init() {
-		add_filter( 'tcp_the_currency', array( &$this, 'tcp_the_currency' ) );
-		add_action( 'twentyten_credits', array( &$this, 'twentyten_credits' ) );
-		add_action( 'twentyeleven_credits', array( &$this, 'twentyten_credits' ) );
-		add_action( 'twentytwelve_credits', array( &$this, 'twentyten_credits' ) );
-		add_action( 'wp_meta', array( &$this, 'wp_meta' ) );
-		add_filter( 'post_class', array( &$this, 'post_class' ), 10, 3 );
+	function tcp_init() {
+		add_filter( 'tcp_the_currency'		, array( $this, 'tcp_the_currency' ) );
+		add_action( 'twentyten_credits'		, array( $this, 'twentyten_credits' ) );
+		add_action( 'twentyeleven_credits'	, array( $this, 'twentyten_credits' ) );
+		add_action( 'twentytwelve_credits'	, array( $this, 'twentyten_credits' ) );
+		add_action( 'wp_meta'				, array( $this, 'wp_meta' ) );
+		add_filter( 'post_class'			, array( $this, 'post_class' ), 10, 3 );
 		global $thecartpress;
 		if ( $thecartpress && $thecartpress->get_setting( 'disable_ecommerce' ) && $thecartpress->get_setting( 'disable_shopping_cart' ) ) add_action( 'admin_bar_menu', array( &$this, 'admin_bar_menu' ), 65 );
-		add_action( 'wp_before_admin_bar_render', array( &$this, 'wp_before_admin_bar_render' ) );
+		add_action( 'wp_before_admin_bar_render', array( $this, 'wp_before_admin_bar_render' ) );
 	}
 
 	function admin_init() {
-		//add_action( 'tcp_show_settings', array( &$this, 'tcp_show_settings' ) );
-		add_filter( 'admin_footer_text', array( &$this, 'admin_footer_text' ) );
-		add_action( 'wp_dashboard_setup', array( &$this, 'wp_dashboard_setup' ) );
-		add_action( 'admin_head', array( &$this, 'admin_head' ) );
+		//add_action( 'tcp_show_settings', array( $this, 'tcp_show_settings' ) );
+		add_filter( 'admin_footer_text'	, array( $this, 'admin_footer_text' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
+		add_action( 'admin_head'		, array( $this, 'admin_head' ) );
 	}
 
 	function tcp_the_currency( $currency ) {
@@ -209,4 +223,4 @@ class UIImprovements {
 }
 
 new UIImprovements();
-?>
+} // class_exists check

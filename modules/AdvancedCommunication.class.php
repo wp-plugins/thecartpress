@@ -1,5 +1,14 @@
 <?php
 /**
+ * Advanced comunications
+ *
+ * Adds email features to Orders edit, allowing to send, and saved, predefined emails
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +25,11 @@
  * along with this program.	If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPAdvancedCommunication' ) ) {
+
 define( 'TCP_EMAIL_POST_TYPE', 'tcp_email' );
 
 class TCPAdvancedCommunication {
@@ -24,41 +38,41 @@ class TCPAdvancedCommunication {
 	static $order = false;
 	
 	static function init() {
-		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
-		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
-		add_action( 'tcp_order_edit_metaboxes', array( __CLASS__, 'tcp_order_edit_metaboxes' ), 10, 2 );
+		add_action( 'init'						, array( __CLASS__, 'register_post_type' ) );
+		add_action( 'admin_init'				, array( __CLASS__, 'admin_init' ) );
+		add_action( 'tcp_order_edit_metaboxes'	, array( __CLASS__, 'tcp_order_edit_metaboxes' ), 10, 2 );
 	}
 
 	static function register_post_type() {
 		$labels = array(
-			'name' => __( 'Emails', 'tcp' ),
-			'singular_name' => __( 'Email', 'tcp' ),
-			'add_new' => __( 'Add New', 'tcp' ),
-			'add_new_item' => __( 'Add New Email', 'tcp' ),
-			'edit_item' => __( 'Edit Email', 'tcp' ),
-			'new_item' => __( 'New Email', 'tcp' ),
-			'all_items' => __( 'All Emails', 'tcp' ),
-			'view_item' => __( 'View Email', 'tcp' ),
-			'search_items' => __( 'Search Emails', 'tcp' ),
-			'not_found' =>	__( 'No Emails found', 'tcp' ),
-			'not_found_in_trash' => __( 'No Emails found in Trash',  'tcp' ),
-			'parent_item_colon' => '',
-			'menu_name' => __( 'Emails', 'tcp' ),
+			'name'					=> __( 'Emails', 'tcp' ),
+			'singular_name' 		=> __( 'Email', 'tcp' ),
+			'add_new'				=> __( 'Add New', 'tcp' ),
+			'add_new_item'			=> __( 'Add New Email', 'tcp' ),
+			'edit_item'				=> __( 'Edit Email', 'tcp' ),
+			'new_item'				=> __( 'New Email', 'tcp' ),
+			'all_items'				=> __( 'All Emails', 'tcp' ),
+			'view_item'				=> __( 'View Email', 'tcp' ),
+			'search_items'			=> __( 'Search Emails', 'tcp' ),
+			'not_found'				=>	__( 'No Emails found', 'tcp' ),
+			'not_found_in_trash'	=> __( 'No Emails found in Trash',  'tcp' ),
+			'parent_item_colon'		=> '',
+			'menu_name'				=> __( 'Emails', 'tcp' ),
 		);
 		$args = array(
-			'labels' => $labels,
-			'public' => false,
-			'publicly_queryable' => false,
-			'show_ui' => false,
-			'show_in_menu' => false,
-			'query_var' => true,
-			'rewrite' => false,
-			'capability_type' => 'page',
-			'exclude_from_search' => true,
-			'has_archive' => false, 
-			'hierarchical' => false,
-			'menu_position' => null,
-			'supports' => array( 'title', 'editor', 'author', 'thumbnail' ),
+			'labels'				=> $labels,
+			'public'				=> false,
+			'publicly_queryable'	=> false,
+			'show_ui'				=> false,
+			'show_in_menu'			=> false,
+			'query_var'				=> true,
+			'rewrite'				=> false,
+			'capability_type'		=> 'page',
+			'exclude_from_search'	=> true,
+			'has_archive'			=> false, 
+			'hierarchical'			=> false,
+			'menu_position'			=> null,
+			'supports'				=> array( 'title', 'editor', 'author', 'thumbnail' ),
 		); 
 		register_post_type( TCP_EMAIL_POST_TYPE, $args );
 	}
@@ -91,8 +105,8 @@ class TCPAdvancedCommunication {
 		TCPAdvancedCommunication::$order_id = $order_id;
 		TCPAdvancedCommunication::$order = $order;
 		
-		add_meta_box( 'tcp_order_notification_metabox', __( 'Notice Manager', 'tcp' ), array( __CLASS__, 'tcp_orders_notificaton_metabox' ) , 'tcp-order-edit', 'normal', 'default' );
-		add_meta_box( 'tcp_order_notifications_metabox', __( 'Notifications', 'tcp' ), array( __CLASS__, 'tcp_orders_notificatons_metabox' ) , 'tcp-order-edit', 'side', 'default' );
+		add_meta_box( 'tcp_order_notification_metabox'	, __( 'Notice Manager', 'tcp' ), array( __CLASS__, 'tcp_orders_notificaton_metabox' ) , 'tcp-order-edit', 'normal', 'default' );
+		add_meta_box( 'tcp_order_notifications_metabox'	, __( 'Notifications', 'tcp' ), array( __CLASS__, 'tcp_orders_notificatons_metabox' ) , 'tcp-order-edit', 'side', 'default' );
 	}
 
 	static function tcp_orders_notificaton_metabox() {
@@ -108,6 +122,7 @@ class TCPAdvancedCommunication {
 			<option value="<?php echo $post_id; ?>"><?php echo get_the_title( $post_id); ?></option>
 		<?php endforeach; ?>
 		</select><?php tcp_the_feedback_image( 'tcp-load-text-feedback' ); ?>
+		<span class="description"><?php _e( 'Create more notices visiting ', 'tcp' ); ?> <a href="edit.php?post_type=tcp_template"><?php _e( 'Notices administrator', 'tcp' ); ?></a></span>
 		<script>
 		jQuery( '#tcp-email-to-send' ).change( function ( event ) {
 			var feedback = jQuery( '.tcp-load-text-feedback' );
@@ -210,24 +225,24 @@ class TCPAdvancedCommunication {
 		} );
 		</script>
 	<?php else : ?>
-		<p class="description"><?php _e( 'No emails templates', 'tcp' ); ?> <a href="edit.php?post_type=tcp_template"><?php _e( 'Create Templates', 'tcp' ); ?></a></p>
+		<p class="description"><?php _e( 'No Notices/Emails templates.', 'tcp' ); ?> <a href="edit.php?post_type=tcp_template"><?php _e( 'Create Notices', 'tcp' ); ?></a></p>
 	<?php endif; ?>
 </p>
 	<?php }
 
 	static function tcp_send_email() {
-		$text = isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
-		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
-		$subject = isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
+		$text		= isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
+		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
+		$subject	= isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
 		$copy_to_me = isset( $_REQUEST['copy_to_me'] ) ? $_REQUEST['copy_to_me'] : false;
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-		$order = Orders::get( $order_id );
-		$to = isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : $order->billing_email;
+		$order		= Orders::get( $order_id );
+		$to			= isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : $order->billing_email;
 		global $thecartpress;
-		$from = $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-		$headers .= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
+		$from		= $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
+		$headers	= 'MIME-Version: 1.0' . "\r\n";
+		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
 		if ( $copy_to_me ) {
 			global $thecartpress;
 			$bcc = $thecartpress->get_setting( 'emails', false );
@@ -242,16 +257,16 @@ class TCPAdvancedCommunication {
 	}
 
 	static function tcp_save_email( $title = '' ) {
-		$text = isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
-		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
-		$created_at = current_time( 'mysql' );
-		$subject = isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : $title;
-		$notice = array(
-			'post_type' => TCP_EMAIL_POST_TYPE,
-			'post_title' => $subject,
-			'post_content' => $text,
-			'post_status' => 'publish',
-			'post_parent' => $order_id,
+		$text		= isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
+		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
+		$created_at	= current_time( 'mysql' );
+		$subject	= isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : $title;
+		$notice		= array(
+			'post_type'		=> TCP_EMAIL_POST_TYPE,
+			'post_title'	=> $subject,
+			'post_content'	=> $text,
+			'post_status'	=> 'publish',
+			'post_parent'	=> $order_id,
 		);
 		$post_id = wp_insert_post( $notice );
 		return $post_id;
@@ -384,20 +399,20 @@ jQuery().ready( function () {
 		if ( $order_id === false ) die( 'Error, no order id.' );
 		$results = array();
 		$args = array(
-			'post_type' => TCP_EMAIL_POST_TYPE,
-			'post_parent' => $order_id,
-			'posts_per_page' => -1,
-			'fields' => 'ids',
+			'post_type'		=> TCP_EMAIL_POST_TYPE,
+			'post_parent'	=> $order_id,
+			'posts_per_page'=> -1,
+			'fields'		=> 'ids',
 		);
 		$posts = get_posts( $args );
 		foreach( $posts as $post_id ) {
 			$post = get_post( $post_id );
 			$results[$post_id] = array(
-				'post_id' => $post_id,
-				'title' => $post->post_title,
-				'created_at' => $post->post_date,
-				'author' => $post->post_author,
-				'content' => $post->post_content,
+				'post_id'		=> $post_id,
+				'title'			=> $post->post_title,
+				'created_at'	=> $post->post_date,
+				'author'		=> $post->post_author,
+				'content'		=> $post->post_content,
 			);
 		}
 		die( json_encode( $results ) );
@@ -405,4 +420,4 @@ jQuery().ready( function () {
 }
 
 TCPAdvancedCommunication::init();
-?>
+} // class_exists check

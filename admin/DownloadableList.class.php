@@ -37,7 +37,7 @@ function tcp_reload() {
 <div class="wrap">
 
 <?php if ( is_admin() ) : ?>
-	<h2><?php echo __( 'Downloadable products', 'tcp' ); ?></h2>
+	<?php screen_icon( 'tcp-download-list' ); ?><h2><?php echo __( 'Downloadable products', 'tcp' ); ?></h2>
 	<div class="clear"></div>
 <?php endif;
 

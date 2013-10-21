@@ -16,33 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCheckoutEditor' ) ) {
+
 require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
 
 class TCPCheckoutEditor {
 
 	function __construct() {
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'admin_init'		, array( $this, 'admin_init' ) );
+		add_action( 'tcp_admin_menu'	, array( $this, 'tcp_admin_menu' ) );
 	}
 
 	function admin_init() {
-		add_action( 'wp_ajax_tcp_checkout_steps_save', array( &$this, 'tcp_checkout_steps_save' ) );
+		add_action( 'wp_ajax_tcp_checkout_steps_save', array( $this, 'tcp_checkout_steps_save' ) );
 	}
 
 	function tcp_checkout_steps_save() {
 		$steps = $_REQUEST['list'];
 		$steps = explode( ',', $steps );
-		require_once( TCP_CHECKOUT_FOLDER .'TCPCheckoutManager.class.php' );
 		TCPCheckoutManager::update_steps( $steps );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu( $thecartpress ) {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
 		$page = add_submenu_page( $base, __( 'Checkout Editor', 'tcp' ), __( 'Checkout Editor', 'tcp' ), 'tcp_edit_settings', 'checkout_editor_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -82,6 +85,7 @@ class TCPCheckoutEditor {
 	function admin_page() { ?>
 <div class="wrap">
 <?php screen_icon( 'tcp-checkout' ); ?><h2><?php _e( 'Checkout Editor', 'tcp' ); ?></h2>
+<p><?php _e( 'This screen allows to change the look of the Checkout. Click in the little triangle at the right of each box to open more options.', 'tcp' ); ?></p>
 <ul class="subsubsub"></ul>
 
 <form method="post">
@@ -100,7 +104,7 @@ class TCPCheckoutEditor {
 	if ( is_array( $partial_path ) ) $partial_path = $partial_path['path']; ?>
 		<li class="tcp_checkout_step tcp_checkout_step_<?php echo $class_name; ?>" target="<?php echo $class_name; ?>">
 			<h4><?php echo $class_name; ?></h4>
-			<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open"><?php _e( 'open', 'tcp'); ?></a>
+			<a href="#open" target="<?php echo $class_name; ?>" class="tcp_checkout_step_open" title="<?php _e( 'Show setup panel', 'tcp' ); ?>"><?php _e( 'open', 'tcp'); ?></a>
 			<div id="tcp_checkout_box_edit_<?php echo $class_name; ?>" class="tcp_checkout_box_edit" style="display: none;">
 			<form method="post">
 				<?php 
@@ -154,7 +158,8 @@ class TCPCheckoutEditor {
 	<?php endif; ?>
 	</ul>
 
-	<p class="description"><?php _e( 'Drag and drop to Activated Box area', 'tcp' ); ?></p>
+	<p class="description"><?php _e( 'Drag and drop to Activate Box area, to add steps to the checkout.', 'tcp' ); ?></p>
+	<p class="description"><?php _e( 'If you drag and drop in the deactivated area, the step will be deleted from the checkout.', 'tcp' ); ?></p>
 
 </div><!-- wrap -->
 <script>
@@ -206,4 +211,4 @@ function do_drop() {
 }
 
 new TCPCheckoutEditor();
-?>
+} // class_exists check

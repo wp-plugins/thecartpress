@@ -15,22 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPEMarketingSettings' ) ) {
 
 class TCPEMarketingSettings {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_settings();
+		$base = thecartpress()->get_base_settings();
 		$page = add_submenu_page( $base, __( 'eMarketing Tools Settings', 'tcp' ), __( 'eMarketing Tools', 'tcp' ), 'tcp_edit_settings', 'emarketing_tools_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -98,4 +101,4 @@ $search_engine_activated = $thecartpress->get_setting( 'search_engine_activated'
 }
 
 new TCPEMarketingSettings();
-?>
+} // class_exists check

@@ -1,5 +1,14 @@
 <?php
 /**
+ * Custom Fields
+ *
+ * Allows to create custom fields to products
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,26 +25,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define( 'TCP_CUSTOM_FIELD_TYPE_TEXT', 'string' );
-define( 'TCP_CUSTOM_FIELD_TYPE_TEXT_MULTILINE', 'string-multiline' );
-define( 'TCP_CUSTOM_FIELD_TYPE_NUMBER', 'number' );
-define( 'TCP_CUSTOM_FIELD_TYPE_LIST', 'list' );
-define( 'TCP_CUSTOM_FIELD_TYPE_RADIO', 'radio' );
-define( 'TCP_CUSTOM_FIELD_TYPE_CHECK', 'check' );
-define( 'TCP_CUSTOM_FIELD_TYPE_FILE', 'upload' );
-define( 'TCP_CUSTOM_FIELD_TYPE_IMAGE', 'image' );
-define( 'TCP_CUSTOM_FIELD_TYPE_EMAIL', 'email' );
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCustomFields' ) ) {
+
+define( 'TCP_CUSTOM_FIELD_TYPE_TEXT'			, 'string' );
+define( 'TCP_CUSTOM_FIELD_TYPE_TEXT_MULTILINE'	, 'string-multiline' );
+define( 'TCP_CUSTOM_FIELD_TYPE_NUMBER'			, 'number' );
+define( 'TCP_CUSTOM_FIELD_TYPE_LIST'			, 'list' );
+define( 'TCP_CUSTOM_FIELD_TYPE_RADIO'			, 'radio' );
+define( 'TCP_CUSTOM_FIELD_TYPE_CHECK'			, 'check' );
+define( 'TCP_CUSTOM_FIELD_TYPE_FILE'			, 'upload' );
+define( 'TCP_CUSTOM_FIELD_TYPE_IMAGE'			, 'image' );
+define( 'TCP_CUSTOM_FIELD_TYPE_EMAIL'			, 'email' );
 
 class TCPCustomFields {
 
 	static function init() {
-		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ), 40 );
-		add_action( 'admin_init', array( __CLASS__, 'registerMetaBox' ), 99 );
+		add_action( 'tcp_admin_menu'	, array( __CLASS__, 'tcp_admin_menu' ), 40 );
+		add_action( 'admin_init'		, array( __CLASS__, 'registerMetaBox' ), 99 );
 	}
 
-	static function admin_menu() {
-		global $thecartpress;
-		$base = $thecartpress->get_base_tools();
+	static function tcp_admin_menu() {
+		$base = thecartpress()->get_base_tools();
 		add_submenu_page( $base, __( 'Custom fields', 'tcp' ), __( 'Custom fields', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'CustomFieldsList.php' );
 	}
 	
@@ -44,8 +57,8 @@ class TCPCustomFields {
 		$post_types = get_post_types();
 		foreach( $post_types as $post_type )
 			add_meta_box( 'tcp-custom-fields', __( 'TCP Custom fields', 'tcp' ), array( __CLASS__, 'show' ), $post_type, 'normal', 'high' );
-		add_action( 'save_post', array( __CLASS__, 'save_post' ), 1, 2 );
-		add_action( 'delete_post', array( __CLASS__, 'delete_post' ) );
+		add_action( 'save_post'		, array( __CLASS__, 'save_post' ), 1, 2 );
+		add_action( 'delete_post'	, array( __CLASS__, 'delete_post' ) );
 	}
 
 	/*static function post_edit_form_tag() {
@@ -370,4 +383,4 @@ function tcp_display_custom_field( $custom_field_id, $post_id = 0 ) {
 	);
 	return apply_filters( 'tcp_display_custom_field', $field, $custom_field_id, $post_id );
 }
-?>
+} // class_exists check

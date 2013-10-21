@@ -78,18 +78,30 @@ if ( ! isset( $source ) ) return; ?>
 			</tr>
 			<tr valign="top">
 				<td class="shipping_info">
-					<?php echo $source->get_shipping_postcode() . ', ' . $source->get_shipping_city(); ?><br/>
+					<?php $out = array();
+					if ( strlen( $source->get_shipping_postcode() ) > 0 ) $out[] = $source->get_shipping_postcode();
+					if ( strlen( $source->get_shipping_city() ) > 0 ) $out[] = $source->get_shipping_city();
+					echo implode( ', ', $out ); ?>
 				</td>
 				<td class="billing_info">
-					<?php echo $source->get_billing_postcode(); ?>, <?php echo $source->get_billing_city(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_postcode() ) > 0 ) $out[] = $source->get_billing_postcode();
+					if ( strlen( $source->get_billing_city() ) > 0 ) $out[] = $source->get_billing_city();
+					echo implode( ', ', $out ); ?>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td class="shipping_info">
-					<?php echo $source->get_shipping_region() . ', ' . $source->get_shipping_country(); ?><br/>
+					<?php $out = array();
+					if ( strlen( $source->get_shipping_region() ) > 0 ) $out[] = $source->get_shipping_region();
+					if ( strlen( $source->get_shipping_country() ) > 0 ) $out[] = $source->get_shipping_country();
+					echo implode( ', ', $out ); ?>
 				</td>
 				<td class="billing_info">
-					<?php echo $source->get_billing_region(); ?>, <?php echo $source->get_billing_country(); ?>
+					<?php $out = array();
+					if ( strlen( $source->get_billing_region() ) > 0 ) $out[] = $source->get_billing_region();
+					if ( strlen( $source->get_billing_country() ) > 0 ) $out[] = $source->get_billing_country();
+					echo implode( ', ', $out ); ?>
 				</td>
 			</tr>
 			<tr valign="top">

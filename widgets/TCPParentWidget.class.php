@@ -16,6 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPParentWidget' ) ) {
+	
 class TCPParentWidget extends WP_Widget {
 	function TCPParentWidget( $name, $description, $title, $width = 300 ) {
 		$widget_settings = array(
@@ -90,4 +95,4 @@ class TCPParentWidget extends WP_Widget {
 		<?php do_action( 'tcp_parent_widget_form', $this );
 	}
 }
-?>
+} // class_exists check

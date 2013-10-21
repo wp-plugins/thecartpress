@@ -16,22 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPMainSettings' ) ) {
+
 class TCPMainSettings {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Main Settings', 'tcp' ), false, array( 'TCPMainSettings', __FILE__ ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
 		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
-		//add_menu_page( '', __( 'TCP Settings', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 41 );
 		$page = add_submenu_page( $base, __( 'Main Settings', 'tcp' ), __( 'Main Settings', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
+
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );
 	}
@@ -64,6 +68,7 @@ class TCPMainSettings {
 	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
 	</div>
 <?php endif; ?>
+
 <?php global $thecartpress;
 $disable_ecommerce		= $thecartpress->get_setting( 'disable_ecommerce', false );
 $disable_shopping_cart	= $thecartpress->get_setting( 'disable_shopping_cart', false );
@@ -73,6 +78,7 @@ $hide_downloadable_menu	= $thecartpress->get_setting( 'hide_downloadable_menu', 
 $downloadable_path		= $thecartpress->get_setting( 'downloadable_path', '' );
 $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 <form method="post" action="">
+<div class="postbox">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -142,9 +148,13 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 		<span class="description"><?php _e( 'Hide the invisible products in the back-end.', 'tcp' ); ?></span>
 	</td>
 </tr>
-<?php do_action( 'tcp_main_settings_page' ); ?>
+<?php do_action( 'tcp_main_settings_page', $thecartpress ); ?>
 </tbody>
 </table>
+</div><!-- .postbox -->
+
+<?php do_action( 'tcp_main_settings_after_page', $thecartpress ); ?>
+
 <?php wp_nonce_field( 'tcp_main_settings' ); ?>
 <?php submit_button( null, 'primary', 'save-main-settings' ); ?>
 </form>
@@ -172,4 +182,4 @@ $hide_visibles			= $thecartpress->get_setting( 'hide_visibles', false ); ?>
 }
 
 new TCPMainSettings();
-?>
+} // class_exists check

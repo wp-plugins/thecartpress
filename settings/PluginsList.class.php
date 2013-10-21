@@ -16,19 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPPluginsList' ) ) {
+
 class TCPPluginsList {
 
 	private $plugin_type;
 
 	function __construct( $plugin_type = 'payment' ) {
 		$this->plugin_type = $plugin_type;
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_plugins' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_settings();
+		$base = thecartpress()->get_base_settings();
 		if ( $this->plugin_type == 'payment' ) {
 			$title = __( 'Payment Methods', 'tcp' );
 			$menu_slug = 'payment_settings';
@@ -37,7 +41,7 @@ class TCPPluginsList {
 			$menu_slug = 'shipping_settings';
 		}
 		$page = add_submenu_page( $base, $title, $title, 'tcp_edit_plugins', $menu_slug, array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
 	}
 
 	function admin_load() {
@@ -176,4 +180,4 @@ jQuery( '.tcp_div_show_hide' ).click( function( e ) {
 }
 
 new TCPPluginsList( 'payment' );
-?>
+} // class_exists check

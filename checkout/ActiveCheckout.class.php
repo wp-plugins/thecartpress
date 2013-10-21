@@ -1,5 +1,15 @@
 <?php
 /**
+ * Active checkout
+ *
+ * Shortcode to display the checkout.
+ * It has the emails methods to send orders or any other comunication with customers.
+ *
+ * @package TheCartPress
+ * @subpackage Checkout
+ */
+
+/**
  * This file is part of TheCartPress.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +26,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'ActiveCheckout' ) ) {
+
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
 class ActiveCheckout {//shortcode
@@ -163,4 +177,4 @@ class ActiveCheckout {//shortcode
 }
 
 add_shortcode( 'tcp_checkout', array( new ActiveCheckout(), 'show' ) );
-?>
+} // class_exists check

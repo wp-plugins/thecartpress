@@ -1,5 +1,15 @@
 <?php
 /**
+ * Billing Box
+ *
+ * Billing address box
+ *
+ * @deprecated
+ * @package TheCartPress
+ * @subpackage Checkout
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +25,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPBillingBox' ) ) {
 
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
@@ -383,7 +398,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		<?php return true;
 	}
 	
-	private function showErrorMsg( $field_name ) {
+	public function showErrorMsg( $field_name ) {
 		if ( isset( $this->errors[$field_name] ) ) : ?>
 			<br/><span class="error"><?php echo $this->errors[$field_name];?></span>
 		<?php endif;
@@ -395,4 +410,4 @@ class TCPBillingBox extends TCPCheckoutBox {
 		return true;
 	}
 }
-?>
+} // class_exists check

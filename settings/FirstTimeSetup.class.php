@@ -19,18 +19,18 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+if ( ! class_exists( 'TCPFirstTimeSetup' ) ) {
+
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
-
-if ( ! class_exists( 'TCPFirstTimeSetup' ) ) {
 
 class TCPFirstTimeSetup {
 
 	private $updated = false;
 
 	function __construct() {
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-		add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
+		add_action( 'tcp_admin_menu'		, array( $this, 'tcp_admin_menu' ) );
+		add_filter( 'plugin_action_links'	, array( $this, 'plugin_action_links' ), 10, 2 );
 		global $tcp_miranda;
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'First time setup', 'tcp' ), false, array( 'TCPFirstTimeSetup', __FILE__ ), plugins_url( 'thecartpress/images/miranda/first_settings_48.png' ) );
 	}
@@ -43,10 +43,9 @@ class TCPFirstTimeSetup {
 		return $links;
 	}
 
-	function admin_menu() {
+	function tcp_admin_menu() {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
-		$base = $thecartpress->get_base_settings();
+		$base = thecartpress()->get_base_settings();
 		$page = add_submenu_page( $base, __( 'First Time Setup', 'tcp' ), __( 'First time', 'tcp' ), 'tcp_edit_settings', 'first_time_setup', array( &$this, 'admin_page' ) );
 		add_action( "load-$page", array( &$this, 'admin_load' ) );
 		add_action( "load-$page", array( &$this, 'admin_action' ) );
@@ -76,7 +75,7 @@ class TCPFirstTimeSetup {
 
 <?php if ( ! empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
-	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
+		<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
 	</div>
 
 	<p><?php _e( 'Congratulations! You have finished to setup your eCommerce software.', 'tcp' ); ?></p>
@@ -110,10 +109,7 @@ class TCPFirstTimeSetup {
 
 	$user_registration	= $thecartpress->get_setting( 'user_registration' );
 	$emails				= $thecartpress->get_setting( 'emails' );
-	$from_email			= $thecartpress->get_setting( 'from_email' );
-
-	$use_default_loop	= $thecartpress->get_setting( 'use_default_loop', 'only_settings' );
-	?>
+	$from_email			= $thecartpress->get_setting( 'from_email' ); ?>
 
 	<form method="post" action="">
 
@@ -276,61 +272,10 @@ class TCPFirstTimeSetup {
 		</div><!-- .postbox -->
 		<p>
 			<input class="tcp_prev_step button-secondary" type="button" value="<?php _e( 'Previuos step', 'tcp' ); ?>" onclick="tcp_show_step('step_two');" />
-			<input class="tcp_next_step button-secondary" type="button" value="<?php _e( 'Next step', 'tcp' ); ?>" onclick="tcp_show_step('step_four');" />
-		</p>
-
-	</div><!-- #step_three -->
-
-	<div id="step_four" class="tcp_step">
-
-		<h3><?php _e( 'Step Four', 'tcp' ); ?></h3>
-
-		<p class="description"><?php _e( 'Theme Compatibility', 'tcp'); ?></p>
-
-		<table class="form-table">
-		<tbody>
-
-		<tr valign="top">
-			<th scope="row">
-				<label for="use_default_loop_only"><?php _e( 'Theme templates', 'tcp' ); ?></label>
-			</th>
-			<td>
-				<input type="radio" id="use_default_loop_only" name="use_default_loop" value="only_settings" <?php checked( 'only_settings', $use_default_loop ); ?>
-				onclick="hide_excerpt();"/> <label for="use_default_loop_only"><strong><?php _e( 'Use configurable TCP loops', 'tcp' ); ?></strong></label>
-				<p class="description"><?php _e( 'If this setting is activated you should have a configurable TCP Loop in your theme. (eg: loop-tcp-grid.php)', 'tcp' ); ?></p>
-				<p class="description"><?php printf( __( 'You must configure the grid using <a href="%s">Loop settings</a> menu.', 'tcp' ), add_query_arg( 'page', 'loop_settings', get_admin_url() . 'admin.php' ) ); ?></p>
-				<p class="description"><?php _e( 'Total flexibility for developers and theme constructors.', 'tcp' ); ?></p>
-
-				<input type="radio" id="use_default_loop_2012" name="use_default_loop" value="yes_2012" <?php checked( 'yes_2012', $use_default_loop ); ?>
-				onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentytwelve based)', 'tcp' ); ?></strong></label>
-				<br/>
-
-				<input type="radio" id="use_default_loop_2011" name="use_default_loop" value="yes" <?php checked( 'yes', $use_default_loop ); ?>
-				onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyeleven based)', 'tcp' ); ?></strong></label>
-				<br/>
-
-				<input type="radio" id="use_default_loop_2010" name="use_default_loop" value="yes_2010" <?php checked( 'yes_2010', $use_default_loop ); ?>
-				onclick="hide_excerpt();" /> <label for="use_default_loop"><strong><?php _e( 'Use TCP default Templates (twentyten based)', 'tcp' ); ?></strong></label>
-				<p class="description"><?php _e( 'To show Product Pages with default/basic template provided by TheCartPress.', 'tcp' ); ?></p>
-				<p class="description"><?php printf( __( 'If this setting is activated you must configure the grid using <a href="%s">Loop settings</a> menu.', 'tcp' ), add_query_arg( 'page', 'loop_settings', get_admin_url() . 'admin.php' ) ); ?></p>
-				<p class="description"><?php _e( 'TheCartPress provides two version of default templates, one for themes based on "Twenty Eleven" and another for themes based on "Twenty Ten".', 'tcp' ); ?></p>
-
-				<input type="radio" id="use_default_loop_none" name="use_default_loop" value="none" <?php checked( 'none', $use_default_loop ); ?> 
-				onclick="show_excerpt();"/> <label for="use_default_loop_none"><strong><?php _e( 'None', 'tcp' ); ?></strong></label>
-				<p class="description"><?php _e( 'Use your own templates. Total flexibility for developers and theme constructors.', 'tcp' ); ?></p>
-			</td>
-		</tr>
-
-		</tbody>
-		</table>
-
-		<p>
-			<input class="tcp_prev_step button-secondary" type="button" value="<?php _e( 'Previuos step', 'tcp' ); ?>" onclick="tcp_show_step('step_three');" />
-			<?php submit_button( null, 'primary', 'save-first_time_setup' ); ?>
+			<?php submit_button( null, 'primary', 'save-first_time_setup', false ); ?>
 			<?php wp_nonce_field( 'tcp_first_time_setup' ); ?>
 		</p>
-
-	</div><!-- #step_four -->
+	</div><!-- #step_three -->
 
 	</form>
 
@@ -368,8 +313,6 @@ class TCPFirstTimeSetup {
 		$settings['user_registration']		= isset( $_POST['user_registration'] ) ? $_POST['user_registration'] == 'yes' : false;
 		$settings['emails']					= $_POST['emails'];
 		$settings['from_email']				= $_POST['from_email'];
-
-		$settings['use_default_loop' ]		= isset( $_POST['use_default_loop'] ) ? $_POST['use_default_loop'] : 'only_settings';
 
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;

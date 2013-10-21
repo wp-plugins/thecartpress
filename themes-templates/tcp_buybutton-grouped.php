@@ -40,7 +40,7 @@ remove_filter( 'tcp_the_add_to_cart_button', array( $wish_list, 'tcp_the_add_to_
 
 <?php /**** Start editing to customise your buy buttons! */ ?>
 
-<div class="tcp_buy_button_area tcp_buy_button_grouped tcp_buy_button_<?php echo get_post_type(); ?> <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
+<div class="tcp_buy_button_area tcp_buy_button_grouped tcp_buy_button_<?php echo get_post_type(); ?> tcp-tcpf <?php echo implode( ' ' , apply_filters( 'tcp_buy_button_get_product_classes', array(), $post_id ) ); ?>">
 
 <form method="post" id="tcp_frm_<?php echo $post_id; ?>" action="<?php echo $action; ?>">
 

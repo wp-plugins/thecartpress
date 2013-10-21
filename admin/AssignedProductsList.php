@@ -245,12 +245,9 @@ if ( $post_id ) :
 
 					<select id="<?php echo $category_slug; ?>" name="<?php echo $category_slug; ?>">
 						<option value=""<?php selected( $category_value, '' ); ?> <?php selected( $category_value, '' ); ?>><?php _e( 'All', 'tcp' ); ?></option>
-
 					<?php $terms = get_terms( $category_slug, array( 'hide_empty' => true ) );
-					foreach( $terms as $term ) : var_dump( $terms); ?>
-
+					foreach( $terms as $term ) : ?>
 						<option value="<?php echo $term->slug; ?>"<?php selected( $category_value, $term->slug ); ?>><?php echo esc_attr( $term->name ); ?></option>
-
 					<?php endforeach; ?>
 					</select>
 

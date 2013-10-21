@@ -16,6 +16,11 @@
  * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'WishListWidget' ) ) {
+
 require_once( dirname( __FILE__) . '/CustomListWidget.class.php' );
 
 class WishListWidget extends CustomListWidget {
@@ -73,4 +78,4 @@ class WishListWidget extends CustomListWidget {
 		parent::show_post_type_form( $instance );
 	}
 }
-?>
+} // class_exists check

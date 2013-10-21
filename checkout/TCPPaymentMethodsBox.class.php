@@ -27,8 +27,13 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 	function get_title() {
 		if ( isset( $_SESSION['tcp_checkout']['payment_methods'] ) ) {
 			$plugin = explode( '#', $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] );
-			$object = new $plugin[0]();
-			return sprintf( __( 'Payment method: %s', 'tcp' ), $object->getCheckoutMethodLabel( $plugin[1], '', false ) );
+			if ( class_exists( $plugin[0] ) ) {
+				$object = new $plugin[0]();
+				return sprintf( __( 'Payment method: %s', 'tcp' ), $object->getCheckoutMethodLabel( $plugin[1], '', false ) );
+			} else {
+				unset( $_SESSION['tcp_checkout']['payment_methods'] );
+				return __( 'Payment methods', 'tcp' );
+			}
 		} else {
 			return __( 'Payment methods', 'tcp' );
 		}
@@ -123,17 +128,16 @@ class TCPPaymentMethodsBox extends TCPCheckoutBox {
 		}
 		</style>
 		<script>
-		jQuery(document).ready(function() {
-			jQuery('#tcp_payment_list').sortable();
-			jQuery('#tcp_payment_list').disableSelection();
-			
-			jQuery('#tcp_save_TCPPaymentMethodsBox').click(function(e) {
+		jQuery( function() {
+			jQuery( '#tcp_payment_list' ).sortable();
+			jQuery( '#tcp_payment_list' ).disableSelection();
+			jQuery( '#tcp_save_TCPPaymentMethodsBox' ).click( function( e ) {
 				var vals = '';
-				jQuery('li.tcp_payment_item').each(function(index) {
-					vals += jQuery(this).attr('id') + ',';
+				jQuery( 'li.tcp_payment_item' ).each( function( index ) {
+					vals += jQuery( this).attr( 'id' ) + ',';
 				});
-				vals = vals.slice(0, -1);
-				jQuery('#tcp_payment_sorting').val(vals);
+				vals = vals.slice( 0, -1 );
+				jQuery( '#tcp_payment_sorting' ).val( vals );
 			});
 		});
 		</script>

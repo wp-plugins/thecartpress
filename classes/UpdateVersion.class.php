@@ -18,7 +18,25 @@
 
 class TCPUpdateVersion {
 
+	function tcp_update_admin_notices() { ?>
+<div id="message" class="updated">
+	<div class="squeezer">
+		<h4><?php _e( 'Congratulations, you have installed the new version of TheCartPress.', 'tcp' ); ?></h4>
+		<p><?php _e( 'This new version requires you have to update the Checkout Editor. It now implements new capabilities, but some of them need to be activated.','tcp' ); ?></p>
+		<p><?php printf( __( 'Please, visit <a href="%s">Checkout editor</a> to "Restore Default Values". Then you could edit all the steps and theirs settings.','tcp' ), admin_url( 'admin.php?page=checkout_editor_settings' ) ); ?></p>
+		<p class="submit"><a class="skip button-primary" href="<?php echo add_query_arg( 'tcp_hide_installed_notice_1', 'true' ); ?>"><?php _e( 'Hide this notice', 'tcp' ); ?></a></p>
+	</div>
+</div><?php
+	}
+
 	function update( $thecartpress ) {
+		if ( isset( $_GET['tcp_hide_installed_notice_1'] ) ) {
+			update_option( '_tcp_hide_installed_notice_1', true );
+		} else {
+			$tcp_hide_installed_notice = get_option( '_tcp_hide_installed_notice_1', false );
+			if ( ! $tcp_hide_installed_notice ) add_action( 'admin_notices', array( $this, 'tcp_update_admin_notices' ) );
+		}
+
 		$version = (float)get_option( 'tcp_version' );
 		if ( $version < 118 ) {
 			global $wpdb;
@@ -133,6 +151,52 @@ class TCPUpdateVersion {
 			$post_type_defs['tcp_product']['menu_icon'] = plugins_url( '/images/tcp.png', dirname( __FILE__ ) );
 			tcp_update_custom_post_type( 'tcp_product', $post_type_defs['tcp_product'] );
 			update_option( 'tcp_version', 131 );
+		}
+		if ( $version < 132 ) {
+			global $wpdb;
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_class\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `shipping_class` VARCHAR(255) NOT NULL AFTER `shipping_method`;';
+				$wpdb->query( $sql );
+			}
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_instance\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `shipping_instance` INT NOT NULL AFTER `shipping_class`;';
+				$wpdb->query( $sql );
+			}
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'billing_street_2\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `billing_street_2` VARCHAR(255) NOT NULL AFTER `billing_street`;';
+				$wpdb->query( $sql );
+			}
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_orders WHERE field = \'shipping_street_2\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `shipping_street_2` VARCHAR(255) NOT NULL AFTER `shipping_street`;';
+				$wpdb->query( $sql );
+			}
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `firstname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `lastname` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `company` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `city` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `region` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `street` varchar(255) NOT NULL;';
+			$wpdb->query( $sql );
+			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'street_2\'';
+			$row = $wpdb->get_row( $sql );
+			if ( ! $row ) {
+				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_addresses ADD COLUMN `street_2` VARCHAR(255) NOT NULL AFTER `street`;';
+				$wpdb->query( $sql );
+			}
+			update_option( 'tcp_version', 132 );
 		}
 	}
 }

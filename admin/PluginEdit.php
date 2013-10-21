@@ -1,5 +1,14 @@
 <?php
 /**
+ * Plugin Editor
+ *
+ * Allows to Edit any Payment or Shipping methd.
+ *
+ * @package TheCartPress
+ * @subpackage Admin
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +25,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
-require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 
 $plugin_id		= isset( $_REQUEST['plugin_id'] ) ? $_REQUEST['plugin_id'] : '';
 $plugin_type	= isset( $_REQUEST['plugin_type'] ) ? $_REQUEST['plugin_type'] : tcp_get_plugin_type( $plugin_id );
@@ -72,7 +83,7 @@ $plugin_data	= tcp_get_plugin_data( $plugin_id );
 $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&plugin_type=' . $plugin_type . '&instance='; ?>
 
 <div class="wrap">
-<h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle(); ?></h2>
+<?php screen_icon( 'tcp-plugins-list' ); ?><h2><?php //echo __( 'Plugin', 'tcp' ), ':';?> <?php echo $plugin->getTitle(); ?></h2>
 <ul class="subsubsub">
 	<?php 
 	if ( $plugin_type == 'payment' ) {
@@ -83,6 +94,7 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 	$url = add_query_arg( 'page', $page, get_admin_url() . 'admin.php' ); ?>
 	<li><a href="<?php echo $url; ?>"><?php _e( 'Return to the list', 'tcp' ); ?></a></li>
 </ul><!-- subsubsub -->
+
 <div class="clear"></div>
 
 <div class="instances">
@@ -108,13 +120,16 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 	$data = array();
 endif;
 $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING; ?>
-</div>
+</div><!-- .instances -->
+
+<div class="clear"></div>
 
 <form method="post">
 	<input type="hidden" name="plugin_id" value="<?php echo $plugin_id;?>" />
 	<input type="hidden" name="plugin_type" value="<?php echo $plugin_type;?>" />
 	<input type="hidden" name="instance" value="<?php echo $instance;?>" />
 
+<div class="postbox">
 	<table class="form-table">
 	<tbody>
 	<tr valign="top">
@@ -235,10 +250,24 @@ $new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDE
 			<input type="checkbox" id="unique" name="unique" value="yes" <?php checked( isset( $data['unique'] ) ? $data['unique'] : false ); ?> />
 		</td>
 	</tr>
-	<?php do_action( 'tcp_plugin_edit_fields', $data, $plugin_type ); ?>
-	<?php $plugin->showEditFields( $data ); ?>
 	</tbody>
 	</table>
+</div><!-- .postbox -->
+
+<h3><?php if ( $plugin_type == 'shipping' ) { ?>
+	<?php _e( 'Settings', 'tcp' ); ?>					
+<?php } else { //billing ?>
+	<?php _e( 'Account Settings', 'tcp' ); ?>
+<?php } ?></h3>
+
+<div class="postbox">
+	<table class="form-table">
+	<tbody>
+		<?php do_action( 'tcp_plugin_edit_fields', $data, $plugin_type ); ?>
+		<?php $plugin->showEditFields( $data ); ?>
+	</tbody>
+	</table>
+</div><!-- .postbox -->
 	<p class="submit">
 		<input name="tcp_plugin_save" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
 		<input name="tcp_plugin_delete" value="<?php _e( 'Delete', 'tcp' ); ?>" type="submit" class="button-secondary" />

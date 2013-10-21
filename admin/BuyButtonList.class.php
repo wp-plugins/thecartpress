@@ -35,7 +35,8 @@ if ( isset( $_REQUEST['tcp_save_templates'] ) ) {
 ?>
 <div class="wrap">
 
-<h2><?php _e( 'Buy Button Selection', 'tcp' ); ?></h2>
+<?php screen_icon( 'tcp-buybuttons-templates' ); ?><h2><?php _e( 'Buy Button Templates', 'tcp' ); ?></h2>
+<p class="description"><?php _e( 'Select which template to use to display buy buttons for different product types.', 'tcp' ); ?></p>
 
 <form method="post">
 

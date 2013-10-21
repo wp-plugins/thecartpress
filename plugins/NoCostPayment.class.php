@@ -16,6 +16,11 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'NoCostPayment' ) ) {
+
 class NoCostPayment extends TCP_Plugin {
 	function getTitle() {
 		return 'No Payment';
@@ -30,10 +35,8 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function getCheckoutMethodLabel( $instance, $shippingCountry = '', $shoppingCart = false ) {
-		//if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
 		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
-		if ( isset( $data['title'] ) ) {
-			//$title = tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title );
+		if ( isset( $data['title'] ) && function_exists( 'tcp_string' ) ) {
 			$title = tcp_string( 'TheCartPress', apply_filters( 'tcp_plugin_data_get_option_translatable_key', 'pay_NoCostPayment-title-' . $instance ), $data['title'] );
 		} else {
 			$title = __( 'No payment.', 'tcp' );
@@ -71,21 +74,28 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
-		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
-		$url = tcp_get_the_checkout_ok_url( $order_id );
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$redirect = isset( $data['redirect'] ) ? $data['redirect'] : false; ?>
-		<p><?php echo tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title ); ?></p>
-		<p><?php echo $data['notice'];?></p>
-		<p><input type="button" id="tcp_no_cost_payment_button" class="tcp_pay_button" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
+		global $thecartpress;
+		$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
+		$buy_button_size	= $thecartpress->get_setting( 'buy_button_size' );
+		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
+		$url				= tcp_get_the_checkout_ok_url( $order_id );
+		$title				= isset( $data['title'] ) ? $data['title'] : '';
+		$redirect			= isset( $data['redirect'] ) ? $data['redirect'] : false; ?>
+
+<p><?php echo tcp_string( 'TheCartPress', 'pay_NoCostPayment-title', $title ); ?></p>
+
+<p><?php echo $data['notice'];?></p>
+
+<p><input type="button" id="tcp_no_cost_payment_button" class="tcp_pay_button tcp-btn <?php echo $buy_button_color, ' ', $buy_button_size; ?>" value="<?php _e( 'Finish', 'tcp' );?>" onclick="window.location.href = '<?php echo $url; ?>';"/></p>
+
 		<?php require_once( TCP_DAOS_FOLDER . '/Orders.class.php' );
 		Orders::editStatus( $order_id, $data['new_status'] ); //Orders::$ORDER_PROCESSING );
 		require_once( TCP_CHECKOUT_FOLDER . '/ActiveCheckout.class.php' );
 		ActiveCheckout::sendMails( $order_id );
-		if ( $redirect ) : ?>
-		<script type="text/javascript">
-			jQuery( '#tcp_no_cost_payment_button' ).click();
-		</script><?php endif;
+		if ( $redirect ) { ?>
+<script type="text/javascript">
+	jQuery( '#tcp_no_cost_payment_button' ).click();
+</script><?php }
 	}
 }
-?>
+} // class_exists check

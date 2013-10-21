@@ -1,5 +1,14 @@
 <?php
 /**
+ * Cart Table
+ *
+ * Allows to create an Order Summary, to print or email
+ *
+ * @package TheCartPress
+ * @subpackage Classes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPCartTable' ) ) {
 
 /**
  * Shows a Cart table.
@@ -35,4 +49,4 @@ class TCPCartTable {
 		else return $out;
 	}
 }
-?>
+} // class_exists check

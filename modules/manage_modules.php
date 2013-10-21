@@ -1,5 +1,14 @@
 <?php
 /**
+ * Manage Modules
+ *
+ * Loads modules to extend the core funtionality
+ *
+ * @package TheCartPress
+ * @subpackage Modules
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +31,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 require_once( 'AdminBarMenu.class.php' );
 require_once( 'AdvancedCommunication.class.php' );
 require_once( 'Ajax.class.php' );
-require_once( 'Bootstrap.class.php' );
+//require_once( 'Bootstrap.class.php' );
 require_once( 'BuddyPress.class.php' );
 require_once( 'BuyButton.class.php' );
+
 require_once( 'CopyOrder.class.php' );
 //require_once( 'CheckoutPermalinks.class.php' );
+
 require_once( 'CustomFields.class.php' );
 require_once( 'CustomJavascript.class.php' );
 require_once( 'CustomStyles.class.php' );
@@ -37,6 +48,9 @@ require_once( 'LastLogin.class.php' );
 require_once( 'LoginRegister.class.php' );
 require_once( 'StockManagement.class.php' );
 require_once( 'TaxonomyImages.class.php' );
+
+require_once( 'ThemeCompat.class.php' );
+
 require_once( 'TopSellers.class.php' );
 require_once( 'UIImprovements.class.php' );
 require_once( 'UnderConstruction.class.php' );

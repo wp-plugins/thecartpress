@@ -355,6 +355,6 @@ class ProductCustomPostType {
 	}
 }
 
-$productcustomposttype = new ProductCustomPostType();
+$GLOBALS['productcustomposttype'] = new ProductCustomPostType();
 
 } // class_exists check

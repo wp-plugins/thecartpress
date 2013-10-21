@@ -16,8 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'CustomPostTypeListWidget' ) ) {
+
 require_once( TCP_WIDGETS_FOLDER . 'CustomListWidget.class.php' );
- 
+
 class CustomPostTypeListWidget extends CustomListWidget {
 
 	function CustomPostTypeListWidget() {
@@ -66,7 +71,7 @@ class CustomPostTypeListWidget extends CustomListWidget {
 	}
 
 	function form( $instance ) {
-		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Custom Post type', 'tcp');
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Product List', 'tcp');
 		parent::form( $instance );
 		$defaults = array(
 			'post_type' => TCP_PRODUCT_POST_TYPE,
@@ -190,4 +195,4 @@ class CustomPostTypeListWidget extends CustomListWidget {
 		<?php parent::show_post_type_form( $instance );
 	}
 }
-?>
+} // class_exists check
