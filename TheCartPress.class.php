@@ -1,13 +1,4 @@
 <?php
-/**
- * The TheCartPress Plugin
- *
- * TheCartPress is, possibly, the best eCommerce plugin for WordPress
- *
- * @package TheCartPress
- * @subpackage Main
- */
-
 /*
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
@@ -20,6 +11,15 @@ Domain Path: /languages/
 License: GPL
 Parent: thecartpress
 */
+
+/**
+ * The TheCartPress Plugin
+ *
+ * TheCartPress is, possibly, the best eCommerce plugin for WordPress
+ *
+ * @package TheCartPress
+ * @subpackage Main
+ */
 
 /**
  * This file is part of TheCartPress.
