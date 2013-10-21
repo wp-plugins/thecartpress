@@ -293,10 +293,6 @@ This plugin is released under a GPL license.
 9. Back-end: Dashboard
 
 == Changelog ==
-= 1.3.3 =
-* Reports
-* Media Loader Improvement
-
 = 1.3.2 =
 * SEPA support: Single Euro Payments Area
 * Custom Login: Allows to select any page as login page
