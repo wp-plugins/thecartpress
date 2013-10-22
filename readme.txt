@@ -298,6 +298,10 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+
+= 1.3.2.1 =
+* Issue with svn
+
 = 1.3.2 =
 * SEPA support: Single Euro Payments Area
 * Custom Login: Allows to select any page as login page

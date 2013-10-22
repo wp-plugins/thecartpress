@@ -1186,7 +1186,7 @@ function tcp_number_format( $number, $decimals = 2 ) {
 function tcp_format_number( $number, $decimals = 2 ) {
 	global $thecartpress;
 	if ( ! $thecartpress ) return;
-	return number_format( (float)$number, $decimals, $thecartpress->get_setting( 'decimal_point', '.' ), $thecartpress->get_setting( 'thousands_separator', ',' ) );
+	return number_format( (float)$number, $decimals, stripslashes( $thecartpress->get_setting( 'decimal_point', '.' ) ), stripslashes( $thecartpress->get_setting( 'thousands_separator', ',' ) ) );
 }
 
 /**
@@ -1196,8 +1196,8 @@ function tcp_format_number( $number, $decimals = 2 ) {
 function tcp_input_number( $input ) {
 	global $thecartpress;
 	if ( ! $thecartpress ) return;
-	$aux = str_replace( $thecartpress->get_setting( 'thousands_separator', ',' ), '', $input );
-	$aux = str_replace( $thecartpress->get_setting( 'decimal_point', '.' ), '.', $aux );
+	$aux = str_replace( stripslashes( $thecartpress->get_setting( 'thousands_separator', ',' ) ), '', $input );
+	$aux = str_replace( stripslashes( $thecartpress->get_setting( 'decimal_point', '.' ) ), '.', $aux );
 	return (float)$aux;
 }
 
