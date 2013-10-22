@@ -72,17 +72,17 @@ class TCPCurrencyCountrySettings {
 <?php endif; ?>
 
 <?php global $thecartpress;
-$currency = $thecartpress->get_setting( 'currency', 'EUR' );
-$currency_layout = $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$s)' );
-$decimal_currency = (int)$thecartpress->get_setting( 'decimal_currency', 2 );
-$decimal_point = $thecartpress->get_setting( 'decimal_point', '.' );
-$thousands_separator= $thecartpress->get_setting( 'thousands_separator', ',' );
-$use_weight = $thecartpress->get_setting( 'use_weight', true );
-$unit_weight = $thecartpress->get_setting( 'unit_weight', 'gr' );
-$date_format = $thecartpress->get_setting( 'date_format', 'y-m-d' );
-$country = $thecartpress->get_setting( 'country', '' );
-$billing_isos = $thecartpress->get_setting( 'billing_isos', array() );
-$shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
+$currency				= $thecartpress->get_setting( 'currency', 'EUR' );
+$currency_layout		= $thecartpress->get_setting( 'currency_layout', '%1$s%2$s (%3$s)' );
+$decimal_currency		= (int)$thecartpress->get_setting( 'decimal_currency', 2 );
+$decimal_point			= $thecartpress->get_setting( 'decimal_point', '.' );
+$thousands_separator	= $thecartpress->get_setting( 'thousands_separator', ',' );
+$use_weight				= $thecartpress->get_setting( 'use_weight', true );
+$unit_weight			= $thecartpress->get_setting( 'unit_weight', 'gr' );
+$date_format			= $thecartpress->get_setting( 'date_format', 'y-m-d' );
+$country				= $thecartpress->get_setting( 'country', '' );
+$billing_isos			= $thecartpress->get_setting( 'billing_isos', array() );
+$shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 <form method="post" action="">
 
@@ -118,7 +118,7 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		</select>
 		</p>
 		<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
-		<input type="text" id="currency_layout" name="currency_layout" value="<?php echo $currency_layout; ?>" size="20" maxlength="25" />
+		<input type="text" id="currency_layout" name="currency_layout" value="<?php echo stripslashes( $currency_layout ); ?>" size="20" maxlength="25" />
 		<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' ); ?></p>
 		<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files), looking for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
@@ -137,7 +137,7 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		<label for="decimal_point"><?php _e( 'Decimal point separator', 'tcp' ); ?></label>
 	</th>
 	<td>
-		<input type="text" id="decimal_point" name="decimal_point" value="<?php echo $decimal_point; ?>" size="1" maxlength="1" />
+		<input type="text" id="decimal_point" name="decimal_point" value="<?php echo stripslashes( $decimal_point ); ?>" size="1" maxlength="1" />
 	</td>
 </tr>
 <tr valign="top">
@@ -145,7 +145,7 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		<label for="thousands_separator"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
 	</th>
 	<td>
-		<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo $thousands_separator; ?>" size="1" maxlength="1" />
+		<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo stripslashes( $thousands_separator ); ?>" size="1" maxlength="1" />
 	</td>
 </tr>
 <tr valign="top">
@@ -338,19 +338,25 @@ $shipping_isos = $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_currency_settings' );
 		$settings = get_option( 'tcp_settings' );
-		$settings['currency'] = isset( $_POST['currency'] ) ? $_POST['currency'] : 'EUR';		
-		$settings['currency_layout'] = isset( $_POST['currency_layout'] ) ? $_POST['currency_layout'] : '%1$s%2$s (%3$s)';
-		$settings['decimal_currency'] = (int)isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
-		$settings['decimal_point'] = isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
-		$settings['thousands_separator'] = isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
-		$settings['use_weight'] = isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;
-		$settings['unit_weight'] = isset( $_POST['unit_weight'] ) ? $_POST['unit_weight'] : 'gr';
-		$settings['date_format'] = isset( $_POST['date_format'] ) ? $_POST['date_format'] : 'y-m-d';
-		if ( isset( $_POST['all_shipping_isos'] ) && $_POST['all_shipping_isos'] == 'yes' ) $settings['shipping_isos'] = array();
-		else $settings['shipping_isos'] = isset( $_POST['shipping_isos'] ) ? $_POST['shipping_isos'] : array();
-		if ( isset( $_POST['all_billing_isos'] ) && $_POST['all_billing_isos'] == 'yes' ) $settings['billing_isos'] = array();
-		else $settings['billing_isos'] = isset( $_POST['billing_isos'] ) ? $_POST['billing_isos'] : array();
-		$settings['country'] = isset( $_POST['country'] ) ? $_POST['country'] : '';
+		$settings['currency']				= isset( $_POST['currency'] ) ? $_POST['currency'] : 'EUR';		
+		$settings['currency_layout']		= isset( $_POST['currency_layout'] ) ? $_POST['currency_layout'] : '%1$s%2$s (%3$s)';
+		$settings['decimal_currency']		= (int)isset( $_POST['decimal_currency'] ) ? $_POST['decimal_currency'] : 2;
+		$settings['decimal_point']			= isset( $_POST['decimal_point'] ) ? $_POST['decimal_point'] : '.';
+		$settings['thousands_separator']	= isset( $_POST['thousands_separator'] ) ? $_POST['thousands_separator'] : ',';
+		$settings['use_weight']				= isset( $_POST['use_weight'] );// ? $_POST['use_weight'] == 'yes' : false;
+		$settings['unit_weight']			= isset( $_POST['unit_weight'] ) ? $_POST['unit_weight'] : 'gr';
+		$settings['date_format']			= isset( $_POST['date_format'] ) ? $_POST['date_format'] : 'y-m-d';
+		if ( isset( $_POST['all_shipping_isos'] ) && $_POST['all_shipping_isos'] == 'yes' )  {
+			$settings['shipping_isos']		= array();
+		} else {
+			$settings['shipping_isos']		= isset( $_POST['shipping_isos'] ) ? $_POST['shipping_isos'] : array();
+		}
+		if ( isset( $_POST['all_billing_isos'] ) && $_POST['all_billing_isos'] == 'yes' ) {
+			$settings['billing_isos']		= array();
+		} else {
+			$settings['billing_isos']		= isset( $_POST['billing_isos'] ) ? $_POST['billing_isos'] : array();
+		}
+		$settings['country']				= isset( $_POST['country'] ) ? $_POST['country'] : '';
 		$settings = apply_filters( 'tcp_localize_settings_action', $settings );
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;

@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable Tag: 1.3.2
+Stable Tag: 1.3.2.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -298,6 +298,10 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+
+= 1.3.2.1 =
+* Issue with svn
+
 = 1.3.2 =
 * SEPA support: Single Euro Payments Area
 * Custom Login: Allows to select any page as login page

@@ -183,7 +183,7 @@ class TCPFirstTimeSetup {
 					</select>
 					</p>
 					<label for="currency_layouts"><?php _e( 'Custom layout', 'tcp' ); ?>:</label>
-					<input type="text" id="currency_layout" name="currency_layout" value="<?php echo $currency_layout; ?>" size="20" maxlength="25" />
+					<input type="text" id="currency_layout" name="currency_layout" value="<?php echo stripslashes( $currency_layout ); ?>" size="20" maxlength="25" />
 					<p class="description"><?php _e( '%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD).', 'tcp' ); ?></p>
 					<p class="description"><?php _e( 'For Example: For Euro use %2$s %1$s -> 100&euro;.', 'tcp' ); ?></p>
 					<p class="description"><?php _e( 'If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal "%1$s%2$s (%3$s)."', 'tcp' ); ?></p>
@@ -204,7 +204,7 @@ class TCPFirstTimeSetup {
 					<label for="decimal_point"><?php _e( 'Decimal point separator', 'tcp' ); ?></label>
 				</th>
 				<td>
-					<input type="text" id="decimal_point" name="decimal_point" value="<?php echo $decimal_point; ?>" size="1" maxlength="1" />
+					<input type="text" id="decimal_point" name="decimal_point" value="<?php echo stripslashes( $decimal_point ); ?>" size="1" maxlength="1" />
 				</td>
 			</tr>
 	
@@ -213,7 +213,7 @@ class TCPFirstTimeSetup {
 					<label for="continue_url"><?php _e( 'Thousands separator', 'tcp' ); ?></label>
 				</th>
 				<td>
-					<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo $thousands_separator; ?>" size="1" maxlength="1" />
+					<input type="text" id="thousands_separator" name="thousands_separator" value="<?php echo stripslashes( $thousands_separator ); ?>" size="1" maxlength="1" />
 				</td>
 			</tr>
 	
