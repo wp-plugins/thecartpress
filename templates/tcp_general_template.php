@@ -541,13 +541,14 @@ function tcp_get_sorting_fields() {
 }
 
 function tcp_the_sort_panel() {
-	$filter = new TCPFilterNavigation();
+	$filter		= new TCPFilterNavigation();
 	$order_type = $filter->get_order_type();
 	$order_desc = $filter->get_order_desc();
-	$settings = get_option( 'ttc_settings' );
-	$disabled_order_types = isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
-	$sorting_fields = tcp_get_sorting_fields(); ?>
-<div class="tcp_order_panel">
+	$settings	= get_option( 'ttc_settings' );
+	$disabled_order_types	= isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
+	$sorting_fields			= tcp_get_sorting_fields();
+	$buy_button_color		= thecartpress()->get_setting( 'buy_button_color' ); ?>
+<div class="tcp_order_panel tcpf">
 	<form action="" method="post">
 	<span class="tcp_order_type">
 	<label for="tcp_order_type"><?php _e( 'Order by', 'tcp' ); ?>:</label>&nbsp;
@@ -564,7 +565,7 @@ function tcp_the_sort_panel() {
 		<label for="tcp_order_asc"><?php _e( 'Asc.', 'tcp' ); ?></label>
 		<input type="radio" name="tcp_order_desc" id="tcp_order_desc" value="desc" <?php checked( $order_desc, 'desc' );?>/>
 		<label for="tcp_order_desc"><?php _e( 'Desc.', 'tcp' ); ?></label>
-		<span class="tcp_order_submit"><input type="submit" name="tcp_order_by" value="<?php _e( 'Sort', 'tcp' );?>" /></span>
+		<span class="tcp_order_submit"><button type="submit" name="tcp_order_by" class="tcp-btn <?php echo $buy_button_color; ?>"><?php _e( 'Sort', 'tcp' );?></button></span>
 	</span><!-- .tcp_order_desc -->
 	</form>
 </div><!-- .tcp_order_panel --><?php
