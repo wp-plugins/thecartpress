@@ -74,7 +74,7 @@ img.tcp-image {
 			</p>
 
 			<h2 class=""><?php _e( 'What\'s new?', 'tcp' ); ?></h2>
-			<p class="lead"><?php _e( 'New User interface improvements to make your day a day more easy.', 'tcp' ); ?></p>
+			<p class="lead"><?php _e( 'New User interface improvements, to make your day easier.', 'tcp' ); ?></p>
 
 			<hr/>
 			
@@ -83,11 +83,11 @@ img.tcp-image {
 			<img class="img-rounded tcp-image" src="<?php echo plugins_url( 'images/new_version/orders-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
 
 			<h2><?php _e( 'Products list', 'tcp' ); ?></h2>
-			<p class="">Now, more integrated into your screeen.</p>
+			<p class="">Now, more integrated into your page.</p>
 			<img class="img-rounded tcp-image" src="<?php echo plugins_url( 'images/new_version/products-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
 
 			<h2><?php _e( 'Product Settings', 'tcp' ); ?></h2>
-			<p class="">New tab system. Find product fields easiest.</p>
+			<p class="">New tab system. Find product fields easier.</p>
 			<img class="img-rounded" src="<?php echo plugins_url( 'images/new_version/product-settings.jpg', dirname( __FILE__ ) ); ?>" class="center" />
 		</div><!-- .text-center -->
 	</div><!-- .tcp-new-version -->
