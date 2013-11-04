@@ -16,7 +16,6 @@
 		<header class="entry-header">
 			<h1 class="entry-title"><?php _e( 'Nothing Found', 'tcp' ); ?></h1>
 		</header><!-- .entry-header -->
-
 		<div class="entry-content">
 			<p>
 				<?php _e( 'Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'tcp' ); ?>
@@ -104,12 +103,12 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 
 		if ( $tcp_col_sm >= $number_columns_sm ) {
 			$tcp_col_sm = 0; ?>
-		<div class="clearfix tcp-visible-sm"></div>
+		<div class="clearfix visible-sm"></div>
 		<?php }
 
 		if ( $tcp_col_lg >= $number_columns_lg ) {
 			$tcp_col_lg = 0; ?>
-		<div class="clearfix tcp-visible-lg"></div>
+		<div class="clearfix visible-lg"></div>
 		<?php }
 
 		$tcp_col++;
