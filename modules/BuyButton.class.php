@@ -35,26 +35,13 @@ class TCPBuyButton {
 	function __construct() {
 		//WordPress hooks
 		add_action( 'tcp_admin_menu'			, array( $this, 'tcp_admin_menu' ), 30 );
-		add_action( 'admin_init'				, array( $this, 'admin_init' ) );
+		add_action( 'tcp_admin_init'			, array( $this, 'tcp_admin_init' ) );
 
 		//TheCartPress hooks
 		add_filter( 'tcp_get_buybutton_template', array( $this, 'tcp_get_buybutton_template' ), 10, 2 );
-		// add_action( 'init', array( $this, 'init') );
 	}
 
-	// function init() {
-	// 	global $thecartpress;
-	// 	if ( $thecartpress && $thecartpress->get_setting( 'buy_button_grouped', false ) ) {
-	// 		add_filter( 'tcp_the_add_to_cart_button', array( $this, 'tcp_the_add_to_cart_button_0' ), 0 );
-	// 	}
-	// }
-
-	// function tcp_the_add_to_cart_button_0( $content ) {
-	// 	ob_start();
-	// 	return ob_get_clean() . $content;
-	// }
-
-	function admin_init() {
+	function tcp_admin_init() {
 		//Attach this new setting to the default metabox
 		add_action( 'tcp_product_metabox_custom_fields'				, array( $this, 'tcp_product_metabox_custom_fields' ) );
 		add_action( 'tcp_product_metabox_save_custom_fields'		, array( $this, 'tcp_product_metabox_save_custom_fields' ) );
@@ -249,9 +236,9 @@ class TCPBuyButton {
 			jQuery( '#tcp_btn_example' ).removeClass().addClass( colors ).addClass( sizes );
 		} );
 		</script>
-		<span class="description tcp-tcpf">
+		<span class="description tcpf">
 			<?php _e( 'Example ', 'tcp' ); ?>
-			<button id="tcp_btn_example" class="<?php echo $buy_button_color, ' ', $buy_button_size; ?>"/><?php _e( 'Add to Cart', 'tcp' ); ?></button>
+			<button id="tcp_btn_example" type="submit" class="<?php echo $buy_button_color, ' ', $buy_button_size; ?>"/><?php _e( 'Add to Cart', 'tcp' ); ?></button>
 		</span>
 	</td>
 </tr>

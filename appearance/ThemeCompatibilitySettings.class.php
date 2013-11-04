@@ -28,7 +28,7 @@ class TCPThemeCompatibilitySettings {
 	function __construct() {
 		add_action( 'tcp_admin_menu', array( $this, 'tcp_admin_menu' ) );
 		global $tcp_miranda;
-		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Theme Compatibility', 'tcp' ), false, array( 'TCPThemeCompatibilitySettings', __FILE__ ), plugins_url( 'thecartpress/images/miranda/theme_settings_48.png' ) );
+		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Theme Compatibility', 'tcp' ), false, array( 'TCPThemeCompatibilitySettings', __FILE__ ), plugins_url( 'images/miranda/theme_settings_48.png', TCP_FOLDER ) );
 	}
 
 	function tcp_admin_menu() {
@@ -63,7 +63,7 @@ class TCPThemeCompatibilitySettings {
 
 <?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
-	<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
+		<p><?php _e( 'Settings updated', 'tcp' ); ?></p>
 	</div>
 <?php endif; ?>
 
@@ -76,26 +76,18 @@ if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_
 	$current_post_type = '';
 }
 
-$load_default_buy_button_style	= $thecartpress->get_setting( 'load_default_buy_button_style', true );
+$load_default_buy_button_style				= $thecartpress->get_setting( 'load_default_buy_button_style', true );
 $load_default_shopping_cart_checkout_style	= $thecartpress->get_setting( 'load_default_shopping_cart_checkout_style', true );
-$load_default_loop_style = $thecartpress->get_setting( 'load_default_loop_style', true );
+$load_default_loop_style					= $thecartpress->get_setting( 'load_default_loop_style', true );
+$load_bootstrap_js							= $thecartpress->get_setting( 'load_bootstrap_js', true );
 
-$products_per_page			= $thecartpress->get_setting( 'products_per_page' . $suffix, '10' );//TODO
+$products_per_page							= $thecartpress->get_setting( 'products_per_page' . $suffix, '10' );
+$image_size_grouped_by_button				= $thecartpress->get_setting( 'image_size_grouped_by_button' . $suffix, 'thumbnail' );
+//image
+$image_size_content							= $thecartpress->get_setting( 'image_size_content', 'thumbnail' );
+//$image_align_content						= $thecartpress->get_setting( 'image_align_content' . $suffix );
+//$image_link_content							= $thecartpress->get_setting( 'image_link_content' . $suffix );
 
-$see_buy_button_in_content	= $thecartpress->get_setting( 'see_buy_button_in_content' . $suffix, true );
-$see_price_in_content		= $thecartpress->get_setting( 'see_price_in_content' . $suffix );
-$image_size_grouped_by_button = $thecartpress->get_setting( 'image_size_grouped_by_button' . $suffix, 'thumbnail' );
-$see_image_in_content		= $thecartpress->get_setting( 'see_image_in_content' . $suffix );
-$image_size_content			= $thecartpress->get_setting( 'image_size_content' . $suffix, 'thumbnail' );
-$image_align_content		= $thecartpress->get_setting( 'image_align_content' . $suffix );
-$image_link_content			= $thecartpress->get_setting( 'image_link_content' . $suffix );
-$see_buy_button_in_excerpt	= $thecartpress->get_setting( 'see_buy_button_in_excerpt' . $suffix );
-$align_buy_button_in_excerpt = $thecartpress->get_setting( 'align_buy_button_in_excerpt', 'north' );
-$see_price_in_excerpt		= $thecartpress->get_setting( 'see_price_in_excerpt' . $suffix );
-$see_image_in_excerpt		= $thecartpress->get_setting( 'see_image_in_excerpt' . $suffix );
-$image_size_excerpt			= $thecartpress->get_setting( 'image_size_excerpt' . $suffix, 'thumbnail' );
-$image_align_excerpt		= $thecartpress->get_setting( 'image_align_excerpt' . $suffix );
-$image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suffix );
 ?>
 
 <form method="post" action="">
@@ -111,7 +103,7 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 
 <tr valign="top">
 	<th scope="row">
-	<label for="load_default_buy_button_style"><?php _e( 'Load default Buy Button styles', 'tcp' ); ?></label>
+		<label for="load_default_buy_button_style"><?php _e( 'Load default Buy Button styles', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="load_default_buy_button_style" name="load_default_buy_button_style" value="yes" <?php checked( true, $load_default_buy_button_style ); ?> />
@@ -120,7 +112,7 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 
 <tr valign="top">
 	<th scope="row">
-	<label for="load_default_shopping_cart_checkout_style"><?php _e( 'Load default Shopping Cart & Checkout styles', 'tcp' ); ?></label>
+		<label for="load_default_shopping_cart_checkout_style"><?php _e( 'Load default Shopping Cart & Checkout styles', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="load_default_shopping_cart_checkout_style" name="load_default_shopping_cart_checkout_style" value="yes" <?php checked( true, $load_default_shopping_cart_checkout_style ); ?> />
@@ -129,7 +121,7 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 
 <tr valign="top">
 	<th scope="row">
-	<label for="load_default_loop_style"><?php _e( 'Load default Catalogue styles', 'tcp' ); ?></label>
+		<label for="load_default_loop_style"><?php _e( 'Load default Catalogue styles', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="load_default_loop_style" name="load_default_loop_style" value="yes" <?php checked( true, $load_default_loop_style ); ?> />
@@ -138,7 +130,16 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 
 <tr valign="top">
 	<th scope="row">
-	<label for="products_per_page"><?php _e( 'Product pages show at most', 'tcp' ); ?></label>
+		<label for="load_default_loop_style"><?php _e( 'Load Bootstrap JavaScript', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" id="load_bootstrap_js" name="load_bootstrap_js" value="yes" <?php checked( true, $load_bootstrap_js ); ?> />
+	</td>
+</tr>
+
+<tr valign="top">
+	<th scope="row">
+		<label for="products_per_page"><?php _e( 'Product pages show at most', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="text" id="products_per_page" name="products_per_page" value="<?php echo $products_per_page; ?>" class="small-text tcp_count" maxlength="4"/>
@@ -169,11 +170,11 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 		<select id="current_post_type" name="current_post_type">
 			<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
 			<?php foreach( $post_types as $i => $post_type ) : 
-				$existe = $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, 'false' ) !== 'false'; ?>
+				$existe = $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, 'false' ) !== 'false'; ?>
 			<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
 			<?php if ( $existe ) : ?> style="font-weight: bold;"<?php endif; ?>
 			>
-			<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'see_buy_button_in_content-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
+			<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
 			<?php if ( $existe ) : ?> *<?php endif; ?>
 			</option>
 			<?php endforeach; ?>
@@ -186,26 +187,6 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 		<?php _e( 'Remember to save the changes before to load new post type settings.', 'tcp' ); ?>
 		</span>
 
-	</td>
-</tr>
-
-<tr valign="top">
-	<th scope="row">
-	<label for="see_buy_button_in_content"><?php _e( 'See buy button', 'tcp' ); ?></label>
-	</th>
-	<td>
-		<input type="checkbox" id="see_buy_button_in_content" name="see_buy_button_in_content" value="yes" <?php checked( true, $see_buy_button_in_content ); ?> />
-		<p class="description"><?php _e( 'Allows to show the buy button in the product description.', 'tcp' ); ?></p>
-	</td>
-</tr>
-
-<tr valign="top">
-	<th scope="row">
-	<label for="see_price_in_content"><?php _e( 'See price', 'tcp' ); ?></label>
-	</th>
-	<td>
-		<input type="checkbox" id="see_price_in_content" name="see_price_in_content" value="yes" <?php checked( true, $see_price_in_content ); ?> />
-		<span><?php _e( 'This value will be available if buy button is hidden', 'tcp' ); ?></span>
 	</td>
 </tr>
 
@@ -227,16 +208,7 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 
 <tr valign="top">
 	<th scope="row">
-	<label for="see_image_in_content"><?php _e( 'See image', 'tcp' ); ?></label>
-	</th>
-	<td>
-		<input type="checkbox" id="see_image_in_content" name="see_image_in_content" value="yes" <?php checked( true, $see_image_in_content ); ?> />
-	</td>
-</tr>
-
-<tr valign="top">
-	<th scope="row">
-	<label for="image_size_content"><?php _e( 'Image size', 'tcp' ); ?></label>
+	<label for="image_size_content"><?php _e( 'Image size in content', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<?php $image_sizes = get_intermediate_image_sizes(); ?>
@@ -248,9 +220,9 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 	</td>
 </tr>
 
-<tr valign="top">
+<!--<tr valign="top">
 	<th scope="row">
-	<label for="image_align_content"><?php _e( 'Image align', 'tcp' ); ?></label>
+	<label for="image_align_content"><?php _e( 'Image align in content', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="image_align_content" name="image_align_content">
@@ -260,11 +232,11 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 			<option value="alignright" <?php selected( 'alignright', $image_align_content ); ?>><?php _e( 'Align Right', 'tcp' ); ?></option>
 		</select>
 	</td>
-</tr>
+</tr>-->
 
-<tr valign="top">
+<!--<tr valign="top">
 	<th scope="row">
-	<label for="image_link_content"><?php _e( 'Image link', 'tcp' ); ?></label>
+	<label for="image_link_content"><?php _e( 'Image link in content', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="image_link_content" name="image_link_content">
@@ -273,7 +245,8 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 			<option value="post" <?php selected( 'post', $image_link_content ); ?>><?php _e( 'Post url', 'tcp' ); ?></option>
 		</select>
 	</td>
-</tr>
+</tr>-->
+
 </tbody>
 </table>
 
@@ -298,20 +271,7 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 			if ( strlen( $suffix ) == 0 ) return;
 			$settings = get_option( 'tcp_settings' );
 			unset( $settings['products_per_page' . $suffix] );
-			unset( $settings['see_buy_button_in_content' . $suffix] );
-			unset( $settings['see_price_in_content' . $suffix] );
 			unset( $settings['image_size_grouped_by_button' . $suffix] );
-			unset( $settings['see_image_in_content' . $suffix] );
-			unset( $settings['image_size_content' . $suffix] );
-			unset( $settings['image_align_content' . $suffix] );
-			unset( $settings['image_link_content' . $suffix] );
-			unset( $settings['see_buy_button_in_excerpt' . $suffix] );
-			unset( $settings['align_buy_button_in_excerpt' . $suffix] );
-			unset( $settings['see_price_in_excerpt' . $suffix] );
-			unset( $settings['see_image_in_excerpt' . $suffix] );
-			unset( $settings['image_size_excerpt' . $suffix] );
-			unset( $settings['image_align_excerpt' . $suffix] );
-			unset( $settings['image_link_excerpt' . $suffix] );
 			$settings = apply_filters( 'tcp_theme_compatibility_unset_settings_action', $settings, $suffix );
 			update_option( 'tcp_settings', $settings );
 			$this->updated = true;
@@ -324,22 +284,14 @@ $image_link_excerpt			= $thecartpress->get_setting( 'image_link_excerpt' . $suff
 		$settings['load_default_buy_button_style']			= isset( $_POST['load_default_buy_button_style'] ) ? $_POST['load_default_buy_button_style'] == 'yes' : false;
 		$settings['load_default_shopping_cart_checkout_style'] = isset( $_POST['load_default_shopping_cart_checkout_style'] ) ? $_POST['load_default_shopping_cart_checkout_style'] == 'yes' : false;
 		$settings['load_default_loop_style']				= isset( $_POST['load_default_loop_style'] ) ? $_POST['load_default_loop_style'] == 'yes' : false;
-
+		$settings['load_bootstrap_js']						= isset( $_POST['load_bootstrap_js'] );
 		$settings['products_per_page' . $suffix]			= isset( $_POST[ 'products_per_page' ] ) ? $_POST[ 'products_per_page' ] : false;
-		$settings['see_buy_button_in_content' . $suffix]	= isset( $_POST['see_buy_button_in_content'] ) ? $_POST['see_buy_button_in_content'] == 'yes' : false;
-		$settings['see_price_in_content' . $suffix]			= isset( $_POST['see_price_in_content'] ); // ? $_POST['see_price_in_content'] == 'yes' : false;
+
 		$settings['image_size_grouped_by_button' . $suffix]	= isset( $_POST['image_size_grouped_by_button'] ) ? $_POST['image_size_grouped_by_button'] : 'thumbnail';
 		$settings['see_image_in_content' . $suffix]			= isset( $_POST['see_image_in_content'] ) ? $_POST['see_image_in_content'] == 'yes' : false;
 		$settings['image_size_content' . $suffix]			= isset( $_POST['image_size_content'] ) ? $_POST['image_size_content'] : 'thumbnail';
-		$settings['image_align_content' . $suffix]			= isset( $_POST['image_align_content'] ) ? $_POST['image_align_content'] : 'north';
-		$settings['image_link_content' . $suffix]			= isset( $_POST['image_link_content'] ) ? $_POST['image_link_content'] : '';
-		$settings['see_buy_button_in_excerpt' . $suffix]	= isset( $_POST['see_buy_button_in_excerpt'] ) ? $_POST['see_buy_button_in_excerpt'] == 'yes' : false;
-		$settings['align_buy_button_in_excerpt' . $suffix]	= isset( $_POST['align_buy_button_in_excerpt'] ) ? $_POST['align_buy_button_in_excerpt'] : '';
-		$settings['see_price_in_excerpt' . $suffix]			= isset( $_POST['see_price_in_excerpt'] ) ? $_POST['see_price_in_excerpt'] == 'yes' : false;
-		$settings['see_image_in_excerpt' . $suffix]			= isset( $_POST['see_image_in_excerpt'] ) ? $_POST['see_image_in_excerpt'] == 'yes' : false;
-		$settings['image_size_excerpt' . $suffix]			= isset( $_POST['image_size_excerpt'] ) ? $_POST['image_size_excerpt'] : 'thumbnail';
-		$settings['image_align_excerpt' . $suffix]			= isset( $_POST['image_align_excerpt'] ) ? $_POST['image_align_excerpt'] : 'SOUTH';
-		$settings['image_link_excerpt' . $suffix]			= isset( $_POST['image_link_excerpt'] ) ? $_POST['image_link_excerpt'] : '';
+		//$settings['image_align_content' . $suffix]			= isset( $_POST['image_align_content'] ) ? $_POST['image_align_content'] : 'north';
+		//$settings['image_link_content' . $suffix]			= isset( $_POST['image_link_content'] ) ? $_POST['image_link_content'] : '';
 
 		$settings = apply_filters( 'tcp_theme_compatibility_settings_action', $settings, $suffix );
 		

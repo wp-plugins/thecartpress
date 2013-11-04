@@ -30,11 +30,11 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'TCP_Plugin' ) ) {
 
+require_once( TCP_TEMPLATES_FOLDER . 'tcp_template_template.php' );
+
 /**
  * All the checkout plugins must implement this class
  */
-require_once( WP_PLUGIN_DIR . '/thecartpress/templates/tcp_template_template.php' );
-
 class TCP_Plugin {
 
 	function isForOtherPayments() {
@@ -158,6 +158,7 @@ function tcp_register_shipping_plugin( $class_name, $object = false ) {
 	else $obj = $object;
 	$tcp_shipping_plugins['shi_' . $class_name] = $obj;
 	tcp_add_template_class( 'tcp_shipping_plugins_' . $class_name, sprintf( __( 'This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s', 'tcp' ), $obj->getName() ) );
+	return $obj;
 }
 
 /**
@@ -171,6 +172,7 @@ function tcp_register_payment_plugin( $class_name, $object = false ) {
 	tcp_add_template_class( 'tcp_payment_plugins_' . $class_name, sprintf( __( 'This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s', 'tcp' ), $obj->getName() ) );
 	global $tcp_miranda;
 	if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'payments', $obj->getTitle(), $obj->getDescription(), 'http://google.com', $obj->getIcon() );
+	return $obj;
 }
 
 /**

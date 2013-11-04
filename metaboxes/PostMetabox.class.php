@@ -1,5 +1,14 @@
 <?php
 /**
+ * Post related content Metabox
+ *
+ * Displays related info
+ *
+ * @package TheCartPress
+ * @subpackage Metaboxes
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * TheCartPress is free software: you can redistribute it and/or modify
@@ -16,17 +25,22 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPPostMetabox' ) ) {
+
 require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 		
-class PostMetabox {
+class TCPPostMetabox {
 
 	function __construct() {
-		add_action( 'admin_init', array( &$this, 'admin_init' ) );
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 
 	function admin_init() {
-		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( &$this, 'show' ), 'post', 'normal', 'high' );
-		add_action( 'delete_post', array( &$this, 'delete_post' ) );
+		add_meta_box( 'tcp-post-related-content', __( 'Related content', 'tcp' ), array( $this, 'show' ), 'post', 'normal', 'high' );
+		add_action( 'delete_post', array( $this, 'delete_post' ) );
 	}
 
 	function show() {
@@ -73,5 +87,5 @@ class PostMetabox {
 	}
 }
 
-new PostMetabox();
-?>
+new TCPPostMetabox();
+} // class_exists check
