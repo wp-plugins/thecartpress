@@ -178,18 +178,6 @@ class TCPUpdateVersion {
 				$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders ADD COLUMN `shipping_street_2` VARCHAR(255) NOT NULL AFTER `shipping_street`;';
 				$wpdb->query( $sql );
 			}
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `firstname` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `lastname` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `company` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `city` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `region` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
-			$sql = 'ALTER TABLE ' . $wpdb->prefix . 'tcp_orders MODIFY COLUMN `street` varchar(255) NOT NULL;';
-			$wpdb->query( $sql );
 			$sql = 'SHOW COLUMNS FROM ' . $wpdb->prefix . 'tcp_addresses WHERE field = \'street_2\'';
 			$row = $wpdb->get_row( $sql );
 			if ( ! $row ) {
@@ -197,6 +185,9 @@ class TCPUpdateVersion {
 				$wpdb->query( $sql );
 			}
 			update_option( 'tcp_version', 132 );
+		}
+		if ( $version < 133 ) {
+			update_option( 'tcp_version', 133 );
 		}
 	}
 }

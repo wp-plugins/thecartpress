@@ -4,8 +4,8 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 License: GPLv2 or later
 Requires at least: 3.3
-Tested up to: 3.6.1
-Stable Tag: 1.3.2.1
+Tested up to: 3.7.1
+Stable Tag: 1.3.3
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -22,6 +22,8 @@ You can extend its functionality with plugins and themes to customize your store
 * [TheCartPress Demo](http://demo.thecartpress.com)
 * [TheCartPress Community/Support](http://community.thecartpress.com/activity/)
 * [TheCartPress Site](http://thecartpress.com)
+
+= Universal theme compatibility, making it compatible also with all WordPress themes =
 
 = eCommerce 100% WordPress, naturaly flexible & Scalable =
 
@@ -115,7 +117,7 @@ You can extend its functionality with plugins and themes to customize your store
  * See utilities.
  * See author.
  * See custom areas.
-* Use custom and configurable loops also in shortcode generator and widgets.
+* Use custom and configurable loops, also in shortcode generator and widgets.
 
 = Full Catalog Browsing Offering =
 
@@ -298,6 +300,14 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.3 =
+* Product detail: Hidden Content is some themes
+* CardOffLine: fix a bug when using hidden card number (thanks to the community)
+* New look & feel
+* Orders List: new orders list in backend
+* Products List: new product list in backend
+* Activated screen: News and notices about new versions
+* Product detail: Thumbnail size setting
 
 = 1.3.2.1 =
 * Issue with svn

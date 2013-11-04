@@ -29,7 +29,7 @@ class TCPThemeCompat {
 	function tcp_init() {
 		global $thecartpress;
 		//Removes the old the_content hook, used by TheCartPress
-		remove_filter( 'the_content'	, array( $thecartpress, 'the_content' ) );
+		// remove_filter( 'the_content'	, array( $thecartpress, 'the_content' ) );
 
 		//Adds a new hook to create the new template hierarchy
 		add_filter( 'template_include'	, array( $this, 'template_include' ) );
@@ -88,7 +88,6 @@ class TCPThemeCompat {
 			$template_names = apply_filters( 'tcp_theme_compat_single_saleable_template_names', array(
 				'single-' . $post->post_type . '.php',
 				'single-tcp_saleable.php',
-				'thecartpress.php',
 			), $post );
 			//Searching for a template
 			$template = locate_template( $template_names );
@@ -96,12 +95,13 @@ class TCPThemeCompat {
 			//and Theme compatibility will inject the content
 			if ( strlen( $template ) == 0 ) {
 				$template_names = apply_filters( 'tcp_archive_saleable_default_template_names', array(
+					'thecartpress.php',
 					'page.php',
 					'index.php'
 				), $post );
 				$this->theme_compatibility_reset_post( array(
 					'post_title'	=> $post->post_title,
-					//'post_content'	=> $post->post_content,
+					'post_content'	=> $post->post_content,
 					'is_single'		=> true,
 				) );
 				$template = locate_template( $template_names );
@@ -123,11 +123,11 @@ class TCPThemeCompat {
 			), $post );
 			//Searching for a template
 			$template = locate_template( $template_names );
-
 			//If the theme hasn't the previous templates then TheCartPress loads one of this
 			//and Theme compatibility will inject the content
-			if ( strlen( $template ) == 0 ) {
-				$template_names = apply_filters( 'tcp_theme_compat_taxonomy_saleable_default_template_names', array(	
+			if ( substr( $template, -strlen( 'thecartpress.php' ) ) === 'thecartpress.php' || strlen( $template ) == 0 ) {
+				$template_names = apply_filters( 'tcp_theme_compat_taxonomy_saleable_default_template_names', array(
+					'thecartpress.php',
 					'page.php',
 					'index.php'
 				), $post );
@@ -142,7 +142,8 @@ class TCPThemeCompat {
 				$this->theme_compatibility_reset_post( array(
 					'post_title'	=> $label,
 					'post_type'		=> $post->post_type,
-					'is_tax'		=> true
+					'is_tax'		=> true,
+					'is_archive'	=> true
 				) );
 				$template = locate_template( $template_names );
 				//Adds a new 'the_content' hook
@@ -155,7 +156,6 @@ class TCPThemeCompat {
 			$template_names = apply_filters( 'tcp_theme_compat_archive_saleable_template_names', array(
 				'archive-' . $post->post_type . '.php',
 				'archive-tcp_saleable.php',
-				'thecartpress.php',
 			), $post );
 			//Searching for a template
 			$template = locate_template( $template_names );
@@ -164,6 +164,7 @@ class TCPThemeCompat {
 			//and Theme compatibility will inject the content
 			if ( strlen( $template ) == 0 ) {
 				$template_names = apply_filters( 'tcp_theme_compat_archive_saleable_default_template_names', array(
+					'thecartpress.php',
 					//'archive.php',
 					'page.php',
 					'index.php'
@@ -207,6 +208,7 @@ class TCPThemeCompat {
 
 			//If the theme has not this template, then the template available in TheCartPress will be used
 			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . $template_name;
+
 			//Applies the template
 			ob_start();
 			require( apply_filters( 'tcp_template_single_product', $located ) );

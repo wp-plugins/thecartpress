@@ -143,6 +143,7 @@ TCPUnitsInBuyButton::initModule();
 function tcp_get_product_units_list( $by_default = false ) {
 	$units = array(
 		'empty' => '',
+		'unit' => __( 'unit', 'tcp' ),
 		'piece' => __( 'piece', 'tcp' ),
 		'roll' => __( 'roll', 'tcp' ),
 		'meter' => __( 'meter', 'tcp' ),
