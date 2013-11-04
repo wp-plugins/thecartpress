@@ -52,6 +52,10 @@ class TCPNewVersionDetails {
 	left: 0;
 	top: 0;
 }
+
+img.tcp-image {
+	border: 1px solid lightgrey;
+}
 </style>
 	<?php }
 
@@ -76,11 +80,11 @@ class TCPNewVersionDetails {
 			
 			<h2><?php _e( 'Orders list', 'tcp' ); ?></h2>
 			<p class=""><?php _e( 'New orders list, to see your orders faster. Take a quick look using "view", localize addresses in map, etc.', 'tcp' ); ?></p>
-			<img class="img-rounded" src="<?php echo plugins_url( 'images/new_version/orders-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
+			<img class="img-rounded tcp-image" src="<?php echo plugins_url( 'images/new_version/orders-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
 
 			<h2><?php _e( 'Products list', 'tcp' ); ?></h2>
 			<p class="">Now, more integrated into your screeen.</p>
-			<img class="img-rounded" src="<?php echo plugins_url( 'images/new_version/products-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
+			<img class="img-rounded tcp-image" src="<?php echo plugins_url( 'images/new_version/products-list.jpg', dirname( __FILE__ ) ); ?>" class="center" />
 
 			<h2><?php _e( 'Product Settings', 'tcp' ); ?></h2>
 			<p class="">New tab system. Find product fields easiest.</p>
