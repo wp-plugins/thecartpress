@@ -1321,12 +1321,15 @@ function tcp_get_template_part( $path, $slug = '', $name = '' ) {
  * @since 1.3.3
  * @uses locate_template, tcp_get_template_part, plugin_dir_path, apply_filters (called using 'tcp_the_loop')
  */
-function tcp_the_loop( $loop = 'tcp-grid' ) {
-	if ( ! locate_template( "loop-$loop.php", true ) ) {
+function tcp_the_loop( $loop = 'tcp-grid', $include = true ) {
+	$path = locate_template( "loop-$loop.php" );
+	if ( strlen( $path ) == 0 ) {
 		$path = plugin_dir_path( dirname( __FILE__ ) ) . "themes-templates/loop-$loop.php";
 		if ( !file_exists( $path ) ) $path = plugin_dir_path( dirname( __FILE__ ) ) . "themes-templates/loop-tcp-grid.php";
-		require( apply_filters( 'tcp_the_loop', $path, $loop ) );
 	}
+	$path = apply_filters( 'tcp_the_loop', $path, $loop );
+	if ( $include ) include( $path );
+	else return $path;
 }
 
 /**
