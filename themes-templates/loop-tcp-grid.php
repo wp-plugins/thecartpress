@@ -244,8 +244,7 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 				<?php if ( $see_taxonomies ) : ?>
 					<div class="tcp-product-taxonomies clearfix">
 						<span class="tcp_taxonomies">
-						<?php
-						$taxonomies = get_object_taxonomies( get_post_type(), 'objects' );
+						<?php $taxonomies = get_object_taxonomies( get_post_type(), 'objects' );
 						foreach( $taxonomies as $id => $taxonomy ) :
 							$terms_list = get_the_term_list( 0, $id, '', ', ' );
 							if ( strlen( $terms_list ) > 0 ) : ?>
@@ -258,14 +257,13 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 					</div><!-- tcp-product-taxonomies -->
 				<?php endif;?>
 				</div><!-- .tcp-product-meta -->
-
+				<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
 			</div><!-- grid-item -->
 		</div><!-- .tcp-product -->
 <?php endwhile; // End the loop ?>
 
 	</div><!-- .tcpf .entry-content -->
 </div><!-- .tcp-product-list .tcp-product-grid -->
-
 
 <?php /* Display pagination */
 if ( $see_pagination ) tcp_get_the_pagination(); ?>
