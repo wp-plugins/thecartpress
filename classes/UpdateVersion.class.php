@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPUpdateVersion' ) ) {
 
 class TCPUpdateVersion {
 
@@ -191,4 +195,4 @@ class TCPUpdateVersion {
 		}
 	}
 }
-?>
+} // class_exists check

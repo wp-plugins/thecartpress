@@ -30,8 +30,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'TCP_Plugin' ) ) {
 
-require_once( TCP_TEMPLATES_FOLDER . 'tcp_template_template.php' );
-
 /**
  * All the checkout plugins must implement this class
  */
