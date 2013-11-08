@@ -86,8 +86,8 @@ class TCPCustomJavascript {
 <div class="clear"></div>
 
 <form method="post">
-	<?php $tcp_custom_style_activate = get_option( 'tcp_custom_javascript_activate', false ); ?>
-	<label for="tcp_custom_javascript_activate"><input type="checkbox" name="tcp_custom_javascript_activate" id="tcp_custom_javascript_activate" value="yes" <?php checked( $tcp_custom_style_activate ); ?>/>&nbsp;<?php _e( 'Activate next Javascript', 'tcp' ); ?></label>
+	<?php $tcp_custom_javascript_activate = get_option( 'tcp_custom_javascript_activate', false ); ?>
+	<label for="tcp_custom_javascript_activate"><input type="checkbox" name="tcp_custom_javascript_activate" id="tcp_custom_javascript_activate" value="yes" <?php checked( $tcp_custom_javascript_activate ); ?>/>&nbsp;<?php _e( 'Activate next Javascript', 'tcp' ); ?></label>
 	<br/>
 	<textarea name="tcp_custom_javascript" id="tcp_custom_javascript" cols="60" rows="30">
 	<?php echo stripslashes( get_option( 'tcp_custom_javascript', '' ) ); ?>
@@ -107,7 +107,7 @@ class TCPCustomJavascript {
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_custom_javascript_settings' );
 		update_option( 'tcp_custom_javascript_activate', isset( $_POST['tcp_custom_javascript_activate'] ) );
-		update_option( 'tcp_custom_javascript', $_POST['tcp_custom_javascript'] );
+		update_option( 'tcp_custom_javascript', trim( $_POST['tcp_custom_javascript'] ) );
 		$this->updated = true;
 	}
 }
