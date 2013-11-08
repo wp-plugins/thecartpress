@@ -1068,9 +1068,12 @@ function tcp_get_status_label( $status ) {
 // End Order status functions templates
 //
 
-//
-//Product types
-//
+/**
+ * Returns product types
+ *
+ * @since 1.1
+ * @uses apply_filters (tcp_get_product_types)
+ */
 function tcp_get_product_types( $no_one = false, $no_one_desc = '' ) {
 	$types = array();
 	if ( $no_one ) $types[''] = array( 'label' => $no_one_desc != '' ? $no_one_desc : __( 'No one', 'tcp' ) );

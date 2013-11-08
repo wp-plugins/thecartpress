@@ -300,9 +300,14 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.3.1 =
+* Shortcodes/Widgets loops: see discount & see stock settings
+* Product type: External Affiliate products
+* CSS Styles: New buy button styles
+
 = 1.3.3 =
-* Product detail: Hidden Content is some themes
-* CardOffLine: fix a bug when using hidden card number (thanks to the community)
+* Product detail: fix hidden content is some themes
+* CardOffLine: fix a bug when using hidden card numbers (thanks to the community)
 * New look & feel
 * Orders List: new orders list in backend
 * Products List: new product list in backend

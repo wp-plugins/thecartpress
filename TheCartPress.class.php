@@ -390,11 +390,11 @@ class TheCartPress {
 								$weight_2	= 0;
 							}
 						} else {
-							$price_1	= 0;
-							$weight_1	= 0;
+							$price_1	 = 0;
+							$weight_1	 = 0;
 							$option_2_id = 0;
-							$price_2	= 0;
-							$weight_2	= 0;
+							$price_2	 = 0;
+							$weight_2	 = 0;
 						}
 					}
 					$unit_price	= tcp_get_the_price( $post_id );
