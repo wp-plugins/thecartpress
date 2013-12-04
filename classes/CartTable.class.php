@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPCartTable' ) ) {
+if ( !class_exists( 'TCPCartTable' ) ) :
 
 /**
  * Shows a Cart table.
@@ -49,4 +49,4 @@ class TCPCartTable {
 		else return $out;
 	}
 }
-} // class_exists check
+endif; // class_exists check

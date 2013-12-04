@@ -75,6 +75,7 @@ class TCPLoginRegister {
 <h3><?php _e( 'Custom Login', 'tcp' ); ?></h3>
 
 <div class="postbox">
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -96,6 +97,7 @@ class TCPLoginRegister {
 </tr>
 </tbody>
 </table>
+</div>
 </div><!-- .postbox --><?php
 	}
 

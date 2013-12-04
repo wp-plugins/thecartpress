@@ -44,7 +44,9 @@ function tcp_get_current_id( $post_id, $post_type = false ) {
 	global $sitepress;
 	if ( $sitepress ) {
 		$default_language = $sitepress->get_current_language();
-		if ( $post_type === false ) $post_type = get_post_type( $post_id );
+		if ( $post_type === false ) {
+			$post_type = get_post_type( $post_id );
+		}
 		return icl_object_id( $post_id, $post_type, true, $default_language );
 	} else {
 		return $post_id;

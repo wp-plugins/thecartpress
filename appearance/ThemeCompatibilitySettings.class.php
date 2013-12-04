@@ -1,5 +1,12 @@
 <?php
 /**
+ * Product Details settings
+ *
+ * @package TheCartPress
+ * @subpackage Appearance
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +26,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPThemeCompatibilitySettings' ) ) {
+if ( !class_exists( 'TCPThemeCompatibilitySettings' ) ) :
 
 class TCPThemeCompatibilitySettings {
 
@@ -31,14 +38,26 @@ class TCPThemeCompatibilitySettings {
 		if ( $tcp_miranda ) $tcp_miranda->add_item( 'settings', 'default_settings', __( 'Theme Compatibility', 'tcp' ), false, array( 'TCPThemeCompatibilitySettings', __FILE__ ), plugins_url( 'images/miranda/theme_settings_48.png', TCP_FOLDER ) );
 	}
 
-	function tcp_admin_menu() {
+	function tcp_admin_menu( $thecartpress ) {
 		if ( ! current_user_can( 'tcp_edit_settings' ) ) return;
-		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
-		add_menu_page( '', __( 'Look&Feel', 'tcp' ), 'tcp_edit_settings', $base, '', plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ), 42 );
-		$page = add_submenu_page( $base, __( 'Theme Compatibility Settings', 'tcp' ), __( 'Theme Compatibility', 'tcp' ), 'tcp_edit_settings', $base, array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_menu_page(
+			'',
+			__( 'Look&Feel', 'tcp' ),
+			'tcp_edit_settings',
+			$base,
+			'',
+			plugins_url( 'thecartpress/images/tcp.png', TCP_FOLDER ),
+			42 );
+		$page = add_submenu_page(
+			$base,
+			__( 'Theme Compatibility Settings', 'tcp' ),
+			__( 'Theme Compatibility', 'tcp' ),
+			'tcp_edit_settings',
+			$base,
+			array( $this, 'admin_page' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -68,8 +87,8 @@ class TCPThemeCompatibilitySettings {
 <?php endif; ?>
 
 <?php global $thecartpress;
-if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_type'] ) ) > 0 ) {
-	$current_post_type = $_POST['current_post_type'];
+if ( isset( $_REQUEST['current_post_type'] ) && strlen( trim( $_REQUEST['current_post_type'] ) ) > 0 ) {
+	$current_post_type = $_REQUEST['current_post_type'];
 	$suffix = '-' . $current_post_type;
 } else {
 	$suffix = '';
@@ -84,7 +103,7 @@ $load_bootstrap_js							= $thecartpress->get_setting( 'load_bootstrap_js', true
 $products_per_page							= $thecartpress->get_setting( 'products_per_page' . $suffix, '10' );
 $image_size_grouped_by_button				= $thecartpress->get_setting( 'image_size_grouped_by_button' . $suffix, 'thumbnail' );
 //image
-$image_size_content							= $thecartpress->get_setting( 'image_size_content', 'thumbnail' );
+$image_size_content							= $thecartpress->get_setting( 'image_size_content' . $suffix, 'thumbnail' );
 //$image_align_content						= $thecartpress->get_setting( 'image_align_content' . $suffix );
 //$image_link_content							= $thecartpress->get_setting( 'image_link_content' . $suffix );
 
@@ -97,7 +116,7 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 <p class="description"><?php _e( 'Allows to load default styles provided by TheCartPress. To create your own styles, deactivate these settings. You could, also, customise by copying these CSS files to your theme.', 'tcp' ); ?></p>
 
 <div class="postbox">
-
+<div class="inside">
 <table class="form-table">
 <tbody>
 
@@ -148,7 +167,7 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 </tr>
 </tbody>
 </table>
-
+</div><!-- .inside -->
 </div>
 
 <?php do_action( 'tcp_theme_compatibility_settings_page_top', $suffix, $thecartpress ); ?>
@@ -156,7 +175,7 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 <h3 class="hndle"><?php _e( 'How to display Product Details', 'tcp' ); ?></h3>
 
 <div class="postbox">
-
+<div class="inside">
 <table class="form-table">
 <tbody>
 
@@ -164,24 +183,43 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 	<th scope="row">
 		<label for="current_post_type"><?php _e( 'Post type', 'tcp' ); ?></label>
 	</th>
-	<td>
+	<td class="tcpf">
 		<?php $post_types = get_post_types( '', 'object' ); ?>
+		<p>
+			<select id="current_post_type" name="current_post_type">
+				<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
+				<?php foreach( $post_types as $i => $post_type ) : 
+					$existe = $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, 'false' ) !== 'false'; ?>
+				<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
+				<?php if ( $existe ) : ?> style="font-weight: bold;"<?php endif; ?>
+				>
+				<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
+				<?php if ( $existe ) : ?> *<?php endif; ?>
+				</option>
+				<?php endforeach; ?>
+			</select>
+			<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
+			<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
+		</p>
+		<?php $config = '';
+		foreach( $post_types as $i => $post_type ) {
+			if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) {
+				$line = '<li>' . $post_type->labels->singular_name;
+				$line .= ': <a href="' . add_query_arg( 'current_post_type', $i ) . '">' . __( 'Load settings', 'tcp' ) . '</span></a>';
+				$line .= '</li>';
+				$config .= $line;
+			}
+		} ?>
+		<?php if ( strlen( $config ) > 0 ) : ?>
+		<div class="alert alert-warning">
+			<?php  _e( 'There are specific settings for the next Post Types:', 'tcp' ); ?>
+			<ul style="padding-left:10px;">
+				<?php echo $config; ?>
+				<li><a href="<?php echo remove_query_arg( 'current_post_type' ); ?>"><?php _e( 'Load default settings', 'tcp' ); ?></a></li>
+			</ul>
+		</div>
+		<?php endif; ?>
 
-		<select id="current_post_type" name="current_post_type">
-			<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
-			<?php foreach( $post_types as $i => $post_type ) : 
-				$existe = $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, 'false' ) !== 'false'; ?>
-			<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
-			<?php if ( $existe ) : ?> style="font-weight: bold;"<?php endif; ?>
-			>
-			<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
-			<?php if ( $existe ) : ?> *<?php endif; ?>
-			</option>
-			<?php endforeach; ?>
-		</select>
-
-		<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
-		<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
 		<p class="description"><?php _e( 'Allows to create different configuration for each Post Type.', 'tcp' ); ?></p>
 		<span class="description"><?php _e( 'Options in bold have a specific configuration.', 'tcp' ); ?>
 		<?php _e( 'Remember to save the changes before to load new post type settings.', 'tcp' ); ?>
@@ -250,6 +288,7 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 </tbody>
 </table>
 
+</div><!-- .inside -->
 </div><!-- .postbox -->
 
 <?php do_action( 'tcp_theme_compatibility_settings_page', $suffix, $thecartpress ); ?>
@@ -303,4 +342,4 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content', 't
 }
 
 new TCPThemeCompatibilitySettings();
-} // class_exists check
+endif; // class_exists check

@@ -89,6 +89,7 @@ $shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 <h3><?php _e( 'Currency Settings', 'tcp' ); ?></h3>
 
 <div id="excerpt_content" class="postbox">
+<div class="inside">
 
 <table class="form-table">
 <tbody>
@@ -191,13 +192,13 @@ $shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 </tbody>
 </table>
-
+</div>
 </div>
 
 <h3><?php _e( 'Date Settings', 'tcp'); ?></h3>
 
 <div id="excerpt_content" class="postbox">
-
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -230,13 +231,13 @@ $shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 </tr>
 </tbody>
 </table>
-
+</div>
 </div>
 
 <h3><?php _e( 'Countries Settings', 'tcp'); ?></h3>
 
 <div id="excerpt_content" class="postbox">
-
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -320,7 +321,7 @@ $shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 
 </tbody>
 </table>
-
+</div>
 </div>
 
 <?php do_action( 'tcp_localize_settings_page' ); ?>

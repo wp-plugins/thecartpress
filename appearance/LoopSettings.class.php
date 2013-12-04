@@ -1,5 +1,12 @@
 <?php
 /**
+ * Catalogue settings
+ *
+ * @package TheCartPress
+ * @subpackage Appearance
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +26,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPLoopSettings' ) ) {
+if ( !class_exists( 'TCPLoopSettings' ) ) :
 
 class TCPLoopSettings {
 
@@ -32,8 +39,8 @@ class TCPLoopSettings {
 		global $thecartpress;
 		$base = $thecartpress->get_base_appearance();
 		$page = add_submenu_page( $base, __( 'Catalogue Settings', 'tcp' ), __( 'Catalogue', 'tcp' ), 'tcp_edit_settings', 'loop_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {
@@ -52,11 +59,12 @@ class TCPLoopSettings {
 	}
 
 	function admin_page() {
-		$settings = get_option( 'ttc_settings' ); ?>
+		$settings = get_option( 'ttc_settings' );
+?>
 <div class="wrap">
 	<?php screen_icon( 'tcp-loop-settings' ); ?><h2><?php _e( 'Catalogue Settings', 'tcp' ); ?></h2>
 
-	<p class="description"><?php _e( 'Allows to configure how to display products in your Catalogue', 'tcp' ); ?></p>
+	<p class="description"><?php _e( 'Allows to configure how to display products, or any other post type, in your Catalogues', 'tcp' ); ?></p>
 
 	<?php if ( !empty( $this->updated ) ) : ?>
 	<div id="message" class="updated">
@@ -64,8 +72,8 @@ class TCPLoopSettings {
 	</div>
 	<?php endif; ?>
 
-<?php if ( isset( $_POST['current_post_type'] ) && strlen( trim( $_POST['current_post_type'] ) ) > 0 ) {
-	$current_post_type = $_POST['current_post_type'];
+<?php if ( isset( $_REQUEST['current_post_type'] ) && strlen( trim( $_REQUEST['current_post_type'] ) ) > 0 ) {
+	$current_post_type = $_REQUEST['current_post_type'];
 	$suffix = '-' . $current_post_type;
 } else {
 	$suffix = '';
@@ -105,26 +113,49 @@ $see_third_custom_area	= isset( $settings['see_third_custom_area' . $suffix] ) ?
 $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $settings['see_jetpack_sharing' . $suffix] : false; ?>
 	<form method="post" action="">
 	<div class="postbox">
+	<div class="inside">
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
 			<th scope="row">
-				<label for="current_post_type"><?php _e( 'Post type', 'tcp' ); ?></label>
+				<label for="current_post_type"><?php _e( 'Post type', 'tcp' ); ?></label>:
 			</th>
-			<td>
-				<?php $post_types = get_post_types( '', 'object' ); ?>
-				<select id="current_post_type" name="current_post_type">
-					<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
-					<?php foreach( $post_types as $i => $post_type ) : ?>
-					<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
-					<?php if ( isset( $settings[ 'title_tag-' . $i] ) ) : ?> style="font-weight: bold;"<?php endif; ?>
-					>
-					<?php echo $post_type->labels->singular_name; ?>
-					</option>
-					<?php endforeach; ?>
-				</select>
-				<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
-				<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
+			<td class="tcpf">
+				<p>
+					<?php $post_types = get_post_types( '', 'object' ); ?>
+					<select id="current_post_type" name="current_post_type">
+						<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
+						<?php foreach( $post_types as $i => $post_type ) : ?>
+						<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
+						<?php if ( isset( $settings[ 'title_tag-' . $i] ) ) : ?> style="font-weight: bold;"<?php endif; ?>
+						>
+						<?php echo $post_type->labels->singular_name; ?>
+						<?php if ( isset( $settings[ 'title_tag-' . $i] ) ) : ?> *<?php endif; ?>
+						</option>
+						<?php endforeach; ?>
+					</select>
+					<input type="submit" name="load_post_type_settings" value="<?php _e( 'Load post type settings', 'tcp' ); ?>" class="button-secondary"/>
+					<input type="submit" name="delete_post_type_settings" value="<?php _e( 'Delete post type settings', 'tcp' ); ?>" class="button-secondary"/>
+				</p>
+				<?php $config = '';
+				foreach( $post_types as $i => $post_type ) {
+					if ( isset( $settings[ 'title_tag-' . $i] ) ) {
+						$line = '<li>' . $post_type->labels->singular_name;
+						$line .= ': <a href="' . add_query_arg( 'current_post_type', $i ) . '">' . __( 'Load settings', 'tcp' ) . '</span></a>';
+						$line .= '</li>';
+						$config .= $line;
+					}
+				} ?>
+				<?php if ( strlen( $config ) > 0 ) : ?>
+				<div class="alert alert-warning">
+					<?php  _e( 'There are specific settings for the next Post Types:', 'tcp' ); ?>
+					<ul style="padding-left:10px;">
+						<?php echo $config; ?>
+						<li><a href="<?php echo remove_query_arg( 'current_post_type' ); ?>"><?php _e( 'Load default settings', 'tcp' ); ?></a></li>
+					</ul>
+				</div>
+				<?php endif; ?>
+
 				<p class="description"><?php _e( 'Allows to create different configuration for each Post Type. Products, posts or pages are custom post types.', 'tcp' ); ?></p>
 				<span class="description"><?php _e( 'Options in bold have a specific configuration.', 'tcp' ); ?>
 				<?php _e( 'Remember to save changes before to load another post type settings, or you\'ll loose the current values.', 'tcp' ); ?>
@@ -133,53 +164,61 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 		</tr>
 		</tbody>
 		</table>
+	</div><!-- .inside -->
 	</div><!-- .postbox -->
 	
 	<h3><?php _e( 'Layout', 'tcp' ); ?></h3>
 
 	<div class="postbox">
+	<div class="inside">
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
 			<th scope="row">
-				<label for="order_desc"><?php _e( 'Columns for Extra Small devices (Phones)', 'tcp' ); ?>:</label>
+				<label for="order_desc"><?php _e( 'Columns for Extra Small devices', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<input id="columns_xs" name="columns_xs" value="<?php echo $number_columns_xs;?>" size="2" maxlength="2" type="text" />
+				<span class="description"><?php _e( 'Phones', 'tcp' ); ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="order_desc"><?php _e( 'Columns for Small Devices (Tablets)', 'tcp' ); ?>:</label>
+				<label for="order_desc"><?php _e( 'Columns for Small Devices', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<input id="columns_sm" name="columns_sm" value="<?php echo $number_columns_sm;?>" size="2" maxlength="2" type="text" />
+				<span class="description"><?php _e( 'Tablets', 'tcp' ); ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="order_desc"><?php _e( 'Columns for Medium Devices (Desktop)', 'tcp' ); ?>:</label>
+				<label for="order_desc"><?php _e( 'Columns for Medium Devices', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<input id="columns" name="columns" value="<?php echo $number_columns;?>" size="2" maxlength="2" type="text" />
+				<span class="description"><?php _e( 'Desktops', 'tcp' ); ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="order_desc"><?php _e( 'Columns for Large Devices (Large Desktops)', 'tcp' ); ?>:</label>
+				<label for="order_desc"><?php _e( 'Columns for Large Devices', 'tcp' ); ?>:</label>
 			</th>
 			<td>
 				<input id="columns_lg" name="columns_lg" value="<?php echo $number_columns_lg;?>" size="2" maxlength="2" type="text" />
+				<span class="description"><?php _e( 'Large Desktops', 'tcp' ); ?></span>
 			</td>
 		</tr>
 		</tbody>
 		</table>
+	</div><!-- .inside -->
 	</div><!-- .postbox -->
 
 	<?php submit_button( null, 'primary', 'save-loop-settings' ); ?>
 	<h3><?php _e( 'Visibility', 'tcp' ); ?></h3>
 
 	<div class="postbox">
+	<div class="inside">
 		<table class="form-table">
 		<tbody>
 			<tr valign="top">
@@ -219,7 +258,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 					<option value="div" <?php selected( $title_tag, 'div' ); ?>>div</option>
 					<option value="span" <?php selected( $title_tag, 'span' ); ?>>span</option>
 				</select>
-				<p class="description"><?php _e( 'Allows to show or hide product titles in the loops, using custom html tag', 'tcp' ); ?></p>
+				<p class="description"><?php _e( 'Allows to show or hide product titles in your catalogues, using custom html tag', 'tcp' ); ?></p>
 			</td>
 		</tr>
 		
@@ -243,6 +282,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 		</tr>
 		</tbody>
 		</table>
+	</div><!-- .inside -->
 	</div><!-- .postbox -->
 
 	<?php submit_button( null, 'primary', 'save-loop-settings' ); ?>
@@ -250,6 +290,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 	<h3><?php _e( 'Advanced Visibility', 'tcp' ); ?></h3>
 
 	<div class="postbox">
+	<div class="inside">
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
@@ -283,7 +324,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 				<label for="excerpt_length"><?php _e( 'Excerpt Length', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-				<input type="numer" min="0" name="excerpt_length" id="excerpt_length" value="<?php echo $excerpt_length; ?>" maxlength="2" size="2" />
+				<input type="numer" min="0" name="excerpt_length" id="excerpt_length" value="<?php echo $excerpt_length; ?>" maxlength="2" size="2" /><span class="description"><?php _e( 'words', 'tcp' ); ?></span>
 			</td>
 		</tr>
 
@@ -352,8 +393,8 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 				<input type="checkbox" name="see_third_custom_area" id="see_third_custom_area" value="yes" <?php checked( $see_third_custom_area, true ); ?> />
 			</td>
 		</tr>
-		<?php //if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'sharedaddy' ) ) { ?>
-		<?php if ( method_exists( 'Jetpack', 'is_module_active' ) && Jetpack::is_module_active( 'sharedaddy' ) ) { ?>
+		<?php if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'sharedaddy' ) ) { ?>
+		<?php //if ( method_exists( 'Jetpack', 'is_module_active' ) && Jetpack::is_module_active( 'sharedaddy' ) ) { ?>
 		<tr valign="top">
 			<th scope="row">
 				<label for="see_jetpack_sharing"><?php _e( 'Display JetPack Sharing Area', 'tcp' ); ?>:</label>
@@ -366,6 +407,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 		<?php do_action( 'tcp_loop_settings_page', $settings ); ?>
 		</tbody>
 		</table>
+	</div><!-- .inside -->
 	</div><!-- .postbox -->
 
 	<?php submit_button( null, 'primary', 'save-loop-settings' ); ?>
@@ -373,6 +415,7 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 	<h3><?php _e( 'Sorting & Pagination', 'tcp' ); ?></h3>
 
 	<div class="postbox">
+	<div class="inside">
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
@@ -385,49 +428,50 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-			<label for="order_type_"><?php _e( 'Disabled order types', 'tcp' ); ?>:</label>
+				<label for="order_type_"><?php _e( 'Disabled order types', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-			<?php $sorting_fields = tcp_get_sorting_fields();
-			foreach( $sorting_fields as $sorting_field ) : ?>
-			<input type="checkbox" id="order_type_<?php echo $sorting_field['value']; ?>" name="disabled_order_types[]" value="<?php echo $sorting_field['value']; ?>" <?php tcp_checked_multiple( $disabled_order_types, $sorting_field['value'] ); ?>/> <?php echo $sorting_field['title']; ?><br/>
-			<?php endforeach; ?>
+				<?php $sorting_fields = tcp_get_sorting_fields();
+				foreach( $sorting_fields as $sorting_field ) : ?>
+				<input type="checkbox" id="order_type_<?php echo $sorting_field['value']; ?>" name="disabled_order_types[]" value="<?php echo $sorting_field['value']; ?>" <?php tcp_checked_multiple( $disabled_order_types, $sorting_field['value'] ); ?>/> <?php echo $sorting_field['title']; ?><br/>
+				<?php endforeach; ?>
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-			<label for="see_order_type"><?php _e( 'Order Type', 'tcp' ); ?>:</label>
+				<label for="see_order_type"><?php _e( 'Order Type', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-			<?php $sorting_fields = tcp_get_sorting_fields(); ?>
-			<select id="order_type" name="order_type">
-			<?php foreach( $sorting_fields as $sorting_field ) :
-				if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
-				<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
-				<?php endif;
-			endforeach; ?>
-			</select>
+				<?php $sorting_fields = tcp_get_sorting_fields(); ?>
+				<select id="order_type" name="order_type">
+				<?php foreach( $sorting_fields as $sorting_field ) :
+					if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
+					<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
+					<?php endif;
+				endforeach; ?>
+				</select>
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-			<label for="order_desc"><?php _e( 'Order Desc', 'tcp' ); ?>:</label>
+				<label for="order_desc"><?php _e( 'Order Desc', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-			<input type="checkbox" name="order_desc" id="order_desc" value="yes" <?php checked( $order_desc, 'desc' );?> />
+				<input type="checkbox" name="order_desc" id="order_desc" value="yes" <?php checked( $order_desc, 'desc' );?> />
 			</td>
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-			<label for="see_pagination"><?php _e( 'Display Pagination', 'tcp' ); ?>:</label>
+				<label for="see_pagination"><?php _e( 'Display Pagination', 'tcp' ); ?>:</label>
 			</th>
 			<td>
-			<input type="checkbox" name="see_pagination" id="see_pagination" value="yes" <?php checked( $see_pagination, true ); ?> />
+				<input type="checkbox" name="see_pagination" id="see_pagination" value="yes" <?php checked( $see_pagination, true ); ?> />
 			</td>
 		</tr>
 		
 		</tbody>
 		</table>
+	</div><!-- .inside -->
 	</div><!-- .postbox -->
 	<?php wp_nonce_field( 'tcp_loop_settings' ); ?>
 	<?php submit_button( null, 'primary', 'save-loop-settings' ); ?>
@@ -440,8 +484,11 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_loop_settings' );
 		if ( isset( $_POST['load_post_type_settings'] ) ) return;
-		if ( strlen( $_POST['current_post_type'] ) > 0 ) $suffix = '-' . $_POST['current_post_type'];
-		else $suffix = '';
+		if ( strlen( $_POST['current_post_type'] ) > 0 ) {
+			$suffix = '-' . $_POST['current_post_type'];
+		} else {
+			$suffix = '';
+		}
 		if ( isset( $_POST['delete_post_type_settings'] ) ) {
 			if ( strlen( $suffix ) == 0 ) return;
 			$settings = get_option( 'ttc_settings' );
@@ -522,4 +569,4 @@ $see_jetpack_sharing	= isset( $settings['see_jetpack_sharing' . $suffix] ) ? $se
 }
 
 new TCPLoopSettings();
-} // class_exists check
+endif; // class_exists check

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-04 17:18+0100\n"
+"POT-Creation-Date: 2013-11-27 17:30+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -14,211 +14,211 @@ msgstr ""
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
-#: thecartpress/TheCartPress.class.php:314
+#: thecartpress/TheCartPress.class.php:329
 #, fuzzy
 msgid "This notice will be added in the email to the customer when the Checkout process ends"
 msgstr "Este aviso será incluído no email para o cliente assim que o processo de Checkout esteja terminado."
 
-#: thecartpress/TheCartPress.class.php:315
+#: thecartpress/TheCartPress.class.php:330
 #, fuzzy
 msgid "This notice will be showed in the Checkout Notice Box into the checkout process"
 msgstr "Este aviso será mostrado na Caixa de Avisos do Checkout no decorrer do processo de checkout."
 
-#: thecartpress/TheCartPress.class.php:316
+#: thecartpress/TheCartPress.class.php:331
 #, fuzzy
 msgid "This notice will be showed if the checkout process ends right"
 msgstr "Este aviso será mostrado se o processo de checkout terminar correctamente."
 
-#: thecartpress/TheCartPress.class.php:317
+#: thecartpress/TheCartPress.class.php:332
 msgid "This notice will be showed if the checkout process ends wrong: Declined payments, etc."
 msgstr "Este aviso será mostrado se o processo de checkout terminar de maneira incorrecta: Pagamentos recusados, etc."
 
-#: thecartpress/TheCartPress.class.php:318
+#: thecartpress/TheCartPress.class.php:333
 msgid "This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty"
 msgstr "Este aviso será mostrado no Carrinho de Compras ou na página de Checkout, se o Carrinho de Compras estiver vazio"
 
-#: thecartpress/TheCartPress.class.php:319
+#: thecartpress/TheCartPress.class.php:334
 #, fuzzy
 msgid "This notice will be showed at the Checkout Resume Cart"
 msgstr "Este aviso será mostrado se o processo de checkout terminar correctamente."
 
-#: thecartpress/TheCartPress.class.php:320
+#: thecartpress/TheCartPress.class.php:335
 #, fuzzy
 msgid "This notice will be showed at Billing address in Checkout"
 msgstr "Este aviso será mostrado se o processo de checkout terminar correctamente."
 
-#: thecartpress/TheCartPress.class.php:538
+#: thecartpress/TheCartPress.class.php:553
 #, fuzzy
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "A <strong>página do carrinho de compras</strong> foi apagada."
 
-#: thecartpress/TheCartPress.class.php:541
+#: thecartpress/TheCartPress.class.php:556
 #, fuzzy
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "A <strong>página de Checkout</strong> foi apagada."
 
-#: thecartpress/TheCartPress.class.php:544
+#: thecartpress/TheCartPress.class.php:559
 #, fuzzy
 msgid "My Account page has been deleted"
 msgstr "A página de checkout foi criada"
 
-#: thecartpress/TheCartPress.class.php:547
+#: thecartpress/TheCartPress.class.php:562
 #, fuzzy
 msgid "Catalogue page has been deleted"
 msgstr "A página de checkout foi criada"
 
-#: thecartpress/TheCartPress.class.php:552
+#: thecartpress/TheCartPress.class.php:567
 msgid "Notice:"
 msgstr "Aviso:"
 
-#: thecartpress/TheCartPress.class.php:556
+#: thecartpress/TheCartPress.class.php:571
 #, fuzzy, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Visitar a <a href=\"%s\">Página de Verificação</a> para reparar essas advertências."
 
-#: thecartpress/TheCartPress.class.php:690
+#: thecartpress/TheCartPress.class.php:705
 #: thecartpress/widgets/SalesChartDashboard.class.php:87
 #: thecartpress/widgets/SalesChartDashboard.class.php:132
 #: thecartpress/widgets/SalesChartDashboard.class.php:246
 msgid "Orders"
 msgstr "Encomendas"
 
-#: thecartpress/TheCartPress.class.php:691
+#: thecartpress/TheCartPress.class.php:707
 msgid "My Downloads"
 msgstr "Os meus downloads"
 
-#: thecartpress/TheCartPress.class.php:692
+#: thecartpress/TheCartPress.class.php:709
 msgid "Addresses"
 msgstr "Endereços"
 
-#: thecartpress/TheCartPress.class.php:693
+#: thecartpress/TheCartPress.class.php:710
 msgid "Taxes"
 msgstr "Impostos"
 
-#: thecartpress/TheCartPress.class.php:694
+#: thecartpress/TheCartPress.class.php:711
 msgid "Related Categories"
 msgstr "Categorias Relacionadas"
 
-#: thecartpress/TheCartPress.class.php:695
+#: thecartpress/TheCartPress.class.php:712
 msgid "Update Prices"
 msgstr "Actualizar Preços"
 
-#: thecartpress/TheCartPress.class.php:696
+#: thecartpress/TheCartPress.class.php:713
 #, fuzzy
 msgid "Order"
 msgstr "Pedido"
 
-#: thecartpress/TheCartPress.class.php:697
+#: thecartpress/TheCartPress.class.php:714
 msgid "list of Assigned products"
 msgstr "lista de produtos atribuídos"
 
-#: thecartpress/TheCartPress.class.php:698
+#: thecartpress/TheCartPress.class.php:715
 msgid "list of Assigned categories"
 msgstr "lista de categorias atribuídas"
 
-#: thecartpress/TheCartPress.class.php:699
+#: thecartpress/TheCartPress.class.php:716
 msgid "Plugin editor"
 msgstr "editor do plugin"
 
-#: thecartpress/TheCartPress.class.php:700
+#: thecartpress/TheCartPress.class.php:717
 msgid "Address editor"
 msgstr "editor de endereços"
 
-#: thecartpress/TheCartPress.class.php:701
+#: thecartpress/TheCartPress.class.php:718
 msgid "Upload files"
 msgstr "Upload ficheiros"
 
-#: thecartpress/TheCartPress.class.php:702
+#: thecartpress/TheCartPress.class.php:719
 msgid "Files"
 msgstr "Ficheiros"
 
-#: thecartpress/TheCartPress.class.php:703
+#: thecartpress/TheCartPress.class.php:720
 msgid "Downloadable products"
 msgstr "Produtos disponíveis para download"
 
-#: thecartpress/TheCartPress.class.php:704
+#: thecartpress/TheCartPress.class.php:721
 #, fuzzy
 msgid "TheCartPress checking"
 msgstr "Verificação TheCartPress"
 
-#: thecartpress/TheCartPress.class.php:707
+#: thecartpress/TheCartPress.class.php:724
 msgid "Settings"
 msgstr "Definições"
 
-#: thecartpress/TheCartPress.class.php:710
+#: thecartpress/TheCartPress.class.php:727
 #, fuzzy
 msgid "Tools"
 msgstr "ferramentas TCP"
 
-#: thecartpress/TheCartPress.class.php:711
+#: thecartpress/TheCartPress.class.php:728
 msgid "Shortcodes Generator"
 msgstr "Gerador de Shortcodes"
 
-#: thecartpress/TheCartPress.class.php:711
+#: thecartpress/TheCartPress.class.php:728
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
-#: thecartpress/TheCartPress.class.php:712
+#: thecartpress/TheCartPress.class.php:729
 msgid "Manage post types"
 msgstr "Gerir tipos de artigos"
 
-#: thecartpress/TheCartPress.class.php:713
+#: thecartpress/TheCartPress.class.php:730
 msgid "Manage taxonomies"
 msgstr "Gerir taxonomias"
 
-#: thecartpress/TheCartPress.class.php:714
+#: thecartpress/TheCartPress.class.php:731
 msgid "Post Type Editor"
 msgstr "Editor de Tipos de Artigos"
 
-#: thecartpress/TheCartPress.class.php:715
+#: thecartpress/TheCartPress.class.php:732
 msgid "Taxonomy Editor"
 msgstr "Editor de Taxonomias"
 
-#: thecartpress/TheCartPress.class.php:867
+#: thecartpress/TheCartPress.class.php:884
 #, fuzzy
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "O TheCartPress precisa da versão 3.0 ou superior do Wordpress"
 
-#: thecartpress/TheCartPress.class.php:898
+#: thecartpress/TheCartPress.class.php:927
 msgid "Free transport"
 msgstr "transporte gratuito"
 
-#: thecartpress/TheCartPress.class.php:909
+#: thecartpress/TheCartPress.class.php:938
 msgid "Cash on delivery"
 msgstr "Pagamento contra entrega"
 
-#: thecartpress/TheCartPress.class.php:949
+#: thecartpress/TheCartPress.class.php:978
 msgid "Checkout notice"
 msgstr "Aviso de checkout"
 
-#: thecartpress/TheCartPress.class.php:982
+#: thecartpress/TheCartPress.class.php:1011
 #: thecartpress/widgets/ShoppingCartWidget.class.php:71
 msgid "Shopping Cart"
 msgstr "Carrinho de Compras"
 
-#: thecartpress/TheCartPress.class.php:995
+#: thecartpress/TheCartPress.class.php:1024
 msgid "Checkout"
 msgstr "Checkout"
 
-#: thecartpress/TheCartPress.class.php:1010
+#: thecartpress/TheCartPress.class.php:1039
 #, fuzzy
 msgid "My Account"
 msgstr "Conta"
 
-#: thecartpress/TheCartPress.class.php:1023
+#: thecartpress/TheCartPress.class.php:1052
 msgid "Catalogue"
 msgstr "Catálogo"
 
-#: thecartpress/TheCartPress.class.php:1036
-#: thecartpress/TheCartPress.class.php:1060
+#: thecartpress/TheCartPress.class.php:1065
+#: thecartpress/TheCartPress.class.php:1089
 msgid "Category One"
 msgstr "Categoria Um"
 
-#: thecartpress/TheCartPress.class.php:1037
+#: thecartpress/TheCartPress.class.php:1066
 msgid "Category One for Product One"
 msgstr "Categoria Uma para Produto Um"
 
-#: thecartpress/TheCartPress.class.php:1044
+#: thecartpress/TheCartPress.class.php:1073
 msgid "Product One"
 msgstr "Produto Um"
 
@@ -226,8 +226,8 @@ msgstr "Produto Um"
 msgid "Allow to display Top Sellers"
 msgstr "Permitir a exibição de Top Sellers"
 
-#: thecartpress/widgets/TopSellersWidget.class.php:55
-#: thecartpress/widgets/CustomListWidget.class.php:185
+#: thecartpress/widgets/TopSellersWidget.class.php:64
+#: thecartpress/widgets/CustomListWidget.class.php:204
 msgid "Top Seller!"
 msgstr ""
 
@@ -545,144 +545,158 @@ msgstr "Ver a ligação ao carrinho de compras"
 msgid "See checkout link"
 msgstr "Veja a ligação de checkout"
 
-#: thecartpress/widgets/CustomListWidget.class.php:114
+#: thecartpress/widgets/CustomListWidget.class.php:118
+msgid "Out of stock"
+msgstr "Esgotado"
+
+#: thecartpress/widgets/CustomListWidget.class.php:129
 msgid "price"
 msgstr "preço"
 
-#: thecartpress/widgets/CustomListWidget.class.php:124
+#: thecartpress/widgets/CustomListWidget.class.php:139
 msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Continuar a ler <span class=\"meta-nav\">&rarr;</span>"
 
-#: thecartpress/widgets/CustomListWidget.class.php:125
+#: thecartpress/widgets/CustomListWidget.class.php:140
 msgid "Pages:"
 msgstr "Páginas:"
 
-#: thecartpress/widgets/CustomListWidget.class.php:132
+#: thecartpress/widgets/CustomListWidget.class.php:147
 #, php-format
 msgid "<span class=\"%1$s\">Posted in</span> %2$s"
 msgstr "<span class=\"%1$s\">Publicado em</span> %2$s"
 
-#: thecartpress/widgets/CustomListWidget.class.php:139
+#: thecartpress/widgets/CustomListWidget.class.php:154
 #, php-format
 msgid "<span class=\"%1$s\">Tagged</span> %2$s"
 msgstr "<span class=\"%1$s\">Tagged</span> %2$s"
 
-#: thecartpress/widgets/CustomListWidget.class.php:143
+#: thecartpress/widgets/CustomListWidget.class.php:158
 msgid "Leave a comment"
 msgstr "Deixar um comentário"
 
-#: thecartpress/widgets/CustomListWidget.class.php:143
+#: thecartpress/widgets/CustomListWidget.class.php:158
 msgid "1 Comment"
 msgstr "1 Comentário"
 
-#: thecartpress/widgets/CustomListWidget.class.php:143
+#: thecartpress/widgets/CustomListWidget.class.php:158
 msgid "% Comments"
 msgstr "% Comentários"
 
-#: thecartpress/widgets/CustomListWidget.class.php:144
+#: thecartpress/widgets/CustomListWidget.class.php:159
 msgid "Edit"
 msgstr "Editar"
 
-#: thecartpress/widgets/CustomListWidget.class.php:213
+#: thecartpress/widgets/CustomListWidget.class.php:234
 #: thecartpress/widgets/AuthorsWidget.class.php:69
 msgid "Limit"
 msgstr "Limite"
 
-#: thecartpress/widgets/CustomListWidget.class.php:217
+#: thecartpress/widgets/CustomListWidget.class.php:238
 msgid "Loop"
 msgstr "Loop"
 
-#: thecartpress/widgets/CustomListWidget.class.php:218
+#: thecartpress/widgets/CustomListWidget.class.php:239
 msgid "theme"
 msgstr "tema"
 
-#: thecartpress/widgets/CustomListWidget.class.php:220
+#: thecartpress/widgets/CustomListWidget.class.php:241
 msgid "default"
 msgstr "predefinido(a)"
 
-#: thecartpress/widgets/CustomListWidget.class.php:238
+#: thecartpress/widgets/CustomListWidget.class.php:259
 msgid "parent"
 msgstr "parente"
 
-#: thecartpress/widgets/CustomListWidget.class.php:247
+#: thecartpress/widgets/CustomListWidget.class.php:268
 msgid "show/hide advanced options"
 msgstr "mostrar/esconder opções avançadas"
 
-#: thecartpress/widgets/CustomListWidget.class.php:251
+#: thecartpress/widgets/CustomListWidget.class.php:272
 msgid "N<sup>o</sup> columns for Extra Small Devices (Tablets)"
 msgstr ""
 
-#: thecartpress/widgets/CustomListWidget.class.php:255
+#: thecartpress/widgets/CustomListWidget.class.php:276
 #, fuzzy
 msgid "N<sup>o</sup> columns for Small Devices (Tablets)"
 msgstr "N<sup>o</sup> colunas"
 
-#: thecartpress/widgets/CustomListWidget.class.php:259
+#: thecartpress/widgets/CustomListWidget.class.php:280
 msgid "N<sup>o</sup> columns for Medium Devices (Desktop)"
 msgstr ""
 
-#: thecartpress/widgets/CustomListWidget.class.php:263
+#: thecartpress/widgets/CustomListWidget.class.php:284
 msgid "N<sup>o</sup> columns for Large Devices (Large Desktop)"
 msgstr ""
 
-#: thecartpress/widgets/CustomListWidget.class.php:268
+#: thecartpress/widgets/CustomListWidget.class.php:289
 msgid "Show title"
 msgstr "Mostrar título"
 
-#: thecartpress/widgets/CustomListWidget.class.php:271
+#: thecartpress/widgets/CustomListWidget.class.php:292
 #, fuzzy
 msgid "Title tag"
 msgstr "Tag do título"
 
-#: thecartpress/widgets/CustomListWidget.class.php:274
+#: thecartpress/widgets/CustomListWidget.class.php:295
 msgid "No tag"
 msgstr "Sem tag"
 
-#: thecartpress/widgets/CustomListWidget.class.php:287
+#: thecartpress/widgets/CustomListWidget.class.php:308
 msgid "Show image"
 msgstr "Mostrar imagem"
 
-#: thecartpress/widgets/CustomListWidget.class.php:290
+#: thecartpress/widgets/CustomListWidget.class.php:311
 msgid "Image size"
 msgstr "Tamanho da imagem"
 
-#: thecartpress/widgets/CustomListWidget.class.php:300
+#: thecartpress/widgets/CustomListWidget.class.php:321
 msgid "Show content"
 msgstr "Mostrar conteúdo"
 
-#: thecartpress/widgets/CustomListWidget.class.php:304
+#: thecartpress/widgets/CustomListWidget.class.php:326
+#, fuzzy
+msgid "Show discount"
+msgstr "Mostrar número de artigos"
+
+#: thecartpress/widgets/CustomListWidget.class.php:330
+#, fuzzy
+msgid "Show Stock"
+msgstr "Stock"
+
+#: thecartpress/widgets/CustomListWidget.class.php:335
 msgid "Show excerpt"
 msgstr "Mostrar excerto"
 
-#: thecartpress/widgets/CustomListWidget.class.php:308
+#: thecartpress/widgets/CustomListWidget.class.php:339
 msgid "Show author"
 msgstr "Mostrar autor"
 
-#: thecartpress/widgets/CustomListWidget.class.php:312
+#: thecartpress/widgets/CustomListWidget.class.php:343
 msgid "Show tags"
 msgstr "Mostrar tags"
 
-#: thecartpress/widgets/CustomListWidget.class.php:316
+#: thecartpress/widgets/CustomListWidget.class.php:347
 msgid "Show price"
 msgstr "Mostrar preço"
 
-#: thecartpress/widgets/CustomListWidget.class.php:320
+#: thecartpress/widgets/CustomListWidget.class.php:351
 msgid "Show buy button"
 msgstr "Mostrar botão comprar"
 
-#: thecartpress/widgets/CustomListWidget.class.php:324
+#: thecartpress/widgets/CustomListWidget.class.php:355
 msgid "Show utilities"
 msgstr "Mostrar utilidades"
 
-#: thecartpress/widgets/CustomListWidget.class.php:328
+#: thecartpress/widgets/CustomListWidget.class.php:359
 msgid "Show first custom area"
 msgstr "Mostrar a primeira área personalizada"
 
-#: thecartpress/widgets/CustomListWidget.class.php:332
+#: thecartpress/widgets/CustomListWidget.class.php:363
 msgid "Show second custom area"
 msgstr "Mostrar a segunda área personalizada"
 
-#: thecartpress/widgets/CustomListWidget.class.php:336
+#: thecartpress/widgets/CustomListWidget.class.php:367
 msgid "Show third custom area"
 msgstr "Mostrar a terceira área personalizada"
 
@@ -930,11 +944,11 @@ msgid "Press save to load the taxonomies"
 msgstr "Carregue em guardar para carregar as taxonomias"
 
 #: thecartpress/widgets/AttributesListWidget.class.php:73
-#: thecartpress/widgets/CustomValuesWidget.class.php:99
+#: thecartpress/widgets/CustomValuesWidget.class.php:113
 msgid "Taxonomies"
 msgstr "Taxonomias"
 
-#: thecartpress/widgets/AuthorWidget.class.php:23
+#: thecartpress/widgets/AuthorWidget.class.php:28
 #, fuzzy
 msgid "Allow to display Author Profile"
 msgstr "Permitir a exibição de Top Sellers"
@@ -1000,63 +1014,63 @@ msgstr "Use este widget pata adicionar taxonomias diferentes"
 msgid "Select your country"
 msgstr "Ver o número de produtos"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:24
+#: thecartpress/widgets/CustomValuesWidget.class.php:38
 #, fuzzy
 msgid "Allows to create Custom Values Lists"
 msgstr "Permitir a criação de Listas personalizadas de tipos de artigos"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:53
+#: thecartpress/widgets/CustomValuesWidget.class.php:67
 #, fuzzy
 msgid "Custom Values"
 msgstr "Campos personalizados"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:89
+#: thecartpress/widgets/CustomValuesWidget.class.php:103
 msgid "Custom Fields"
 msgstr "Campos personalizados"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:96
-#: thecartpress/widgets/CustomValuesWidget.class.php:105
-#: thecartpress/widgets/CustomValuesWidget.class.php:115
+#: thecartpress/widgets/CustomValuesWidget.class.php:110
+#: thecartpress/widgets/CustomValuesWidget.class.php:119
+#: thecartpress/widgets/CustomValuesWidget.class.php:129
 msgid "Add"
 msgstr "Adicionar"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:108
+#: thecartpress/widgets/CustomValuesWidget.class.php:122
 msgid "Other values"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:124
-#: thecartpress/widgets/CustomValuesWidget.class.php:130
-#: thecartpress/widgets/CustomValuesWidget.class.php:136
-#: thecartpress/widgets/CustomValuesWidget.class.php:149
-#: thecartpress/widgets/CustomValuesWidget.class.php:160
-#: thecartpress/widgets/CustomValuesWidget.class.php:171
+#: thecartpress/widgets/CustomValuesWidget.class.php:138
+#: thecartpress/widgets/CustomValuesWidget.class.php:144
+#: thecartpress/widgets/CustomValuesWidget.class.php:150
+#: thecartpress/widgets/CustomValuesWidget.class.php:163
+#: thecartpress/widgets/CustomValuesWidget.class.php:174
+#: thecartpress/widgets/CustomValuesWidget.class.php:185
 msgid "remove"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:142
+#: thecartpress/widgets/CustomValuesWidget.class.php:156
 msgid "Add fields to the list, and drag and drop them to change order"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:201
+#: thecartpress/widgets/CustomValuesWidget.class.php:215
 #, fuzzy
 msgid "See label"
 msgstr "Ver título:"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:205
+#: thecartpress/widgets/CustomValuesWidget.class.php:219
 #, fuzzy
 msgid "Hide empty fields"
 msgstr "Esconder termos vazios"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:209
+#: thecartpress/widgets/CustomValuesWidget.class.php:223
 #, fuzzy
 msgid "See links"
 msgstr "Veja a ligação de checkout"
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:219
+#: thecartpress/widgets/CustomValuesWidget.class.php:233
 msgid "Modified date"
 msgstr ""
 
-#: thecartpress/widgets/CustomValuesWidget.class.php:223
+#: thecartpress/widgets/CustomValuesWidget.class.php:237
 msgid "Modified time"
 msgstr ""
 
@@ -1166,47 +1180,47 @@ msgstr "Mostrar número de artigos"
 msgid "Allow to display Wish List"
 msgstr "Permitir a criação de uma Wish List"
 
-#: thecartpress/widgets/WishListWidget.class.php:53
+#: thecartpress/widgets/WishListWidget.class.php:59
 #, fuzzy
 msgid "Remove"
 msgstr "apagar ficheiro"
 
-#: thecartpress/widgets/WishListWidget.class.php:53
+#: thecartpress/widgets/WishListWidget.class.php:60
 #, fuzzy
 msgid "Remove this item"
 msgstr "apagar ficheiro"
 
-#: thecartpress/widgets/WishListWidget.class.php:56
+#: thecartpress/widgets/WishListWidget.class.php:63
 #, fuzzy
 msgid "Do you really want to remove this item? "
 msgstr "Tem a certeza que pretende apagar esta opção?"
 
-#: thecartpress/widgets/WishListWidget.class.php:65
+#: thecartpress/widgets/WishListWidget.class.php:76
 #, fuzzy
 msgid "Remove all"
 msgstr "apagar ficheiro"
 
-#: thecartpress/widgets/WishListWidget.class.php:65
+#: thecartpress/widgets/WishListWidget.class.php:77
 #, fuzzy
 msgid "Remove all items"
 msgstr "apagar ficheiro"
 
-#: thecartpress/widgets/WishListWidget.class.php:66
+#: thecartpress/widgets/WishListWidget.class.php:80
 #, fuzzy
 msgid "Add all"
 msgstr "Adicionar nova Tag"
 
-#: thecartpress/widgets/WishListWidget.class.php:66
+#: thecartpress/widgets/WishListWidget.class.php:81
 #, fuzzy
 msgid "Add all items into cart"
 msgstr "Adicionar artigo seleccionado ao carrinho"
 
-#: thecartpress/widgets/WishListWidget.class.php:69
+#: thecartpress/widgets/WishListWidget.class.php:84
 #, fuzzy
 msgid "Do you really want to remove all items? "
 msgstr "Tem a certeza que pretende apagar esta opção?"
 
-#: thecartpress/widgets/WishListWidget.class.php:76
+#: thecartpress/widgets/WishListWidget.class.php:91
 msgid "Wish List"
 msgstr "Wish List"
 
@@ -1595,7 +1609,7 @@ msgid "What's new?"
 msgstr ""
 
 #: thecartpress/admin/NewVersionDetails.class.php:77
-msgid "New User interface improvements to make your day a day more easy."
+msgid "New User interface improvements, to make your day easier."
 msgstr ""
 
 #: thecartpress/admin/NewVersionDetails.class.php:81
@@ -2016,17 +2030,17 @@ msgstr ""
 msgid "View this item inline"
 msgstr "Ver este item inline"
 
-#: thecartpress/admin/OrdersListTable.class.php:193
+#: thecartpress/admin/OrdersListTable.class.php:191
 #: thecartpress/admin/AddressesListTable.class.php:149
 msgid "Search by"
 msgstr "Procurar por"
 
-#: thecartpress/admin/OrdersListTable.class.php:195
+#: thecartpress/admin/OrdersListTable.class.php:193
 #: thecartpress/admin/AddressesListTable.class.php:151
 msgid "Filter"
 msgstr "Filtrar"
 
-#: thecartpress/admin/OrdersListTable.class.php:216
+#: thecartpress/admin/OrdersListTable.class.php:214
 msgid "Search Orders"
 msgstr "Procurar pedidos"
 
@@ -3069,101 +3083,106 @@ msgstr "O campo de identificação tem de ser preeenchido"
 msgid "The field Identifier is repeated"
 msgstr "O campo de identificação está repetido"
 
-#: thecartpress/admin/ShortCodeGenerator.php:95
-#: thecartpress/admin/ShortCodeGenerator.php:103
+#: thecartpress/admin/ShortCodeGenerator.php:97
+#: thecartpress/admin/ShortCodeGenerator.php:105
 msgid "Shortcode saved"
 msgstr "Shortcode guardado"
 
-#: thecartpress/admin/ShortCodeGenerator.php:123
+#: thecartpress/admin/ShortCodeGenerator.php:125
 msgid "ShortCode Generator"
 msgstr "Gerador de Shortcodes"
 
-#: thecartpress/admin/ShortCodeGenerator.php:139
+#: thecartpress/admin/ShortCodeGenerator.php:141
 msgid "new shortcode"
 msgstr "novo shortcode"
 
-#: thecartpress/admin/ShortCodeGenerator.php:142
+#: thecartpress/admin/ShortCodeGenerator.php:144
 msgid "No shortcodes, create one now:"
 msgstr "Sem shortcodes, criar um agora:"
 
-#: thecartpress/admin/ShortCodeGenerator.php:206
+#: thecartpress/admin/ShortCodeGenerator.php:210
 msgid "Identifier"
 msgstr "Identificador"
 
-#: thecartpress/admin/ShortCodeGenerator.php:207
+#: thecartpress/admin/ShortCodeGenerator.php:211
 msgid "Don't use whitespace. For example use the_identifier"
 msgstr "Não utilize whitespace. Use por exemplo the_identifier"
 
-#: thecartpress/admin/ShortCodeGenerator.php:211
+#: thecartpress/admin/ShortCodeGenerator.php:215
 #, php-format
 msgid "Usage: [tcp_list id=\"%s\"]"
 msgstr "Uso: [tcp_list id=\"%s\"]"
 
-#: thecartpress/admin/ShortCodeGenerator.php:232
+#: thecartpress/admin/ShortCodeGenerator.php:236
 msgid "Save to load the list of taxonomies"
 msgstr "Guardar para carregar a lista de taxonomias"
 
-#: thecartpress/admin/ShortCodeGenerator.php:241
+#: thecartpress/admin/ShortCodeGenerator.php:245
 msgid "If checked, you can select which Taxonomy (category) you want to display. If not checked you can select as many product as you want to show."
 msgstr ""
 
-#: thecartpress/admin/ShortCodeGenerator.php:257
+#: thecartpress/admin/ShortCodeGenerator.php:261
 msgid "Save to load the list of terms"
 msgstr "Guardar para carregar a lista de termos"
 
-#: thecartpress/admin/ShortCodeGenerator.php:313
+#: thecartpress/admin/ShortCodeGenerator.php:317
 msgid "Set -1 to show all possible items."
 msgstr "Coloque -1 para mostrar todos os items possíveis."
 
-#: thecartpress/admin/ShortCodeGenerator.php:318
+#: thecartpress/admin/ShortCodeGenerator.php:322
 msgid "Pagination"
 msgstr "Paginação"
 
-#: thecartpress/admin/ShortCodeGenerator.php:322
+#: thecartpress/admin/ShortCodeGenerator.php:326
 msgid "Allows to set pagination in the shortcode."
 msgstr "Permite a paginação no shortcode."
 
-#: thecartpress/admin/ShortCodeGenerator.php:327
+#: thecartpress/admin/ShortCodeGenerator.php:331
 #, fuzzy
 msgid "See Order Panel"
 msgstr "Ver painel de ordenação"
 
-#: thecartpress/admin/ShortCodeGenerator.php:331
+#: thecartpress/admin/ShortCodeGenerator.php:335
 #, fuzzy
 msgid "Allows to display an order panel in the shortcode."
 msgstr "Permite a paginação no shortcode."
 
-#: thecartpress/admin/ShortCodeGenerator.php:366
+#: thecartpress/admin/ShortCodeGenerator.php:370
 #, php-format
 msgid "\"%s\" is missing"
 msgstr ""
 
-#: thecartpress/admin/ShortCodeGenerator.php:388
+#: thecartpress/admin/ShortCodeGenerator.php:392
 msgid "Order desc."
 msgstr "Desc. do pedido"
 
-#: thecartpress/admin/ShortCodeGenerator.php:402
+#: thecartpress/admin/ShortCodeGenerator.php:406
 msgid "N<sup>o</sup> columns for Extra Small Devices (Phones)"
 msgstr ""
 
-#: thecartpress/admin/ShortCodeGenerator.php:458
+#: thecartpress/admin/ShortCodeGenerator.php:463
+#, fuzzy
+msgid "Show Discount"
+msgstr "Desconto"
+
+#: thecartpress/admin/ShortCodeGenerator.php:470
 #, fuzzy
 msgid "Excerpt length"
 msgstr "Excerto"
 
-#: thecartpress/admin/ShortCodeGenerator.php:463
+#: thecartpress/admin/ShortCodeGenerator.php:475
 msgid "Show about author"
 msgstr "Mostrar sobre o autor"
 
-#: thecartpress/admin/ShortCodeGenerator.php:467
+#: thecartpress/admin/ShortCodeGenerator.php:479
 msgid "Show posted on"
 msgstr "Mostrar publicado em"
 
-#: thecartpress/admin/ShortCodeGenerator.php:471
+#: thecartpress/admin/ShortCodeGenerator.php:483
 msgid "Show taxonomies"
 msgstr "Mostrar taxonomias"
 
-#: thecartpress/admin/ShortCodeGenerator.php:499
+#: thecartpress/admin/ShortCodeGenerator.php:511
 msgid "save"
 msgstr "guardar"
 
@@ -3237,22 +3256,22 @@ msgid "Do you really want to delete this taxonomy?"
 msgstr "Tem a certeza que pretende apagar esta taxonomia?"
 
 #: thecartpress/settings/FirstTimeSetup.class.php:35
-#: thecartpress/settings/FirstTimeSetup.class.php:40
-#: thecartpress/settings/FirstTimeSetup.class.php:74
+#: thecartpress/settings/FirstTimeSetup.class.php:51
+#: thecartpress/settings/FirstTimeSetup.class.php:77
 msgid "First time setup"
 msgstr "Primeira configuração"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:49
+#: thecartpress/settings/FirstTimeSetup.class.php:41
 #, fuzzy
 msgid "First Time Setup"
 msgstr "Primeira configuração"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:49
+#: thecartpress/settings/FirstTimeSetup.class.php:41
 #, fuzzy
 msgid "First time"
 msgstr "Primeira configuração"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:57
+#: thecartpress/settings/FirstTimeSetup.class.php:60
 #: thecartpress/settings/CurrencyCountrySettings.class.php:47
 #: thecartpress/settings/TaxSettings.class.php:45
 #: thecartpress/settings/MainSettings.class.php:46
@@ -3262,11 +3281,11 @@ msgstr "Primeira configuração"
 msgid "Overview"
 msgstr "Deixar um comentário"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:59
+#: thecartpress/settings/FirstTimeSetup.class.php:62
 msgid "Customize TheCartPress behaviour using those few steps."
 msgstr ""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:63
+#: thecartpress/settings/FirstTimeSetup.class.php:66
 #: thecartpress/settings/CurrencyCountrySettings.class.php:54
 #: thecartpress/settings/TaxSettings.class.php:51
 #: thecartpress/settings/MainSettings.class.php:53
@@ -3275,7 +3294,7 @@ msgstr ""
 msgid "For more information:"
 msgstr ""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:64
+#: thecartpress/settings/FirstTimeSetup.class.php:67
 #: thecartpress/settings/CurrencyCountrySettings.class.php:55
 #: thecartpress/settings/TaxSettings.class.php:52
 #: thecartpress/settings/MainSettings.class.php:54
@@ -3285,7 +3304,7 @@ msgstr ""
 msgid "<a href=\"http://thecartpress.com\" target=\"_blank\">Documentation on TheCartPress</a>"
 msgstr "Método de pagamento contra entrega.<br>Autor: <a href=\"http://thecartpress.com\" target=\"_blank\">A equipa do TheCartPress</a>"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:65
+#: thecartpress/settings/FirstTimeSetup.class.php:68
 #: thecartpress/settings/CurrencyCountrySettings.class.php:56
 #: thecartpress/settings/TaxSettings.class.php:53
 #: thecartpress/settings/MainSettings.class.php:55
@@ -3294,7 +3313,7 @@ msgstr "Método de pagamento contra entrega.<br>Autor: <a href=\"http://thecartp
 msgid "<a href=\"http://community.thecartpress.com/\" target=\"_blank\">Support Forums</a>"
 msgstr ""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:66
+#: thecartpress/settings/FirstTimeSetup.class.php:69
 #: thecartpress/settings/CurrencyCountrySettings.class.php:57
 #: thecartpress/settings/MainSettings.class.php:56
 #: thecartpress/settings/PluginsList.class.php:59
@@ -3302,7 +3321,7 @@ msgstr ""
 msgid "<a href=\"http://extend.thecartpress.com/\" target=\"_blank\">Extend site</a>"
 msgstr "Método de pagamento contra entrega.<br>Autor: <a href=\"http://thecartpress.com\" target=\"_blank\">A equipa do TheCartPress</a>"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:78
+#: thecartpress/settings/FirstTimeSetup.class.php:81
 #: thecartpress/settings/CurrencyCountrySettings.class.php:70
 #: thecartpress/settings/TaxSettings.class.php:65
 #: thecartpress/settings/MainSettings.class.php:68
@@ -3312,191 +3331,191 @@ msgstr "Método de pagamento contra entrega.<br>Autor: <a href=\"http://thecartp
 msgid "Settings updated"
 msgstr "Definições"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:81
+#: thecartpress/settings/FirstTimeSetup.class.php:84
 msgid "Congratulations! You have finished to setup your eCommerce software."
 msgstr "Parabéns! Acabou de configurar o seu software de eCommerce."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:83
+#: thecartpress/settings/FirstTimeSetup.class.php:86
 #, fuzzy
 msgid "Your eCommerce has actived the next Shipping and Payments methods:"
 msgstr "O eCommerce activou os seguintes métodos de envio e de pagamento:"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:85
+#: thecartpress/settings/FirstTimeSetup.class.php:88
 #: thecartpress/settings/PluginsList.class.php:65
 msgid "Shipping methods"
 msgstr "Métodos de envio"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:89
+#: thecartpress/settings/FirstTimeSetup.class.php:92
 #, fuzzy
 msgid "To activate or deactivate Shipping methods you have to visit <a href=\"admin.php?page=shipping_settings\">Shipping page</a>."
 msgstr "Para activar ou desactivar os métodos de envio deverá visitar a <a href=\"admin.php?page=thecartpress/admin/PluginsListShipping.php\">página de envios</a>."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:91
+#: thecartpress/settings/FirstTimeSetup.class.php:94
 #: thecartpress/settings/PluginsList.class.php:65
 msgid "Payment methods"
 msgstr "Metodos de pagamento"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:95
+#: thecartpress/settings/FirstTimeSetup.class.php:98
 #, fuzzy
 msgid "To activate or deactivate Payment methods you have to visit <a href=\"admin.php?page=payment_settings\">Payment page</a>."
 msgstr "Para activar ou desactivar os métodos de pagamento deverá visitar a <a href=\"admin.php?page=thecartpress/admin/PluginsList.php\">página de pagamentos</a>."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:97
+#: thecartpress/settings/FirstTimeSetup.class.php:100
 #, fuzzy
 msgid "Remmember, you have more configuration settings in <a href=\"admin.php?page=thecartpress/TheCartPress.class.php\">Settings page</a>."
 msgstr "Lembre-se que tem mais definições de configuração na <a href=\"admin.php?page=tcp_settings_page\">Página de definições</a>."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:118
+#: thecartpress/settings/FirstTimeSetup.class.php:121
 #, fuzzy
 msgid "Step One"
 msgstr "Página %d"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:120
+#: thecartpress/settings/FirstTimeSetup.class.php:123
 msgid "Set base country for your eCommerce"
 msgstr ""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:128
+#: thecartpress/settings/FirstTimeSetup.class.php:131
 #: thecartpress/settings/CurrencyCountrySettings.class.php:244
 msgid "Base country"
 msgstr "País base"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:144
-#: thecartpress/settings/FirstTimeSetup.class.php:226
+#: thecartpress/settings/FirstTimeSetup.class.php:147
+#: thecartpress/settings/FirstTimeSetup.class.php:229
 msgid "Next step"
 msgstr "Página seguinte"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:151
+#: thecartpress/settings/FirstTimeSetup.class.php:154
 #, fuzzy
 msgid "Step Two"
 msgstr "Página %d"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:153
+#: thecartpress/settings/FirstTimeSetup.class.php:156
 #, fuzzy
 msgid "Set Currency settings to use along the Store"
 msgstr "Por favor seleccione as definições de moeda para serem utilizadas na loja"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:161
+#: thecartpress/settings/FirstTimeSetup.class.php:164
 #: thecartpress/settings/CurrencyCountrySettings.class.php:97
 msgid "Currency"
 msgstr "Moeda"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:175
+#: thecartpress/settings/FirstTimeSetup.class.php:178
 #: thecartpress/settings/CurrencyCountrySettings.class.php:110
 #, fuzzy
 msgid "Currency layouts"
 msgstr "Layout de moeda"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:178
+#: thecartpress/settings/FirstTimeSetup.class.php:181
 #: thecartpress/settings/CurrencyCountrySettings.class.php:113
 msgid "Default layouts"
 msgstr "Layouts predefinidos"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:180
+#: thecartpress/settings/FirstTimeSetup.class.php:183
 #: thecartpress/settings/CurrencyCountrySettings.class.php:115
 msgid "Currency sign left, Currency ISO right: $100 USD"
 msgstr "Sinal da moeda à esquerda, ISO da moeda à direita: $100 USD"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:181
+#: thecartpress/settings/FirstTimeSetup.class.php:184
 #: thecartpress/settings/CurrencyCountrySettings.class.php:116
 msgid "Currency sign left: $100"
 msgstr "Sinal da moeda à esquerda: $100"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:182
+#: thecartpress/settings/FirstTimeSetup.class.php:185
 #: thecartpress/settings/CurrencyCountrySettings.class.php:117
 msgid "Currency sign right: 100 &euro;"
 msgstr "Sinal da moeda à direita: 100 &euro;"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:185
+#: thecartpress/settings/FirstTimeSetup.class.php:188
 #: thecartpress/settings/CurrencyCountrySettings.class.php:120
 msgid "Custom layout"
 msgstr "Layout personalizado"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:187
+#: thecartpress/settings/FirstTimeSetup.class.php:190
 #: thecartpress/settings/CurrencyCountrySettings.class.php:122
 #, php-format
 msgid "%1$s -> Currency; %2$s -> Amount; %3$s -> ISO Code. By default, use %1$s%2$s (%3$s) -> $100 (USD)."
 msgstr "%1$s -> Moeda; %2$s -> Quantidade; %3$s -> Código ISO. Por predefinição, use %1$s%2$s (%3$s) -> $100 (USD)."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:188
+#: thecartpress/settings/FirstTimeSetup.class.php:191
 #: thecartpress/settings/CurrencyCountrySettings.class.php:123
 #, php-format
 msgid "For Example: For Euro use %2$s %1$s -> 100&euro;."
 msgstr "Por exemplo, para o Euro use %2$s %1$s -> 100&euro;."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:189
+#: thecartpress/settings/FirstTimeSetup.class.php:192
 #, php-format
 msgid "If this value is left to blank, then TheCartPress will take this layout from the languages configuration files (mo files). Look for the literal \"%1$s%2$s (%3$s).\""
 msgstr "Se este valor for deixado em branco, então o TheCartPress retirará este layout dos ficheiros de configuração de linguas (mo files). Pocure literalmente \"%1$s%2$s (%3$s).\""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:195
+#: thecartpress/settings/FirstTimeSetup.class.php:198
 #: thecartpress/settings/CurrencyCountrySettings.class.php:129
 msgid "Currency decimals"
 msgstr "Decimais da moeda"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:204
+#: thecartpress/settings/FirstTimeSetup.class.php:207
 #: thecartpress/settings/CurrencyCountrySettings.class.php:137
 msgid "Decimal point separator"
 msgstr "Símbolo decimal"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:213
+#: thecartpress/settings/FirstTimeSetup.class.php:216
 #: thecartpress/settings/CurrencyCountrySettings.class.php:145
 msgid "Thousands separator"
 msgstr "Separador de milhares"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:225
-#: thecartpress/settings/FirstTimeSetup.class.php:274
+#: thecartpress/settings/FirstTimeSetup.class.php:228
+#: thecartpress/settings/FirstTimeSetup.class.php:277
 msgid "Previuos step"
 msgstr "Página anterior"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:233
+#: thecartpress/settings/FirstTimeSetup.class.php:236
 msgid "Step Three"
 msgstr ""
 
-#: thecartpress/settings/FirstTimeSetup.class.php:235
+#: thecartpress/settings/FirstTimeSetup.class.php:238
 #, fuzzy
 msgid "Set Checkout options"
 msgstr "Veja a ligação de checkout"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:242
+#: thecartpress/settings/FirstTimeSetup.class.php:245
 msgid "User registration required"
 msgstr "Registo de utilizador necessário"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:246
+#: thecartpress/settings/FirstTimeSetup.class.php:249
 msgid "Indicates if the clients should be or not registered to buy."
 msgstr "Indica se os clientes tem de estar registados para poderem comprar."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:252
+#: thecartpress/settings/FirstTimeSetup.class.php:255
 msgid "@mails to send orders"
 msgstr "@mails para enviar pedidos"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:256
+#: thecartpress/settings/FirstTimeSetup.class.php:259
 msgid "Comma (,) separated mails"
 msgstr "emails separados por uma virgula (,)"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:257
+#: thecartpress/settings/FirstTimeSetup.class.php:260
 msgid "These emails will receive orders notifications."
 msgstr "Estes emails irão receber notificações das encomendas."
 
-#: thecartpress/settings/FirstTimeSetup.class.php:263
+#: thecartpress/settings/FirstTimeSetup.class.php:266
 msgid "From email"
 msgstr "Do email"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:267
+#: thecartpress/settings/FirstTimeSetup.class.php:270
 msgid "Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com"
 msgstr "Host email. Se não está definido, os emails as enviar aos clientes terão como origem no-response@thecartpress.com"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:341
+#: thecartpress/settings/FirstTimeSetup.class.php:344
 #: thecartpress/settings/PluginsList.class.php:127
 #, php-format
 msgid "N<sup>o</sup> of instances: %d, actives: %d "
 msgstr "N<sup>o</sup> de instâncias: %d, activas: %d "
 
-#: thecartpress/settings/FirstTimeSetup.class.php:343
+#: thecartpress/settings/FirstTimeSetup.class.php:346
 #: thecartpress/settings/PluginsList.class.php:131
 msgid "Not in use"
 msgstr "Não utilizado"
 
-#: thecartpress/settings/FirstTimeSetup.class.php:351
+#: thecartpress/settings/FirstTimeSetup.class.php:354
 msgid "NOTICE: None is active!"
 msgstr ""
 
@@ -4606,26 +4625,55 @@ msgstr "jPlayer skins"
 msgid "You can customize The default TheCartPress player (JPlayer)."
 msgstr ""
 
-#: thecartpress/modules/CustomStyles.class.php:39
-#: thecartpress/modules/CustomStyles.class.php:73
-#: thecartpress/modules/CustomStyles.class.php:96
+#: thecartpress/modules/ExternalProduct.class.php:56
+msgid "External/Affiliates"
+msgstr ""
+
+#: thecartpress/modules/ExternalProduct.class.php:70
+#, fuzzy
+msgid "Product URL"
+msgstr "Configuração do produto"
+
+#: thecartpress/modules/ExternalProduct.class.php:74
+#, fuzzy
+msgid "External URL to the product."
+msgstr "Voltar ao produto"
+
+#: thecartpress/modules/ExternalProduct.class.php:79
+#, fuzzy
+msgid "Button text"
+msgstr "Modelos personalizados"
+
+#: thecartpress/modules/ExternalProduct.class.php:82
+#, fuzzy
+msgid "Buy product"
+msgstr "copiar produto"
+
+#: thecartpress/modules/ExternalProduct.class.php:83
+#, fuzzy
+msgid "Text to be shown on the button linking to the external product."
+msgstr "Permite mostrar o botão comprar na lista de produtos."
+
+#: thecartpress/modules/CustomStyles.class.php:42
+#: thecartpress/modules/CustomStyles.class.php:76
+#: thecartpress/modules/CustomStyles.class.php:99
 #, fuzzy
 msgid "Custom Styles"
 msgstr "Modelos personalizados"
 
-#: thecartpress/modules/CustomStyles.class.php:73
+#: thecartpress/modules/CustomStyles.class.php:76
 #, fuzzy
 msgid "Custom Style"
 msgstr "Modelos personalizados"
 
-#: thecartpress/modules/CustomStyles.class.php:83
+#: thecartpress/modules/CustomStyles.class.php:86
 #, fuzzy
 msgid "You can add Custom Styles."
 msgstr "Pode fazer sem registar como utilizador"
 
-#: thecartpress/modules/CustomStyles.class.php:108
+#: thecartpress/modules/CustomStyles.class.php:111
 #, fuzzy
-msgid "Activate next Styles"
+msgid "Activate Styles"
 msgstr "Caixas activas"
 
 #: thecartpress/modules/AdminBarMenu.class.php:40
@@ -4950,12 +4998,6 @@ msgstr "Veja os avisos de stock"
 msgid "No enough stock for this product. Only %s available items."
 msgstr "Não existe stock suficiente para esta compra. Apenas existem %s garrafas disponíveis."
 
-#: thecartpress/modules/StockManagement.class.php:520
-#: thecartpress/modules/StockManagement.class.php:536
-#: thecartpress/modules/StockManagement.class.php:749
-msgid "Out of stock"
-msgstr "Esgotado"
-
 #: thecartpress/modules/StockManagement.class.php:539
 #, fuzzy, php-format
 msgid "No enough stock. Only %s available items."
@@ -5021,27 +5063,27 @@ msgstr ""
 msgid "TCP Custom fields"
 msgstr "Campos personalizados"
 
-#: thecartpress/modules/CustomFields.class.php:233
+#: thecartpress/modules/CustomFields.class.php:234
 #, fuzzy
 msgid "Remove file"
 msgstr "apagar ficheiro"
 
-#: thecartpress/modules/CustomFields.class.php:235
+#: thecartpress/modules/CustomFields.class.php:236
 msgid "If you upload a new file, existing one will be deleted"
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:250
+#: thecartpress/modules/CustomFields.class.php:251
 #, php-format
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:353
+#: thecartpress/modules/CustomFields.class.php:354
 #, fuzzy
 msgid "file..."
 msgstr "ficheiros"
 
-#: thecartpress/modules/CustomFields.class.php:373
-#: thecartpress/modules/CustomFields.class.php:378
+#: thecartpress/modules/CustomFields.class.php:374
+#: thecartpress/modules/CustomFields.class.php:379
 #, fuzzy
 msgid "No value"
 msgstr "Reparar valor"
@@ -5051,52 +5093,52 @@ msgstr "Reparar valor"
 msgid "%s per %s"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:63
-#: thecartpress/modules/UnitsInBuyButton.class.php:123
+#: thecartpress/modules/UnitsInBuyButton.class.php:64
+#: thecartpress/modules/UnitsInBuyButton.class.php:124
 #, fuzzy
 msgid "Product unit"
 msgstr "Produto Um"
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:70
-#: thecartpress/modules/UnitsInBuyButton.class.php:106
+#: thecartpress/modules/UnitsInBuyButton.class.php:71
+#: thecartpress/modules/UnitsInBuyButton.class.php:107
 msgid "Empty"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:91
+#: thecartpress/modules/UnitsInBuyButton.class.php:92
 #, fuzzy
 msgid "Product Units"
 msgstr "Produtos"
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:146
+#: thecartpress/modules/UnitsInBuyButton.class.php:147
 #, fuzzy
 msgid "unit"
 msgstr "unidades"
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:147
+#: thecartpress/modules/UnitsInBuyButton.class.php:148
 msgid "piece"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:148
+#: thecartpress/modules/UnitsInBuyButton.class.php:149
 msgid "roll"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:149
+#: thecartpress/modules/UnitsInBuyButton.class.php:150
 msgid "meter"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:150
+#: thecartpress/modules/UnitsInBuyButton.class.php:151
 msgid "kg"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:151
+#: thecartpress/modules/UnitsInBuyButton.class.php:152
 msgid "gr"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:152
+#: thecartpress/modules/UnitsInBuyButton.class.php:153
 msgid "pack"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:154
+#: thecartpress/modules/UnitsInBuyButton.class.php:155
 #, fuzzy
 msgid "By default"
 msgstr "predefinido(a)"
@@ -5179,32 +5221,38 @@ msgstr "Alinhar ao centro"
 msgid "Remove from term "
 msgstr ""
 
-#: thecartpress/modules/GroupedProducts.class.php:54
+#: thecartpress/modules/GroupedProducts.class.php:56
 msgid "Grouped"
 msgstr "Agrupado"
 
-#: thecartpress/modules/GroupedProducts.class.php:63
+#: thecartpress/modules/GroupedProducts.class.php:65
 msgid "See assigned products"
 msgstr "Ver produtos atribuídos"
 
-#: thecartpress/modules/GroupedProducts.class.php:63
+#: thecartpress/modules/GroupedProducts.class.php:65
 msgid "assigned products"
 msgstr "produtos atribuídos"
 
-#: thecartpress/modules/GroupedProducts.class.php:69
+#: thecartpress/modules/GroupedProducts.class.php:71
 msgid "Grouped in"
 msgstr "Agrupado em "
 
-#: thecartpress/modules/GroupedProducts.class.php:94
-msgid "parent's assigned products"
-msgstr "produtos atribuídos dos parentes"
+#: thecartpress/modules/GroupedProducts.class.php:98
+#, fuzzy
+msgid "Grouped product"
+msgstr "editar produto"
 
-#: thecartpress/modules/GroupedProducts.class.php:125
+#: thecartpress/modules/GroupedProducts.class.php:107
+#, fuzzy
+msgid "Grouped products"
+msgstr "Gerir produtos agrupados"
+
+#: thecartpress/modules/GroupedProducts.class.php:152
 #, php-format
 msgid "From %s"
 msgstr ""
 
-#: thecartpress/modules/GroupedProducts.class.php:140
+#: thecartpress/modules/GroupedProducts.class.php:167
 #, fuzzy
 msgid "Add selected to cart"
 msgstr "Adicionar artigo seleccionado ao carrinho"
@@ -5235,87 +5283,87 @@ msgstr "Caixas activas"
 msgid "Buy Buttons"
 msgstr "Mostrar botão comprar"
 
-#: thecartpress/modules/BuyButton.class.php:122
+#: thecartpress/modules/BuyButton.class.php:126
 #, fuzzy
 msgid "Theme"
 msgstr "tema"
 
-#: thecartpress/modules/BuyButton.class.php:126
+#: thecartpress/modules/BuyButton.class.php:130
 #, fuzzy
 msgid "Parent theme"
 msgstr "Item parente"
 
-#: thecartpress/modules/BuyButton.class.php:158
+#: thecartpress/modules/BuyButton.class.php:163
 #, fuzzy
 msgid "Buy button"
 msgstr "Mostrar botão comprar"
 
-#: thecartpress/modules/BuyButton.class.php:193
-#: thecartpress/modules/BuyButton.class.php:204
+#: thecartpress/modules/BuyButton.class.php:203
+#: thecartpress/modules/BuyButton.class.php:214
 #, fuzzy
 msgid "Theme default"
 msgstr "predefinido(a)"
 
-#: thecartpress/modules/BuyButton.class.php:195
+#: thecartpress/modules/BuyButton.class.php:205
 msgid "Blue"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:196
+#: thecartpress/modules/BuyButton.class.php:206
 msgid "Green"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:197
+#: thecartpress/modules/BuyButton.class.php:207
 msgid "Cyan"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:198
+#: thecartpress/modules/BuyButton.class.php:208
 msgid "Orange"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:199
+#: thecartpress/modules/BuyButton.class.php:209
 msgid "Red"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:200
+#: thecartpress/modules/BuyButton.class.php:210
 msgid "Link"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:205
+#: thecartpress/modules/BuyButton.class.php:215
 msgid "Extra Small"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:206
+#: thecartpress/modules/BuyButton.class.php:216
 msgid "Small"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:207
+#: thecartpress/modules/BuyButton.class.php:217
 msgid "Large"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:215
+#: thecartpress/modules/BuyButton.class.php:224
 #, fuzzy
 msgid "Button Styles"
 msgstr "Modelos personalizados"
 
-#: thecartpress/modules/BuyButton.class.php:224
+#: thecartpress/modules/BuyButton.class.php:233
 msgid "Colors"
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:240
+#: thecartpress/modules/BuyButton.class.php:249
 msgid "Example "
 msgstr ""
 
-#: thecartpress/modules/BuyButton.class.php:241
+#: thecartpress/modules/BuyButton.class.php:250
 #, fuzzy
 msgid "Add to Cart"
 msgstr "Após adicionar ao carrinho"
 
-#: thecartpress/modules/BuyButton.class.php:248
+#: thecartpress/modules/BuyButton.class.php:257
 #, fuzzy
 msgid "Sizes"
 msgstr "Unidades de medida"
 
-#: thecartpress/modules/BuyButton.class.php:268
+#: thecartpress/modules/BuyButton.class.php:277
 #, fuzzy
 msgid "Grouped buttons"
 msgstr "Agrupado em "
@@ -5438,82 +5486,82 @@ msgstr "ID da encomenda"
 msgid "Do you really want to remove this notice?"
 msgstr "Tem a certeza que pretende apagar esta opção?"
 
-#: thecartpress/plugins/ShippingCost.class.php:33
+#: thecartpress/plugins/ShippingCost.class.php:42
 msgid "Calculate the shipping cost using a table of weights ranges and zones.<br>Author: <a href=\"http://thecartpress.com\" target=\"_blank\">TheCartPress team</a>"
 msgstr "Calcule o custo de envio usando um quadro com pesos e zonas.<br>Autor: <a href=\"http://thecartpress.com\" target=\"_blank\">a equipa do TheCartPress</a>"
 
-#: thecartpress/plugins/ShippingCost.class.php:52
+#: thecartpress/plugins/ShippingCost.class.php:60
 #: thecartpress/plugins/FlatRate.class.php:56
 #, php-format
 msgid "%s. Cost: %s"
 msgstr "%s. Custo: %s"
 
-#: thecartpress/plugins/ShippingCost.class.php:87
-#: thecartpress/plugins/ShippingCost.class.php:119
-#: thecartpress/plugins/ShippingCost.class.php:144
+#: thecartpress/plugins/ShippingCost.class.php:95
+#: thecartpress/plugins/ShippingCost.class.php:128
 #: thecartpress/plugins/ShippingCost.class.php:153
+#: thecartpress/plugins/ShippingCost.class.php:162
 msgid "Remember to <strong>save</strong> before deleting other rows or columns"
 msgstr "Lembre-se de <strong>guardar</strong> antes de apagar outras linhas ou colunas"
 
-#: thecartpress/plugins/ShippingCost.class.php:128
+#: thecartpress/plugins/ShippingCost.class.php:137
 msgid "Remember to <strong>save</strong> to add the new zone"
 msgstr "Lembrar de <strong>guardar</strong> para adicionar uma nova zona"
 
-#: thecartpress/plugins/ShippingCost.class.php:162
+#: thecartpress/plugins/ShippingCost.class.php:171
 msgid "Remember to <strong>save</strong> before deleting other zones"
 msgstr "Lembre-se de <strong>guardar</strong> antes de apagar outras zonas"
 
-#: thecartpress/plugins/ShippingCost.class.php:170
+#: thecartpress/plugins/ShippingCost.class.php:179
 msgid "copy from first instance"
 msgstr "copiar da primeira instância"
 
-#: thecartpress/plugins/ShippingCost.class.php:179
-#: thecartpress/plugins/ShippingCost.class.php:195
+#: thecartpress/plugins/ShippingCost.class.php:188
+#: thecartpress/plugins/ShippingCost.class.php:204
 msgid "Weight ranges"
 msgstr "Intervalo de pesos"
 
-#: thecartpress/plugins/ShippingCost.class.php:183
-#: thecartpress/plugins/ShippingCost.class.php:197
+#: thecartpress/plugins/ShippingCost.class.php:192
+#: thecartpress/plugins/ShippingCost.class.php:206
 #, php-format
 msgid "Zone %d"
 msgstr "Zona %d"
 
-#: thecartpress/plugins/ShippingCost.class.php:206
+#: thecartpress/plugins/ShippingCost.class.php:215
 #, php-format
 msgid "Range %d, less or equal than"
 msgstr "Intervalo %d, menor ou igual do que"
 
-#: thecartpress/plugins/ShippingCost.class.php:216
+#: thecartpress/plugins/ShippingCost.class.php:225
 msgid "delete range"
 msgstr "apagar intervalo"
 
-#: thecartpress/plugins/ShippingCost.class.php:224
+#: thecartpress/plugins/ShippingCost.class.php:233
 msgid "insert new range"
 msgstr "inserir novo intervalo"
 
-#: thecartpress/plugins/ShippingCost.class.php:226
+#: thecartpress/plugins/ShippingCost.class.php:235
 msgid "Remember to save all values before inserting a new range"
 msgstr "Lembre-se de guardar todos os valores antes de inserir um novo intervalo"
 
-#: thecartpress/plugins/ShippingCost.class.php:242
-#: thecartpress/plugins/ShippingCost.class.php:249
+#: thecartpress/plugins/ShippingCost.class.php:251
+#: thecartpress/plugins/ShippingCost.class.php:258
 #, php-format
 msgid "Zone %s"
 msgstr "Zona %s"
 
-#: thecartpress/plugins/ShippingCost.class.php:288
+#: thecartpress/plugins/ShippingCost.class.php:297
 msgid "delete zone"
 msgstr "apagar zona"
 
-#: thecartpress/plugins/ShippingCost.class.php:288
+#: thecartpress/plugins/ShippingCost.class.php:297
 msgid "To delete a defined zone"
 msgstr "Para apagar uma zona definida"
 
-#: thecartpress/plugins/ShippingCost.class.php:296
+#: thecartpress/plugins/ShippingCost.class.php:305
 msgid "Add new zone"
 msgstr "Adicionar nova zona"
 
-#: thecartpress/plugins/ShippingCost.class.php:297
+#: thecartpress/plugins/ShippingCost.class.php:306
 msgid "Remember to save all values before inserting a new zone"
 msgstr "Lembrar de guardar todos os valores antes de inserir uma nova zona"
 
@@ -5546,7 +5594,7 @@ msgid "No payment."
 msgstr "pagamento"
 
 #: thecartpress/plugins/NoCostPayment.class.php:57
-#: thecartpress/plugins/Transference.class.php:152
+#: thecartpress/plugins/Transference.class.php:161
 msgid "Redirect automatically"
 msgstr ""
 
@@ -5555,7 +5603,7 @@ msgid "If checked, Checkout page will completed the order. Customers will not ne
 msgstr ""
 
 #: thecartpress/plugins/NoCostPayment.class.php:89
-#: thecartpress/plugins/Transference.class.php:225
+#: thecartpress/plugins/Transference.class.php:235
 #: thecartpress/plugins/Remboursement.class.php:123
 msgid "Finish"
 msgstr "Acabar"
@@ -5564,59 +5612,59 @@ msgstr "Acabar"
 msgid "Local pick up"
 msgstr "Serviço local de recolha"
 
-#: thecartpress/plugins/Transference.class.php:49
-#: thecartpress/plugins/Transference.class.php:199
+#: thecartpress/plugins/Transference.class.php:58
+#: thecartpress/plugins/Transference.class.php:209
 msgid "Owner"
 msgstr "Dono"
 
-#: thecartpress/plugins/Transference.class.php:56
-#: thecartpress/plugins/Transference.class.php:200
+#: thecartpress/plugins/Transference.class.php:65
+#: thecartpress/plugins/Transference.class.php:210
 msgid "Bank"
 msgstr "Banco"
 
-#: thecartpress/plugins/Transference.class.php:64
+#: thecartpress/plugins/Transference.class.php:73
 msgid "Bank account format"
 msgstr ""
 
-#: thecartpress/plugins/Transference.class.php:68
+#: thecartpress/plugins/Transference.class.php:77
 #, fuzzy
 msgid "Two Fields"
 msgstr "Campos personalizados"
 
-#: thecartpress/plugins/Transference.class.php:69
+#: thecartpress/plugins/Transference.class.php:78
 #, fuzzy
 msgid "Four Fields"
 msgstr "Campos personalizados"
 
-#: thecartpress/plugins/Transference.class.php:95
-#: thecartpress/plugins/Transference.class.php:202
+#: thecartpress/plugins/Transference.class.php:104
+#: thecartpress/plugins/Transference.class.php:212
 #, fuzzy
 msgid "Bank code"
 msgstr "Banco"
 
-#: thecartpress/plugins/Transference.class.php:102
-#: thecartpress/plugins/Transference.class.php:110
-#: thecartpress/plugins/Transference.class.php:205
+#: thecartpress/plugins/Transference.class.php:111
+#: thecartpress/plugins/Transference.class.php:119
+#: thecartpress/plugins/Transference.class.php:215
 msgid "Account"
 msgstr "Conta"
 
-#: thecartpress/plugins/Transference.class.php:131
-#: thecartpress/plugins/Transference.class.php:206
-#: thecartpress/plugins/Transference.class.php:210
+#: thecartpress/plugins/Transference.class.php:140
+#: thecartpress/plugins/Transference.class.php:216
+#: thecartpress/plugins/Transference.class.php:220
 msgid "IBAN"
 msgstr "IBAN"
 
-#: thecartpress/plugins/Transference.class.php:138
-#: thecartpress/plugins/Transference.class.php:211
+#: thecartpress/plugins/Transference.class.php:147
+#: thecartpress/plugins/Transference.class.php:221
 msgid "BIC"
 msgstr ""
 
-#: thecartpress/plugins/Transference.class.php:145
-#: thecartpress/plugins/Transference.class.php:207
+#: thecartpress/plugins/Transference.class.php:154
+#: thecartpress/plugins/Transference.class.php:217
 msgid "SWIFT"
 msgstr "SWIFT"
 
-#: thecartpress/plugins/Transference.class.php:156
+#: thecartpress/plugins/Transference.class.php:165
 msgid "If checked, Checkout page will redirect automatically to Checkout Ok page. Otherwise, customers must click on \"Finish\" button."
 msgstr ""
 
@@ -5906,64 +5954,72 @@ msgstr "O cartão de crédito será guardado como 9999 xxxx xxxx 9999"
 msgid "Off line payment:"
 msgstr "Pagamento offline:"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:80
-msgid "Credit card holder"
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:81
+#, fuzzy
+msgid "Card Details"
+msgstr "emails"
+
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:84
+#, fuzzy
+msgid "Card holder"
 msgstr "Títular do cartão de crédito"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:89
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:226
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:93
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:229
 msgid "Card number"
 msgstr "Número do cartão"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:106
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:233
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:108
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:236
 #, fuzzy
 msgid "cvc"
 msgstr "cvc"
 
 #: thecartpress/plugins/CardOffLine/CardOffLine.class.php:115
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:238
-msgid "Expiration date"
+#, fuzzy
+msgid "Expiration date: Month"
 msgstr "Data de validade"
-
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:118
-msgid "Month"
-msgstr "Mês"
 
 #: thecartpress/plugins/CardOffLine/CardOffLine.class.php:125
 msgid "Year"
 msgstr "Ano"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:136
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:137
 msgid "Card type"
 msgstr "Tipo de cartão"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:179
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:182
 msgid "Wrong Card number"
 msgstr "Número de cartão errado"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:185
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:188
 msgid "The field Card Holder must be completed"
 msgstr "O títular do cartão tem de ser preenchido"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:196
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:199
 msgid "Send"
 msgstr "Enviar"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:209
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:212
 #, fuzzy
 msgid "The data from the customer's credit card has been permanently removed"
 msgstr "A informação do cartão de cliente do cliente foi permanentemente eliminada."
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:218
-msgid "Credit Card Holder"
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:221
+#, fuzzy
+msgid "Card Holder"
 msgstr "Títular do cartão de crédito"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:248
-msgid "Credit Card Type"
-msgstr "Tipo de Cartão de Crédito"
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:241
+msgid "Expiration date"
+msgstr "Data de validade"
 
-#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:252
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:251
+#, fuzzy
+msgid "Card Type"
+msgstr "Tipo de cartão"
+
+#: thecartpress/plugins/CardOffLine/CardOffLine.class.php:255
 msgid "Delete card data"
 msgstr "Apagar informação do cartão"
 
@@ -6010,25 +6066,25 @@ msgstr "transporte gratuito"
 msgid "No attachments"
 msgstr ""
 
-#: thecartpress/metaboxes/RelationsMetabox.class.php:26
+#: thecartpress/metaboxes/RelationsMetabox.class.php:36
 msgid "Related data"
 msgstr "Informação relacionada"
 
-#: thecartpress/metaboxes/RelationsMetabox.class.php:44
+#: thecartpress/metaboxes/RelationsMetabox.class.php:58
 msgid "Manage grouped products"
 msgstr "Gerir produtos agrupados"
 
-#: thecartpress/metaboxes/RelationsMetabox.class.php:46
+#: thecartpress/metaboxes/RelationsMetabox.class.php:60
 msgid "Create new grouped product"
 msgstr "Criar novo produto agrupado"
 
-#: thecartpress/metaboxes/RelationsMetabox.class.php:85
+#: thecartpress/metaboxes/RelationsMetabox.class.php:99
 msgctxt "to sort the list"
 msgid "Order"
 msgstr "Pedido"
 
-#: thecartpress/metaboxes/RelationsMetabox.class.php:136
-#: thecartpress/metaboxes/RelationsMetabox.class.php:146
+#: thecartpress/metaboxes/RelationsMetabox.class.php:150
+#: thecartpress/metaboxes/RelationsMetabox.class.php:160
 msgctxt "to sort lists"
 msgid "Order"
 msgstr "Pedido"
@@ -6051,96 +6107,96 @@ msgstr "Após guardar o título e conteúdo, será capaz de editar estas relaç�
 msgid "Product setup"
 msgstr "Configuração do produto"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:60
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:62
 msgid "After saving the title and content, you will be able to edit the specific fields of the product."
 msgstr "Após guardar o título e o conteúdo, será capaz de editar os campos especificos do produto."
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:80
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:83
 msgid "For crossing sell, adds products to the current product"
 msgstr "Para vendas cruzadas, adiciona produtos ao produto actual"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:81
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:84
 #: thecartpress/metaboxes/PostMetabox.class.php:63
 #, fuzzy
 msgid "Related Products"
 msgstr "produtos relacionados"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:89
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:107
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:92
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:110
 #, fuzzy
 msgid "For crossing sell, adds Post to the current product"
 msgstr "Para vendas cruzadas, adiciona artigos ao produto actual"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:90
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:93
 #: thecartpress/metaboxes/PostMetabox.class.php:68
 #, fuzzy
 msgid "Related Posts"
 msgstr "artigos relacionados"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:98
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:101
 #, fuzzy
 msgid "For crossing sell, adds Categories of Post to the current product"
 msgstr "Para vendas cruzadas, adiciona artigos ao produto actual"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:99
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:102
 #, fuzzy
 msgid "Related Cat. of Posts"
 msgstr "cat. de produtos relacionadas"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:108
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:111
 #: thecartpress/metaboxes/PostMetabox.class.php:73
 #, fuzzy
 msgid "Related Cat. of Products"
 msgstr "cat. de produtos relacionadas"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:135
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:133
 #, fuzzy
 msgid "Prices"
 msgstr "Preço"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:136
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:134
 msgid "Advanced"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:173
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:209
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:171
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:210
 #, php-format
 msgid "Current number format is %s"
 msgstr "O formato de número actual é %s"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:213
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:216
 msgid "Order (in loops/catalogue)"
 msgstr "Pedido (em loops/catálogo)"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:215
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:220
 msgid "Numerical position to sort the product in lists of products."
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:219
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:226
 msgid "Initial Quantity"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:221
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:230
 msgid "Initial number of units to display in the buy button. If the product is displayed inside a grouped product this value will be omitted, using the unit field defined in the grouped list."
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:225
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:235
 msgid "Is visible (in loops/catalogue)"
 msgstr "É visível (em loops/catálogo)"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:239
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:249
 msgid "Hide buy button"
 msgstr "Esconder botão comprar"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:242
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:252
 msgid "Allow to hide the buy button for this product"
 msgstr "Permitir esconder o botão comprar para este produto"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:247
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:257
 msgid "Exclude for range prices"
 msgstr "Excluir para os intervalos de preço"
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:250
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:260
 #, fuzzy
 msgid "If the product is assigned to a Grouped product, this option excludes the product from the range price of the parent product."
 msgstr "Se o produto for atribuído a um produto agrupado, esta opção exclui o produto do intervalo de preços do produto parente."
@@ -6153,36 +6209,36 @@ msgstr "Conteúdo relacionado"
 msgid "For crossing sell, adds post to the current product"
 msgstr "Para vendas cruzadas, adiciona artigos ao produto actual"
 
-#: thecartpress/shortcodes/Shortcode.class.php:62
+#: thecartpress/shortcodes/Shortcode.class.php:60
 #, php-format
 msgid "Mal formed shortcode: %s"
 msgstr "Shortcode malformado: %s"
 
-#: thecartpress/shortcodes/ShoppingCartPage.class.php:73
+#: thecartpress/shortcodes/ShoppingCartPage.class.php:94
 #, fuzzy
 msgid "Continue Shopping"
 msgstr "Fazer mais compras"
 
-#: thecartpress/shortcodes/ShoppingCartPage.class.php:100
+#: thecartpress/shortcodes/ShoppingCartPage.class.php:127
 #, fuzzy
 msgid "See Your Shopping Cart"
 msgstr "Mostrar o carrinho de compras"
 
-#: thecartpress/classes/UpdateVersion.class.php:24
+#: thecartpress/classes/UpdateVersion.class.php:28
 #, fuzzy
 msgid "Congratulations, you have installed the new version of TheCartPress."
 msgstr "Parabéns! Acabou de configurar o seu software de eCommerce."
 
-#: thecartpress/classes/UpdateVersion.class.php:25
+#: thecartpress/classes/UpdateVersion.class.php:29
 msgid "This new version requires you have to update the Checkout Editor. It now implements new capabilities, but some of them need to be activated."
 msgstr ""
 
-#: thecartpress/classes/UpdateVersion.class.php:26
+#: thecartpress/classes/UpdateVersion.class.php:30
 #, php-format
 msgid "Please, visit <a href=\"%s\">Checkout editor</a> to \"Restore Default Values\". Then you could edit all the steps and theirs settings."
 msgstr ""
 
-#: thecartpress/classes/UpdateVersion.class.php:27
+#: thecartpress/classes/UpdateVersion.class.php:31
 #, fuzzy
 msgid "Hide this notice"
 msgstr "Veja o aviso de stock"
@@ -6200,57 +6256,57 @@ msgstr "Erro de identificação"
 msgid "TheCartPress search engine property is deactivate"
 msgstr "A propriedade do motor de busca do TheCartPress está desactivada"
 
-#: thecartpress/classes/TCP_Plugin.class.php:160
-#: thecartpress/classes/TCP_Plugin.class.php:172
+#: thecartpress/classes/TCP_Plugin.class.php:163
+#: thecartpress/classes/TCP_Plugin.class.php:175
 #, fuzzy, php-format
 msgid "This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s"
 msgstr "Este aviso será mostrado no decorrer do processo de checkout, e adicionado ao email para o cliente com a informação relacionada com %s"
 
-#: thecartpress/classes/DownloadableProducts.class.php:80
+#: thecartpress/classes/DownloadableProducts.class.php:81
 #, php-format
 msgid "The product is in your <a href=\"%s\">cart</a>"
 msgstr "O produto está no seu <a href=\"%s\">carrinho</a>"
 
-#: thecartpress/classes/DownloadableProducts.class.php:110
+#: thecartpress/classes/DownloadableProducts.class.php:111
 #, fuzzy
 msgid "Upload File"
 msgstr "Upload ficheiro"
 
-#: thecartpress/classes/DownloadableProducts.class.php:118
+#: thecartpress/classes/DownloadableProducts.class.php:119
 msgid "Is downloadable"
 msgstr "É passivel de download"
 
-#: thecartpress/classes/DownloadableProducts.class.php:124
+#: thecartpress/classes/DownloadableProducts.class.php:125
 msgid "file upload"
 msgstr "upload do ficheiro"
 
-#: thecartpress/classes/DownloadableProducts.class.php:131
+#: thecartpress/classes/DownloadableProducts.class.php:132
 msgid "Max. downloads"
 msgstr "Downloads max."
 
-#: thecartpress/classes/DownloadableProducts.class.php:133
+#: thecartpress/classes/DownloadableProducts.class.php:134
 msgid "If you don't want to set a number of maximun downloads, set this value to -1."
 msgstr "Se não quer definir um número máximo de downloads permitidos, então coloque -1."
 
-#: thecartpress/classes/DownloadableProducts.class.php:137
+#: thecartpress/classes/DownloadableProducts.class.php:138
 msgid "Days to expire"
 msgstr "Dias para expirar"
 
-#: thecartpress/classes/DownloadableProducts.class.php:139
+#: thecartpress/classes/DownloadableProducts.class.php:140
 #, fuzzy
 msgid "Days to expire from the buying day. You can use -1 value."
 msgstr "Data de validade a partir da data de compra. Pode usar o valor -1."
 
-#: thecartpress/classes/DownloadableProducts.class.php:145
+#: thecartpress/classes/DownloadableProducts.class.php:146
 #, fuzzy
 msgid "Downloadable"
 msgstr "Caminho de download"
 
-#: thecartpress/classes/DownloadableProducts.class.php:214
+#: thecartpress/classes/DownloadableProducts.class.php:215
 msgid "Downloadable files"
 msgstr "Ficheiros passíveis de download"
 
-#: thecartpress/classes/DownloadableProducts.class.php:232
+#: thecartpress/classes/DownloadableProducts.class.php:233
 #, fuzzy, php-format
 msgid "Please, to download products visit <a href=\"%s\">My Downloads</a> page (login required)."
 msgstr "Para fazer download do produto por favor visite a página <a href=\"%s\">Os meus Downloads</a> (Login necessário)."
@@ -6429,27 +6485,27 @@ msgstr ""
 msgid "(No inc. tax)"
 msgstr "Sem imposto"
 
-#: thecartpress/templates/tcp_template.php:972
+#: thecartpress/templates/tcp_template.php:973
 msgid "Completed"
 msgstr "Concluído"
 
-#: thecartpress/templates/tcp_template.php:979
+#: thecartpress/templates/tcp_template.php:980
 msgid "Processing"
 msgstr "A processar"
 
-#: thecartpress/templates/tcp_template.php:985
+#: thecartpress/templates/tcp_template.php:986
 msgid "Pending"
 msgstr "Pendente"
 
-#: thecartpress/templates/tcp_template.php:991
+#: thecartpress/templates/tcp_template.php:992
 msgid "Cancelled"
 msgstr "Cancelado"
 
-#: thecartpress/templates/tcp_template.php:998
+#: thecartpress/templates/tcp_template.php:999
 msgid "Suspended"
 msgstr "Suspenso"
 
-#: thecartpress/templates/tcp_template.php:1078
+#: thecartpress/templates/tcp_template.php:1082
 msgid "Simple"
 msgstr "Simples"
 
@@ -6470,509 +6526,551 @@ msgstr "Ver artigos para %1$s %2$s"
 msgid "Add to cart"
 msgstr "Após adicionar ao carrinho"
 
-#: thecartpress/templates/tcp_buybutton_template.php:76
+#: thecartpress/templates/tcp_buybutton_template.php:75
 #, fuzzy, php-format
-msgid "<span class=\"tcp_units\">%s</span> unit(s) <a href=\"%s\" class=\"alert-link\">in your cart</a>"
+msgid "<span class=\"tcp_units\">%s</span> <a href=\"%s\" class=\"alert-link\">in your cart</a>"
 msgstr "%s unidade(s) <a href=\"%s\">no seu carrinho</a>"
 
-#: thecartpress/templates/tcp_general_template.php:136
+#: thecartpress/templates/tcp_general_template.php:145
 #, php-format
 msgid "Select %s"
 msgstr "Seleccionar %s"
 
-#: thecartpress/templates/tcp_general_template.php:311
+#: thecartpress/templates/tcp_general_template.php:320
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:277
 #: thecartpress/themes-templates/tcp_shopping_cart.php:252
 msgid "Modify"
 msgstr "Modificar"
 
-#: thecartpress/templates/tcp_general_template.php:320
-#: thecartpress/templates/tcp_general_template.php:347
-#: thecartpress/templates/tcp_general_template.php:411
+#: thecartpress/templates/tcp_general_template.php:329
+#: thecartpress/templates/tcp_general_template.php:356
+#: thecartpress/templates/tcp_general_template.php:420
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:320
 #: thecartpress/themes-templates/tcp_shopping_cart.php:295
 msgid "Discount"
 msgstr "Desconto"
 
-#: thecartpress/templates/tcp_general_template.php:336
+#: thecartpress/templates/tcp_general_template.php:345
 msgid "Delete item"
 msgstr "Apagar item"
 
-#: thecartpress/templates/tcp_general_template.php:355
+#: thecartpress/templates/tcp_general_template.php:364
 msgid "shopping cart"
 msgstr "carrinho de compras"
 
-#: thecartpress/templates/tcp_general_template.php:360
+#: thecartpress/templates/tcp_general_template.php:369
 msgid "checkout"
 msgstr "checkout"
 
-#: thecartpress/templates/tcp_general_template.php:422
+#: thecartpress/templates/tcp_general_template.php:431
 msgid "N<sup>o</sup> products"
 msgstr "N<sup>o</sup> produtos"
 
-#: thecartpress/templates/tcp_general_template.php:430
+#: thecartpress/templates/tcp_general_template.php:439
 msgid "Weigth"
 msgstr "Peso"
 
-#: thecartpress/templates/tcp_general_template.php:509
+#: thecartpress/templates/tcp_general_template.php:518
 msgid "Unordered"
 msgstr "Não ordenado"
 
-#: thecartpress/templates/tcp_general_template.php:513
+#: thecartpress/templates/tcp_general_template.php:522
 msgid "Suggested"
 msgstr "Sugerido"
 
-#: thecartpress/templates/tcp_general_template.php:533
+#: thecartpress/templates/tcp_general_template.php:542
 msgid "Popular"
 msgstr "Popular"
 
-#: thecartpress/templates/tcp_general_template.php:537
+#: thecartpress/templates/tcp_general_template.php:546
 msgid "Random"
 msgstr "Ao calhas"
 
-#: thecartpress/templates/tcp_general_template.php:567
+#: thecartpress/templates/tcp_general_template.php:577
 msgid "Sort"
 msgstr "Ordenar"
 
-#: thecartpress/templates/tcp_general_template.php:667
+#: thecartpress/templates/tcp_general_template.php:677
 msgid "Password Lost and Found"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:667
+#: thecartpress/templates/tcp_general_template.php:677
 #, fuzzy
 msgid "Lost your password?"
 msgstr "Senha Perdida"
 
-#: thecartpress/templates/tcp_general_template.php:684
-#: thecartpress/templates/tcp_general_template.php:772
+#: thecartpress/templates/tcp_general_template.php:694
+#: thecartpress/templates/tcp_general_template.php:782
 msgid "Error"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:711
+#: thecartpress/templates/tcp_general_template.php:721
 #, fuzzy
 msgid "Repeat password"
 msgstr "Senha Perdida"
 
-#: thecartpress/templates/tcp_general_template.php:730
+#: thecartpress/templates/tcp_general_template.php:740
 msgid "Error has occurred while registering"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:733
+#: thecartpress/templates/tcp_general_template.php:743
 #, fuzzy
 msgid "Registration data has been saved."
 msgstr "A relação foi criada"
 
-#: thecartpress/templates/tcp_general_template.php:755
+#: thecartpress/templates/tcp_general_template.php:765
 msgid "Type your new password again."
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:758
+#: thecartpress/templates/tcp_general_template.php:768
 msgid "E-mail"
 msgstr "E-mail"
 
-#: thecartpress/templates/tcp_general_template.php:775
+#: thecartpress/templates/tcp_general_template.php:785
 msgid "The user is already logged"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:849
+#: thecartpress/templates/tcp_general_template.php:859
 msgid "Home"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:912
+#: thecartpress/templates/tcp_general_template.php:922
 #, fuzzy, php-format
 msgid "Search results for \"%s\""
 msgstr "Procurar pedidos"
 
-#: thecartpress/templates/tcp_general_template.php:916
+#: thecartpress/templates/tcp_general_template.php:926
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:922
+#: thecartpress/templates/tcp_general_template.php:932
 #, php-format
 msgid "Articles posted by %s"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:926
+#: thecartpress/templates/tcp_general_template.php:936
 msgid "Error 404"
 msgstr ""
 
-#: thecartpress/templates/tcp_general_template.php:981
+#: thecartpress/templates/tcp_general_template.php:991
 #, fuzzy, php-format
 msgid "Posts by %s"
 msgstr "Tipos de artigos"
 
-#: thecartpress/templates/tcp_general_template.php:1053
+#: thecartpress/templates/tcp_general_template.php:1063
 #, fuzzy, php-format
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\">Publicado em </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 
-#: thecartpress/templates/tcp_general_template.php:1062
+#: thecartpress/templates/tcp_general_template.php:1072
 #, php-format
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 msgstr "<span class=\"tcp_by_author\"><span class=\"sep\">por </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:31
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:39
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:38
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:55
 #, fuzzy
 msgid "Theme Compatibility"
 msgstr "Compatibilidade com o tema"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:38
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:46
 #, fuzzy
 msgid "Look&Feel"
 msgstr "ferramentas TCP"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:39
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:62
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:54
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:81
 #, fuzzy
 msgid "Theme Compatibility Settings"
 msgstr "Compatibilidade com o tema"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:49
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:68
 msgid "Customize Theme Compatibility. Thanks to this feature, TheCartPress supports all themes."
 msgstr ""
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:95
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:114
 #, fuzzy
 msgid "TheCartPress Styles"
 msgstr "Definições TheCartPress"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:97
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:116
 msgid "Allows to load default styles provided by TheCartPress. To create your own styles, deactivate these settings. You could, also, customise by copying these CSS files to your theme."
 msgstr ""
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:106
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:125
 #, fuzzy
 msgid "Load default Buy Button styles"
 msgstr "Carregar estilo de botão comprar predefinido"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:115
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:134
 #, fuzzy
 msgid "Load default Shopping Cart & Checkout styles"
 msgstr "Carregar o carrinho de compras e o estilo de checkout predefinidos"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:124
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:143
 #, fuzzy
 msgid "Load default Catalogue styles"
 msgstr "Carregar estilo de loop predefinido"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:133
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:152
 #, fuzzy
 msgid "Load Bootstrap JavaScript"
 msgstr "Modelos personalizados"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:142
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:161
 msgid "Product pages show at most"
 msgstr "As páginas de produtos mostram no máximo"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:146
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:165
 msgid "products"
 msgstr "produtos"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:156
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:175
 #, fuzzy
 msgid "How to display Product Details"
 msgstr "Permitir a exibição de Top Sellers"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:183
-#: thecartpress/appearance/LoopSettings.class.php:126
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:201
+#: thecartpress/appearance/LoopSettings.class.php:136
 #, fuzzy
 msgid "Load post type settings"
 msgstr "Definições do loop"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:184
-#: thecartpress/appearance/LoopSettings.class.php:127
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:202
+#: thecartpress/appearance/LoopSettings.class.php:137
 #, fuzzy
 msgid "Delete post type settings"
 msgstr "Tipo de artigo predefinido para o TheCartPress"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:185
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:208
+#: thecartpress/appearance/LoopSettings.class.php:143
+#, fuzzy
+msgid "Load settings"
+msgstr "Definições do loop"
+
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:215
+#: thecartpress/appearance/LoopSettings.class.php:150
+msgid "There are specific settings for the next Post Types:"
+msgstr ""
+
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:218
+#: thecartpress/appearance/LoopSettings.class.php:153
+#, fuzzy
+msgid "Load default settings"
+msgstr "Facturação predefinida"
+
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:223
 #, fuzzy
 msgid "Allows to create different configuration for each Post Type."
 msgstr "Permite criar a lista mais recente de comentários para os tipos de artigos personalizados"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:186
-#: thecartpress/appearance/LoopSettings.class.php:129
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:224
+#: thecartpress/appearance/LoopSettings.class.php:159
 msgid "Options in bold have a specific configuration."
 msgstr ""
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:187
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:225
 #, fuzzy
 msgid "Remember to save the changes before to load new post type settings."
 msgstr "Lembrar de guardar todos os valores antes de inserir uma nova zona"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:195
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:233
 #, fuzzy
 msgid "Image size grouped buy button"
 msgstr "Tamanho da imagem agrupado botão comprar"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:199
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:237
 msgid "No image"
 msgstr "Sem imagem"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:205
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:243
 #, fuzzy
 msgid "allows to select the size of the image to show in grouped products."
 msgstr "Permite mostrar o botão comprar na lista de produtos."
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:211
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:249
 msgid "Image size in content"
 msgstr "Tamanho da imagem no conteúdo"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:225
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:263
 #, fuzzy
 msgid "Image align in content"
 msgstr "Ligação à imagem no conteúdo"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:230
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:268
 msgid "Align Left"
 msgstr "Alinha à esquerda"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:231
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:269
 msgid "Align Center"
 msgstr "Alinhar ao centro"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:232
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:270
 msgid "Align Right"
 msgstr "Alinhar à direita"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:239
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:277
 msgid "Image link in content"
 msgstr "Ligação à imagem no conteúdo"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:244
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:282
 msgid "File url"
 msgstr "url do ficheiro"
 
-#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:245
+#: thecartpress/appearance/ThemeCompatibilitySettings.class.php:283
 msgid "Post url"
 msgstr "URL do artigo"
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:34
+#: thecartpress/appearance/CustomTemplatesList.class.php:41
 #, fuzzy
 msgid "Custom Templates Settings"
 msgstr "Modelo personalizado"
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:34
-#: thecartpress/appearance/CustomTemplatesList.class.php:57
+#: thecartpress/appearance/CustomTemplatesList.class.php:41
+#: thecartpress/appearance/CustomTemplatesList.class.php:64
 #, fuzzy
 msgid "Custom Templates"
 msgstr "Modelo personalizado"
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:44
+#: thecartpress/appearance/CustomTemplatesList.class.php:51
 msgid "You can customize default Custom Templates."
 msgstr ""
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:58
+#: thecartpress/appearance/CustomTemplatesList.class.php:65
 msgid "This screen allows to set which templates to use in case to show the different elements of your site."
 msgstr ""
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:73
-#: thecartpress/appearance/CustomTemplatesList.class.php:81
+#: thecartpress/appearance/CustomTemplatesList.class.php:80
+#: thecartpress/appearance/CustomTemplatesList.class.php:88
 msgid "Name id"
 msgstr "ID do nome"
 
-#: thecartpress/appearance/CustomTemplatesList.class.php:74
-#: thecartpress/appearance/CustomTemplatesList.class.php:82
+#: thecartpress/appearance/CustomTemplatesList.class.php:81
+#: thecartpress/appearance/CustomTemplatesList.class.php:89
 msgid "Template"
 msgstr "Modelo"
 
-#: thecartpress/appearance/LoopSettings.class.php:34
-#: thecartpress/appearance/LoopSettings.class.php:57
+#: thecartpress/appearance/LoopSettings.class.php:41
+#: thecartpress/appearance/LoopSettings.class.php:65
 #, fuzzy
 msgid "Catalogue Settings"
 msgstr "Facturação predefinida"
 
-#: thecartpress/appearance/LoopSettings.class.php:44
+#: thecartpress/appearance/LoopSettings.class.php:51
 msgid "Customize your Catalogue look&feel."
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:59
-msgid "Allows to configure how to display products in your Catalogue"
+#: thecartpress/appearance/LoopSettings.class.php:67
+msgid "Allows to configure how to display products, or any other post type, in your Catalogues"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:128
+#: thecartpress/appearance/LoopSettings.class.php:158
 #, fuzzy
 msgid "Allows to create different configuration for each Post Type. Products, posts or pages are custom post types."
 msgstr "Permite criar a lista mais recente de comentários para os tipos de artigos personalizados"
 
-#: thecartpress/appearance/LoopSettings.class.php:130
+#: thecartpress/appearance/LoopSettings.class.php:160
 #, fuzzy
 msgid "Remember to save changes before to load another post type settings, or you'll loose the current values."
 msgstr "Lembrar de guardar todos os valores antes de inserir uma nova zona"
 
-#: thecartpress/appearance/LoopSettings.class.php:138
+#: thecartpress/appearance/LoopSettings.class.php:168
 msgid "Layout"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:145
-msgid "Columns for Extra Small devices (Phones)"
+#: thecartpress/appearance/LoopSettings.class.php:175
+msgid "Columns for Extra Small devices"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:153
-msgid "Columns for Small Devices (Tablets)"
+#: thecartpress/appearance/LoopSettings.class.php:179
+#, fuzzy
+msgid "Phones"
+msgstr "Telefones"
+
+#: thecartpress/appearance/LoopSettings.class.php:184
+#, fuzzy
+msgid "Columns for Small Devices"
+msgstr "N<sup>o</sup> colunas"
+
+#: thecartpress/appearance/LoopSettings.class.php:188
+#, fuzzy
+msgid "Tablets"
+msgstr "Quadro"
+
+#: thecartpress/appearance/LoopSettings.class.php:193
+msgid "Columns for Medium Devices"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:161
-msgid "Columns for Medium Devices (Desktop)"
+#: thecartpress/appearance/LoopSettings.class.php:197
+msgid "Desktops"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:169
-msgid "Columns for Large Devices (Large Desktops)"
+#: thecartpress/appearance/LoopSettings.class.php:202
+#, fuzzy
+msgid "Columns for Large Devices"
+msgstr "Excluir para os intervalos de preço"
+
+#: thecartpress/appearance/LoopSettings.class.php:206
+msgid "Large Desktops"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:180
+#: thecartpress/appearance/LoopSettings.class.php:214
 msgid "Visibility"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:187
+#: thecartpress/appearance/LoopSettings.class.php:221
 #, fuzzy
 msgid "Featured Image"
 msgstr "Ver imagem:"
 
-#: thecartpress/appearance/LoopSettings.class.php:191
+#: thecartpress/appearance/LoopSettings.class.php:225
 #, fuzzy
 msgid "Display Image"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:193
+#: thecartpress/appearance/LoopSettings.class.php:227
 #, fuzzy
 msgid "using size"
 msgstr "Tamanho minimo"
 
-#: thecartpress/appearance/LoopSettings.class.php:204
+#: thecartpress/appearance/LoopSettings.class.php:238
 #, fuzzy
 msgid "Product Title"
 msgstr "Tipos de produtos"
 
-#: thecartpress/appearance/LoopSettings.class.php:208
+#: thecartpress/appearance/LoopSettings.class.php:242
 #, fuzzy
 msgid "Display Title"
 msgstr "Mostrar um subtotal de zero impostos"
 
-#: thecartpress/appearance/LoopSettings.class.php:210
+#: thecartpress/appearance/LoopSettings.class.php:244
 msgid "using tag"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:222
+#: thecartpress/appearance/LoopSettings.class.php:256
 #, fuzzy
-msgid "Allows to show or hide product titles in the loops, using custom html tag"
+msgid "Allows to show or hide product titles in your catalogues, using custom html tag"
 msgstr "Permite mostrar o botão comprar na lista de produtos."
 
-#: thecartpress/appearance/LoopSettings.class.php:228
+#: thecartpress/appearance/LoopSettings.class.php:262
 #, fuzzy
 msgid "Display Price"
 msgstr "Mostrar coluna com os pesos"
 
-#: thecartpress/appearance/LoopSettings.class.php:232
+#: thecartpress/appearance/LoopSettings.class.php:266
 msgid "Configure Price format"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:237
+#: thecartpress/appearance/LoopSettings.class.php:271
 #, fuzzy
 msgid "Display Buy Button"
 msgstr "Ver botão comprar:"
 
-#: thecartpress/appearance/LoopSettings.class.php:241
+#: thecartpress/appearance/LoopSettings.class.php:275
 #, fuzzy
 msgid "Configure Buy buttons"
 msgstr "Mostrar botão comprar"
 
-#: thecartpress/appearance/LoopSettings.class.php:250
+#: thecartpress/appearance/LoopSettings.class.php:284
 msgid "Advanced Visibility"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:257
+#: thecartpress/appearance/LoopSettings.class.php:291
 #, fuzzy
 msgid "Display Discount"
 msgstr "Mostrar coluna com os pesos"
 
-#: thecartpress/appearance/LoopSettings.class.php:265
+#: thecartpress/appearance/LoopSettings.class.php:299
 #, fuzzy
 msgid "Display Stock"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:274
+#: thecartpress/appearance/LoopSettings.class.php:308
 #, fuzzy
 msgid "Display Excerpt"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:283
+#: thecartpress/appearance/LoopSettings.class.php:317
 #, fuzzy
 msgid "Excerpt Length"
 msgstr "Excerto"
 
-#: thecartpress/appearance/LoopSettings.class.php:292
+#: thecartpress/appearance/LoopSettings.class.php:320
+#, fuzzy
+msgid "words"
+msgstr "Senha"
+
+#: thecartpress/appearance/LoopSettings.class.php:326
 #, fuzzy
 msgid "Display Content"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:300
+#: thecartpress/appearance/LoopSettings.class.php:334
 #, fuzzy
 msgid "Display Author"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:309
+#: thecartpress/appearance/LoopSettings.class.php:343
 #, fuzzy
 msgid "Display Posted On"
 msgstr "Formato da tela"
 
-#: thecartpress/appearance/LoopSettings.class.php:317
+#: thecartpress/appearance/LoopSettings.class.php:351
 #, fuzzy
 msgid "Display Taxonomies"
 msgstr "Mostrar coluna com os pesos"
 
-#: thecartpress/appearance/LoopSettings.class.php:325
+#: thecartpress/appearance/LoopSettings.class.php:359
 #, fuzzy
 msgid "Display Meta Utilities"
 msgstr "Ver utilidades meta:"
 
-#: thecartpress/appearance/LoopSettings.class.php:333
+#: thecartpress/appearance/LoopSettings.class.php:367
 #, fuzzy
 msgid "Display First Custom Area"
 msgstr "Ver a primeira área personalizada"
 
-#: thecartpress/appearance/LoopSettings.class.php:341
+#: thecartpress/appearance/LoopSettings.class.php:375
 #, fuzzy
 msgid "Display Second Custom Area"
 msgstr "Ver a segunda área personalizada"
 
-#: thecartpress/appearance/LoopSettings.class.php:349
+#: thecartpress/appearance/LoopSettings.class.php:383
 #, fuzzy
 msgid "Display Third Custom Area"
 msgstr "Ver a terceira área personalizada"
 
-#: thecartpress/appearance/LoopSettings.class.php:359
+#: thecartpress/appearance/LoopSettings.class.php:393
 msgid "Display JetPack Sharing Area"
 msgstr ""
 
-#: thecartpress/appearance/LoopSettings.class.php:373
+#: thecartpress/appearance/LoopSettings.class.php:407
 #, fuzzy
 msgid "Sorting & Pagination"
 msgstr "Ver paginação"
 
-#: thecartpress/appearance/LoopSettings.class.php:380
+#: thecartpress/appearance/LoopSettings.class.php:414
 #, fuzzy
 msgid "Display Sorting Panel"
 msgstr "Ver painel de ordenação"
 
-#: thecartpress/appearance/LoopSettings.class.php:388
+#: thecartpress/appearance/LoopSettings.class.php:422
 #, fuzzy
 msgid "Disabled order types"
 msgstr "Tipos de pedido desactivados:"
 
-#: thecartpress/appearance/LoopSettings.class.php:399
+#: thecartpress/appearance/LoopSettings.class.php:433
 #, fuzzy
 msgid "Order Type"
 msgstr "Tipo de pedido:"
 
-#: thecartpress/appearance/LoopSettings.class.php:414
+#: thecartpress/appearance/LoopSettings.class.php:448
 #, fuzzy
 msgid "Order Desc"
 msgstr "Desc. do pedido:"
 
-#: thecartpress/appearance/LoopSettings.class.php:422
+#: thecartpress/appearance/LoopSettings.class.php:456
 #, fuzzy
 msgid "Display Pagination"
 msgstr "Paginação"
@@ -7010,7 +7108,7 @@ msgstr "Subtotal"
 msgid "Nothing Found"
 msgstr "Nada encontrado"
 
-#: thecartpress/themes-templates/loop-tcp-grid.php:22
+#: thecartpress/themes-templates/loop-tcp-grid.php:21
 msgid "Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post."
 msgstr "Pedimos desculpa, mas não foram encontrados nenhuns resultados para o arquivo requerido. Talvez procurando seja possível encontrar um artigo relacionado."
 
@@ -7038,26 +7136,34 @@ msgstr "imprimir"
 msgid "View/hide tier price"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_author_profile.php:27
+#: thecartpress/themes-templates/tcp_author_profile.php:37
 #, php-format
 msgid "Last login: %s"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_author_profile.php:37
-#: thecartpress/themes-templates/tcp_author_profile.php:39
+#: thecartpress/themes-templates/tcp_author_profile.php:50
+#: thecartpress/themes-templates/tcp_author_profile.php:52
 #, fuzzy
 msgid "Profile"
 msgstr "ficheiros"
 
-#: thecartpress/themes-templates/tcp_author_profile.php:45
+#: thecartpress/themes-templates/tcp_author_profile.php:61
+msgid "blog admin"
+msgstr ""
+
+#: thecartpress/themes-templates/tcp_author_profile.php:69
 #, fuzzy
 msgid "Log Out"
 msgstr "Login"
 
-#: thecartpress/themes-templates/tcp_author_profile.php:50
-msgid "blog admin"
-msgstr ""
+#~ msgid "parent's assigned products"
+#~ msgstr "produtos atribuídos dos parentes"
 
+#~ msgid "Month"
+#~ msgstr "Mês"
+
+#~ msgid "Credit Card Type"
+#~ msgstr "Tipo de Cartão de Crédito"
 #~ msgctxt "column name"
 
 #~ msgid "ID"
@@ -7338,9 +7444,6 @@ msgstr ""
 #~ msgid "South"
 #~ msgstr "Sul"
 
-#~ msgid "Allows to show the buy button in the product lists."
-#~ msgstr "Permite mostrar o botão comprar na lista de produtos."
-
 #~ msgid ""
 #~ "The \"in excerpt\" settings only can be activated if the products "
 #~ "template doesn't use the template tags to show data."
@@ -7412,9 +7515,6 @@ msgstr ""
 #~ msgid "related cat. of products"
 #~ msgstr "cat. de produtos relacionadas"
 
-#~ msgid "copy product"
-#~ msgstr "copiar produto"
-
 #~ msgid "files"
 #~ msgstr "ficheiros"
 
@@ -7425,9 +7525,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "My theme has eCommerce templates for TheCartPress"
 #~ msgstr "Powered by TheCartPress, eCommerce platform for WordPress"
-
-#~ msgid "Loop Settings"
-#~ msgstr "Definições do loop"
 
 #, fuzzy
 #~ msgid "See Title"

@@ -23,7 +23,7 @@ define( 'TCP_PRODUCT_TAG',			'tcp_product_tag' );
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ProductCustomPostType' ) ) {
+if ( !class_exists( 'ProductCustomPostType' ) ) :
 
 /**
  * Defines the default post type 'tcp_product'
@@ -358,4 +358,4 @@ class ProductCustomPostType {
 }
 
 $GLOBALS['productcustomposttype'] = new ProductCustomPostType();
-} // class_exists check
+endif; // class_exists check

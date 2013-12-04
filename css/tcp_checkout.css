@@ -224,8 +224,8 @@ li.tcp_checkout_active_step span{
 .tcp_back_continue{
 	display: block;
 }
-
-.tcpf label {
+.tcpf #new_billing_area label,
+.tcpf #new_shipping_area label {
 	font-weight: normal;
 }
 

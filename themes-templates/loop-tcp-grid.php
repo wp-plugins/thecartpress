@@ -27,9 +27,11 @@
 
 <?php
 $currency = tcp_the_currency( false ); 
-if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
+if ( !isset( $instance ) ) $instance = get_option( 'ttc_settings' );
+
+//Test if there is a specific configuration by post type
 $suffix = '-' . get_post_type( get_the_ID() );
-if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
+if ( !isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
 
 $see_title				= isset( $instance['see_title' . $suffix] ) ? $instance['see_title' . $suffix] : true;
 $title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag' . $suffix] : 'h2';
@@ -121,23 +123,26 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 
 			<div class="tcp-grid-item">
 
-				<?php if (has_post_thumbnail()) :  ?>
+				<?php if ( tcp_has_post_thumbnail() ) :  ?>
 					<?php if ( $see_image ) : ?>
 						<div class="tcp-product-thumbnail">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
+							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>">
+								<?php tcp_the_thumbnail( get_the_ID(), 0, 0, $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
+								<?php //if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
+							</a>
 						</div><!-- .tcp-product-thumbnail -->
 					<?php endif; ?>
 				<?php else : ?>
 					<?php if ( $see_image ) : ?>
 						<div class="tcp-product-thumbnail tcp-no-image">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><img class="img-responsive" src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="<?php the_title(); ?>" /></a>
+							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>"><img class="img-responsive" src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="<?php the_title(); ?>" /></a>
 						</div><!-- .tcp-product-thumbnail -->
 					<?php endif; ?>
 				<?php endif; ?>	 
 
 				<?php if ( $see_title ) : ?>
 					<div class="tcp-product-title">
-					<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a>
+					<?php echo $title_tag;?><a href="<?php tcp_the_permalink( );?>"><?php the_title(); ?></a>
 					<?php echo $title_end_tag;?>
 					</div><!-- .tcp-product-title -->
 				<?php endif; ?>

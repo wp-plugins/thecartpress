@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 3.7.1
-Stable Tag: 1.3.3
+Stable Tag: 1.3.4
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,10 +300,18 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.4 =
+* My Account: New links and GUI Improvements
+* Post types configurations
+* Products example xml file
+* Catalogue settings: It didn't display properly using previous PHP versions
+* New languages: Czech & Catalan
+
 = 1.3.3.1 =
-* Shortcodes/Widgets loops: see discount & see stock settings
+* Shortcodes/Widgets loops: See discount & See stock settings
 * Product type: External Affiliate products
 * CSS Styles: New buy button styles
+* Custom Post Types: Help messages in Themes Compatibility and Catalogue settings page
 
 = 1.3.3 =
 * Product detail: fix hidden content is some themes
@@ -312,7 +320,7 @@ This plugin is released under a GPL license.
 * Orders List: new orders list in backend
 * Products List: new product list in backend
 * Activated screen: News and notices about new versions
-* Product detail: Thumbnail size setting
+* Product detail: Thumbnail size setting (thanks to the community)
 
 = 1.3.2.1 =
 * Issue with svn
@@ -338,7 +346,7 @@ This plugin is released under a GPL license.
 * Payment and Shipping method Editor: UI improvements
 * Custom Post Type Engine: UI improvement
 * Checkout: Adding 'tcp_' prefix to steps
-* Login: Allowinf to select any page for login
+* Login: Allowing to select any page for login
 * Stock: Fix minor bug
 * Menus UI Improvement
 * First Time Setup: UI Improvement

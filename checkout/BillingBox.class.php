@@ -29,7 +29,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPBillingBox' ) ) {
+if ( !class_exists( 'TCPBillingBox' ) ) :
 
 require_once( TCP_CHECKOUT_FOLDER	. 'TCPCheckoutBox.class.php' );
 require_once( TCP_CLASSES_FOLDER	. 'CustomForms.class.php' );
@@ -57,20 +57,23 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 	function after_action() {
 		global $thecartpress;
-		$use_as_shipping			= isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
+
+		//Getting Saved Settings
+		$settings		 = get_option( 'tcp_' . get_class( $this ), array() );
+		$use_as_shipping = isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
+
 		//Only if a new address is typed...
 		$selected_billing_address	= isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
 		if ( $selected_billing_address == 'new' || $selected_billing_address == 'N' ) {
 			//Getting defalt fields
 			$fields = $this->getDefaultFields();
-			//Getting Saved Settings
-			$settings = get_option( 'tcp_' . get_class( $this ), array() );
+			
 			//Applying active and required properties
 			foreach( $fields as $id => $field ) {
 				$active = isset( $settings['active-' . $id] ) ? $settings['active-' . $id] : true;
 				if ( $active ) {
 					if ( isset( $settings['callback_required-' . $id] ) ) {
-//TODO
+						//TODO
 					} else {
 						$required = isset( $settings['required-' . $id] ) ? $settings['required-' . $id] : false;
 						if ( $required && ( ! isset( $_REQUEST[$id] ) || strlen( $_REQUEST[$id] ) == 0 ) ) {
@@ -91,7 +94,6 @@ class TCPBillingBox extends TCPCheckoutBox {
 				}
 			}
 		} elseif ( $selected_billing_address == 'Y' ) {
-			global $thecartpress;
 			$billing_isos = isset( $thecartpress->settings['billing_isos'] ) ? $thecartpress->settings['billing_isos'] : false;
 			if ( $billing_isos ) {
 				$billing_country_id = Addresses::getCountryId( $_REQUEST['selected_billing_id'] );
@@ -100,6 +102,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				}
 			}
 		}
+
 		if ( $use_as_shipping ) {
 			$_SESSION['tcp_checkout']['shipping'] = array(
 				'selected_shipping_address' => "BIL",
@@ -151,13 +154,16 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$selected_billing_address = false;
 		}?>
 		<div class="checkout_info clearfix" id="billing_layer_info">
-		<?php if ( $use_as_shipping ) :?>
+			<?php if ( $use_as_shipping ) : ?>
 			<span class="tcp_use_as_shipping"><?php _e( 'This data will be used, also, as Shipping.', 'tcp' ); ?></span><br/>
-		<?php endif; ?>
+			<?php endif; ?>
 		<?php global $current_user;
 		get_currentuserinfo();
-		if ( $current_user->ID > 0 ) $addresses = Addresses::getCustomerAddresses( $current_user->ID );
-		else $addresses = false;
+		if ( $current_user->ID > 0 ) {
+			$addresses = Addresses::getCustomerAddresses( $current_user->ID );
+		} else {
+			$addresses = false;
+		}
 		if ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 			if ( $selected_billing_address === false ) $selected_billing_address = 'Y';
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
@@ -724,4 +730,4 @@ class TCPBillingBox extends TCPCheckoutBox {
 }
 
 new TCPBillingBox();
-} // class_exists check
+endif; // class_exists check

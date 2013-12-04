@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPBuyButton' ) ) {
+if ( ! class_exists( 'TCPBuyButton' ) ) :
 
 class TCPBuyButton {
 
@@ -98,10 +98,12 @@ class TCPBuyButton {
 		if ( strlen( $template ) == 0 ) {
 			foreach ( $templates as $template ) {
 				$template = TCP_THEMES_TEMPLATES_FOLDER . $template;
-				if ( file_exists( $template ) ) return $template;
+				if ( file_exists( $template ) ) {
+					return apply_filters( 'tcp_buy_button_get_template', $template );
+				}
 			}
 		} else {
-			return $template;
+			return apply_filters( 'tcp_buy_button_get_template', $template );
 		}
 		return false;
 	}
@@ -113,8 +115,12 @@ class TCPBuyButton {
 		}
 	}
 
+	/**
+	 * Returns templates for buy buttons
+	 * 
+	 * @return array( array( 'label' => '...', 'path' => '...' ) )
+	 */
 	static function get_buy_buttons() {
-		//Older implementation...locate_template
 		$paths = array();
 		$paths[] = array(
 			'label'	=> __( 'Theme' ),
@@ -194,7 +200,7 @@ class TCPBuyButton {
 
 	function tcp_theme_compatibility_settings_page( $suffix, $thecartpress ) {
 		$colors = array(
-			''							=> __( 'Theme default', 'tcp' ),
+			//''							=> __( 'Theme default', 'tcp' ),
 			'tcp-btn tcp-btn-default'	=> __( 'Default', 'tcp' ),
 			'tcp-btn tcp-btn-primary'	=> __( 'Blue', 'tcp' ),
 			'tcp-btn tcp-btn-success'	=> __( 'Green', 'tcp' ),
@@ -205,20 +211,20 @@ class TCPBuyButton {
 		);
 		$colors = apply_filters( 'tcp_buy_buttons_colors', $colors );
 		$sizes	= array(
-			''				=> __( 'Theme default', 'tcp' ),
 			'tcp-btn-xs'	=> __( 'Extra Small', 'tcp' ),
 			'tcp-btn-sm'	=> __( 'Small', 'tcp' ),
+			''				=> __( 'Medium', 'tcp' ),
 			'tcp-btn-lg'	=> __( 'Large', 'tcp' ),
 		);
 		$sizes = apply_filters( 'tcp_buy_buttons_sizes', $sizes );
-		global $thecartpress;
-		$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
-		$buy_button_size	= $thecartpress->get_setting( 'buy_button_size' );
-		$buy_button_grouped	= $thecartpress->get_setting( 'buy_button_grouped' );
+		$buy_button_color	= tcp_get_buy_button_color( $suffix );
+		$buy_button_size	= tcp_get_buy_button_size( $suffix );
+		$buy_button_grouped	= $thecartpress->get_setting( 'buy_button_grouped' . $suffix );
 ?>
 <h3 class="hndle"><?php _e( 'Button Styles', 'tcp' ); ?></h3>
 
 <div class="postbox">
+<div class="inside">
 
 <table class="form-table">
 <tbody>
@@ -277,6 +283,7 @@ class TCPBuyButton {
 </tr>-->
 </tbody>
 </table>
+</div><!-- .inside -->
 </div><!-- .postbox -->
 		<?php
 	}
@@ -297,4 +304,4 @@ class TCPBuyButton {
 }
 
 new TCPBuyButton();
-} // class_exists check
+endif; // class_exists check

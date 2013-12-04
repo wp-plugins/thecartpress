@@ -74,9 +74,8 @@ class NoCostPayment extends TCP_Plugin {
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
-		global $thecartpress;
-		$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
-		$buy_button_size	= $thecartpress->get_setting( 'buy_button_size' );
+		$buy_button_color	= tcp_get_buy_button_color();
+		$buy_button_size	= tcp_get_buy_button_size();
 		$data				= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
 		$url				= tcp_get_the_checkout_ok_url( $order_id );
 		$title				= isset( $data['title'] ) ? $data['title'] : '';

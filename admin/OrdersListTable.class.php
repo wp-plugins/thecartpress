@@ -154,9 +154,8 @@ class OrdersListTable extends WP_List_Table {
 		if ( strlen( $item->shipping_city ) > 0 ) echo $item->shipping_city;
 		if ( strlen( $item->shipping_postcode ) > 0 ) echo ', ', $item->shipping_postcode;
 		echo ' (', $item->shipping_country_id, ')';
-		printf ('<a href="%s" target="_blank"><img src="%s"/></a>',
-			"http://maps.google.com/maps?&q={$item->shipping_street},+{$item->shipping_city},+{$item->shipping_postcode},+{$item->shipping_country_id}&z=16",
-			plugins_url( 'images/tcp_map_link_16.png', dirname( __FILE__ ) )
+		printf ('<a href="%s" target="_blank"><span class="glyphicon glyphicon-map-marker"></span></a>',
+			"http://maps.google.com/maps?&q={$item->shipping_street},+{$item->shipping_city},+{$item->shipping_postcode},+{$item->shipping_country_id}&z=16"
 		);
 	}
 
@@ -166,9 +165,8 @@ class OrdersListTable extends WP_List_Table {
 		if ( strlen( $item->billing_city ) > 0 ) echo $item->billing_city;
 		if ( strlen( $item->billing_postcode ) > 0 ) echo ', ', $item->billing_postcode;
 		echo ' (', $item->billing_country_id, ')';
-		printf ('<a href="%s" target="_blank"><img src="%s"/></a>',
-			"http://maps.google.com/maps?&q={$item->billing_street},+{$item->billing_city},+{$item->billing_postcode},+{$item->billing_country_id}&z=16",
-			plugins_url( 'images/tcp_map_link_16.png', dirname( __FILE__ ) )
+		printf ('<a href="%s" target="_blank"><span class="glyphicon glyphicon-map-marker"></span></a>',
+			"http://maps.google.com/maps?&q={$item->billing_street},+{$item->billing_city},+{$item->billing_postcode},+{$item->billing_country_id}&z=16"
 		);
 	}
 
@@ -210,7 +208,7 @@ class TCPOrdersList {
 		$ordersListTable->prepare_items(); ?>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
-<div class="wrap">
+<div class="wrap tcpf">
 	<?php screen_icon( 'tcp-orders-list' ); ?><h2><?php _e( 'Orders', 'tcp' );?></h2>
 	<div class="clear"></div>
 	<?php $ordersListTable->search_box( __( 'Search Orders', 'tcp' ), 'order' ); ?>
