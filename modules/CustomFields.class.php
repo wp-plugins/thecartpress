@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPCustomFields' ) ) {
+if ( !class_exists( 'TCPCustomFields' ) ) :
 
 define( 'TCP_CUSTOM_FIELD_TYPE_TEXT'			, 'string' );
 define( 'TCP_CUSTOM_FIELD_TYPE_TEXT_MULTILINE'	, 'string-multiline' );
@@ -55,8 +55,9 @@ class TCPCustomFields {
 	static function registerMetaBox() {
 		//add_action( 'post_edit_form_tag', array( __CLASS__, 'post_edit_form_tag' ) );
 		$post_types = get_post_types();
-		foreach( $post_types as $post_type )
+		foreach( $post_types as $post_type ) {
 			add_meta_box( 'tcp-custom-fields', __( 'TCP Custom fields', 'tcp' ), array( __CLASS__, 'show' ), $post_type, 'normal', 'high' );
+		}
 		add_action( 'save_post'		, array( __CLASS__, 'save_post' ), 1, 2 );
 		add_action( 'delete_post'	, array( __CLASS__, 'delete_post' ) );
 	}
@@ -383,4 +384,4 @@ function tcp_display_custom_field( $custom_field_id, $post_id = 0 ) {
 	);
 	return apply_filters( 'tcp_display_custom_field', $field, $custom_field_id, $post_id );
 }
-} // class_exists check
+endif; // class_exists check

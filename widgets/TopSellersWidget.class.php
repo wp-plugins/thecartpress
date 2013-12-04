@@ -53,6 +53,7 @@ class TopSellersWidget extends CustomListWidget {
 		if ( $see_pagination ) {
 			$loop_args['paged'] = $paged;
 		}
+		$instance['post_type'] = TCP_PRODUCT_POST_TYPE;
 		$loop_args = apply_filters( 'tcp_top_sellers_widget', $loop_args, $instance );
 		$instance['order_type'] = '';
 		$instance['order_desc'] = '';

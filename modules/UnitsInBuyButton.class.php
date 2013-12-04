@@ -92,7 +92,7 @@ class TCPUnitsInBuyButton {
 <h3><?php _e( 'Product Units', 'tcp'); ?></h3>
 
 <div class="postbox">
-
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -112,6 +112,7 @@ class TCPUnitsInBuyButton {
 </tbody>
 </table>
 
+</div>
 </div><!-- .postbox -->
 	<?php }
 

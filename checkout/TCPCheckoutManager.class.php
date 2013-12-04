@@ -19,7 +19,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPCheckoutManager' ) ) {
+if ( ! class_exists( 'TCPCheckoutManager' ) ) :
 
 require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
@@ -167,7 +167,7 @@ class TCPCheckoutManager {
 	protected function show_box( $box, $step = 0 ) {
 		global $thecartpress;
 		$user_registration	= $thecartpress->get_setting( 'user_registration', false );
-		$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
+		$buy_button_color	= tcp_get_buy_button_color();
 		if ( $user_registration && $step > 0 && ! is_user_logged_in() ) return $this->show_box( $this->get_box( 0 ) );
 		ob_start(); ?>
 <div class="checkout tcpf" id="checkout">
@@ -291,6 +291,8 @@ class TCPCheckoutManager {
 			if ( $checkout_box && isset( $tcp_checkout_boxes[$checkout_box] ) ) {
 				$initial_path = dirname( dirname( TCP_ADMIN_FOLDER ) ) . '/';
 				require_once( $initial_path . $tcp_checkout_boxes[$checkout_box]['path'] );
+
+				//instantiate the box object
 				$this->steps_objects[$step] = new $checkout_box();
 				return $this->steps_objects[$step];
 			} else {
@@ -693,4 +695,4 @@ class TCPCheckoutManager {
 		}
 	}
 }
-} // class_exists check
+endif; // class_exists check

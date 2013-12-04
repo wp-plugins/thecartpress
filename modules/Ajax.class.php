@@ -93,6 +93,7 @@ class TCPAjax {
 <h3><?php _e( 'Ajax', 'tcp' ); ?></h3>
 
 <div class="postbox">
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -106,6 +107,7 @@ class TCPAjax {
 </tr>
 </tbody>
 </table>
+</div>
 </div><!-- .postbox --> <?php
 	}
 

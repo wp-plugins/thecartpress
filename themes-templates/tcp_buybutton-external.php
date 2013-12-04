@@ -24,11 +24,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-global $thecartpress;
-$buy_button_color	= $thecartpress->get_setting( 'buy_button_color' );
-$buy_button_size	= $thecartpress->get_setting( 'buy_button_size' );
-$action				= tcp_get_the_product_url( $post_id );
-$title				= tcp_string( 'TheCartPress', 'external_button_text-' . $post_id, $name, tcp_get_the_buy_button_text( $post_id ) );
+
+$action = tcp_get_the_product_url( $post_id );
+$title	= tcp_string( 'TheCartPress', 'external_button_text-' . $post_id, tcp_get_the_buy_button_text( $post_id ) );
 if ( strlen( $title ) == 0 ) {
 	$title = apply_filters( 'tcp_the_add_to_cart_button_title', __( 'Add to cart', 'tcp' ), $post_id );
 }
@@ -49,7 +47,7 @@ if ( strlen( $title ) == 0 ) {
 			<div class="tcp-add-to-cart">
 				<div class="form-group">
 					<button type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>"
-					class="<?php echo $buy_button_color, ' ', $buy_button_size; ?>">
+					class="<?php echo tcp_get_buy_button_color(), ' ', tcp_get_buy_button_size(); ?>">
 						<?php echo stripcslashes( $title ); ?>
 					</button>
 				</div>

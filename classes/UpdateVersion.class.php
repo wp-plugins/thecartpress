@@ -190,9 +190,7 @@ class TCPUpdateVersion {
 			}
 			update_option( 'tcp_version', 132 );
 		}
-		if ( $version < 133 ) {
-			update_option( 'tcp_version', 133 );
-		}
+		update_option( 'tcp_version', 134 );
 	}
 }
 } // class_exists check

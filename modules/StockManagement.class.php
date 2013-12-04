@@ -278,6 +278,7 @@ class TCPStockManagement {
 <h3><?php _e( 'Stock', 'tcp' ); ?></h3>
 
 <div class="postbox">
+<div class="inside">
 <table class="form-table">
 <tbody>
 <tr valign="top">
@@ -332,6 +333,7 @@ class TCPStockManagement {
 <?php do_action( 'tcp_main_settings_page_stock' ); ?>
 </tbody>
 </table>
+</div>
 </div><!-- .postbox -->
 <script>
 jQuery(document).ready(function() {

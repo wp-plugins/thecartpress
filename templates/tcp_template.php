@@ -733,13 +733,14 @@ function tcp_get_the_thumbnail_src( $post_id = 0, $image_size = 'full' ) {
 	return $image_attributes[0];
 }
 
-function tcp_get_the_thumbnail_image( $post_id = 0, $args = false ) {
+function tcp_get_the_thumbnail_image( $post_id = 0, $args = false, $attr = false ) {
 	if ( has_post_thumbnail( $post_id ) ) {
 		$image_size = isset( $args['size'] ) ? $args['size'] : 'thumbnail';
 		 if ( is_array( $image_size ) ) $image_size = $image_size[0];
 		$image_align = isset( $args['align'] ) ? $args['align'] : '';
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
-		$attr = array( 'class' => $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id );
+		if ( !is_array( $attr ) ) $attr = (array)$attr;
+		$attr['class'] = $image_align . ' size-' . $image_size . ' wp-image-' . $thumbnail_id . ' tcp_single_img_featured tcp_image_' . $post_id;
 		if ( is_numeric( $image_size ) ) $image_size = array( $image_size, $image_size );
 		if ( function_exists( 'get_the_post_thumbnail' ) ) $image = get_the_post_thumbnail( $post_id, $image_size, $attr );
 		return $image;
@@ -770,43 +771,79 @@ function tcp_get_the_thumbnail_with_permalink( $post_id = 0, $args = false, $ech
 	else return $image;
 }
 
-function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
-	$post_id = tcp_get_current_id( $post_id, get_post_type( $post_id ) );
-	if ( ! tcp_is_visible( $post_id ) ) {
-		$parent_id = tcp_get_the_parent( $post_id );
-		if ( $parent_id > 0 ) $post_id = $parent_id;
-	}
-	$url = get_permalink( $post_id );
-	return apply_filters( 'tcp_get_permalink', $url, $post_id );
+/**
+ * Outputs the permalink
+ *
+ * @since 1.3.4
+ *
+ * @uses tcp_get_permalink
+ */
+function tcp_the_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+	echo tcp_get_permalink( $post_id, $option_1_id, $option_2_id );
 }
 
-function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail' ) {
-	$image = '';
-	$args = array( 'size' => $size );
-	if ( $option_2_id > 0 ) {
-		$image = tcp_get_the_thumbnail_image( $option_2_id, $args );
-		if ( strlen( $image ) == 0 ) {
-			$option_2_id = tcp_get_default_id( $option_2_id, get_post_type( $option_2_id ) );
-			//$image = get_the_post_thumbnail( $option_2_id, $size );
-			$image = tcp_get_the_thumbnail_image( $option_2_id, $args );
+	function tcp_get_permalink( $post_id = 0, $option_1_id = 0, $option_2_id = 0 ) {
+		$post_id = tcp_get_current_id( $post_id, get_post_type( $post_id ) );
+		if ( ! tcp_is_visible( $post_id ) ) {
+			$parent_id = tcp_get_the_parent( $post_id );
+			if ( $parent_id > 0 ) $post_id = $parent_id;
 		}
+		$url = get_permalink( $post_id );
+		return apply_filters( 'tcp_get_permalink', $url, $post_id );
 	}
-	if ( strlen( $image ) == 0 && $option_1_id > 0 ) {
-		$image = tcp_get_the_thumbnail_image( $option_1_id, $args );
-		if ( strlen( $image ) == 0 ) {
-			$option_1_id = tcp_get_default_id( $option_1_id, get_post_type( $option_1_id ) );
-			$image = tcp_get_the_thumbnail_image( $option_1_id, $args );
-		}
-	}
-	if ( strlen( $image ) == 0 && $post_id > 0 ) {
-		$image = tcp_get_the_thumbnail_image( $post_id, $args );
-		if ( has_post_thumbnail( $post_id ) ) {
-			$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
-			$image = tcp_get_the_thumbnail_image( $post_id, $args );
-		}
-	}
-	return apply_filters( 'tcp_get_the_thumbnail', $image, $post_id, $size );
+
+/**
+ * Check if post has an image attached.
+ *
+ * @since 1.3.4
+ *
+ * @param int $post_id Optional. Post ID.
+ * @return bool Whether post has an image attached.
+ *
+ * @uses has_post_thumbnail, apply_filters (tcp_has_post_thumbnail)
+ */
+function tcp_has_post_thumbnail( $post_id = null ) {
+	$has = has_post_thumbnail( $post_id );
+	return apply_filters( 'tcp_has_post_thumbnail', (bool)$has, $post_id );
 }
+
+/**
+ * Outputs the image, of the product or of the product's parent
+ *
+ * @uses tcp_get_the_thumbnail
+ * @since 1.3.4
+ */
+function tcp_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail', $attr = false ) {
+	echo tcp_get_the_thumbnail( $post_id, $option_1_id, $option_2_id, $size, $attr );
+}
+
+	function tcp_get_the_thumbnail( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $size = 'thumbnail', $attr = false ) {
+		$image = '';
+		$args = array( 'size' => $size );
+		if ( $option_2_id > 0 ) {
+			$image = tcp_get_the_thumbnail_image( $option_2_id, $args, $attr );
+			if ( strlen( $image ) == 0 ) {
+				$option_2_id = tcp_get_default_id( $option_2_id, get_post_type( $option_2_id ) );
+				//$image = get_the_post_thumbnail( $option_2_id, $size );
+				$image = tcp_get_the_thumbnail_image( $option_2_id, $args, $attr );
+			}
+		}
+		if ( strlen( $image ) == 0 && $option_1_id > 0 ) {
+			$image = tcp_get_the_thumbnail_image( $option_1_id, $args );
+			if ( strlen( $image ) == 0 ) {
+				$option_1_id = tcp_get_default_id( $option_1_id, get_post_type( $option_1_id ) );
+				$image = tcp_get_the_thumbnail_image( $option_1_id, $args, $attr );
+			}
+		}
+		if ( strlen( $image ) == 0 && $post_id > 0 ) {
+			$image = tcp_get_the_thumbnail_image( $post_id, $args, $attr );
+			if ( has_post_thumbnail( $post_id ) ) {
+				$post_id = tcp_get_default_id( $post_id, get_post_type( $post_id ) );
+				$image = tcp_get_the_thumbnail_image( $post_id, $args, $attr );
+			}
+		}
+		return apply_filters( 'tcp_get_the_thumbnail', $image, $post_id, $size );
+	}
 
 /**
  * Displays the content of the given post
@@ -853,10 +890,11 @@ function tcp_get_the_excerpt( $post_id = 0, $length = 0 ) { // Max excerpt lengt
 	$see_points = false;
 	if ( strlen( $text ) == 0 ) {
 		$text = tcp_get_the_content( $post_id );
+		$text = strip_tags( $text, '<p><br><style>' ); // use ' $text = strip_tags($text,'&lt;p&gt;&lt;a&gt;'); ' if you want to keep some tags
 		$see_points = true;
 	}
 	$text = strip_shortcodes( $text ); // optional, recommended
-	$text = strip_tags( $text ); // use ' $text = strip_tags($text,'&lt;p&gt;&lt;a&gt;'); ' if you want to keep some tags
+
 //	if ( $length > 0 ) $text = substr( $text, 0, $length );
 	if ( $length > 0 ) {
 		$initial_length = strlen( $text );
@@ -897,7 +935,7 @@ function tcp_get_the_meta( $meta_key, &$post_id = 0 ) {
 //
 /**
  * Returns all saleable post types
- * But is importat to remask that you would prefer to uses "tcp_get_product_post_types"
+ * But is importat to remark that you would prefer to uses "tcp_get_product_post_types"
  * because it returns all saleable products (removing options, for example)
  *
  * @see tcp_get_product_post_types

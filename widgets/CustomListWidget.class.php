@@ -30,15 +30,16 @@ class CustomListWidget extends TCPParentWidget {
 	}
 
 	function widget( $args, $instance ) {
-		if ( ! parent::widget( $args, $instance ) ) return;
+		if ( !parent::widget( $args, $instance ) ) return;
 		extract( $args );
-		$order_type	= isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
-		$order_desc	= isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
-		$loop_args	= isset( $instance['loop_args'] ) ? $instance['loop_args'] : array();
-		if ( $order_type == 'price' ) {
+		$is_saleable = tcp_is_saleable_post_type( $instance['post_type'] );
+		$order_type	 = isset( $instance['order_type'] ) ? $instance['order_type'] : 'date';
+		$order_desc	 = isset( $instance['order_desc'] ) ? $instance['order_desc'] : 'asc';
+		$loop_args	 = isset( $instance['loop_args'] ) ? $instance['loop_args'] : array();
+		if ( $order_type == 'price' && $is_saleable ) {
 			$loop_args['orderby'] = 'meta_value_num';
 			$loop_args['meta_key'] = 'tcp_price';
-		} elseif ( $order_type == 'order' ) {
+		} elseif ( $order_type == 'order' && $is_saleable ) {
 			$loop_args['orderby'] = 'meta_value_num';
 			$loop_args['meta_key'] = 'tcp_order';
 		} else {
@@ -46,11 +47,11 @@ class CustomListWidget extends TCPParentWidget {
 		}
 		if ( strlen( $order_desc ) > 0 ) $loop_args['order'] = $order_desc;
 		//$loop_args = apply_filters( 'tcp_sort_loop', $loop_args, $order_type, $order_desc );
-		if ( isset( $loop_args['post_type'] ) && tcp_is_saleable_post_type( $loop_args['post_type'] ) ) {
+		if ( isset( $loop_args['post_type'] ) && $is_saleable ) {
 			$loop_args['meta_query'][] = array(
-				'key' => 'tcp_is_visible',
-				'value' => 1,
-				'compare' => '='
+				'key'		=> 'tcp_is_visible',
+				'value'		=> 1,
+				'compare'	=> '='
 			);
 		}
 		$loop_args = apply_filters( 'tcp_custom_list_widget_args', $loop_args );
@@ -168,6 +169,7 @@ class CustomListWidget extends TCPParentWidget {
 		// $loop = locate_template( 'loop-tcp-grid.php' );
 		// if ( strlen( $loop ) == 0 ) $loop = TCP_THEMES_TEMPLATES_FOLDER . 'loop-tcp-grid.php';
 		// include( $loop );
+
 		$loop = tcp_the_loop( 'tcp-grid', false );
 		include( $loop );
 	}

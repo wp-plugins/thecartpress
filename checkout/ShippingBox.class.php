@@ -29,7 +29,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPShippingBox' ) ) {
+if ( !class_exists( 'TCPShippingBox' ) ) :
 
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomForms.class.php' );
@@ -688,4 +688,4 @@ class TCPShippingBox extends TCPCheckoutBox {
 }
 
 new TCPShippingBox();
-} // class_exists check
+endif; // class_exists check

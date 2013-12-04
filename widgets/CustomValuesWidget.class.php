@@ -1,5 +1,14 @@
 <?php
 /**
+ * Custom Fields Widget
+ *
+ * Allows to display custom values and other values associated with post types
+ *
+ * @package TheCartPress
+ * @subpackage Widgets
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * TheCartPress is free software: you can redistribute it and/or modify
@@ -15,6 +24,11 @@
  * You should have received a copy of the GNU General Public License
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+if ( !class_exists( 'CustomValuesWidget' ) ) :
 
 require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 
@@ -41,11 +55,11 @@ class CustomValuesWidget extends TCPParentWidget {
 
 	function update( $new_instance, $old_instance ) {
 		$instance = parent::update( $new_instance, $old_instance );
-		$instance['post_type'] = $new_instance['post_type'];
-		$instance['see_label'] = $new_instance['see_label'] == 'yes';
-		$instance['hide_empty_fields'] = $new_instance['hide_empty_fields'] == 'yes';
-		$instance['see_links'] = $new_instance['see_links'] == 'yes';
-		$instance['selected_custom_fields'] =  str_replace( ',,', ',', $new_instance['selected_custom_fields'] );
+		$instance['post_type']				= $new_instance['post_type'];
+		$instance['see_label']				= $new_instance['see_label'] == 'yes';
+		$instance['hide_empty_fields']		= $new_instance['hide_empty_fields'] == 'yes';
+		$instance['see_links']				= $new_instance['see_links'] == 'yes';
+		$instance['selected_custom_fields']	=  str_replace( ',,', ',', $new_instance['selected_custom_fields'] );
 		return apply_filters( 'tcp_custom_values_widget_update', $instance, $new_instance );
 	}
 
@@ -60,19 +74,19 @@ class CustomValuesWidget extends TCPParentWidget {
 			'selected_custom_fields' => '',
 			'post_type' => TCP_PRODUCT_POST_TYPE,
 		);
-		$instance = wp_parse_args( (array)$instance, $defaults );
+		$instance				= wp_parse_args( (array)$instance, $defaults );
 
-		$tcp_custom_fields = $this->get_field_id( 'tcp_custom_fields' );
-		$tcp_add_custom_field = $this->get_field_id( 'tcp_add_custom_field' );
+		$tcp_custom_fields		= $this->get_field_id( 'tcp_custom_fields' );
+		$tcp_add_custom_field	= $this->get_field_id( 'tcp_add_custom_field' );
 
-		$tcp_taxomonies = $this->get_field_id( 'tcp_taxonomy' );
-		$tcp_add_tax = $this->get_field_id( 'tcp_add_tax' );
+		$tcp_taxomonies			= $this->get_field_id( 'tcp_taxonomy' );
+		$tcp_add_tax			= $this->get_field_id( 'tcp_add_tax' );
 
-		$tcp_other_values = $this->get_field_id( 'tcp_other_values' );
-		$tcp_add_other_value = $this->get_field_id( 'tcp_add_other_value' );
+		$tcp_other_values		= $this->get_field_id( 'tcp_other_values' );
+		$tcp_add_other_value	= $this->get_field_id( 'tcp_add_other_value' );
 
-		$tcp_custom_field_list = $this->get_field_id( 'tcp_custom_field_list' );
-		$tcp_selected_custom_fields = $this->get_field_id( 'tcp_selected_custom_fields' ); ?>
+		$tcp_custom_field_list		= $this->get_field_id( 'tcp_custom_field_list' );
+		$tcp_selected_custom_fields	= $this->get_field_id( 'tcp_selected_custom_fields' ); ?>
 <p>
 	<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type', 'tcp' )?>:</label>
 	<select name="<?php echo $this->get_field_name( 'post_type' ); ?>" id="<?php echo $this->get_field_id( 'post_type' ); ?>" class="widefat">
@@ -225,4 +239,4 @@ function custom_values_widget_add_default_values( $other_values ) {
 	);
 	return $other_values;
 }
-?>
+endif; // class_exists check

@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'ProductCustomFieldsMetabox' ) ) {
+if ( ! class_exists( 'ProductCustomFieldsMetabox' ) ) :
 
 require_once( TCP_DAOS_FOLDER . 'RelEntities.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
@@ -111,9 +111,10 @@ class ProductCustomFieldsMetabox {
 				'label'	=> __( 'Related Cat. of Products', 'tcp' ) . $count
 			);
 			$links = apply_filters( 'tcp_product_custom_fields_links', $links, $post_id, $post );
-			?>
+?>
 <ul class="subsubsub">
 <?php $separator = '';
+
 foreach( $links as $link ) {
 	echo $separator; ?>
 	<li><a href="<?php echo $link['url']; ?>" title="<?php echo $link['title']; ?>"><?php echo $link['label']; ?></a></li>
@@ -385,4 +386,4 @@ foreach( $tabs  as $tab_id => $tab ) { ?>
 }
 
 new ProductCustomFieldsMetabox();
-} // class_exists check
+endif; // class_exists check

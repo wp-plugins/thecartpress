@@ -50,9 +50,9 @@ class TCPShortcode {
 					'widget_id'		=> $id,
 				);
 				ob_start();
-				$filter = new TCPFilterNavigation();
-				$shortcode_data['order_type'] = $filter->get_order_type();
-				$shortcode_data['order_desc'] = $filter->get_order_desc();
+				// $filter = new TCPFilterNavigation();
+				// $shortcode_data['order_type'] = $filter->get_order_type();
+				// $shortcode_data['order_desc'] = $filter->get_order_desc();
 				$shortcode_data['see_sorting_panel'] = isset( $shortcode_data['see_order_panel'] ) ? $shortcode_data['see_order_panel'] : false;
 				$customPostTypeListWidget->widget( $args, $shortcode_data );
 				return ob_get_clean();
