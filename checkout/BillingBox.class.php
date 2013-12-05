@@ -468,7 +468,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'input'		=> 'text',
 				'error'		=> __( 'The billing Telephone field must be completed', 'tcp' ),
 				'attrs'		=> array(
-					'size'		=> 10,
+					'size'		=> 15,
 					'maxlength'	=> 20,
 				),
 			),
@@ -477,7 +477,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'input'		=> 'text',
 				'error'		=> __( 'The billing Second Telephone field must be completed', 'tcp' ),
 				'attrs'		=> array(
-					'size'		=> 10,
+					'size'		=> 15,
 					'maxlength'	=> 20,
 				),
 			),
