@@ -442,8 +442,8 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'input'		=> 'text',
 				'error'		=> __( 'The shipping Telephone field must be completed', 'tcp' ),
 				'attrs'		=> array(
-					'size'		=> 10,
-					'maxlength'	=> 10,
+					'size'		=> 15,
+					'maxlength'	=> 20,
 				),
 			),
 			'shipping_telephone_2'	=> array(
@@ -451,8 +451,8 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'input'		=> 'text',
 				'error'		=> __( 'The shipping Second Telephone field must be completed', 'tcp' ),
 				'attrs'		=> array(
-					'size'		=> 10,
-					'maxlength'	=> 10,
+					'size'		=> 15,
+					'maxlength'	=> 20,
 				),
 			),
 			'shipping_fax'			=> array(
