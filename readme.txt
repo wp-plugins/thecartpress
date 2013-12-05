@@ -306,6 +306,7 @@ This plugin is released under a GPL license.
 * Products example xml file
 * Catalogue settings: It didn't display properly using previous PHP versions
 * New languages: Czech & Catalan
+* XML with Example products
 
 = 1.3.3.1 =
 * Shortcodes/Widgets loops: See discount & See stock settings
