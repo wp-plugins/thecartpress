@@ -359,10 +359,16 @@ class TCPCountries {
 		}
 	}
 }
-if ( ! class_exists( 'Countries' ) ) :
+
+if ( !class_exists( 'Countries' ) ) :
 
 //Deprecated
 class Countries extends TCPCountries {
+	public function __construct() {
+		_deprecated_function( 'Countries', '1.4', 'TCP_Countries' );
+		parent::__construct();
+	}
 }
+
 endif; // class_exists check
 endif; // class_exists check

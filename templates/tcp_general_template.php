@@ -777,7 +777,7 @@ function tcp_register_form( $args = array() ) {
 		<?php if ( $args['locked'] ) : ?><input type="hidden" name="tcp_locked" value="yes" /><?php endif; ?>
 		<?php if ( $args['login'] ) : ?><input type="hidden" name="tcp_login" value="yes" /><?php endif; ?>
 		<p>
-			<button type="submit" value="<?php _e( 'Register', 'tcp' ); ?>" name="tcp_register_action" id="tcp_register_action" class="tcp_checkout_button" />
+			<button type="submit" name="tcp_register_action" id="tcp_register_action" class="tcp_checkout_button"><?php _e( 'Register', 'tcp' ); ?></button>
 		</p>
 		<p id="tcp_error_register" class="tcp_error" style="display:none;"><?php _e( 'Error', 'tcp' ); ?>: </p>
 	</form>

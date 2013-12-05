@@ -122,11 +122,9 @@ $instance_href	= TCP_ADMIN_PATH . 'PluginEdit.php&plugin_id=' . $plugin_id . '&p
 		$new_status = isset( $data['new_status'] ) ? $data['new_status'] : Orders::$ORDER_PENDING; ?>
 		</h4>
 
-
 		<input type="hidden" name="plugin_id" value="<?php echo $plugin_id;?>" />
 		<input type="hidden" name="plugin_type" value="<?php echo $plugin_type;?>" />
 		<input type="hidden" name="instance" value="<?php echo $instance;?>" />
-
 
 		<table class="form-table">
 		<tbody>
