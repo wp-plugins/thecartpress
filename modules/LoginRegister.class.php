@@ -29,7 +29,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPLoginRegister' ) ) {
+if ( ! class_exists( 'TCPLoginRegister' ) ) :
 
 class TCPLoginRegister {
 
@@ -298,12 +298,12 @@ class TCPLoginRegister {
 		if ( isset( $_REQUEST['redirect_to'] ) ) $args['redirect'] = $_REQUEST['redirect_to'];
 		tcp_login_form(); ?>
 	</div>
-<?php if ( ! is_user_logged_in() && get_option( 'users_can_register' ) ) : ?>
+	<?php if ( !is_user_logged_in() && get_option( 'users_can_register' ) ) : ?>
 	<div class="span6">
 		<h3><?php _e( 'Register', 'tcp' ); ?></h3>
 		<?php tcp_register_form( array( 'login' => true ) ); ?>
 	</div>
-<?php endif; ?>
+	<?php endif; ?>
 </div><!-- .row-fluid -->
 
 <!--<h2><?php //_e( 'My Adresses', 'tcp-fe' ); ?></h2>
@@ -319,4 +319,4 @@ class TCPLoginRegister {
 }
 
 new TCPLoginRegister();
-} // class_exists check
+endif; // class_exists check

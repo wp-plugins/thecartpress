@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.4
+Version: 1.3.4.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -415,9 +415,13 @@ class TheCartPress {
 					$unit_price	= tcp_get_the_price( $post_id );
 					$unit_price	+= $price_1 + $price_2;
 					$unit_price	= apply_filters( 'tcp_price_to_add_to_shoppingcart', $unit_price, $post_id );
-					if ( $weight_2 > 0 ) $unit_weight = $weight_2;
-					elseif ( $weight_1 > 0 ) $unit_weight = $weight_1;
-					else $unit_weight = tcp_get_the_weight( $post_id );
+					if ( $weight_2 > 0 ) {
+						$unit_weight = $weight_2;
+					} elseif ( $weight_1 > 0 ) {
+						$unit_weight = $weight_1;
+					} else {
+						$unit_weight = tcp_get_the_weight( $post_id );
+					}
 					////$unit_weight	= tcp_get_the_weight( $post_id ) + $weight_1 + $weight_2;
 					$args = compact( 'i', 'post_id', 'count', 'unit_price', 'unit_weight' );
 					$args = apply_filters( 'tcp_add_item_shopping_cart', $args );
@@ -469,8 +473,11 @@ class TheCartPress {
 			return TheCartPress::$shoppingCart;
 		}
 		if ( isset( $_SESSION['tcp_session'] ) ) {
-			if ( is_string( $_SESSION['tcp_session'] ) ) TheCartPress::$shoppingCart = unserialize( $_SESSION['tcp_session'] );
-			else TheCartPress::$shoppingCart = $_SESSION['tcp_session'];
+			if ( is_string( $_SESSION['tcp_session'] ) ) {
+				TheCartPress::$shoppingCart = unserialize( $_SESSION['tcp_session'] );
+			} else {
+				TheCartPress::$shoppingCart = $_SESSION['tcp_session'];
+			}
 		}
 		if ( TheCartPress::$shoppingCart === false ) {
 			TheCartPress::$shoppingCart = new ShoppingCart();
@@ -507,8 +514,11 @@ class TheCartPress {
 
 	static function refreshShoppingCart( $refresh = true ) {
 		tcp_session_start();
-		if ( $refresh ) $_SESSION['tcp_session_refresh'] = $refresh;
-		else unset( $_SESSION['tcp_session_refresh'] );
+		if ( $refresh ) {
+			$_SESSION['tcp_session_refresh'] = $refresh;
+		} else {
+			unset( $_SESSION['tcp_session_refresh'] );
+		}
 	}	
 
 	/**
@@ -1173,6 +1183,7 @@ class TheCartPress {
 						'menu_icon'			=> isset( $post_type_def['menu_icon'] ) ? $post_type_def['menu_icon'] : null,
 					);
 					register_post_type( $id, $register );
+
 					$is_saleable = isset( $post_type_def['is_saleable'] ) ? $post_type_def['is_saleable'] : false;
 					if ( $is_saleable ) {
 						$this->register_saleable_post_type( $id );
@@ -1236,6 +1247,9 @@ class TheCartPress {
 	 * @since 1.1.6
 	 */
 	function register_saleable_post_type( $saleable_post_type ) {
+		if ( in_array( $saleable_post_type, $this->saleable_post_types ) ) {
+			return;
+		}
 		$this->saleable_post_types[] = $saleable_post_type;
 	}
 

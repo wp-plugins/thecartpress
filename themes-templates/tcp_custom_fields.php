@@ -58,7 +58,7 @@ foreach( $field_ids as $id ) {
 			$label = isset( $other_values[$ov_id]['label'] ) ? $other_values[$ov_id]['label'] : false;
 		}
 	} ?>
-<?php if ( $instance['see_label'] ) : ?><dt><?php echo $label; ?></dt><?php endif; ?>
+<?php if ( $instance['see_label'] ) : ?><dt class="tcp-<?php echo $id; ?>"><?php echo $label; ?></dt><?php endif; ?>
 	<dd><?php echo $value; ?></dd>
 <?php }
 $html = ob_get_clean();

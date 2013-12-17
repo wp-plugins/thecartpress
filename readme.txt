@@ -4,8 +4,8 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 License: GPLv2 or later
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable Tag: 1.3.4
+Tested up to: 3.8
+Stable Tag: 1.3.4.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,11 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.4.1 =
+* Custom Values: Downloadable product attributes
+* template functions: tcp_get_the_author_name and tcp_get_the_author_name_and_link
+* WP 3.8 support: UI Design for WP 3.8
+
 = 1.3.4 =
 * My Account: New links and GUI Improvements
 * Post types configurations

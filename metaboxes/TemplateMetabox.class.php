@@ -19,7 +19,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPTemplateMetabox' ) ) {
+if ( !class_exists( 'TCPTemplateMetabox' ) ) :
 
 class TCPTemplateMetabox {
 
@@ -100,4 +100,4 @@ class TCPTemplateMetabox {
 }
 
 TCPTemplateMetabox::init();
-} // class_exists check
+endif; // class_exists check

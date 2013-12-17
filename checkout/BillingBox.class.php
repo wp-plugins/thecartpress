@@ -389,6 +389,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_lastname'		=> array(
@@ -399,6 +400,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 40,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_company'		=> array(
@@ -409,6 +411,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_tax_id_number'	=> array(
@@ -418,6 +421,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_country_id'	=> array(
@@ -441,6 +445,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_street_2'		=> array(
@@ -451,6 +456,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_postcode'		=> array(
@@ -461,6 +467,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 10,
 					'maxlength'	=> 10,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_telephone_1'	=> array(
@@ -470,6 +477,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_telephone_2'	=> array(
@@ -479,6 +487,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_fax'			=> array(
@@ -488,6 +497,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'billing_email'			=> array(
@@ -498,6 +508,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 		);
@@ -525,7 +536,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		$country_bill	= $country_id;
 		//If no country selected, set the default country
 		if ( $country_bill == '' ) $country_bill = $country; ?>
-		<select id="billing_country_id" name="billing_country_id">
+		<select id="billing_country_id" name="billing_country_id" class="form-control">
 		<?php foreach( $countries as $item ) { ?>
 			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill ); ?>><?php echo $item->name; ?></option>
 		<?php } ?>
@@ -546,7 +557,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		} ?>
 		<label for="billing_region_id"><?php _e( 'Region', 'tcp' ); ?>:<?php if ( $required ) echo '<em>*</em>'; ?></label>
 		<?php $regions = apply_filters( 'tcp_load_regions_for_billing', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )	?>
-		<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+		<select id="billing_region_id" name="billing_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?> class="form-control">
 			<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
 		<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region_item ) { ?>
 			<option value="<?php echo $id;?>" <?php selected( $id, $region_id ); ?>><?php echo $region_item['name']; ?></option>
@@ -575,14 +586,14 @@ class TCPBillingBox extends TCPCheckoutBox {
 		$cities		= array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
 		$cities		= apply_filters( 'tcp_load_cities_for_billing', $cities );
 		if ( is_array( $cities ) && count( $cities ) > 0 ) { ?>
-			<select id="billing_city_id" name="billing_city_id">
+			<select id="billing_city_id" name="billing_city_id" class="form-control">
 			<?php foreach( $cities as $id => $city ) { ?>
 				<option value="<?php echo $id;?>" <?php selected( $id, $city_id ); ?>><?php echo $city['name'];?></option>
 			<?php } ?>
 			</select>
 			<?php $this->showErrorMsg( 'billing_city_id' ); ?>
 		<?php } else { ?>
-			<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="255" />
+			<input type="text" id="billing_city" name="billing_city" value="<?php echo $city;?>" size="20" maxlength="255" class="form-control"/>
 			<?php $this->showErrorMsg( 'billing_city' ); ?>
 		<?php }
 	}

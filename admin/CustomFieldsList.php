@@ -100,6 +100,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 
 <!--<input type="hidden" name="post_type" value="<?php echo $post_type;?>"/>-->
 <div class="postbox">
+	<div class="inside">
 	<table class="form-table">
 	<tr valign="top">
 		<th scope="row">
@@ -151,7 +152,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 	</table>
 
 	<p style="padding-left: 1em;"><input type="submit" name="tcp_save_custom_field" value="<?php _e( 'Save' , 'tcp' );?>" class="button-primary" /></p>
-	
+	</div><!-- .inside -->
 </div><!-- .postbox -->
 </form>
 

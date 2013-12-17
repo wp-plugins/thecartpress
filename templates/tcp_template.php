@@ -198,6 +198,7 @@ function tcp_get_the_product_price( $post_id = 0 ) {
 	return (float)apply_filters( 'tcp_get_the_product_price', $price, $post_id );
 	return $price;
 }
+
 /**
  * Adds the currency to the price
  * @since 1.0.9
@@ -247,25 +248,24 @@ function tcp_get_the_price_to_show( $post_id = 0, $price = false ) {
  * Display the price with currency
  * @since 1.0.9
  */
-function tcp_the_price_label( $before = '', $after = '', $echo = true ) {
+function tcp_the_price_label( $before = '', $after = '' ) {
 	$label = tcp_get_the_price_label();
 	$label = $before . $label . $after;
-	if ( $echo ) echo $label;
-	else return $label;
+	echo $label;
 }
 
-/**
- * Returns the price with currency
- * @since 1.0.9
- */
-function tcp_get_the_price_label( $post_id = 0, $price = false, $apply_filters = true ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$post_id = tcp_get_default_id( $post_id );
-	$price = tcp_get_the_price_to_show( $post_id, $price );
-	$label = tcp_format_the_price( $price );
-	if ( $apply_filters ) $label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
-	return $label;
-}
+	/**
+	 * Returns the price with currency
+	 * @since 1.0.9
+	 */
+	function tcp_get_the_price_label( $post_id = 0, $price = false, $apply_filters = true ) {
+		if ( $post_id == 0 ) $post_id = get_the_ID();
+		$post_id = tcp_get_default_id( $post_id );
+		$price = tcp_get_the_price_to_show( $post_id, $price );
+		$label = tcp_format_the_price( $price );
+		if ( $apply_filters ) $label = apply_filters( 'tcp_get_the_price_label', $label, $post_id, $price );
+		return $label;
+	}
 
 /**
  * Returns the (min, max) price for grouped products
@@ -959,6 +959,7 @@ function tcp_is_saleable_post_type( $post_type ) {
 
 /**
  * Returns true if a post, defined by post_id, is saleable
+ *
  * @since 1.1.6
  */
 function tcp_is_saleable( $post_id = 0 ) {
@@ -968,6 +969,7 @@ function tcp_is_saleable( $post_id = 0 ) {
 
 /**
  * Registers a post type as saleable
+ *
  * @since 1.1.6
  */
 function tcp_register_saleable_post_type( $saleable_post_type ) {
@@ -977,6 +979,7 @@ function tcp_register_saleable_post_type( $saleable_post_type ) {
 
 /**
  * Returns true if a taxonomy has saleable post types
+ *
  * @since 1.1.6
  */
 function tcp_is_saleable_taxonomy( $taxonomy ) {
@@ -987,6 +990,7 @@ function tcp_is_saleable_taxonomy( $taxonomy ) {
 
 /**
  * Dynamic Option is a saleable post type, but it's not a product, it's an option
+ *
  * @since 1.2.6.1
  */
 function tcp_get_product_post_types( $one_more = false ) {
@@ -994,6 +998,28 @@ function tcp_get_product_post_types( $one_more = false ) {
 	$product_post_types = apply_filters( 'tcp_get_product_post_types', $product_post_types );
 	return $product_post_types;
 }
+
+/**
+ * Retusn the author name from a post id
+ *
+ * @since 1.3.5
+ *
+ * @param int $post_id, if 0 get the current post id
+ * @return string author name
+ */
+function tcp_get_the_author_name( $post_id = 0 ) {
+	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$post_id = tcp_get_default_id( $post_id );
+
+	$post = get_post( $post_id );
+	if ( $post ) {
+		$author_name = the_author_meta( 'display_name', $post->post_author );
+		$author_name = apply_filters( 'tcp_get_the_author_name', $author_name, $post_id );
+		return $author_name;
+	}
+}
+
+//tcp_get_the_author_name_and_link
 
 //
 //Order status template functions

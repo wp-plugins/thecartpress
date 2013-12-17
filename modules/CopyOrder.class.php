@@ -48,6 +48,7 @@ class TCPCopyOrder {
 				$details = OrdersDetails::getDetails( $order_id );
 				foreach( $details as $detail ) {
 					$unit_price = tcp_get_the_product_price( $detail->post_id );
+					//$unit_price = tcp_get_the_price( $detail->post_id, false );
 					$unit_weight = tcp_get_the_weight( $detail->post_id );
 					if ( $detail->option_1_id > 0 ) $unit_price += tcp_get_the_price( $detail->option_1_id );
 					if ( $detail->option_2_id > 0 ) $unit_price += tcp_get_the_price( $detail->option_2_id );

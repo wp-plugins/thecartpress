@@ -46,7 +46,8 @@ class CrossSellingWidget extends CustomListWidget {
 	}
 
 	function form( $instance ) {
-		parent::form( $instance, __( 'Cross Selling', 'tcp' ) );
+		if ( ! isset( $instance['title'] ) ) $instance['title'] = __( 'Cross Selling', 'tcp' );
+		parent::form( $instance );
 		parent::show_post_type_form( $instance );
 	}
 }
