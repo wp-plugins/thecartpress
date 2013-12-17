@@ -374,6 +374,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_lastname'		=> array(
@@ -384,6 +385,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 40,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_company'		=> array(
@@ -393,6 +395,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_country_id'	=> array(
@@ -415,6 +418,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_street_2'		=> array(
@@ -425,6 +429,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_postcode'		=> array(
@@ -435,6 +440,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 10,
 					'maxlength'	=> 10,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_telephone_1'	=> array(
@@ -444,6 +450,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_telephone_2'	=> array(
@@ -453,6 +460,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_fax'			=> array(
@@ -462,6 +470,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 15,
 					'maxlength'	=> 20,
+					'class'		=> 'form-control',
 				),
 			),
 			'shipping_email'			=> array(
@@ -472,6 +481,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
+					'class'		=> 'form-control',
 				),
 			),
 		);
@@ -499,7 +509,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 		$country_bill	= $country_id;
 		//If no country selected, set the default country
 		if ( $country_bill == '' ) $country_bill = $country; ?>
-		<select id="shipping_country_id" name="shipping_country_id">
+		<select id="shipping_country_id" name="shipping_country_id" class="form-control">
 		<?php foreach( $countries as $item ) { ?>
 			<option value="<?php echo $item->iso;?>" <?php selected( $item->iso, $country_bill ); ?>><?php echo $item->name; ?></option>
 		<?php } ?>
@@ -520,7 +530,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 		} ?>
 		<label for="shipping_region_id"><?php _e( 'Region', 'tcp' ); ?>:<?php if ( $required ) echo '<em>*</em>'; ?></label>
 		<?php $regions = apply_filters( 'tcp_load_regions_for_shipping', false ); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )	?>
-		<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+		<select id="shipping_region_id" name="shipping_region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?> class="form-control">
 			<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
 		<?php if ( is_array( $regions ) && count( $regions ) > 0 ) foreach( $regions as $id => $region_item ) { ?>
 			<option value="<?php echo $id;?>" <?php selected( $id, $region_id ); ?>><?php echo $region_item['name']; ?></option>
@@ -549,14 +559,14 @@ class TCPShippingBox extends TCPCheckoutBox {
 		$cities		= array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
 		$cities		= apply_filters( 'tcp_load_cities_for_shipping', $cities );
 		if ( is_array( $cities ) && count( $cities ) > 0 ) { ?>
-			<select id="shipping_city_id" name="shipping_city_id">
+			<select id="shipping_city_id" name="shipping_city_id" class="form-control">
 			<?php foreach( $cities as $id => $city ) { ?>
 				<option value="<?php echo $id;?>" <?php selected( $id, $city_id ); ?>><?php echo $city['name'];?></option>
 			<?php } ?>
 			</select>
 			<?php $this->showErrorMsg( 'shipping_city_id' ); ?>
 		<?php } else { ?>
-			<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="255" />
+			<input type="text" id="shipping_city" name="shipping_city" value="<?php echo $city;?>" size="20" maxlength="255" class="form-control"/>
 			<?php $this->showErrorMsg( 'shipping_city' ); ?>
 		<?php }
 	}

@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPStockManagement' ) ) {
+if ( ! class_exists( 'TCPStockManagement' ) ) :
 
 class TCPStockManagement {
 	private $no_stock_enough = false;
@@ -921,4 +921,4 @@ function tcp_get_the_initial_stock( $post_id = 0, $option_1_id = 0, $option_2_id
 	return apply_filters( 'tcp_get_the_initial_stock', $initial_stock, $post_id, $option_1_id, $option_2_id );
 }
 
-} // class_exists check
+endif; // class_exists check

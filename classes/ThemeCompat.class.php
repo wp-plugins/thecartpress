@@ -11,7 +11,7 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPThemeCompat' ) ) {
+if ( ! class_exists( 'TCPThemeCompat' ) ) :
 
 /**
  * Theme Compatibility approach 1.3.1
@@ -38,22 +38,8 @@ class TCPThemeCompat {
 	function template_include( $template ) {
 		global $post;
 		if ( ! $post ) return $template;
-
 		//Catalogue page
 		if ( tcp_is_the_catalogue_page() ) {
-			//Template hierarchy
-			//TODO Custom templates...
-			//Searching for a template
-			//TheCartPress loads one of the next ones and Theme Compatibility will inject the content
-			$template_names = apply_filters( 'tcp_theme_compat_catalogue_template_names', array(
-				'archive-' . $post->post_type . '.php',
-				'archive-tcp_saleable.php',
-				'thecartpress.php',
-				'page.php',
-				'index.php'
-				), $post
-			);
-			$template = locate_template( $template_names );
 
 			//Makes a new query and resets the global one
 			global $wp_query, $thecartpress;
@@ -327,4 +313,4 @@ class TCPThemeCompat {
 }
 
 new TCPThemeCompat();
-} // class_exists check
+endif; // class_exists check

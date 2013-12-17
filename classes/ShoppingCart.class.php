@@ -45,10 +45,17 @@ class ShoppingCart {
 	private $discounts				= array();
 	private $order_id				= 0;
 
+	/**
+	 * Adds a product in the shopping cart
+	 *
+	 * @uses apply_filters, calls 'tcp_add_to_shopping_cart
+	 */
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
 		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
+
+		//If the product is in the cart, only add it
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			$sci = $this->shopping_cart_items[$shopping_cart_id];
 			$sci->add( $count );
@@ -56,8 +63,11 @@ class ShoppingCart {
 			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $unit_weight );
 		}
 		$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
-		if ( is_wp_error( $sci ) ) return $sci;
-		else $this->shopping_cart_items[$shopping_cart_id] = $sci;
+		if ( is_wp_error( $sci ) ) {
+			return $sci;
+		} else {
+			$this->shopping_cart_items[$shopping_cart_id] = $sci;
+		}
 		$this->removeOrderId();
 		return $sci;
 	}

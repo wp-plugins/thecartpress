@@ -88,7 +88,7 @@ if ( $shoppingCart->isEmpty() ) {
 		),
 		'tcp_continue'	=> array(
 			'li_class'	=> 'tcp_sc_continue',
-			'a_class'	=> $buy_button_color . ' ' . $buy_button_size,
+			'a_class'	=> 'tcp-btn tcp-btn-default ' . $buy_button_size,
 			'url'		=> tcp_get_the_continue_url(),
 			'label'		=> __( 'Continue Shopping', 'tcp' )
 		),

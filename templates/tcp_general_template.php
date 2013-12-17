@@ -286,7 +286,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	$see_shopping_cart	= isset( $args['see_shopping_cart'] ) ? $args['see_shopping_cart'] : true;
 	$see_checkout		= isset( $args['see_checkout'] ) ? $args['see_checkout'] : true;
 	$widget_id			= isset( $args['widget_id'] ) ? 'tcp_' . str_replace( '-', '_', $args['widget_id'] ) : 'tcp_shopping_cart_detail'; ?>
-<div id="<?php echo $widget_id; ?>">
+<div id="<?php echo $widget_id; ?>" class="tcpf">
 	<ul class="tcp_shopping_cart">
 	<?php $shoppingCart = TheCartPress::getShoppingCart();
 	$items = $shoppingCart->getItems();
@@ -361,17 +361,22 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 		</li>
 	<?php if ( $see_shopping_cart ) :?>
 		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link">
-			<a href="<?php tcp_the_shopping_cart_url(); ?>"><?php _e( 'shopping cart', 'tcp' ); ?></a>
+			<a href="<?php tcp_the_shopping_cart_url(); ?>"><span class="glyphicon glyphicon-shopping-cart"></span> <?php _e( 'shopping cart', 'tcp' ); ?></a>
 		</li>
 	<?php endif; ?>
 	<?php if ( $see_checkout ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_checkout_link">
-			<a href="<?php tcp_the_checkout_url(); ?>"><?php _e( 'checkout', 'tcp' ); ?></a>
+			<a href="<?php tcp_the_checkout_url(); ?>"><span class="glyphicon glyphicon-credit-card"></span> <?php _e( 'checkout', 'tcp' ); ?></a>
 		</li>
 	<?php endif; ?>
 	<?php if ( $see_delete_all && count( $items ) > 0 ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
-			<form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'delete', 'tcp' ); ?>"/></form>
+			<form method="post">
+				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm">
+					<span class="glyphicon glyphicon-trash"></span>
+					<span class="sr-only"><?php _e( 'delete', 'tcp' ); ?></span>
+				</button>
+			</form>
 		</li>
 	<?php endif; ?>
 	<?php do_action( 'tcp_get_shopping_cart_widget', $args ); ?>
@@ -412,7 +417,7 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	ob_start();
 	do_action( 'tcp_get_shopping_cart_before_summary', $args );
 	$widget_id = isset( $args['widget_id'] ) ? str_replace( '-', '_', $args['widget_id'] ) : 'shopping_cart_summary'; ?>
-<div id="tcp_<?php echo $widget_id; ?>"> 
+<div id="tcp_<?php echo $widget_id; ?>" class="tcpf">
 	<ul class="tcp_shopping_cart_resume">
 	<?php if ( $args['see_discount'] ) : 
 		$discount = $shoppingCart->getAllDiscounts();
@@ -441,11 +446,11 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	<?php endif; ?>
 
 	<?php if ( $args['see_shopping_cart'] ) : ?>
-		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php echo tcp_get_the_shopping_cart_url(); ?>"><?php _e( 'Shopping cart', 'tcp' ); ?></a></li>
+		<li class="tcp_cart_widget_footer_link tcp_shopping_cart_link"><a href="<?php echo tcp_get_the_shopping_cart_url(); ?>"><span class="glyphicon glyphicon-shopping-cart"></span> <?php _e( 'Shopping cart', 'tcp' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( $args['see_checkout'] ) : ?>
-		<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php echo tcp_get_the_checkout_url(); ?>"><?php _e( 'Checkout', 'tcp' ); ?></a></li>
+		<li class="tcp_cart_widget_footer_link tcp_checkout_link"><a href="<?php echo tcp_get_the_checkout_url(); ?>"><span class="glyphicon glyphicon-credit-card"></span> <?php _e( 'Checkout', 'tcp' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( $args['see_delete_all'] ) : ?>
@@ -461,11 +466,12 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 
 function tcp_get_taxonomies_cloud( $args = false, $echo = true, $before = '', $after = '' ) {
 	do_action( 'tcp_get_taxonomies_cloud' );
-	if ( ! $args )
+	if ( !$args ) {
 		$args = array(
 			'taxonomy'	=> 'tcp_product_tag',
 			'echo'		=> false,
 		);
+	}
 	$cloud = wp_tag_cloud( $args );
 	$cloud = apply_filters( 'tcp_get_taxonomies_cloud', $cloud );
 	if ( $echo ) echo $before, $cloud, $after;
@@ -549,18 +555,22 @@ function tcp_get_sorting_fields() {
 	return apply_filters( 'tcp_sorting_fields', $sorting_fields );
 }
 
-function tcp_the_sort_panel() {
-	$filter		= new TCPFilterNavigation();
-	$order_type = $filter->get_order_type();
-	$order_desc = $filter->get_order_desc();
+function tcp_the_sort_panel( $post_type = false ) {
+	if ( $post_type === false ) $post_type = get_post_type( get_the_ID() );
 	$settings	= get_option( 'ttc_settings' );
-	$disabled_order_types	= isset( $settings['disabled_order_types'] ) ? $settings['disabled_order_types'] : array();
+	$suffix		= '-' . $post_type;
+	if ( !isset( $settings['see_title' . $suffix] ) ) {
+		$suffix = '';
+	}
+	$order_type = $settings['order_type' . $suffix];
+	$order_desc = $settings['order_desc' . $suffix];
+	$disabled_order_types	= isset( $settings['disabled_order_types' . $suffix] ) ? $settings['disabled_order_types' . $suffix] : array();
 	$sorting_fields			= tcp_get_sorting_fields();
 	$buy_button_color		= thecartpress()->get_setting( 'buy_button_color' ); ?>
 <div class="tcp_order_panel tcpf">
 	<form action="" method="post">
 	<span class="tcp_order_type">
-	<label for="tcp_order_type"><?php _e( 'Order by', 'tcp' ); ?>:</label>&nbsp;
+		<label for="tcp_order_type"><?php _e( 'Order by', 'tcp' ); ?>:</label>&nbsp;
 		<select id="tcp_order_type" name="tcp_order_type">
 		<?php foreach( $sorting_fields as $sorting_field ) : 
 			if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
@@ -777,7 +787,7 @@ function tcp_register_form( $args = array() ) {
 		<?php if ( $args['locked'] ) : ?><input type="hidden" name="tcp_locked" value="yes" /><?php endif; ?>
 		<?php if ( $args['login'] ) : ?><input type="hidden" name="tcp_login" value="yes" /><?php endif; ?>
 		<p>
-			<button type="submit" name="tcp_register_action" id="tcp_register_action" class="tcp_checkout_button"><?php _e( 'Register', 'tcp' ); ?></button>
+			<button type="submit" name="tcp_register_action" id="tcp_register_action" class="tcp_checkout_button tcp-btn <?php echo thecartpress()->get_setting( 'buy_button_color' ); ?>"><?php _e( 'Register', 'tcp' ); ?></button>
 		</p>
 		<p id="tcp_error_register" class="tcp_error" style="display:none;"><?php _e( 'Error', 'tcp' ); ?>: </p>
 	</form>
