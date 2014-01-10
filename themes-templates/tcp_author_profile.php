@@ -67,7 +67,6 @@
 				<li class="tcp-log-out">
 					<?php $redirect = get_permalink(); ?>
 					<a id="wp-logout" href="<?php echo wp_logout_url( $redirect ) ?>"><span class="glyphicon glyphicon-log-out"></span> <?php _e( 'Log Out' ); ?></a>
-
 				</li>
 			</ul>
 

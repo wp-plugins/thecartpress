@@ -1,5 +1,14 @@
 <?php
 /**
+ * Custom List widget
+ *
+ * Allows to display a list of post of any post type
+ *
+ * @package TheCartPress
+ * @subpackage Widgets
+ */
+
+/**
  * This file is part of TheCartPress.
  * 
  * TheCartPress is free software: you can redistribute it and/or modify
@@ -19,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'CustomListWidget' ) ) {
+if ( !class_exists( 'CustomListWidget' ) ) :
 
 require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 
@@ -370,4 +379,4 @@ class CustomListWidget extends TCPParentWidget {
 		</div><?php
 	}
 }
-} // class_exists check
+endif; // class_exists check

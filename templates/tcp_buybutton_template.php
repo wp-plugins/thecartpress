@@ -16,19 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function tcp_the_buy_button( $post_id = 0, $echo = true ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
-	$out = apply_filters( 'tcp_the_buy_button', TCPBuyButton::show( $post_id, false ), $post_id );
-	if ( $echo ) echo $out;
-	else return $out;
+/**
+ * Outputs the buy-button area
+ *
+ * @since 1.1.8
+ * @uses tcp_get_the_buy_button
+ */
+function tcp_the_buy_button( $post_id = 0 ) {
+	echo tcp_get_the_buy_button( $post_id );
 }
-
-function tcp_get_the_buy_button( $post_id = 0 ) {
-	return tcp_the_buy_button( $post_id, false );
-}
+	/**
+	 * Returns the buy-button area
+	 *
+	 * @since 1.1.8
+	 * @uses apply_filters (tcp_the_buy_button)
+	 */
+	function tcp_get_the_buy_button( $post_id = 0 ) {
+		if ( $post_id == 0 ) $post_id = get_the_ID();
+		return apply_filters( 'tcp_the_buy_button', TCPBuyButton::show( $post_id, false ), $post_id );
+	}
 
 /**
- * Displays a buy button
+ * Outputs the button, for the buy-button area
  *
  * @since 1.1.8
  */
@@ -36,7 +45,7 @@ function tcp_the_add_to_cart_button( $post_id, $title = '', $echo = true ) {
 	ob_start(); ?>
 	<input type="hidden" name="tcp_post_id[]" id="tcp_post_id_<?php echo $post_id; ?>" value="<?php echo $post_id; ?>" />
 	<?php if ( strlen( $title ) == 0 ) $title = apply_filters( 'tcp_the_add_to_cart_button_title', __( 'Add to cart', 'tcp' ), $post_id ); ?>
-	<button type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?> <?php echo tcp_get_buy_button_color(), ' ', tcp_get_buy_button_size(); ?>" target="<?php echo $post_id; ?>"><?php echo $title; ?></button>
+	<button type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>" class="tcp_add_to_shopping_cart tcp_add_to_shopping_cart_<?php echo tcp_get_the_product_type( $post_id ); ?> <?php tcp_the_buy_button_color(); ?> <?php tcp_the_buy_button_size(); ?>" target="<?php echo $post_id; ?>"><?php echo $title; ?></button>
 	<?php $out = apply_filters( 'tcp_the_add_to_cart_button', ob_get_clean(), $post_id );
 	if ( $echo ) echo $out;
 	else return $out;
@@ -78,31 +87,55 @@ function tcp_the_add_to_cart_items_in_the_cart( $post_id, $echo = true ) {
 }
 
 /**
- * Returns the selected color for buttons
+ * Outputs the selected color for buttons
  *
- * @since 1.3.4
+ * @since 1.3.4.1
  *
  * @params string $suffix, '-' + post type 
  * @params string $default, values by default if empty ('tcp-btn tcp-btn-info')
- * @uses $thecartpress->get_setting
+ * @uses tcp_get_buy_button_color
  */
-function tcp_get_buy_button_color( $suffix = '', $default = 'tcp-btn tcp-btn-info' ) {
-	global $thecartpress;
-	$buy_button_color = $thecartpress->get_setting( 'buy_button_color' . $suffix, $default );
-	return apply_filters( 'tcp_get_buy_button_color', $buy_button_color, $suffix, $default );
+function tcp_the_buy_button_color( $suffix = '', $default = 'tcp-btn tcp-btn-info' ) {
+	echo tcp_get_buy_button_color( $suffix, $default );
 }
+	/**
+	 * Returns the selected color for buttons
+	 *
+	 * @since 1.3.4
+	 *
+	 * @params string $suffix, '-' + post type 
+	 * @params string $default, values by default if empty ('tcp-btn tcp-btn-info')
+	 * @uses $thecartpress->get_setting
+	 */
+	function tcp_get_buy_button_color( $suffix = '', $default = 'tcp-btn tcp-btn-info' ) {
+		global $thecartpress;
+		$buy_button_color = $thecartpress->get_setting( 'buy_button_color' . $suffix, $default );
+		return apply_filters( 'tcp_get_buy_button_color', $buy_button_color, $suffix, $default );
+	}
 
 /**
- * Returns the selected size for buttons
+ * Outputs the selected size for buttons
  *
- * @since 1.3.4
+ * @since 1.3.4.1
  *
  * @params string $suffix, '-' + post type , to get specific values for post types
  * @params string $default, values by default if empty ('')
  * @uses $thecartpress->get_setting
  */
-function tcp_get_buy_button_size( $suffix = '', $default = '' ) {
-	global $thecartpress;
-	$buy_button_size = $thecartpress->get_setting( 'buy_button_size' . $suffix, $default );
-	return apply_filters( 'tcp_get_buy_button_size', $buy_button_size, $suffix, $default );
+function tcp_the_buy_button_size( $suffix = '', $default = '' ) {
+	echo tcp_get_buy_button_size( $suffix, $default );
 }
+	/**
+	 * Returns the selected size for buttons
+	 *
+	 * @since 1.3.4
+	 *
+	 * @params string $suffix, '-' + post type , to get specific values for post types
+	 * @params string $default, values by default if empty ('')
+	 * @uses tcp_get_buy_button_size
+	 */
+	function tcp_get_buy_button_size( $suffix = '', $default = '' ) {
+		global $thecartpress;
+		$buy_button_size = $thecartpress->get_setting( 'buy_button_size' . $suffix, $default );
+		return apply_filters( 'tcp_get_buy_button_size', $buy_button_size, $suffix, $default );
+	}

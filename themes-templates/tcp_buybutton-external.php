@@ -47,7 +47,7 @@ if ( strlen( $title ) == 0 ) {
 			<div class="tcp-add-to-cart">
 				<div class="form-group">
 					<button type="submit" name="tcp_add_to_shopping_cart" id="tcp_add_to_shopping_cart_<?php echo $post_id; ?>"
-					class="<?php echo tcp_get_buy_button_color(), ' ', tcp_get_buy_button_size(); ?>">
+					class="<?php tcp_the_buy_button_color(); ?> <?php tcp_the_buy_button_size(); ?>">
 						<?php echo stripcslashes( $title ); ?>
 					</button>
 				</div>

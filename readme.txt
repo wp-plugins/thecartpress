@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 3.8
-Stable Tag: 1.3.4.1
+Stable Tag: 1.3.4.2
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,14 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+
+= 1.3.4.2 =
+* Filters: More filters (tcp_shopping_cart_row_price, tcp_checkout_cart_row_price)
+* Backend: New Toolbar
+* Last Visited bug fixed
+* Custom List widget: fixed an issue with stock + non-saleable post types
+* Advanced Menu: bug with html code
+
 = 1.3.4.1 =
 * Custom Values: Downloadable product attributes
 * template functions: tcp_get_the_author_name and tcp_get_the_author_name_and_link

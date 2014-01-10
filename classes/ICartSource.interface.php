@@ -16,6 +16,9 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 interface TCP_ICartSource {
 	public function see_address();
 	public function see_sku();
@@ -99,4 +102,3 @@ interface TCP_ICostsSource {
 	public function get_cost();
 	public function get_tax();
 }
-?>

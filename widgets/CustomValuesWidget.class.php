@@ -245,6 +245,10 @@ function tcp_custom_values_widget_add_default_values( $other_values ) {
 		'label'		=> __( 'Author', 'tcp' ),
 		'callback'	=> 'tcp_get_the_author_name',
 	);
+	$other_values['excerpt'] = array(
+		'label'		=> __( 'Excerpt', 'tcp' ),
+		'callback'	=> 'tcp_get_the_excerpt',
+	);
 	return $other_values;
 }
 endif; // class_exists check

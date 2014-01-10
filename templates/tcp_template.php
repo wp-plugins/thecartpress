@@ -879,10 +879,16 @@ function tcp_the_excerpt( $post_id = 0, $length = 0 ) {
 
 /**
  * Returns the excerpt of the given post
+ *
  * @since 1.2.8
+ *
+ * @param int $post_id
+ * @param int $length Max excerpt length. Length is set in characters
+ *
+ * @uses get_the_ID, get_post, apply_filters ('the_excerpt'), tcp_get_the_content, strip_shortcodes and tcp_get_permalink
  * @see http://wp-snippets.com/dynamic-custom-length-excpert/
  */
-function tcp_get_the_excerpt( $post_id = 0, $length = 0 ) { // Max excerpt length. Length is set in characters
+function tcp_get_the_excerpt( $post_id = 0, $length = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$post = get_post( $post_id );
 	$text = $post->post_excerpt;
@@ -1395,6 +1401,7 @@ function tcp_the_loop( $loop = 'tcp-grid', $include = true ) {
 		if ( !file_exists( $path ) ) $path = plugin_dir_path( dirname( __FILE__ ) ) . "themes-templates/loop-tcp-grid.php";
 	}
 	$path = apply_filters( 'tcp_the_loop', $path, $loop );
+
 	if ( $include ) include( $path );
 	else return $path;
 }

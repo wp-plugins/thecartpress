@@ -22,7 +22,7 @@ if ( ! class_exists( 'TCPUpdateVersion' ) ) {
 
 class TCPUpdateVersion {
 
-	function tcp_update_admin_notices() { ?>
+	/*function tcp_update_admin_notices() { ?>
 <div id="message" class="updated">
 	<div class="squeezer">
 		<h4><?php _e( 'Congratulations, you have installed the new version of TheCartPress.', 'tcp' ); ?></h4>
@@ -31,15 +31,15 @@ class TCPUpdateVersion {
 		<p class="submit"><a class="skip button-primary" href="<?php echo add_query_arg( 'tcp_hide_installed_notice_1', 'true' ); ?>"><?php _e( 'Hide this notice', 'tcp' ); ?></a></p>
 	</div>
 </div><?php
-	}
+	}*/
 
 	function update( $thecartpress ) {
-		if ( isset( $_GET['tcp_hide_installed_notice_1'] ) ) {
+		/*if ( isset( $_GET['tcp_hide_installed_notice_1'] ) ) {
 			update_option( '_tcp_hide_installed_notice_1', true );
 		} else {
 			$tcp_hide_installed_notice = get_option( '_tcp_hide_installed_notice_1', false );
 			if ( ! $tcp_hide_installed_notice ) add_action( 'admin_notices', array( $this, 'tcp_update_admin_notices' ) );
-		}
+		}*/
 
 		$version = (float)get_option( 'tcp_version' );
 		if ( $version < 118 ) {

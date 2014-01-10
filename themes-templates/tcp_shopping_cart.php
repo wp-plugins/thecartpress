@@ -50,7 +50,7 @@ if ( $source->see_address() ) : ?>
 
 	<?php if ( strlen( $source->get_shipping_firstname() ) > 0 && strlen( $source->get_shipping_lastname() ) > 0 ) : ?>
 
-		<div id="shipping_billing_info" class="row-fluid">
+		<div id="shipping_billing_info" class="row-fluid tcpf">
 			<ul class="span4 unstyled">
 				<li class="shipping_info divider" ><h3><?php _e( 'Shipping address', 'tcp' ); ?></h3></li>
 				<li class="shipping_info">
@@ -242,16 +242,20 @@ if ( $source->has_order_details() ) :
 		<?php if ( ! $source->is_editing_units() ) : ?>
 			<?php echo tcp_number_format( $order_detail->get_qty_ordered(), 0 ); ?>
 		<?php else : ?>
-			<form method="post" action="<?php tcp_the_shopping_cart_url(); ?>">
+			<form method="post" action="<?php tcp_the_shopping_cart_url(); ?>" class="form-inline" role="form">
 				<input type="hidden" name="tcp_post_id" value="<?php echo $order_detail->get_post_id();?>" />
 				<input type="hidden" name="tcp_option_1_id" value="<?php echo $order_detail->get_option_1_id(); ?>" />
 				<input type="hidden" name="tcp_option_2_id" value="<?php echo $order_detail->get_option_2_id(); ?>" />
 				<?php do_action( 'tcp_get_shopping_cart_hidden_fields', $order_detail ); ?>
 				<?php ob_start(); ?>
-				<input type="number" name="tcp_count" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count" min="0" step="1"/>
-				<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>" title="<?php _e( 'Modify', 'tcp' ); ?>" />
+				<div class="form-group">
+					<label class="sr-only" for="tcp_count-<?php echo $order_detail->get_post_id();?>"><?php _e( 'Units', 'tcp' ); ?></label>
+					<input type="number" name="tcp_count" id="tcp_count-<?php echo $order_detail->get_post_id();?>" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count form-control" min="0" step="1"/>
+				</div>
+
+				<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
 				<?php echo apply_filters( 'tcp_shopping_cart_page_units', ob_get_clean(), $order_detail ); ?>
-				<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" title="<?php _e( 'Delete', 'tcp' ); ?>" />
+				<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete', 'tcp' ); ?></span></button>
 				<?php do_action( 'tcp_cart_units', $order_detail ); ?>
 			</form>
 		<?php endif; ?>
@@ -270,6 +274,7 @@ if ( $source->has_order_details() ) :
 		$tax = round( $tax, $decimals );
 		$total_tax += $tax * $order_detail->get_qty_ordered();
 		$price = round( $price * $order_detail->get_qty_ordered(), $decimals );
+		$price = apply_filters( 'tcp_shopping_cart_row_price', $price, $order_detail );
 		$total += $price; ?>
 		<?php if ( $source->see_tax() ) : ?>
 			<td class="tcp_cart_tax"><?php echo tcp_format_the_price( $tax ); ?></td>

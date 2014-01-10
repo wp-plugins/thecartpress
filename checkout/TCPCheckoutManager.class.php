@@ -202,14 +202,14 @@ class TCPCheckoutManager {
 						if ( defined( 'TCP_CHECKOUT' ) ) : ?>
 						<a href="<?php $previous_box = $this->get_box( $step - 1 ); echo get_site_url() . '/' . TCP_CHECKOUT .'/' . $previous_box->get_name(); ?>" name="tcp_back" id="tcp_back" class="tcp-btn tcp_checkout_button"><?php _e( 'Back', 'tcp' ); ?></a>
 						<?php else : ?>
-						<button type="submit" name="tcp_back" id="tcp_back" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_back_button_title', __( 'Back', 'tcp' ), $step, $this->steps ); ?></button>
+						<button type="submit" name="tcp_back" id="tcp_back" class="tcp_checkout_button tcp-btn tcp-btn-default"><?php echo apply_filters( 'tcp_checkout_back_button_title', __( 'Back', 'tcp' ), $step, $this->steps ); ?></button>
 						<?php endif;
 					endif;
 					if ( $see_continue_button ) :
 						if ( $step < count( $this->steps ) - 1 ) : ?>
-							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_continue_button_title', __( 'Continue', 'tcp' ), $step, $this->steps ); ?></button>
+							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button tcp-btn <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_continue_button_title', __( 'Continue', 'tcp' ), $step, $this->steps ); ?></button>
 						<?php elseif ( $step == count( $this->steps ) - 1 ) : ?>
-							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_purchase_button_title', __( 'Purchase', 'tcp' ), $step, $this->steps ); ?></button>
+							<button type="submit" name="tcp_continue" id="tcp_continue" class="tcp_checkout_button tcp-btn <?php echo $buy_button_color; ?>"><?php echo apply_filters( 'tcp_checkout_purchase_button_title', __( 'Purchase', 'tcp' ), $step, $this->steps ); ?></button>
 							<input type="hidden" name="tcp_step" value="<?php echo count( $this->steps ) - 1; ?>" />
 						<?php endif;
 					endif; ?>

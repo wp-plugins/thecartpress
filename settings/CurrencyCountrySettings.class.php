@@ -21,7 +21,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 
-if ( ! class_exists( 'TCPCurrencyCountrySettings' ) ) {
+if ( !class_exists( 'TCPCurrencyCountrySettings' ) ) :
+
 class TCPCurrencyCountrySettings {
 
 	private $updated = false;
@@ -367,4 +368,4 @@ $shipping_isos			= $thecartpress->get_setting( 'shipping_isos', array() ); ?>
 }
 
 new TCPCurrencyCountrySettings();
-} // class_exists check
+endif; // class_exists check

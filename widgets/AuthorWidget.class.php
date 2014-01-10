@@ -29,11 +29,13 @@ class TCPAuthorWidget extends TCPParentWidget {
 	}
 
 	function widget( $args, $instance ) {
-		if ( ! parent::widget( $args, $instance ) ) return;
+		if ( !parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		echo $before_widget;
+
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
 		if ( $title ) echo $before_title, $title, $after_title;
+
 		global $post;
 		if ( !empty( $post ) ) {
 			$current_user = new WP_User( $post->post_author );
@@ -45,7 +47,7 @@ class TCPAuthorWidget extends TCPParentWidget {
 			}
 		} ?>
 		<ul>
-		<?php tcp_author_profile( $current_user ); ?>
+		<?php tcp_author_profile( $current_user );?>
 		</ul>
 		<?php echo $after_widget;
 	}

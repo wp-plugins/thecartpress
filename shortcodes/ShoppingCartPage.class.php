@@ -121,7 +121,7 @@ if ( $shoppingCart->isEmpty() ) {
 	static function show_button() {
 		ob_start(); ?>
 <div class="tcp-shopping-cart-direct-link">
-	<button onclick="window.location='<?php tcp_the_shopping_cart_url(); ?>'" class="tcp-btn <?php echo tcp_get_buy_button_color(), ' ', tcp_get_buy_button_size(); ?>"><?php echo apply_filters( 'tcp_shopping_cart_button_title', __( 'See Your Shopping Cart', 'tcp' ) ); ?></button>
+	<button onclick="window.location='<?php tcp_the_shopping_cart_url(); ?>'" class="tcp-btn <?php tcp_the_buy_button_color(); ?> <?php tcp_the_buy_button_size(); ?>"><?php echo apply_filters( 'tcp_shopping_cart_button_title', __( 'See Your Shopping Cart', 'tcp' ) ); ?></button>
 </div>
 		<?php return ob_get_clean();
 	}

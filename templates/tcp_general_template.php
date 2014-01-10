@@ -290,7 +290,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	<ul class="tcp_shopping_cart">
 	<?php $shoppingCart = TheCartPress::getShoppingCart();
 	$items = $shoppingCart->getItems();
-	foreach( $items as $item ) : ?>
+	foreach( $items as $item ) if ( !empty($item ) ) : ?>
 		<li class="tcp_widget_cart_detail_item_<?php echo $item->getPostId(); ?>">
 		<form method="post">
 			<input type="hidden" name="tcp_post_id" value="<?php echo $item->getPostId(); ?>" />
@@ -317,7 +317,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				<li>
 				<?php if ( $see_modify_item ) : ?>
 					<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
-					<input type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart" value="<?php _e( 'Modify', 'tcp' ); ?>"/>
+					<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
 				<?php else : ?>
 					<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
 				<?php endif; ?>
@@ -342,14 +342,14 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item ); ?>
 				<?php if ( $see_delete_item ) : ?>
 				<li>
-					<input type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart" value="<?php _e( 'Delete item', 'tcp' ); ?>"/>
+					<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete item', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete item', 'tcp' ); ?></span></button>
 				</li>
 				<?php endif; ?>
 				<?php do_action( 'tcp_get_shopping_cart_widget_item', $args, $item ); ?>
 			</ul>
 		</form>
 		</li>
-	<?php endforeach; ?>
+	<?php endif; ?>
 	<?php $discount = $shoppingCart->getCartDiscountsTotal(); //$shoppingCart->getAllDiscounts();
 	if ( $discount > 0 ) : ?>
 		<li>
@@ -372,7 +372,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 	<?php if ( $see_delete_all && count( $items ) > 0 ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
 			<form method="post">
-				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm">
+				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'delete', 'tcp' ); ?>">
 					<span class="glyphicon glyphicon-trash"></span>
 					<span class="sr-only"><?php _e( 'delete', 'tcp' ); ?></span>
 				</button>
@@ -454,7 +454,11 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	<?php endif; ?>
 
 	<?php if ( $args['see_delete_all'] ) : ?>
-		<li class="tcp_cart_widget_footer_link tcp_delete_all_link"><form method="post"><input type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart" value="<?php _e( 'Delete', 'tcp' ); ?>" title="<?php _e( 'Delete', 'tcp' ); ?>" /></form></li>
+		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
+			<form method="post">
+				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete', 'tcp' ); ?></span></button>
+			</form>
+		</li>
 	<?php endif; ?>
 	</ul>
 </div>
@@ -562,29 +566,49 @@ function tcp_the_sort_panel( $post_type = false ) {
 	if ( !isset( $settings['see_title' . $suffix] ) ) {
 		$suffix = '';
 	}
-	$order_type = $settings['order_type' . $suffix];
-	$order_desc = $settings['order_desc' . $suffix];
+
+	if ( isset( $_REQUEST['tcp_order_type'] ) ) {
+		$order_type = $_REQUEST['tcp_order_type'];
+		$order_desc = $_REQUEST['tcp_order_desc'];
+	} else {
+		$order_type = $settings['order_type' . $suffix];
+		$order_desc = $settings['order_desc' . $suffix];
+	}
 	$disabled_order_types	= isset( $settings['disabled_order_types' . $suffix] ) ? $settings['disabled_order_types' . $suffix] : array();
 	$sorting_fields			= tcp_get_sorting_fields();
 	$buy_button_color		= thecartpress()->get_setting( 'buy_button_color' ); ?>
 <div class="tcp_order_panel tcpf">
-	<form action="" method="post">
-	<span class="tcp_order_type">
+	<form action="" method="post" class="form-inline" role="form">
+	<span class="tcp_order_type form-group">
 		<label for="tcp_order_type"><?php _e( 'Order by', 'tcp' ); ?>:</label>&nbsp;
-		<select id="tcp_order_type" name="tcp_order_type">
-		<?php foreach( $sorting_fields as $sorting_field ) : 
+		<select id="tcp_order_type" name="tcp_order_type" class="form-control">
+			<?php foreach( $sorting_fields as $sorting_field ) : 
 			if ( ! in_array( $sorting_field['value'], $disabled_order_types ) ) : ?>
 			<option value="<?php echo $sorting_field['value']; ?>" <?php selected( $order_type, $sorting_field['value'] ); ?>><?php echo $sorting_field['title']; ?></option>
 			<?php endif;
-		endforeach; ?>
+			endforeach; ?>
 		</select>
 	</span><!-- .tcp_order_type -->
 	<span class="tcp_order_desc">
-		<input type="radio" name="tcp_order_desc" id="tcp_order_asc" value="asc" <?php checked( $order_desc, 'asc' );?>/>
-		<label for="tcp_order_asc"><?php _e( 'Asc.', 'tcp' ); ?></label>
-		<input type="radio" name="tcp_order_desc" id="tcp_order_desc" value="desc" <?php checked( $order_desc, 'desc' );?>/>
-		<label for="tcp_order_desc"><?php _e( 'Desc.', 'tcp' ); ?></label>
-		<span class="tcp_order_submit"><button type="submit" name="tcp_order_by" class="tcp-btn <?php echo $buy_button_color; ?>"><?php _e( 'Sort', 'tcp' );?></button></span>
+		<div class="form-group">
+			<div class="radio">
+				<label>
+					<input type="radio" name="tcp_order_desc" id="tcp_order_asc" value="asc" <?php checked( $order_desc, 'asc' );?>/>
+					<?php _e( 'Asc.', 'tcp' ); ?>
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="radio">
+				<label>
+					<input type="radio" name="tcp_order_desc" id="tcp_order_desc" value="desc" <?php checked( $order_desc, 'desc' );?>/>
+					<?php _e( 'Desc.', 'tcp' ); ?>
+				</label>
+			</div>
+		</div>
+		<span class="tcp_order_submit">
+			<button type="submit" name="tcp_order_by" class="tcp-btn <?php echo $buy_button_color; ?>"><?php _e( 'Sort', 'tcp' );?></button>
+		</span>
 	</span><!-- .tcp_order_desc -->
 	</form>
 </div><!-- .tcp_order_panel --><?php
@@ -806,11 +830,22 @@ function tcp_register_form( $args = array() ) {
 function tcp_author_profile( $current_user = false) {
 	//$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
 	if ( $current_user == false ) {
-		global $current_user;
-		global $user_level;
-	} else {
-		$user_level = $current_user->user_level;
+		global $post;
+		if ( !empty( $post ) ) {
+			$current_user = new WP_User( $post->post_author );
+		} else {
+			$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
+			if ( $current_user === false ) {
+				$current_user = get_the_author();
+				$current_user = get_user_by( 'login', $current_user );
+			} else {
+				global $current_user;
+				global $user_level;
+			}
+		}
 	}
+	if ( !isset( $user_level ) ) $user_level = $current_user->user_level;
+
 	$located = locate_template( 'tcp_author_profile.php' );
 	if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_author_profile.php';
 	include( $located );

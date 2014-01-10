@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.4.1
+Version: 1.3.4.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -235,8 +235,9 @@ class TheCartPress {
 			}
 
 			//TheCartPress css styles for the BuyButton. Can be disabled/enabled in Look&Feel/Theme Compatibilty
-			if ( $this->get_setting( 'load_default_buy_button_style', true ) )
+			if ( $this->get_setting( 'load_default_buy_button_style', true ) ) {
 				wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'css/tcp_buy_button.css', __FILE__ ) );
+			}
 
 			//Initializing checkout
 			$this->loading_default_checkout_boxes();
@@ -260,8 +261,9 @@ class TheCartPress {
 		add_filter( 'get_pagenum_link'	, array( $this, 'get_pagenum_link' ) );
 
 		//TheCartPress css styles for the Catalogue. Can be disabled/enabkled in Look&Feel/Theme Compatibilty
-		if ( $this->get_setting( 'load_default_loop_style', true ) )
+		if ( $this->get_setting( 'load_default_loop_style', true ) ) {
 			wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
+		}
 
 		//To allow to add 'init' actions to TheCartPress plugins or modules (since 1.3.2)
 		do_action( 'tcp_init', $this );
@@ -588,15 +590,19 @@ class TheCartPress {
 	 */
 	function pre_get_posts( $query ) {
 		if ( is_admin() ) return;
+
 		$apply_filters = false;
 		if ( $query->is_author ) {
 			$post_types = get_post_types( array( 'public' => true ) );
 			unset($post_types['attachment']);
 			unset($post_types['page']);
 			$query->set( 'post_type', $post_types );
+			if ( $query->get( 'tcp_is_injection' ) ) {
+				$apply_filters = true;
+			}
 		}
 
-		if ( ! $apply_filters && isset( $query->tax_query ) ) {
+		if ( !$apply_filters && isset( $query->tax_query ) ) {
 			foreach ( $query->tax_query->queries as $tax_query ) { //@See Query.php: 1530
 				if ( tcp_is_saleable_taxonomy( $tax_query['taxonomy'] ) ) {
 					$apply_filters = true;
@@ -604,10 +610,12 @@ class TheCartPress {
 				}
 			}
 		}
-		if ( ! $apply_filters && tcp_is_saleable_post_type( $query->get( 'post_type' ) ) ) {
+		if ( !$apply_filters && tcp_is_saleable_post_type( $query->get( 'post_type' ) ) ) {
 			$apply_filters = true;
 		}
+
 		if ( $apply_filters ) {
+
 			//TODO filter by custom field
 			$meta_query = $query->get( 'meta_query' );
 			$meta_query[] = array(
@@ -618,7 +626,9 @@ class TheCartPress {
 			);
 			$query->set( 'meta_query', $meta_query );
 			global $wp_the_query;
-			if ( $query == $wp_the_query ) {
+
+			// If it's the main query
+			if ( $query == $wp_the_query || $query->get( 'tcp_is_injection' ) ) {
 				$filter = new TCPFilterNavigation();
 				if ( $filter->is_filter_by_layered() ) {
 					$layered = $filter->get_layered();

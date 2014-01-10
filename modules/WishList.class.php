@@ -153,7 +153,7 @@ class TCPWishList {
 		if ( ! $shoppingCart->isInWishList( $post_id ) ) {
 			ob_start(); ?>
 			<input type="hidden" value="" name="tcp_new_wish_list_item" id="tcp_new_wish_list_item_<?php echo $post_id; ?>" />
-			<button type="submit" name="tcp_add_to_wish_list" class="tcp_add_to_wish_list <?php echo tcp_get_buy_button_color(), ' ', tcp_get_buy_button_size(); ?>" id="tcp_add_wish_list_<?php echo $post_id; ?>"
+			<button type="submit" name="tcp_add_to_wish_list" class="tcp_add_to_wish_list <?php tcp_the_buy_button_color(); ?> <?php tcp_the_buy_button_size(); ?>" id="tcp_add_wish_list_<?php echo $post_id; ?>"
 			onclick="jQuery('#tcp_new_wish_list_item_<?php echo $post_id; ?>').val('<?php echo $post_id; ?>');jQuery('#tcp_frm_<?php echo $post_id; ?>').attr('action', '');"><?php _e( 'Add to Wish list', 'tcp' ); ?></button>
 			<?php do_action( 'tcp_buy_button_add_to_wish_list', $post_id );
 			$out .= ob_get_clean();

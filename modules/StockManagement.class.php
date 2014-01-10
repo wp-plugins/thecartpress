@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPStockManagement' ) ) :
+if ( !class_exists( 'TCPStockManagement' ) ) :
 
 class TCPStockManagement {
 	private $no_stock_enough = false;
@@ -649,14 +649,18 @@ function show_hide_stock_management() {
 	}
 
 	function tcp_custom_list_widget_args( $loop_args ) {
-		global $thecartpress;
-		if ( $thecartpress->get_setting( 'hide_out_of_stock' ) )
-			$loop_args['meta_query'][] = array(
-				'key'		=> 'tcp_stock',
-				'value'		=> 0,
-				'type'		=> 'NUMERIC',
-				'compare'	=> '!='
-			);
+		$is_saleable = isset( $loop_args['post_type'] ) ? tcp_is_saleable_post_type( $loop_args['post_type'] ) : false;
+		if ( $is_saleable ) {
+			global $thecartpress;
+			if ( $thecartpress->get_setting( 'hide_out_of_stock' ) ) {
+				$loop_args['meta_query'][] = array(
+					'key'		=> 'tcp_stock',
+					'value'		=> 0,
+					'type'		=> 'NUMERIC',
+					'compare'	=> '!='
+				);
+			}
+		}
 		return $loop_args;
 	}
 

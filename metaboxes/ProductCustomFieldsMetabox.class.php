@@ -341,11 +341,14 @@ foreach( $tabs  as $tab_id => $tab ) { ?>
 
 	function delete( $post_id ) {
 		$post = get_post( $post_id );
-		if ( ! tcp_is_saleable_post_type( $post->post_type ) ) return $post_id;
+		if ( !tcp_is_saleable_post_type( $post->post_type ) ) return $post_id;
 		if ( !current_user_can( 'edit_post', $post_id ) ) return $post_id;
+
 		$post_id = tcp_get_default_id( $post_id, $post->post_type );
+
 		RelEntities::deleteAll( $post_id );
 		RelEntities::deleteAllTo( $post_id );
+
 		delete_post_meta( $post_id, 'tcp_price' );
 		delete_post_meta( $post_id, 'tcp_initial_units' );
 		delete_post_meta( $post_id, 'tcp_tax_id' );
@@ -355,6 +358,7 @@ foreach( $tabs  as $tab_id => $tab ) { ?>
 		delete_post_meta( $post_id, 'tcp_weight' );
 		delete_post_meta( $post_id, 'tcp_sku' );
 		delete_post_meta( $post_id, 'tcp_order' );
+		
 		$translations = tcp_get_all_translations( $post_id, get_post_type( $post_id ) );
 		if ( is_array( $translations ) && count( $translations ) > 0 ) {
 			foreach( $translations as $translation ) {

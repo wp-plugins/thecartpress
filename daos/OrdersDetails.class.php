@@ -61,15 +61,16 @@ class OrdersDetails {
 		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
 			if ( $row->tax == 0 ) {
-				$total += $row->price * $row->qty_ordered;
+				$price = $row->price * $row->qty_ordered;
 			} else {
 				//$t = $row->price * $row->tax / 100;
 				////$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
 				//$t = ( $row->price + $t ) * $row->qty_ordered;
 				//$total += $t;
 				$tax = round( $row->price * $row->tax / 100, $decimals );
-				$total += ( $row->price + $tax ) * $row->qty_ordered;
+				$price = ( $row->price + $tax ) * $row->qty_ordered;		
 			}
+			$total += apply_filters( 'tcp_orders_details_row_price', $price, $row );
 		}
 		return round( $total, $decimals );
 	}

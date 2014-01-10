@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPAdvancedCommunication' ) ) {
+if ( !class_exists( 'TCPAdvancedCommunication' ) ) :
 
 define( 'TCP_EMAIL_POST_TYPE', 'tcp_email' );
 
@@ -173,21 +173,24 @@ class TCPAdvancedCommunication {
 			var tcp_copy_to_me = jQuery( '#tcp_copy_to_me' ).attr( 'checked' );
 			feedback.show();
 			jQuery.ajax( {
-				async : true,
-				type : "POST",
-				url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-				data : {
-					action : 'tcp_advanced_comm',
-					to_do : 'tcp_send_email',
-					order_id : '<?php echo $order_id; ?>',
-					subject : jQuery( '#tcp_notice_subject' ).val(),
-					copy_to_me : tcp_copy_to_me,
-					text : tinymce.activeEditor.getContent(),
+				async	: true,
+				type	: "POST",
+				url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+				data	: {
+					action		: 'tcp_advanced_comm',
+					to_do		: 'tcp_send_email',
+					order_id	: '<?php echo $order_id; ?>',
+					subject		: jQuery( '#tcp_notice_subject' ).val(),
+					copy_to_me	: tcp_copy_to_me,
+					text		: tinymce.activeEditor.getContent(),
 				},
 				success : function( response ) {
 					feedback.hide();
-					if ( response == 'OK' ) jQuery( '#tcp-sending' ).show( 800).delay( 2000 ).hide( 800 );
-					else jQuery( '#tcp-error-sending' ).show( 400).delay( 1000 ).hide( 400 );
+					if ( response == 'OK' ) {
+						jQuery( '#tcp-sending' ).show( 800).delay( 2000 ).hide( 800 );
+					} else {
+						jQuery( '#tcp-error-sending' ).show( 400 ).delay( 1000 ).hide( 400 );
+					}
 					tcp_load_notices( <?php echo $order_id; ?> );
 				},
 				error : function( response ) {
@@ -201,15 +204,15 @@ class TCPAdvancedCommunication {
 			var feedback = jQuery( '.tcp-save-email-feedback' );
 			feedback.show();
 			jQuery.ajax( {
-				async : true,
-				type : "POST",
-				url : "<?php echo admin_url( 'admin-ajax.php' ); ?>",
-				data : {
-					action : 'tcp_advanced_comm',
-					to_do : 'tcp_save_email',
+				async	: true,
+				type	: "POST",
+				url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+				data	: {
+					action	 : 'tcp_advanced_comm',
+					to_do	 : 'tcp_save_email',
 					order_id : '<?php echo $order_id; ?>',
-					subject : jQuery( '#tcp_notice_subject' ).val(),
-					text : tinymce.activeEditor.getContent(),
+					subject	 : jQuery( '#tcp_notice_subject' ).val(),
+					text	 : tinymce.activeEditor.getContent(),
 				},
 				success : function( response ) {
 					feedback.hide();
@@ -231,9 +234,9 @@ class TCPAdvancedCommunication {
 	<?php }
 
 	static function tcp_send_email() {
-		$text		= isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
+		$text		= isset( $_REQUEST['text'] ) ? stripslashes( $_REQUEST['text'] ) : false;
 		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
-		$subject	= isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
+		$subject	= isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
 		$copy_to_me = isset( $_REQUEST['copy_to_me'] ) ? $_REQUEST['copy_to_me'] : false;
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		$order		= Orders::get( $order_id );
@@ -257,10 +260,10 @@ class TCPAdvancedCommunication {
 	}
 
 	static function tcp_save_email( $title = '' ) {
-		$text		= isset( $_REQUEST['text'] ) ? $_REQUEST['text'] : false;
+		$text		= isset( $_REQUEST['text'] ) ? stripslashes( $_REQUEST['text'] ) : false;
 		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
 		$created_at	= current_time( 'mysql' );
-		$subject	= isset( $_REQUEST['subject'] ) ? $_REQUEST['subject'] : $title;
+		$subject	= isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : $title;
 		$notice		= array(
 			'post_type'		=> TCP_EMAIL_POST_TYPE,
 			'post_title'	=> $subject,
@@ -280,8 +283,8 @@ class TCPAdvancedCommunication {
 	}
 
 	static function tcp_get_email_text() {
-		$post_id = isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : false;
-		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
+		$post_id	= isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : false;
+		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
 		if ( $post_id !== false && $order_id !== false ) {
 			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			TCPAdvancedCommunication::$order_id = $order_id;
@@ -420,4 +423,4 @@ jQuery().ready( function () {
 }
 
 TCPAdvancedCommunication::init();
-} // class_exists check
+endif; // class_exists check

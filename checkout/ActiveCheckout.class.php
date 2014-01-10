@@ -29,7 +29,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'ActiveCheckout' ) ) {
+if ( !class_exists( 'ActiveCheckout' ) ) :
 
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
@@ -177,4 +177,4 @@ class ActiveCheckout {//shortcode
 }
 
 add_shortcode( 'tcp_checkout', array( new ActiveCheckout(), 'show' ) );
-} // class_exists check
+endif; // class_exists check

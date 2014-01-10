@@ -34,7 +34,7 @@ $attachments = get_children( array(
 				if ( function_exists( 'magictoolbox_WordPress_MagicZoomPlus_init' ) ) { ?>
 					<a class="MagicZoomPlus" id="MagicZoom-single-product" href="<?php echo $imageFull[0]; ?>">
 						<?php $image = the_post_thumbnail( null, $image_size_content );
-						echo apply_filters( 'tcp_get_image_in_content', $image, $post->ID ); ?>
+						echo apply_filters( 'tcp_get_image_in_content', $image, $post->ID, array( 'size' => $image_size_content ) ); ?>
 					</a>
 				<?php } else {
 					if ( count( $attachments ) != 1 ) {
@@ -42,7 +42,7 @@ $attachments = get_children( array(
 					} else {
 						$image = do_shortcode( '[gallery columns="1" link="file" size="' . $image_size_content . '"]' );
 					}
-					echo apply_filters( 'tcp_get_image_in_content', $image, $post->ID );
+					echo apply_filters( 'tcp_get_image_in_content', $image, $post->ID, array( 'size' => $image_size_content ) );
 				}
 			} else { ?>
 

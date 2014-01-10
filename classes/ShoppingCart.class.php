@@ -28,7 +28,10 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'ShoppingCart' ) ) {
+if ( !class_exists( 'ShoppingCart' ) ) :
+
+require_once( 'ICartSource.interface.php' );
+
 /**
  * Session Shopping Cart
  */
@@ -51,11 +54,13 @@ class ShoppingCart {
 	 * @uses apply_filters, calls 'tcp_add_to_shopping_cart
 	 */
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
-		if ( ! is_numeric( $post_id ) || ! is_numeric( $option_1_id ) || ! is_numeric( $option_2_id ) ) return;
+		if ( !is_numeric( $post_id ) || !is_numeric( $option_1_id ) || !is_numeric( $option_2_id ) ) {
+			return;
+		}
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 
-		//If the product is in the cart, only add it
+		// If the product is in the cart, only add more units
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) ) {
 			$sci = $this->shopping_cart_items[$shopping_cart_id];
 			$sci->add( $count );
@@ -69,6 +74,9 @@ class ShoppingCart {
 			$this->shopping_cart_items[$shopping_cart_id] = $sci;
 		}
 		$this->removeOrderId();
+
+		// Sends an action: an item has been modified in the shopping cart
+		do_action( 'tcp_shopping_cart_item_added', $sci, $this );
 		return $sci;
 	}
 
@@ -83,6 +91,9 @@ class ShoppingCart {
 				$sci->setUnits( $count );
 				$sci = apply_filters( 'tcp_modify_to_shopping_cart', $sci );
 				if ( $sci ) $this->shopping_cart_items[$shopping_cart_id] = $sci;
+
+				// Sends an action: an item has been modified in the shopping cart
+				do_action( 'tcp_shopping_cart_item_modified', $post_id, $this );
 			} else {
 				$this->delete( $post_id, $option_1_id , $option_2_id );
 			}
@@ -91,12 +102,24 @@ class ShoppingCart {
 		return $sci;
 	}
 
+	/**
+	 * Removes a given product from the cart
+	 *
+	 * @param int $post_id product identifier
+	 * @param int $option_1_id (deprecated)
+	 * @param int $option_2_id (deprecated)
+	 *
+	 * @uses sanitize_key, apply_filters ('tcp_shopping_cart_key'), ShoppingCart::removeOrderId
+	 */
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
 		$shopping_cart_id = sanitize_key( apply_filters( 'tcp_shopping_cart_key', $shopping_cart_id ) );
 		if ( isset( $this->shopping_cart_items[$shopping_cart_id] ) )
 			unset( $this->shopping_cart_items[$shopping_cart_id] );
 		$this->removeOrderId();
+
+		// Sends an action: an item has been deleted from the shopping cart
+		do_action( 'tcp_shopping_cart_item_deleted', $post_id, $this );
 	}
 
 	function deleteAll() {
@@ -106,6 +129,9 @@ class ShoppingCart {
 		$this->other_costs = array();
 		$this->deleteAllDiscounts();
 		//$this->removeOrderId();
+
+		// Sends an action: the shopping cart has been deleted
+		do_action( 'tcp_shopping_cart_all_deleted', $this );
 	}
 
 	function refresh() {
@@ -164,16 +190,25 @@ class ShoppingCart {
 
 	/**
 	 * Delete item by post_id
+	 *
 	 * @since 1.2.8
 	 */
 	function deleteItem( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
-		foreach( $this->shopping_cart_items as $id => $item )
-			if ( $item->getPostId() == $post_id && $item->getOption1Id() == $option_1_id && $item->getOption2Id() == $option_2_id ) unset( $this->shopping_cart_items[$id] );
+		foreach( $this->shopping_cart_items as $id => $item ) {
+			if ( $item->getPostId() == $post_id && $item->getOption1Id() == $option_1_id && $item->getOption2Id() == $option_2_id ) {
+				unset( $this->shopping_cart_items[$id] );
+
+				// Sends an action: an item has been deleted from the shopping cart
+				do_action( 'tcp_shopping_cart_item_deleted', $post_id, $this );
+				return true;
+			}
+		}
 		return false;
 	}
 
 	/**
 	 * Add an item
+	 *
 	 * @since 1.2.9
 	 */
 	function addItem( $item, $shopping_cart_id = false ) {
@@ -187,6 +222,8 @@ class ShoppingCart {
 				$this->shopping_cart_items[$shopping_cart_id] = $item;
 			}
 		}
+		// Sends an action: an item has been modified in the shopping cart
+		do_action( 'tcp_shopping_cart_item_added', $item, $this );
 	}
 
 	/**
@@ -195,6 +232,9 @@ class ShoppingCart {
 	 */
 	function setItems( $items ) {
 		$this->shopping_cart_items = $items;
+
+		// Sends an action: an item has been modified in the shopping cart
+		do_action( 'tcp_shopping_cart_items_modified', $items, $this );
 	}
 
 	/**
@@ -204,8 +244,9 @@ class ShoppingCart {
 	function getTotal( $otherCosts = false ) {
 		$total = 0;
 		$items = $this->getItems();
-		foreach( $items as $item )
+		foreach( $items as $item ) {
 			$total += $item->getTotal();
+		}
 		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
 		$total -= $this->getCartDiscountsTotal();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total', $total );
@@ -217,47 +258,68 @@ class ShoppingCart {
 	 */
 	function getTotalForShipping() {
 		$total = 0;
-		foreach( $this->shopping_cart_items as $item )
-			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
+		foreach( $this->shopping_cart_items as $item ) {
+			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() ) {
 				$total += $item->getTotal();
+			}
+		}
 		return $total;
 	}
 
 	function getTotalToShow( $otherCosts = false ) {
 		$total = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
-			if ( $shopping_cart_item ) $total += $shopping_cart_item->getTotalToShow();
-		if ( $otherCosts ) $total += $this->getTotalOtherCosts();
+		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
+			if ( $shopping_cart_item ) {
+				$total += $shopping_cart_item->getTotalToShow();
+			}
+		}
+		if ( $otherCosts ) {
+			$total += $this->getTotalOtherCosts();
+		}
 		$total -= $this->getCartDiscountsTotal();
 		$total = (float)apply_filters( 'tcp_shopping_cart_get_total_to_show', $total );
 		return $total;
 	}
 
 	/**
-	 * Return the number of articles in the cart
+	 * Returns the number of articles in the cart
+	 *
+	 * @uses ShoppingCartItem::getCount
 	 */
 	function getCount() {
 		$count = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
+		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
 			$count += $shopping_cart_item->getCount();
+		}
 		return $count;
 	}
 
+	/**
+	 * Returns the total weight of products in the cart.
+	 *
+	 * @uses ShoppingCartItem::getWeight
+	 */
 	function getWeight() {
 		$weight = 0;
-		foreach( $this->shopping_cart_items as $shopping_cart_item )
+		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
 			$weight += $shopping_cart_item->getWeight();
+		}
 		return $weight;
 	}
 
 	/**
-	 * Returns the total weight to calculate shipping cost
+	 * Returns the total weight of products in the cart.
+	 * It's used to calculate shipping costs, so free products are not added
+	 *
+	 * @uses ShoppingCartItem::isDownloadable, ShoppingCartItem::isFreeShipping, ShoppingCartItem::getWeight
 	 */
 	function getWeightForShipping() {
 		$weight = 0;
-		foreach( $this->shopping_cart_items as $item )
-			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() )
+		foreach( $this->shopping_cart_items as $item ) {
+			if ( ! $item->isDownloadable() && ! $item->isFreeShipping() ) {
 				$weight += $item->getWeight();
+			}
+		}
 		return $weight;
 	}
 
@@ -269,7 +331,15 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Returns true if the product exists in the cart
+	 * Returns true if a given product exists in the cart
+	 *
+	 * @since 1.0
+	 *
+	 * @param $post_id given product id
+	 * @param $option_1_id (deprecated)
+	 * @param $option_2_id (deprecated)
+	 * @return boolean, true if the given product exists in the cart
+	 * @uses sanitize_key, apply_filters ('tcp_shopping_cart_key')
 	 */
 	function exists( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -278,31 +348,47 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Return true if all the products in the cart are downloadable
+	 * Returns true if all products, in the cart, are downloadable
+	 *
+	 * @since 1.0
+	 *
+	 * @return boolean, true if all products in the cart are downloadable
+	 * @uses ShoppingCartIte::isDownloadable
 	 */
 	function isDownloadable() {
-		foreach( $this->shopping_cart_items as $item )
-			if ( ! $item->isDownloadable() ) return false;
+		foreach( $this->shopping_cart_items as $item ) {
+			if ( ! $item->isDownloadable() ) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	/**
-	 * Return true if anyone of the products in the cart is downloadable
+	 * Returns true if anyone of the products, in the cart, is downloadable
+	 *
 	 * @since 1.2.9 support filter 'tcp_has_downloadable'
+	 *
+	 * @uses ShoppingCartIte::isDownloadable, apply_filters ('tcp_has_downloadable')
 	 */
 	function hasDownloadable() {
 		$has_downloadable = false;
-		foreach( $this->shopping_cart_items as $item )
+		foreach( $this->shopping_cart_items as $item ) {
 			if ( $item->isDownloadable() ) {
 				$has_downloadable = true;
 				break;
 			}
+		}
 		return apply_filters( 'tcp_has_downloadable', $has_downloadable );
 	}
 
 	/**
-	 * Order_id if the cart has been saved in the database
+	 * Set Order_id
+	 * It's used if the cart has been saved in the database
+	 *
 	 * @since 1.1.0
+	 *
+	 * @param int $order_id 
 	 */
 	function setOrderId( $order_id ) {
 		$this->order_id = $order_id;
@@ -322,13 +408,19 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Visited functions
+	 * Adds a given product to the visited list
+	 *
+	 * @since 1.2
+	 *
+	 * @param $post_id product id to add
+	 * @uses ShoppingCart::getVisitedPosts
 	 */
 	function addVisitedPost( $post_id ) {
-		if ( isset( $this->visited_post_ids[$post_id] ) )
+		if ( isset( $this->visited_post_ids[$post_id] ) ) {
 			$this->visited_post_ids[$post_id]++;
-		else
+		} else {
 			$this->visited_post_ids[$post_id] = 0;
+		}
 		return $this->getVisitedPosts();
 	}
 
@@ -373,8 +465,9 @@ class ShoppingCart {
 		if ( $user_id > 0 ) {	
 			$wishList = (array)get_user_meta( $user_id, 'tcp_wish_list', true );
 			if ( count( $this->wish_list_post_ids ) > 0 ) {
-				foreach( $this->wish_list_post_ids as $id => $item )
+				foreach( $this->wish_list_post_ids as $id => $item ) {
 					$wishList[$id] = 1;
+				}
 				update_user_meta( $user_id, 'tcp_wish_list', $wishList );
 				unset( $this->wish_list_post_ids );
 				$this->wish_list_post_ids = array();
@@ -423,10 +516,11 @@ class ShoppingCart {
 	 * Other costs API
 	 */
 	function addOtherCost( $id, $cost = 0, $desc = '', $order = 0 ) {
-		if ( $cost == 0 )
+		if ( $cost == 0 ) {
 			$this->deleteOtherCost( $id );
-		else
+		} else {
 			$this->other_costs[$id] = new ShoppingCartOtherCost( $cost, $desc, $order );
+		}
 	}
 
 	function deleteOtherCost( $id, $starts = false ) {
@@ -457,14 +551,17 @@ class ShoppingCart {
 
 	function getTotalOtherCosts() {
 		$total = 0;
-		foreach( $this->other_costs as $other_cost )
+		foreach( $this->other_costs as $other_cost ) {
 			$total += $other_cost->getCost();
+		}
 		return $total;
 	}
 	
 	function setFreeShipping( $freeShipping = true ) {
 		$this->freeShipping = (bool)$freeShipping;
-		if ( $freeShipping ) $this->deleteOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID );
+		if ( $freeShipping ) {
+			$this->deleteOtherCost( ShoppingCart::$OTHER_COST_SHIPPING_ID );
+		}
 	}
 
 	function isFreeShipping() {
@@ -506,8 +603,9 @@ class ShoppingCart {
 	 * Deletes a cart discount
 	 */
 	function deleteDiscount( $id ) {
-		if ( isset( $this->discounts[$id] ) )
+		if ( isset( $this->discounts[$id] ) ) {
 			unset( $this->discounts[$id] );
+		}
 	}
 
 	/**
@@ -523,8 +621,11 @@ class ShoppingCart {
 	 */
 	function getAllDiscounts() {
 		$discount = $this->getCartDiscountsTotal();
-		foreach( $this->shopping_cart_items as $item )
-			if ( $item ) $discount += $item->getDiscount();
+		foreach( $this->shopping_cart_items as $item ) {
+			if ( $item ) {
+				$discount += $item->getDiscount();
+			}
+		}
 		return apply_filters( 'tcp_get_all_discounts', $discount );
 	}
 
@@ -532,13 +633,14 @@ class ShoppingCart {
 	 * Deletes all discounts
 	 */
 	function deleteAllDiscounts() {
-		foreach( $this->shopping_cart_items as $item )
+		foreach( $this->shopping_cart_items as $item ) {
 			$item->setDiscount( 0 );
+		}
 		$this->deleteAllCartDiscounts();
 	}
 }
 
-class ShoppingCartItem {
+class ShoppingCartItem implements TCP_IDetailSource {
 	private $post_id;
 	private $option_1_id;
 	private $option_2_id;
@@ -558,8 +660,7 @@ class ShoppingCartItem {
 		$this->option_1_id = $option_1_id;
 		$this->option_2_id = $option_2_id;
 		$this->count = (int)$count;
-		$decimals = tcp_get_decimal_currency();
-		$this->unit_price = round( $unit_price, $decimals );
+		$this->unit_price = round( $unit_price, tcp_get_decimal_currency() );
 		$this->unit_weight = $unit_weight;
 		$this->setSku( tcp_get_the_sku( $post_id, $option_1_id, $option_2_id ) );
 		do_action( 'tcp_shopping_cart_item_created', $this );
@@ -573,6 +674,7 @@ class ShoppingCartItem {
 		return $this->post_id . '_' . $this->option_1_id . '_' . $this->option_2_id;
 	}
 
+	// To implement TCP_IDetailSource
 	function get_post_id() {
 		return $this->getPostId();
 	}
@@ -581,6 +683,7 @@ class ShoppingCartItem {
 		return $this->post_id;
 	}
 
+	// To implement TCP_IDetailSource
 	function get_option_1_id() {
 		return $this->getOption1Id();
 	}
@@ -593,12 +696,18 @@ class ShoppingCartItem {
 		return $this->option_2_id;
 	}
 
+	// To implement TCP_IDetailSource
 	function get_option_2_id() {
 		return $this->getOption2Id();
 	}
 
 	function getTitle() {
 		return tcp_get_the_title( $this->post_id, $this->option_1_id, $this->option_2_id );
+	}
+
+	// To implement TCP_IDetailSource
+	function get_name() {
+		return $this->getTitle();
 	}
 
 	function getCount() {
@@ -608,6 +717,11 @@ class ShoppingCartItem {
 	//Rename of getCount()
 	function getUnits() {
 		return $this->getCount();
+	}
+
+	// To implement TCP_IDetailSource
+	function get_qty_ordered() {
+		return $this->getCount();	
 	}
 
 	function setCount( $count ) {
@@ -622,13 +736,26 @@ class ShoppingCartItem {
 		return apply_filters( 'tcp_item_get_unit_price', $this->unit_price, $this->getPostId() );
 	}
 
+	// To implement TCP_IDetailSource
+	function get_price() {
+		return $this->getUnitPrice();
+	}
+
 	function setUnitPrice( $unit_price ) {
 		$this->unit_price = $unit_price;
 	}
 
 	function getTax() {
-		if ( $this->tax === false ) return apply_filters( 'tcp_item_get_tax', tcp_get_the_tax( $this->getPostId() ), $this->getPostId() );
-		else return $this->tax;
+		if ( $this->tax === false ) {
+			return apply_filters( 'tcp_item_get_tax', tcp_get_the_tax( $this->getPostId() ), $this->getPostId() );
+		} else {
+			return $this->tax;
+		}
+	}
+
+	// To implement TCP_IDetailSource
+	function get_tax() {
+		return $this->getTax();
 	}
 
 	function setTax( $tax = false ) {
@@ -636,8 +763,16 @@ class ShoppingCartItem {
 	}
 
 	function getSKU() {
-		if ( $this->sku === false ) return tcp_get_the_sku( $this->post_id, $this->option_1_id, $this->option_2_id );
-		else return $this->sku;
+		if ( $this->sku === false ) {
+			return tcp_get_the_sku( $this->post_id, $this->option_1_id, $this->option_2_id );
+		} else {
+			return $this->sku;
+		}
+	}
+
+	// To implement TCP_IDetailSource
+	function get_sku() {
+		return $this->getSKU();
 	}
 
 	function setSku( $sku ) {
@@ -649,7 +784,7 @@ class ShoppingCartItem {
 	}
 
 	function getPriceToShow() {
-		return apply_filters( 'tcp_item_get_price_to_show', tcp_get_the_price_to_show( $this->getPostId(), $this->getUnitPrice() ) );
+		return (double)apply_filters( 'tcp_item_get_price_to_show', tcp_get_the_price_to_show( $this->getPostId(), $this->getUnitPrice() ) );
 	}
 
 	function getTotal() {
@@ -672,6 +807,10 @@ class ShoppingCartItem {
 		return apply_filters( 'tcp_shopping_cart_get_weight', $weight, $this->getPostId() );
 	}
 
+	// To implement TCP_IDetailSource
+	function get_weight() {
+		return $this->getWeight();
+	}
 	function isDownloadable() {
 		return $this->is_downloadable;
 	}
@@ -693,6 +832,11 @@ class ShoppingCartItem {
 	function getDiscount() {
 		$discount = $this->discount;
 		return apply_filters( 'tcp_item_get_discount', $discount, $this->getPostId() );
+	}
+
+	// To implement TCP_IDetailSource
+	function get_discount() {
+		return $this->getDiscount();
 	}
 
 	function setFreeShipping( $free_shipping = true ) {
@@ -733,7 +877,9 @@ class ShoppingCartItem {
 	}
 
 	function remove_attribute( $id ) {
-		if ( isset( $this->attributes[$id] ) ) unset( $this->attributes[$id] );
+		if ( isset( $this->attributes[$id] ) ) {
+			unset( $this->attributes[$id] );
+		}
 	}
 
 }
@@ -795,4 +941,4 @@ class ShoppingCartDiscount {
 		return $this->desc . ': ' . $this->discount;
 	}
 }
-} // class_exists check
+endif; // class_exists check

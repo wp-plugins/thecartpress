@@ -201,6 +201,7 @@ class TCPCartBox extends TCPCheckoutBox {
 			$tax_amount_per_unit = round( $tax_amount_per_unit, $decimals );
 			$tax_amount = round( $tax_amount_per_unit * $item->getUnits(), $decimals );
 			$line_price_without_tax = round( $unit_price_without_tax * $item->getUnits(), $decimals );
+			$line_price_without_tax = apply_filters( 'tcp_checkout_cart_row_price', $line_price_without_tax, $item );
 
 			$line_price_with_tax = $line_price_without_tax + $tax_amount;
 
