@@ -598,8 +598,10 @@ function show_hide_stock_management() {
 */ 
 	function tcp_completed_ok_stockadjust( $order_id ) {
 		global $thecartpress;
+
 		$totalOrderDetails = OrdersDetails::getDetails( $order_id );
 		$order = Orders::get( $order_id );
+
 		$_additional = $order->comment_internal;
 		$additional = __( 'No stock after payment for:', 'tcp' );
 		$stock_management = $thecartpress->get_setting('stock_management', false );
@@ -628,7 +630,7 @@ function show_hide_stock_management() {
 				$this->stock_adjust_manual( $order_id, $new_status );
 			}
 			if ( $this->no_stock_enough ) {
-				Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $order->transaction_id, $_additional."\n".$additional );
+				Orders::editStatus( $order_id, Orders::$ORDER_PROCESSING, $order->transaction_id, $_additional . "\n" . $additional );
 				$message = tcp_do_template( 'tcp_error_stock_when_pay', false );
 				if ( strlen( $message ) == 0 ) : ?>
 					<p><?php _e( 'There was an error when creating the order. Seller will contact you regarding your order.', 'tcp' ); ?></p>
@@ -653,12 +655,14 @@ function show_hide_stock_management() {
 		if ( $is_saleable ) {
 			global $thecartpress;
 			if ( $thecartpress->get_setting( 'hide_out_of_stock' ) ) {
-				$loop_args['meta_query'][] = array(
+				$args['meta_query'][] = array(
 					'key'		=> 'tcp_stock',
 					'value'		=> 0,
 					'type'		=> 'NUMERIC',
 					'compare'	=> '!='
 				);
+				$args = apply_filters( 'tcp_stock_custom_list_widget_args', $args );
+				$loop_args = array_merge( $loop_args, $args );
 			}
 		}
 		return $loop_args;
@@ -771,7 +775,10 @@ function show_hide_stock_management() {
 				'type'		=> 'NUMERIC',
 				'compare'	=> '!='
 			);
-			$query->set( 'meta_query', $meta_query );
+			$meta_query = apply_filters( 'tcp_stock_apply_filters_for_saleables', $meta_query, $query );
+			if ( $meta_query !== false ) {
+				$query->set( 'meta_query', $meta_query );
+			}
 		}
 		return $query;
 	}
@@ -784,8 +791,8 @@ function show_hide_stock_management() {
 	function stock_column_orderby( $vars ) {
 		if ( isset( $vars['orderby'] ) && 'tcp_stock' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
-				'orderby' => 'meta_value_num',
-				'meta_key' => 'tcp_stock',
+				'orderby'	=> 'meta_value_num',
+				'meta_key'	=> 'tcp_stock',
 			) );
 		}
 		return $vars;

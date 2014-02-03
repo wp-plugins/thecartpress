@@ -82,6 +82,13 @@ function tcp_is_the_catalogue_page() {
 	return is_page( tcp_get_current_id( get_option( 'tcp_catalogue_page_id' ), 'page' ) );
 }
 
+/**
+ * @since 1.3.4.2
+ */
+function tcp_get_the_catalogue_page_id() {
+	return tcp_get_current_id( get_option( 'tcp_catalogue_page_id' ), 'page' );
+}
+
 function tcp_the_continue_url( $echo = true) {
 	global $thecartpress;
 	$url = isset( $thecartpress->settings['continue_url'] ) && strlen( $thecartpress->settings['continue_url'] ) > 0 ? $thecartpress->settings['continue_url'] : get_home_url();
@@ -309,15 +316,18 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 					<?php echo tcp_get_the_thumbnail( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $thumbnail_size ); ?>
 				</li>
 				<?php endif; ?>
-				<li>
+				<!--<li>
 					<span class="tcp_unit_price"><?php _e( 'Price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span>
-				</li>
+				</li>-->
 				<?php //if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 				<?php if ( ! $item->isDownloadable() ) : ?>
 				<li>
 				<?php if ( $see_modify_item ) : ?>
-					<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count"/>
-					<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
+					<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count input-sm"/>
+					<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
+					<?php if ( $see_delete_item ) : ?>
+					<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Delete item', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete item', 'tcp' ); ?></span></button>
+				<?php endif; ?>
 				<?php else : ?>
 					<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
 				<?php endif; ?>
@@ -330,7 +340,7 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				</li>
 				<?php endif; ?>
 				<li>
-					<span class="tcp_subtotal"><?php _e( 'Total', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span>
+					<span class="tcp_subtotal"><?php //_e( 'Total', 'tcp' ); ?><?php echo tcp_format_the_price( $item->getTotalToShow() ); ?></span>
 				</li>
 				<?php if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
 					<?php if ( $see_weight && $item->getWeight() > 0 ) : ?>
@@ -340,11 +350,6 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php do_action( 'tcp_shopping_cart_widget_item', $item ); ?>
-				<?php if ( $see_delete_item ) : ?>
-				<li>
-					<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete item', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete item', 'tcp' ); ?></span></button>
-				</li>
-				<?php endif; ?>
 				<?php do_action( 'tcp_get_shopping_cart_widget_item', $args, $item ); ?>
 			</ul>
 		</form>
@@ -373,8 +378,8 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
 			<form method="post">
 				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'delete', 'tcp' ); ?>">
-					<span class="glyphicon glyphicon-trash"></span>
-					<span class="sr-only"><?php _e( 'delete', 'tcp' ); ?></span>
+					<span class="glyphicon glyphicon-trash"></span>&nbsp;
+					<span class=""><?php _e( 'Delete All', 'tcp' ); ?></span>
 				</button>
 			</form>
 		</li>
@@ -419,6 +424,12 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	$widget_id = isset( $args['widget_id'] ) ? str_replace( '-', '_', $args['widget_id'] ) : 'shopping_cart_summary'; ?>
 <div id="tcp_<?php echo $widget_id; ?>" class="tcpf">
 	<ul class="tcp_shopping_cart_resume">
+
+	<?php if ( $args['see_product_count'] ) :
+	$count = $shoppingCart->getCount(); ?>
+	<li class="tcp_resumen_count_li"><span class="tcp_resumen_count"><?php _e( 'N<sup>o</sup> products', 'tcp' ); ?>:</span><span class="tcp_resumen_count_value">&nbsp;<?php echo $count; ?></span></li>
+	<?php endif; ?>
+
 	<?php if ( $args['see_discount'] ) : 
 		$discount = $shoppingCart->getAllDiscounts();
 		if ( $discount > 0 ) : ?>
@@ -429,11 +440,6 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	<?php if ( $args['see_total'] ) : 
 		$subtotal = tcp_format_the_price( $shoppingCart->getTotalToShow( false ) ); ?>
 		<li class="tcp_resumen_subtotal_li"><span class="tcp_resumen_subtotal"><?php _e( 'Total', 'tcp' ); ?>:</span><span class="tcp_resumen_subtotal_value"><?php echo $subtotal; ?></span></li>
-	<?php endif; ?>
-
-	<?php if ( $args['see_product_count'] ) :
-		$count = $shoppingCart->getCount(); ?>
-		<li class="tcp_resumen_count_li"><span class="tcp_resumen_count"><?php _e( 'N<sup>o</sup> products', 'tcp' ); ?>:</span><span class="tcp_resumen_count_value">&nbsp;<?php echo $count; ?></span></li>
 	<?php endif; ?>
 
 	<?php if ( $args['see_weight'] ) : 
@@ -456,7 +462,8 @@ function tcp_get_shopping_cart_summary( $args = false, $echo = true ) {
 	<?php if ( $args['see_delete_all'] ) : ?>
 		<li class="tcp_cart_widget_footer_link tcp_delete_all_link">
 			<form method="post">
-				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete', 'tcp' ); ?></span></button>
+				<button type="submit" name="tcp_delete_shopping_cart" class="tcp_delete_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>">
+					<span class="glyphicon glyphicon-trash"></span> <span class=""><?php _e( 'Delete All', 'tcp' ); ?></span></button>
 			</form>
 		</li>
 	<?php endif; ?>
@@ -1072,6 +1079,7 @@ function tcp_get_author_posts_url( $author_id, $author_nicename, $post_type = TC
 
 /**
  * Displays the wishlist button
+ *
  * @since 1.1.8
  */
 function tcp_the_add_wishlist_button( $post_id ) {
@@ -1081,14 +1089,16 @@ function tcp_the_add_wishlist_button( $post_id ) {
 
 /**
  * Display Custom Values
+ *
  * @since 1.2.8
  */
 function tcp_display_custom_values( $post_id = 0, $instance ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$defaults = array(
-		'see_label' =>  true,
-		'hide_empty_fields' => true,
-		'see_links' => false,
+		'post_type'				 => TCP_PRODUCT_POST_TYPE,
+		'see_label'				 => true,
+		'hide_empty_fields'		 => true,
+		'see_links'				 => false,
 		'selected_custom_fields' => '',
 	);
 	$instance = wp_parse_args( (array)$instance, $defaults );
@@ -1096,7 +1106,9 @@ function tcp_display_custom_values( $post_id = 0, $instance ) {
 	if ( is_array( $field_ids ) && count( $field_ids ) > 0 )  {
 		$other_values = apply_filters( 'tcp_custom_values_get_other_values', array() );
 		$template = locate_template( 'tcp_custom_fields.php' );
-		if ( strlen( $template ) == 0 ) $template = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_custom_fields.php';
+		if ( strlen( $template ) == 0 ) {
+			$template = TCP_THEMES_TEMPLATES_FOLDER . 'tcp_custom_fields.php';
+		}
 		include ( $template );
 	}
 }
@@ -1130,4 +1142,3 @@ function tcp_the_feedback_image( $class, $html = false ) { ?>
 	<?php if ( $html !== false ) echo $html; ?>
 </span>
 <?php }
-?>

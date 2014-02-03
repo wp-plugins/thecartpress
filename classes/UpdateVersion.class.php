@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPUpdateVersion' ) ) {
+if ( ! class_exists( 'TCPUpdateVersion' ) ) :
 
 class TCPUpdateVersion {
 
@@ -193,4 +193,4 @@ class TCPUpdateVersion {
 		update_option( 'tcp_version', 134 );
 	}
 }
-} // class_exists check
+endif; // class_exists check

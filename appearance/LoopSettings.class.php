@@ -24,9 +24,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPLoopSettings' ) ) :
+if ( ! class_exists( 'TCPLoopSettings' ) ) :
 
 class TCPLoopSettings {
 
@@ -87,8 +87,8 @@ $image_size				= isset( $settings['image_size' . $suffix] ) ? $settings['image_s
 $see_discount			= isset( $settings['see_discount' . $suffix] ) ? $settings['see_discount' . $suffix] : true;
 $see_stock				= isset( $settings['see_stock' . $suffix] ) ? $settings['see_stock' . $suffix] : false;
 
-$see_excerpt			= isset( $settings['see_excerpt' . $suffix] ) ? $settings['see_excerpt' . $suffix] : true;
-$excerpt_length			= isset( $settings['excerpt_length' . $suffix] ) ? $settings['excerpt_length' . $suffix] : false;
+$see_excerpt			= isset( $settings['see_excerpt' . $suffix] ) ? $settings['see_excerpt' . $suffix] : false;
+$excerpt_length			= isset( $settings['excerpt_length' . $suffix] ) ? $settings['excerpt_length' . $suffix] : 10;
 $see_content			= isset( $settings['see_content' . $suffix] ) ? $settings['see_content' . $suffix] : false;
 $see_author				= isset( $settings['see_author' . $suffix] ) ? $settings['see_author' . $suffix] : false;
 $see_price				= isset( $settings['see_price' . $suffix] ) ? $settings['see_price' . $suffix] : false;
@@ -98,7 +98,7 @@ $see_taxonomies			= isset( $settings['see_taxonomies' . $suffix] ) ? $settings['
 $see_meta_utilities		= isset( $settings['see_meta_utilities' . $suffix] ) ? $settings['see_meta_utilities' . $suffix] : false;
 $disabled_order_types	= isset( $settings['disabled_order_types' . $suffix] ) ? $settings['disabled_order_types' . $suffix] : array();
 $order_type				= isset( $settings['order_type' . $suffix] ) ? $settings['order_type' . $suffix] : 'date';
-$order_desc				= isset( $settings['order_desc' . $suffix] ) ? $settings['order_desc' . $suffix] : 'desc';
+$order_desc				= isset( $settings['order_desc' . $suffix] ) ? $settings['order_desc' . $suffix] : 'asc';
 $see_sorting_panel		= isset( $settings['see_sorting_panel' . $suffix] ) ? $settings['see_sorting_panel' . $suffix] : false;
 
 $number_columns_xs		= isset( $settings['columns_xs' . $suffix] ) ? (int)$settings['columns_xs' . $suffix] : 1; //extra small devices (phones)

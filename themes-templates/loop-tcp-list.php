@@ -27,11 +27,9 @@
 
 <?php
 $currency = tcp_the_currency( false ); 
-if ( !isset( $instance ) ) $instance = get_option( 'ttc_settings' );
-
-//Test if there is a specific configuration by post type
+if ( ! isset( $instance ) ) $instance = get_option( 'ttc_settings' );
 $suffix = '-' . get_post_type( get_the_ID() );
-if ( !isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
+if ( ! isset( $instance['title_tag' . $suffix] ) ) $suffix = '';
 
 $see_title				= isset( $instance['see_title' . $suffix] ) ? $instance['see_title' . $suffix] : true;
 $title_tag				= isset( $instance['title_tag' . $suffix] ) ? $instance['title_tag' . $suffix] : 'h2';
@@ -39,8 +37,8 @@ $see_image				= isset( $instance['see_image' . $suffix] ) ? $instance['see_image
 $image_size				= isset( $instance['image_size' . $suffix] ) ? $instance['image_size' . $suffix] : 'thumbnail';
 $see_discount			= isset( $instance['see_discount' . $suffix ] ) ? $instance['see_discount' . $suffix ] : true;
 $see_stock				= isset( $instance['see_stock' . $suffix ] ) ? $instance['see_stock' . $suffix ] : false;
-$see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : false;
-$excerpt_length			= isset( $instance['excerpt_length' . $suffix] ) ? $instance['excerpt_length' . $suffix] : 10;
+$see_excerpt			= isset( $instance['see_excerpt' . $suffix] ) ? $instance['see_excerpt' . $suffix] : true;
+$excerpt_length			= isset( $instance['excerpt_length' . $suffix] ) ? $instance['excerpt_length' . $suffix] : false;
 $see_content			= isset( $instance['see_content' . $suffix] ) ? $instance['see_content' . $suffix] : false;
 $see_price				= isset( $instance['see_price' . $suffix] ) ? $instance['see_price' . $suffix] : false;
 $see_buy_button			= isset( $instance['see_buy_button' . $suffix] ) ? $instance['see_buy_button' . $suffix] : true;
@@ -78,71 +76,30 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 		tcp_the_az_panel( $see_az_name );
 	} ?>
 
-	<div class="tcp-product-grid row">
-	<?php /* Start the Loop.*/
-	$class = array(
-		'tcp_' . $number_columns . '_cols',
-		'col-xs-' . (int)(12 / $number_columns_xs ),
-		'col-sm-' . (int)(12 / $number_columns_sm ),
-		'col-md-' . (int)(12 / $number_columns ),
-		'col-lg-' . (int)(12 / $number_columns_lg ),
-	);
+	<div class="tcp-product-ls">
+	<?php while ( have_posts() ) : the_post(); ?>
 
-	$tcp_col = 0;
-	$tcp_col_xs = 0;
-	$tcp_col_sm = 0;
-	$tcp_col_lg = 0;
+		<div class="tcp-product-<?php the_ID(); ?> tcp_col media">
 
-	while ( have_posts() ) : the_post();
-		if ( $tcp_col >= $number_columns ) {
-			$tcp_col = 0; ?>
-		<div class="clearfix visible-md"></div>
-		<?php }
 
-		if ( $tcp_col_xs >= $number_columns_xs ) {
-			$tcp_col_xs = 0; ?>
-		<div class="clearfix visible-xs"></div>
-		<?php }
+				<?php if ( $see_image ) : ?>
+						<?php if (has_post_thumbnail()) :  ?>
+									<div class="entry-post-thumbnail pull-left">
+										<a class="media-objet tcp_size-<?php echo $image_size;?> media-object" href="<?php the_permalink(); ?>"><?php if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail($image_size); ?></a>
+									</div><!-- .entry-post-thumbnail -->
+						<?php else : ?>
+								<div class="entry-post-thumbnail tcp-no-image pull-left">
+									<a class="media-objet tcp_size-<?php echo $image_size;?>" href="<?php the_permalink(); ?>"><img src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="" width="" height="" /></a>
+								</div><!-- .entry-post-thumbnail -->
+						<?php endif; ?>	
+				<?php endif; ?>
 
-		if ( $tcp_col_sm >= $number_columns_sm ) {
-			$tcp_col_sm = 0; ?>
-		<div class="clearfix visible-sm"></div>
-		<?php }
 
-		if ( $tcp_col_lg >= $number_columns_lg ) {
-			$tcp_col_lg = 0; ?>
-		<div class="clearfix visible-lg"></div>
-		<?php }
-
-		$tcp_col++;
-		$tcp_col_xs++;
-		$tcp_col_sm++;
-		$tcp_col_lg++; ?>
-
-		<div class="tcp-product-<?php the_ID(); ?> tcp_col tcp_col_<?php echo $tcp_col; ?> tcp_col_xs_<?php echo $tcp_col_xs; ?> <?php echo implode( ' ', $class ); ?>">
-
-			<div class="tcp-grid-item">
-
-				<?php if ( tcp_has_post_thumbnail() ) :  ?>
-					<?php if ( $see_image ) : ?>
-						<div class="tcp-product-thumbnail">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>">
-								<?php tcp_the_thumbnail( get_the_ID(), 0, 0, $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
-								<?php //if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
-							</a>
-						</div><!-- .tcp-product-thumbnail -->
-					<?php endif; ?>
-				<?php else : ?>
-					<?php if ( $see_image ) : ?>
-						<div class="tcp-product-thumbnail tcp-no-image">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>"><img class="img-responsive" src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="<?php the_title(); ?>" /></a>
-						</div><!-- .tcp-product-thumbnail -->
-					<?php endif; ?>
-				<?php endif; ?>	 
+			<div class="media-body">
 
 				<?php if ( $see_title ) : ?>
 					<div class="tcp-product-title">
-					<?php echo $title_tag;?><a href="<?php tcp_the_permalink( );?>"><?php the_title(); ?></a>
+					<?php echo $title_tag;?><a href="<?php the_permalink( );?>"><?php the_title(); ?></a>
 					<?php echo $title_end_tag;?>
 					</div><!-- .tcp-product-title -->
 				<?php endif; ?>
@@ -175,8 +132,9 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 						endif; ?>
 				<?php endif; ?>
 
-				<?php if ( function_exists( 'sharing_display' ) ) remove_filter( 'the_content', 'sharing_display', 19 ); ?>
-				<?php if ( function_exists( 'sharing_display' ) ) remove_filter( 'the_excerpt', 'sharing_display', 19 ); ?>
+					<?php 
+						remove_filter( 'the_excerpt', 'sharing_display',19 );
+					?>
 
 				<?php if ( $see_excerpt ) : ?>
 					<div class="tcp-product-summary">
@@ -197,12 +155,6 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 					</div>
 				<?php endif;?>
 
-				<?php if ( $see_first_custom_area ) : ?>
-					<div class="tcp-product-jetpackshare clearfix">
-						<?php if ( function_exists( 'sharing_display' ) ) echo sharing_display(); ?>
-					</div>
-				<?php endif;?>
-
 				<?php if ( $see_content ) : ?>
 					<div class="tcp-product-content">
 						<?php the_content( __( 'More <span class="meta-nav">&rarr;</span>', 'tcp' ) ); ?>
@@ -210,6 +162,14 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 					</div><!-- .tcp-product-content -->
 				<?php endif; ?>
 
+				<?php if ( $see_jetpack_sharing ) : ?>
+					<div class="tcp-product-jetpackshare clearfix">
+						<?php if ( function_exists( 'sharing_display' ) ) {
+						    sharing_display( '', true );
+						}
+ 						?>
+					</div>
+				<?php endif;?>
 				<div class="tcp-product-meta">
 
 				<?php if ( $see_author ) :?>
@@ -262,9 +222,15 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 						</span>
 					</div><!-- tcp-product-taxonomies -->
 				<?php endif;?>
+
+
+
+				<?php if ( $see_first_custom_area ) : ?>
+				<?php endif;?>
+
 				</div><!-- .tcp-product-meta -->
 				<?php do_action( 'tcp_after_loop_tcp_grid_item', get_the_ID() ); ?>
-			</div><!-- grid-item -->
+			</div><!-- media-body -->
 		</div><!-- .tcp-product -->
 <?php endwhile; // End the loop ?>
 

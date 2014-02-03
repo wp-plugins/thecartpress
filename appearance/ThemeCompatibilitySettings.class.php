@@ -24,9 +24,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPThemeCompatibilitySettings' ) ) :
+if ( ! class_exists( 'TCPThemeCompatibilitySettings' ) ) :
 
 class TCPThemeCompatibilitySettings {
 
@@ -189,11 +189,12 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 			<select id="current_post_type" name="current_post_type">
 				<option value="" <?php selected( true, $current_post_type ); ?>><?php _e( 'Default', 'tcp'); ?></option>
 				<?php foreach( $post_types as $i => $post_type ) : 
-					$existe = $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, 'false' ) !== 'false'; ?>
+					//$existe = $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, 'false' ) !== 'false';
+					$existe = $thecartpress->get_setting( 'image_size_content-' . $i, 'false' ) !== 'false'; ?>
 				<option value="<?php echo $i; ?>" <?php selected( $i, $current_post_type ); ?>
 				<?php if ( $existe ) : ?> style="font-weight: bold;"<?php endif; ?>
 				>
-				<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
+				<?php echo $post_type->labels->singular_name; ?><?php if ( $thecartpress->get_setting( 'image_size_content-' . $i, false ) !== false ) : ?> (*)<?php endif; ?>
 				<?php if ( $existe ) : ?> *<?php endif; ?>
 				</option>
 				<?php endforeach; ?>
@@ -203,7 +204,7 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 		</p>
 		<?php $config = '';
 		foreach( $post_types as $i => $post_type ) {
-			if ( $thecartpress->get_setting( 'image_size_grouped_by_button-' . $i, false ) !== false ) {
+			if ( $thecartpress->get_setting( 'image_size_content-' . $i, false ) !== false ) {
 				$line = '<li>' . $post_type->labels->singular_name;
 				$line .= ': <a href="' . add_query_arg( 'current_post_type', $i ) . '">' . __( 'Load settings', 'tcp' ) . '</span></a>';
 				$line .= '</li>';
@@ -228,6 +229,8 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 	</td>
 </tr>
 
+<?php $image_sizes = get_intermediate_image_sizes(); ?>
+
 <tr valign="top">
 	<th scope="row">
 	<label for="image_size_grouped_by_button"><?php _e( 'Image size grouped buy button', 'tcp' ); ?></label>
@@ -235,7 +238,9 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 	<td>
 		<select id="image_size_grouped_by_button" name="image_size_grouped_by_button">
 			<option value="none" <?php selected( 'none', $image_size_grouped_by_button ); ?>><?php _e( 'No image', 'tcp' ); ?></option>
-			<option value="thumbnail" <?php selected( 'thumbnail', $image_size_grouped_by_button ); ?>><?php _e( 'Thumbnail', 'tcp' ); ?></option>
+			<?php foreach( $image_sizes as $image_size ) : ?>
+			<option value="<?php echo $image_size; ?>" <?php selected( $image_size, $image_size_grouped_by_button ); ?>><?php echo $image_size; ?></option>
+			<?php endforeach; ?>
 			<option value="64" <?php selected( '64', $image_size_grouped_by_button ); ?>><?php _e( '64x64', 'tcp' ); ?></option>
 			<option value="48" <?php selected( '48', $image_size_grouped_by_button ); ?>><?php _e( '48x48', 'tcp' ); ?></option>
 			<option value="32" <?php selected( '32', $image_size_grouped_by_button ); ?>><?php _e( '32x32', 'tcp' ); ?></option>
@@ -249,7 +254,6 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 	<label for="image_size_content"><?php _e( 'Image size in content', 'tcp' ); ?></label>
 	</th>
 	<td>
-		<?php $image_sizes = get_intermediate_image_sizes(); ?>
 		<select id="image_size_content" name="image_size_content">
 		<?php foreach( $image_sizes as $image_size ) : ?>
 			<option value="<?php echo $image_size; ?>" <?php selected( $image_size, $image_size_content ); ?>><?php echo $image_size; ?></option>

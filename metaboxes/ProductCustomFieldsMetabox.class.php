@@ -114,11 +114,12 @@ class ProductCustomFieldsMetabox {
 ?>
 <ul class="subsubsub">
 <?php $separator = '';
-
-foreach( $links as $link ) {
-	echo $separator; ?>
-	<li><a href="<?php echo $link['url']; ?>" title="<?php echo $link['title']; ?>"><?php echo $link['label']; ?></a></li>
-	<?php if ( $separator == '' ) $separator = '<li>|</li>';
+if ( is_array( $links ) && count( $links ) > 0 ) {
+	foreach( $links as $link ) {
+		echo $separator; ?>
+		<li><a href="<?php echo $link['url']; ?>" title="<?php echo $link['title']; ?>"><?php echo $link['label']; ?></a></li>
+		<?php if ( $separator == '' ) $separator = '<li>|</li>';
+	}
 } ?>
 </ul>
 <div class="clear"></div>

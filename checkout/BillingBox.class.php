@@ -27,9 +27,9 @@
 */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPBillingBox' ) ) :
+if ( ! class_exists( 'TCPBillingBox' ) ) :
 
 require_once( TCP_CHECKOUT_FOLDER	. 'TCPCheckoutBox.class.php' );
 require_once( TCP_CLASSES_FOLDER	. 'CustomForms.class.php' );
@@ -438,10 +438,10 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'error'		=> __( 'The billing City field must be completed', 'tcp' ),
 			),
 			'billing_street'		=> array(
-				'label'		=> __( 'Address', 'tcp' ),
+				'label'		=> __( 'Address 1', 'tcp' ),
 				'required'	=> true,
 				'input'		=> 'text',
-				'error'		=> __( 'The billing Street field must be completed', 'tcp' ),
+				'error'		=> __( 'The billing Address field must be completed', 'tcp' ),
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,
@@ -452,7 +452,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				'label'		=> __( 'Address 2', 'tcp' ),
 				'required'	=> false,
 				'input'		=> 'text',
-				'error'		=> __( 'The billing Street 2 field must be completed', 'tcp' ),
+				//'error'		=> __( 'The billing Street 2 field must be completed', 'tcp' ),
 				'attrs'		=> array(
 					'size'		=> 20,
 					'maxlength'	=> 255,

@@ -44,6 +44,8 @@ class CustomValuesWidget extends TCPParentWidget {
 		ob_start();
 		tcp_display_custom_values( 0, $instance );
 		$html = ob_get_clean();
+		
+		// If exists contents, then output it
 		if ( strlen( $html ) > 0 ) {
 			echo $before_widget;
 			$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
@@ -68,12 +70,11 @@ class CustomValuesWidget extends TCPParentWidget {
 		parent::form( $instance );
 
 		$defaults = array(
-			'post_type' => 'tcp_product',
-			'see_label' =>  true,
-			'hide_empty_fields' => true,
-			'see_links' => false,
+			'see_label'				 => true,
+			'hide_empty_fields'		 => true,
+			'see_links'				 => false,
 			'selected_custom_fields' => '',
-			'post_type' => TCP_PRODUCT_POST_TYPE,
+			'post_type'				 => TCP_PRODUCT_POST_TYPE,
 		);
 		$instance				= wp_parse_args( (array)$instance, $defaults );
 
@@ -103,7 +104,7 @@ class CustomValuesWidget extends TCPParentWidget {
 <p>
 	<label for="<?php echo $tcp_custom_fields; ?>"><?php _e( 'Custom Fields', 'tcp' ); ?>:</label>
 	<select id="<?php echo $tcp_custom_fields; ?>">
-	<?php $custom_fields_def = tcp_get_custom_fields_def();
+	<?php $custom_fields_def = tcp_get_custom_fields_def( $instance['post_type'] );
 	foreach( $custom_fields_def as $i => $def ) { ?>
 		<option value="custom_field-<?php echo $def['id']; ?>"><?php echo esc_attr( $def['label'] ); ?></option>
 	<?php } ?>
@@ -134,7 +135,7 @@ class CustomValuesWidget extends TCPParentWidget {
 <?php $field_ids = explode( ',', $instance['selected_custom_fields'] );
 foreach( $field_ids as $field_id ) {
 	if ( substr( $field_id, 0, 12 ) == 'custom_field' ) {
-		$field_def = tcp_get_custom_field_def( substr( $field_id, 13 ) );
+		$field_def = tcp_get_custom_field_def( substr( $field_id, 13 ), $instance['post_type'] );
 		if ( $field_def != false ) { ?>
 	<li id="custom_field-<?php echo $field_def['id']; ?>"><?php echo $field_def['label']; ?> <a href="#" class="tcp_custom_value_remove" onclick="return tcp_remove_field( 'custom_field-<?php echo $field_def['id']; ?>', 'input#<?php echo $tcp_selected_custom_fields; ?>' );"> <?php _e( 'remove', 'tcp' ); ?></a></li>
 		<?php }

@@ -17,13 +17,13 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'OrdersListTable' ) ) {
+if ( ! class_exists( 'TCPOrdersListTable' ) ) :
 
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
-class OrdersListTable extends WP_List_Table {
+class TCPOrdersListTable extends WP_List_Table {
 
 	function __construct() {
 		parent::__construct( array(
@@ -40,11 +40,12 @@ class OrdersListTable extends WP_List_Table {
 	}
 
 	function prepare_items() {
-		if ( ! is_user_logged_in() ) return;
-		$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
-		$search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
-		$per_page = apply_filters( 'tcp_orders_per_page', 15 );
-		$paged = $this->get_pagenum();
+		if ( !is_user_logged_in() ) return;
+
+		$status		= isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
+		$search_by	= isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
+		$per_page	= apply_filters( 'tcp_orders_per_page', 15 );
+		$paged		= $this->get_pagenum();
 		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			//$search_by //TODO
 			$this->items = Orders::getOrdersEx( $paged, $per_page, $status );
@@ -204,7 +205,7 @@ class OrdersListTable extends WP_List_Table {
 class TCPOrdersList {
 	function show( $echo = true ) {
 		ob_start();
-		$ordersListTable = new OrdersListTable();
+		$ordersListTable = new TCPOrdersListTable();
 		$ordersListTable->prepare_items(); ?>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
@@ -220,4 +221,4 @@ class TCPOrdersList {
 		return $out;
 	}
 }
-} // class_exists check
+endif; // class_exists check

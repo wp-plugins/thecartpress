@@ -411,7 +411,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 				'error'		=> __( 'The shipping City field must be completed', 'tcp' ),
 			),
 			'shipping_street'		=> array(
-				'label'		=> __( 'Address', 'tcp' ),
+				'label'		=> __( 'Address 1', 'tcp' ),
 				'required'	=> true,
 				'input'		=> 'text',
 				'error'		=> __( 'The shipping Street field must be completed', 'tcp' ),

@@ -42,19 +42,19 @@ class TCPShoppingCartPage {
 		$shoppingCart = TheCartPress::getShoppingCart();
 		require_once( TCP_CLASSES_FOLDER . 'CartTable.class.php' );
 		require_once( TCP_CLASSES_FOLDER . 'CartSourceSession.class.php' );
-		ob_start();
-?><div class="tcp_shopping_cart_page tcpf">
+		ob_start(); ?>
+<div class="tcp_shopping_cart_page tcpf">
 
-<?php //Display Empty Shopping Cart messages
+<?php // Display Empty Shopping Cart messages
 if ( $shoppingCart->isEmpty() ) {
 	echo '<span class="tcp_shopping_cart_empty">', __( 'The cart is empty', 'tcp' ), '</span>';
 
-	//If exists one, or more, templates associated
+	// If exists one, or more, templates associated
 	tcp_do_template( 'tcp_shopping_cart_empty' );
 
 	do_action( 'tcp_shopping_cart_empty' );
 
-//Displaying messages before Shopping Cart
+// Displaying messages before Shopping Cart
 } else { ?>
 	<div id="shopping_cart">
 		<p class="tcp_shopping_cart_notice">

@@ -250,12 +250,12 @@ if ( $source->has_order_details() ) :
 				<?php ob_start(); ?>
 				<div class="form-group">
 					<label class="sr-only" for="tcp_count-<?php echo $order_detail->get_post_id();?>"><?php _e( 'Units', 'tcp' ); ?></label>
-					<input type="number" name="tcp_count" id="tcp_count-<?php echo $order_detail->get_post_id();?>" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count form-control" min="0" step="1"/>
+					<input type="number" name="tcp_count" id="tcp_count-<?php echo $order_detail->get_post_id();?>" value="<?php echo $order_detail->get_qty_ordered(); ?>" size="2" maxlength="4" class="tcp_count form-control input-sm" min="0" step="1"/>
 				</div>
 
-				<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
+				<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
 				<?php echo apply_filters( 'tcp_shopping_cart_page_units', ob_get_clean(), $order_detail ); ?>
-				<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-default tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete', 'tcp' ); ?></span></button>
+				<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Delete', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete', 'tcp' ); ?></span></button>
 				<?php do_action( 'tcp_cart_units', $order_detail ); ?>
 			</form>
 		<?php endif; ?>
@@ -330,4 +330,4 @@ if ( $source->has_order_details() ) :
 </table>
 <?php if ( $source->see_comment() && strlen( $source->get_comment() ) > 0 ) : ?>
 	<p class="tcp_comment"><?php echo $source->get_comment(); ?></p>
-<?php endif; ?>
+<?php endif;

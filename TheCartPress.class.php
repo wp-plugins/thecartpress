@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.4.2
+Version: 1.3.4.3
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -298,7 +298,7 @@ class TheCartPress {
 			$mofile = sprintf( '%1$s-%2$s.mo', 'tcp', $locale );
 
 			// Setup paths to current locale file
-			$mofile_local	= plugin_dir_path( __FILE__ ) . '/languages/' . $mofile;
+			$mofile_local	= plugin_dir_path( __FILE__ ) . 'languages/' . $mofile;
 			$mofile_global	= WP_LANG_DIR . '/thecartpress/' . $mofile;
 
 			// Look in global /wp-content/languages/bbpress folder
@@ -324,7 +324,8 @@ class TheCartPress {
 
 		//TheCartPress can be used as a catalogue, disabling all ecommerces features
 		if ( ! $this->get_setting( 'disable_ecommerce', false ) ) {
-			//to check the plugin, if core pages have been removed...
+			
+			//To check the plugin, if core pages have been removed...
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) ); 
 
 			//default notices
@@ -367,8 +368,12 @@ class TheCartPress {
 			unset( $_REQUEST['tcp_add_to_shopping_cart'] );
 			if ( ! isset( $_REQUEST['tcp_post_id'] ) ) return;
 			$shoppingCart = TheCartPress::getShoppingCart();
-			if ( ! is_array( $_REQUEST['tcp_post_id'] ) ) $_REQUEST['tcp_post_id'] = (array)$_REQUEST['tcp_post_id'];
-			if ( ! is_array( $_REQUEST['tcp_count'] ) ) $_REQUEST['tcp_count'] = (array)$_REQUEST['tcp_count'];
+			if ( ! is_array( $_REQUEST['tcp_post_id'] ) ) {
+				$_REQUEST['tcp_post_id'] = (array)$_REQUEST['tcp_post_id'];
+			}
+			if ( ! is_array( $_REQUEST['tcp_count'] ) ) {
+				$_REQUEST['tcp_count'] = (array)$_REQUEST['tcp_count'];
+			}
 			do_action( 'tcp_before_add_shopping_cart', $_REQUEST['tcp_post_id'] );
 			for( $i = 0; $i < count( $_REQUEST['tcp_post_id'] ); $i++ ) {
 				$count = isset( $_REQUEST['tcp_count'][$i] ) ? (int)$_REQUEST['tcp_count'][$i] : 0;
@@ -561,17 +566,21 @@ class TheCartPress {
 	function admin_notices() {
 		$warnings = array();
 		$page_id = get_option( 'tcp_shopping_cart_page_id' );
-		if ( ! $page_id || ! get_page( $page_id ) )
+		if ( ! $page_id || ! get_page( $page_id ) ) {
 			$warnings[] = __( 'The <strong>Shopping Cart page</strong> has been deleted.', 'tcp' );
+		}
 		$page_id = get_option( 'tcp_checkout_page_id' );
-		if ( ! $page_id || ! get_page( $page_id ) )
+		if ( ! $page_id || ! get_page( $page_id ) ) {
 			$warnings[] = __( 'The <strong>Checkout page</strong> has been deleted.', 'tcp' );
+		}
 		$page_id = get_option( 'tcp_my_account_page_id' );
-		if ( ! $page_id || ! get_page( $page_id ) )
+		if ( ! $page_id || ! get_page( $page_id ) ) {
 			$warnings[] = __( 'My Account page has been deleted', 'tcp' );
+		}
 		$page_id = get_option( 'tcp_catalogue_page_id' );
-		if ( ! $page_id || ! get_page( $page_id ) )
+		if ( ! $page_id || ! get_page( $page_id ) ) {
 			$warnings[] = __( 'Catalogue page has been deleted', 'tcp' );
+		}
 		$warnings = apply_filters( 'tcp_check_the_plugin', $warnings );
 		if ( count( $warnings ) > 0 ) : 
 			$checking_path = TCP_ADMIN_PATH . 'Checking.php'; ?>
@@ -719,39 +728,46 @@ class TheCartPress {
 	 * @uses do_action (tcp_admin_menu)
 	 */
 	function admin_menu() {
-		if ( ! $this->get_setting( 'disable_ecommerce' ) ) {
-			$base = $this->get_base();
+
+		// TheCartPress
+		$base = $this->get_base();
+		if ( !$this->get_setting( 'disable_ecommerce' ) ) {	
 			add_menu_page( '', 'theCartPress', 'tcp_read_orders', $base, '', plugins_url( '/images/tcp.png', __FILE__ ), 40 );
-				add_submenu_page( $base, __( 'Orders', 'tcp' ), __( 'Orders', 'tcp' ), 'tcp_read_orders', $base );
-				if ( ! $this->get_setting( 'hide_downloadable_menu' ) ) {
-					add_submenu_page( $base, __( 'My Downloads', 'tcp' ), __( 'My Downloads', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'DownloadableList.php' );
-				}
-				add_submenu_page( $base	, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressesList.php' );
-				add_submenu_page( $base	, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', TCP_ADMIN_FOLDER . 'TaxesList.php' );
-				add_submenu_page( $base	, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'RelatedCats.php' );
-				add_submenu_page( $base	, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
-				add_submenu_page( 'tcp', __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'OrderEdit.php' );
-				add_submenu_page( 'tcp', __( 'list of Assigned products', 'tcp' ), __( 'list of Assigned products', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedProductsList.php' );
-				add_submenu_page( 'tcp', __( 'list of Assigned categories', 'tcp' ), __( 'list of Assigned categories', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedCategoriesList.php' );
-				add_submenu_page( 'tcp', __( 'Plugin editor', 'tcp' ), __( 'Plugin editor', 'tcp' ), 'tcp_edit_plugins', TCP_ADMIN_FOLDER . 'PluginEdit.php' );
-				add_submenu_page( 'tcp', __( 'Address editor', 'tcp' ), __( 'Address editor', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressEdit.php' );
-				add_submenu_page( 'tcp', __( 'Upload files', 'tcp' ), __( 'Upload files', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'UploadFiles.php' );
-				add_submenu_page( 'tcp', __( 'Files', 'tcp' ), __( 'Files', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'FilesList.php' );
-				add_submenu_page( 'tcp', __( 'Downloadable products', 'tcp' ), __( 'Downloadable products', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'VirtualProductDownloader.php' );
-				add_submenu_page( 'tcp', __( 'TheCartPress checking', 'tcp' ), __( 'TheCartPress checking', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'Checking.php' );
+			add_submenu_page( $base, __( 'Orders', 'tcp' ), __( 'Orders', 'tcp' ), 'tcp_read_orders', $base );
+			if ( ! $this->get_setting( 'hide_downloadable_menu' ) ) {
+				add_submenu_page( $base, __( 'My Downloads', 'tcp' ), __( 'My Downloads', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'DownloadableList.php' );
+			}
+			add_submenu_page( $base	, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressesList.php' );
+			add_submenu_page( $base	, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', TCP_ADMIN_FOLDER . 'TaxesList.php' );
+			
+			add_submenu_page( $base	, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
+			add_submenu_page( 'tcp' , __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'OrderEdit.php' );
+			add_submenu_page( 'tcp' , __( 'Plugin editor', 'tcp' ), __( 'Plugin editor', 'tcp' ), 'tcp_edit_plugins', TCP_ADMIN_FOLDER . 'PluginEdit.php' );
+			add_submenu_page( 'tcp' , __( 'Address editor', 'tcp' ), __( 'Address editor', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressEdit.php' );
+			add_submenu_page( 'tcp' , __( 'Upload files', 'tcp' ), __( 'Upload files', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'UploadFiles.php' );
+			add_submenu_page( 'tcp' , __( 'Files', 'tcp' ), __( 'Files', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'FilesList.php' );
+			add_submenu_page( 'tcp' , __( 'Downloadable products', 'tcp' ), __( 'Downloadable products', 'tcp' ), 'tcp_downloadable_products', TCP_ADMIN_FOLDER . 'VirtualProductDownloader.php' );
+			add_submenu_page( 'tcp' , __( 'TheCartPress checking', 'tcp' ), __( 'TheCartPress checking', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'Checking.php' );
 		}
+
+		add_submenu_page( $base	, __( 'Related Categories', 'tcp' ), __( 'Related Categories', 'tcp' ), 'tcp_edit_products', TCP_ADMIN_FOLDER . 'RelatedCats.php' );
+		add_submenu_page( 'tcp' , __( 'list of Assigned products', 'tcp' ), __( 'list of Assigned products', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedProductsList.php' );
+		add_submenu_page( 'tcp' , __( 'list of Assigned categories', 'tcp' ), __( 'list of Assigned categories', 'tcp' ), 'tcp_edit_product', TCP_ADMIN_FOLDER . 'AssignedCategoriesList.php' );
+
+		// Settings
 		$base = $this->get_base_settings();
 		add_menu_page( '', __( 'Settings', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( 'images/tcp.png', __FILE__ ), 41 );
 
+		// Tools
 		$base = $this->get_base_tools();
 		add_menu_page( '', __( 'Tools', 'tcp' ), 'tcp_edit_products', $base, '', plugins_url( 'images/tcp.png', __FILE__ ), 43 );
-			add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
-			add_submenu_page( $base, __( 'Manage post types', 'tcp' ), __( 'Manage post types', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeList.php' );
-			add_submenu_page( $base, __( 'Manage taxonomies', 'tcp' ), __( 'Manage taxonomies', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyList.php' );
-			add_submenu_page( 'tcp', __( 'Post Type Editor', 'tcp' ), __( 'Post Type Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeEdit.php' );
-			add_submenu_page( 'tcp', __( 'Taxonomy Editor', 'tcp' ), __( 'Taxonomy Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyEdit.php' );
+		add_submenu_page( $base, __( 'Shortcodes Generator', 'tcp' ), __( 'Shortcodes', 'tcp' ), 'tcp_shortcode_generator', $base );
+		add_submenu_page( $base, __( 'Manage post types', 'tcp' ), __( 'Manage post types', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeList.php' );
+		add_submenu_page( $base, __( 'Manage taxonomies', 'tcp' ), __( 'Manage taxonomies', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyList.php' );
+		add_submenu_page( 'tcp', __( 'Post Type Editor', 'tcp' ), __( 'Post Type Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'PostTypeEdit.php' );
+		add_submenu_page( 'tcp', __( 'Taxonomy Editor', 'tcp' ), __( 'Taxonomy Editor', 'tcp' ), 'manage_options', TCP_ADMIN_FOLDER . 'TaxonomyEdit.php' );
 
-		//To allow to add 'admin_menu' actions to TheCartPress plugins o modules (since 1.3.2)
+		// To allow to add 'admin_menu' actions. Used by TheCartPress plugins or modules (since 1.3.2)
 		do_action( 'tcp_admin_menu', $this );
 	}
 
@@ -893,21 +909,24 @@ class TheCartPress {
 	}
 
 	function activate_plugin() {
-		//resetting session
+		// Resetting session
 		tcp_session_start();
 		unset( $_SESSION['tcp_session'] );
 
 		update_option( 'tcp_rewrite_rules', true );
 
 		global $wp_version;
-		if ( version_compare( $wp_version, '3.0', '<' ) )
+		if ( version_compare( $wp_version, '3.0', '<' ) ) {
 			exit( __( 'TheCartPress requires WordPress version 3.0 or newer.', 'tcp' ) );
-		//Creating nee roles
+		}
+
+		// Creating new roles
 		require_once( TCP_CLASSES_FOLDER 	. 'Roles.class.php' );
-		//Creating database
+
+		// Creating database
 		require_once( TCP_DAOS_FOLDER		. 'manage_daos.php' );
 
-		//Check for Shopping Cart page
+		// Check for Shopping Cart page
 		$shopping_cart_page_id = get_option( 'tcp_shopping_cart_page_id' );
 		if ( ! $shopping_cart_page_id || ! get_page( $shopping_cart_page_id ) ) {
 			$shopping_cart_page_id = TheCartPress::createShoppingCartPage();
@@ -915,7 +934,7 @@ class TheCartPress {
 			wp_publish_post( (int)$shopping_cart_page_id );
 		}
 
-		//Check for Checkout page
+		// Check for Checkout page
 		$page_id = get_option( 'tcp_checkout_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCheckoutPage( $shopping_cart_page_id );
@@ -923,7 +942,7 @@ class TheCartPress {
 			wp_publish_post( (int)$page_id );
 		}
 
-		//Check for Catalogue page
+		// Check for Catalogue page
 		$page_id = get_option( 'tcp_catalogue_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::createCataloguePage();
@@ -931,17 +950,18 @@ class TheCartPress {
 			wp_publish_post( (int)$page_id );
 		}
 
-		//Check for Page My Account
+		// Check for Page My Account
 		$page_id = get_option( 'tcp_my_account_page_id' );
 		if ( ! $page_id || ! get_page( $page_id ) ) {
 			TheCartPress::create_my_account_page();
 		} else {
 			wp_publish_post( (int)$page_id );
 		}
-		//Adding tcp_product, and its taxonomies, to custom post types engine
+		// Adding tcp_product, and its taxonomies, to custom post types engine
 		ProductCustomPostType::create_default_custom_post_type_and_taxonomies();
 		$this->load_custom_post_types_and_custom_taxonomies();
-		//initial shipping and payment method
+
+		// initial shipping and payment method
 		add_option( 'tcp_plugins_data_shi_FreeTrans', array(
 			array(
 				'title'				=> __( 'Free transport', 'tcp' ),
@@ -965,7 +985,8 @@ class TheCartPress {
 				'percentage'		=> 5,
 			),
 		) );
-		//default shortcode: "all products"
+
+		// Default shortcode: "all products"
 		if ( ! get_option( 'tcp_shortcodes_data' ) )
 			add_option( 'tcp_shortcodes_data', array( array(
 				'id'					=> 'all_products',
@@ -1019,7 +1040,8 @@ class TheCartPress {
 			add_option( 'tcp_settings', $this->settings );
 		}
 		TheCartPress::createExampleData();
-		//Activating new version details screen (to display new version help screen)
+
+		// Activating new version details screen (to display new version help screen)
 		set_transient( '_tcp_new_version_activated', true, 60 * 60 );
 	}
 
@@ -1294,6 +1316,24 @@ function thecartpress() {
 	return TheCartPress::instance();
 }
 
+if ( !function_exists( 'tcp_error_log' ) ) {
+	function tcp_error_log( $log )  {
+		if ( true === WP_DEBUG ) {
+			if ( is_array( $log ) || is_object( $log ) ) {
+				$error = print_r( $log, true ) . "\n";
+			} else {
+				$error = $log . "\n";
+			}
+			error_log( $error, 3, dirname( __FILE__ ) . '/tcp_log.php' );
+		}
+	}
+}
+
+/*add_action( 'activated_plugin', 'save_error' );
+function save_error() {
+	tcp_error_log( ob_get_contents() );
+}*/
+
 /**
  * Hook TheCartPress early into the 'plugins_loaded' action.
  *
@@ -1304,7 +1344,7 @@ function thecartpress() {
 if ( defined( 'THECARTPRESS_LATE_LOAD' ) ) {
 	add_action( 'plugins_loaded', 'thecartpress', (int)THECARTPRESS_LATE_LOAD );
 } else {
-	$GLOBALS['thecartpress'] = &thecartpress();
+	$GLOBALS['thecartpress'] = thecartpress();
 }
 
 /*add_action('activated_plugin','save_error');

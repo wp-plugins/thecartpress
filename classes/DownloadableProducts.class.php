@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPDownloadableProducts' ) ) {
+if ( ! class_exists( 'TCPDownloadableProducts' ) ) :
 
 class TCPDownloadableProducts {
 
@@ -303,4 +303,4 @@ function tcp_get_the_days_to_expire( $post_id = 0 ) {
 	$days_to_expire = (int)get_post_meta( $post_id, 'tcp_days_to_expire', true );
 	return apply_filters( 'tcp_get_the_days_to_expire', $days_to_expire, $post_id );
 }
-} // class_exists check
+endif; // class_exists check

@@ -58,7 +58,7 @@ class OrdersDetails {
 	static function getTotal( $order_id, $total = 0 ) {
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
-		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		$res =  $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
 			if ( $row->tax == 0 ) {
 				$price = $row->price * $row->qty_ordered;

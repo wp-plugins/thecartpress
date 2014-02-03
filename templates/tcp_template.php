@@ -890,6 +890,7 @@ function tcp_the_excerpt( $post_id = 0, $length = 0 ) {
  */
 function tcp_get_the_excerpt( $post_id = 0, $length = 0 ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$post_id = tcp_get_current_id( $post_id );
 	$post = get_post( $post_id );
 	$text = $post->post_excerpt;
 	$text = apply_filters( 'the_excerpt', $text );

@@ -2569,7 +2569,7 @@ msgstr "%s (sin registrar)"
 
 #: admin/OrderEdit.php:266
 msgid "Shipping method"
-msgstr "Métodosde envío"
+msgstr "Métodos de envío"
 
 #: admin/OrderEdit.php:269
 msgid "Payment method"

@@ -52,7 +52,7 @@ class Orders {
 			`payment_notice`		text				NOT NULL,
 			`transaction_id`		varchar(255)		NOT NULL default \'\',
 			`comment`				text				NOT NULL,
-			`comment_internal`		text				NOT NULL default \'\',
+			`comment_internal`		text				NOT NULL,
 			`code_tracking`			varchar(50)			NOT NULL,
 			`shipping_firstname`	varchar(255)		NOT NULL,
 			`shipping_lastname`		varchar(255)		NOT NULL,
@@ -254,13 +254,13 @@ class Orders {
 		return $wpdb->get_results( $sql );
 	}
 
-	static function getOrdersExDetails( $status, $from, $to, $customer_id = -1 ) {
+	static function getOrdersExDetails( $status = '', $from = '', $to = '', $customer_id = -1 ) {
 		global $wpdb;
-		$sql = 'select * from ' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details od on (o.order_id = od.order_id) where 1=1';
-		if ( strlen( $status ) > 0 ) $sql .= $wpdb->prepare( ' and status = %s', $status );
-		$sql .= $wpdb->prepare( ' and created_at >= %s', $from );
-		$sql .= $wpdb->prepare( ' and created_at <= %s', $to );
-		if ( $customer_id > -1 ) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
+		$sql = 'select * from ' . $wpdb->prefix . 'tcp_orders o left join ' . $wpdb->prefix . 'tcp_orders_details od on (o.order_id = od.order_id) where 1';
+		if ( strlen( $status ) > 0	) $sql .= $wpdb->prepare( ' and status = %s', $status );
+		if ( strlen( $from ) > 0	) $sql .= $wpdb->prepare( ' and created_at >= %s', $from );
+		if ( strlen( $to ) > 0		) $sql .= $wpdb->prepare( ' and created_at <= %s', $to );
+		if ( $customer_id > -1		) $sql .= $wpdb->prepare( ' and customer_id = %d', $customer_id );
 		$sql .= ' order by created_at desc';
 		$sql = apply_filters( 'get_orders_ex_details_sql', $sql, $status, $from, $to, $customer_id );
 		return $wpdb->get_results( $sql );

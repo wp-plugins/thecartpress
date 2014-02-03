@@ -77,8 +77,11 @@ class CustomListWidget extends TCPParentWidget {
 			include( $instance['loop'] );
 		} else {
 			$columns = isset( $instance['columns'] ) ? (int)$instance['columns'] : 1;
-			if ( $columns < 1 ) $this->show_list( $instance, $args );
-			else $this->show_grid( $instance, $args );
+			if ( $columns < 1 ) {
+				$this->show_list( $instance, $args );
+			} else {
+				$this->show_grid( $instance, $args );
+			}
 			do_action( 'tcp_after_loop_wishlist' );
 		}
 		wp_reset_postdata();

@@ -468,13 +468,17 @@ jQuery(document).ready( function() {
 			} else {
 				$address_id = $_SESSION['tcp_checkout']['billing']['selected_billing_id'];
 				$address = Addresses::get( $address_id );
-				$shipping_region = $address->region_id;
+				if ( $address ) {
+					$shipping_region = $address->region_id;
+				}
 			}
 		} elseif ( $selected_shipping_address == 'Y' ) {
 			if ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] ) ) {
 				$address_id = $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'];
 				$address = Addresses::get( $address_id );
-				$shipping_region = $address->region_id;
+				if ( $address ) {
+					$shipping_region = $address->region_id;
+				}
 			}
 		}
 		return $shipping_region;

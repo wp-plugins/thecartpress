@@ -64,6 +64,7 @@ class TCPThemeCompat {
 				'post_type'		=> 'tcp_product',
 				'post_title'	=> $post->post_title,
 				'is_archive'	=> true,
+				'ID'			=> tcp_get_the_catalogue_page_id(),
 			) );
 
 			//Adds a new 'the_content' hook
@@ -72,7 +73,7 @@ class TCPThemeCompat {
 		}
 
 		//Only apply this hierarchy for saleable post types or taxonomies
-		if ( !is_author() && !tcp_is_saleable_post_type( $post->post_type ) ) return $template;
+		if ( ! is_author() && ! tcp_is_saleable_post_type( $post->post_type ) ) return $template;
 
 		//Displaying a saleable post (a product)
 		if ( is_single() ) {
@@ -208,45 +209,44 @@ class TCPThemeCompat {
 		$rem = remove_filter( 'the_content', array( $this, 'the_content' ) );
 		if ( is_single() ) {
 
-			//Recovers the current post (current product or saleable post)
+			// Recovers the current post (current product or saleable post)
 			$post = $this->post;
 
-			//Set the template to use. It will be, first, searched in your theme
+			// Set the template to use. It will be, first, searched in your theme
 			$template_name = 'tcp-single-product.php';
 			$located = locate_template( $template_name );
 
-			//If the theme has not this template, then the template available in TheCartPress will be used
+			// If the theme has not this template, then the template available in TheCartPress will be used
 			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . $template_name;
 
-			//Applies the template
+			// Applies the template
 			ob_start();
 			require( apply_filters( 'tcp_template_single_product', $located ) );
 			$content = ob_get_clean();
 		} elseif ( is_tax() || is_archive() || tcp_is_the_catalogue_page() ) {
 			global $wp_query;
 
-			//Recovers the current post (current product or saleable post)
+			// Recovers the current post (current product or saleable post)
 			if ( isset( $this->posts[0] ) ) $post = $this->posts[0];
 
-			//Set current posts
+			// Set current posts
 			$wp_query->posts = $this->posts;
 			$wp_query->post_count = count( $this->posts );
 			$wp_query->rewind_posts();
 
-			//Set the template to use. It will be, first, searched in your theme
+			// Set the template to use. It will be, first, searched in your theme
 			$template_name = 'tcp-archive-product.php';
 			$located = locate_template( $template_name );
 
-			//If the theme has not this template, then the template available in TheCartPress will be used
-			//if ( $located == $template_name ) $located = TCP_THEMES_TEMPLATES_FOLDER . $template_name;
+			// If the theme has not this template, then the template available in TheCartPress will be used
 			if ( strlen( $located ) == 0 ) $located = TCP_THEMES_TEMPLATES_FOLDER . $template_name;
 
-			//Applies the template
+			// Applies the template
 			ob_start();
 			require( apply_filters( 'tcp_template_archive_product', $located ) );
 			$content = ob_get_clean();
 
-			//Set the query after the last post
+			// Set the query after the last post
 			$wp_query->current_post = count( $this->posts );
 		}
 
