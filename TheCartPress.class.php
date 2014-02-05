@@ -39,7 +39,7 @@ Parent: thecartpress
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 define ( 'DONOTCACHEPAGE', 'TCP' ); //WPSuperCache
 
@@ -61,7 +61,7 @@ define( 'TCP_THEMES_TEMPLATES_FOLDER'	, TCP_FOLDER . 'themes-templates/' );
 
 define( 'TCP_ADMIN_PATH', 'admin.php?page=' . plugin_basename( TCP_FOLDER ) . '/admin/' );
 
-if ( !class_exists( 'TheCartPress' ) ) :
+if ( ! class_exists( 'TheCartPress' ) ) :
 
 class TheCartPress {
 

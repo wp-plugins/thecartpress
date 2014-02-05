@@ -123,19 +123,17 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 
 			<div class="tcp-grid-item">
 
-				<?php if ( tcp_has_post_thumbnail() ) :  ?>
-					<?php if ( $see_image ) : ?>
+				<?php if ( $see_image ) : ?>
+					<?php if ( tcp_has_post_thumbnail() ) :  ?>
 						<div class="tcp-product-thumbnail">
 							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>">
 								<?php tcp_the_thumbnail( get_the_ID(), 0, 0, $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
 								<?php //if ( function_exists( 'the_post_thumbnail' ) ) the_post_thumbnail( $image_size, array( 'alt' => get_the_title(), 'title' => get_the_title() ) ); ?>
 							</a>
 						</div><!-- .tcp-product-thumbnail -->
-					<?php endif; ?>
-				<?php else : ?>
-					<?php if ( $see_image ) : ?>
+					<?php else : ?>
 						<div class="tcp-product-thumbnail tcp-no-image">
-							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>"><img class="img-responsive" src="<?php echo get_template_directory_uri() ?>/images/tcp-no-image.jpg" alt="No image" title="<?php the_title(); ?>" /></a>
+							<a class="tcp_size-<?php echo $image_size;?>" href="<?php tcp_the_permalink(); ?>"><img class="img-responsive" src="<?php echo plugins_url( dirname( __FILE__) ); ?>/images/tcp-no-image.jpg" alt="No image" title="<?php the_title(); ?>" /></a>
 						</div><!-- .tcp-product-thumbnail -->
 					<?php endif; ?>
 				<?php endif; ?>	 
@@ -272,4 +270,4 @@ if ( isset( $instance['title_tag'] ) && $instance['title_tag'] != '' ) {
 </div><!-- .tcp-product-list .tcp-product-grid -->
 
 <?php /* Display pagination */
-if ( $see_pagination ) tcp_get_the_pagination(); ?>
+if ( $see_pagination ) tcp_get_the_pagination();

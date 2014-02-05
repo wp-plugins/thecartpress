@@ -162,9 +162,9 @@ class TCPBillingBox extends TCPCheckoutBox {
 		if ( $current_user->ID > 0 ) {
 			$addresses = Addresses::getCustomerAddresses( $current_user->ID );
 		} else {
-			$addresses = false;
+			$addresses = array();
 		}
-		if ( is_array( $addresses ) && count( $addresses ) > 0 ) :
+		if ( is_array( $addresses ) && count( $addresses ) > 0 ) {
 			if ( $selected_billing_address === false ) $selected_billing_address = 'Y';
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
 				$default_address_id = $_REQUEST['selected_billing_id'];
@@ -189,7 +189,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 				<?php _e( 'Billing to the address selected', 'tcp' ); ?>
 			</label>
 			<br />
-		<?php endif;?>
+		<?php } ?>
 			<label for="new_billing_address">
 				<input type="radio" id="new_billing_address" name="selected_billing_address" value="new" <?php if ( $selected_billing_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_billing_area').show();jQuery('#selected_billing_area').hide();" />
 				<?php _e( 'New billing address', 'tcp' ); ?>
