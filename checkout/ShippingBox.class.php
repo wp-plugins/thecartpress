@@ -27,9 +27,9 @@
 */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPShippingBox' ) ) :
+if ( ! class_exists( 'TCPShippingBox' ) ) :
 
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 require_once( TCP_CLASSES_FOLDER . 'CustomForms.class.php' );
@@ -188,7 +188,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			</span>
 
 			<label for="new_shipping_address">
-				<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || count( $addresses ) == 0 ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
+				<input type="radio" id="new_shipping_address" name="selected_shipping_address" value="new" <?php if ( $selected_shipping_address == 'new' || ( count( $addresses ) == 0 && $selected_shipping_address != 'BIL' ) ) : ?> checked="true"<?php endif;?> onChange="jQuery('#new_shipping_area').show();jQuery('#selected_shipping_area').hide();" />
 				<?php _e( 'New shipping address', 'tcp' ); ?>
 			</label>
 			<div id="new_shipping_area" class="clearfix" <?php if ( $selected_shipping_address != 'new' ) : ?>style="display:none"<?php endif;?><?php

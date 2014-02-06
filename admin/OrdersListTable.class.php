@@ -40,7 +40,7 @@ class TCPOrdersListTable extends WP_List_Table {
 	}
 
 	function prepare_items() {
-		if ( !is_user_logged_in() ) return;
+		if ( ! is_user_logged_in() ) return;
 
 		$status		= isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
 		$search_by	= isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
@@ -103,8 +103,8 @@ class TCPOrdersListTable extends WP_List_Table {
 	 */
 	function column_total( $item ) {
 		$total = Orders::getTotal( $item->order_id );
-		$total = apply_filters( 'tcp_orders_list_column_total', $total, $item );
-		echo tcp_format_the_price( $total, $item->order_currency_code );
+		$total = tcp_format_the_price( $total, $item->order_currency_code );
+		echo apply_filters( 'tcp_orders_list_column_total', $total, $item );
 	}
 
 	/**
@@ -200,6 +200,31 @@ class TCPOrdersListTable extends WP_List_Table {
 		echo apply_filters( 'tcp_orders_list_get_inline_data', $out, $order_id ); ?>
 		</div><?php
  	}
+
+ 	/*function get_bulk_actions() {
+		return array(
+			'tcp_edit_status' => __( 'Edit Status', 'tcp' ),
+		);
+	}
+
+	function inline_edit() { ?>
+<form method="get" action=""><table style="display: none"><tbody id="inlineedit">
+
+	<tr id="bulk-edit" class="inline-edit-row inline-edit-row-orders bulk-edit-row bulk-edit-row-orders" style="display: none">
+		<td colspan="<?php echo $this->get_column_count(); ?>" class="colspanchange">
+			<fieldset class="inline-edit-col-left"><div class="inline-edit-col">
+				<h4><?php echo $bulk ? __( 'Bulk Edit' ) : __( 'Quick Edit' ); ?></h4>
+
+				<label>
+					<span class="order_status"><?php _e( 'Status', 'tcp' ); ?></span>
+					<span class="input-text-wrap"><input type="text" name="post_title" class="ptitle" value="" /></span>
+				</label>
+			</fieldset>
+		</td>
+	</tr>
+
+</form>
+	<?php }*/
 }
 
 class TCPOrdersList {

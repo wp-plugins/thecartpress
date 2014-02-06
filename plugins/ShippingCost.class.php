@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ShippingCost' ) ) :
+if ( ! class_exists( 'ShippingCost' ) ) :
 
 require_once( dirname( dirname( __FILE__ ) ) . '/daos/Countries.class.php' );
 
@@ -370,7 +370,7 @@ jQuery( '.tcp_select_countries' ).on( 'change', function() {
 
 jQuery(document).ready( function() {
 	<?php foreach( $zones as $z => $isos ) : ?>
-	jQuery( '#zones_isos_<?php echo $z; ?>' ).tcp_convert_multiselect();
+	//jQuery( '#zones_isos_<?php echo $z; ?>' ).tcp_convert_multiselect();
 	<?php endforeach; ?>
 } );
 </script>

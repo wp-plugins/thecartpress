@@ -26,7 +26,7 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'ProductCustomFieldsMetabox' ) ) :
 
@@ -41,9 +41,11 @@ class ProductCustomFieldsMetabox {
 
 	function register_metabox() {
 		$saleable_post_types = tcp_get_saleable_post_types();
-		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) )
-			foreach( $saleable_post_types as $post_type )
-				add_meta_box( 'tcp-product-custom-fields', __( 'Product setup', 'tcp' ), array( &$this, 'show' ), $post_type, 'normal', 'high' );
+		if ( is_array( $saleable_post_types ) && count( $saleable_post_types ) ) {
+			foreach( $saleable_post_types as $post_type ) {
+				add_meta_box( 'tcp-product-custom-fields', __( 'Product setup', 'tcp' ), array( $this, 'show' ), $post_type, 'normal', 'high' );
+			}
+		}
 		add_action( 'save_post'		, array( $this, 'save' ), 10, 2 );
 		add_action( 'delete_post'	, array( $this, 'delete' ) );
 	}

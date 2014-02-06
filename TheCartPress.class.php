@@ -43,6 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define ( 'DONOTCACHEPAGE', 'TCP' ); //WPSuperCache
 
+define( 'TCP_FILE'						, __FILE__ );
 define( 'TCP_FOLDER'					, dirname( __FILE__ ) . '/' );
 define( 'TCP_ADMIN_FOLDER'				, TCP_FOLDER . 'admin/' );
 define( 'TCP_APPEARANCE_FOLDER'			, TCP_FOLDER . 'appearance/' );

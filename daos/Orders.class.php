@@ -95,6 +95,7 @@ class Orders {
 	static function get( $order_id ) {
 		global $wpdb;
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders where order_id = %d', $order_id ) );
+		//return get_post( $order_id );
 	}
 
 	static function getTotal( $order_id ) {
@@ -129,6 +130,7 @@ class Orders {
 		$sql = 'delete from ' . $wpdb->prefix . 'tcp_orders where ';
 		$sql .= $wpdb->prepare( 'order_id = %d' , $order_id );
 		$wpdb->query( $sql );
+		//wp_delete_post( $order_id, true );
 		OrdersMeta::delete_by_order_id( $order_id );
 		OrdersDetails::delete_by_order_id( $order_id );
 		OrdersDetailsMeta::delete_by_order_id( $order_id );
@@ -140,6 +142,8 @@ class Orders {
 		global $wpdb;
 		$count = $wpdb->get_var( $wpdb->prepare( 'select count(*) from ' . $wpdb->prefix . 'tcp_orders where order_id = %d and customer_id = %d', $order_id, $customer_id ) );
 		return $count == 1;
+		//$order = Orders::get( $order_id );
+		//return $order && $order->customer_id == $customer_id;
 	}
 
 	/**

@@ -1036,7 +1036,6 @@ function tcp_get_the_author_name( $post_id = 0 ) {
  * @since 1.2.5.2
  */
 function tcp_get_order_status() {
-	require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 	$status_list = array(
 		Orders::$ORDER_COMPLETED => array(
 			'name'	=> Orders::$ORDER_COMPLETED,
