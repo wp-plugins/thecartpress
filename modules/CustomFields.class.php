@@ -57,7 +57,7 @@ class TCPCustomFields {
 		$post_types = get_post_types();
 		$post_types = apply_filters( 'tcp_valid_post_types_for_custom_fields_metabox', $post_types );
 		foreach( $post_types as $post_type ) {
-			add_meta_box( 'tcp-custom-fields', __( 'TCP Custom fields', 'tcp' ), array( __CLASS__, 'show' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'tcp-custom-fields', __( 'Custom fields', 'tcp' ), array( __CLASS__, 'show' ), $post_type, 'normal', 'high' );
 		}
 		add_action( 'save_post'		, array( __CLASS__, 'save_post' ), 1, 2 );
 		add_action( 'delete_post'	, array( __CLASS__, 'delete_post' ) );
@@ -117,8 +117,9 @@ function tcp_delete_custom_fields_def( $post_type = TCP_PRODUCT_POST_TYPE ) {
  */
 function tcp_get_custom_field_def( $field_id, $post_type = TCP_PRODUCT_POST_TYPE ) {
 	$custom_fields = tcp_get_custom_fields_def( $post_type );
-	foreach( $custom_fields as $custom_field )
+	foreach( $custom_fields as $custom_field ) {
 		if ( $custom_field['id'] == $field_id ) return $custom_field;
+	}
 	return false;
 }
 
@@ -198,9 +199,11 @@ function tcp_exists_custom_field_def( $post_type, $id ) {
 	$custom_fields = get_option( 'tcp_custom_fields', array() );
 	if ( isset( $custom_fields[$post_type] ) ) {
 		$custom_fields = $custom_fields[$post_type];
-		if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 )
-			foreach( $custom_fields as $field )
+		if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
+			foreach( $custom_fields as $field ) {
 				if ( $field['id'] == $id ) return true;
+			}
+		}
 	}
 	return false;
 }

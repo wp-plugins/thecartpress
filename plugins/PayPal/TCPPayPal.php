@@ -68,7 +68,7 @@ class TCPPayPal extends TCP_Plugin {
 		</tr>
 		<tr valign="top">
 			<th scope="row">
-				<label for="receiver"><?php _e( 'Receiver eMail', 'tcp' );?>:</label>
+				<label for=""><?php _e( 'Primary PayPal email', 'tcp' );?>:</label>
 			</th>
 			<td>
 				<input type="text" id="receiver" name="receiver" size="40" maxlength="50" value="<?php echo isset( $data['receiver'] ) ? $data['receiver'] : ''; ?>" />

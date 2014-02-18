@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tcp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-03 10:59+0100\n"
+"POT-Creation-Date: 2014-02-17 09:50+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -14,197 +14,197 @@ msgstr ""
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
-#: thecartpress/TheCartPress.class.php:332
+#: thecartpress/TheCartPress.class.php:333
 msgid "This notice will be added in the email to the customer when the Checkout process ends"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:333
+#: thecartpress/TheCartPress.class.php:334
 msgid "This notice will be showed in the Checkout Notice Box into the checkout process"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:334
+#: thecartpress/TheCartPress.class.php:335
 msgid "This notice will be showed if the checkout process ends right"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:335
+#: thecartpress/TheCartPress.class.php:336
 msgid "This notice will be showed if the checkout process ends wrong: Declined payments, etc."
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:336
+#: thecartpress/TheCartPress.class.php:337
 msgid "This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:337
+#: thecartpress/TheCartPress.class.php:338
 msgid "This notice will be showed at the Checkout Resume Cart"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:338
+#: thecartpress/TheCartPress.class.php:339
 msgid "This notice will be showed at Billing address in Checkout"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:570
+#: thecartpress/TheCartPress.class.php:571
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:574
+#: thecartpress/TheCartPress.class.php:575
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:578
+#: thecartpress/TheCartPress.class.php:579
 msgid "My Account page has been deleted"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:582
+#: thecartpress/TheCartPress.class.php:583
 msgid "Catalogue page has been deleted"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:588
+#: thecartpress/TheCartPress.class.php:589
 msgid "Notice:"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:592
+#: thecartpress/TheCartPress.class.php:593
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:736
+#: thecartpress/TheCartPress.class.php:737
 #: thecartpress/widgets/SalesChartDashboard.class.php:87
 #: thecartpress/widgets/SalesChartDashboard.class.php:132
 #: thecartpress/widgets/SalesChartDashboard.class.php:246
 msgid "Orders"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:738
+#: thecartpress/TheCartPress.class.php:739
 msgid "My Downloads"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:740
+#: thecartpress/TheCartPress.class.php:741
 msgid "Addresses"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:741
+#: thecartpress/TheCartPress.class.php:742
 msgid "Taxes"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:743
+#: thecartpress/TheCartPress.class.php:744
 msgid "Update Prices"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:744
+#: thecartpress/TheCartPress.class.php:745
 msgid "Order"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:745
+#: thecartpress/TheCartPress.class.php:746
 msgid "Plugin editor"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:746
+#: thecartpress/TheCartPress.class.php:747
 msgid "Address editor"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:747
+#: thecartpress/TheCartPress.class.php:748
 msgid "Upload files"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:748
+#: thecartpress/TheCartPress.class.php:749
 msgid "Files"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:749
+#: thecartpress/TheCartPress.class.php:750
 msgid "Downloadable products"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:750
+#: thecartpress/TheCartPress.class.php:751
 msgid "TheCartPress checking"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:753
+#: thecartpress/TheCartPress.class.php:754
 msgid "Related Categories"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:754
+#: thecartpress/TheCartPress.class.php:755
 msgid "list of Assigned products"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:755
+#: thecartpress/TheCartPress.class.php:756
 msgid "list of Assigned categories"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:759
+#: thecartpress/TheCartPress.class.php:760
 msgid "Settings"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:763
+#: thecartpress/TheCartPress.class.php:764
 msgid "Tools"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:764
+#: thecartpress/TheCartPress.class.php:765
 msgid "Shortcodes Generator"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:764
+#: thecartpress/TheCartPress.class.php:765
 msgid "Shortcodes"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:765
+#: thecartpress/TheCartPress.class.php:766
 msgid "Manage post types"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:766
+#: thecartpress/TheCartPress.class.php:767
 msgid "Manage taxonomies"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:767
+#: thecartpress/TheCartPress.class.php:768
 msgid "Post Type Editor"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:768
+#: thecartpress/TheCartPress.class.php:769
 msgid "Taxonomy Editor"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:920
+#: thecartpress/TheCartPress.class.php:921
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:967
+#: thecartpress/TheCartPress.class.php:968
 msgid "Free transport"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:978
+#: thecartpress/TheCartPress.class.php:979
 msgid "Cash on delivery"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1019
+#: thecartpress/TheCartPress.class.php:1020
 msgid "Checkout notice"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1053
+#: thecartpress/TheCartPress.class.php:1054
 #: thecartpress/widgets/ShoppingCartWidget.class.php:71
 msgid "Shopping Cart"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1066
+#: thecartpress/TheCartPress.class.php:1067
 msgid "Checkout"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1081
+#: thecartpress/TheCartPress.class.php:1082
 msgid "My Account"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1094
+#: thecartpress/TheCartPress.class.php:1095
 msgid "Catalogue"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1107
-#: thecartpress/TheCartPress.class.php:1131
+#: thecartpress/TheCartPress.class.php:1108
+#: thecartpress/TheCartPress.class.php:1132
 msgid "Category One"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1108
+#: thecartpress/TheCartPress.class.php:1109
 msgid "Category One for Product One"
 msgstr ""
 
-#: thecartpress/TheCartPress.class.php:1115
+#: thecartpress/TheCartPress.class.php:1116
 msgid "Product One"
 msgstr ""
 
@@ -1960,7 +1960,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: thecartpress/admin/OrdersListTable.class.php:215
+#: thecartpress/admin/OrdersListTable.class.php:240
 msgid "Search Orders"
 msgstr ""
 
@@ -2354,104 +2354,104 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:72
+#: thecartpress/admin/OptionsList.php:74
 msgid "Relation created"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:86
+#: thecartpress/admin/OptionsList.php:88
 msgid "Relation deleted"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:102
+#: thecartpress/admin/OptionsList.php:104
 msgid "Children deleted"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:117
+#: thecartpress/admin/OptionsList.php:119
 msgid "Options copied"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:131
+#: thecartpress/admin/OptionsList.php:133
 msgid "Options created"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:144
+#: thecartpress/admin/OptionsList.php:146
 msgid "Price and Order updated"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:165
+#: thecartpress/admin/OptionsList.php:167
 msgid "Options for"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:169
+#: thecartpress/admin/OptionsList.php:171
 msgid "create new option"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:186
+#: thecartpress/admin/OptionsList.php:188
 msgid "product"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:201
+#: thecartpress/admin/OptionsList.php:203
 msgid "Please, filter first a category"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:204
+#: thecartpress/admin/OptionsList.php:206
 msgid "copy"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:209
-#: thecartpress/admin/OptionsList.php:336
+#: thecartpress/admin/OptionsList.php:211
+#: thecartpress/admin/OptionsList.php:338
 msgid "modify all"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:214
-#: thecartpress/admin/OptionsList.php:225
+#: thecartpress/admin/OptionsList.php:216
+#: thecartpress/admin/OptionsList.php:227
 msgid "Option"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:217
-#: thecartpress/admin/OptionsList.php:228
+#: thecartpress/admin/OptionsList.php:219
+#: thecartpress/admin/OptionsList.php:230
 msgid "Price and order"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:239
-#: thecartpress/admin/OptionsList.php:240
-#: thecartpress/admin/OptionsList.php:251
-#: thecartpress/admin/OptionsList.php:299
-#: thecartpress/admin/OptionsList.php:300
-#: thecartpress/admin/OptionsList.php:310
+#: thecartpress/admin/OptionsList.php:241
+#: thecartpress/admin/OptionsList.php:242
+#: thecartpress/admin/OptionsList.php:253
+#: thecartpress/admin/OptionsList.php:301
+#: thecartpress/admin/OptionsList.php:302
+#: thecartpress/admin/OptionsList.php:312
 msgid "edit option"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:254
-#: thecartpress/admin/OptionsList.php:313
+#: thecartpress/admin/OptionsList.php:256
+#: thecartpress/admin/OptionsList.php:315
 msgid "delete option"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:256
+#: thecartpress/admin/OptionsList.php:258
 msgid "delete children"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:259
+#: thecartpress/admin/OptionsList.php:261
 msgid "create child option"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:265
+#: thecartpress/admin/OptionsList.php:267
 msgid "copy from"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:280
+#: thecartpress/admin/OptionsList.php:282
 msgid "Do you really want to delete this option?"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:289
+#: thecartpress/admin/OptionsList.php:291
 msgid "Do you really want to delete those children?"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:319
+#: thecartpress/admin/OptionsList.php:321
 msgid "Do you really want to delete the option?"
 msgstr ""
 
-#: thecartpress/admin/OptionsList.php:331
+#: thecartpress/admin/OptionsList.php:333
 msgid "The options list is empty"
 msgstr ""
 
@@ -2522,7 +2522,7 @@ msgid "Mail sent"
 msgstr ""
 
 #: thecartpress/admin/OrderEdit.php:72
-#: thecartpress/admin/OrderEdit.php:85
+#: thecartpress/admin/OrderEdit.php:86
 msgid "Order ID"
 msgstr ""
 
@@ -2530,82 +2530,82 @@ msgstr ""
 msgid "Shipping Address"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:75
+#: thecartpress/admin/OrderEdit.php:76
 msgid "Billing Address"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:76
+#: thecartpress/admin/OrderEdit.php:77
 msgid "Order details"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:77
+#: thecartpress/admin/OrderEdit.php:78
 msgid "Order Setup"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:89
+#: thecartpress/admin/OrderEdit.php:90
 msgid "Created at"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:150
-#: thecartpress/admin/OrderEdit.php:218
+#: thecartpress/admin/OrderEdit.php:151
+#: thecartpress/admin/OrderEdit.php:219
 msgid "Telephones"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:256
+#: thecartpress/admin/OrderEdit.php:257
 msgid "User email"
-msgstr ""
-
-#: thecartpress/admin/OrderEdit.php:260
-#, php-format
-msgid "%s&lt;%s&gt; (registered)"
 msgstr ""
 
 #: thecartpress/admin/OrderEdit.php:261
 #, php-format
+msgid "%s&lt;%s&gt; (registered)"
+msgstr ""
+
+#: thecartpress/admin/OrderEdit.php:262
+#, php-format
 msgid "%s (unregistered)"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:266
+#: thecartpress/admin/OrderEdit.php:267
 msgid "Shipping method"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:269
+#: thecartpress/admin/OrderEdit.php:270
 msgid "Payment method"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:278
+#: thecartpress/admin/OrderEdit.php:279
 msgid "Transaction id"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:303
+#: thecartpress/admin/OrderEdit.php:304
 msgid "Code tracking"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:311
+#: thecartpress/admin/OrderEdit.php:312
 msgid "Customer's comment"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:319
+#: thecartpress/admin/OrderEdit.php:320
 msgid "Internal comment"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:334
+#: thecartpress/admin/OrderEdit.php:335
 msgid "Do you really want to delete this order?"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:357
+#: thecartpress/admin/OrderEdit.php:358
 msgid "Send email to billing email"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:361
+#: thecartpress/admin/OrderEdit.php:362
 msgid "Send email to shipping email"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:365
+#: thecartpress/admin/OrderEdit.php:366
 msgid "Print"
 msgstr ""
 
-#: thecartpress/admin/OrderEdit.php:369
+#: thecartpress/admin/OrderEdit.php:370
 msgid "Send email to me"
 msgstr ""
 
@@ -3986,76 +3986,76 @@ msgstr ""
 msgid "There is not applicable methods"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:22
+#: thecartpress/checkout/TCPCartBox.class.php:26
 msgid "Cart"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:76
+#: thecartpress/checkout/TCPCartBox.class.php:80
 msgid "Comments:"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:99
+#: thecartpress/checkout/TCPCartBox.class.php:103
 msgid "Display Weight column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:103
+#: thecartpress/checkout/TCPCartBox.class.php:107
 msgid "Display Price column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:107
+#: thecartpress/checkout/TCPCartBox.class.php:111
 msgid "Display Tax column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:111
+#: thecartpress/checkout/TCPCartBox.class.php:115
 msgid "Display Tax detail"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:115
+#: thecartpress/checkout/TCPCartBox.class.php:119
 msgid "Display SKU column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:119
+#: thecartpress/checkout/TCPCartBox.class.php:123
 msgid "Display Units column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:123
+#: thecartpress/checkout/TCPCartBox.class.php:127
 msgid "Display Comment"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:127
+#: thecartpress/checkout/TCPCartBox.class.php:131
 msgid "Display Total column"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:172
+#: thecartpress/checkout/TCPCartBox.class.php:176
 msgid "SKU"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:178
+#: thecartpress/checkout/TCPCartBox.class.php:182
 msgid "Units"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:181
+#: thecartpress/checkout/TCPCartBox.class.php:185
 msgid "Weight"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:219
+#: thecartpress/checkout/TCPCartBox.class.php:223
 #, php-format
 msgid "%s (Discount %s)"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:269
+#: thecartpress/checkout/TCPCartBox.class.php:273
 msgid "Discounts"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:285
+#: thecartpress/checkout/TCPCartBox.class.php:289
 msgid "Shipping cost"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:297
+#: thecartpress/checkout/TCPCartBox.class.php:301
 msgid "Payment cost"
 msgstr ""
 
-#: thecartpress/checkout/TCPCartBox.class.php:304
+#: thecartpress/checkout/TCPCartBox.class.php:308
 msgid "Free shipping"
 msgstr ""
 
@@ -4154,7 +4154,7 @@ msgstr ""
 
 #: thecartpress/checkout/ShippingBox.class.php:77
 #: thecartpress/checkout/ShippingBox.class.php:94
-#: thecartpress/checkout/ShippingBox.class.php:403
+#: thecartpress/checkout/ShippingBox.class.php:406
 msgid "The shipping Country is not allowed"
 msgstr ""
 
@@ -4162,67 +4162,67 @@ msgstr ""
 msgid "The shipping eMail field must be a valid email"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:163
+#: thecartpress/checkout/ShippingBox.class.php:166
 msgid "Select shipping address:"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:174
+#: thecartpress/checkout/ShippingBox.class.php:177
 msgid "Shipping to the address selected"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:181
+#: thecartpress/checkout/ShippingBox.class.php:184
 msgid "Use billing address"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:189
+#: thecartpress/checkout/ShippingBox.class.php:192
 msgid "New shipping address"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:372
+#: thecartpress/checkout/ShippingBox.class.php:375
 msgid "The shipping First name field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:383
+#: thecartpress/checkout/ShippingBox.class.php:386
 msgid "The shipping Last name field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:393
+#: thecartpress/checkout/ShippingBox.class.php:396
 msgid "The shipping Company name must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:407
+#: thecartpress/checkout/ShippingBox.class.php:410
 msgid "The shipping State field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:411
+#: thecartpress/checkout/ShippingBox.class.php:414
 msgid "The shipping City field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:417
+#: thecartpress/checkout/ShippingBox.class.php:420
 msgid "The shipping Street field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:428
+#: thecartpress/checkout/ShippingBox.class.php:431
 msgid "The shipping Street 2 field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:438
+#: thecartpress/checkout/ShippingBox.class.php:441
 msgid "The shipping Postcode field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:449
+#: thecartpress/checkout/ShippingBox.class.php:452
 msgid "The shipping Telephone field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:459
+#: thecartpress/checkout/ShippingBox.class.php:462
 msgid "The shipping Second Telephone field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:469
+#: thecartpress/checkout/ShippingBox.class.php:472
 msgid "The shipping Fax field must be completed"
 msgstr ""
 
-#: thecartpress/checkout/ShippingBox.class.php:479
+#: thecartpress/checkout/ShippingBox.class.php:482
 msgid "The shipping eMail field must be completed and valid"
 msgstr ""
 
@@ -4419,6 +4419,34 @@ msgstr ""
 
 #: thecartpress/modules/ExternalProduct.class.php:83
 msgid "Text to be shown on the button linking to the external product."
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:37
+msgid "Add New Order"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:38
+msgid "Edit Order"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:39
+msgid "New Order"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:40
+msgid "All Orders"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:41
+msgid "View Order"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:43
+msgid "No orders found"
+msgstr ""
+
+#: thecartpress/modules/OrdersCustomPostType.class.php:44
+msgid "No orders found in Trash"
 msgstr ""
 
 #: thecartpress/modules/CustomStyles.class.php:42
@@ -4779,29 +4807,25 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:59
-msgid "TCP Custom fields"
-msgstr ""
-
-#: thecartpress/modules/CustomFields.class.php:234
+#: thecartpress/modules/CustomFields.class.php:238
 msgid "Remove file"
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:236
+#: thecartpress/modules/CustomFields.class.php:240
 msgid "If you upload a new file, existing one will be deleted"
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:251
+#: thecartpress/modules/CustomFields.class.php:255
 #, php-format
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:354
+#: thecartpress/modules/CustomFields.class.php:358
 msgid "file..."
 msgstr ""
 
-#: thecartpress/modules/CustomFields.class.php:374
-#: thecartpress/modules/CustomFields.class.php:379
+#: thecartpress/modules/CustomFields.class.php:378
+#: thecartpress/modules/CustomFields.class.php:383
 msgid "No value"
 msgstr ""
 
@@ -4852,7 +4876,11 @@ msgstr ""
 msgid "pack"
 msgstr ""
 
-#: thecartpress/modules/UnitsInBuyButton.class.php:168
+#: thecartpress/modules/UnitsInBuyButton.class.php:167
+msgid "swatch"
+msgstr ""
+
+#: thecartpress/modules/UnitsInBuyButton.class.php:169
 msgid "By default"
 msgstr ""
 
@@ -5059,102 +5087,73 @@ msgstr ""
 msgid "Grouped buttons"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:48
-#: thecartpress/modules/AdvancedCommunication.class.php:60
-#: thecartpress/modules/AdvancedCommunication.class.php:116
-msgid "Emails"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:51
-msgid "Add New Email"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:52
-msgid "Edit Email"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:53
-msgid "New Email"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:54
-msgid "All Emails"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:55
-msgid "View Email"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:56
-msgid "Search Emails"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:57
-msgid "No Emails found"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:58
-msgid "No Emails found in Trash"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:108
-msgid "Notice Manager"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:109
-msgid "Notifications"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:120
-msgid "Free text"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:125
-msgid "Create more notices visiting "
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:125
-msgid "Notices administrator"
-msgstr ""
-
-#: thecartpress/modules/AdvancedCommunication.class.php:155
+#: thecartpress/modules/AdvancedCommunication.class.php:88
+#: thecartpress/modules/AdvancedCommunication.class.php:165
 msgid "Subject"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:156
+#: thecartpress/modules/AdvancedCommunication.class.php:88
+msgid "This field will be used if the notice is used as email"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:116
+msgid "Notice Manager"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:117
+msgid "Notifications"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:124
+msgid "Emails"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:128
+msgid "Free text"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:133
+msgid "Create more notices visiting "
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:133
+msgid "Notices administrator"
+msgstr ""
+
+#: thecartpress/modules/AdvancedCommunication.class.php:166
 msgid "Send a copy to me"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:162
+#: thecartpress/modules/AdvancedCommunication.class.php:172
 msgid "Save & Send"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:164
+#: thecartpress/modules/AdvancedCommunication.class.php:174
 msgid "Sending..."
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:165
+#: thecartpress/modules/AdvancedCommunication.class.php:175
 msgid "Error sending"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:168
+#: thecartpress/modules/AdvancedCommunication.class.php:178
 msgid "Saved..."
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:231
+#: thecartpress/modules/AdvancedCommunication.class.php:241
 msgid "No Notices/Emails templates."
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:231
+#: thecartpress/modules/AdvancedCommunication.class.php:241
 msgid "Create Notices"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:239
+#: thecartpress/modules/AdvancedCommunication.class.php:249
 #, php-format
 msgid "Order ID: %s"
 msgstr ""
 
-#: thecartpress/modules/AdvancedCommunication.class.php:369
+#: thecartpress/modules/AdvancedCommunication.class.php:384
 msgid "Do you really want to remove this notice?"
 msgstr ""
 
@@ -5273,7 +5272,6 @@ msgstr ""
 
 #: thecartpress/plugins/NoCostPayment.class.php:92
 #: thecartpress/plugins/Transference.class.php:235
-#: thecartpress/plugins/Remboursement.class.php:123
 msgid "Finish"
 msgstr ""
 
@@ -5344,12 +5342,10 @@ msgstr ""
 
 #: thecartpress/plugins/FlatRate.class.php:79
 #: thecartpress/plugins/FlatRate.class.php:101
-#: thecartpress/plugins/Remboursement.class.php:48
 msgid "Percentage"
 msgstr ""
 
 #: thecartpress/plugins/FlatRate.class.php:80
-#: thecartpress/plugins/Remboursement.class.php:56
 msgid "Fix"
 msgstr ""
 
@@ -5428,7 +5424,6 @@ msgid "Authorization Only"
 msgstr ""
 
 #: thecartpress/plugins/authorize.net/TCPAuthorizeNet.class.php:92
-#: thecartpress/plugins/PayPal/TCPPayPal.php:104
 msgid "Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later"
 msgstr ""
 
@@ -5458,7 +5453,7 @@ msgid "PayPal eMail"
 msgstr ""
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:71
-msgid "Receiver eMail"
+msgid "Primary PayPal email"
 msgstr ""
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:75
@@ -5753,89 +5748,89 @@ msgstr ""
 msgid "Product setup"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:62
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:64
 msgid "After saving the title and content, you will be able to edit the specific fields of the product."
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:83
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:85
 msgid "For crossing sell, adds products to the current product"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:84
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:86
 #: thecartpress/metaboxes/PostMetabox.class.php:63
 msgid "Related Products"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:92
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:110
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:94
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:112
 msgid "For crossing sell, adds Post to the current product"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:93
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:95
 #: thecartpress/metaboxes/PostMetabox.class.php:68
 msgid "Related Posts"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:101
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:103
 msgid "For crossing sell, adds Categories of Post to the current product"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:102
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:104
 msgid "Related Cat. of Posts"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:111
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:113
 #: thecartpress/metaboxes/PostMetabox.class.php:73
 msgid "Related Cat. of Products"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:134
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:136
 msgid "Prices"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:135
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:137
 msgid "Advanced"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:172
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:211
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:174
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:213
 #, php-format
 msgid "Current number format is %s"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:217
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:219
 msgid "Order (in loops/catalogue)"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:221
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:223
 msgid "Numerical position to sort the product in lists of products."
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:227
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:229
 msgid "Initial Quantity"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:231
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:233
 msgid "Initial number of units to display in the buy button. If the product is displayed inside a grouped product this value will be omitted, using the unit field defined in the grouped list."
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:236
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:238
 msgid "Is visible (in loops/catalogue)"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:250
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:252
 msgid "Hide buy button"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:253
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:255
 msgid "Allow to hide the buy button for this product"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:258
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:260
 msgid "Exclude for range prices"
 msgstr ""
 
-#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:261
+#: thecartpress/metaboxes/ProductCustomFieldsMetabox.class.php:263
 msgid "If the product is assigned to a Grouped product, this option excludes the product from the range price of the parent product."
 msgstr ""
 
@@ -6098,27 +6093,27 @@ msgstr ""
 msgid "(No inc. tax)"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1043
+#: thecartpress/templates/tcp_template.php:1042
 msgid "Completed"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1050
+#: thecartpress/templates/tcp_template.php:1049
 msgid "Processing"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1056
+#: thecartpress/templates/tcp_template.php:1055
 msgid "Pending"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1062
+#: thecartpress/templates/tcp_template.php:1061
 msgid "Cancelled"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1069
+#: thecartpress/templates/tcp_template.php:1068
 msgid "Suspended"
 msgstr ""
 
-#: thecartpress/templates/tcp_template.php:1152
+#: thecartpress/templates/tcp_template.php:1151
 msgid "Simple"
 msgstr ""
 
@@ -6149,7 +6144,7 @@ msgid "Select %s"
 msgstr ""
 
 #: thecartpress/templates/tcp_general_template.php:327
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:281
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:284
 #: thecartpress/themes-templates/tcp_shopping_cart.php:256
 msgid "Modify"
 msgstr ""
@@ -6161,7 +6156,7 @@ msgstr ""
 #: thecartpress/templates/tcp_general_template.php:339
 #: thecartpress/templates/tcp_general_template.php:361
 #: thecartpress/templates/tcp_general_template.php:436
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:325
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:328
 #: thecartpress/themes-templates/tcp_shopping_cart.php:300
 msgid "Discount"
 msgstr ""
@@ -6387,7 +6382,7 @@ msgid "allows to select the size of the image to show in grouped products."
 msgstr ""
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:254
-msgid "Image size in content"
+msgid "Product image size"
 msgstr ""
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:267
@@ -6634,28 +6629,28 @@ msgstr ""
 msgid "Display Pagination"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:139
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:142
 #: thecartpress/themes-templates/tcp_shopping_cart.php:154
 msgid "Shipping and Billing address"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:206
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:209
 #: thecartpress/themes-templates/tcp_shopping_cart.php:37
 msgid "Payment notice"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:218
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:221
 #: thecartpress/themes-templates/tcp_shopping_cart.php:43
 msgid "Shipping notice"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:267
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:270
 #: thecartpress/themes-templates/tcp_shopping_cart.php:238
 #, php-format
 msgid "Discount %s"
 msgstr ""
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:319
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:322
 #: thecartpress/themes-templates/tcp_shopping_cart.php:294
 msgid "Subtotal"
 msgstr ""
@@ -6671,22 +6666,22 @@ msgid "Apologies, but no results were found for the requested archive. Perhaps s
 msgstr ""
 
 #: thecartpress/themes-templates/loop-tcp-list.php:160
-#: thecartpress/themes-templates/loop-tcp-grid.php:208
+#: thecartpress/themes-templates/loop-tcp-grid.php:206
 msgid "More <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
 
 #: thecartpress/themes-templates/loop-tcp-list.php:197
-#: thecartpress/themes-templates/loop-tcp-grid.php:237
+#: thecartpress/themes-templates/loop-tcp-grid.php:235
 msgid "Leave a review"
 msgstr ""
 
 #: thecartpress/themes-templates/loop-tcp-list.php:197
-#: thecartpress/themes-templates/loop-tcp-grid.php:237
+#: thecartpress/themes-templates/loop-tcp-grid.php:235
 msgid "<b>1</b> Review"
 msgstr ""
 
 #: thecartpress/themes-templates/loop-tcp-list.php:197
-#: thecartpress/themes-templates/loop-tcp-grid.php:237
+#: thecartpress/themes-templates/loop-tcp-grid.php:235
 msgid "<b>%</b> Reviews"
 msgstr ""
 

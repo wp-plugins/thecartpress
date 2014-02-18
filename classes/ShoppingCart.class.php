@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ShoppingCart' ) ) :
+if ( ! class_exists( 'ShoppingCart' ) ) :
 
 require_once( 'ICartSource.interface.php' );
 
@@ -141,7 +141,8 @@ class ShoppingCart {
 			$price = tcp_get_the_price( $item->getPostId() );
 			if ( $item->getOption1Id() > 0 ) $price += tcp_get_the_price( $item->getOption1Id() );
 			if ( $item->getOption2Id() > 0 ) $price += tcp_get_the_price( $item->getOption2Id() );
-			$this->add( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $item->getCount(), $price, $item->getWeight() );
+			$sci = $this->add( $item->getPostId(), $item->getOption1Id(), $item->getOption2Id(), $item->getCount(), $price, $item->getWeight() );
+			$sci->set_attributes( $item->get_attributes() );
 		}
 		$this->removeOrderId();
 	}
@@ -739,6 +740,10 @@ class ShoppingCartItem implements TCP_IDetailSource {
 	// To implement TCP_IDetailSource
 	function get_price() {
 		return $this->getUnitPrice();
+	}
+
+	public function get_original_price() {
+		return tcp_get_the_price_to_show( $this->getPostId );
 	}
 
 	function setUnitPrice( $unit_price ) {

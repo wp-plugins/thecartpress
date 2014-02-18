@@ -17,9 +17,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPAuthorWidget' ) ) :
+if ( ! class_exists( 'TCPAuthorWidget' ) ) :
 
 require_once( TCP_WIDGETS_FOLDER . 'TCPParentWidget.class.php' );
 
@@ -32,12 +32,10 @@ class TCPAuthorWidget extends TCPParentWidget {
 		if ( !parent::widget( $args, $instance ) ) return;
 		extract( $args );
 		echo $before_widget;
-
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );
 		if ( $title ) echo $before_title, $title, $after_title;
-
 		global $post;
-		if ( !empty( $post ) ) {
+		if ( ! empty( $post ) ) {
 			$current_user = new WP_User( $post->post_author );
 		} else {
 			$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
@@ -45,11 +43,9 @@ class TCPAuthorWidget extends TCPParentWidget {
 				$current_user = get_the_author();
 				$current_user = get_user_by( 'login', $current_user );
 			}
-		} ?>
-		<ul>
-		<?php tcp_author_profile( $current_user );?>
-		</ul>
-		<?php echo $after_widget;
+		}
+		tcp_author_profile( $current_user );
+		echo $after_widget;
 	}
 }
 endif;

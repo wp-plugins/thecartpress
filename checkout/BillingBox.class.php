@@ -131,7 +131,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 					'billing_city'				=> isset( $_REQUEST['billing_city'] ) ? $_REQUEST['billing_city'] : '',
 					'billing_city_id'			=> isset( $_REQUEST['billing_city_id'] ) ? $_REQUEST['billing_city_id'] : 0,
 					'billing_street'			=> isset( $_REQUEST['billing_street'] ) ? $_REQUEST['billing_street'] : '',
-					'billing_street_2'			=> isset( $_REQUEST['billing_street'] ) ? $_REQUEST['billing_street'] : '',
+					'billing_street_2'			=> isset( $_REQUEST['billing_street_2'] ) ? $_REQUEST['billing_street_2'] : '',
 					'billing_postcode'			=> isset( $_REQUEST['billing_postcode'] ) ? str_replace( ' ' , '', $_REQUEST['billing_postcode'] ) : '',
 					'billing_telephone_1'		=> isset( $_REQUEST['billing_telephone_1'] ) ? $_REQUEST['billing_telephone_1'] : '',
 					'billing_telephone_2'		=> isset( $_REQUEST['billing_telephone_2'] ) ? $_REQUEST['billing_telephone_2'] : '',

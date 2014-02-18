@@ -129,7 +129,10 @@ if ( ! isset( $source ) ) return; ?>
 					<?php if ( strlen( $source->get_shipping_email() ) > 0 ) : echo $source->get_shipping_email(); ?><?php endif; ?>
 				</td>
 				<td class="billing_info">
-					<?php if ( strlen( $source->get_billing_email() ) > 0 ) : echo $source->get_billing_email(); ?><br/><?php endif; ?>
+					<?php //if ( strlen( $source->get_billing_email() ) > 0 ) echo $source->get_billing_email(), '<br/>'; ?>
+					<?php $user_data = get_userdata( $source->get_customer_id() );
+					if ( $user_data ) printf( __( '%s&lt;%s&gt; (registered)', 'tcp' ), $user_data->user_nicename, $user_data->user_email );
+					else printf( __( '%s (unregistered)', 'tcp' ), $source->get_billing_email() ); ?>
 				</td>
 			</tr>
 		</table>
@@ -264,7 +267,7 @@ if ( $source->has_order_details() ) :
 		</td>
 		<td class="tcp_cart_price" style="padding:4px 4px 4px 4px;"><?php echo tcp_format_the_price( $order_detail->get_price() ); ?>
 			<?php if ( $order_detail->get_discount() > 0 ) : ?>
-			&nbsp;<span class="tcp_cart_discount"><?php  printf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() / $order_detail->get_qty_ordered() ) ); ?></span>
+			&nbsp;<span class="tcp_cart_discount"><?php  printf( __( '(-%s)', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() / $order_detail->get_qty_ordered() ) ); ?></span>
 			<?php endif; ?>
 		</td>
 		<td class="tcp_cart_units" style="padding:4px 4px 4px 4px;">
@@ -292,7 +295,11 @@ if ( $source->has_order_details() ) :
 			<td class="tcp_cart_weight" style="padding:4px 4px 4px 4px;"><?php echo tcp_number_format( $order_detail->get_weight() ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
 		<?php endif; ?>
 		<?php $decimals	= tcp_get_decimal_currency();
-		$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
+		if ( ! $source->is_discount_applied() ) {
+			$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
+		} else {
+			$discount = 0;
+		}
 		$price = $order_detail->get_price() - $discount;
 		$price = round( $price, $decimals );
 		$tax = $price * $order_detail->get_tax() / 100;

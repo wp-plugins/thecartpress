@@ -115,9 +115,9 @@ table#tcp_shopping_cart_table .tcp_cart_thumbnail img {
 table#tcp_shopping_cart_table .tcp_cart_onlyprice {
 	white-space: nowrap;
 }
-table#tcp_shopping_cart_table .tcp_cart_price .tcp_cart_discount {
+/*table#tcp_shopping_cart_table .tcp_cart_price .tcp_cart_discount {
 	float: left;
-} 
+}*/
 #shopping_cart input {
 	font-size: 12px;
 }

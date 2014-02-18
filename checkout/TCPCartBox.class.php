@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with This program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutBox.class.php' );
 
 class TCPCartBox extends TCPCheckoutBox {

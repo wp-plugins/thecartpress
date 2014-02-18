@@ -235,7 +235,7 @@ if ( $source->has_order_details() ) :
 		</td>
 		<td class="tcp_cart_price"><span class="tcp_cart_onlyprice"><?php echo tcp_format_the_price( $order_detail->get_price() ); ?></span>
 		<?php if ( $order_detail->get_discount() > 0 ) : ?>
-		<span class="tcp_cart_discount"><?php  printf( __( 'Discount %s', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() / $order_detail->get_qty_ordered() ) ); ?></span>
+		<span class="tcp_cart_discount"><?php  printf( __( '(-%s)', 'tcp' ), tcp_format_the_price( $order_detail->get_discount() / $order_detail->get_qty_ordered() ) ); ?></span>
 		<?php endif; ?>
 		</td>
 		<td class="tcp_cart_units">
@@ -267,7 +267,11 @@ if ( $source->has_order_details() ) :
 			<td class="tcp_cart_weight"><?php echo tcp_number_format( $order_detail->get_weight() ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
 		<?php endif; ?>
 		<?php $decimals	= tcp_get_decimal_currency();
-		$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
+		if ( ! $source->is_discount_applied() ) {
+			$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
+		} else {
+			$discount = 0;
+		}
 		$price = $order_detail->get_price() - $discount;
 		$price = round( $price, $decimals );
 		$tax = $price * $order_detail->get_tax() / 100;

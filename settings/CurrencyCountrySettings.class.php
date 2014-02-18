@@ -17,11 +17,11 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 require_once( TCP_DAOS_FOLDER . 'Currencies.class.php' );
 
-if ( !class_exists( 'TCPCurrencyCountrySettings' ) ) :
+if ( ! class_exists( 'TCPCurrencyCountrySettings' ) ) :
 
 class TCPCurrencyCountrySettings {
 
@@ -38,8 +38,8 @@ class TCPCurrencyCountrySettings {
 		global $thecartpress;
 		$base = $thecartpress->get_base_settings();
 		$page = add_submenu_page( $base, __( 'Currency & Country Settings', 'tcp' ), __( 'Localize', 'tcp' ), 'tcp_edit_settings', 'currency_settings', array( &$this, 'admin_page' ) );
-		add_action( "load-$page", array( &$this, 'admin_load' ) );
-		add_action( "load-$page", array( &$this, 'admin_action' ) );
+		add_action( "load-$page", array( $this, 'admin_load' ) );
+		add_action( "load-$page", array( $this, 'admin_action' ) );
 	}
 
 	function admin_load() {

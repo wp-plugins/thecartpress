@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-03 11:00+0100\n"
+"POT-Creation-Date: 2014-02-17 09:51+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: \n"
@@ -16,197 +16,197 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x:2c,1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: TheCartPress.class.php:332
+#: TheCartPress.class.php:333
 msgid "This notice will be added in the email to the customer when the Checkout process ends"
 msgstr "Este aviso se añadirá al email que se envia a los clientes cuando finalicen el proceso de compra"
 
-#: TheCartPress.class.php:333
+#: TheCartPress.class.php:334
 msgid "This notice will be showed in the Checkout Notice Box into the checkout process"
 msgstr "Este aviso será mostrado en la caja de avisos de compra dentro del proceso de compra"
 
-#: TheCartPress.class.php:334
+#: TheCartPress.class.php:335
 msgid "This notice will be showed if the checkout process ends right"
 msgstr "Este aviso será mostrado si el proceso de compra finaliza de forma correcta"
 
-#: TheCartPress.class.php:335
+#: TheCartPress.class.php:336
 msgid "This notice will be showed if the checkout process ends wrong: Declined payments, etc."
 msgstr "Este aviso será mostrado si el proceso de compra finaliza de forma incorrecta: Pagos rechazados, etc."
 
-#: TheCartPress.class.php:336
+#: TheCartPress.class.php:337
 msgid "This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty"
 msgstr "Este aviso será mostrado tanto en la página del carrito como en la página del proceso de compra si el carrito está vacío"
 
-#: TheCartPress.class.php:337
+#: TheCartPress.class.php:338
 msgid "This notice will be showed at the Checkout Resume Cart"
 msgstr "Este aviso será mostrado en el resumen del carrito durante el proceso de compra"
 
-#: TheCartPress.class.php:338
+#: TheCartPress.class.php:339
 msgid "This notice will be showed at Billing address in Checkout"
 msgstr "Este aviso será mostrado paso de datos de facturación durante el proceso de compra"
 
-#: TheCartPress.class.php:570
+#: TheCartPress.class.php:571
 msgid "The <strong>Shopping Cart page</strong> has been deleted."
 msgstr "La <strong>Página del carrito</strong> ha sido borrada"
 
-#: TheCartPress.class.php:574
+#: TheCartPress.class.php:575
 msgid "The <strong>Checkout page</strong> has been deleted."
 msgstr "La <strong>Página del checkout</strong> ha sido borrada"
 
-#: TheCartPress.class.php:578
+#: TheCartPress.class.php:579
 msgid "My Account page has been deleted"
 msgstr "La Página de \"Mi Cuenta\" ha sido creada"
 
-#: TheCartPress.class.php:582
+#: TheCartPress.class.php:583
 msgid "Catalogue page has been deleted"
 msgstr "La Página de \"Catálogo\" ha sido borrada"
 
-#: TheCartPress.class.php:588
+#: TheCartPress.class.php:589
 msgid "Notice:"
 msgstr "Aviso:"
 
-#: TheCartPress.class.php:592
+#: TheCartPress.class.php:593
 #, php-format
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Visita la <a href=\"%s\">página de Control</a> para corregir los avisos."
 
-#: TheCartPress.class.php:736
+#: TheCartPress.class.php:737
 #: widgets/SalesChartDashboard.class.php:87
 #: widgets/SalesChartDashboard.class.php:132
 #: widgets/SalesChartDashboard.class.php:246
 msgid "Orders"
 msgstr "Pedidos"
 
-#: TheCartPress.class.php:738
+#: TheCartPress.class.php:739
 msgid "My Downloads"
 msgstr "Mis descargas"
 
-#: TheCartPress.class.php:740
+#: TheCartPress.class.php:741
 msgid "Addresses"
 msgstr "Direcciones"
 
-#: TheCartPress.class.php:741
+#: TheCartPress.class.php:742
 msgid "Taxes"
 msgstr "Impuestos"
 
-#: TheCartPress.class.php:743
+#: TheCartPress.class.php:744
 msgid "Update Prices"
 msgstr "Actualizar Precios"
 
-#: TheCartPress.class.php:744
+#: TheCartPress.class.php:745
 msgid "Order"
 msgstr "Pedido"
 
-#: TheCartPress.class.php:745
+#: TheCartPress.class.php:746
 msgid "Plugin editor"
 msgstr "Editor del plugin"
 
-#: TheCartPress.class.php:746
+#: TheCartPress.class.php:747
 msgid "Address editor"
 msgstr "Editor de direcciones"
 
-#: TheCartPress.class.php:747
+#: TheCartPress.class.php:748
 msgid "Upload files"
 msgstr "Subir ficheros"
 
-#: TheCartPress.class.php:748
+#: TheCartPress.class.php:749
 msgid "Files"
 msgstr "Archivos"
 
-#: TheCartPress.class.php:749
+#: TheCartPress.class.php:750
 msgid "Downloadable products"
 msgstr "Productos descargables"
 
-#: TheCartPress.class.php:750
+#: TheCartPress.class.php:751
 msgid "TheCartPress checking"
 msgstr "Proceso de TheCartPress"
 
-#: TheCartPress.class.php:753
+#: TheCartPress.class.php:754
 msgid "Related Categories"
 msgstr "Categorías relacionadas"
 
-#: TheCartPress.class.php:754
+#: TheCartPress.class.php:755
 msgid "list of Assigned products"
 msgstr "Lista de Productos asignados"
 
-#: TheCartPress.class.php:755
+#: TheCartPress.class.php:756
 msgid "list of Assigned categories"
 msgstr "Lista de Productos asignados"
 
-#: TheCartPress.class.php:759
+#: TheCartPress.class.php:760
 msgid "Settings"
 msgstr "Configuraciones"
 
-#: TheCartPress.class.php:763
+#: TheCartPress.class.php:764
 msgid "Tools"
 msgstr "Herramientas"
 
-#: TheCartPress.class.php:764
+#: TheCartPress.class.php:765
 msgid "Shortcodes Generator"
 msgstr "Generador de Shortcodes"
 
-#: TheCartPress.class.php:764
+#: TheCartPress.class.php:765
 msgid "Shortcodes"
 msgstr "Shortcodes"
 
-#: TheCartPress.class.php:765
+#: TheCartPress.class.php:766
 msgid "Manage post types"
 msgstr "Administrador de Tipos de entradas"
 
-#: TheCartPress.class.php:766
+#: TheCartPress.class.php:767
 msgid "Manage taxonomies"
 msgstr "Editor de taxonomías"
 
-#: TheCartPress.class.php:767
+#: TheCartPress.class.php:768
 msgid "Post Type Editor"
 msgstr "Editor de tipos de Post"
 
-#: TheCartPress.class.php:768
+#: TheCartPress.class.php:769
 msgid "Taxonomy Editor"
 msgstr "Editor de Taxonomías"
 
-#: TheCartPress.class.php:920
+#: TheCartPress.class.php:921
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress requiere la versión de WordPress 3.0 o superior."
 
-#: TheCartPress.class.php:967
+#: TheCartPress.class.php:968
 msgid "Free transport"
 msgstr "Transporte gratuito"
 
-#: TheCartPress.class.php:978
+#: TheCartPress.class.php:979
 msgid "Cash on delivery"
 msgstr "Contrareembolso"
 
-#: TheCartPress.class.php:1019
+#: TheCartPress.class.php:1020
 msgid "Checkout notice"
 msgstr "Aviso de compra"
 
-#: TheCartPress.class.php:1053
+#: TheCartPress.class.php:1054
 #: widgets/ShoppingCartWidget.class.php:71
 msgid "Shopping Cart"
 msgstr "Carrito de compra"
 
-#: TheCartPress.class.php:1066
+#: TheCartPress.class.php:1067
 msgid "Checkout"
 msgstr "Pasar por Caja"
 
-#: TheCartPress.class.php:1081
+#: TheCartPress.class.php:1082
 msgid "My Account"
 msgstr "Mi Cuenta"
 
-#: TheCartPress.class.php:1094
+#: TheCartPress.class.php:1095
 msgid "Catalogue"
 msgstr "Catálogo"
 
-#: TheCartPress.class.php:1107
-#: TheCartPress.class.php:1131
+#: TheCartPress.class.php:1108
+#: TheCartPress.class.php:1132
 msgid "Category One"
 msgstr "Categoría Uno"
 
-#: TheCartPress.class.php:1108
+#: TheCartPress.class.php:1109
 msgid "Category One for Product One"
 msgstr "Categría Uno para Producto Uno"
 
-#: TheCartPress.class.php:1115
+#: TheCartPress.class.php:1116
 msgid "Product One"
 msgstr "Producto Uno"
 
@@ -1962,7 +1962,7 @@ msgstr "Buscar por"
 msgid "Filter"
 msgstr "Filtrar"
 
-#: admin/OrdersListTable.class.php:215
+#: admin/OrdersListTable.class.php:240
 msgid "Search Orders"
 msgstr "Buscar pedidos"
 
@@ -2356,104 +2356,104 @@ msgstr "Sin existencias"
 msgid "Update"
 msgstr "Actualizar"
 
-#: admin/OptionsList.php:72
+#: admin/OptionsList.php:74
 msgid "Relation created"
 msgstr "Relación creada"
 
-#: admin/OptionsList.php:86
+#: admin/OptionsList.php:88
 msgid "Relation deleted"
 msgstr "Relación eliminada"
 
-#: admin/OptionsList.php:102
+#: admin/OptionsList.php:104
 msgid "Children deleted"
 msgstr "Hijos eliminados"
 
-#: admin/OptionsList.php:117
+#: admin/OptionsList.php:119
 msgid "Options copied"
 msgstr "Opciones copiadas"
 
-#: admin/OptionsList.php:131
+#: admin/OptionsList.php:133
 msgid "Options created"
 msgstr "Opciones creadas"
 
-#: admin/OptionsList.php:144
+#: admin/OptionsList.php:146
 msgid "Price and Order updated"
 msgstr "Precio y orden modificado"
 
-#: admin/OptionsList.php:165
+#: admin/OptionsList.php:167
 msgid "Options for"
 msgstr "Opciones para "
 
-#: admin/OptionsList.php:169
+#: admin/OptionsList.php:171
 msgid "create new option"
 msgstr "crear nueva opción"
 
-#: admin/OptionsList.php:186
+#: admin/OptionsList.php:188
 msgid "product"
 msgstr "producto"
 
-#: admin/OptionsList.php:201
+#: admin/OptionsList.php:203
 msgid "Please, filter first a category"
 msgstr "Por favor, filtre en primer lugar por categoría"
 
-#: admin/OptionsList.php:204
+#: admin/OptionsList.php:206
 msgid "copy"
 msgstr "copiar"
 
-#: admin/OptionsList.php:209
-#: admin/OptionsList.php:336
+#: admin/OptionsList.php:211
+#: admin/OptionsList.php:338
 msgid "modify all"
 msgstr "modificar todo"
 
-#: admin/OptionsList.php:214
-#: admin/OptionsList.php:225
+#: admin/OptionsList.php:216
+#: admin/OptionsList.php:227
 msgid "Option"
 msgstr "Opción"
 
-#: admin/OptionsList.php:217
-#: admin/OptionsList.php:228
+#: admin/OptionsList.php:219
+#: admin/OptionsList.php:230
 msgid "Price and order"
 msgstr "Precio y orden"
 
-#: admin/OptionsList.php:239
-#: admin/OptionsList.php:240
-#: admin/OptionsList.php:251
-#: admin/OptionsList.php:299
-#: admin/OptionsList.php:300
-#: admin/OptionsList.php:310
+#: admin/OptionsList.php:241
+#: admin/OptionsList.php:242
+#: admin/OptionsList.php:253
+#: admin/OptionsList.php:301
+#: admin/OptionsList.php:302
+#: admin/OptionsList.php:312
 msgid "edit option"
 msgstr "editar opción"
 
-#: admin/OptionsList.php:254
-#: admin/OptionsList.php:313
+#: admin/OptionsList.php:256
+#: admin/OptionsList.php:315
 msgid "delete option"
 msgstr "borrar opción"
 
-#: admin/OptionsList.php:256
+#: admin/OptionsList.php:258
 msgid "delete children"
 msgstr "borrar hijos"
 
-#: admin/OptionsList.php:259
+#: admin/OptionsList.php:261
 msgid "create child option"
 msgstr "crear opción hija"
 
-#: admin/OptionsList.php:265
+#: admin/OptionsList.php:267
 msgid "copy from"
 msgstr "copiar desde"
 
-#: admin/OptionsList.php:280
+#: admin/OptionsList.php:282
 msgid "Do you really want to delete this option?"
 msgstr "¿Realmente quiere borrar esta opción?"
 
-#: admin/OptionsList.php:289
+#: admin/OptionsList.php:291
 msgid "Do you really want to delete those children?"
 msgstr "¿Realmente quiere borrar estas opciones?"
 
-#: admin/OptionsList.php:319
+#: admin/OptionsList.php:321
 msgid "Do you really want to delete the option?"
 msgstr "¿Realmente quiere borrar la opción?"
 
-#: admin/OptionsList.php:331
+#: admin/OptionsList.php:333
 msgid "The options list is empty"
 msgstr "La lista de opciones está vacía"
 
@@ -2524,7 +2524,7 @@ msgid "Mail sent"
 msgstr "Correo enviado"
 
 #: admin/OrderEdit.php:72
-#: admin/OrderEdit.php:85
+#: admin/OrderEdit.php:86
 msgid "Order ID"
 msgstr "Id de pedido"
 
@@ -2532,82 +2532,82 @@ msgstr "Id de pedido"
 msgid "Shipping Address"
 msgstr "Dirección de envío"
 
-#: admin/OrderEdit.php:75
+#: admin/OrderEdit.php:76
 msgid "Billing Address"
 msgstr "Dirección de facturación"
 
-#: admin/OrderEdit.php:76
+#: admin/OrderEdit.php:77
 msgid "Order details"
 msgstr "Detalle de pedidos"
 
-#: admin/OrderEdit.php:77
+#: admin/OrderEdit.php:78
 msgid "Order Setup"
 msgstr "Estado del pedido"
 
-#: admin/OrderEdit.php:89
+#: admin/OrderEdit.php:90
 msgid "Created at"
 msgstr "Creado el"
 
-#: admin/OrderEdit.php:150
-#: admin/OrderEdit.php:218
+#: admin/OrderEdit.php:151
+#: admin/OrderEdit.php:219
 msgid "Telephones"
 msgstr "Teléfonos"
 
-#: admin/OrderEdit.php:256
+#: admin/OrderEdit.php:257
 msgid "User email"
 msgstr "eMail del usuario"
 
-#: admin/OrderEdit.php:260
+#: admin/OrderEdit.php:261
 #, php-format
 msgid "%s&lt;%s&gt; (registered)"
 msgstr "%s&lt;%s&gt; (registrado)"
 
-#: admin/OrderEdit.php:261
+#: admin/OrderEdit.php:262
 #, php-format
 msgid "%s (unregistered)"
 msgstr "%s (sin registrar)"
 
-#: admin/OrderEdit.php:266
+#: admin/OrderEdit.php:267
 msgid "Shipping method"
 msgstr "Métodos de envío"
 
-#: admin/OrderEdit.php:269
+#: admin/OrderEdit.php:270
 msgid "Payment method"
 msgstr "Métodos de pago"
 
-#: admin/OrderEdit.php:278
+#: admin/OrderEdit.php:279
 msgid "Transaction id"
 msgstr "Identificador de transacción"
 
-#: admin/OrderEdit.php:303
+#: admin/OrderEdit.php:304
 msgid "Code tracking"
 msgstr "Código de seguimiento"
 
-#: admin/OrderEdit.php:311
+#: admin/OrderEdit.php:312
 msgid "Customer's comment"
 msgstr "Comentarios del cliente"
 
-#: admin/OrderEdit.php:319
+#: admin/OrderEdit.php:320
 msgid "Internal comment"
 msgstr "Comentario interno"
 
-#: admin/OrderEdit.php:334
+#: admin/OrderEdit.php:335
 msgid "Do you really want to delete this order?"
 msgstr "¿Desea eliminar este pedido?"
 
-#: admin/OrderEdit.php:357
+#: admin/OrderEdit.php:358
 msgid "Send email to billing email"
 msgstr "Enviar correo a la dirección de facturación"
 
-#: admin/OrderEdit.php:361
+#: admin/OrderEdit.php:362
 msgid "Send email to shipping email"
 msgstr "Enviar correo a la dirección de envío"
 
-#: admin/OrderEdit.php:365
+#: admin/OrderEdit.php:366
 msgid "Print"
 msgstr "Imprimir"
 
-#: admin/OrderEdit.php:369
+#: admin/OrderEdit.php:370
 msgid "Send email to me"
 msgstr "Enviarme el  correo"
 
@@ -3907,12 +3907,10 @@ msgid "The billing City field must be completed"
 msgstr "El campo ciudad de facturación debe estar completado"
 
 #: checkout/BillingBox.class.php:441
-#, fuzzy
 msgid "Address 1"
-msgstr "Dirección 2"
+msgstr "Dirección 1"
 
 #: checkout/BillingBox.class.php:444
-#, fuzzy
 msgid "The billing Address field must be completed"
 msgstr "Debe de introducir el campo Dirección de facturación"
 
@@ -3990,76 +3988,76 @@ msgstr "Ocultar la caja si únicamente un método es aplicable"
 msgid "There is not applicable methods"
 msgstr "No hay métodos para aplicar"
 
-#: checkout/TCPCartBox.class.php:22
+#: checkout/TCPCartBox.class.php:26
 msgid "Cart"
 msgstr "Carrito"
 
-#: checkout/TCPCartBox.class.php:76
+#: checkout/TCPCartBox.class.php:80
 msgid "Comments:"
 msgstr "Comentarios:"
 
-#: checkout/TCPCartBox.class.php:99
+#: checkout/TCPCartBox.class.php:103
 msgid "Display Weight column"
 msgstr "Mostrar columna de Peso"
 
-#: checkout/TCPCartBox.class.php:103
+#: checkout/TCPCartBox.class.php:107
 msgid "Display Price column"
 msgstr "Mostrar columna de Precio"
 
-#: checkout/TCPCartBox.class.php:107
+#: checkout/TCPCartBox.class.php:111
 msgid "Display Tax column"
 msgstr "Mostrar columna de Impuesto"
 
-#: checkout/TCPCartBox.class.php:111
+#: checkout/TCPCartBox.class.php:115
 msgid "Display Tax detail"
 msgstr "Mostrar detalle del Impuestos"
 
-#: checkout/TCPCartBox.class.php:115
+#: checkout/TCPCartBox.class.php:119
 msgid "Display SKU column"
 msgstr "Mostrar columna SKU"
 
-#: checkout/TCPCartBox.class.php:119
+#: checkout/TCPCartBox.class.php:123
 msgid "Display Units column"
 msgstr "Mostrar columna Unidades"
 
-#: checkout/TCPCartBox.class.php:123
+#: checkout/TCPCartBox.class.php:127
 msgid "Display Comment"
 msgstr "Mostrar Comentario"
 
-#: checkout/TCPCartBox.class.php:127
+#: checkout/TCPCartBox.class.php:131
 msgid "Display Total column"
 msgstr "Mostrar columna de total"
 
-#: checkout/TCPCartBox.class.php:172
+#: checkout/TCPCartBox.class.php:176
 msgid "SKU"
 msgstr "SKU"
 
-#: checkout/TCPCartBox.class.php:178
+#: checkout/TCPCartBox.class.php:182
 msgid "Units"
 msgstr "Unidades"
 
-#: checkout/TCPCartBox.class.php:181
+#: checkout/TCPCartBox.class.php:185
 msgid "Weight"
 msgstr "Peso"
 
-#: checkout/TCPCartBox.class.php:219
+#: checkout/TCPCartBox.class.php:223
 #, php-format
 msgid "%s (Discount %s)"
 msgstr "%s (Descuentos %s)"
 
-#: checkout/TCPCartBox.class.php:269
+#: checkout/TCPCartBox.class.php:273
 msgid "Discounts"
 msgstr "Descuentos"
 
-#: checkout/TCPCartBox.class.php:285
+#: checkout/TCPCartBox.class.php:289
 msgid "Shipping cost"
 msgstr "Gastos de envío"
 
-#: checkout/TCPCartBox.class.php:297
+#: checkout/TCPCartBox.class.php:301
 msgid "Payment cost"
 msgstr "Coste de pago"
 
-#: checkout/TCPCartBox.class.php:304
+#: checkout/TCPCartBox.class.php:308
 msgid "Free shipping"
 msgstr "envío gratuito"
 
@@ -4158,7 +4156,7 @@ msgstr "Información de envío"
 
 #: checkout/ShippingBox.class.php:77
 #: checkout/ShippingBox.class.php:94
-#: checkout/ShippingBox.class.php:403
+#: checkout/ShippingBox.class.php:406
 msgid "The shipping Country is not allowed"
 msgstr "El país de envío no está permitido"
 
@@ -4166,67 +4164,67 @@ msgstr "El país de envío no está permitido"
 msgid "The shipping eMail field must be a valid email"
 msgstr "Has de introducir un correo válido en el campo Email de envío"
 
-#: checkout/ShippingBox.class.php:163
+#: checkout/ShippingBox.class.php:166
 msgid "Select shipping address:"
 msgstr "Selecciona la dirección de envío:"
 
-#: checkout/ShippingBox.class.php:174
+#: checkout/ShippingBox.class.php:177
 msgid "Shipping to the address selected"
 msgstr "Enviar a la dirección seleccionada"
 
-#: checkout/ShippingBox.class.php:181
+#: checkout/ShippingBox.class.php:184
 msgid "Use billing address"
 msgstr "Utilizar dirección de facturación"
 
-#: checkout/ShippingBox.class.php:189
+#: checkout/ShippingBox.class.php:192
 msgid "New shipping address"
 msgstr "Nueva dirección de envío"
 
-#: checkout/ShippingBox.class.php:372
+#: checkout/ShippingBox.class.php:375
 msgid "The shipping First name field must be completed"
 msgstr "Has de introducir el campo Nombre de envío"
 
-#: checkout/ShippingBox.class.php:383
+#: checkout/ShippingBox.class.php:386
 msgid "The shipping Last name field must be completed"
 msgstr "Has de introducir el campo Apellido de envío"
 
-#: checkout/ShippingBox.class.php:393
+#: checkout/ShippingBox.class.php:396
 msgid "The shipping Company name must be completed"
 msgstr "Ha de introducir el nombre de la Empresa"
 
-#: checkout/ShippingBox.class.php:407
+#: checkout/ShippingBox.class.php:410
 msgid "The shipping State field must be completed"
 msgstr "Ha de introducir la Provincia de envío"
 
-#: checkout/ShippingBox.class.php:411
+#: checkout/ShippingBox.class.php:414
 msgid "The shipping City field must be completed"
 msgstr "Has de introducir el campo Ciudad de envío"
 
-#: checkout/ShippingBox.class.php:417
+#: checkout/ShippingBox.class.php:420
 msgid "The shipping Street field must be completed"
 msgstr "Has de introducir el campo Dirección de envío"
 
-#: checkout/ShippingBox.class.php:428
+#: checkout/ShippingBox.class.php:431
 msgid "The shipping Street 2 field must be completed"
 msgstr "Has de introducir el campo Dirección de envío 2"
 
-#: checkout/ShippingBox.class.php:438
+#: checkout/ShippingBox.class.php:441
 msgid "The shipping Postcode field must be completed"
 msgstr "Has de introducir el campo Código postal de envío"
 
-#: checkout/ShippingBox.class.php:449
+#: checkout/ShippingBox.class.php:452
 msgid "The shipping Telephone field must be completed"
 msgstr "Ha de introducir el Teléfono de envío"
 
-#: checkout/ShippingBox.class.php:459
+#: checkout/ShippingBox.class.php:462
 msgid "The shipping Second Telephone field must be completed"
 msgstr "Has de introducir el Segundo teléfono de envío"
 
-#: checkout/ShippingBox.class.php:469
+#: checkout/ShippingBox.class.php:472
 msgid "The shipping Fax field must be completed"
 msgstr "Ha de introducir el Fax"
 
-#: checkout/ShippingBox.class.php:479
+#: checkout/ShippingBox.class.php:482
 msgid "The shipping eMail field must be completed and valid"
 msgstr "Ha de introducir un email válido"
 
@@ -4424,6 +4422,34 @@ msgstr "Comprar Producto"
 #: modules/ExternalProduct.class.php:83
 msgid "Text to be shown on the button linking to the external product."
 msgstr "Texto a mostrar en los botones para los productos externos"
+
+#: modules/OrdersCustomPostType.class.php:37
+msgid "Add New Order"
+msgstr "Añadir nuevo"
+
+#: modules/OrdersCustomPostType.class.php:38
+msgid "Edit Order"
+msgstr "Editar pedido"
+
+#: modules/OrdersCustomPostType.class.php:39
+msgid "New Order"
+msgstr "Pedido nuevo"
+
+#: modules/OrdersCustomPostType.class.php:40
+msgid "All Orders"
+msgstr "Todos los Pedidos"
+
+#: modules/OrdersCustomPostType.class.php:41
+msgid "View Order"
+msgstr "Ver Pedidos"
+
+#: modules/OrdersCustomPostType.class.php:43
+msgid "No orders found"
+msgstr "No se han encontrado pedidos"
+
+#: modules/OrdersCustomPostType.class.php:44
+msgid "No orders found in Trash"
+msgstr "Ningúno encontrado en la papelera"
 
 #: modules/CustomStyles.class.php:42
 #: modules/CustomStyles.class.php:76
@@ -4783,29 +4809,25 @@ msgstr "Menú del autor"
 msgid "URL"
 msgstr ""
 
-#: modules/CustomFields.class.php:59
-msgid "TCP Custom fields"
-msgstr "TCP Campos personalizados"
-
-#: modules/CustomFields.class.php:234
+#: modules/CustomFields.class.php:238
 msgid "Remove file"
 msgstr "Borrar fichero"
 
-#: modules/CustomFields.class.php:236
+#: modules/CustomFields.class.php:240
 msgid "If you upload a new file, existing one will be deleted"
 msgstr "Si sube un nuevo fichero, el previo será borrado"
 
-#: modules/CustomFields.class.php:251
+#: modules/CustomFields.class.php:255
 #, php-format
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr "No hay campos personalizados definidos. Visite <a href=\"%s\">Administrador de Campos personalizados</a> para crear campos personalizados."
 
-#: modules/CustomFields.class.php:354
+#: modules/CustomFields.class.php:358
 msgid "file..."
 msgstr "archivo..."
 
-#: modules/CustomFields.class.php:374
-#: modules/CustomFields.class.php:379
+#: modules/CustomFields.class.php:378
+#: modules/CustomFields.class.php:383
 msgid "No value"
 msgstr "Sin valor"
 
@@ -4856,7 +4878,11 @@ msgstr ""
 msgid "pack"
 msgstr "paquete"
 
-#: modules/UnitsInBuyButton.class.php:168
+#: modules/UnitsInBuyButton.class.php:167
+msgid "swatch"
+msgstr "muestra"
+
+#: modules/UnitsInBuyButton.class.php:169
 msgid "By default"
 msgstr "Predeterminado"
 
@@ -5063,102 +5089,73 @@ msgstr "Tamaños"
 msgid "Grouped buttons"
 msgstr "Botones Agrupados"
 
-#: modules/AdvancedCommunication.class.php:48
-#: modules/AdvancedCommunication.class.php:60
-#: modules/AdvancedCommunication.class.php:116
-msgid "Emails"
-msgstr "Correos"
-
-#: modules/AdvancedCommunication.class.php:51
-msgid "Add New Email"
-msgstr "Añadir nuevo correo"
-
-#: modules/AdvancedCommunication.class.php:52
-msgid "Edit Email"
-msgstr "Editar correo"
-
-#: modules/AdvancedCommunication.class.php:53
-msgid "New Email"
-msgstr "Nuevo correo"
-
-#: modules/AdvancedCommunication.class.php:54
-msgid "All Emails"
-msgstr "Todos los correos"
-
-#: modules/AdvancedCommunication.class.php:55
-msgid "View Email"
-msgstr "Ver correos"
-
-#: modules/AdvancedCommunication.class.php:56
-msgid "Search Emails"
-msgstr "Buscar correos"
-
-#: modules/AdvancedCommunication.class.php:57
-msgid "No Emails found"
-msgstr "No se han encontrado correos"
-
-#: modules/AdvancedCommunication.class.php:58
-msgid "No Emails found in Trash"
-msgstr "Ningúno correo encontrado en la papelera"
-
-#: modules/AdvancedCommunication.class.php:108
-msgid "Notice Manager"
-msgstr "Avisos y mensajes"
-
-#: modules/AdvancedCommunication.class.php:109
-msgid "Notifications"
-msgstr "Notificaciones"
-
-#: modules/AdvancedCommunication.class.php:120
-msgid "Free text"
-msgstr "Texto libre"
-
-#: modules/AdvancedCommunication.class.php:125
-msgid "Create more notices visiting "
-msgstr "Cree más \"Avisos\" visitando"
-
-#: modules/AdvancedCommunication.class.php:125
-msgid "Notices administrator"
-msgstr "Avisos y Mensajes"
-
-#: modules/AdvancedCommunication.class.php:155
+#: modules/AdvancedCommunication.class.php:88
+#: modules/AdvancedCommunication.class.php:165
 msgid "Subject"
 msgstr "Asunto"
 
-#: modules/AdvancedCommunication.class.php:156
+#: modules/AdvancedCommunication.class.php:88
+msgid "This field will be used if the notice is used as email"
+msgstr "Este campo se usará si el aviso es usado como correo"
+
+#: modules/AdvancedCommunication.class.php:116
+msgid "Notice Manager"
+msgstr "Avisos y mensajes"
+
+#: modules/AdvancedCommunication.class.php:117
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: modules/AdvancedCommunication.class.php:124
+msgid "Emails"
+msgstr "Correos"
+
+#: modules/AdvancedCommunication.class.php:128
+msgid "Free text"
+msgstr "Texto libre"
+
+#: modules/AdvancedCommunication.class.php:133
+msgid "Create more notices visiting "
+msgstr "Cree más \"Avisos\" visitando"
+
+#: modules/AdvancedCommunication.class.php:133
+msgid "Notices administrator"
+msgstr "Avisos y Mensajes"
+
+#: modules/AdvancedCommunication.class.php:166
 msgid "Send a copy to me"
 msgstr "Enviarme una copia"
 
-#: modules/AdvancedCommunication.class.php:162
+#: modules/AdvancedCommunication.class.php:172
 msgid "Save & Send"
 msgstr "Guardar y Enviar"
 
-#: modules/AdvancedCommunication.class.php:164
+#: modules/AdvancedCommunication.class.php:174
 msgid "Sending..."
 msgstr "Enviando..."
 
-#: modules/AdvancedCommunication.class.php:165
+#: modules/AdvancedCommunication.class.php:175
 msgid "Error sending"
 msgstr "Error al enviar"
 
-#: modules/AdvancedCommunication.class.php:168
+#: modules/AdvancedCommunication.class.php:178
 msgid "Saved..."
 msgstr "Guardando..."
 
-#: modules/AdvancedCommunication.class.php:231
+#: modules/AdvancedCommunication.class.php:241
 msgid "No Notices/Emails templates."
 msgstr "Sin plantillas de correos"
 
-#: modules/AdvancedCommunication.class.php:231
+#: modules/AdvancedCommunication.class.php:241
 msgid "Create Notices"
 msgstr "Crear Avisos"
 
-#: modules/AdvancedCommunication.class.php:239
+#: modules/AdvancedCommunication.class.php:249
 #, php-format
 msgid "Order ID: %s"
 msgstr "ID Pedido: %s"
 
-#: modules/AdvancedCommunication.class.php:369
+#: modules/AdvancedCommunication.class.php:384
 msgid "Do you really want to remove this notice?"
 msgstr "¿Realmente quiere borrar esta noticia?"
 
@@ -5254,14 +5251,13 @@ msgid "Free Trans"
 msgstr "Transporte gratuito"
 
 #: plugins/FreeTrans.class.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "Free transport for orders with cost greater than an editable minimum. <br>Author: <a href=\"%s\" target=\"_blank\">TheCartPress team</a>"
 msgstr "Transporte gratuito para pedidos con un coste mayor que un mínimo editable. <br>Autor: <a href=\"http://thecartpress.com\" target=\"_blank\">El equipo de TheCartPress</a>"
 
 #: plugins/FreeTrans.class.php:41
-#, fuzzy
 msgid "Minimum amount"
-msgstr "Mínima cantidad"
+msgstr "Cantidad mínima "
 
 #: plugins/NoCostPayment.class.php:42
 msgid "No payment."
@@ -5278,14 +5274,12 @@ msgstr "Si se marca, la página de Caja completará el pedido. El cliente no nec
 
 #: plugins/NoCostPayment.class.php:92
 #: plugins/Transference.class.php:235
-#: plugins/Remboursement.class.php:123
 msgid "Finish"
 msgstr "Finalizar"
 
 #: plugins/NoCostPayment.class.php:100
-#, fuzzy
 msgid "Finishing automatically. Please, wait a moment"
-msgstr "Redirigiendo a PayPal, espere un momento"
+msgstr "Acabando automáticamente, espere un momento"
 
 #: plugins/LocalPickUp.class.php:40
 msgid "Local pick up"
@@ -5350,12 +5344,10 @@ msgstr "Calcular por"
 
 #: plugins/FlatRate.class.php:79
 #: plugins/FlatRate.class.php:101
-#: plugins/Remboursement.class.php:48
 msgid "Percentage"
 msgstr "Porcentaje"
 
 #: plugins/FlatRate.class.php:80
-#: plugins/Remboursement.class.php:56
 msgid "Fix"
 msgstr "Valor fijo"
 
@@ -5434,7 +5426,6 @@ msgid "Authorization Only"
 msgstr "Sólo Autorización"
 
 #: plugins/authorize.net/TCPAuthorizeNet.class.php:92
-#: plugins/PayPal/TCPPayPal.php:104
 msgid "Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later"
 msgstr "Indica cuando el pago es una venta final, o un autorización para una venta final, que será capturada más tarde"
 
@@ -5451,26 +5442,25 @@ msgid "Returns to the eCommerce"
 msgstr "Volver al comercio"
 
 #: plugins/authorize.net/TCPAuthorizeNet.class.php:228
-#, fuzzy, php-format
+#, php-format
 msgid "Pay using %s"
-msgstr "usar tamaño"
+msgstr "Pagar usando %s"
 
 #: plugins/authorize.net/TCPAuthorizeNet.class.php:231
-#, fuzzy
 msgid "Redirecting to Authorized.net, wait a moment"
-msgstr "Redirigiendo a PayPal, espere un momento"
+msgstr "Redirigiendo a Authorized.net, espere un momento"
 
 #: plugins/PayPal/TCPPayPal.php:63
 msgid "PayPal eMail"
 msgstr "Email de Paypal"
 
 #: plugins/PayPal/TCPPayPal.php:71
-msgid "Receiver eMail"
-msgstr ""
+msgid "Primary PayPal email"
+msgstr "Email principal de Paypal"
 
 #: plugins/PayPal/TCPPayPal.php:75
 msgid "Leave it blank if business is equl to receiver."
-msgstr ""
+msgstr "Dejar en blanco si no hay más cuentas de paypal"
 
 #: plugins/PayPal/TCPPayPal.php:80
 msgid "PayPal prompt for shipping address"
@@ -5760,89 +5750,89 @@ msgstr "Después de guardar el título y el contenido, podrás modificar estas r
 msgid "Product setup"
 msgstr "Configuración Productos"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:62
+#: metaboxes/ProductCustomFieldsMetabox.class.php:64
 msgid "After saving the title and content, you will be able to edit the specific fields of the product."
 msgstr "Después de guardar el título y el contenido, podrás editar los campos específicos del producto."
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:83
+#: metaboxes/ProductCustomFieldsMetabox.class.php:85
 msgid "For crossing sell, adds products to the current product"
 msgstr "Para ventas cruzdas, añada productos al producto actual"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:84
+#: metaboxes/ProductCustomFieldsMetabox.class.php:86
 #: metaboxes/PostMetabox.class.php:63
 msgid "Related Products"
 msgstr "Productos Relacionados"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:92
-#: metaboxes/ProductCustomFieldsMetabox.class.php:110
+#: metaboxes/ProductCustomFieldsMetabox.class.php:94
+#: metaboxes/ProductCustomFieldsMetabox.class.php:112
 msgid "For crossing sell, adds Post to the current product"
 msgstr "Para ventas cruzadas, asigne entradas al producto actual"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:93
+#: metaboxes/ProductCustomFieldsMetabox.class.php:95
 #: metaboxes/PostMetabox.class.php:68
 msgid "Related Posts"
 msgstr "Artículos Relacionados"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:101
+#: metaboxes/ProductCustomFieldsMetabox.class.php:103
 msgid "For crossing sell, adds Categories of Post to the current product"
 msgstr "Para ventas cruzadas, asigne Categorías de Entradas al producto actual"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:102
+#: metaboxes/ProductCustomFieldsMetabox.class.php:104
 msgid "Related Cat. of Posts"
 msgstr "Categorías de Productos Relacionadas"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:111
+#: metaboxes/ProductCustomFieldsMetabox.class.php:113
 #: metaboxes/PostMetabox.class.php:73
 msgid "Related Cat. of Products"
 msgstr "Categorías de Productos Relacionadas"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:134
+#: metaboxes/ProductCustomFieldsMetabox.class.php:136
 msgid "Prices"
 msgstr "Precios"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:135
+#: metaboxes/ProductCustomFieldsMetabox.class.php:137
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:172
-#: metaboxes/ProductCustomFieldsMetabox.class.php:211
+#: metaboxes/ProductCustomFieldsMetabox.class.php:174
+#: metaboxes/ProductCustomFieldsMetabox.class.php:213
 #, php-format
 msgid "Current number format is %s"
 msgstr "El formato actual es %s"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:217
+#: metaboxes/ProductCustomFieldsMetabox.class.php:219
 msgid "Order (in loops/catalogue)"
 msgstr "Orden (en loops/catálogo)"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:221
+#: metaboxes/ProductCustomFieldsMetabox.class.php:223
 msgid "Numerical position to sort the product in lists of products."
 msgstr "Posición numérica para clasificar el producto en las listas de productos."
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:227
+#: metaboxes/ProductCustomFieldsMetabox.class.php:229
 msgid "Initial Quantity"
 msgstr "Cantidad Inicial"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:231
+#: metaboxes/ProductCustomFieldsMetabox.class.php:233
 msgid "Initial number of units to display in the buy button. If the product is displayed inside a grouped product this value will be omitted, using the unit field defined in the grouped list."
 msgstr "El número inicial de unidades que se mostrarán en el botón de compra. Si el producto se muestra dentro de un producto agrupado este valor se omite, con el campo de la unidad definida en la lista agrupada."
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:236
+#: metaboxes/ProductCustomFieldsMetabox.class.php:238
 msgid "Is visible (in loops/catalogue)"
 msgstr "Es visible (en loops/catálogo)"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:250
+#: metaboxes/ProductCustomFieldsMetabox.class.php:252
 msgid "Hide buy button"
 msgstr "Ocultar botón Comprar:"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:253
+#: metaboxes/ProductCustomFieldsMetabox.class.php:255
 msgid "Allow to hide the buy button for this product"
 msgstr "Permite ocultar el botón de compra para este producto"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:258
+#: metaboxes/ProductCustomFieldsMetabox.class.php:260
 msgid "Exclude for range prices"
 msgstr "Excluido del rango del precio"
 
-#: metaboxes/ProductCustomFieldsMetabox.class.php:261
+#: metaboxes/ProductCustomFieldsMetabox.class.php:263
 msgid "If the product is assigned to a Grouped product, this option excludes the product from the range price of the parent product."
 msgstr "Si el producto es asignado a un producto agrupado, esta opción excluye al producto del rango de precios del producto padre"
 
@@ -6105,27 +6095,27 @@ msgstr "(Inc. Impuestos)"
 msgid "(No inc. tax)"
 msgstr "(No inc. Impuestos)"
 
-#: templates/tcp_template.php:1043
+#: templates/tcp_template.php:1042
 msgid "Completed"
 msgstr "Completado"
 
-#: templates/tcp_template.php:1050
+#: templates/tcp_template.php:1049
 msgid "Processing"
 msgstr "Procesando"
 
-#: templates/tcp_template.php:1056
+#: templates/tcp_template.php:1055
 msgid "Pending"
 msgstr "Pendiente"
 
-#: templates/tcp_template.php:1062
+#: templates/tcp_template.php:1061
 msgid "Cancelled"
 msgstr "Cancelado"
 
-#: templates/tcp_template.php:1069
+#: templates/tcp_template.php:1068
 msgid "Suspended"
 msgstr "Suspendido"
 
-#: templates/tcp_template.php:1152
+#: templates/tcp_template.php:1151
 msgid "Simple"
 msgstr "Simple"
 
@@ -6156,7 +6146,7 @@ msgid "Select %s"
 msgstr "Seleccione %s"
 
 #: templates/tcp_general_template.php:327
-#: themes-templates/tcp_shopping_cart_email.php:281
+#: themes-templates/tcp_shopping_cart_email.php:284
 #: themes-templates/tcp_shopping_cart.php:256
 msgid "Modify"
 msgstr "Cambiar"
@@ -6168,7 +6158,7 @@ msgstr "Eliminar artículo"
 #: templates/tcp_general_template.php:339
 #: templates/tcp_general_template.php:361
 #: templates/tcp_general_template.php:436
-#: themes-templates/tcp_shopping_cart_email.php:325
+#: themes-templates/tcp_shopping_cart_email.php:328
 #: themes-templates/tcp_shopping_cart.php:300
 msgid "Discount"
 msgstr "Descuentos"
@@ -6183,9 +6173,8 @@ msgstr "comprar"
 
 #: templates/tcp_general_template.php:382
 #: templates/tcp_general_template.php:466
-#, fuzzy
 msgid "Delete All"
-msgstr "eliminar todo"
+msgstr "Eliminar todo"
 
 #: templates/tcp_general_template.php:430
 msgid "N<sup>o</sup> products"
@@ -6395,8 +6384,8 @@ msgid "allows to select the size of the image to show in grouped products."
 msgstr "permite seleccionar el tamaño de las imágenes a mostrar en los grupos de productos"
 
 #: appearance/ThemeCompatibilitySettings.class.php:254
-msgid "Image size in content"
-msgstr "Tamaño de la imagen en el contenido"
+msgid "Product image size"
+msgstr "Tamaño de la imagen de un Producto"
 
 #: appearance/ThemeCompatibilitySettings.class.php:267
 msgid "Image align in content"
@@ -6642,28 +6631,28 @@ msgstr "Orden Descendiente"
 msgid "Display Pagination"
 msgstr "Mostrar Paginación"
 
-#: themes-templates/tcp_shopping_cart_email.php:139
+#: themes-templates/tcp_shopping_cart_email.php:142
 #: themes-templates/tcp_shopping_cart.php:154
 msgid "Shipping and Billing address"
 msgstr "Dirección de Envío y Facturación"
 
-#: themes-templates/tcp_shopping_cart_email.php:206
+#: themes-templates/tcp_shopping_cart_email.php:209
 #: themes-templates/tcp_shopping_cart.php:37
 msgid "Payment notice"
 msgstr "Aviso de pago"
 
-#: themes-templates/tcp_shopping_cart_email.php:218
+#: themes-templates/tcp_shopping_cart_email.php:221
 #: themes-templates/tcp_shopping_cart.php:43
 msgid "Shipping notice"
 msgstr "Aviso de envío"
 
-#: themes-templates/tcp_shopping_cart_email.php:267
+#: themes-templates/tcp_shopping_cart_email.php:270
 #: themes-templates/tcp_shopping_cart.php:238
 #, php-format
 msgid "Discount %s"
 msgstr "Descuentos %s"
 
-#: themes-templates/tcp_shopping_cart_email.php:319
+#: themes-templates/tcp_shopping_cart_email.php:322
 #: themes-templates/tcp_shopping_cart.php:294
 msgid "Subtotal"
 msgstr "Subtotal"
@@ -6679,22 +6668,22 @@ msgid "Apologies, but no results were found for the requested archive. Perhaps s
 msgstr "Disculpa, pero no se han encontrado resultados para el archivo solicitado. Tal vez la búsqueda te ayude a encontrar un artículo relacionado."
 
 #: themes-templates/loop-tcp-list.php:160
-#: themes-templates/loop-tcp-grid.php:208
+#: themes-templates/loop-tcp-grid.php:206
 msgid "More <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Más <span class=\"meta-nav\">&rarr;</span>"
 
 #: themes-templates/loop-tcp-list.php:197
-#: themes-templates/loop-tcp-grid.php:237
+#: themes-templates/loop-tcp-grid.php:235
 msgid "Leave a review"
 msgstr "Dejar un comentario"
 
 #: themes-templates/loop-tcp-list.php:197
-#: themes-templates/loop-tcp-grid.php:237
+#: themes-templates/loop-tcp-grid.php:235
 msgid "<b>1</b> Review"
 msgstr "<b>1</b>  Revisión"
 
 #: themes-templates/loop-tcp-list.php:197
-#: themes-templates/loop-tcp-grid.php:237
+#: themes-templates/loop-tcp-grid.php:235
 msgid "<b>%</b> Reviews"
 msgstr "<b>%</b> Revisiones"
 
@@ -6723,6 +6712,36 @@ msgstr "Administración del Blog"
 #: themes-templates/tcp_author_profile.php:69
 msgid "Log Out"
 msgstr "Desconectar"
+
+#~ msgid "TCP Custom fields"
+#~ msgstr "TCP Campos personalizados"
+
+#~ msgid "Add New Email"
+#~ msgstr "Añadir nuevo correo"
+
+#~ msgid "Edit Email"
+#~ msgstr "Editar correo"
+
+#~ msgid "New Email"
+#~ msgstr "Nuevo correo"
+
+#~ msgid "All Emails"
+#~ msgstr "Todos los correos"
+
+#~ msgid "View Email"
+#~ msgstr "Ver correos"
+
+#~ msgid "Search Emails"
+#~ msgstr "Buscar correos"
+
+#~ msgid "No Emails found"
+#~ msgstr "No se han encontrado correos"
+
+#~ msgid "No Emails found in Trash"
+#~ msgstr "Ningúno correo encontrado en la papelera"
+
+#~ msgid "Image size in content"
+#~ msgstr "Tamaño de la imagen en el contenido"
 
 #~ msgid "The billing Street 2 field must be completed"
 #~ msgstr "Debe de introducir el campo Dirección de facturación 2"
@@ -7575,9 +7594,6 @@ msgstr "Desconectar"
 
 #~ msgid "next &raquo;"
 #~ msgstr "siguiente &raquo;"
-
-#~ msgid "Product base"
-#~ msgstr "Producto base"
 
 #~ msgid "Category base"
 #~ msgstr "Categoría base"

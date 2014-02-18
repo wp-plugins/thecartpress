@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class OrdersDetails {
 
 	static function createTable() {
@@ -36,6 +39,7 @@ class OrdersDetails {
 			`original_price`	decimal(13,2)		NOT NULL default 0,
 			`tax`				double				NOT NULL default 0,
 			`qty_ordered`		int(11) unsigned	NOT NULL default 0,
+			`discount`			decimal(13,2)		NOT NULL default 0,
 			`max_downloads`		int(4)				NOT NULL default 10,
 			`expires_at`		date				NOT NULL,
 			PRIMARY KEY  (`order_detail_id`)
@@ -98,7 +102,7 @@ class OrdersDetails {
 		);
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
-		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
+		$res =  $wpdb->get_results( $wpdb->prepare( 'select order_detail_id, price, tax, qty_ordered, discount from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
 		foreach( $res as $row ) {
 			$detailed['amount'] += $row->price * $row->qty_ordered;
 			if ( $row->tax > 0 ) {
@@ -125,10 +129,11 @@ class OrdersDetails {
 				'original_price'	=> $ordersDetails['original_price'],
 				'tax'				=> $ordersDetails['tax'],
 				'qty_ordered'		=> $ordersDetails['qty_ordered'],
+				'discount'			=> $ordersDetails['discount'],
 				'max_downloads'		=> $ordersDetails['max_downloads'],
 				'expires_at'		=> $ordersDetails['expires_at'],
 			),
-			array( '%d', '%d', '%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%f', '%d', '%d', '%s' )
+			array( '%d', '%d', '%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%f', '%d', '%f', '%d', '%s' )
 		);
 		return $wpdb->insert_id;
 	}
@@ -187,4 +192,3 @@ class OrdersDetails {
 		return $wpdb->get_var( $sql );	
 	}
 }
-?>

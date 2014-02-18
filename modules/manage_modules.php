@@ -26,7 +26,7 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 require_once( 'AdminBarMenu.class.php' );
 require_once( 'AdvancedCommunication.class.php' );
@@ -58,5 +58,6 @@ require_once( 'TopSellers.class.php' );
 require_once( 'UIImprovements.class.php' );
 require_once( 'UnderConstruction.class.php' );
 require_once( 'UnitsInBuyButton.class.php' );
+
 require_once( 'WishList.class.php' );
 require_once( 'WPPluginsAdminPanel.class.php' );

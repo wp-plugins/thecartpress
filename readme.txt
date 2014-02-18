@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 3.8
-Stable Tag: 1.3.4.3
+Stable Tag: 1.3.5
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -301,8 +301,10 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 = 1.3.5 =
-* Reports: new 
-* Media Loader: Improvement
+* Custom emails: Custom subject, with fields {billing_fistname}, etc.
+* PayPal: Support "Bussines email" different from "Primary PayPal email"
+* Discount detail in Order email and order admin panel
+* QTranslate: improvements
 
 = 1.3.4.3 =
 * Sorting panel: Custom post types

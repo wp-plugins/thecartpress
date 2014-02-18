@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPCartTable' ) ) :
+if ( ! class_exists( 'TCPCartTable' ) ) :
 
 /**
  * Shows a Cart table.

@@ -17,7 +17,7 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'TCPCheckoutManager' ) ) :
 
@@ -553,6 +553,7 @@ class TCPCheckoutManager {
 			$ordersDetails['qty_ordered']		= $item->getCount();
 			$ordersDetails['max_downloads']		= get_post_meta( $post->ID, 'tcp_max_downloads', true );
 			$ordersDetails['expires_at']		= $expires_at;
+			$ordersDetails['discount']			= $item->getDiscount();
 			$orders_details_id = OrdersDetails::insert( $ordersDetails );
 			if ( $item->has_attributes() ) tcp_update_order_detail_meta( $orders_details_id, 'tcp_attributes', $item->get_attributes() );
 			do_action( 'tcp_checkout_create_order_insert_detail', $order_id, $orders_details_id, $item->getPostId(), $ordersDetails ); //, $item->getOption1Id(), $item->getOption2Id() );

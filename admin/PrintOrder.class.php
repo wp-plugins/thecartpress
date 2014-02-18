@@ -38,7 +38,7 @@ class TCPPrintOrder {
 		if ( $current_user->ID == 0 ) {
 			global $thecartpress;
 			if ( $order_id != $thecartpress->getShoppingCart()->getOrderId() ) return;
-		} elseif ( !current_user_can( 'tcp_edit_orders' ) ) {
+		} elseif ( ! current_user_can( 'tcp_edit_orders' ) ) {
 			require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 			if ( !Orders::is_owner( $order_id, $current_user->ID ) ) return;
 		}

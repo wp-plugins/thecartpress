@@ -27,9 +27,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ActiveCheckout' ) ) :
+if ( ! class_exists( 'ActiveCheckout' ) ) :
 
 require_once( TCP_CLASSES_FOLDER . 'OrderPage.class.php' );
 
