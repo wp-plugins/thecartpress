@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+if ( ! class_exists( 'TCPRegisterformShortcode' ) ) :
+
 class TCPRegisterformShortcode {
 
 	function __construct() {
-		add_shortcode( 'tcp_register_form', array( &$this, 'tcp_register_form' ) );
+		add_shortcode( 'tcp_register_form', array( $this, 'tcp_register_form' ) );
 	}
 
 	function tcp_register_form( $atts ) {
@@ -32,4 +38,5 @@ class TCPRegisterformShortcode {
 }
 
 new TCPRegisterformShortcode();
-?>
+
+endif; // class_exists check

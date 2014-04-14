@@ -54,6 +54,21 @@ function tcp_get_the_checkout_url() {
 	return tcp_the_checkout_url( false );
 }
 
+/**
+ * Returns the url of the payment step of the checkout
+ *
+ * @since 1.3.6
+ */
+function tcp_get_the_checkout_payment_url() {
+	$url = tcp_the_checkout_url( false );
+	require_once( TCP_CHECKOUT_FOLDER . 'TCPCheckoutManager.class.php' );
+	$cm = new TCPCheckoutManager();
+	$step = $cm->getPaymentStep();
+	$url = add_query_arg( 'tcp_step', $step, $url );
+	$url = apply_filters( 'tcp_get_the_checkout_payment_url', $url );
+	return $url;
+}
+
 function tcp_get_the_checkout_ok_url( $order_id = false ) {
 	$url = add_query_arg( 'tcp_checkout', 'ok', tcp_get_the_checkout_url() );
 	if ( $order_id !== false ) $url = add_query_arg( 'order_id', $order_id, $url );
@@ -247,6 +262,7 @@ jQuery( 'li.cat-item > ul' ).each( function( i ) {
 } );
 
 jQuery( 'ul.tcp_navigation_tree ul' ).hide();
+jQuery( 'ul.tcp_navigation_tree li.current-cat ul ' ).show(); // opens active category
 var current = jQuery( 'li.current-cat' );
 if ( current.length ) {
 	current.parents().show();
@@ -319,15 +335,16 @@ function tcp_get_shopping_cart_detail( $args = false, $echo = true ) {
 				<!--<li>
 					<span class="tcp_unit_price"><?php _e( 'Price', 'tcp' ); ?>:&nbsp;<?php echo tcp_format_the_price( $item->getPriceToshow() ); ?></span>
 				</li>-->
-				<?php //if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
-				<?php if ( ! $item->isDownloadable() ) : ?>
 				<li>
-				<?php if ( $see_modify_item ) : ?>
+					<?php //if ( ! tcp_is_downloadable( $item->getPostId() ) ) : ?>
+					<?php if ( ! $item->isDownloadable() ) : ?>
+				
+					<?php if ( $see_modify_item ) : ?>
 					<input type="number" min="0" name="tcp_count" value="<?php echo $item->getCount(); ?>" size="2" maxlength="4" class="tcp_count input-sm"/>
 					<button type="submit" name="tcp_modify_item_shopping_cart" class="tcp_modify_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Modify', 'tcp' ); ?>"><span class="glyphicon glyphicon-refresh"></span> <span class="sr-only"><?php _e( 'Modify', 'tcp' ); ?></span></button>
 					<?php if ( $see_delete_item ) : ?>
 					<button type="submit" name="tcp_delete_item_shopping_cart" class="tcp_delete_item_shopping_cart tcp-btn tcp-btn-link tcp-btn-sm" title="<?php _e( 'Delete item', 'tcp' ); ?>"><span class="glyphicon glyphicon-trash"></span> <span class="sr-only"><?php _e( 'Delete item', 'tcp' ); ?></span></button>
-				<?php endif; ?>
+					<?php endif; ?>
 				<?php else : ?>
 					<span class="tcp_units"><?php _e( 'Units', 'tcp' ); ?>:&nbsp;<?php echo $item->getCount(); ?></span>
 				<?php endif; ?>
@@ -755,7 +772,7 @@ function tcp_register_form( $args = array() ) {
 		'redirect'		=> get_permalink(),
 		'role'			=> array( 'customer' ),
 		'locked'		=> false,
-		'login'			=> true,
+		'login'			=> true, // login after register
 		'form_id'		=> 'loginform',
 		'label_username'=> __( 'Username', 'tcp' ),
 		'label_password'=> __( 'Password', 'tcp' ),
@@ -836,20 +853,21 @@ function tcp_register_form( $args = array() ) {
  */
 function tcp_author_profile( $current_user = false) {
 	//$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
-	if ( $current_user == false ) {
-		global $post;
-		if ( !empty( $post ) ) {
-			$current_user = new WP_User( $post->post_author );
-		} else {
+	if ( $current_user === false ) {
+		//global $post;
+		//if ( !empty( $post ) ) {
+		//	$current_user = new WP_User( $post->post_author );
+		//} else {
 			$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
 			if ( $current_user === false ) {
 				$current_user = get_the_author();
 				$current_user = get_user_by( 'login', $current_user );
-			} else {
+			}
+			if ( $current_user === false ) {
 				global $current_user;
 				global $user_level;
 			}
-		}
+		//}
 	}
 	if ( !isset( $user_level ) ) $user_level = $current_user->user_level;
 

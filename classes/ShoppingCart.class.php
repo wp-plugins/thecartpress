@@ -856,6 +856,17 @@ class ShoppingCartItem implements TCP_IDetailSource {
 		$this->attributes = $attributes;
 	}
 
+	/**
+	 * Adds attributes to the current list of attributes
+	 *
+	 * @since 1.3.6
+	 */
+	function add_attributes( $attributes ) {
+		foreach( $attributes as $id => $attribute ) {
+			$this->add_attribute( $id, $attribute );
+		}
+	}
+
 	function get_attributes() {
 		return $this->attributes;
 	}
@@ -878,7 +889,7 @@ class ShoppingCartItem implements TCP_IDetailSource {
 	}
 
 	function set_attribute( $id, $value ) {
-		$this->attributes[$id] = $value;
+		$this->add_attribute( $id, $value );
 	}
 
 	function remove_attribute( $id ) {

@@ -42,12 +42,24 @@ input[type="number"].tcp_count {
 .tcp-product-list .tcp_dynamic_option_panel .form-group label {
 	font-weight: normal;
 }
+
+.tcp-product-list .form-control {
+	max-width: 99%;
+}
+
 .tcp-product-list .tcp_dynamic_options_select.form-control {
 	border-radius: 3px;
 	font-size: 12px;
 	height: 30px;
 	line-height: 1.5;
 	padding: 5px 10px;
+}
+
+.tcp-grid-item button.tcp-btn[type="submit"],
+.tcp-grid-item input[type="button"],
+.tcp-grid-item input[type="reset"],
+.tcp-grid-item input[type="submit"]  {
+	white-space: normal;
 }
 
 

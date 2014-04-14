@@ -195,7 +195,7 @@ class Orders {
 			'billing_company'		=> $order['billing_company'],
 			'billing_tax_id_number'	=> $order['billing_tax_id_number'],
 			'billing_street'		=> $order['billing_street'],
-			'billing_street_2'		=> isset( $order['billing_street'] ) ? $order['billing_street'] : '',
+			'billing_street_2'		=> isset( $order['billing_street_2'] ) ? $order['billing_street_2'] : '',
 			'billing_city'			=> $order['billing_city'],
 			'billing_city_id'		=> $order['billing_city_id'],
 			'billing_region'		=> $order['billing_region'],
@@ -553,4 +553,3 @@ class Orders {
 		return apply_filters( 'tcp_getOrdersByMonth', $wpdb->get_results( $sql ), $year );
 	}
 }
-?>

@@ -115,6 +115,7 @@ class TCPOrdersListTable extends WP_List_Table {
 	}
 
 	function column_order_id( $item ) {
+		ob_start();
 		echo __( 'Order #', 'tcp' );
 		if ( current_user_can( 'tcp_edit_orders' ) ) {
 			$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
@@ -129,6 +130,7 @@ class TCPOrdersListTable extends WP_List_Table {
 		$user_data = get_userdata( $item->customer_id );
 		if ( $user_data ) echo '<a href="', admin_url( 'user-edit.php?user_id=' . $item->customer_id ), '">', $user_data->display_name, '</a>';//, ' (', $user_data->user_email, ')';
 		echo '<br/>', $item->billing_email;
+		echo apply_filters( 'tcp_order_list_column_order_id', ob_get_clean(), $item );
 	}
 
 	function column_status( $item ) {

@@ -103,7 +103,7 @@ class ActiveCheckout {//shortcode
 					<span class="tcp_checkout_ko"><?php _e( 'Transaction Error. The order has been canceled', 'tcp' ); ?></span>
 				<?php } ?>
 				</div><!-- .tcp_order_unsuccessfully -->
-				<?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_url() ); ?>
+				<?php printf( __( 'Retry the <a href="%s">checkout process</a>', 'tcp' ), tcp_get_the_checkout_payment_url() ); ?>
 			</div><!-- .tcp_payment_area -->
 			<?php $html = ob_get_clean();
 			do_action( 'tcp_checkout_end', $order_id, false );

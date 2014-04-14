@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPStockManagement' ) ) :
+if ( ! class_exists( 'TCPStockManagement' ) ) :
 
 class TCPStockManagement {
 	private $no_stock_enough = false;

@@ -5,7 +5,13 @@
 div.tcp_order_panel {
 	font-size: 13px;
 	margin: 10px 0;
-	text-align: right;
+}
+span.tcp_order_type label {
+	display: none;
+}
+.tcp_order_panel span,
+.tcp_order_panel .form-group {
+	display: inline-block;
 }
 div.tcp_order_panel label {
 	font-size: 0.9em;
@@ -16,12 +22,18 @@ div.tcp_order_panel select {
 .tcp_order_desc {
 	margin-left: 16px;
 }
+
 .tcp-product-list a {
 	text-decoration: none;
 }
-
+.tcp-product-list aside,
+.tcp-product-list .widget,
 .tcp-product-list {
 	font-size: 12px;
+}
+.tcp-product-list aside,
+.tcp-product-list .widget {
+	margin: 10px 0 0;
 }
 .tcp-grid-item {
 	width: 100%;
@@ -34,11 +46,19 @@ div.tcp_order_panel select {
 	vertical-align: top;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 	overflow: hidden;
+	position: relative;
 }
 .tcp-product-thumbnail img {
-	display: block;
+	display: inline-block;
 	height: auto;
 	max-width: 100% !important;
+	box-shadow: none;
+}
+.tcp-product-thumbnail img.wp-post-image {
+	box-shadow: none;
+}
+.tcp-grid-body {
+	overflow: hidden;
 }
 .tcp-grid-item .tcp-product-content,
 .tcp-grid-item .tcp-product-summary {
@@ -57,10 +77,9 @@ div.tcp_order_panel select {
 	max-width: 20px;
 	height: auto;
 }
-.tcp-product-list .tcp-product-price,
 .tcp-product-list .tcp-product-title,
 .tcp-product-list .tcp-product-title .entry-title a {
-	font-size: 14px;
+	font-size: 16px;
 }
 .tcp-grid-item .tcp-product-taxonomy {
 	display: block;
@@ -68,6 +87,7 @@ div.tcp_order_panel select {
 .tcp_col {
 	margin-bottom: 20px;
 }
+
 
 
 .tcp-product-list.tcpf .tcp-product-title,
@@ -80,7 +100,7 @@ div.tcp_order_panel select {
 .tcp-product-list.tcpf .tcp-product-title h4,
 .tcp-product-list.tcpf .tcp-product-title h5,
 .tcp-product-list.tcpf .tcp-product-title h6 {
-	font-size: 14px;
+	font-size: 16px;
 	margin: 0;
 	line-height: 1.6;
 	padding: 0;
@@ -101,7 +121,7 @@ div.tcp_order_panel select {
 .tcp-product-list.tcpf .tcp-product-title h4 a,
 .tcp-product-list.tcpf .tcp-product-title h5 a,
 .tcp-product-list.tcpf .tcp-product-title h6 a  {
-	font-size: 14px;
+	font-size: 16px;
 	margin: 0;
 	line-height: 1.6;
 	padding: 0;
@@ -110,12 +130,15 @@ div.tcp_order_panel select {
 	padding-bottom: 0;
 	padding-top: 0;
 }
+.tcp-product-list  .tcp-product-summary ,
+.tcp-product-list  .tcp-product-price ,
 .tcp-product-list .tcp-product-meta div,
 .tcp-product-list .tcp-product-discount,
 .tcp-product-list .tcp-product-outstock
  {
-	margin-top: 5px;
+	margin-top: 10px;
 }
+.tcp-product-list .tcp-product-price,
 .tcp-product-list .tcp-product-discount,
 .tcp-product-list .tcp-product-outstock {
 	font-size: 14px;
@@ -129,10 +152,23 @@ div.tcp_order_panel select {
 	padding-right: 10px;
 }
 
+.tcp-product-list .customvalues dd {
+	margin-bottom: 4px;
+}
 
-/* fix fontfamily */
-.tcpf h1, .tcpf h2, .tcpf h3, .tcpf h4, .tcpf h5, .tcpf h6, .tcpf .h1, .tcpf .h2, .tcpf .h3, .tcpf .h4, .tcpf .h5, .tcpf .h6 {
-	font-family: inherit;
+/* list view mode */
+
+.tcp-product-viewlist div.tcp_col {
+	width: 100% !important;
+}
+.tcp-product-viewlist div.tcp-product-thumbnail {
+	float: left;
+	max-width: 25%;
+	margin:0 10px 10px 0;
+}
+
+.tcp-product-list.tcpf .tcp-product-viewlist .tcp-product-title {
+    margin: 0;
 }
 
 
@@ -141,6 +177,10 @@ div.tcp_order_panel select {
 .tcp-product-ls .entry-post-thumbnail {
 	max-width: 30%
 
+}
+
+.tcp-product-list.tcpf .tcp-product-ls .tcp-product-title {
+	margin: 0;
 }
 
 
@@ -174,9 +214,24 @@ div.tcp_order_panel select {
 .single-product-imagen .gallery-columns-5 .gallery-item {
 	width: 19% !important;
 	margin: 0 1px;
-	padding: 1px;
+	padding: 0;
 
 }
+
+/* fix for duplicate images when theme compatibility injection used and template page has a template tag for featured image */
+.single-tcp_product .tcp-single-imagen img.wp-post-image {
+	display: inline;
+}
+.single-tcp_product .post-thumbnail img.wp-post-image {
+	display: none;
+}
+
+@media screen and (min-width: 768px) {
+	div.tcp_order_panel {
+		text-align: right;
+	}
+}
+
 
 
 

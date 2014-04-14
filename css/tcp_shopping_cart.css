@@ -153,14 +153,17 @@ table#tcp_shopping_cart_table .tcp_cart_name a {
 
  /* Buttons */
 ul.tcp_sc_links {
-	list-style-type: none;
+	list-style-type: none !important;
 	width:auto;
 } 	
 ul.tcp_sc_links li{
 	float: right;
-	list-style: none;
-	margin: 0 0 0 10px;
+	list-style: none !important;
+	margin: 0;
 } 
+ul.tcp_sc_links li .tcp-btn {
+	margin: 0 0 0 12px;
+}
 
 
 
