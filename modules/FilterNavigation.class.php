@@ -26,9 +26,9 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'TCPFilterNavigation' ) ) :
+if ( ! class_exists( 'TCPFilterNavigation' ) ) :
 
 class TCPFilterNavigation {
 	private $min_price = 0;

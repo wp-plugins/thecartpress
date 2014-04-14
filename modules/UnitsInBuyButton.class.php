@@ -165,6 +165,7 @@ function tcp_get_product_units_list( $by_default = false ) {
 		'gr'		 => __( 'gr', 'tcp' ),
 		'pack'		 => __( 'pack', 'tcp' ),
 		'swatch'	 => __( 'swatch', 'tcp' ),
+		'square_meter'=> __( 'square meter', 'tcp' ),
 		'cubic_metre'=> __( 'cubic metre', 'tcp' ),
 	);
 	if ( $by_default ) $units['by-default'] = __( 'By default', 'tcp' );

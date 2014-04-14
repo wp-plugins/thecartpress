@@ -58,127 +58,149 @@ class TCPPayPal extends TCP_Plugin {
 	}
 
 	function showEditFields( $data, $instance = 0 ) { ?>
-		<tr valign="top">
-			<th scope="row">
-				<label for="business"><?php _e( 'PayPal eMail', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" id="business" name="business" size="40" maxlength="50" value="<?php echo isset( $data['business'] ) ? $data['business'] : ''; ?>" />
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for=""><?php _e( 'Primary PayPal email', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" id="receiver" name="receiver" size="40" maxlength="50" value="<?php echo isset( $data['receiver'] ) ? $data['receiver'] : ''; ?>" />
-				<span class="description"><?php _e( 'Leave it blank if business is equl to receiver.', 'tcp' );?></span>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<?php _e( 'PayPal prompt for shipping address', 'tcp' );?>:
-			</th>
-			<td>
-				<input type="radio" id="no_shipping_0" name="no_shipping" value="0" <?php checked( 0 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
-				<label for="no_shipping"><?php _e( 'PayPal prompt for an address, but do not require one', 'tcp' );?></label><br />
-				<input type="radio" id="no_shipping_1" name="no_shipping" value="1" <?php checked( 1 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
-				<label for="no_shipping"><?php _e( 'PayPal do not prompt for an address', 'tcp' );?></label><br />
-				<input type="radio" id="no_shipping_2" name="no_shipping" value="2" <?php checked( 2 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
-				<label for="no_shipping"><?php _e( 'PayPal prompt for an address, and require one', 'tcp' );?></label><br />
-				<span class="description"><?php _e( 'Be sure to match this in the Checkout Editor', 'tcp' );?></span>
-			</td>
-		</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="business"><?php _e( 'PayPal eMail', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="text" id="business" name="business" size="40" maxlength="50" value="<?php echo isset( $data['business'] ) ? $data['business'] : ''; ?>" />
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for=""><?php _e( 'Primary PayPal email', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="text" id="receiver" name="receiver" size="40" maxlength="50" value="<?php echo isset( $data['receiver'] ) ? $data['receiver'] : ''; ?>" />
+		<span class="description"><?php _e( 'Leave it blank if business is equl to receiver.', 'tcp' );?></span>
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="cost_type"><?php _e( 'Cost type', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<select id="cost_type" name="cost_type">
+			<option value="per" <?php selected( isset( $data['cost_type'] ) ? $data['cost_type'] == 'per' : true ); ?>><?php _e( 'Percentage', 'tcp' ); ?></option>
+			<option value="fix" <?php selected( isset( $data['cost_type'] ) ? $data['cost_type'] == 'fix' : false ); ?>><?php _e( 'Amount', 'tcp' ); ?></option>
+		</select>
+		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p>
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="cost"><?php _e( 'Cost', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="text" id="cost" name="cost" size="10" maxlength="9" value="<?php echo isset( $data['cost'] ) ? $data['cost'] : ''; ?>" /><?php tcp_the_currency(); ?>
+		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p>
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<?php _e( 'PayPal prompt for shipping address', 'tcp' );?>:
+	</th>
+	<td>
+		<input type="radio" id="no_shipping_0" name="no_shipping" value="0" <?php checked( 0 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
+		<label for="no_shipping"><?php _e( 'PayPal prompt for an address, but do not require one', 'tcp' );?></label><br />
+		<input type="radio" id="no_shipping_1" name="no_shipping" value="1" <?php checked( 1 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
+		<label for="no_shipping"><?php _e( 'PayPal do not prompt for an address', 'tcp' );?></label><br />
+		<input type="radio" id="no_shipping_2" name="no_shipping" value="2" <?php checked( 2 , isset( $data['no_shipping'] ) ? $data['no_shipping'] : 0 ); ?> />
+		<label for="no_shipping"><?php _e( 'PayPal prompt for an address, and require one', 'tcp' );?></label><br />
+		<span class="description"><?php _e( 'Be sure to match this in the Checkout Editor', 'tcp' );?></span>
+	</td>
+</tr>
 
-		<tr valign="top">
-			<th scope="row">
-				<?php _e( 'Payment type', 'tcp' );?>:
-			</th>
-			<td>
-				<?php $paymentaction = isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale'; ?>
-				<select name="paymentaction">
-					<option value="sale" <?php selected( 'sale', $paymentaction ); ?>><?php _e( 'Sale', 'tcp' ); ?></option>
-					<option value="authorization" <?php selected( 'authorization', $paymentaction ); ?>><?php _e( 'Authorization', 'tcp' ); ?></option>
-					<option value="order" <?php selected( 'order', $paymentaction ); ?>><?php _e( 'Order', 'tcp' ); ?></option>
-				</select>
-				<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="redirect"><?php _e( 'Redirect automatically', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="checkbox" id="redirect" name="redirect" value="yes" <?php checked( isset( $data['redirect'] ) ? $data['redirect'] : false ); ?> />
-				<p class="description"><?php _e( 'If checked, Checkout page will redirect automatically to the Paypal payment site. Otherwise, customers must click on "Pay with PayPal".', 'tcp' ); ?></p>
-			</td>
-		</tr>
+<tr valign="top">
+	<th scope="row">
+		<?php _e( 'Payment type', 'tcp' );?>:
+	</th>
+	<td>
+		<?php $paymentaction = isset( $data['paymentaction'] ) ? $data['paymentaction'] : 'sale'; ?>
+		<select name="paymentaction">
+			<option value="sale" <?php selected( 'sale', $paymentaction ); ?>><?php _e( 'Sale', 'tcp' ); ?></option>
+			<option value="authorization" <?php selected( 'authorization', $paymentaction ); ?>><?php _e( 'Authorization', 'tcp' ); ?></option>
+			<option value="order" <?php selected( 'order', $paymentaction ); ?>><?php _e( 'Order', 'tcp' ); ?></option>
+		</select>
+		<span class="description"><?php _e( 'Indicates whether the payment is a final sale or an authorization for a final sale, to be captured later', 'tcp' );?></span>
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="redirect"><?php _e( 'Redirect automatically', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="checkbox" id="redirect" name="redirect" value="yes" <?php checked( isset( $data['redirect'] ) ? $data['redirect'] : false ); ?> />
+		<p class="description"><?php _e( 'If checked, Checkout page will redirect automatically to the Paypal payment site. Otherwise, customers must click on "Pay with PayPal".', 'tcp' ); ?></p>
+	</td>
+</tr>
 <!--		<tr valign="top">
-		<th scope="row">
-			<label for="profile_shipping"><?php _e( 'Use PayPal profile shipping', 'tcp' );?>:</label>
-		</th><td>
-			<input type="checkbox" id="profile_shipping" name="profile_shipping" value="yes" <?php checked( true , isset( $data['profile_shipping'] ) ? $data['profile_shipping'] : false );?> />
-			<?php if ( preg_match("/lb|kg/", tcp_get_the_unit_weight() ) == 0 ) : ?>
-			<span class="description"><strong><?php _e( 'Change your Unit Weight in TCP Settings. PayPal only allows lbs or kgs.', 'tcp' );?></strong></span>
-			<?php endif; ?>
-			<span class="description"> <?php _e( 'Be sure to enable shipping overrides in your PayPal profile.', 'tcp' );?></span>
-		</td></tr>
-		<tr valign="top">
-		<th scope="row">
-			<label for="profile_taxes"><?php _e( 'Use PayPal profile taxes', 'tcp' );?>:</label>
-		</th><td>
-			<input type="checkbox" id="profile_taxes" name="profile_taxes" value="yes" <?php checked( true , isset( $data['profile_taxes'] ) ? $data['profile_taxes'] : false );?> />
-		</td></tr>-->
-		<tr valign="top">
-			<th scope="row">
-				<?php _e( 'PayPal is sent', 'tcp' );?>:
-			</th>
-			<td>
-				<input type="radio" id="send_detail" name="send_detail" value="0" <?php checked( 0 , isset( $data['send_detail'] ) ? $data['send_detail'] : 0 );?> />
-				<label for="send_detail"><?php _e( 'One total amount', 'tcp' );?></label><br />
-				<input type="radio" id="send_detail" name="send_detail" value="1" <?php checked( 1 , isset( $data['send_detail'] ) ? $data['send_detail'] : 0 );?> />
-				<label for="send_detail"><?php _e( 'Item detail, each with amount', 'tcp' );?></label><br />
-			</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">&nbsp;</th>
-			<td>&nbsp;</td>
-		</tr>
-		<tr valign="top">
-			<th scope="row">
-				<label for="logging"><?php _e( 'Log IPN data', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="checkbox" id="logging" name="logging" value="yes" <?php checked( true , isset( $data['logging'] ) ? $data['logging'] : false );?> />
-			</td>
-		</tr>
+<th scope="row">
+	<label for="profile_shipping"><?php _e( 'Use PayPal profile shipping', 'tcp' );?>:</label>
+</th><td>
+	<input type="checkbox" id="profile_shipping" name="profile_shipping" value="yes" <?php checked( true , isset( $data['profile_shipping'] ) ? $data['profile_shipping'] : false );?> />
+	<?php if ( preg_match("/lb|kg/", tcp_get_the_unit_weight() ) == 0 ) : ?>
+	<span class="description"><strong><?php _e( 'Change your Unit Weight in TCP Settings. PayPal only allows lbs or kgs.', 'tcp' );?></strong></span>
+	<?php endif; ?>
+	<span class="description"> <?php _e( 'Be sure to enable shipping overrides in your PayPal profile.', 'tcp' );?></span>
+</td></tr>
+<tr valign="top">
+<th scope="row">
+	<label for="profile_taxes"><?php _e( 'Use PayPal profile taxes', 'tcp' );?>:</label>
+</th><td>
+	<input type="checkbox" id="profile_taxes" name="profile_taxes" value="yes" <?php checked( true , isset( $data['profile_taxes'] ) ? $data['profile_taxes'] : false );?> />
+</td></tr>-->
+<tr valign="top">
+	<th scope="row">
+		<?php _e( 'PayPal is sent', 'tcp' );?>:
+	</th>
+	<td>
+		<input type="radio" id="send_detail" name="send_detail" value="0" <?php checked( 0 , isset( $data['send_detail'] ) ? $data['send_detail'] : 0 );?> />
+		<label for="send_detail"><?php _e( 'One total amount', 'tcp' );?></label><br />
+		<input type="radio" id="send_detail" name="send_detail" value="1" <?php checked( 1 , isset( $data['send_detail'] ) ? $data['send_detail'] : 0 );?> />
+		<label for="send_detail"><?php _e( 'Item detail, each with amount', 'tcp' );?></label><br />
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">&nbsp;</th>
+	<td>&nbsp;</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="logging"><?php _e( 'Log IPN data', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="checkbox" id="logging" name="logging" value="yes" <?php checked( true , isset( $data['logging'] ) ? $data['logging'] : false );?> />
+	</td>
+</tr>
 
-		<tr valign="top">
-			<th scope="row">
-				<label for="cpp_cart_border_color"><?php _e( 'Cart border color', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="text" id="cart_border_color" name="cpp_cart_border_color" size="6" maxlength="8" value="<?php echo isset( $data['cpp_cart_border_color'] ) ? $data['cpp_cart_border_color'] : '';?>" />
-				<span class="description"><?php _e( 'Optional, for customizing the PayPal page, and can be set from your PayPal account.<br /> Enter a 6 digit hex color code.', 'tcp' );?></span>
-			</td>
-		</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="cpp_cart_border_color"><?php _e( 'Cart border color', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="text" id="cart_border_color" name="cpp_cart_border_color" size="6" maxlength="8" value="<?php echo isset( $data['cpp_cart_border_color'] ) ? $data['cpp_cart_border_color'] : '';?>" />
+		<span class="description"><?php _e( 'Optional, for customizing the PayPal page, and can be set from your PayPal account.<br /> Enter a 6 digit hex color code.', 'tcp' );?></span>
+	</td>
+</tr>
 
-		<tr valign="top">
-			<th scope="row">
-				<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
-			</th>
-			<td>
-				<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
-				<br/><a href="https://developer.paypal.com/?login_email=<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" target="_blank">developer.paypal.com</a>
-			</td>
-		</tr>
-		<?php do_action( 'tcp_paypal_show_edit_fields', $data ); ?>
-		<?php
-	}
+<tr valign="top">
+	<th scope="row">
+		<label for="test_mode"><?php _e( 'PayPal sandbox test mode', 'tcp' );?>:</label>
+	</th>
+	<td>
+		<input type="checkbox" id="test_mode" name="test_mode" value="yes" <?php checked( true , isset( $data['test_mode'] ) ? $data['test_mode'] : false );?> />
+		<br/><a href="https://developer.paypal.com/?login_email=<?php echo isset( $data['business'] ) ? $data['business'] : '';?>" target="_blank">developer.paypal.com</a>
+	</td>
+</tr>
+<?php do_action( 'tcp_paypal_show_edit_fields', $data ); ?>
+<?php }
 
 	function saveEditFields( $data, $instance = 0 ) {
 		$data['business']				= isset( $_REQUEST['business'] ) ? trim( $_REQUEST['business'] ) : '';
 		$data['receiver']				= isset( $_REQUEST['receiver'] ) ? trim( $_REQUEST['receiver'] ) : '';
+		$data['cost']					= isset( $_REQUEST['cost'] ) ? (float)$_REQUEST['cost'] : '0';
+		$data['cost_type']				= isset( $_REQUEST['cost_type'] ) ? $_REQUEST['cost_type'] : 'per';
 		$data['profile_shipping']		= isset( $_REQUEST['profile_shipping'] );
 		$data['profile_taxes']			= isset( $_REQUEST['profile_taxes'] );
 		$data['no_shipping']			= isset( $_REQUEST['no_shipping'] ) ? $_REQUEST['no_shipping'] : 0;
@@ -190,6 +212,19 @@ class TCPPayPal extends TCP_Plugin {
 		$data['test_mode']				= isset( $_REQUEST['test_mode'] );
 		$data = apply_filters( 'tcp_paypal_save_edit_fields', $data );
 		return $data;
+	}
+
+	function getCost( $instance, $shippingCountry, $shoppingCart = false ) {
+		$data = tcp_get_payment_plugin_data( get_class( $this ), $instance );
+		$cost = isset( $data['cost'] ) ? (float)$data['cost'] : 0;
+		if ( $cost > 0 ) {
+			$type = isset( $data['cost_type'] ) ? (float)$data['cost_type'] : 'per';
+			if ( $type == 'per' ) {
+				if ( $shoppingCart === false ) $shoppingCart = TheCartPress::getShoppingCart();
+				$cost = $shoppingCart->getTotal() * $cost / 100 ;
+			}
+		}
+		return $cost;
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {
@@ -371,7 +406,7 @@ wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $h
 		//		example and just send an email using the getTextReport() method to get all
 		//		of the details about the IPN.
 				$business			= $data['business'];
-				$receiver			= $date['receiver'];
+				$receiver			= $data['receiver'];
 				if ( strlen( $receiver ) == 0 ) {
 					$receiver = $business;
 				}

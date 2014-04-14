@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 3.8
-Stable Tag: 1.3.5
+Stable Tag: 1.3.6
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,16 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.6 =
+* Checkout: Notice is integrated into Cart
+* Checkout: 'Retry checkout' goes to Payment step by default
+* Mails and notices: "tcp_shopping_cart_bottom"
+* Shopping cart: new function "add_attributes"
+* Taxonomy management: allows set one taxonomy to more than one post type
+* Paypal: Supports adding cost to payments via Paypal
+* login shortcode: new attributes (login, register: display true/false)
+* Hooks: more hooks
+
 = 1.3.5 =
 * Custom emails: Custom subject, with fields {billing_fistname}, etc.
 * PayPal: Support "Bussines email" different from "Primary PayPal email"

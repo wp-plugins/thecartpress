@@ -41,7 +41,6 @@ class TCPThemeCompat {
 
 		// Catalogue page
 		if ( tcp_is_the_catalogue_page() ) {
-
 			// Makes a new query and resets the global one
 			global $wp_query, $thecartpress;
 			$args = array(
@@ -68,7 +67,7 @@ class TCPThemeCompat {
 			) );
 
 			//Adds a new 'the_content' hook
-			add_filter( 'the_content', array( $this, 'the_content' ) );
+			add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			return $template;
 		}
 
@@ -107,7 +106,7 @@ class TCPThemeCompat {
 				$template = locate_template( $template_names );
 
 				//Adds a new 'the_content' hook
-				add_filter( 'the_content', array( $this, 'the_content' ) );
+				add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			}
 		} elseif ( is_tax() ) {
 			$taxonomy	= get_query_var( 'taxonomy' );
@@ -141,8 +140,8 @@ class TCPThemeCompat {
 				$obj = get_term_by( 'slug', $term, $taxonomy );
 				$term_name = isset( $obj->name ) ? $obj->name : $term;
 				unset( $obj );
-				$label = $taxonomy_name . ', ' . $term_name;
-
+				$label = $taxonomy_name . ': ' . $term_name;
+				$label = apply_filters( 'tcp_theme_compat_label_is_tax', $label, $taxonomy_name, $term_name );
 				$this->theme_compatibility_reset_post( array(
 					'post_title'	=> $label,
 					'post_type'		=> $post->post_type,
@@ -153,7 +152,7 @@ class TCPThemeCompat {
 				$template = locate_template( $template_names );
 
 				//Adds a new 'the_content' hook
-				add_filter( 'the_content', array( $this, 'the_content' ) );
+				add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			}
 		} elseif ( is_archive() && !is_author() ) {
 			//Template hierarchy
@@ -189,7 +188,7 @@ class TCPThemeCompat {
 				$template = locate_template( $template_names );
 
 				//Adds a new 'the_content' hook
-				add_filter( 'the_content', array( $this, 'the_content' ) );
+				add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			}
 		}
 
@@ -206,7 +205,7 @@ class TCPThemeCompat {
 		global $post;
 
 		//Removes this "the_content" hook, very important to avoid recursion
-		$rem = remove_filter( 'the_content', array( $this, 'the_content' ) );
+		$rem = remove_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 		if ( is_single() ) {
 
 			// Recovers the current post (current product or saleable post)
@@ -252,7 +251,7 @@ class TCPThemeCompat {
 
 		$content = apply_filters( 'tcp_theme_compat_the_content', $content, $post );
 
-		add_filter( 'the_content', array( $this, 'the_content' ) );
+		add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 
 		return $content;
 	}

@@ -308,13 +308,18 @@ $image_size_content							= $thecartpress->get_setting( 'image_size_content' . $
 		if ( empty( $_POST ) ) return;
 		check_admin_referer( 'tcp_theme_compatibility_settings' );
 		if ( isset( $_POST['load_post_type_settings'] ) ) return;
-		if ( isset( $_POST['current_post_type'] )  && strlen( $_POST['current_post_type'] ) > 0 ) $suffix = '-' . $_POST['current_post_type'];
-		else $suffix = '';
+		if ( isset( $_POST['current_post_type'] )  && strlen( $_POST['current_post_type'] ) > 0 ) {
+			$suffix = '-' . $_POST['current_post_type'];
+		} else {
+			$suffix = '';
+		}
 		if ( isset( $_POST['delete_post_type_settings'] ) ) {
-			if ( strlen( $suffix ) == 0 ) return;
+			if ( empty( $suffix ) ) return;
 			$settings = get_option( 'tcp_settings' );
 			unset( $settings['products_per_page' . $suffix] );
 			unset( $settings['image_size_grouped_by_button' . $suffix] );
+			unset( $settings['see_image_in_content' . $suffix] );
+			unset( $settings['image_size_content' . $suffix] );
 			$settings = apply_filters( 'tcp_theme_compatibility_unset_settings_action', $settings, $suffix );
 			update_option( 'tcp_settings', $settings );
 			$this->updated = true;
