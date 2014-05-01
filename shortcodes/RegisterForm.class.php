@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
