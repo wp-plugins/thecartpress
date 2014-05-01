@@ -156,17 +156,18 @@ TCPUnitsInBuyButton::initModule();
 
 function tcp_get_product_units_list( $by_default = false ) {
 	$units = array(
-		'empty'		 => '',
-		'unit'		 => __( 'unit', 'tcp' ),
-		'piece'		 => __( 'piece', 'tcp' ),
-		'roll'		 => __( 'roll', 'tcp' ),
-		'meter'		 => __( 'meter', 'tcp' ),
-		'kg'		 => __( 'kg', 'tcp' ),
-		'gr'		 => __( 'gr', 'tcp' ),
-		'pack'		 => __( 'pack', 'tcp' ),
-		'swatch'	 => __( 'swatch', 'tcp' ),
-		'square_meter'=> __( 'square meter', 'tcp' ),
-		'cubic_metre'=> __( 'cubic metre', 'tcp' ),
+		'empty'				=> '',
+		'unit'				=> __( 'unit', 'tcp' ),
+		'piece'				=> __( 'piece', 'tcp' ),
+		'roll'				=> __( 'roll', 'tcp' ),
+		'meter'				=> __( 'meter', 'tcp' ),
+		'kg'				=> __( 'kg', 'tcp' ),
+		'gr'				=> __( 'gr', 'tcp' ),
+		'pack'				=> __( 'pack', 'tcp' ),
+		'swatch'	 		=> __( 'swatch', 'tcp' ),
+		'square_meter'		=> __( 'square meter', 'tcp' ),
+		'cubic_metre'		=> __( 'cubic metre', 'tcp' ),
+		'quadratic meter'	=> __( 'quadratic meter', 'tcp' ),
 	);
 	if ( $by_default ) $units['by-default'] = __( 'By default', 'tcp' );
 	return apply_filters( 'tcp_product_units_list', $units );

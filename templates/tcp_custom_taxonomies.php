@@ -87,6 +87,9 @@ function tcp_update_custom_taxonomy( $taxonomy_id, $taxonomy_def ) {
 	tcp_register_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-new_item_name', $taxonomy_def['new_item_name'] );
 	*/
 	$post_types = $taxonomy_def['post_type'];
+	if ( ! is_array( $post_types ) ) {
+		$post_types = array( $post_types );
+	}
 	foreach ( $post_types as $post_type ) {
 		tcp_register_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-name', $taxonomy_def['name'] );
 		tcp_register_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-singular_name', $taxonomy_def['singular_name'] );
@@ -108,12 +111,8 @@ function tcp_update_custom_taxonomy( $taxonomy_id, $taxonomy_def ) {
  */
 function tcp_delete_custom_taxonomy( $taxonomy_id ) {
 	$taxonomy_defs = tcp_get_custom_taxonomies();
-	unset( $taxonomy_defs[$taxonomy_id] );
-	$terms = get_terms( $taxonomy_id, array( 'number' => -1, 'hide_empty' => false, 'fields' => 'ids' ) );
-	foreach( $terms as $term ) {
-		wp_delete_term( $term, $taxonomy_id );
-	}
-	tcp_set_custom_taxonomies( $taxonomy_defs );
+
+	//Unregistering translation strings
 	/*
 	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-name' );
 	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-singular_name' );
@@ -126,7 +125,11 @@ function tcp_delete_custom_taxonomy( $taxonomy_id ) {
 	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-add_new_item' );
 	tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $taxonomy_def['post_type'] . '_' . $taxonomy_id . '-new_item_name' );
 	*/
+	$taxonomy_def = $taxonomy_defs[$taxonomy_id];
 	$post_types = $taxonomy_def['post_type'];
+	if ( ! is_array( $post_types ) ) {
+		$post_types = array( $post_types );
+	}
 	foreach ( $post_types as $post_type ) {
 		tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-name' );
 		tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-singular_name' );
@@ -139,6 +142,15 @@ function tcp_delete_custom_taxonomy( $taxonomy_id ) {
 		tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-add_new_item' );
 		tcp_unregister_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $taxonomy_id . '-new_item_name' );
 	}
+
+	// Removing the taxonmy definition
+	unset( $taxonomy_defs[$taxonomy_id] );
+	$terms = get_terms( $taxonomy_id, array( 'number' => -1, 'hide_empty' => false, 'fields' => 'ids' ) );
+	foreach( $terms as $term ) {
+		wp_delete_term( $term, $taxonomy_id );
+	}
+	tcp_set_custom_taxonomies( $taxonomy_defs );
+
 }
 
 /**
