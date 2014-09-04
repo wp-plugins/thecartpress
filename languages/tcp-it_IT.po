@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-17 09:50+0100\n"
+"POT-Creation-Date: 2014-03-04 10:03+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Angelo Giammarresi <info@wocmultimedia.com>\n"
-"Language-Team: \n"
+"Language-Team: Angelo Giammarsesi\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4029,15 +4029,17 @@ msgstr "Ripeti <a href=\"%s\">la procedura di pagamento</a>"
 msgid "Order from %s, Order ID: %s"
 msgstr "Ordine da %s, Ordine ID: %s"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:39
+#: thecartpress/checkout/TCPNoticeBox.class.php:44
+#: thecartpress/checkout/TCPCartBox.class.php:49
 msgid "You must accept the conditions!!"
 msgstr "Dovete accettare le condizioni!"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:52
+#: thecartpress/checkout/TCPNoticeBox.class.php:58
 msgid "Accept conditions:"
 msgstr "Accettare le condizioni:"
 
-#: thecartpress/checkout/TCPNoticeBox.class.php:58
+#: thecartpress/checkout/TCPNoticeBox.class.php:64
+#: thecartpress/checkout/TCPCartBox.class.php:404
 msgid ""
 "When you click on the 'continue' button the order will be created and if you "
 "have chosen an external payment method the system will show a button to go "
@@ -4199,78 +4201,86 @@ msgstr "Nasconde la casella, qualora un solo metodo sia applicabile"
 msgid "There is not applicable methods"
 msgstr "Non ci sono metodi applicabili"
 
-#: thecartpress/checkout/TCPCartBox.class.php:26
+#: thecartpress/checkout/TCPCartBox.class.php:28
 msgid "Cart"
 msgstr "Carrello Acquisti"
 
-#: thecartpress/checkout/TCPCartBox.class.php:80
+#: thecartpress/checkout/TCPCartBox.class.php:90
 msgid "Comments:"
 msgstr "Commenti:"
 
-#: thecartpress/checkout/TCPCartBox.class.php:103
+#: thecartpress/checkout/TCPCartBox.class.php:118
 msgid "Display Weight column"
 msgstr "Visualizza colonna Peso"
 
-#: thecartpress/checkout/TCPCartBox.class.php:107
+#: thecartpress/checkout/TCPCartBox.class.php:122
 msgid "Display Price column"
 msgstr "Visualizza colonna Prezzo"
 
-#: thecartpress/checkout/TCPCartBox.class.php:111
+#: thecartpress/checkout/TCPCartBox.class.php:126
 msgid "Display Tax column"
 msgstr "Mostrare colonna Imposte"
 
-#: thecartpress/checkout/TCPCartBox.class.php:115
+#: thecartpress/checkout/TCPCartBox.class.php:130
 msgid "Display Tax detail"
 msgstr "Mostrare dettaglio Imposta"
 
-#: thecartpress/checkout/TCPCartBox.class.php:119
+#: thecartpress/checkout/TCPCartBox.class.php:134
 msgid "Display SKU column"
 msgstr "Mostrare colonna COD."
 
-#: thecartpress/checkout/TCPCartBox.class.php:123
+#: thecartpress/checkout/TCPCartBox.class.php:138
 msgid "Display Units column"
 msgstr "Visualizza colonna Unità"
 
-#: thecartpress/checkout/TCPCartBox.class.php:127
+#: thecartpress/checkout/TCPCartBox.class.php:142
 msgid "Display Comment"
 msgstr "Mostrare Commento"
 
-#: thecartpress/checkout/TCPCartBox.class.php:131
+#: thecartpress/checkout/TCPCartBox.class.php:146
 msgid "Display Total column"
 msgstr "Visualizza colonna Totale"
 
-#: thecartpress/checkout/TCPCartBox.class.php:176
+#: thecartpress/checkout/TCPCartBox.class.php:150
+msgid "Display Notice"
+msgstr "Visualizza Avviso"
+
+#: thecartpress/checkout/TCPCartBox.class.php:196
 msgid "SKU"
 msgstr "COD."
 
-#: thecartpress/checkout/TCPCartBox.class.php:182
+#: thecartpress/checkout/TCPCartBox.class.php:202
 msgid "Units"
 msgstr "Unità"
 
-#: thecartpress/checkout/TCPCartBox.class.php:185
+#: thecartpress/checkout/TCPCartBox.class.php:205
 msgid "Weight"
 msgstr "Peso"
 
-#: thecartpress/checkout/TCPCartBox.class.php:223
+#: thecartpress/checkout/TCPCartBox.class.php:243
 #, php-format
 msgid "%s (Discount %s)"
 msgstr "%s (Sconto %s)"
 
-#: thecartpress/checkout/TCPCartBox.class.php:273
+#: thecartpress/checkout/TCPCartBox.class.php:296
 msgid "Discounts"
 msgstr "Sconti"
 
-#: thecartpress/checkout/TCPCartBox.class.php:289
+#: thecartpress/checkout/TCPCartBox.class.php:312
 msgid "Shipping cost"
 msgstr "Prezzo di spedizione"
 
-#: thecartpress/checkout/TCPCartBox.class.php:301
+#: thecartpress/checkout/TCPCartBox.class.php:324
 msgid "Payment cost"
 msgstr "Prezzo di pagamento"
 
-#: thecartpress/checkout/TCPCartBox.class.php:308
+#: thecartpress/checkout/TCPCartBox.class.php:331
 msgid "Free shipping"
 msgstr "Spedizione gratuita"
+
+#: thecartpress/checkout/TCPCartBox.class.php:397
+msgid "Accept conditions"
+msgstr "Accettare le condizioni:"
 
 #: thecartpress/checkout/register_and_login.php:29
 msgid "Password incorrect"
@@ -4353,7 +4363,7 @@ msgid "If you prefer this way then press the continue button"
 msgstr "Se preferite questa modalità, schiacciate il pulsante prosegui"
 
 #: thecartpress/checkout/TCPSigninBox.class.php:165
-#: thecartpress/checkout/TCPCheckoutManager.class.php:210
+#: thecartpress/checkout/TCPCheckoutManager.class.php:216
 msgid "Continue"
 msgstr "Continuare"
 
@@ -4439,26 +4449,26 @@ msgstr "Il campo Fax della spedizione deve essere completato"
 msgid "The shipping eMail field must be completed and valid"
 msgstr "Il campo E-mail della spedizione deve essere completato e valido"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:203
-#: thecartpress/checkout/TCPCheckoutManager.class.php:205
+#: thecartpress/checkout/TCPCheckoutManager.class.php:209
+#: thecartpress/checkout/TCPCheckoutManager.class.php:211
 msgid "Back"
 msgstr "Indietro"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:212
+#: thecartpress/checkout/TCPCheckoutManager.class.php:218
 msgid "Purchase"
 msgstr "Acquisto"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:605
+#: thecartpress/checkout/TCPCheckoutManager.class.php:612
 msgid "Please continue checking out using your chosen payment method."
 msgstr ""
 "Si prega di proseguire con la procedura di acquisto utilizzando il metodo di "
 "pagamento prescelto."
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:649
+#: thecartpress/checkout/TCPCheckoutManager.class.php:656
 msgid "billing address"
 msgstr "Indirizzo di fatturazione"
 
-#: thecartpress/checkout/TCPCheckoutManager.class.php:677
+#: thecartpress/checkout/TCPCheckoutManager.class.php:684
 msgid "shipping address"
 msgstr "Indirizzo di spedizione"
 
@@ -5162,7 +5172,15 @@ msgstr "scatola"
 msgid "swatch"
 msgstr "swatch"
 
+#: thecartpress/modules/UnitsInBuyButton.class.php:168
+msgid "square meter"
+msgstr "metro quadro"
+
 #: thecartpress/modules/UnitsInBuyButton.class.php:169
+msgid "cubic metre"
+msgstr "metro cubico"
+
+#: thecartpress/modules/UnitsInBuyButton.class.php:171
 msgid "By default"
 msgstr "Per impostazione predefinita"
 
@@ -6518,131 +6536,131 @@ msgstr ""
 msgid "Select %s"
 msgstr "Selezionare %s"
 
-#: thecartpress/templates/tcp_general_template.php:327
+#: thecartpress/templates/tcp_general_template.php:328
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:284
 #: thecartpress/themes-templates/tcp_shopping_cart.php:256
 msgid "Modify"
 msgstr "Cambiare"
 
-#: thecartpress/templates/tcp_general_template.php:329
+#: thecartpress/templates/tcp_general_template.php:330
 msgid "Delete item"
 msgstr "Eliminare l'articolo"
 
-#: thecartpress/templates/tcp_general_template.php:339
-#: thecartpress/templates/tcp_general_template.php:361
-#: thecartpress/templates/tcp_general_template.php:436
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:328
-#: thecartpress/themes-templates/tcp_shopping_cart.php:300
+#: thecartpress/templates/tcp_general_template.php:340
+#: thecartpress/templates/tcp_general_template.php:362
+#: thecartpress/templates/tcp_general_template.php:437
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:332
+#: thecartpress/themes-templates/tcp_shopping_cart.php:304
 msgid "Discount"
 msgstr "Sconti"
 
-#: thecartpress/templates/tcp_general_template.php:369
+#: thecartpress/templates/tcp_general_template.php:370
 msgid "shopping cart"
 msgstr "carrello"
 
-#: thecartpress/templates/tcp_general_template.php:374
+#: thecartpress/templates/tcp_general_template.php:375
 msgid "checkout"
 msgstr "checkout"
 
-#: thecartpress/templates/tcp_general_template.php:382
-#: thecartpress/templates/tcp_general_template.php:466
+#: thecartpress/templates/tcp_general_template.php:383
+#: thecartpress/templates/tcp_general_template.php:467
 msgid "Delete All"
 msgstr "Elimina tutti"
 
-#: thecartpress/templates/tcp_general_template.php:430
+#: thecartpress/templates/tcp_general_template.php:431
 msgid "N<sup>o</sup> products"
 msgstr "N<sup>o</sup> prodotti"
 
-#: thecartpress/templates/tcp_general_template.php:450
+#: thecartpress/templates/tcp_general_template.php:451
 msgid "Weigth"
 msgstr "Peso"
 
-#: thecartpress/templates/tcp_general_template.php:535
+#: thecartpress/templates/tcp_general_template.php:536
 msgid "Unordered"
 msgstr "non ordinato"
 
-#: thecartpress/templates/tcp_general_template.php:539
+#: thecartpress/templates/tcp_general_template.php:540
 msgid "Suggested"
 msgstr "Consigliati"
 
-#: thecartpress/templates/tcp_general_template.php:559
+#: thecartpress/templates/tcp_general_template.php:560
 msgid "Popular"
 msgstr "Popolare"
 
-#: thecartpress/templates/tcp_general_template.php:563
+#: thecartpress/templates/tcp_general_template.php:564
 msgid "Random"
 msgstr "Casuale"
 
-#: thecartpress/templates/tcp_general_template.php:617
+#: thecartpress/templates/tcp_general_template.php:618
 msgid "Sort"
 msgstr "Ordine"
 
-#: thecartpress/templates/tcp_general_template.php:718
+#: thecartpress/templates/tcp_general_template.php:719
 msgid "Password Lost and Found"
 msgstr "Password Persa e Ritrovata"
 
-#: thecartpress/templates/tcp_general_template.php:718
+#: thecartpress/templates/tcp_general_template.php:719
 msgid "Lost your password?"
 msgstr "Hai smarrito la Password?"
 
-#: thecartpress/templates/tcp_general_template.php:735
-#: thecartpress/templates/tcp_general_template.php:823
+#: thecartpress/templates/tcp_general_template.php:736
+#: thecartpress/templates/tcp_general_template.php:824
 msgid "Error"
 msgstr "Errore"
 
-#: thecartpress/templates/tcp_general_template.php:762
+#: thecartpress/templates/tcp_general_template.php:763
 msgid "Repeat password"
 msgstr "Ripetere la Password"
 
-#: thecartpress/templates/tcp_general_template.php:781
+#: thecartpress/templates/tcp_general_template.php:782
 msgid "Error has occurred while registering"
 msgstr "Si è verificato un Errore durante la registrazione"
 
-#: thecartpress/templates/tcp_general_template.php:784
+#: thecartpress/templates/tcp_general_template.php:785
 msgid "Registration data has been saved."
 msgstr "I dati di registrazione sono stati salvati."
 
-#: thecartpress/templates/tcp_general_template.php:806
+#: thecartpress/templates/tcp_general_template.php:807
 msgid "Type your new password again."
 msgstr "Digita nuovamente la tua nuova password"
 
-#: thecartpress/templates/tcp_general_template.php:809
+#: thecartpress/templates/tcp_general_template.php:810
 msgid "E-mail"
 msgstr "E-mail"
 
-#: thecartpress/templates/tcp_general_template.php:826
+#: thecartpress/templates/tcp_general_template.php:827
 msgid "The user is already logged"
 msgstr "L'utente è già collegato"
 
-#: thecartpress/templates/tcp_general_template.php:911
+#: thecartpress/templates/tcp_general_template.php:912
 msgid "Home"
 msgstr "Home"
 
-#: thecartpress/templates/tcp_general_template.php:974
+#: thecartpress/templates/tcp_general_template.php:975
 #, php-format
 msgid "Search results for \"%s\""
 msgstr "Ricerca dei risultati per \"%s\""
 
-#: thecartpress/templates/tcp_general_template.php:978
+#: thecartpress/templates/tcp_general_template.php:979
 #, php-format
 msgid "Posts tagged \"%s\""
 msgstr "Articoli con Tag\"%s\""
 
-#: thecartpress/templates/tcp_general_template.php:984
+#: thecartpress/templates/tcp_general_template.php:985
 #, php-format
 msgid "Articles posted by %s"
 msgstr "Articoli pubblicati da %s"
 
-#: thecartpress/templates/tcp_general_template.php:988
+#: thecartpress/templates/tcp_general_template.php:989
 msgid "Error 404"
 msgstr "Errore 404"
 
-#: thecartpress/templates/tcp_general_template.php:1043
+#: thecartpress/templates/tcp_general_template.php:1044
 #, php-format
 msgid "Posts by %s"
 msgstr "Pubblicato da %s"
 
-#: thecartpress/templates/tcp_general_template.php:1120
+#: thecartpress/templates/tcp_general_template.php:1121
 #, php-format
 msgid ""
 "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href="
@@ -6653,7 +6671,7 @@ msgstr ""
 "href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" "
 "datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 
-#: thecartpress/templates/tcp_general_template.php:1129
+#: thecartpress/templates/tcp_general_template.php:1130
 #, php-format
 msgid ""
 "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class="
@@ -7069,11 +7087,11 @@ msgstr "Avviso di spedizione"
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:270
 #: thecartpress/themes-templates/tcp_shopping_cart.php:238
 #, php-format
-msgid "Discount %s"
-msgstr "Sconto %s"
+msgid "(-%s)"
+msgstr "(-%s)"
 
-#: thecartpress/themes-templates/tcp_shopping_cart_email.php:322
-#: thecartpress/themes-templates/tcp_shopping_cart.php:294
+#: thecartpress/themes-templates/tcp_shopping_cart_email.php:326
+#: thecartpress/themes-templates/tcp_shopping_cart.php:298
 msgid "Subtotal"
 msgstr "Subtotale"
 
@@ -7136,6 +7154,9 @@ msgstr "Amministrazione del blog"
 #: thecartpress/themes-templates/tcp_author_profile.php:69
 msgid "Log Out"
 msgstr "Log Out"
+
+#~ msgid "Discount %s"
+#~ msgstr "Sconto %s"
 
 #~ msgid "The billing Street 2 field must be completed"
 #~ msgstr "Il campo di fatturazione Via 2 deve essere completato"

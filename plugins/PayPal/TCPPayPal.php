@@ -19,8 +19,8 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-require_once('paypal.class.php');
-require_once('currencyconverter.class.php');
+require_once( 'paypal.class.php' );
+require_once( 'currencyconverter.class.php' );
 
 new TCPPaypalCurrencyConverter();
 
@@ -315,10 +315,11 @@ class TCPPayPal extends TCP_Plugin {
 		if ( ! empty( $data['cpp_cart_border_color'] ) ) $p->add_field( 'cpp_cart_border_color', $data['cpp_cart_border_color'] );
 		echo $p->submit_paypal_post();
 		if ( $redirect ) : ?>
+		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp' ); ?></p>
 		<script type="text/javascript">
 			jQuery( 'form[name=paypal_form]' ).submit();
 		</script>
-		<p class="tcp_redirect"><?php _e( 'Redirecting to paypal, wait a moment', 'tcp' ); ?></p>
+		
 		<?php endif;
 
 		/*if ( ! $this->isSupportedCurrency( $currency_code ) ) {

@@ -297,8 +297,8 @@ class TCPLoginRegister {
 	 */
 	function tcp_my_account( $atts ) {
 		extract( shortcode_atts( array(
-			'login'		=> true,
-			'register'	=> true,
+			'login'		=> 'true',
+			'register'	=> 'true',
 		), $atts ) );
 		$login		= $login === 'true' ? $login = true : $login = false;
 		$register	= $register === 'true' ? $register = true : $register = false;
