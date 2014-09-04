@@ -67,8 +67,8 @@ class ShoppingCart {
 		} else {
 			$sci = new ShoppingCartItem( $post_id, $option_1_id, $option_2_id, $count, $unit_price, $unit_weight );
 		}
-		$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci );
-		if ( is_wp_error( $sci ) ) {
+		$sci = apply_filters( 'tcp_add_to_shopping_cart', $sci, $count, $unit_price, $unit_weight );
+		if ( is_wp_error( $sci ) || $sci === false ) {
 			return $sci;
 		} else {
 			$this->shopping_cart_items[$shopping_cart_id] = $sci;
@@ -89,9 +89,12 @@ class ShoppingCart {
 			if ( $count > 0 ) {
 				$sci = $this->shopping_cart_items[$shopping_cart_id];
 				$sci->setUnits( $count );
-				$sci = apply_filters( 'tcp_modify_to_shopping_cart', $sci );
-				if ( $sci ) $this->shopping_cart_items[$shopping_cart_id] = $sci;
-
+				$sci = apply_filters( 'tcp_modify_to_shopping_cart', $sci, $count );
+				if ( is_wp_error( $sci ) || $sci === false ) {
+					return $sci;
+				} else {
+					$this->shopping_cart_items[$shopping_cart_id] = $sci;
+				}
 				// Sends an action: an item has been modified in the shopping cart
 				do_action( 'tcp_shopping_cart_item_modified', $post_id, $this );
 			} else {
@@ -149,8 +152,9 @@ class ShoppingCart {
 
 	function getItemsId() {
 		$ids = array();
-		foreach( $this->shopping_cart_items as $id => $item )
+		foreach( $this->shopping_cart_items as $id => $item ) {
 			$ids[] = $item->getPostId();
+		}
 		return $ids;
 	}
 

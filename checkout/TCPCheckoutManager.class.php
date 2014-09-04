@@ -610,8 +610,9 @@ class TCPCheckoutManager {
 			$payment_method = new $class();
 			if ( $payment_method->sendPurchaseMail() ) {
 				global $thecartpress;
-				$send_email = $thecartpress->get_setting( 'send_email', true );
-				if ( $send_email ) ActiveCheckout::sendOrderMails( $order_id );
+				$send_email				= $thecartpress->get_setting( 'send_email', true ); //to merchant
+				$send_email_customer	= $thecartpress->get_setting( 'send_email_customer', $send_email );
+				ActiveCheckout::sendOrderMails( $order_id, '', $send_email_customer, $send_email );
 			}
 			do_action( 'tcp_checkout_calculate_other_costs' ); ?>
 			<div class="tcp_plugin_notice">
@@ -696,7 +697,7 @@ class TCPCheckoutManager {
 			$address['lastname']			= $order['shipping_lastname'];
 			$address['company']				= $order['shipping_company'];
 			$address['street']				= $order['shipping_street'];
-			$address['street_2']				= $order['shipping_street_2'];
+			$address['street_2']			= $order['shipping_street_2'];
 			$address['city']				= $order['shipping_city'];
 			$address['city_id']				= $order['shipping_city_id'];
 			$address['region_id']			= $order['shipping_region_id'];

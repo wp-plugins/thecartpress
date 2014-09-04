@@ -325,7 +325,7 @@ if ( isset( $_SESSION['tcp_checkout']['payment_methods']['payment_method_id'] ) 
 } else {
 	$shoppingCart->deleteOtherCost( ShoppingCart::$OTHER_COST_PAYMENT_ID, true );
 }
-do_action( 'tcp_checkout_calculate_other_costs' );
+do_action( 'tcp_checkout_calculate_other_costs', $shoppingCart );
 if ( $shoppingCart->isFreeShipping() ) : ?>
 	<tr class="tcp_cart_free_shipping<?php if ( $i++ & 1 == 1 ) :?> tcp_par<?php endif; ?>">
 		<td class="tcp_cost_tcp_free_shipping"><?php _e( 'Free shipping', 'tcp' ); ?></td>

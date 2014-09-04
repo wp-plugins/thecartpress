@@ -166,20 +166,22 @@ function tcp_get_taxonomy_tree( $args = false, $echo = true, $before = '', $afte
 		$taxonomy = get_taxonomy( $args['taxonomy'] );
 		$args['show_option_none'] = sprintf ( __( 'Select %s', 'tcp' ), $taxonomy->labels->name );
 		global $wp_query;
-		if ( isset( $wp_query->query_vars['taxonomy'] ) )
-			$args['selected']	= get_query_var( $wp_query->query_vars['taxonomy'] );
-		$args['name']		= $args['taxonomy'];
-		$args['walker']		= new TCPWalker_CategoryDropdown(); ?>
+		if ( isset( $wp_query->query_vars['taxonomy'] ) ) {
+			$args['selected'] = get_query_var( $wp_query->query_vars['taxonomy'] );
+		}
+		$args['name']	= 'tcp_' . $args['widget_id'];
+		$args['walker']	= new TCPWalker_CategoryDropdown();
+		$dropdown = 'dropdown_' . $args['name']; ?>
 		<?php echo wp_dropdown_categories( apply_filters( 'tcp_widget_taxonomy_tree_dropdown_args', $args ) ); ?>
 <script type='text/javascript'>
 // <![CDATA[
-	var dropdown = document.getElementById("<?php echo $args['name']; ?>");
+	var <?php echo $dropdown; ?> = document.getElementById("<?php echo $args['name']; ?>");
 	function on_<?php echo $args['name']; ?>_change() {
-		if ( dropdown.options[dropdown.selectedIndex].value != -1 ) {
-			location.href = dropdown.options[dropdown.selectedIndex].value;
+		if ( <?php echo $dropdown; ?>.options[<?php echo $dropdown; ?>.selectedIndex].value != -1 ) {
+			location.href = <?php echo $dropdown; ?>.options[<?php echo $dropdown; ?>.selectedIndex].value;
 		}
 	}
-	dropdown.onchange = on_<?php echo $args['name']; ?>_change;
+	<?php echo $dropdown; ?>.onchange = on_<?php echo $args['name']; ?>_change;
 // ]]>
 </script>
 	<?php else :
@@ -851,7 +853,7 @@ function tcp_register_form( $args = array() ) {
  * Displays/returns the current author's profile
  * @since 1.2.8
  */
-function tcp_author_profile( $current_user = false) {
+function tcp_author_profile( $current_user = false ) {
 	//$current_user = get_query_var( 'author_name' ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
 	if ( $current_user === false ) {
 		//global $post;

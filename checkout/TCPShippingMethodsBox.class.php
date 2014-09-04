@@ -178,6 +178,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			<li><label><input type="checkbox" value="yes" name="tcp_hidden_if_unique" <?php checked( $tcp_hidden_if_unique ); ?>/> <?php _e( 'Hide box, displaying only header, if only one method is applicable', 'tcp' ); ?></label></li>
 			<li><label><input type="checkbox" value="yes" name="tcp_hide_box" <?php checked( $tcp_hide_box ); ?>/> <?php _e( 'Hide box if only one method is applicable', 'tcp' ); ?></label></li>
 		</ul>
+		<?php do_action( 'tcp_shipping_methods_box_show_config_settings', $settings ); ?>
 		<?php return true;
 	}
 
@@ -187,6 +188,7 @@ class TCPShippingMethodsBox extends TCPCheckoutBox {
 			'hidden_if_unique' => isset( $_REQUEST['tcp_hidden_if_unique'] ),
 			'hide_box' => isset( $_REQUEST['tcp_hide_box'] ),
 		);
+		$settings = apply_filters( 'tcp_shipping_methods_box_save_config_settings', $settings );
 		update_option( 'tcp_' . get_class( $this ), $settings );
 		return true;
 	}

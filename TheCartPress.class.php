@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.6.1
+Version: 1.3.6.2
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -242,7 +242,7 @@ class TheCartPress {
 
 			//Initializing checkout
 			$this->loading_default_checkout_boxes();
-			
+
 			//add_action( 'user_register', array( $this, 'user_register' ) );
 			require_once( TCP_CHECKOUT_FOLDER	. 'ActiveCheckout.class.php' );
 			require_once( TCP_ADMIN_FOLDER		. 'PrintOrder.class.php' );
@@ -325,9 +325,9 @@ class TheCartPress {
 
 		//TheCartPress can be used as a catalogue, disabling all ecommerces features
 		if ( ! $this->get_setting( 'disable_ecommerce', false ) ) {
-			
+
 			//To check the plugin, if core pages have been removed...
-			add_action( 'admin_notices', array( $this, 'admin_notices' ) ); 
+			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 			//default notices
 			tcp_add_template_class( 'tcp_shopping_cart_empty'		, __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
@@ -626,6 +626,8 @@ class TheCartPress {
 			$apply_filters = true;
 		}
 
+		if ( is_search() ) $apply_filters = true;
+		
 		if ( $apply_filters ) {
 
 			//TODO filter by custom field
@@ -742,7 +744,7 @@ class TheCartPress {
 			}
 			add_submenu_page( $base	, __( 'Addresses', 'tcp' ), __( 'Addresses', 'tcp' ), 'tcp_edit_address', TCP_ADMIN_FOLDER . 'AddressesList.php' );
 			add_submenu_page( $base	, __( 'Taxes', 'tcp' ), __( 'Taxes', 'tcp' ), 'tcp_edit_taxes', TCP_ADMIN_FOLDER . 'TaxesList.php' );
-			
+
 			add_submenu_page( $base	, __( 'Update Prices', 'tcp' ), __( 'Update Prices', 'tcp' ), 'tcp_update_price', TCP_ADMIN_FOLDER . 'PriceUpdate.php' );
 			add_submenu_page( 'tcp' , __( 'Order', 'tcp' ), __( 'Order', 'tcp' ), 'tcp_edit_orders', TCP_ADMIN_FOLDER . 'OrderEdit.php' );
 			add_submenu_page( 'tcp' , __( 'Plugin editor', 'tcp' ), __( 'Plugin editor', 'tcp' ), 'tcp_edit_plugins', TCP_ADMIN_FOLDER . 'PluginEdit.php' );

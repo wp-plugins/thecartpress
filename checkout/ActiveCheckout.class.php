@@ -160,7 +160,7 @@ class ActiveCheckout {//shortcode
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 			//$headers .= 'To: ' . $to . "\r\n";
-			$name = substr( $from, 0, strpos( $from, '@' ) );
+			$name	  = substr( $from, 0, strpos( $from, '@' ) );
 			$headers .= 'From: ' . $name . ' <' . $from . ">\r\n";
 			if ( $for_customer ) {
 				$customer_email = array();
@@ -169,7 +169,9 @@ class ActiveCheckout {//shortcode
 				$to_customer = implode( ',', $customer_email );
 				$message_to_customer = apply_filters( 'tcp_send_order_mail_to_customer_message', $message, $order_id );
 //echo $message_to_customer;
-				wp_mail( $to_customer, $subject, $message_to_customer , $headers );
+				$attachments = apply_filters( 'tcp_order_email_customer_attachments', null );
+//var_dump($attachments);exit;
+				wp_mail( $to_customer, $subject, $message_to_customer , $headers, $attachments );
 				do_action( 'tcp_send_order_mail_to_customer', $to_customer, $subject, $message_to_customer, $headers, $order_id );
 			}
 			if ( $for_merchant ) {
@@ -177,7 +179,9 @@ class ActiveCheckout {//shortcode
 				if ( strlen( $to ) ) {
 					$message_to_merchant = apply_filters( 'tcp_send_order_mail_to_merchant_message', $message, $order_id );
 //echo $message_to_merchant;
-					wp_mail( $to, $subject, $message_to_merchant, $headers );
+					$attachments = apply_filters( 'tcp_order_email_merchant_attachments', null );
+//var_dump($attachments);exit;
+					wp_mail( $to, $subject, $message_to_merchant, $headers, $attachments );
 					do_action( 'tcp_send_order_mail_to_merchant', $to, $subject, $message_to_merchant, $headers, $order_id );
 				}
 			}
