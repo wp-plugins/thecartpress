@@ -148,12 +148,12 @@ class ActiveCheckout {//shortcode
 			$headers .= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
 			//$headers .= 'Cc: ' . $cc . "\r\n";
 			//$headers .= 'Bcc: ' . $bcc . "\r\n";
-			$subject = sprintf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id );
-			$subject = apply_filters( 'tcp_send_order_email_subject', $subject, $order_id );
+			$subject  = sprintf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id );
+			$subject  = apply_filters( 'tcp_send_order_email_subject', $subject, $order_id );
 			$old_value = $thecartpress->getShoppingCart()->getOrderId();
 			$_REQUEST['order_id'] = $order_id;
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );
-			$message = TCPPrintOrder::printOrder( $order_id );
+			$message  = TCPPrintOrder::printOrder( $order_id );
 			$thecartpress->getShoppingCart()->setOrderId( $old_value );
 			$message .= tcp_do_template( 'tcp_checkout_email', false );
 			$message .= $additional_msg . "\n";

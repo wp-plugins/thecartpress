@@ -247,6 +247,7 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'cmd'			, '_ext-enter' );
 		$p->add_field( 'redirect_cmd'	, '_xclick' );
 		$p->add_field( 'charset'		, 'utf-8' );
+		$p->add_field( 'bn'				, 'TheCartPress_SP' );
 		$p->add_field( 'business'		, $business );
 		if ( function_exists( 'tcp_get_the_checkout_ok_url' ) ) {
 			$p->add_field( 'return'			, tcp_get_the_checkout_ok_url( $order_id ) );
@@ -260,7 +261,7 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'currency_code'	, $currency );
 		$p->add_field( 'cbt'			, __( 'Return to ', 'tcp' ) . $merchant ); //text for the Return to Merchant button
 		$p->add_field( 'no_shipping'	, $no_shipping );
-		
+
 		if ( $send_detail == 0 ) { // && empty( $profile_shipping ) && empty( $profile_taxes ) ) { // Buy Now - one total
 			$p->add_field( 'item_name', sprintf( __( 'Purchase from %s (Order No. %s)', 'tcp' ), $merchant, $order_id ) );
 
@@ -273,7 +274,7 @@ class TCPPayPal extends TCP_Plugin {
 		} else { //Item by item 
 			$p->add_field( 'cmd', '_cart' );
 			$p->add_field( 'upload', '1' );
-			
+
 			$i = 1;
 			foreach( $shoppingCart->getItems() as $item ) {
 				$p->add_field( "item_name_$i"	, strip_tags( html_entity_decode( $item->getTitle() . ' (' . $item->getSKU() . ')', ENT_QUOTES ) ) );

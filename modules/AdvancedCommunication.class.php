@@ -35,10 +35,11 @@ define( 'TCP_EMAIL_POST_TYPE', 'tcp_email' );
 class TCPAdvancedCommunication {
 
 	static $order_id = false;
-	static $order = false;
-	
+	static $order	 = false;
+
 	static function init() {
 		//add_action( 'init'						, array( __CLASS__, 'register_post_type' ) );
+		add_action( 'tcp_do_delay_email_event'	, array( __CLASS__, 'do_delay_email_event' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init'				, array( __CLASS__, 'admin_init' ) );
@@ -106,13 +107,16 @@ class TCPAdvancedCommunication {
 		case 'tcp_remove_notice' :
 			TCPAdvancedCommunication::tcp_remove_notice();
 			break;
+		case 'tcp_delay_email' :
+			TCPAdvancedCommunication::tcp_delay_email();
+			break;
 		}
 	}
 
 	static function tcp_order_edit_metaboxes( $order_id, $order ) {
 		TCPAdvancedCommunication::$order_id = $order_id;
 		TCPAdvancedCommunication::$order = $order;
-		
+
 		add_meta_box( 'tcp_order_notification_metabox'	, __( 'Notice Manager', 'tcp' ), array( __CLASS__, 'tcp_orders_notificaton_metabox' ) , 'tcp-order-edit', 'normal', 'default' );
 		add_meta_box( 'tcp_order_notifications_metabox'	, __( 'Notifications', 'tcp' ), array( __CLASS__, 'tcp_orders_notificatons_metabox' ) , 'tcp-order-edit', 'side', 'default' );
 	}
@@ -173,9 +177,15 @@ class TCPAdvancedCommunication {
 			<?php tcp_the_feedback_image( 'tcp-send-email-feedback' ); ?>
 			<span id="tcp-sending" style="display: none;"><?php _e( 'Sending...', 'tcp' ); ?></span>
 			<span id="tcp-error-sending" style="display: none;"><?php _e( 'Error sending', 'tcp' ); ?></span>
+
 			<input type="button" name="tcp-save-email" id="tcp-save-email" value="<?php _e( 'Save', 'tcp' ); ?>" class="button-primary"/>
 			<?php tcp_the_feedback_image( 'tcp-save-email-feedback' ); ?>
 			<span id="tcp-saved" style="display: none;"><?php _e( 'Saved...', 'tcp' ); ?></span>
+
+<!--			<input type="button" name="tcp-delay-email" id="tcp-delay-email" value="<?php _e( 'Send delayed email', 'tcp' ); ?>" class="button-primary"/>
+			<?php tcp_the_feedback_image( 'tcp-delay-email-feedback' ); ?>
+			<span id="tcp-delayed" style="display: none;"><?php _e( 'Email saved. It will be sent.', 'tcp' ); ?></span>
+-->
 		</p>
 		<script>
 		jQuery( '#tcp-send-email' ).click( function ( event ) {
@@ -210,6 +220,7 @@ class TCPAdvancedCommunication {
 			event.stopPropagation();
 			return false;
 		} );
+
 		jQuery( '#tcp-save-email' ).click( function( event ) {
 			var feedback = jQuery( '.tcp-save-email-feedback' );
 			feedback.show();
@@ -236,6 +247,36 @@ class TCPAdvancedCommunication {
 			event.stopPropagation();
 			return false;
 		} );
+
+		jQuery( '#tcp-delay-email' ).click( function( event ) {
+			var feedback = jQuery( '.tcp-delay-email-feedback' );
+			feedback.show();
+			jQuery.ajax( {
+				async	: true,
+				type	: "POST",
+				url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+				data	: {
+					action	 : 'tcp_advanced_comm',
+					to_do	 : 'tcp_delay_email',
+					order_id : '<?php echo $order_id; ?>',
+					subject	 : jQuery( '#tcp_notice_subject' ).val(),
+					text	 : tinymce.activeEditor.getContent(),
+					days	 : 5, //jQuery( '#tcp_delay_days' ).val(),
+				},
+				success : function( response ) {
+					console.log(response);//TODO
+					feedback.hide();
+					jQuery( '#tcp-delayed' ).show( 800).delay( 2000 ).hide( 800 );
+					tcp_load_notices( <?php echo $order_id; ?> );
+				},
+				error : function( response ) {
+					console.log(response);//TODO
+					feedback.hide();
+				},
+			} );
+			event.stopPropagation();
+			return false;
+		} );
 		</script>
 	<?php else : ?>
 		<p class="description"><?php _e( 'No Notices/Emails templates.', 'tcp' ); ?> <a href="edit.php?post_type=tcp_template"><?php _e( 'Create Notices', 'tcp' ); ?></a></p>
@@ -251,8 +292,8 @@ class TCPAdvancedCommunication {
 		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		$order		= Orders::get( $order_id );
 		$to			= isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : $order->billing_email;
-		global $thecartpress;
-		$from		= $thecartpress->get_setting( 'from_email', 'no-response@thecartpress.com' );
+		//global $thecartpress;
+		$from		= tcp_thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
 		$headers	= 'MIME-Version: 1.0' . "\r\n";
 		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
@@ -284,6 +325,39 @@ class TCPAdvancedCommunication {
 		$post_id = wp_insert_post( $notice );
 		return $post_id;
 	}
+
+	static function tcp_delay_email() {
+		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
+		$title	  = isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
+		$post_id  = TCPAdvancedCommunication::tcp_save_email( $title );
+		wp_schedule_single_event( time() + 60, 'tcp_do_delay_email_event', array( $post_id, $order_id ) );
+	}
+
+
+	static function do_delay_email_event( $notice_id, $order_id ) {
+		$order		= Orders::get( $order_id );
+		$to			= $order->billing_email;
+		$copy_to_me = false;
+		//global $thecartpress;
+		$from		= tcp_thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
+		$headers	= 'MIME-Version: 1.0' . "\r\n";
+		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
+		if ( $copy_to_me ) {
+			//global $thecartpress;
+			$bcc = $thecartpress()->get_setting( 'emails', false );
+			if ( $bcc !== false ) $headers .= 'Bcc: ' . $bcc . "\r\n";
+		}
+		$post = get_post( $notice_id );
+		$subject = $post->post_title;
+		$text = $post->post_content;
+		if ( wp_mail( $to, $subject, $text, $headers ) ) {
+			die( 'OK' );
+		} else {
+			die( 'error sending' );
+		}
+	}
+
 
 	static function tcp_remove_notice() {
 		$post_id = isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : false;

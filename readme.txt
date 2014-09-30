@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 4.0
-Stable Tag: 1.3.6.2
+Stable Tag: 1.3.7
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,11 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.7 =
+* Order Edit: One button to save, send and return to orders list
+* Theme Compatibility improvements
+* Minor bug in Custom taxonomy engine
+
 = 1.3.6.2 =
 * Removed two deprecated functions
 * New Setting: allow/avoid to send purchase email to customer and merchant (first email)
