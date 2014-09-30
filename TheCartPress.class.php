@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.6.2
+Version: 1.3.7
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -1141,36 +1141,37 @@ class TheCartPress {
 		if ( is_array( $taxonomies ) && count( $taxonomies ) > 0 ) {
 			foreach( $taxonomies as $id => $taxonomy ) {
 				if ( $taxonomy['activate'] ) {
-					$taxonomy_labels = array(
-						'name'				=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-name', $taxonomy['name'] ),
-						'singular_name'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-singular_name', $taxonomy['singular_name'] ),
-						'search_items'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-search_items', $taxonomy['search_items'] ),
-						'all_items'			=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-all_items', $taxonomy['all_items'] ),
-						'parent_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item', isset( $taxonomy['parent_item'] ) ? $taxonomy['parent_item'] : '' ),
-						'parent_item_colon' => tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-parent_item_colon', isset( $taxonomy['parent_item_colon'] ) ? $taxonomy['parent_item_colon'] : ''),
-						'edit_item'			=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-edit_item', $taxonomy['edit_item'] ),
-						'update_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-update_item', $taxonomy['update_item'] ),
-						'add_new_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-add_new_item', $taxonomy['add_new_item'] ),
-						'new_item_name'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $taxonomy['post_type'] . '_' . $id . '-new_item_name', $taxonomy['new_item_name'] ),
-					);
-					$register = array (
-						'labels'		=> $taxonomy_labels,
-						'hierarchical'	=> $taxonomy['hierarchical'],
-						'query_var'		=> $id,
-						//'show_in_nav_menus' => true,
-						//'update_count_callback' => '_update_post_term_count',
-						//'public'			=> true,
-						//'show_ui'			=> true,
-						//'show_tagcloud'	=> true,
-						'rewrite'		=> strlen( $taxonomy['rewrite'] ) > 0 ? array( 'slug' => _x( $taxonomy['rewrite'], 'URL slug', 'tcp' ) ) : false,
-					);
-					$post_types = $taxonomy['post_type'];
-					if ( ! is_array( $post_types ) ) $post_types = array( $post_types );
-					//foreach( $post_types as $post_type ) {
-					//	register_taxonomy( $id, $post_type, $register );
-					//}
-					register_taxonomy( $id, $post_types, $register );
-					do_action( 'tcp_load_custom_taxonomies', $id, $taxonomy );
+
+					if ( !is_array( $taxonomy['post_type'] ) ) {
+						$taxonomy['post_type'] = array( $taxonomy['post_type'] );
+					}
+					foreach ($taxonomy['post_type'] as $post_type ) {
+						$taxonomy_labels = array(
+							'name'				=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-name', $taxonomy['name'] ),
+							'singular_name'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-singular_name', $taxonomy['singular_name'] ),
+							'search_items'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-search_items', $taxonomy['search_items'] ),
+							'all_items'			=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-all_items', $taxonomy['all_items'] ),
+							'parent_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-parent_item', isset( $taxonomy['parent_item'] ) ? $taxonomy['parent_item'] : '' ),
+							'parent_item_colon' => tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-parent_item_colon', isset( $taxonomy['parent_item_colon'] ) ? $taxonomy['parent_item_colon'] : ''),
+							'edit_item'			=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-edit_item', $taxonomy['edit_item'] ),
+							'update_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-update_item', $taxonomy['update_item'] ),
+							'add_new_item'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-add_new_item', $taxonomy['add_new_item'] ),
+							'new_item_name'		=> tcp_string( 'TheCartPress', 'custom_tax_' . $post_type . '_' . $id . '-new_item_name', $taxonomy['new_item_name'] ),
+						);
+						$register = array (
+							'labels'		=> $taxonomy_labels,
+							'hierarchical'	=> $taxonomy['hierarchical'],
+							'query_var'		=> $id,
+							//'show_in_nav_menus' => true,
+							//'update_count_callback' => '_update_post_term_count',
+							//'public'			=> true,
+							//'show_ui'			=> true,
+							//'show_tagcloud'	=> true,
+							'rewrite'		=> strlen( $taxonomy['rewrite'] ) > 0 ? array( 'slug' => _x( $taxonomy['rewrite'], 'URL slug', 'tcp' ) ) : false,
+						);
+						register_taxonomy( $id, $post_type, $register );
+						do_action( 'tcp_load_custom_taxonomies', $id, $taxonomy, $post_type );
+					}
 				}
 			}
 		}

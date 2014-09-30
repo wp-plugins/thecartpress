@@ -97,11 +97,31 @@ class TCPThemeCompat {
 					'index.php'
 				), $post );
 				$this->theme_compatibility_reset_post( array(
-					'post_title'	=> $post->post_title,
-					'post_content'	=> $post->post_content,
-					'post_type'		=> $post->post_type, //'tcp_product',
-					'is_single'		=> true,
-					'ID'			=> $post->ID,
+					'ID'					=> $post->ID,
+					'post_status'			=> $post->post_status,
+					'post_author'			=> $post->post_author,
+					'post_parent'			=> $post->post_parent,
+					'post_type'				=> $post->post_type,
+					'post_date'				=> $post->post_date,
+					'post_date_gmt'			=> $post->post_date_gmt,
+					'post_modified'			=> $post->post_modified,
+					'post_modified_gmt'		=> $post->post_modified_gmt,
+					'post_content'			=> $post->post_content,
+					'post_title'			=> $post->post_title,
+					'post_excerpt'			=> $post->post_excerpt,
+					'post_content_filtered'	=> $post->post_content_filtered,
+					'post_mime_type'		=> $post->post_mime_type,
+					'post_password'			=> $post->post_password,
+					'post_name'				=> $post->post_name,
+					'guid'					=> $post->guid,
+					'menu_order'			=> $post->menu_order,
+					'pinged'				=> $post->pinged,
+					'to_ping'				=> $post->to_ping,
+					'ping_status'			=> $post->ping_status,
+					'comment_status'		=> $post->comment_status,
+					'comment_count'			=> $post->comment_count,
+					'filter'				=> $post->filter,
+					'is_single'				=> true,
 				) );
 				$template = locate_template( $template_names );
 
