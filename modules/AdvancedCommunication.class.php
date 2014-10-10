@@ -39,47 +39,13 @@ class TCPAdvancedCommunication {
 
 	static function init() {
 		//add_action( 'init'						, array( __CLASS__, 'register_post_type' ) );
-		add_action( 'tcp_do_delay_email_event'	, array( __CLASS__, 'do_delay_email_event' ) );
+		add_action( 'tcp_do_delay_email_event', array( __CLASS__, 'do_delay_email_event' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init'				, array( __CLASS__, 'admin_init' ) );
 			add_action( 'tcp_order_edit_metaboxes'	, array( __CLASS__, 'tcp_order_edit_metaboxes' ), 10, 2 );
 		}
 	}
-
-	/*static function register_post_type() {
-		$labels = array(
-			'name'					=> __( 'Emails', 'tcp' ),
-			'singular_name' 		=> __( 'Email', 'tcp' ),
-			'add_new'				=> __( 'Add New', 'tcp' ),
-			'add_new_item'			=> __( 'Add New Email', 'tcp' ),
-			'edit_item'				=> __( 'Edit Email', 'tcp' ),
-			'new_item'				=> __( 'New Email', 'tcp' ),
-			'all_items'				=> __( 'All Emails', 'tcp' ),
-			'view_item'				=> __( 'View Email', 'tcp' ),
-			'search_items'			=> __( 'Search Emails', 'tcp' ),
-			'not_found'				=>	__( 'No Emails found', 'tcp' ),
-			'not_found_in_trash'	=> __( 'No Emails found in Trash',  'tcp' ),
-			'parent_item_colon'		=> '',
-			'menu_name'				=> __( 'Emails', 'tcp' ),
-		);
-		$args = array(
-			'labels'				=> $labels,
-			'public'				=> false,
-			'publicly_queryable'	=> false,
-			'show_ui'				=> false,
-			'show_in_menu'			=> false,
-			'query_var'				=> true,
-			'rewrite'				=> false,
-			'capability_type'		=> 'page',
-			'exclude_from_search'	=> true,
-			'has_archive'			=> false, 
-			'hierarchical'			=> false,
-			'menu_position'			=> null,
-			'supports'				=> array( 'title', 'editor', 'author', 'thumbnail' ),
-		); 
-		register_post_type( TCP_EMAIL_POST_TYPE, $args );
-	}*/
 
 	static function admin_init() {
 		add_action( 'wp_ajax_tcp_advanced_comm', array( __CLASS__, 'tcp_advanced_comm' ) );
@@ -166,7 +132,7 @@ class TCPAdvancedCommunication {
 		} );
 		</script>
 		<div class="tcp-email-subject">
-			<label><?php _e( 'Subject', 'tcp' ); ?>: <input type="text" name="tcp_notice_subject" id="tcp_notice_subject" maxlength="255" class="widefat" value="<?php printf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id ); ?>" />
+			<label><?php _e( 'Subject', 'tcp' ); ?>: <input type="text" name="tcp_notice_subject" id="tcp_notice_subject" maxlength="255" class="widefat" value="<?php printf( __( 'Order from %s, Order ID: %s', 'tcp' ), htmlentities( get_bloginfo( 'name' ) ), $order_id ); ?>" /></label>
 			<label><?php _e( 'Send a copy to me', 'tcp' ); ?> <input type="checkbox" name="tcp_copy_to_me" id="tcp_copy_to_me" value="yes"/></label>
 		</div>
 		<div class="tcp-email-modify-text">
@@ -293,13 +259,13 @@ class TCPAdvancedCommunication {
 		$order		= Orders::get( $order_id );
 		$to			= isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : $order->billing_email;
 		//global $thecartpress;
-		$from		= tcp_thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
+		$from		= thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
 		$headers	= 'MIME-Version: 1.0' . "\r\n";
 		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
 		if ( $copy_to_me ) {
-			global $thecartpress;
-			$bcc = $thecartpress->get_setting( 'emails', false );
+			//global $thecartpress;
+			$bcc = thecartpress()->get_setting( 'emails', false );
 			if ( $bcc !== false ) $headers .= 'Bcc: ' . $bcc . "\r\n";
 		}
 		TCPAdvancedCommunication::tcp_save_email( $subject );
