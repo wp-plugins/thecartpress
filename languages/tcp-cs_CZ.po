@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TheCartPress v1.3.6.1\n"
+"Project-Id-Version: TheCartPress v1.3.6.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-03 11:00+0100\n"
-"PO-Revision-Date: 2014-05-29 07:47:29+0000\n"
+"PO-Revision-Date: 2014-09-18 11:15:39+0000\n"
 "Last-Translator: sensei <sensei@thecartpress.com>\n"
 "Language-Team: Jakub Kadečka <jakub.ka@seznam.cz>\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgstr "Poznámka:"
 msgid "Visit the <a href=\"%s\">Checking page</a> to fix those warnings."
 msgstr "Navštivte <a href=\"%s\">Kontrolní stránku</a> pro opravení těchto varování.."
 
-#: TheCartPress.class.php:739
+#: TheCartPress.class.php:741
 #: admin/OrdersListTable.class.php:240
 #: modules/AdminBarMenu.class.php:46
 #: modules/UIImprovements.class.php:184
@@ -97,18 +97,18 @@ msgstr "Navštivte <a href=\"%s\">Kontrolní stránku</a> pro opravení těchto 
 msgid "Orders"
 msgstr "Objednávky"
 
-#: TheCartPress.class.php:741
+#: TheCartPress.class.php:743
 #@ tcp
 msgid "My Downloads"
 msgstr "Mé downloady"
 
-#: TheCartPress.class.php:743
+#: TheCartPress.class.php:745
 #: admin/AddressesListTable.class.php:174
 #@ tcp
 msgid "Addresses"
 msgstr "Adresy"
 
-#: TheCartPress.class.php:744
+#: TheCartPress.class.php:746
 #: metaboxes/ProductCustomFieldsMetabox.class.php:191
 #: themes-templates/tcp_shopping_cart.php:324
 #: themes-templates/tcp_shopping_cart_email.php:352
@@ -116,13 +116,13 @@ msgstr "Adresy"
 msgid "Taxes"
 msgstr "Daně"
 
-#: TheCartPress.class.php:746
+#: TheCartPress.class.php:748
 #: admin/PriceUpdate.php:63
 #@ tcp
 msgid "Update Prices"
 msgstr "Aktualizace cen"
 
-#: TheCartPress.class.php:747
+#: TheCartPress.class.php:749
 #: admin/OptionsList.php:250
 #: admin/OptionsList.php:309
 #: admin/OrderEdit.php:352
@@ -131,53 +131,53 @@ msgstr "Aktualizace cen"
 msgid "Order"
 msgstr "Objednávka"
 
-#: TheCartPress.class.php:748
+#: TheCartPress.class.php:750
 #@ tcp
 msgid "Plugin editor"
-msgstr "Editor pluginu"
+msgstr "Úprava pluginu"
 
-#: TheCartPress.class.php:749
+#: TheCartPress.class.php:751
 #@ tcp
 msgid "Address editor"
-msgstr "Editor adres"
+msgstr "Úprava adres"
 
-#: TheCartPress.class.php:750
+#: TheCartPress.class.php:752
 #@ tcp
 msgid "Upload files"
 msgstr "Nahrát soubory"
 
-#: TheCartPress.class.php:751
+#: TheCartPress.class.php:753
 #@ tcp
 msgid "Files"
 msgstr "Soubory"
 
-#: TheCartPress.class.php:752
+#: TheCartPress.class.php:754
 #: admin/DownloadableList.class.php:46
 #@ tcp
 msgid "Downloadable products"
 msgstr "Stahovatelné produkty"
 
-#: TheCartPress.class.php:753
+#: TheCartPress.class.php:755
 #@ tcp
 msgid "TheCartPress checking"
 msgstr "Kontrola TheCartPress"
 
-#: TheCartPress.class.php:756
+#: TheCartPress.class.php:758
 #@ tcp
 msgid "Related Categories"
 msgstr "Související kategorie"
 
-#: TheCartPress.class.php:757
+#: TheCartPress.class.php:759
 #@ tcp
 msgid "list of Assigned products"
 msgstr "seznam připojených produktů"
 
-#: TheCartPress.class.php:758
+#: TheCartPress.class.php:760
 #@ tcp
 msgid "list of Assigned categories"
 msgstr "seznam připojených kategorií"
 
-#: TheCartPress.class.php:762
+#: TheCartPress.class.php:764
 #: admin/PluginEdit.php:255
 #: modules/Miranda.class.php:318
 #: modules/WPPluginsAdminPanel.class.php:71
@@ -185,106 +185,106 @@ msgstr "seznam připojených kategorií"
 msgid "Settings"
 msgstr "Nastavení"
 
-#: TheCartPress.class.php:766
+#: TheCartPress.class.php:768
 #@ tcp
 msgid "Tools"
-msgstr "Nástroje"
+msgstr "Nástroje CartPress"
 
-#: TheCartPress.class.php:767
+#: TheCartPress.class.php:769
 #@ tcp
 msgid "Shortcodes Generator"
 msgstr "Generátor zkrácených kódů"
 
-#: TheCartPress.class.php:767
+#: TheCartPress.class.php:769
 #@ tcp
 msgid "Shortcodes"
 msgstr "Zkrácené kódy"
 
-#: TheCartPress.class.php:768
+#: TheCartPress.class.php:770
 #@ tcp
 msgid "Manage post types"
 msgstr "Správa typů doručení"
 
-#: TheCartPress.class.php:769
+#: TheCartPress.class.php:771
 #@ tcp
 msgid "Manage taxonomies"
 msgstr "Správa uspořádání"
 
-#: TheCartPress.class.php:770
+#: TheCartPress.class.php:772
 #@ tcp
 msgid "Post Type Editor"
-msgstr "Editor typů příspěvků"
+msgstr "Úprava typů příspěvků"
 
-#: TheCartPress.class.php:771
+#: TheCartPress.class.php:773
 #@ tcp
 msgid "Taxonomy Editor"
-msgstr "Editor uspořádání"
+msgstr "Úprava uspořádání"
 
-#: TheCartPress.class.php:824
+#: TheCartPress.class.php:826
 #@ tcp
 msgid "TheCartPress requires WordPress version 3.0 or newer."
 msgstr "TheCartPress vyžaduje WordPress verze 3.0 nebo novější"
 
-#: TheCartPress.class.php:871
+#: TheCartPress.class.php:873
 #: plugins/FreeTrans.class.php:66
 #@ tcp
 msgid "Free transport"
 msgstr "Doprava zdarma"
 
-#: TheCartPress.class.php:882
+#: TheCartPress.class.php:884
 #: plugins/Remboursement.class.php:27
 #@ tcp
 msgid "Cash on delivery"
 msgstr "Platba při doručení"
 
-#: TheCartPress.class.php:923
-#: checkout/CheckoutSettings.class.php:129
+#: TheCartPress.class.php:925
+#: checkout/CheckoutSettings.class.php:139
 #: checkout/TCPNoticeBox.class.php:31
 #@ tcp
 msgid "Checkout notice"
 msgstr "Souhlas s obchodními podmínkami"
 
-#: TheCartPress.class.php:957
+#: TheCartPress.class.php:959
 #: checkout/TCPCartBox.class.php:78
 #: widgets/ShoppingCartWidget.class.php:71
 #@ tcp
 msgid "Shopping Cart"
 msgstr "Nákupní košík"
 
-#: TheCartPress.class.php:970
+#: TheCartPress.class.php:972
 #: checkout/CheckoutSettings.class.php:31
 #: checkout/CheckoutSettings.class.php:37
 #: shortcodes/ShoppingCartPage.class.php:87
-#: templates/tcp_general_template.php:476
+#: templates/tcp_general_template.php:478
 #@ tcp
 msgid "Checkout"
-msgstr "Platby"
+msgstr "Nastavení platby"
 
-#: TheCartPress.class.php:985
+#: TheCartPress.class.php:987
 #: admin/NewVersionDetails.class.php:84
 #@ tcp-fe
 #@ tcp
 msgid "My Account"
 msgstr "Můj účet"
 
-#: TheCartPress.class.php:998
+#: TheCartPress.class.php:1000
 #: appearance/LoopSettings.class.php:41
 #@ tcp
 msgid "Catalogue"
 msgstr "Katalog"
 
-#: TheCartPress.class.php:1011
-#: TheCartPress.class.php:1035
+#: TheCartPress.class.php:1013
+#: TheCartPress.class.php:1037
 #@ tcp
 msgid "Category One"
 msgstr "Kategorie jedna"
 
-#: TheCartPress.class.php:1012
+#: TheCartPress.class.php:1014
 #@ tcp
 msgid "Category One for Product One"
 msgstr "Kategorie jedna pro produkt jedna"
 
-#: TheCartPress.class.php:1019
+#: TheCartPress.class.php:1021
 #@ tcp
 msgid "Product One"
 msgstr "Produkt jedna"
@@ -381,8 +381,8 @@ msgstr "Umožnit řazení panelů"
 #: admin/TaxesList.php:74
 #: admin/TaxesList.php:88
 #: admin/TaxesList.php:120
-#: templates/tcp_general_template.php:564
-#: widgets/ArchivesWidget.class.php:150
+#: templates/tcp_general_template.php:566
+#: widgets/ArchivesWidget.class.php:152
 #: widgets/AttributesListWidget.class.php:60
 #: widgets/CheckoutWidget.class.php:58
 #: widgets/CommentsCustomPostTypeWidget.class.php:91
@@ -391,7 +391,7 @@ msgstr "Umožnit řazení panelů"
 #: widgets/ShoppingCartSummaryWidget.class.php:81
 #: widgets/ShoppingCartWidget.class.php:92
 #: widgets/SortPanelWidget.class.php:54
-#: widgets/TCPParentWidget.class.php:76
+#: widgets/TCPParentWidget.class.php:71
 #@ tcp
 #@ default
 msgid "Title"
@@ -402,7 +402,7 @@ msgstr "Titulek"
 msgid "Use this widget to add a buy button"
 msgstr "Použijte tento widget pro přidání tlačítka koupit"
 
-#: templates/tcp_general_template.php:572
+#: templates/tcp_general_template.php:574
 #: widgets/OrdersSummaryDashboard.class.php:64
 #: widgets/SalesChartDashboard.class.php:83
 #: widgets/SalesChartDashboard.class.php:114
@@ -424,7 +424,7 @@ msgstr "Prodejní suma"
 #: admin/CustomFieldsList.php:224
 #: metaboxes/ProductCustomFieldsMetabox.class.php:159
 #: plugins/FlatRate.class.php:118
-#: widgets/ArchivesWidget.class.php:159
+#: widgets/ArchivesWidget.class.php:161
 #: widgets/SalesChartDashboard.class.php:113
 #@ tcp
 msgid "Type"
@@ -541,7 +541,7 @@ msgstr "Status objednávky"
 #: plugins/ShippingCost.class.php:293
 #: widgets/CommentsCustomPostTypeWidget.class.php:99
 #: widgets/SalesChartDashboard.class.php:262
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:186
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:189
 #@ tcp
 msgid "All"
 msgstr "Vše"
@@ -576,13 +576,13 @@ msgstr "Počet komentářů k zobrazení:"
 #: admin/TaxonomyList.php:65
 #: appearance/LoopSettings.class.php:121
 #: appearance/ThemeCompatibilitySettings.class.php:184
-#: widgets/ArchivesWidget.class.php:152
+#: widgets/ArchivesWidget.class.php:154
 #: widgets/AttributesListWidget.class.php:64
 #: widgets/CommentsCustomPostTypeWidget.class.php:97
 #: widgets/CustomPostTypeListWidget.class.php:116
 #: widgets/CustomValuesWidget.class.php:93
 #: widgets/TaxonomyCloudsPostTypeWidget.class.php:84
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:148
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:151
 #@ tcp
 msgid "Post type"
 msgstr "Typ příspěvku"
@@ -618,7 +618,7 @@ msgstr "Použít strukturu"
 #: admin/TaxonomyEdit.php:96
 #: widgets/CustomPostTypeListWidget.class.php:130
 #: widgets/TaxonomyCloudsPostTypeWidget.class.php:95
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:158
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:161
 #@ tcp
 msgid "Taxonomy"
 msgstr "Struktura"
@@ -652,7 +652,7 @@ msgid "Included"
 msgstr "Včetně"
 
 #: admin/ShortCodeGenerator.php:377
-#: templates/tcp_general_template.php:607
+#: templates/tcp_general_template.php:609
 #: widgets/AuthorsWidget.class.php:104
 #: widgets/BrothersListWidget.class.php:116
 #: widgets/CustomPostTypeListWidget.class.php:181
@@ -660,7 +660,7 @@ msgstr "Včetně"
 msgid "Order by"
 msgstr "Třídit podle"
 
-#: templates/tcp_general_template.php:621
+#: templates/tcp_general_template.php:623
 #: widgets/AuthorsWidget.class.php:117
 #: widgets/BrothersListWidget.class.php:126
 #: widgets/CustomPostTypeListWidget.class.php:190
@@ -668,7 +668,7 @@ msgstr "Třídit podle"
 msgid "Asc."
 msgstr "Vzest."
 
-#: templates/tcp_general_template.php:629
+#: templates/tcp_general_template.php:631
 #: widgets/AuthorsWidget.class.php:118
 #: widgets/BrothersListWidget.class.php:128
 #: widgets/CustomPostTypeListWidget.class.php:192
@@ -767,7 +767,7 @@ msgstr "Zobrazit odkaz na nákup"
 
 #: modules/StockManagement.class.php:522
 #: modules/StockManagement.class.php:538
-#: modules/StockManagement.class.php:759
+#: modules/StockManagement.class.php:760
 #: themes-templates/loop-tcp-grid.php:169
 #: themes-templates/loop-tcp-list.php:128
 #: widgets/CustomListWidget.class.php:130
@@ -1026,75 +1026,75 @@ msgstr "A"
 msgid "Use this widget to add trees of different taxonomies"
 msgstr "Použitím tohoto widgetu přidáte stromy různé struktury"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:132
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:135
 #@ tcp
 msgid "Navigation trees"
 msgstr "Navigační sromy"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:155
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:158
 #@ tcp
 msgid "Press save to load the list of taxonomies."
 msgstr "Stiskněte uložit pro načtení seznamu struktury."
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:165
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:168
 #@ tcp
 msgid "Press save to load the next lists."
 msgstr "Stiskněte uložit pro načtení dalšího seznamu"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:169
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:172
 #@ tcp
 msgid "See children number"
 msgstr "Zobrazit počet dětí"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:172
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:175
 #@ tcp
 msgid "Hide empty terms"
 msgstr "Schovat prázdné termíny"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:175
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:178
 #@ tcp
 msgid "Use description for title"
 msgstr "Použít popis pro titulek"
 
-#: widgets/ArchivesWidget.class.php:169
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:178
+#: widgets/ArchivesWidget.class.php:171
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:181
 #@ default
 #@ tcp
 msgid "Display as dropdown"
 msgstr "Zobrazit jako rozbalovací"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:181
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:184
 #@ tcp
 msgid "Display collapsible tree"
 msgstr "Zobraz skládací strom"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:184
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:187
 #@ tcp
 msgid "Included and sorted"
 msgstr "Zahrnuty a řazeny"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:198
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:201
 #@ tcp
 msgid "up"
 msgstr "nahoru"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:199
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:202
 #@ tcp
 msgid "down"
 msgstr "dolů"
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:200
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:203
 #@ tcp
 msgid "Use those actions to sort the list."
 msgstr "Třídit seznam pomocí těchto akcí."
 
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:204
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:207
 #@ tcp
 msgid "Excluded"
 msgstr "Vyjma"
 
 #: templates/tcp_template.php:1149
-#: widgets/TaxonomyTreesPostTypeWidget.class.php:206
+#: widgets/TaxonomyTreesPostTypeWidget.class.php:209
 #@ tcp
 msgid "No one"
 msgstr "Žádný"
@@ -1334,8 +1334,8 @@ msgstr "Zákazník"
 
 #: checkout/TCPCartBox.class.php:208
 #: checkout/TCPCartBox.class.php:372
-#: templates/tcp_general_template.php:382
-#: templates/tcp_general_template.php:459
+#: templates/tcp_general_template.php:384
+#: templates/tcp_general_template.php:461
 #: themes-templates/tcp_shopping_cart.php:212
 #: themes-templates/tcp_shopping_cart.php:330
 #: themes-templates/tcp_shopping_cart_email.php:243
@@ -1456,7 +1456,7 @@ msgid "Modified time"
 msgstr "Upravený čas"
 
 #: admin/PostTypeEdit.php:420
-#: templates/tcp_general_template.php:568
+#: templates/tcp_general_template.php:570
 #: widgets/CustomValuesWidget.class.php:246
 #@ tcp
 msgid "Author"
@@ -1485,7 +1485,7 @@ msgstr "Povolit zobrazení pokladny (pro účely ladění)"
 msgid "Use this widget to add a Shopping Cart summary"
 msgstr "Použijte tento widget pro přidání shrnutí Nákupního košíku"
 
-#: templates/tcp_general_template.php:472
+#: templates/tcp_general_template.php:474
 #: widgets/ShoppingCartSummaryWidget.class.php:69
 #@ tcp
 msgid "Shopping cart"
@@ -1496,22 +1496,22 @@ msgstr "Nákupní košík"
 msgid "See product count"
 msgstr "Zobrazit počet produktů"
 
-#: widgets/TCPParentWidget.class.php:81
+#: widgets/TCPParentWidget.class.php:76
 #@ tcp
 msgid "Private"
 msgstr "Soukromý"
 
-#: widgets/TCPParentWidget.class.php:84
+#: widgets/TCPParentWidget.class.php:79
 #@ tcp
 msgid "Roles"
 msgstr "Role"
 
-#: widgets/TCPParentWidget.class.php:86
+#: widgets/TCPParentWidget.class.php:81
 #@ tcp
 msgid "All roles"
 msgstr "Všechny role"
 
-#: widgets/TCPParentWidget.class.php:93
+#: widgets/TCPParentWidget.class.php:88
 #@ tcp
 msgid "Notice: Roles are not hierarchical"
 msgstr "Poznámka: role nelze srovnat hierarchicky"
@@ -1553,37 +1553,37 @@ msgstr "Vybrat den"
 msgid "Select One"
 msgstr "Vybrat jeden"
 
-#: widgets/ArchivesWidget.class.php:161
+#: widgets/ArchivesWidget.class.php:163
 #@ tcp
 msgid "yearly"
 msgstr "ročně"
 
-#: widgets/ArchivesWidget.class.php:162
+#: widgets/ArchivesWidget.class.php:164
 #@ tcp
 msgid "monthly"
 msgstr "měsíčně"
 
-#: widgets/ArchivesWidget.class.php:163
+#: widgets/ArchivesWidget.class.php:165
 #@ tcp
 msgid "daily"
 msgstr "denně"
 
-#: widgets/ArchivesWidget.class.php:164
+#: widgets/ArchivesWidget.class.php:166
 #@ tcp
 msgid "weekly"
 msgstr "týdně"
 
-#: widgets/ArchivesWidget.class.php:165
+#: widgets/ArchivesWidget.class.php:167
 #@ tcp
 msgid "postbypost"
 msgstr "odeslat poštou"
 
-#: widgets/ArchivesWidget.class.php:166
+#: widgets/ArchivesWidget.class.php:168
 #@ tcp
 msgid "alpha"
 msgstr "alfa"
 
-#: widgets/ArchivesWidget.class.php:171
+#: widgets/ArchivesWidget.class.php:173
 #@ default
 msgid "Show post counts"
 msgstr "Zobrazit počet příspěvků"
@@ -1757,7 +1757,7 @@ msgstr "Nenalezeno v koši"
 msgid "Post type saved. See <a href=\"edit.php?post_type=%s\">%s</a>"
 msgstr "Typ příspěvku uložen. Zobrazit <a href=\"edit.php?post_type=%s\">%s</a>"
 
-#: admin/AddressEdit.class.php:92
+#: admin/AddressEdit.class.php:101
 #: admin/OrderEdit.php:355
 #: admin/PluginEdit.php:118
 #: admin/PostTypeEdit.php:151
@@ -1879,7 +1879,7 @@ msgstr "Hledat položky"
 msgid "Not found in Trash"
 msgstr "V koši nenalezeno"
 
-#: admin/AddressEdit.class.php:250
+#: admin/AddressEdit.class.php:273
 #: admin/AssignedCategoriesList.php:62
 #: admin/AssignedCategoriesList.php:88
 #: admin/BuyButtonList.class.php:109
@@ -2078,8 +2078,8 @@ msgid "Trackbacks"
 msgstr "Zpětné odkazy"
 
 #: admin/PostTypeEdit.php:424
-#: modules/CustomFields.class.php:52
-#: modules/CustomFields.class.php:60
+#: modules/CustomFields.class.php:59
+#: modules/CustomFields.class.php:67
 #@ tcp
 msgid "Custom fields"
 msgstr "Volitelná pole"
@@ -2122,7 +2122,7 @@ msgid "Enjoy TheCartPress"
 msgstr "Děti CartPressu"
 
 #: admin/NewVersionDetails.class.php:71
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp
 msgid "Welcome to TheCartPress %s"
 msgstr "odkaz na TheCartPress stránku"
@@ -2361,7 +2361,7 @@ msgstr "Nastavení platby"
 #: admin/TaxesList.php:113
 #: admin/TaxesRates.php:90
 #: modules/TaxonomyImages.class.php:97
-#: templates/tcp_general_template.php:482
+#: templates/tcp_general_template.php:484
 #: themes-templates/tcp_shopping_cart.php:258
 #: themes-templates/tcp_shopping_cart_email.php:286
 #@ tcp
@@ -2443,7 +2443,7 @@ msgstr "Návrat na produkt"
 #: admin/UploadFiles.php:123
 #: admin/UploadFiles.php:134
 #: classes/DownloadableProducts.class.php:143
-#: modules/CustomFields.class.php:237
+#: modules/CustomFields.class.php:244
 #@ tcp
 msgid "File"
 msgstr "Soubor"
@@ -2500,110 +2500,105 @@ msgstr "Nemáte dostatečná oprávnění pro návštěvu této stránky"
 msgid "Address name field must be completed"
 msgstr "Políčko adresa musí být vyplněno"
 
-#: admin/AddressEdit.class.php:51
+#: admin/AddressEdit.class.php:52
 #@ tcp
 msgid "Firstname field must be completed"
 msgstr "Políčko jméno musí být vyplněno"
 
-#: admin/AddressEdit.class.php:53
+#: admin/AddressEdit.class.php:55
 #@ tcp
 msgid "Lastname field must be completed"
 msgstr "Příjmení musí být vyplněno"
 
-#: admin/AddressEdit.class.php:55
+#: admin/AddressEdit.class.php:58
 #@ tcp
 msgid "Street field must be completed"
 msgstr "Ulice musí být vyplněna"
 
-#: admin/AddressEdit.class.php:57
-#: admin/AddressEdit.class.php:58
+#: admin/AddressEdit.class.php:61
+#: admin/AddressEdit.class.php:62
 #@ tcp
 msgid "City field must be completed"
 msgstr "Město musí být vyplněno"
 
-#: admin/AddressEdit.class.php:61
-#@ tcp
-msgid "Region field must be completed"
-msgstr "Region musí být vyplněn"
-
-#: admin/AddressEdit.class.php:63
+#: admin/AddressEdit.class.php:67
 #@ tcp
 msgid "Postcode field must be completed"
 msgstr "PSČ musí být vyplněno"
 
-#: admin/AddressEdit.class.php:65
+#: admin/AddressEdit.class.php:70
 #@ tcp
 msgid "eMail field must be completed"
 msgstr "E-mail musí být vyplněn"
 
-#: admin/AddressEdit.class.php:77
+#: admin/AddressEdit.class.php:83
 #@ tcp
 msgid "Address saved"
 msgstr "Adresa uložena"
 
-#: admin/AddressEdit.class.php:81
+#: admin/AddressEdit.class.php:87
 #@ tcp
 msgid "Validation errors. Address has not been saved"
 msgstr "Chyba ověření. Adresa nebyla uložena."
 
-#: admin/AddressEdit.class.php:90
+#: admin/AddressEdit.class.php:99
 #@ tcp
 msgid "Address"
 msgstr "Ulice"
 
-#: admin/AddressEdit.class.php:99
+#: admin/AddressEdit.class.php:108
 #@ tcp
 msgid "Address name"
 msgstr "Jméno adresy"
 
-#: admin/AddressEdit.class.php:105
+#: admin/AddressEdit.class.php:115
 #@ tcp
 msgid "Firstname"
 msgstr "Jméno"
 
-#: admin/AddressEdit.class.php:111
+#: admin/AddressEdit.class.php:122
 #@ tcp
 msgid "Lastname"
 msgstr "Příjmení"
 
-#: admin/AddressEdit.class.php:118
+#: admin/AddressEdit.class.php:130
 #@ tcp
 msgid "Custom id"
 msgstr "Id zákazníka"
 
-#: admin/AddressEdit.class.php:121
+#: admin/AddressEdit.class.php:133
 #@ tcp
 msgid "This id is useful to connect the customers with third software"
 msgstr "Toto id je užitečné pro spojení zákazníků s terciálním software"
 
-#: admin/AddressEdit.class.php:124
+#: admin/AddressEdit.class.php:137
 #: checkout/BillingBox.class.php:409
 #: checkout/ShippingBox.class.php:395
 #@ tcp
 msgid "Company"
 msgstr "Společnost"
 
-#: admin/AddressEdit.class.php:130
+#: admin/AddressEdit.class.php:144
 #@ tcp
 msgid "Tax id number"
 msgstr "IČO"
 
-#: admin/AddressEdit.class.php:136
+#: admin/AddressEdit.class.php:150
 #@ tcp
 msgid "Company id"
 msgstr "Id společnosti"
 
-#: admin/AddressEdit.class.php:139
+#: admin/AddressEdit.class.php:153
 #@ tcp
 msgid "This id is useful to connect the companies with third software"
 msgstr "Toto je užitečné pro propojení společností s třetím software"
 
-#: admin/AddressEdit.class.php:143
+#: admin/AddressEdit.class.php:158
 #@ tcp
 msgid "Street"
 msgstr "Ulice"
 
-#: admin/AddressEdit.class.php:150
+#: admin/AddressEdit.class.php:166
 #: admin/TaxesRates.php:57
 #: admin/TaxesRates.php:68
 #: checkout/BillingBox.class.php:525
@@ -2613,7 +2608,7 @@ msgstr "Ulice"
 msgid "Country"
 msgstr "Stát"
 
-#: admin/AddressEdit.class.php:173
+#: admin/AddressEdit.class.php:189
 #: admin/TaxesRates.php:58
 #: admin/TaxesRates.php:69
 #: checkout/BillingBox.class.php:560
@@ -2622,42 +2617,42 @@ msgstr "Stát"
 msgid "Region"
 msgstr "Kraj"
 
-#: admin/AddressEdit.class.php:176
+#: admin/AddressEdit.class.php:192
 #: checkout/BillingBox.class.php:563
 #: checkout/ShippingBox.class.php:537
 #@ tcp
 msgid "No state selected"
 msgstr "Nevybrán žádný stát"
 
-#: admin/AddressEdit.class.php:188
+#: admin/AddressEdit.class.php:204
 #: checkout/BillingBox.class.php:586
 #: checkout/ShippingBox.class.php:560
 #@ tcp
 msgid "City"
 msgstr "Město"
 
-#: admin/AddressEdit.class.php:206
+#: admin/AddressEdit.class.php:222
 #: checkout/BillingBox.class.php:465
 #: checkout/ShippingBox.class.php:439
 #@ tcp
 msgid "Postal code"
 msgstr "PSČ"
 
-#: admin/AddressEdit.class.php:213
+#: admin/AddressEdit.class.php:230
 #: checkout/BillingBox.class.php:476
 #: checkout/ShippingBox.class.php:450
 #@ tcp
 msgid "Telephone 1"
 msgstr "Telefon 1"
 
-#: admin/AddressEdit.class.php:220
+#: admin/AddressEdit.class.php:238
 #: checkout/BillingBox.class.php:486
 #: checkout/ShippingBox.class.php:460
 #@ tcp
 msgid "Telephone 2"
 msgstr "Telefon 2"
 
-#: admin/AddressEdit.class.php:226
+#: admin/AddressEdit.class.php:245
 #: admin/OrderEdit.php:156
 #: admin/OrderEdit.php:224
 #: checkout/BillingBox.class.php:496
@@ -2672,17 +2667,17 @@ msgstr "Telefon 2"
 msgid "Fax"
 msgstr "Fax"
 
-#: admin/AddressEdit.class.php:232
+#: admin/AddressEdit.class.php:252
 #@ tcp
 msgid "eMail"
 msgstr "e-mail"
 
-#: admin/AddressEdit.class.php:238
+#: admin/AddressEdit.class.php:259
 #@ tcp
 msgid "Default billing"
 msgstr "Standardní fakturace"
 
-#: admin/AddressEdit.class.php:243
+#: admin/AddressEdit.class.php:265
 #@ tcp
 msgid "Default shipping"
 msgstr "Standardní přeprava"
@@ -2716,7 +2711,7 @@ msgstr "Objednávka"
 #@ tcp
 msgctxt "column name"
 msgid "Billing"
-msgstr "Fakturace"
+msgstr "Vaše údaje"
 
 #: admin/OrdersListTable.class.php:89
 #@ tcp
@@ -2889,8 +2884,8 @@ msgstr "Jméno"
 #: metaboxes/ProductCustomFieldsMetabox.class.php:170
 #: metaboxes/RelationsMetabox.class.php:69
 #: metaboxes/RelationsMetabox.class.php:77
-#: templates/tcp_general_template.php:336
-#: templates/tcp_general_template.php:560
+#: templates/tcp_general_template.php:338
+#: templates/tcp_general_template.php:562
 #: themes-templates/tcp_shopping_cart.php:207
 #: themes-templates/tcp_shopping_cart_email.php:238
 #@ tcp
@@ -2937,7 +2932,7 @@ msgstr "upravit"
 #: plugins/ShippingCost.class.php:181
 #: plugins/ShippingCost.class.php:194
 #: plugins/ShippingCost.class.php:244
-#: templates/tcp_general_template.php:397
+#: templates/tcp_general_template.php:399
 #@ tcp
 msgid "delete"
 msgstr "smazat"
@@ -3258,7 +3253,7 @@ msgstr "Opravdu chcete smazat tuto adresu?"
 #: admin/AddressesListTable.class.php:145
 #@ tcp
 msgid "Billing"
-msgstr "Fakturace"
+msgstr "Vaše údaje"
 
 #: admin/AddressesListTable.class.php:130
 #: admin/AddressesListTable.class.php:146
@@ -3628,14 +3623,14 @@ msgstr "%s (neregistrovaných)"
 #: themes-templates/tcp_shopping_cart_email.php:214
 #@ tcp
 msgid "Shipping method"
-msgstr "Doručovací metoda"
+msgstr "Způsob doručení"
 
 #: admin/OrderEdit.php:270
 #: themes-templates/tcp_shopping_cart.php:34
 #: themes-templates/tcp_shopping_cart_email.php:202
 #@ tcp
 msgid "Payment method"
-msgstr "Platrbní metoda"
+msgstr "Způsob platby"
 
 #: admin/OrderEdit.php:279
 #@ tcp
@@ -3674,7 +3669,7 @@ msgstr "Poslat e-mail na doručovací adresu"
 
 #: admin/OrderEdit.php:366
 #: checkout/ActiveCheckout.class.php:89
-#: checkout/TCPCheckoutManager.class.php:631
+#: checkout/TCPCheckoutManager.class.php:632
 #@ tcp
 msgid "Print"
 msgstr "Tisk"
@@ -4635,43 +4630,43 @@ msgstr "Krok tři"
 msgid "Set Checkout options"
 msgstr "Nastavte plateby"
 
-#: checkout/CheckoutSettings.class.php:92
+#: checkout/CheckoutSettings.class.php:93
 #: settings/FirstTimeSetup.class.php:250
 #@ tcp
 msgid "User registration required"
 msgstr "Vyžadována registrace uživatelů"
 
-#: checkout/CheckoutSettings.class.php:96
+#: checkout/CheckoutSettings.class.php:97
 #: settings/FirstTimeSetup.class.php:254
 #@ tcp
 msgid "Indicates if the clients should be or not registered to buy."
 msgstr "Určuje, zda by klienti měli neměli být registrovaní pro možnost nákupu."
 
-#: checkout/CheckoutSettings.class.php:101
+#: checkout/CheckoutSettings.class.php:102
 #: settings/FirstTimeSetup.class.php:260
 #@ tcp
 msgid "@mails to send orders"
 msgstr "E-maily pro odeslání objednávek"
 
-#: checkout/CheckoutSettings.class.php:105
+#: checkout/CheckoutSettings.class.php:106
 #: settings/FirstTimeSetup.class.php:264
 #@ tcp
 msgid "Comma (,) separated mails"
 msgstr "Čárkou (,) oddělené e-maily"
 
-#: checkout/CheckoutSettings.class.php:106
+#: checkout/CheckoutSettings.class.php:107
 #: settings/FirstTimeSetup.class.php:265
 #@ tcp
 msgid "These emails will receive orders notifications."
 msgstr "Tyto e-maily budou přijímat oznámení o objednávkách."
 
-#: checkout/CheckoutSettings.class.php:111
+#: checkout/CheckoutSettings.class.php:112
 #: settings/FirstTimeSetup.class.php:271
 #@ tcp
 msgid "From email"
 msgstr "Od e-mailu"
 
-#: checkout/CheckoutSettings.class.php:115
+#: checkout/CheckoutSettings.class.php:116
 #: settings/FirstTimeSetup.class.php:275
 #@ tcp
 msgid "Host email. If not set, The emails will be sent to the customer from no-response@thecartpress.com"
@@ -5289,7 +5284,7 @@ msgstr "Pokud kliknete na tlačítko Pokračovat, objednávka bude vytvořena a 
 #, fuzzy
 #@ tcp
 msgid "Billing Info"
-msgstr "Fakturace"
+msgstr "Vaše údaje"
 
 #: checkout/BillingBox.class.php:84
 #: checkout/BillingBox.class.php:101
@@ -5459,7 +5454,7 @@ msgstr "Tato volba musí být aktivována v případě, že není zboží pro p�
 #, php-format
 #@ tcp
 msgid "Sending method: %s"
-msgstr "Metoda doručení: %s"
+msgstr "Způsob doručení: %s"
 
 #: checkout/TCPShippingMethodsBox.class.php:38
 #@ tcp
@@ -5486,10 +5481,10 @@ msgstr "Skrýt okno a zobrazit pouze záhlaví, je-li jen jedna metoda je použi
 #: checkout/TCPShippingMethodsBox.class.php:179
 #@ tcp
 msgid "Hide box if only one method is applicable"
-msgstr "Skrýt okno, je-li jen jedna metoda je použitelná"
+msgstr "Skrýt okno, je-li jen jeden způsob je použitelný"
 
 #: checkout/TCPPaymentMethodsBox.class.php:235
-#: checkout/TCPShippingMethodsBox.class.php:245
+#: checkout/TCPShippingMethodsBox.class.php:247
 #@ tcp
 msgid "There is not applicable methods"
 msgstr "Není použitelná metoda"
@@ -5558,7 +5553,7 @@ msgstr "SKU"
 #: checkout/TCPCartBox.class.php:202
 #: metaboxes/RelationsMetabox.class.php:99
 #: modules/UnitsInBuyButton.class.php:112
-#: templates/tcp_general_template.php:349
+#: templates/tcp_general_template.php:351
 #: themes-templates/tcp_shopping_cart.php:208
 #: themes-templates/tcp_shopping_cart.php:252
 #: themes-templates/tcp_shopping_cart_email.php:239
@@ -5569,7 +5564,7 @@ msgstr "Jednotky"
 #: checkout/TCPCartBox.class.php:205
 #: customposttypes/ProductCustomPostType.class.php:352
 #: metaboxes/ProductCustomFieldsMetabox.class.php:209
-#: templates/tcp_general_template.php:365
+#: templates/tcp_general_template.php:367
 #: themes-templates/tcp_shopping_cart.php:210
 #: themes-templates/tcp_shopping_cart_email.php:241
 #@ tcp
@@ -5648,32 +5643,32 @@ msgid "Please log in below:"
 msgstr "Přihlaste se prosím níže:"
 
 #: checkout/TCPSigninBox.class.php:114
-#: templates/tcp_general_template.php:686
-#: templates/tcp_general_template.php:777
+#: templates/tcp_general_template.php:688
+#: templates/tcp_general_template.php:779
 #@ tcp
 #@ default
 msgid "Username"
 msgstr "Uživatelské jméno"
 
 #: checkout/TCPSigninBox.class.php:115
-#: templates/tcp_general_template.php:687
-#: templates/tcp_general_template.php:778
+#: templates/tcp_general_template.php:689
+#: templates/tcp_general_template.php:780
 #@ tcp
 #@ default
 msgid "Password"
 msgstr "Heslo"
 
 #: checkout/TCPSigninBox.class.php:116
-#: templates/tcp_general_template.php:688
-#: templates/tcp_general_template.php:780
+#: templates/tcp_general_template.php:690
+#: templates/tcp_general_template.php:782
 #@ tcp
 #@ default
 msgid "Remember Me"
 msgstr "Zapamatuj si mě"
 
 #: checkout/TCPSigninBox.class.php:117
-#: templates/tcp_general_template.php:689
-#: templates/tcp_general_template.php:781
+#: templates/tcp_general_template.php:691
+#: templates/tcp_general_template.php:783
 #@ tcp
 #@ default
 msgid "Log In"
@@ -5701,8 +5696,8 @@ msgstr "Snadný přístup do historie Vašich nákupů a objednávek"
 
 #: checkout/TCPSigninBox.class.php:142
 #: modules/LoginRegister.class.php:315
-#: templates/tcp_general_template.php:745
-#: templates/tcp_general_template.php:838
+#: templates/tcp_general_template.php:747
+#: templates/tcp_general_template.php:840
 #@ tcp
 #@ default
 msgid "Register"
@@ -5850,17 +5845,17 @@ msgstr "Zpět"
 msgid "Purchase"
 msgstr "Potvrdit objednávku"
 
-#: checkout/TCPCheckoutManager.class.php:622
+#: checkout/TCPCheckoutManager.class.php:623
 #@ tcp
 msgid "Please continue checking out using your chosen payment method."
 msgstr "Pokračujte prosím kontrolou pomocí Vámi zvoleného způsobu platby."
 
-#: checkout/TCPCheckoutManager.class.php:666
+#: checkout/TCPCheckoutManager.class.php:667
 #@ tcp
 msgid "billing address"
 msgstr "fakturační adresa"
 
-#: checkout/TCPCheckoutManager.class.php:694
+#: checkout/TCPCheckoutManager.class.php:695
 #@ tcp
 msgid "shipping address"
 msgstr "adresa k doručení"
@@ -5869,7 +5864,7 @@ msgstr "adresa k doručení"
 #, php-format
 #@ tcp
 msgid "Payment method: %s"
-msgstr "Platební metoda: %s"
+msgstr "Způsob platby: %s"
 
 #: checkout/TCPPaymentMethodsBox.class.php:102
 #@ tcp
@@ -5897,57 +5892,52 @@ msgstr "Nastavení platby"
 msgid "You can customize the checkout process."
 msgstr "Můžete přizpůsobit proces platby."
 
-#: checkout/CheckoutSettings.class.php:77
+#: checkout/CheckoutSettings.class.php:78
 #@ tcp
 msgid "The order has been completed successfully"
 msgstr "Objednávka byla úspěšně dokončena."
 
-#: checkout/CheckoutSettings.class.php:83
+#: checkout/CheckoutSettings.class.php:84
 #@ tcp
 msgid "HTTPS process"
 msgstr "HTTPS proces"
 
-#: checkout/CheckoutSettings.class.php:87
+#: checkout/CheckoutSettings.class.php:88
 #@ tcp
 msgid "Allows to make the checkout process under https."
 msgstr "Povolit uhrazení pod protokolem HTTPS."
 
-#: checkout/CheckoutSettings.class.php:120
-#@ tcp
-msgid "Send Purchase eMail"
-msgstr "Zaslat potvrzovací e-mail"
-
-#: checkout/CheckoutSettings.class.php:124
+#: checkout/CheckoutSettings.class.php:125
 #@ tcp
 msgid "Allows to send an email to Merchant when customers click on Purchase button."
 msgstr "Umožňuje odeslat e-mail kupci, když zákazníci kliknou na tlačítko Koupit."
 
-#: checkout/CheckoutSettings.class.php:133
+#: checkout/CheckoutSettings.class.php:143
 #@ tcp
 msgid "If the checkout notice is blank, the Checkout page will try to use the Notice class called \"tcp_checkout_notice\""
 msgstr "Pokud je Oznámení pokladny prázdná, zkusí stránka Pokladna použít k Oznámení třídu s názvem \"tcp_checkout_notice\""
 
-#: checkout/CheckoutSettings.class.php:134
+#: checkout/CheckoutSettings.class.php:144
 #@ tcp
 msgid "The Notice class allows to create a multilingual notice"
 msgstr "Třída Oznámení umožňuje vytvořit vícejazyčné oznámení"
 
-#: checkout/CheckoutSettings.class.php:135
+#: checkout/CheckoutSettings.class.php:145
 #@ tcp
 msgid "If the checkout notice is blank and no Notice class is assigned, then the Checkout page will not show the \"Accept conditions\" check."
 msgstr "Pokud je Oznámení pokladny prázdné a není přiřazena třída, pak stránka Pokladna nezobrazí \"Accept conditions\"."
 
-#: checkout/CheckoutSettings.class.php:140
+#: checkout/CheckoutSettings.class.php:150
 #@ tcp
 msgid "Checkout successfully message"
 msgstr "Úspěšná zpráva pro dokončení nákupu"
 
-#: checkout/CheckoutSettings.class.php:144
+#: checkout/CheckoutSettings.class.php:154
 #@ tcp
 msgid "This text will show at the end of the checkout process."
 msgstr "Tento text se zobrazí na konci procesu nákupu."
 
-#: checkout/CheckoutSettings.class.php:145
+#: checkout/CheckoutSettings.class.php:155
 #@ tcp
 msgid "If this messages is blank, the Checkout page will try to use the Notice class called \"tcp_checkout_end\""
 msgstr "Pokud je tato zpráva prázdná, zkusí stránka Pokladna použít k Upozornění třídu s názvem \"tcp_checkout_end\""
@@ -5956,7 +5946,7 @@ msgstr "Pokud je tato zpráva prázdná, zkusí stránka Pokladna použít k Upo
 #: checkout/CheckoutEditor.class.php:87
 #@ tcp
 msgid "Checkout Editor"
-msgstr "Editor objednávky"
+msgstr "Úprava objednávky (košíku)"
 
 #: checkout/CheckoutEditor.class.php:56
 #@ tcp
@@ -6318,7 +6308,7 @@ msgstr "rodičovské téma"
 #: modules/StockManagement.class.php:398
 #: modules/StockManagement.class.php:438
 #: modules/StockManagement.class.php:466
-#: modules/StockManagement.class.php:685
+#: modules/StockManagement.class.php:686
 #@ tcp
 msgid "Stock"
 msgstr "Skladem"
@@ -6452,34 +6442,34 @@ msgstr "Vyskytla se chyba při vytváření objednávky. Kontaktujte prosím pro
 msgid "No stock after payment for:"
 msgstr "Po zaplacení není skladem pro:"
 
-#: modules/StockManagement.class.php:636
+#: modules/StockManagement.class.php:637
 #@ tcp
 msgid "There was an error when creating the order. Seller will contact you regarding your order."
 msgstr "Vyskytla se chyba při vytváření objednávky. Pro dokončení Vás bude kontaktovat prodejce."
 
-#: modules/StockManagement.class.php:673
+#: modules/StockManagement.class.php:674
 #@ tcp
 msgid "Units in stock"
 msgstr "Jednotky na skladě"
 
-#: modules/StockManagement.class.php:677
+#: modules/StockManagement.class.php:678
 #@ tcp
 msgid "Initial stock"
 msgstr "Počáteční sklad"
 
 #: customposttypes/ProductCustomPostType.class.php:229
-#: modules/StockManagement.class.php:714
-#: modules/StockManagement.class.php:717
+#: modules/StockManagement.class.php:715
+#: modules/StockManagement.class.php:718
 #@ tcp
 msgid "N/A"
 msgstr "N/A"
 
-#: modules/StockManagement.class.php:737
+#: modules/StockManagement.class.php:738
 #@ tcp
 msgid "See stock notice"
 msgstr "Prohlédněte si oznámení"
 
-#: modules/StockManagement.class.php:748
+#: modules/StockManagement.class.php:749
 #, php-format
 #@ tcp
 msgid "No enough stock for some products. Visit the <a href=\"%s\">Shopping Cart</a> to see more details."
@@ -6490,29 +6480,29 @@ msgstr "Nedostatek zboží u některých produktů. Navštivte <a href=\"%s\">N�
 msgid "URL"
 msgstr "URL"
 
-#: modules/CustomFields.class.php:238
+#: modules/CustomFields.class.php:245
 #@ tcp
 msgid "Remove file"
 msgstr "Odstranit pole"
 
-#: modules/CustomFields.class.php:240
+#: modules/CustomFields.class.php:247
 #@ tcp
 msgid "If you upload a new file, existing one will be deleted"
 msgstr "Pokud nahrajete nový soubor, bude existující soubor přepsán"
 
-#: modules/CustomFields.class.php:255
+#: modules/CustomFields.class.php:262
 #, php-format
 #@ tcp
 msgid "No custom fields defined. Visit <a href=\"%s\">Custom Fields Manager</a> to create custom fields."
 msgstr "Žádné uživatelské pole není definované. Navštivte <a href=\"%s\">Manažera uživatelských polí</a> pro vytvoření uživatelských polí."
 
-#: modules/CustomFields.class.php:358
+#: modules/CustomFields.class.php:365
 #@ tcp
 msgid "file..."
 msgstr "soubor..."
 
-#: modules/CustomFields.class.php:378
-#: modules/CustomFields.class.php:383
+#: modules/CustomFields.class.php:385
+#: modules/CustomFields.class.php:390
 #@ tcp
 msgid "No value"
 msgstr "Žádná hodnota"
@@ -6618,7 +6608,7 @@ msgid "Url"
 msgstr "URL"
 
 #: modules/UnderConstruction.class.php:104
-#: templates/tcp_general_template.php:1011
+#: templates/tcp_general_template.php:1013
 #@ tcp
 #@ default
 msgid "Page"
@@ -7029,7 +7019,7 @@ msgid "Free Trans"
 msgstr "Doprava zdarma"
 
 #: plugins/FreeTrans.class.php:31
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp
 msgid "Free transport for orders with cost greater than an editable minimum. <br>Author: <a href=\"%s\" target=\"_blank\">TheCartPress team</a>"
 msgstr "Přeprava zdarma při objednávce s cenou vyšší než editovatelné minimun. <br>Autor: <a href=\"%s\" target=\"_blank\"> TheCartPress tým</ a>"
@@ -7267,7 +7257,7 @@ msgid "Returns to the eCommerce"
 msgstr "Návrat do eCommerce"
 
 #: plugins/authorize.net/TCPAuthorizeNet.class.php:233
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp_ceca
 msgid "Pay using %s"
 msgstr "Minimální velikost"
@@ -7401,19 +7391,19 @@ msgstr "Návrat k"
 msgid "Purchase from %s (Order No. %s)"
 msgstr "Zakoupeno z %s (objednávka č. %s)"
 
-#: plugins/PayPal/TCPPayPal.php:321
+#: plugins/PayPal/TCPPayPal.php:318
 #@ tcp
 msgid "Redirecting to paypal, wait a moment"
 msgstr "Přesměrování na paypal, chvilku strpení"
 
-#: plugins/PayPal/TCPPayPal.php:373
 #: plugins/PayPal/TCPPayPal.php:374
+#: plugins/PayPal/TCPPayPal.php:375
 #@ tcp
 msgid "Customer cancel at PayPal"
 msgstr "Zákazník zruší u PayPal"
 
-#: plugins/PayPal/TCPPayPal.php:391
 #: plugins/PayPal/TCPPayPal.php:392
+#: plugins/PayPal/TCPPayPal.php:393
 #@ tcp
 msgid "No validation. Error in connection."
 msgstr "Žádné ověření. Chyba v připojení."
@@ -7763,8 +7753,8 @@ msgstr "Chyba identifikace"
 msgid "TheCartPress search engine property is deactivate"
 msgstr "TheCartPress vyhledávač je vypnutý"
 
-#: classes/TCP_Plugin.class.php:163
-#: classes/TCP_Plugin.class.php:175
+#: classes/TCP_Plugin.class.php:165
+#: classes/TCP_Plugin.class.php:177
 #, php-format
 #@ tcp
 msgid "This notice will be displayed in the checkout process and added in the email to the customer with the info related to %s"
@@ -7783,7 +7773,7 @@ msgid "Days to expire"
 msgstr "Dny do expirace"
 
 #: classes/DownloadableProducts.class.php:98
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp
 msgid "The product is in your <a href=\"%s\" class=\"alert-link\">cart</a>"
 msgstr "Produkt je v <a href=\"%s\">košíku</a>"
@@ -7832,7 +7822,7 @@ msgid "Please, to download products visit <a href=\"%s\">My Downloads</a> page (
 msgstr "Pro stažení produktů prosím navštivte stránku <a href=\"%s\">My Downloads</a> (nutné přihlášení)"
 
 #: classes/CustomForms.class.php:136
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp
 msgid "Field %s is required"
 msgstr "Vyžadováno uživatelské jméno "
@@ -8097,7 +8087,7 @@ msgid "Add to cart"
 msgstr "Přidat do košíku"
 
 #: templates/tcp_buybutton_template.php:81
-#, fuzzy, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format
 #@ tcp
 msgid "<span class=\"tcp_units\">%s</span> <a href=\"%s\" class=\"alert-link\">in your cart</a>"
 msgstr "<span class=\"tcp_units\">%s</span>Přidáno <a href=\"%s\">do košíku</a>"
@@ -8108,166 +8098,166 @@ msgstr "<span class=\"tcp_units\">%s</span>Přidáno <a href=\"%s\">do košíku<
 msgid "Select %s"
 msgstr "Vybrat %s"
 
-#: templates/tcp_general_template.php:344
+#: templates/tcp_general_template.php:346
 #: themes-templates/tcp_shopping_cart.php:256
 #: themes-templates/tcp_shopping_cart_email.php:284
 #@ tcp
 msgid "Modify"
 msgstr "Přepočítat"
 
-#: templates/tcp_general_template.php:346
+#: templates/tcp_general_template.php:348
 #@ tcp
 msgid "Delete item"
 msgstr "Smazat položku"
 
-#: templates/tcp_general_template.php:356
-#: templates/tcp_general_template.php:378
-#: templates/tcp_general_template.php:453
+#: templates/tcp_general_template.php:358
+#: templates/tcp_general_template.php:380
+#: templates/tcp_general_template.php:455
 #: themes-templates/tcp_shopping_cart.php:304
 #: themes-templates/tcp_shopping_cart_email.php:332
 #@ tcp
 msgid "Discount"
 msgstr "Sleva"
 
-#: templates/tcp_general_template.php:386
+#: templates/tcp_general_template.php:388
 #@ tcp
 msgid "shopping cart"
 msgstr "Nákupní košík"
 
-#: templates/tcp_general_template.php:391
+#: templates/tcp_general_template.php:393
 #@ tcp
 msgid "checkout"
 msgstr "K pokladně"
 
-#: templates/tcp_general_template.php:399
-#: templates/tcp_general_template.php:483
+#: templates/tcp_general_template.php:401
+#: templates/tcp_general_template.php:485
 #, fuzzy
 #@ tcp
 msgid "Delete All"
 msgstr "smazat vše"
 
-#: templates/tcp_general_template.php:447
+#: templates/tcp_general_template.php:449
 #@ tcp
 msgid "N<sup>o</sup> products"
 msgstr "Počet výrobků"
 
-#: templates/tcp_general_template.php:467
+#: templates/tcp_general_template.php:469
 #@ tcp
 msgid "Weigth"
 msgstr "Váha"
 
-#: templates/tcp_general_template.php:552
+#: templates/tcp_general_template.php:554
 #@ tcp
 msgid "Unordered"
 msgstr "Neuspořádaně"
 
-#: templates/tcp_general_template.php:556
+#: templates/tcp_general_template.php:558
 #@ tcp
 msgid "Suggested"
 msgstr "Navržené"
 
-#: templates/tcp_general_template.php:576
+#: templates/tcp_general_template.php:578
 #@ tcp
 msgid "Popular"
 msgstr "Populární"
 
-#: templates/tcp_general_template.php:580
+#: templates/tcp_general_template.php:582
 #@ tcp
 msgid "Random"
 msgstr "Náhodný"
 
-#: templates/tcp_general_template.php:634
+#: templates/tcp_general_template.php:636
 #@ tcp
 msgid "Sort"
 msgstr "Třídit"
 
-#: templates/tcp_general_template.php:735
+#: templates/tcp_general_template.php:737
 #@ default
 msgid "Password Lost and Found"
 msgstr "Heslo - ztracené a nalezené"
 
-#: templates/tcp_general_template.php:735
+#: templates/tcp_general_template.php:737
 #@ default
 msgid "Lost your password?"
 msgstr "Zapomněl jste heslo?"
 
-#: templates/tcp_general_template.php:752
-#: templates/tcp_general_template.php:840
+#: templates/tcp_general_template.php:754
+#: templates/tcp_general_template.php:842
 #@ tcp
 msgid "Error"
 msgstr "Chyba"
 
-#: templates/tcp_general_template.php:779
+#: templates/tcp_general_template.php:781
 #@ tcp
 msgid "Repeat password"
 msgstr "Opakovat heslo"
 
-#: templates/tcp_general_template.php:798
+#: templates/tcp_general_template.php:800
 #@ tcp
 msgid "Error has occurred while registering"
 msgstr "Při registraci se vyskytla chyba"
 
-#: templates/tcp_general_template.php:801
+#: templates/tcp_general_template.php:803
 #@ tcp
 msgid "Registration data has been saved."
 msgstr "Data registrace byla uložena"
 
-#: templates/tcp_general_template.php:823
+#: templates/tcp_general_template.php:825
 #@ default
 msgid "Type your new password again."
 msgstr "Napište Vaše nové heslo."
 
-#: templates/tcp_general_template.php:826
+#: templates/tcp_general_template.php:828
 #@ tcp
 msgid "E-mail"
 msgstr "E-mail"
 
-#: templates/tcp_general_template.php:843
+#: templates/tcp_general_template.php:845
 #@ tcp
 msgid "The user is already logged"
 msgstr "Uživatel je již přihlášen"
 
-#: templates/tcp_general_template.php:929
+#: templates/tcp_general_template.php:931
 #@ tcp
 msgid "Home"
 msgstr "Domů"
 
-#: templates/tcp_general_template.php:992
+#: templates/tcp_general_template.php:994
 #, php-format
 #@ tcp
 msgid "Search results for \"%s\""
 msgstr "Výsledek hledání pro %s\""
 
-#: templates/tcp_general_template.php:996
+#: templates/tcp_general_template.php:998
 #, php-format
 #@ tcp
 msgid "Posts tagged \"%s\""
 msgstr "Příspěvky označeny %s\""
 
-#: templates/tcp_general_template.php:1002
+#: templates/tcp_general_template.php:1004
 #, php-format
 #@ tcp
 msgid "Articles posted by %s"
 msgstr "Předměty zveřejněné v %s"
 
-#: templates/tcp_general_template.php:1006
+#: templates/tcp_general_template.php:1008
 #@ tcp
 msgid "Error 404"
 msgstr "Chyba 404"
 
-#: templates/tcp_general_template.php:1061
+#: templates/tcp_general_template.php:1063
 #, php-format
 #@ default
 msgid "Posts by %s"
 msgstr "Příspěvky od %s"
 
-#: templates/tcp_general_template.php:1138
+#: templates/tcp_general_template.php:1140
 #, php-format
 #@ tcp
 msgid "<span class=\"tcp_posted_on\"><span class=\"sep\">Posted on </span><a href=\"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></a></span>"
 msgstr "<span class=\"tcp_posted_on\"><span class=\"sep\"> Datum zveřejnění: </ span><a href = \"%1$s\" title=\"%2$s\" rel=\"bookmark\"><time class=\"entry-date\" datetime=\"%3$s\" pubdate>%4$s</time></ a></ span>"
 
-#: templates/tcp_general_template.php:1147
+#: templates/tcp_general_template.php:1149
 #, php-format
 #@ tcp
 msgid "<span class=\"tcp_by_author\"><span class=\"sep\">by </span> <span class=\"author vcard\"><a class=\"url fn n\" href=\"%1$s\" title=\"%2$s\" rel=\"author\">%3$s</a></span>"
@@ -8868,19 +8858,13 @@ msgstr "Profesionální WordPress eCommerce plugin. Používejte jako e-shop neb
 msgid "TheCartPress team"
 msgstr "TheCartPress tým"
 
-#. translators: plugin header field 'Version'
-#: TheCartPress.class.php:0
-#@ tcp
-msgid "1.3.6.1"
-msgstr "1.3.6.1"
-
 #: TheCartPress.class.php:334
 #@ tcp
 msgid "This notice will be showed at Shopping cart bottom"
 msgstr "Tato poznámka se zobrazí na tlačítku Nákupní košík"
 
-#: TheCartPress.class.php:1117
-#: TheCartPress.class.php:1163
+#: TheCartPress.class.php:1119
+#: TheCartPress.class.php:1165
 #@ tcp
 msgctxt "URL slug"
 msgid "rewrite"
@@ -8951,7 +8935,7 @@ msgstr "Cena"
 msgid "Leave this field to blank (or zero) to use the fixed value"
 msgstr "Nechte toto pole prázdné (nebo nula) pro použití pevné hodnoty"
 
-#: templates/tcp_general_template.php:1149
+#: templates/tcp_general_template.php:1151
 #, php-format
 #@ tcp
 msgid "View all posts by %s"
@@ -8970,4 +8954,25 @@ msgstr "Od %s"
 #@ tcp
 msgid "(-%s)"
 msgstr "(-%s)"
+
+#. translators: plugin header field 'Version'
+#: TheCartPress.class.php:0
+#@ tcp
+msgid "1.3.6.2"
+msgstr "1.3.6.2"
+
+#: checkout/CheckoutSettings.class.php:121
+#@ tcp
+msgid "Send Purchase eMail to merchant"
+msgstr "Zaslat potvrzovací e-mail obchodníkovi"
+
+#: checkout/CheckoutSettings.class.php:130
+#@ tcp
+msgid "Send Purchase eMail to customers"
+msgstr "Zaslat potvrzovací e-mail zákazníkovi"
+
+#: checkout/CheckoutSettings.class.php:134
+#@ tcp
+msgid "Allows to send an email to Customer when customers click on Purchase button."
+msgstr "Povolit odeslání e-mailu zákazníkovi, pokud zákazník klikne na tlačítko Potvrdit"
 
