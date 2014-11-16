@@ -216,8 +216,11 @@ $table_amount_without_tax = 0;
 $table_amount_with_tax = 0;
 foreach( $shoppingCart->getItems() as $item ) :
 	$tax = $item->getTax();	//$tax = tcp_get_the_tax( $item->getPostId() );
-	if ( ! tcp_is_display_prices_with_taxes() ) $discount = round( $item->getDiscount() / $item->getUnits(), $decimals );
-	else $discount = 0;
+	if ( ! tcp_is_display_prices_with_taxes() ) {
+		$discount = round( $item->getDiscount() / $item->getUnits(), $decimals );
+	} else {
+		$discount = 0;
+	}
 	$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 	$unit_price_without_tax = round( $unit_price_without_tax - $discount, $decimals );
 
@@ -254,7 +257,7 @@ foreach( $shoppingCart->getItems() as $item ) :
 		<?php if ( $see_tax ) : ?>
 		<td class="tcp_cart_tax">
 			<?php echo tcp_format_the_price( $tax_amount_per_unit ); ?>
-			<?php if ( $see_tax_detail ) : ?>&nbsp;(<?php echo tcp_number_format( $tax, 0 ); ?>%)<?php endif; ?>
+			<?php if ( $see_tax_detail ) : ?>&nbsp;(<?php echo tcp_number_format( $tax, $decimals ); ?>%)<?php endif; ?>
 		</td>
 		<?php endif; ?>
 		<?php if ( $see_units ) : ?>
@@ -264,7 +267,7 @@ foreach( $shoppingCart->getItems() as $item ) :
 		<?php endif; ?>
 		<?php if ( $see_weight ) : ?>
 		<td class="tcp_cart_weight">
-			<?php echo tcp_number_format( $item->getWeight(), 2 ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?>
+			<?php echo tcp_number_format( $item->getWeight(), $decimals ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?>
 		</td>
 		<?php endif; ?>
 		<?php if ( $see_total ) : ?>

@@ -360,10 +360,10 @@ class TCPPayPal extends TCP_Plugin {
 
 	function tcp_paypal_ipn() {
 
-/*$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-$headers .= "From: Tests <testing@arohadigital.biz>\r\n";
-wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $headers );*/
+//$headers  = 'MIME-Version: 1.0' . "\r\n";
+//$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+//$headers .= "From: Tests <testing@arohadigital.biz>\r\n";
+//wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $headers );
 
 		$custom		= isset( $_POST['custom'] ) ? $_POST['custom'] : '0-0'; //-CANCELLED-TCPPayPal-0';//Order_id-test_mode-new_status-class-instance
 		$transaction_id	= isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : '';
@@ -390,8 +390,8 @@ wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $h
 				$verified = $listener->processIpn();
 			} catch ( Exception $e ) {
 				$verified = false;
-				Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, __( 'No validation. Error in connection.', 'tcp' ) );
-				ActiveCheckout::sendMails( $order_id, __( 'No validation. Error in connection.', 'tcp' ) );
+				Orders::editStatus( $order_id, Orders::$ORDER_SUSPENDED, $transaction_id, $e->getMessage() . "\n" . __( 'No validation. Error in connection.', 'tcp' ) );
+				ActiveCheckout::sendMails( $order_id, $e->getMessage() . "\n" . __( 'No validation. Error in connection.', 'tcp' ) );
 				exit(0);
 			}
 			if ( $verified ) {
@@ -407,8 +407,8 @@ wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $h
 		//		Since implementations on this varies, I will leave these checks out of this
 		//		example and just send an email using the getTextReport() method to get all
 		//		of the details about the IPN.
-				$business			= $data['business'];
-				$receiver			= $data['receiver'];
+				$business	= $data['business'];
+				$receiver	= $data['receiver'];
 				if ( strlen( $receiver ) == 0 ) {
 					$receiver = $business;
 				}
@@ -419,13 +419,33 @@ wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', print_r( $_REQUEST, true ) , $h
 					switch ( $_POST['payment_status'] ) {
 						case 'Completed':
 						case 'Canceled_Reversal':
-						case 'Processed': //should check price, but with profile options, we can't know it, could check currency
-							//$comment = 'mc_gross: ' . $_POST['mc_gross'] . ' ' . $_POST['mc_currency'];
-							//$comment .= "\nmc_shipping: " . $_POST['mc_shipping'] . ', tax=' . $_POST['tax'];
-							//if ( isset( $_POST['receipt_id'] ) ) $additional .= "\nPayPal Receipt ID: " . $_POST['receipt_id'];
-							//if ( isset( $_POST['memo'] ) ) $additional .= "\nCustomer comment: " . $_POST['memo'];
-							Orders::editStatus( $order_id, $new_status, $transaction_id, $additional . print_r( $_POST, true ) );
-							$ok = true;
+						case 'Processed':
+							$order = Orders::get( $order_id );
+							if ( $order ) {
+								$data		= tcp_get_payment_plugin_data( get_class( $this ), $instance, $order_id );
+								$amount 	= Orders::getTotal( $order_id );
+								$amount 	= apply_filters( 'tcp_paypal_converted_amount', $amount, $data );
+								$amount 	= number_format( $amount, 2 );
+
+								$currency	= tcp_get_the_currency_iso();
+								$currency	= apply_filters( 'tcp_paypal_get_convert_to', $currency, $data );
+
+//$headers  = 'MIME-Version: 1.0' . "\r\n";
+//$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+//$headers .= "From: Tests <testing@arohadigital.biz>\r\n";
+//wp_mail( 'inigoini@gmail.com', 'tcp_paypal_ipn', sprintf( __( 'Amount or curreny are not equal: %s = %s, %s = %s', tcp ), $amount, $_POST['mc_gross'], $currency, $_POST['mc_currency'] ), $headers );
+
+								if ( $amount == $_POST['mc_gross'] && $currency == $_POST['mc_currency'] ) {
+									Orders::editStatus( $order_id, $new_status, $transaction_id, $additional . print_r( $_POST, true ) );
+									$ok = true;
+								} else {
+									$additional = sprintf( __( 'Amount or curreny are not equal: %s = %s, %s = %s', tcp ), $amount, $_POST['mc_gross'], $currency, $_POST['mc_currency'] );
+									Orders::editStatus( $order_id, Orders::$ORDER_CANCELLED, $transaction_id, $additional );
+									$ok = false;
+								}
+							} else {
+								$ok = false;
+							}
 							break;
 						case 'Refunded':
 						case 'Reversed':

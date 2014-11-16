@@ -38,13 +38,50 @@ class TCPAdvancedCommunication {
 	static $order	 = false;
 
 	static function init() {
-		//add_action( 'init'						, array( __CLASS__, 'register_post_type' ) );
-		add_action( 'tcp_do_delay_email_event', array( __CLASS__, 'do_delay_email_event' ) );
+
+		// Runs the delay method
+		add_action( 'tcp_do_delay_email_event', array( __CLASS__, 'tcp_do_delay_email_event' ), 10 , 3 );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init'				, array( __CLASS__, 'admin_init' ) );
 			add_action( 'tcp_order_edit_metaboxes'	, array( __CLASS__, 'tcp_order_edit_metaboxes' ), 10, 2 );
+
+			// Adds settings (number of days to delay the email) to main settings page
+			add_action( 'tcp_main_settings_page'	, array( __CLASS__, 'tcp_main_settings_page' ) );
+			add_filter( 'tcp_main_settings_action'	, array( __CLASS__, 'tcp_main_settings_action' ) );
 		}
+	}
+
+	/**
+	 * Adds the delayed time setting in the main settings page 
+	 *
+	 * @since TheCartPress 1.3.7.2
+	 */
+	static function tcp_main_settings_page() {
+		$email_delayed_days = thecartpress()->get_setting( 'email_delayed_days', 1 ); ?>
+<tr>
+	<th><?php _e( 'Delayed email time', 'tcp' ); ?></th>
+	<td>
+	<select id="email_delayed_days" name="email_delayed_days">
+		<?php foreach ( array( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30 ) as $days ) : ?>
+		<option value="<?php echo $days; ?>" <?php selected( $days, $email_delayed_days ); ?>><?php echo $days; ?></option>
+		<?php endforeach; ?>
+	</select>
+	<p class="description"><?php _e( 'Delay x days the emails to send from Manage orders "Send delayed email"', 'tcp' ); ?></p>
+	</td>
+</tr>
+<?php }
+
+	/**
+	 * Executes when data is saved, in the main settings page 
+	 *
+	 * @param (array) $settings - TheCartPress settings
+	 * @since TheCartPress 1.3.7.2
+	 */
+	static function tcp_main_settings_action( $settings ) {
+		$email_delayed_days = isset( $_POST['email_delayed_days'] ) ? (int)$_POST['email_delayed_days'] : 1;
+		$settings['email_delayed_days'] = $email_delayed_days;
+		return $settings;
 	}
 
 	static function admin_init() {
@@ -148,10 +185,9 @@ class TCPAdvancedCommunication {
 			<?php tcp_the_feedback_image( 'tcp-save-email-feedback' ); ?>
 			<span id="tcp-saved" style="display: none;"><?php _e( 'Saved...', 'tcp' ); ?></span>
 
-<!--			<input type="button" name="tcp-delay-email" id="tcp-delay-email" value="<?php _e( 'Send delayed email', 'tcp' ); ?>" class="button-primary"/>
+			<input type="button" name="tcp-delay-email" id="tcp-delay-email" value="<?php _e( 'Send delayed email', 'tcp' ); ?>" class="button-primary"/>
 			<?php tcp_the_feedback_image( 'tcp-delay-email-feedback' ); ?>
 			<span id="tcp-delayed" style="display: none;"><?php _e( 'Email saved. It will be sent.', 'tcp' ); ?></span>
--->
 		</p>
 		<script>
 		jQuery( '#tcp-send-email' ).click( function ( event ) {
@@ -216,6 +252,7 @@ class TCPAdvancedCommunication {
 
 		jQuery( '#tcp-delay-email' ).click( function( event ) {
 			var feedback = jQuery( '.tcp-delay-email-feedback' );
+			var tcp_copy_to_me = jQuery( '#tcp_copy_to_me' ).attr( 'checked' );
 			feedback.show();
 			jQuery.ajax( {
 				async	: true,
@@ -224,6 +261,7 @@ class TCPAdvancedCommunication {
 				data	: {
 					action	 : 'tcp_advanced_comm',
 					to_do	 : 'tcp_delay_email',
+					copy_to_me	: tcp_copy_to_me,
 					order_id : '<?php echo $order_id; ?>',
 					subject	 : jQuery( '#tcp_notice_subject' ).val(),
 					text	 : tinymce.activeEditor.getContent(),
@@ -293,30 +331,40 @@ class TCPAdvancedCommunication {
 	}
 
 	static function tcp_delay_email() {
-		$order_id = isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
-		$title	  = isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
-		$post_id  = TCPAdvancedCommunication::tcp_save_email( $title );
-		wp_schedule_single_event( time() + 60, 'tcp_do_delay_email_event', array( $post_id, $order_id ) );
+		$order_id			= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
+		$copy_to_me			= isset( $_REQUEST['copy_to_me'] ) ? $_REQUEST['copy_to_me'] : false;
+		$title				= isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
+		$post_id			= TCPAdvancedCommunication::tcp_save_email( $title );
+		$email_delayed_days	= thecartpress()->get_setting( 'email_delayed_days', 1 );
+		$email_delayed_days = $email_delayed_days * 24 * 60 * 60;
+		wp_schedule_single_event( time() + $email_delayed_days, 'tcp_do_delay_email_event', array( $post_id, $order_id, $copy_to_me ) );
 	}
 
 
-	static function do_delay_email_event( $notice_id, $order_id ) {
+	static function tcp_do_delay_email_event( $notice_id, $order_id, $copy_to_me ) {
+
+		// Get the order to get the email where TO send the email
 		$order		= Orders::get( $order_id );
 		$to			= $order->billing_email;
-		$copy_to_me = false;
-		//global $thecartpress;
+
+		// Get the system email to know the FROM email
 		$from		= tcp_thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
 		$headers	= 'MIME-Version: 1.0' . "\r\n";
 		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
+
+		// If copy To me is activated, sends an email to thecartpress emails settings
 		if ( $copy_to_me ) {
-			//global $thecartpress;
-			$bcc = $thecartpress()->get_setting( 'emails', false );
+			$bcc = thecartpress()->get_setting( 'emails', false );
 			if ( $bcc !== false ) $headers .= 'Bcc: ' . $bcc . "\r\n";
 		}
+
+		// Get the content of the email
 		$post = get_post( $notice_id );
 		$subject = $post->post_title;
 		$text = $post->post_content;
+
+		// Send the email
 		if ( wp_mail( $to, $subject, $text, $headers ) ) {
 			die( 'OK' );
 		} else {

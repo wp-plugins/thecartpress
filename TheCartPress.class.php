@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.7.2
+Version: 1.3.8
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -626,7 +626,7 @@ class TheCartPress {
 			$apply_filters = true;
 		}
 
-		if ( is_search() ) $apply_filters = true;
+		if ( thecartpress()->get_setting( 'search_only_products', false ) && is_search() ) $apply_filters = true;
 		
 		if ( $apply_filters ) {
 
