@@ -121,7 +121,7 @@ class TCPOrdersListTable extends WP_List_Table {
 			$status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : '';
 			$paged = isset( $_REQUEST['paged'] ) ? $_REQUEST['paged'] : 0;
 			$href = TCP_ADMIN_PATH . 'OrderEdit.php&order_id=' . $item->order_id . '&status=' . $status . '&paged=' . $paged;
-			echo '<a href="' . $href . '" title="' . esc_attr( __( 'Edit this order', 'tcp' ) ) . '">';
+			echo '<a href="', $href, '" title="', esc_attr( __( 'Edit this order', 'tcp' ) ), '">';
 		}
 		echo $item->order_id;
 		if ( current_user_can( 'tcp_edit_orders' ) ) echo '</a>';

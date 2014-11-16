@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 4.0
-Stable Tag: 1.3.7.2
+Stable Tag: 1.3.8
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,12 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.8 =
+* Delayed emails in Manage address, using "Send delayed email" button. To set the number of days to delay the email visit Settings panel
+* PayPal: Immediate Action Required – SSL 3.0 vulnerability (Dec 3, 2014)
+* New Setting: Only search products (There are themes that are not compatible with it)
+* Minor bug with tax decimals display in checkout
+
 = 1.3.7.2 =
 * New Romanian translations, thanks to Mihaela (http://ham-bebe.ro/)
 * Paypal bug with ssl version
@@ -317,7 +323,7 @@ This plugin is released under a GPL license.
 = 1.3.6.2 =
 * Removed two deprecated functions
 * New Setting: allow/avoid to send purchase email to customer and merchant (first email)
-* New filters: adding attachments to customer/merchant emails
+* New filters: adding attachments to customer/merchant emails, and more
 * Taxonomy tree: fix bug for dropdown mode with more than one taxonomy widgets on screen
 
 = 1.3.6.1 =

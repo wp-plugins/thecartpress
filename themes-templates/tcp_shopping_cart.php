@@ -57,17 +57,17 @@ if ( $source->see_address() ) : ?>
 					<?php echo $source->get_shipping_firstname(); ?> <?php echo $source->get_shipping_lastname(); ?>
 				</li>
 				<?php if ( strlen( $source->get_shipping_company() ) > 0 || strlen( $source->get_billing_company() ) > 0 ) : ?>
-						<li class="shipping_info">
-							<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>
-								<?php echo $source->get_shipping_company(); ?>
-							<?php endif; ?>&nbsp;
-						</li>
+				<li class="shipping_info">
+					<?php if ( strlen( $source->get_shipping_company() ) > 0 ) : ?>
+						<?php echo $source->get_shipping_company(); ?>
+					<?php endif; ?>&nbsp;
+				</li>
 				<?php endif; ?>
 
 				<?php if ( strlen( $source->get_billing_tax_id_number() ) > 0 ) : ?>
-						<li class="shipping_info">
-							&nbsp;
-						</li>
+				<li class="shipping_info">
+					&nbsp;
+				</li>
 				<?php endif; ?>
 				<li class="shipping_info">
 					<?php echo $source->get_shipping_street(); ?>
