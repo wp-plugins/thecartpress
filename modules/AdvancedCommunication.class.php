@@ -85,8 +85,7 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			feedback.hide();
 		},
 	} );
-	event.stopPropagation();
-	return false;
+	return true;
 } );
 </script>
 <?php }
