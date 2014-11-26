@@ -46,7 +46,7 @@ do_action( 'tcp_admin_order_editor_delete', $order_id ); ?>
 }
 $order = Orders::get( $order_id );
 
-if ( isset( $_REQUEST['send_email'] ) || isset( $_REQUEST['tcp_order_edit_email_return'] ) ) :
+if ( isset( $_REQUEST['send_email'] ) ) : //|| isset( $_REQUEST['tcp_order_edit_email_return'] ) ) :
 	require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
 	if ( $_REQUEST['send_email'] != 'merchant' ) {
 		ActiveCheckout::sendMails( $order_id, '', true );

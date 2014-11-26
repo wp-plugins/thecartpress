@@ -69,7 +69,7 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			to_do		: 'tcp_send_email',
 			order_id	: '<?php echo $order_id; ?>',
 			subject		: jQuery( '#tcp_notice_subject' ).val(),
-			copy_to_me	: tcp_copy_to_me,
+			copy_to_me	: tcp_copy_to_me ? true : false,
 			text		: tinymce.activeEditor.getContent(),
 		},
 		success : function( response ) {
@@ -85,7 +85,8 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			feedback.hide();
 		},
 	} );
-	return true;
+	//event.stopPropagation();
+	return true;//false;
 } );
 </script>
 <?php }
@@ -345,6 +346,9 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			if ( $bcc !== false ) $headers .= 'Bcc: ' . $bcc . "\r\n";
 		}
 		TCPAdvancedCommunication::tcp_save_email( $subject );
+		if ( strlen( $text ) == 0 ) {
+			$text = ' ';
+		}
 		if ( wp_mail( $to, $subject, $text, $headers ) ) {
 			die( 'OK' );
 		} else {
