@@ -118,8 +118,9 @@ class TCPStockManagement {
 					add_filter( 'tcp_order_quick_edit_before'							, array( $this, 'tcp_order_quick_edit_before' ), 10, 3 );
 							
 					$saleable_post_types = tcp_get_saleable_post_types();
-					foreach( $saleable_post_types  as $post_type )
+					foreach( $saleable_post_types  as $post_type ) {
 						add_filter( 'manage_edit-' . $post_type . '_sortable_columns'	, array( $this, 'stock_column_sortable_column' ) );
+					}
 					add_filter( 'request', array( &$this, 'stock_column_orderby' ) );
 				}
 			}
@@ -767,8 +768,7 @@ function show_hide_stock_management() {
 	}
 
 	function tcp_apply_filters_for_saleables( $query ) {
-		global $thecartpress;
-		if ( $thecartpress->get_setting( 'hide_out_of_stock' ) ) {
+		if ( thecartpress()->get_setting( 'hide_out_of_stock' ) ) {
 			$meta_query = $query->get( 'meta_query' );
 			$meta_query[] = array(
 				'key'		=> 'tcp_stock',

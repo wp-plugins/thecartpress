@@ -40,7 +40,7 @@ class TCPAdvancedCommunication {
 	static function init() {
 
 		// Runs the delay method
-		add_action( 'tcp_do_delay_email_event', array( __CLASS__, 'tcp_do_delay_email_event' ), 10 , 3 );
+		add_action( 'tcp_do_delay_email_event'		, array( __CLASS__, 'tcp_do_delay_email_event' ), 10 , 3 );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init'				, array( __CLASS__, 'admin_init' ) );
@@ -49,8 +49,47 @@ class TCPAdvancedCommunication {
 			// Adds settings (number of days to delay the email) to main settings page
 			add_action( 'tcp_main_settings_page'	, array( __CLASS__, 'tcp_main_settings_page' ) );
 			add_filter( 'tcp_main_settings_action'	, array( __CLASS__, 'tcp_main_settings_action' ) );
+
+			add_action( 'tcp_admin_order_submit_area', array( __CLASS__, 'tcp_admin_order_submit_area' ) );
 		}
 	}
+
+	static function tcp_admin_order_submit_area( $order_id ) { ?>
+<script>
+jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) {
+	var feedback = jQuery( '.tcp-send-email-feedback' );
+	var tcp_copy_to_me = jQuery( '#tcp_copy_to_me' ).attr( 'checked' );
+	feedback.show();
+	jQuery.ajax( {
+		async	: true,
+		type	: "POST",
+		url		: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+		data	: {
+			action		: 'tcp_advanced_comm',
+			to_do		: 'tcp_send_email',
+			order_id	: '<?php echo $order_id; ?>',
+			subject		: jQuery( '#tcp_notice_subject' ).val(),
+			copy_to_me	: tcp_copy_to_me,
+			text		: tinymce.activeEditor.getContent(),
+		},
+		success : function( response ) {
+			feedback.hide();
+			if ( response == 'OK' ) {
+				jQuery( '#tcp-sending' ).show( 800).delay( 2000 ).hide( 800 );
+			} else {
+				jQuery( '#tcp-error-sending' ).show( 400 ).delay( 1000 ).hide( 400 );
+			}
+			tcp_load_notices( <?php echo $order_id; ?> );
+		},
+		error : function( response ) {
+			feedback.hide();
+		},
+	} );
+	event.stopPropagation();
+	return false;
+} );
+</script>
+<?php }
 
 	/**
 	 * Adds the delayed time setting in the main settings page 
@@ -337,6 +376,7 @@ class TCPAdvancedCommunication {
 		$post_id			= TCPAdvancedCommunication::tcp_save_email( $title );
 		$email_delayed_days	= thecartpress()->get_setting( 'email_delayed_days', 1 );
 		$email_delayed_days = $email_delayed_days * 24 * 60 * 60;
+
 		wp_schedule_single_event( time() + $email_delayed_days, 'tcp_do_delay_email_event', array( $post_id, $order_id, $copy_to_me ) );
 	}
 
@@ -348,7 +388,8 @@ class TCPAdvancedCommunication {
 		$to			= $order->billing_email;
 
 		// Get the system email to know the FROM email
-		$from		= tcp_thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
+		$from		= thecartpress()->get_setting( 'from_email', 'no-response@thecartpress.com' );
+
 		$headers	= 'MIME-Version: 1.0' . "\r\n";
 		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
