@@ -1114,6 +1114,7 @@ function tcp_the_add_wishlist_button( $post_id ) {
  */
 function tcp_display_custom_values( $post_id = 0, $instance ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
+	$post_id = tcp_get_default_id( $post_id );
 	$defaults = array(
 		'post_type'				 => TCP_PRODUCT_POST_TYPE,
 		'see_label'				 => true,

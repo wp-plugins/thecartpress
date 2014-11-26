@@ -48,8 +48,11 @@ $order = Orders::get( $order_id );
 
 if ( isset( $_REQUEST['send_email'] ) || isset( $_REQUEST['tcp_order_edit_email_return'] ) ) :
 	require_once( TCP_CHECKOUT_FOLDER . 'ActiveCheckout.class.php' );
-	if ( $_REQUEST['send_email'] != 'merchant' ) ActiveCheckout::sendMails( $order_id, '', true );
-	else ActiveCheckout::sendOrderMails( $order_id, '', false, true ); ?>
+	if ( $_REQUEST['send_email'] != 'merchant' ) {
+		ActiveCheckout::sendMails( $order_id, '', true );
+	//} else {
+	//	ActiveCheckout::sendOrderMails( $order_id, '', false, true );
+	} ?>
 	<div id="message" class="updated">
 		<p><?php _e( 'Mail sent', 'tcp' ); ?></p>
 	</div>
@@ -327,7 +330,7 @@ function tcp_order_setup_metabox() {
 		<tr>
 			<th colspan="2" class="_submit" style="text-align: right;">
 				<input name="tcp_order_edit" value="<?php _e( 'Save', 'tcp' ); ?>" type="submit" class="button-primary" />
-				<input name="tcp_order_edit_email_return" value="<?php _e( 'Save, send and return', 'tcp' ); ?>" type="submit" class="button-primary" />
+				<input name="tcp_order_edit_email_return" value="<?php _e( 'Save, send notice and return', 'tcp' ); ?>" type="submit" class="button-primary" />
 				<?php do_action( 'tcp_admin_order_submit_area', $order_id ); ?>
 				<?php if ( tcp_is_order_status_valid_for_deleting( $order->status ) ) : ?>
 					<a href="#" onclick="jQuery('#delete_order').show();return false;" class="delete"><?php _e( 'Delete', 'tcp' ); ?></a>

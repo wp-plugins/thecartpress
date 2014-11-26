@@ -4,8 +4,8 @@ Donate link: http://thecartpress.com/collaborate-to-grow-and-support-thecartpres
 Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerce, products, TheCartPress, CartPress
 License: GPLv2 or later
 Requires at least: 3.3
-Tested up to: 4.0
-Stable Tag: 1.3.8
+Tested up to: 4.0.1
+Stable Tag: 1.3.8.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -300,6 +300,11 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.8.1 =
+* Taxonomies improvements (WP 4.0)
+* WPML integration improvements
+* Order Edit improvemetns (Save, send and return)
+
 = 1.3.8 =
 * Delayed emails in Manage address, using "Send delayed email" button. To set the number of days to delay the email visit Settings panel
 * PayPal: Immediate Action Required – SSL 3.0 vulnerability (Dec 3, 2014)
