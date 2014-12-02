@@ -55,10 +55,15 @@ class TCPAdvancedCommunication {
 	}
 
 	static function tcp_admin_order_submit_area( $order_id ) { ?>
+<span class="tcp_order_edit_email-feedback" style="display: none;">
+	<?php _e( 'Sending...', 'tcp' ); ?>
+	<img src="http://tcp.iniciacomunicacion.com/wp-admin/images/loading.gif"></img>
+</span>
 <script>
 jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) {
-	var feedback = jQuery( '.tcp-send-email-feedback' );
+	var feedback = jQuery( '.tcp_order_edit_email-feedback' );
 	var tcp_copy_to_me = jQuery( '#tcp_copy_to_me' ).attr( 'checked' );
+
 	feedback.show();
 	jQuery.ajax( {
 		async	: true,
@@ -73,7 +78,7 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			text		: tinymce.activeEditor.getContent(),
 		},
 		success : function( response ) {
-			feedback.hide();
+			//feedback.hide();
 			if ( response == 'OK' ) {
 				jQuery( '#tcp-sending' ).show( 800).delay( 2000 ).hide( 800 );
 			} else {
@@ -82,7 +87,7 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 			tcp_load_notices( <?php echo $order_id; ?> );
 		},
 		error : function( response ) {
-			feedback.hide();
+			//feedback.hide( 800 );
 		},
 	} );
 	//event.stopPropagation();
@@ -340,8 +345,7 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 		$headers	= 'MIME-Version: 1.0' . "\r\n";
 		$headers	.= 'Content-type: text/html; charset=utf-8' . "\r\n";
 		$headers	.= 'From: ' . get_bloginfo( 'name' ) . ' <' . $from . ">\r\n";
-		if ( $copy_to_me ) {
-			//global $thecartpress;
+		if ( $copy_to_me === true ) {
 			$bcc = thecartpress()->get_setting( 'emails', false );
 			if ( $bcc !== false ) $headers .= 'Bcc: ' . $bcc . "\r\n";
 		}
