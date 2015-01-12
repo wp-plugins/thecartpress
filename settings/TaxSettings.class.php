@@ -19,7 +19,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPTaxSettings' ) ) {
+if ( ! class_exists( 'TCPTaxSettings' ) ) :
 
 class TCPTaxSettings {
 
@@ -73,7 +73,8 @@ $prices_include_tax			= $thecartpress->get_setting( 'prices_include_tax', false 
 $shipping_cost_include_tax	= $thecartpress->get_setting( 'shipping_cost_include_tax', false );
 $display_prices_with_taxes	= $thecartpress->get_setting( 'display_prices_with_taxes', false );
 $tax_for_shipping			= $thecartpress->get_setting( 'tax_for_shipping', '' );
-$display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shipping_cost_with_taxes', false ); ?>
+$display_shipping_cost_with_taxes = $thecartpress->get_setting( 'display_shipping_cost_with_taxes', false );
+$calculate_tax_by_row		= $thecartpress->get_setting( 'calculate_tax_by_row', false ); ?>
 
 <form method="post" action="">
 <div class="postbox">
@@ -104,7 +105,7 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="tax_based_on"><?php _e( 'Tax based on', 'tcp' ); ?></label>
+		<label for="tax_based_on"><?php _e( 'Tax based on', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="tax_based_on" name="tax_based_on">
@@ -124,7 +125,7 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="display_prices_with_taxes"><?php _e( 'Display prices with taxes', 'tcp' ); ?></label>
+		<label for="display_prices_with_taxes"><?php _e( 'Display prices with taxes', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="display_prices_with_taxes" name="display_prices_with_taxes" value="yes" <?php checked( $display_prices_with_taxes, true ); ?> />
@@ -132,7 +133,7 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="shipping_cost_include_tax"><?php _e( 'Shipping cost include tax', 'tcp' ); ?></label>
+		<label for="shipping_cost_include_tax"><?php _e( 'Shipping cost include tax', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="shipping_cost_include_tax" name="shipping_cost_include_tax" value="yes" <?php checked( $shipping_cost_include_tax, true ); ?> />
@@ -140,7 +141,7 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 </tr>
 <tr valign="top">
 	<th scope="row">
-	<label for="tax_for_shipping"><?php _e( 'Select tax for shipping/payment/other costs', 'tcp' ); ?></label>
+		<label for="tax_for_shipping"><?php _e( 'Select tax for shipping/payment/other costs', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<select id="tax_for_shipping" name="tax_for_shipping">
@@ -153,13 +154,20 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 		</select>
 	</td>
 </tr>
-
 <tr valign="top">
 	<th scope="row">
-	<label for="display_shipping_cost_with_taxes"><?php _e( 'Display shipping prices with taxes', 'tcp' ); ?></label>
+		<label for="display_shipping_cost_with_taxes"><?php _e( 'Display shipping prices with taxes', 'tcp' ); ?></label>
 	</th>
 	<td>
 		<input type="checkbox" id="display_shipping_cost_with_taxes" name="display_shipping_cost_with_taxes" value="yes" <?php checked( $display_shipping_cost_with_taxes, true ); ?> />
+	</td>
+</tr>
+<tr valign="top">
+	<th scope="row">
+		<label for="calculate_tax_by_row"><?php _e( 'Calculate taxes by row (by unit by default)', 'tcp' ); ?></label>
+	</th>
+	<td>
+		<input type="checkbox" id="calculate_tax_by_row" name="calculate_tax_by_row" value="yes" <?php checked( $calculate_tax_by_row ); ?> />
 	</td>
 </tr>
 </tbody>
@@ -184,13 +192,13 @@ $display_shipping_cost_with_taxes	= $thecartpress->get_setting( 'display_shippin
 		$settings['shipping_cost_include_tax']	= isset( $_POST['shipping_cost_include_tax'] ) ? $_POST['shipping_cost_include_tax'] == 'yes' : false;
 		$settings['display_prices_with_taxes']	= isset( $_POST['display_prices_with_taxes'] ) ? $_POST['display_prices_with_taxes'] == 'yes' : false;
 		$settings['tax_for_shipping']			= $_POST['tax_for_shipping'];
-		$settings['display_shipping_cost_with_taxes']	= isset( $_POST['display_shipping_cost_with_taxes'] ) ? $_POST['display_shipping_cost_with_taxes'] == 'yes' : false;
+		$settings['display_shipping_cost_with_taxes'] = isset( $_POST['display_shipping_cost_with_taxes'] ) ? $_POST['display_shipping_cost_with_taxes'] == 'yes' : false;
+		$settings['calculate_tax_by_row']		= isset( $_POST['calculate_tax_by_row'] );
 		update_option( 'tcp_settings', $settings );
 		$this->updated = true;
-		global $thecartpress;
-		$thecartpress->load_settings();
+		thecartpress()->load_settings();
 	}
 }
 
 new TCPTaxSettings();
-} // class_exists check
+endif; // class_exists check

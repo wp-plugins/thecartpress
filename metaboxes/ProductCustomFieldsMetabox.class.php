@@ -286,8 +286,9 @@ foreach( $tabs  as $tab_id => $tab ) { ?>
 		$create_grouped_relation = $tcp_product_parent_id > 0;
 		if ( $create_grouped_relation ) {
 			$rel_type = isset( $_REQUEST['tcp_rel_type'] ) ? $_REQUEST['tcp_rel_type'] : 'GROUPED';
-			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id, $rel_type ) ) 
+			if ( ! RelEntities::exists( $tcp_product_parent_id, $post_id, $rel_type ) ) {
 				RelEntities::insert( $tcp_product_parent_id, $post_id, $rel_type );
+			}
 			$args = array( 'fields' => 'ids' );
 			$terms = wp_get_post_terms( $tcp_product_parent_id, TCP_PRODUCT_CATEGORY, array( 'fields' => 'ids' ) );
 			wp_set_post_terms( $post_id, $terms, TCP_PRODUCT_CATEGORY );
@@ -297,8 +298,11 @@ foreach( $tabs  as $tab_id => $tab ) { ?>
 			//wp_set_post_terms( $post_id, $terms, TCP_SUPPLIER_TAG );
 		}
 		$tax_id = isset( $_POST['tcp_tax_id'] ) ? (int)$_POST['tcp_tax_id'] : 0;
-		if ( $tax_id > 0 ) update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
-		else update_post_meta( $post_id, 'tcp_tax_id', 0 );
+		if ( $tax_id > 0 ) {
+			update_post_meta( $post_id, 'tcp_tax_id',  $tax_id );
+		} else {
+			update_post_meta( $post_id, 'tcp_tax_id', 0 );
+		}
 		update_post_meta( $post_id, 'tcp_hide_buy_button', isset( $_POST['tcp_hide_buy_button'] ) );
 		update_post_meta( $post_id, 'tcp_exclude_range', isset( $_POST['tcp_exclude_range'] ) );
 		if ( isset( $_POST['tcp_type'] ) ) {

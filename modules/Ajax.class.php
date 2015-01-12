@@ -28,7 +28,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'TCPAjax' ) ) {
+if ( ! class_exists( 'TCPAjax' ) ) :
 
 class TCPAjax {
 	function __construct() {
@@ -591,4 +591,4 @@ function tcp_items_in_the_cart_<?php echo $post_id; ?>() {
 }
 
 new TCPAjax();
-} // class_exists check
+endif; // class_exists check

@@ -293,8 +293,9 @@ if ( $source->has_order_details() ) :
 		<?php endif; ?>
 		<?php if ( $source->see_weight() ) : ?>
 			<td class="tcp_cart_weight" style="padding:4px 4px 4px 4px;"><?php echo tcp_number_format( $order_detail->get_weight() ); ?>&nbsp;<?php echo tcp_get_the_unit_weight(); ?></td>
-		<?php endif; ?>
-		<?php $decimals	= tcp_get_decimal_currency();
+		<?php endif;
+		$calculate_tax_by_row = thecartpress()->get_setting( 'calculate_tax_by_row', false );
+		$decimals	= tcp_get_decimal_currency();
 		if ( ! $source->is_discount_applied() ) {
 			$discount = round( $order_detail->get_discount() / $order_detail->get_qty_ordered(), $decimals );
 		} else {
@@ -302,10 +303,18 @@ if ( $source->has_order_details() ) :
 		}
 		$price = $order_detail->get_price() - $discount;
 		$price = round( $price, $decimals );
-		$tax = $price * $order_detail->get_tax() / 100;
-		$tax = round( $tax, $decimals );
-		$total_tax += $tax * $order_detail->get_qty_ordered();
-		$price = round( $price * $order_detail->get_qty_ordered(), $decimals );
+		if ( $calculate_tax_by_row ) {
+			$price = round( $price * $order_detail->get_qty_ordered(), $decimals );
+			$tax = $price * $order_detail->get_tax() / 100;
+			$tax = round( $tax, $decimals );
+			$total_tax += $tax;
+			$price = round( $price, $decimals );
+		} else {
+			$tax = $price * $order_detail->get_tax() / 100;
+			$tax = round( $tax, $decimals );
+			$total_tax += $tax * $order_detail->get_qty_ordered();
+			$price = round( $price * $order_detail->get_qty_ordered(), $decimals );
+		}
 		$price = apply_filters( 'tcp_shopping_cart_row_price', $price, $order_detail );
 		$total += $price; ?>
 		<?php if ( $source->see_tax() ) : ?>

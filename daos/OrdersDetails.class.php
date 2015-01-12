@@ -67,12 +67,17 @@ class OrdersDetails {
 			if ( $row->tax == 0 ) {
 				$price = $row->price * $row->qty_ordered;
 			} else {
-				//$t = $row->price * $row->tax / 100;
-				////$t = ( $row->price + round( $t, $decimals ) ) * $row->qty_ordered;
-				//$t = ( $row->price + $t ) * $row->qty_ordered;
-				//$total += $t;
-				$tax = round( $row->price * $row->tax / 100, $decimals );
-				$price = ( $row->price + $tax ) * $row->qty_ordered;		
+				$calculate_tax_by_row = thecartpress()->get_setting( 'calculate_tax_by_row', false );
+				//$order = Orders::get( $order_id );
+				//if ( $order->created_at < )
+				if ( $calculate_tax_by_row ) {
+					$price = $row->price * $row->qty_ordered;
+					$tax = round( $price * $row->tax / 100, $decimals );
+					$price = $price + $tax;
+				} else {
+					$tax = round( $row->price * $row->tax / 100, $decimals );
+					$price = ( $row->price + $tax ) * $row->qty_ordered;
+				}
 			}
 			$total += apply_filters( 'tcp_orders_details_row_price', $price, $row );
 		}
