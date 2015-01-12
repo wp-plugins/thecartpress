@@ -45,7 +45,7 @@ class CustomValuesWidget extends TCPParentWidget {
 		tcp_display_custom_values( 0, $instance );
 		$html = ob_get_clean();
 		
-		// If exists contents, then output it
+		// If exists content, then output it
 		if ( strlen( $html ) > 0 ) {
 			echo $before_widget;
 			$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : false );

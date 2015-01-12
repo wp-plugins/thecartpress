@@ -211,6 +211,7 @@ class TCPCartBox extends TCPCheckoutBox {
 </thead>
 <tbody>
 <?php $i = 0;
+$calculate_tax_by_row = thecartpress()->get_setting( 'calculate_tax_by_row', false );
 $decimals = tcp_get_decimal_currency();
 $table_amount_without_tax = 0;
 $table_amount_with_tax = 0;
@@ -223,13 +224,18 @@ foreach( $shoppingCart->getItems() as $item ) :
 	}
 	$unit_price_without_tax = tcp_get_the_price_without_tax( $item->getPostId(), $item->getUnitPrice() );
 	$unit_price_without_tax = round( $unit_price_without_tax - $discount, $decimals );
-
-	$tax_amount_per_unit = $unit_price_without_tax * $tax / 100;
-	$tax_amount_per_unit = round( $tax_amount_per_unit, $decimals );
-	$tax_amount = round( $tax_amount_per_unit * $item->getUnits(), $decimals );
-	$line_price_without_tax = round( $unit_price_without_tax * $item->getUnits(), $decimals );
+	if ( $calculate_tax_by_row ) {
+		$tax_amount_per_unit = $unit_price_without_tax * $item->getUnits() * $tax / 100;
+		$tax_amount_per_unit = round( $tax_amount_per_unit, $decimals );
+		$tax_amount = round( $tax_amount_per_unit, $decimals );
+		$line_price_without_tax = round( $unit_price_without_tax * $item->getUnits(), $decimals );
+	} else {
+		$tax_amount_per_unit = $unit_price_without_tax * $tax / 100;
+		$tax_amount_per_unit = round( $tax_amount_per_unit, $decimals );
+		$tax_amount = round( $tax_amount_per_unit * $item->getUnits(), $decimals );
+		$line_price_without_tax = round( $unit_price_without_tax * $item->getUnits(), $decimals );
+	}
 	$line_price_without_tax = apply_filters( 'tcp_checkout_cart_row_price', $line_price_without_tax, $item );
-
 	$line_price_with_tax = $line_price_without_tax + $tax_amount;
 
 	$table_amount_without_tax += $line_price_without_tax;

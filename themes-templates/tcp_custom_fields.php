@@ -16,15 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//$instance:	 array( 'post_type', 'see_label', 'hide_empty_fields', 'see_links', 'selected_custom_fields' )
-//$post_id:		 Current post id (or product id)
-//$field_ids:	 Custom fields to display
-//$other_values: Other "custom fields" that are not custom fields, as 'price', 'sku', 'stock', etc...
+/*
+Used by CustomValuesWidget
+
+Params
+------
+$instance		: array( 'post_type', 'see_label', 'hide_empty_fields', 'see_links', 'selected_custom_fields' )
+$post_id		: Current post id (or product id)
+$field_ids		: Custom fields to display
+$other_values	: Other "custom fields" that are not custom fields, as 'price', 'sku', 'stock', etc...
+*/
 
 ob_start();
 foreach( $field_ids as $id ) {
 	if ( $id == '' ) continue;
-	
+
 	if ( substr( $id, 0, 12 ) == 'custom_field' ) {
 		$field_id = substr( $id, 13 );
 		$value = get_post_meta( $post_id, $field_id, true );
