@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thecartpress\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-20 17:48+0100\n"
+"POT-Creation-Date: 2015-01-20 17:37+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: sensei <sensei@thecartpress.com>\n"
+"Last-Translator: Angelo Giammarresi <info@wocmultimedia.com>\n"
 "Language-Team: Angelo Giammarsesi\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __;_e;_x:2c,1\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: thecartpress\n"
 
 #: thecartpress/TheCartPress.class.php:333
@@ -24,10 +24,8 @@ msgstr ""
 "quando il carrello è vuoto"
 
 #: thecartpress/TheCartPress.class.php:334
-#, fuzzy
 msgid "This notice will be showed at Shopping cart bottom"
-msgstr ""
-"Il presente avviso verrà mostrato nell'indirizzo di fatturazione nel Checkout"
+msgstr "Il presente avviso verrà mostrato in calce nel Carrello Acquisti"
 
 #: thecartpress/TheCartPress.class.php:336
 msgid ""
@@ -3150,7 +3148,7 @@ msgstr "Commento interno"
 
 #: thecartpress/admin/OrderEdit.php:333
 msgid "Save, send notice and return"
-msgstr ""
+msgstr "Salva, invia avviso e ritorna"
 
 #: thecartpress/admin/OrderEdit.php:339
 #: thecartpress/modules/OrdersCustomPostType.class.php:443
@@ -4391,7 +4389,7 @@ msgstr "Visualizza le spese di spedizione tasse incluse"
 
 #: thecartpress/settings/TaxSettings.class.php:167
 msgid "Calculate taxes by row (by unit by default)"
-msgstr ""
+msgstr "Calcolare le tasse per riga (predefinito è per unità)"
 
 #: thecartpress/settings/MainSettings.class.php:30
 #: thecartpress/settings/MainSettings.class.php:37
@@ -5147,9 +5145,8 @@ msgid "Allows to make the checkout process under https."
 msgstr "Permette di effettuare la procedura di pagamento con https."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:121
-#, fuzzy
 msgid "Send Purchase eMail to merchant"
-msgstr "Invia eMail dell'acquisto"
+msgstr "Invia eMail dell'acquisto al venditore"
 
 #: thecartpress/checkout/CheckoutSettings.class.php:125
 msgid ""
@@ -5159,16 +5156,14 @@ msgstr ""
 "pulsante Acquisto."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:130
-#, fuzzy
 msgid "Send Purchase eMail to customers"
-msgstr "Invia eMail dell'acquisto"
+msgstr "Invia eMail dell'acquisto al cliente"
 
 #: thecartpress/checkout/CheckoutSettings.class.php:134
-#, fuzzy
 msgid ""
 "Allows to send an email to Customer when customers click on Purchase button."
 msgstr ""
-"Consente di inviare una e-mail al Venditore quando i clienti cliccano sul "
+"Consente di inviare una e-mail all'Acquirente quando i clienti cliccano sul "
 "pulsante Acquisto."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:143
@@ -5839,7 +5834,6 @@ msgid "cubic metre"
 msgstr "metro cubico"
 
 #: thecartpress/modules/UnitsInBuyButton.class.php:170
-#, fuzzy
 msgid "quadratic meter"
 msgstr "metro quadro"
 
@@ -6061,14 +6055,15 @@ msgid "Sending..."
 msgstr "Inviando..."
 
 #: thecartpress/modules/AdvancedCommunication.class.php:107
-#, fuzzy
 msgid "Delayed email time"
-msgstr "Inviami una e-mail"
+msgstr "Impostazione per l'invio posticipato dell'e-mail"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:114
 msgid ""
 "Delay x days the emails to send from Manage orders \"Send delayed email\""
 msgstr ""
+"Ritardare x giorni l'invio delle email dal Gestore Ordini \"Invio email "
+"posticipato\""
 
 #: thecartpress/modules/AdvancedCommunication.class.php:136
 #: thecartpress/modules/AdvancedCommunication.class.php:216
@@ -6120,13 +6115,12 @@ msgid "Saved..."
 msgstr "Salvato..."
 
 #: thecartpress/modules/AdvancedCommunication.class.php:232
-#, fuzzy
 msgid "Send delayed email"
-msgstr "Invia eMail dell'acquisto"
+msgstr "Invia e-mail posticipate"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:234
 msgid "Email saved. It will be sent."
-msgstr ""
+msgstr "E-mail salvata. Verrà spedita."
 
 #: thecartpress/modules/AdvancedCommunication.class.php:330
 msgid "No Notices/Emails templates."
@@ -6394,7 +6388,6 @@ msgstr ""
 "com\" target=\"_blank\">TheCartPress team</a>"
 
 #: thecartpress/plugins/Remboursement.class.php:51
-#, fuzzy
 msgid "Leave this field to blank (or zero) to use the fixed value"
 msgstr "Lascia questo campo vuoto (o zero) per utilizzare il valore fisso"
 
@@ -6492,9 +6485,8 @@ msgid "Leave it blank if business is equl to receiver."
 msgstr "Lasciare vuoto se business è uguale al destinatario"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:80
-#, fuzzy
 msgid "Cost type"
-msgstr "Tipo di post"
+msgstr "Tipo di Costi"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:87
 #: thecartpress/plugins/PayPal/TCPPayPal.php:96
@@ -6506,7 +6498,7 @@ msgstr "Formato del numero corrente è %s"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:92
 msgid "Cost"
-msgstr ""
+msgstr "Costo"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:101
 msgid "PayPal prompt for shipping address"
@@ -6629,7 +6621,7 @@ msgstr "Nessuna convalida. Errore nella connessione."
 #: thecartpress/plugins/PayPal/TCPPayPal.php:442
 #, php-format
 msgid "Amount or curreny are not equal: %s = %s, %s = %s"
-msgstr ""
+msgstr "Totale o valuta non è uguale a: %s = %s, %s = %s"
 
 #: thecartpress/plugins/PayPal/currencyconverter.class.php:34
 msgid "Currency conversion"
@@ -7543,20 +7535,20 @@ msgid "Post url"
 msgstr "Url dell'articolo"
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:300
-#, fuzzy
 msgid "TheCartPress Search"
-msgstr "Configurazione TheCartPress"
+msgstr "Ricerche in TheCartPress"
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:302
 msgid ""
 "Allows to define what to search. This option could not be compatible with "
 "all themes."
 msgstr ""
+"Consente di definire cosa cercare. Questa opzione potrebbe comunque non "
+"essere compatibile con tutti i temi."
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:311
-#, fuzzy
 msgid "Search only products"
-msgstr "Ricerca prodotti"
+msgstr "Ricerca solo prodotti"
 
 #: thecartpress/appearance/CustomTemplatesList.class.php:41
 msgid "Custom Templates Settings"
