@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-20 17:48+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: sensei <sensei@thecartpress.com>\n"
+"Last-Translator: Sophie <soph@sophie-g.net>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -25,9 +25,8 @@ msgstr ""
 "vide"
 
 #: thecartpress/TheCartPress.class.php:334
-#, fuzzy
 msgid "This notice will be showed at Shopping cart bottom"
-msgstr "Ce message sera affiché à l’adresse de facturation de la commande"
+msgstr "Ce message sera affiché sous le panier"
 
 #: thecartpress/TheCartPress.class.php:336
 msgid ""
@@ -1256,7 +1255,7 @@ msgstr "Permet la création d’une identification buddyPress"
 #: thecartpress/modules/LoginRegister.class.php:308
 #: thecartpress/modules/UnderConstruction.class.php:98
 msgid "Login"
-msgstr "Login"
+msgstr "S’identifier"
 
 #: thecartpress/widgets/CheckoutWidget.class.php:24
 msgid "Allow to view the Checkout info (for debugging purpose)"
@@ -2362,7 +2361,7 @@ msgstr "Modifier cette commande"
 #: thecartpress/admin/OrdersListTable.class.php:129
 #: thecartpress/modules/OrdersCustomPostType.class.php:107
 msgid ", by "
-msgstr ""
+msgstr ", par "
 
 #: thecartpress/admin/OrdersListTable.class.php:144
 msgid "View this item inline"
@@ -2574,7 +2573,7 @@ msgstr "assigner"
 
 #: thecartpress/admin/AssignedCategoriesList.php:22
 msgid "post_id param required!!!"
-msgstr ""
+msgstr "le paramètre post_id est requis !!!"
 
 #: thecartpress/admin/AssignedCategoriesList.php:32
 msgid "The relations has been deleted"
@@ -3101,7 +3100,7 @@ msgstr "E-mail de l’utilisateur"
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:134
 #, php-format
 msgid "%s&lt;%s&gt; (registered)"
-msgstr ""
+msgstr "%s&lt;%s&gt; (enregistré)"
 
 #: thecartpress/admin/OrderEdit.php:265
 #: thecartpress/modules/OrdersCustomPostType.class.php:370
@@ -3146,7 +3145,7 @@ msgstr "Commentaire interne"
 
 #: thecartpress/admin/OrderEdit.php:333
 msgid "Save, send notice and return"
-msgstr ""
+msgstr "Enregistrer, envoyer le message et revenir"
 
 #: thecartpress/admin/OrderEdit.php:339
 #: thecartpress/modules/OrdersCustomPostType.class.php:443
@@ -3316,6 +3315,8 @@ msgid ""
 "Is this taxonomy hierarchical (have descendants) like categories or not "
 "hierarchical like tags"
 msgstr ""
+"Est-ce que cette taxonomie est hiérarchique (a des descendants) comme les "
+"catégories, ou pas hiérarchique comme les mots-clés"
 
 #: thecartpress/admin/TaxonomyEdit.php:289
 msgid ""
@@ -4389,7 +4390,7 @@ msgstr "Afficher prix de livraison avec taxes"
 
 #: thecartpress/settings/TaxSettings.class.php:167
 msgid "Calculate taxes by row (by unit by default)"
-msgstr ""
+msgstr "Calcule les taxes par rang (par unité par défaut)"
 
 #: thecartpress/settings/MainSettings.class.php:30
 #: thecartpress/settings/MainSettings.class.php:37
@@ -4844,9 +4845,8 @@ msgid "Display Total column"
 msgstr "Afficher la colonne de total"
 
 #: thecartpress/checkout/TCPCartBox.class.php:150
-#, fuzzy
 msgid "Display Notice"
-msgstr "Afficher le prix"
+msgstr "Afficher le message"
 
 #: thecartpress/checkout/TCPCartBox.class.php:196
 #: thecartpress/modules/StockManagement.class.php:398
@@ -4901,9 +4901,8 @@ msgid "Free shipping"
 msgstr "Livraison gratuite"
 
 #: thecartpress/checkout/TCPCartBox.class.php:406
-#, fuzzy
 msgid "Accept conditions"
-msgstr "Accepter les conditions :"
+msgstr "Accepter les conditions"
 
 #: thecartpress/checkout/register_and_login.php:29
 #: thecartpress/modules/LoginRegister.class.php:226
@@ -4961,7 +4960,7 @@ msgstr "Rester connecté"
 #: thecartpress/templates/tcp_general_template.php:691
 #: thecartpress/templates/tcp_general_template.php:783
 msgid "Log In"
-msgstr "Login"
+msgstr "Identification"
 
 #: thecartpress/checkout/TCPSigninBox.class.php:135
 msgid "Checkout as registered"
@@ -5148,9 +5147,8 @@ msgid "Allows to make the checkout process under https."
 msgstr "Permet de passer le processus de commande en https."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:121
-#, fuzzy
 msgid "Send Purchase eMail to merchant"
-msgstr "Envoyez un e-mail d’achat"
+msgstr "Envoyez un e-mail d’achat au vendeur"
 
 #: thecartpress/checkout/CheckoutSettings.class.php:125
 msgid ""
@@ -5160,16 +5158,14 @@ msgstr ""
 "bouton Acheter."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:130
-#, fuzzy
 msgid "Send Purchase eMail to customers"
-msgstr "Envoyez un e-mail d’achat"
+msgstr "Envoyez un e-mail d’achat aux clients"
 
 #: thecartpress/checkout/CheckoutSettings.class.php:134
-#, fuzzy
 msgid ""
 "Allows to send an email to Customer when customers click on Purchase button."
 msgstr ""
-"Permet d’envoyer un e-mail au vendeur quand les clients cliquent sur le "
+"Permet d’envoyer un e-mail au Client quand les clients cliquent sur le "
 "bouton Acheter."
 
 #: thecartpress/checkout/CheckoutSettings.class.php:143
@@ -5325,39 +5321,32 @@ msgid "Text to be shown on the button linking to the external product."
 msgstr "Texte à afficher dans le bouton de lien vers le produit externe."
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:37
-#, fuzzy
 msgid "Add New Order"
-msgstr "Ajouter nouveau"
+msgstr "Ajouter une nouvelle commande"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:38
-#, fuzzy
 msgid "Edit Order"
-msgstr "Modifier cette commande"
+msgstr "Modifier la commande"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:39
-#, fuzzy
 msgid "New Order"
-msgstr "Commande"
+msgstr "Nouvelle commande"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:40
-#, fuzzy
 msgid "All Orders"
-msgstr "Commandes"
+msgstr "Toutes les commandes"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:41
-#, fuzzy
 msgid "View Order"
-msgstr "Commande"
+msgstr "Afficher la commande"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:43
-#, fuzzy
 msgid "No orders found"
-msgstr "Aucune commande trouvée."
+msgstr "Aucune commande trouvée"
 
 #: thecartpress/modules/OrdersCustomPostType.class.php:44
-#, fuzzy
 msgid "No orders found in Trash"
-msgstr "Aucun message trouvé dans la corbeille"
+msgstr "Aucune commande trouvée dans la corbeille"
 
 #: thecartpress/modules/CustomStyles.class.php:42
 #: thecartpress/modules/CustomStyles.class.php:76
@@ -5836,11 +5825,11 @@ msgstr ""
 
 #: thecartpress/modules/UnitsInBuyButton.class.php:168
 msgid "square meter"
-msgstr ""
+msgstr "mètre carré"
 
 #: thecartpress/modules/UnitsInBuyButton.class.php:169
 msgid "cubic metre"
-msgstr ""
+msgstr "mètre cube"
 
 #: thecartpress/modules/UnitsInBuyButton.class.php:170
 msgid "quadratic meter"
@@ -6062,14 +6051,15 @@ msgid "Sending..."
 msgstr "Envoi en cours…"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:107
-#, fuzzy
 msgid "Delayed email time"
-msgstr "M’envoyer un e-mail"
+msgstr "Temps de délai avant envoi d’email"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:114
 msgid ""
 "Delay x days the emails to send from Manage orders \"Send delayed email\""
 msgstr ""
+"Délai de x jour pour envoyer des mails de la Gestion de commande \"Envoyez "
+"un e-mail plus tard\""
 
 #: thecartpress/modules/AdvancedCommunication.class.php:136
 #: thecartpress/modules/AdvancedCommunication.class.php:216
@@ -6077,10 +6067,8 @@ msgid "Subject"
 msgstr "Sujet"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:136
-#, fuzzy
 msgid "This field will be used if the notice is used as email"
-msgstr ""
-"Ce message sera affiché si le processus de commande se termine correctement"
+msgstr "Ce champ sera utilisé si le message est utilisé comme email"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:167
 msgid "Notice Manager"
@@ -6123,13 +6111,12 @@ msgid "Saved..."
 msgstr "Enregistré…"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:232
-#, fuzzy
 msgid "Send delayed email"
-msgstr "Envoyez un e-mail d’achat"
+msgstr "Envoyez un e-mail plus tard"
 
 #: thecartpress/modules/AdvancedCommunication.class.php:234
 msgid "Email saved. It will be sent."
-msgstr ""
+msgstr "Email enregistré. Il sera envoyé."
 
 #: thecartpress/modules/AdvancedCommunication.class.php:330
 msgid "No Notices/Emails templates."
@@ -6404,7 +6391,6 @@ msgstr ""
 "target=\"_blank\">L’équipe TheCartPress</a>"
 
 #: thecartpress/plugins/Remboursement.class.php:51
-#, fuzzy
 msgid "Leave this field to blank (or zero) to use the fixed value"
 msgstr "Laisser ce champ vide (ou à zéro) pour utiliser la valeur fixe"
 
@@ -6494,18 +6480,16 @@ msgid "PayPal eMail"
 msgstr "E-mail PayPal"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:71
-#, fuzzy
 msgid "Primary PayPal email"
-msgstr "E-mail PayPal"
+msgstr "E-mail PayPal primaire"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:75
 msgid "Leave it blank if business is equl to receiver."
 msgstr "Laissez vide si la société est la même que le destinataire."
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:80
-#, fuzzy
 msgid "Cost type"
-msgstr "Type d’article"
+msgstr "Type de coût"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:87
 #: thecartpress/plugins/PayPal/TCPPayPal.php:96
@@ -6517,7 +6501,7 @@ msgstr "Le format de numéro actuel est %s"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:92
 msgid "Cost"
-msgstr ""
+msgstr "Coût"
 
 #: thecartpress/plugins/PayPal/TCPPayPal.php:101
 msgid "PayPal prompt for shipping address"
@@ -6639,7 +6623,7 @@ msgstr "Pas de validation. Erreur de connexion."
 #: thecartpress/plugins/PayPal/TCPPayPal.php:442
 #, php-format
 msgid "Amount or curreny are not equal: %s = %s, %s = %s"
-msgstr ""
+msgstr "Le montant ou la monnaie ne sont pas égaux : %s = %s, %s = %s"
 
 #: thecartpress/plugins/PayPal/currencyconverter.class.php:34
 msgid "Currency conversion"
@@ -7518,9 +7502,8 @@ msgstr ""
 "groupés."
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:256
-#, fuzzy
 msgid "Product image size"
-msgstr "Base produit"
+msgstr "Taille de l’image produit"
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:269
 msgid "Image align in content"
@@ -7551,9 +7534,8 @@ msgid "Post url"
 msgstr "Url article"
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:300
-#, fuzzy
 msgid "TheCartPress Search"
-msgstr "Fonctionnalités de TheCartPress"
+msgstr "Recherche de TheCartPress"
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:302
 msgid ""
@@ -7562,9 +7544,8 @@ msgid ""
 msgstr ""
 
 #: thecartpress/appearance/ThemeCompatibilitySettings.class.php:311
-#, fuzzy
 msgid "Search only products"
-msgstr "Recherche produits"
+msgstr "Ne rechercher que des produits"
 
 #: thecartpress/appearance/CustomTemplatesList.class.php:41
 msgid "Custom Templates Settings"
@@ -7822,7 +7803,7 @@ msgstr "Avis d’expédition"
 #: thecartpress/themes-templates/tcp_shopping_cart.php:238
 #, php-format
 msgid "(-%s)"
-msgstr ""
+msgstr "(-%s)"
 
 #: thecartpress/themes-templates/tcp_shopping_cart_email.php:335
 #: thecartpress/themes-templates/tcp_shopping_cart.php:307
@@ -7874,7 +7855,7 @@ msgstr "Afficher/cacher les prix par quantités"
 #: thecartpress/themes-templates/tcp_author_profile.php:37
 #, php-format
 msgid "Last login: %s"
-msgstr "Dernier login : %s"
+msgstr "Dernière identification : %s"
 
 #: thecartpress/themes-templates/tcp_author_profile.php:50
 #: thecartpress/themes-templates/tcp_author_profile.php:52

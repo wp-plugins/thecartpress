@@ -662,21 +662,25 @@ function tcp_attribute_list( $taxonomies = false ) {
 }
 
 /**
- * 'echo'			=> true,
- * 'redirect'		=> get_permalink(),
- * 'form_id'		=> 'loginform',
- * 'label_username'	=> __( 'Username', 'tcp' ),
- * 'label_password'	=> __( 'Password', 'tcp' ),
- * 'label_remember'	=> __( 'Remember Me', 'tcp' ),
- * 'label_log_in'	=> __( 'Log In', 'tcp' ),
- * 'id_username'	=> 'user_login',
- * 'id_password'	=> 'user_pass',
- * 'id_remember'	=> 'rememberme',
- * 'id_submit'		=> 'wp-submit',
- * 'remember'		=> true,
- * 'value_username'	=> '',
- * 'value_remember'	=> false,
- * 'see_register'	=> true,
+ * Outputs a login form
+ *
+ * @param $args, array with all parameters:
+ *<dl>
+ * <dt>echo</dt><dd>true</dd>
+ * <dt>redirect</dt><dd>get_permalink()</dd>
+ * <dt>form_id</dt><dd>loginform"</dd>
+ * <dt>label_username</dt><dd>__( 'Username"</dd>"
+ * <dt>label_password</dt><dd>"Password"</dd>
+ * <dt>label_remember</dt><dd>"Remember Me'</dd>
+ * <dt>label_log_in</dt><dd>"Log In"</dd>
+ * <dt>id_username</dt><dd>"user_login"</dd>
+ * <dt>id_password</dt><dd>"user_pass"</dd>
+ * <dt>id_remember</dt><dd>"rememberme"</dd>
+ * <dt>id_submit</dt><dd>"wp-submit"</dd>
+ * <dt>remember</dt><dd>true</dd>
+ * <dt>value_username</dt><dd>""</dd>
+ * <dt>value_remember</dt><dd>false</dd>
+ * <dt>see_register</dt><dd>if true (by default) the register link will be displayed</dd>
  */
 function tcp_login_form( $args = array() ) {
 	$defaults = array(
@@ -766,6 +770,27 @@ function tcp_login_form( $args = array() ) {
 	else return $out;
 }
 
+/**
+ * Outputs a register form.
+ *
+ * To display a register form remember to activate this settings from WordPress general settings.
+ *
+ * @param $args, array with all parameters:
+ *<dl>
+ *<dt>echo</dt><dd>If true (by default) the register form is displayed</dd>
+ *<dt>redirect</dt><dd>URL to redirect after registration</dd> 
+ *<dt>role</dt><dd>Role to set to the new user</dd>
+ *<dt>locked</dt><dd>if true (false by default) the user will be locjed until admin unlock it</dd>
+ *<dt>login</dt><dd>if true (by default) the user will need to log in after registration. If false the user will be logged ig after registration.</dd>
+ *<dt>form_id</dt><dd>"loginform" by default, allows to set an id to the form</dd>
+ *<dt>label_username</dt><dd>"Username" by default</dd>
+ *<dt>label_password</dt><dd>"Password" by default</dd>
+ *<dt>label_repeat_password</dt><dd>"Repeat password" by default</dd>
+ *<dt>label_remember</dt><dd>"Remember Me" by default</dd>
+ *<dt>label_log_in</dt><dd>"Log In" by default</dd>
+ *</dl>
+ *@since 1.2.0
+ */
 function tcp_register_form( $args = array() ) {
 	$defaults = array(
 		'echo'			=> true,

@@ -52,6 +52,12 @@ class OrdersDetails {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_detail_id = %d', $order_details_id ) );
 	}
 
+	/**
+	 * Returns the list of details of a given order
+	 *
+	 * @param int $order_id, given order identifier
+	 * @since 1.3.2
+	 */
 	static function getDetails( $order_id ) {
 		global $wpdb;
 		$sql = $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id );
@@ -59,7 +65,16 @@ class OrdersDetails {
 		return $wpdb->get_results( $sql );
 	}
 
-	static function getTotal( $order_id, $total = 0 ) {
+
+	/**
+	 * Returns the total amount of a given order
+	 *
+	 * @param int $order_id, given order identifier
+	 * @param $initial, initial amount to add to the total
+	 * @since 1.3.2
+	 */
+	static function getTotal( $order_id, $initial = 0 ) {
+		$total = $initial;
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
 		$res =  $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->prefix . 'tcp_orders_details where order_id = %d', $order_id ) );
@@ -100,10 +115,17 @@ class OrdersDetails {
 		return $weight;
 	}
 
+	/**
+	 * Returns the detailed totals of a given order.
+	 *
+	 * @param $order_id
+	 * @return array( total amount, total tax amount)
+	 * @since 1.3.2
+	 */
 	static function getTotalDetailed( $order_id ) {
 		$detailed = array(
 			'amount'	=> 0,
-			'tax'		=>0,
+			'tax'		=> 0,
 		);
 		$decimals = tcp_get_decimal_currency();
 		global $wpdb;
@@ -189,10 +211,17 @@ class OrdersDetails {
 		return $wpdb->get_results( $sql );
 	}
 
+	/**
+	 * Returns the total units sold of a given product
+	 *
+	 * @param $post_id product identifier
+	 * @return the total units
+	 */
 	static function get_product_total_sales( $post_id ) {
 		global $wpdb;
 		$sql = 'select sum( od.qty_ordered ) from ' . $wpdb->prefix . 'tcp_orders_details od left join ' . $wpdb->prefix . 'tcp_orders o on od.order_id = o.order_id';
-		$sql .= $wpdb->prepare( ' and o.status = %s', Orders::$ORDER_COMPLETED);
+		$sql .= $wpdb->prepare( ' and (o.status = %s', Orders::$ORDER_COMPLETED);
+		$sql .= $wpdb->prepare( ' or o.status = %s)', Orders::$ORDER_PROCESSING);
 		$sql .= $wpdb->prepare( ' where od.post_id = %d', $post_id);
 		return $wpdb->get_var( $sql );	
 	}

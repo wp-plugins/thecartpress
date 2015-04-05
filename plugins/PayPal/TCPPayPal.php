@@ -84,7 +84,6 @@ class TCPPayPal extends TCP_Plugin {
 			<option value="per" <?php selected( isset( $data['cost_type'] ) ? $data['cost_type'] == 'per' : true ); ?>><?php _e( 'Percentage', 'tcp' ); ?></option>
 			<option value="fix" <?php selected( isset( $data['cost_type'] ) ? $data['cost_type'] == 'fix' : false ); ?>><?php _e( 'Amount', 'tcp' ); ?></option>
 		</select>
-		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p>
 	</td>
 </tr>
 <tr valign="top">
@@ -92,7 +91,7 @@ class TCPPayPal extends TCP_Plugin {
 		<label for="cost"><?php _e( 'Cost', 'tcp' );?>:</label>
 	</th>
 	<td>
-		<input type="text" id="cost" name="cost" size="10" maxlength="9" value="<?php echo isset( $data['cost'] ) ? $data['cost'] : ''; ?>" /><?php tcp_the_currency(); ?>
+		<input type="text" id="cost" name="cost" size="10" maxlength="9" value="<?php echo isset( $data['cost'] ) ? $data['cost'] : ''; ?>" /><?php tcp_the_currency(); ?>/%
 		<p class="description"><?php printf( __( 'Current number format is %s', 'tcp' ), tcp_get_number_format_example( 9999.99, false ) ); ?></p>
 	</td>
 </tr>
@@ -224,7 +223,7 @@ class TCPPayPal extends TCP_Plugin {
 				$cost = $shoppingCart->getTotal() * $cost / 100 ;
 			}
 		}
-		return $cost;
+		return apply_filters( 'tcp_paypal_cost', $cost, $data, $shoppingCart );
 	}
 
 	function showPayForm( $instance, $shippingCountry, $shoppingCart, $order_id = 0 ) {

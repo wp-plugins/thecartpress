@@ -299,7 +299,9 @@ function tcp_get_min_max_price( $post_id = 0 ) {
  * @since 1.1.0
  */
 function tcp_get_min_price( $post_id = 0 ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
+	if ( $post_id == 0 ) {
+		$post_id = get_the_ID();
+	}
 	$min_max = tcp_get_min_max_price( $post_id );
 	if ( is_array( $min_max ) && count( $min_max ) == 2 ) {
 		return $min_max[0];
@@ -313,7 +315,9 @@ function tcp_get_min_price( $post_id = 0 ) {
  * @since 1.1.0
  */
 function tcp_get_max_price( $post_id = 0 ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
+	if ( $post_id == 0 ) {
+		$post_id = get_the_ID();
+	}
 	$min_max = tcp_get_min_max_price( $post_id );
 	if ( is_array( $min_max ) && count( $min_max ) == 2 ) {
 		return $min_max[1];
@@ -403,8 +407,13 @@ function tcp_get_the_tax_type( $post_id = 0 ) {
 	}
 }
 
+//
+// Utils
+//
+
 /**
  * Returns the default country
+ *
  * @since 1.2.9
  */
 function tcp_get_default_country() {
@@ -506,6 +515,7 @@ function tcp_get_the_shipping_cost_without_tax( $cost ) {
 
 /**
  * Returns the tax (float) to apply to the shipping/payment/other costs
+ *
  * @since 1.0.9
  */
 function tcp_get_the_shipping_tax() {
@@ -522,6 +532,7 @@ function tcp_get_the_shipping_tax() {
 
 /**
  * Returns the default tax (float) to apply to the shipping/payment/other costs
+ *
  * @since 1.1.8
  */
 function tcp_get_the_shipping_default_tax() {
@@ -537,6 +548,7 @@ function tcp_get_the_shipping_default_tax() {
 }
 /**
  * Returns the tax id to apply to the shipping/payment/other costs
+ *
  * @since 1.0.9
  */
 function tcp_get_the_shipping_tax_id() {

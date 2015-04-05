@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.8.2
+Version: 1.3.9
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -315,6 +315,11 @@ class TheCartPress {
 		return false;
 	}
 
+	/**
+	 * Configures TheCartPress at admin init: adding scripts, notices
+	 *
+	 * @uses wp_register_script, plugins_url, wp_enqueue_script, wp_enqueue_style,tcp_add_template_class
+	 */
 	function admin_init() {
 		//TheCartPress javascript for the backend
 		wp_register_script( 'tcp_scripts', plugins_url( 'js/tcp_admin_scripts.js', __FILE__ ) );
@@ -333,7 +338,15 @@ class TheCartPress {
 			tcp_add_template_class( 'tcp_shopping_cart_empty'		, __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
 			tcp_add_template_class( 'tcp_shopping_cart_bottom'		, __( 'This notice will be showed at Shopping cart bottom', 'tcp' ) );
 
-			tcp_add_template_class( 'tcp_checkout_email'			, __( 'This notice will be added in the email to the customer when the Checkout process ends', 'tcp' )  );
+			// Adds tcp_checkout_email, it will be used if not tempale is set to a status.
+			tcp_add_template_class( 'tcp_checkout_email'			, __( 'This notice will be added in the email to the customer when the Checkout process ends', 'tcp' ) );
+
+			// Adds notices for each status
+			$order_status_list = tcp_get_order_status();
+			foreach ( $order_status_list as $order_status ) {
+				tcp_add_template_class( 'tcp_checkout_email-' . $order_status['name'], sprintf( __( 'This notice will be added in the email to the customer when the Checkout process ends, if status is %s', 'tcp' ), $order_status['label'] ) );
+			}
+
 			tcp_add_template_class( 'tcp_checkout_notice'			, __( 'This notice will be showed in the Checkout Notice Box into the checkout process', 'tcp' ) );
 			tcp_add_template_class( 'tcp_checkout_end'				, __( 'This notice will be showed if the checkout process ends right', 'tcp' ) );
 			tcp_add_template_class( 'tcp_checkout_end_ko'			, __( 'This notice will be showed if the checkout process ends wrong: Declined payments, etc.', 'tcp' ) );

@@ -160,6 +160,7 @@ class TCPCountries {
 			 (\'DK\',\'DENMARK\',\'DENMARK\',\'DINAMARCA\',\'DÄNEMARK\',\'DANEMARK\',\'DNK\',208,1,0,1),
 			 (\'DM\',\'DOMINICA\',\'DOMINICA\',\'DOMINICA\',\'DOMINICA\',\'DOMINIQUE\',\'DMA\',212,0,0,0),
 			 (\'DO\',\'DOMINICAN REPUBLIC\',\'DOMINICAN REPUBLIC\',\'REPÚBLICA DOMINICANA\',\'DOMINIKANISCHE REPUBLIK\',\'DOMINICAINE, RÉPUBLIQUE\',\'DOM\',214,0,0,0),
+			 (\'DZ\',\'Algeria\',\'Algeria\',\'Argelia\',\'Algeria\',\'Algérie\',\'DZA\',012,0,0,0),
 			 (\'EC\',\'ECUADOR\',\'ECUADOR\',\'ECUADOR\',\'ECUADOR\',\'ÉQUATEUR\',\'ECU\',218,0,0,0),
 			 (\'EE\',\'ESTONIA\',\'ESTONIA\',\'ESTONIA\',\'ESTLAND\',\'ESTONIE\',\'EST\',233,0,0,0),
 			 (\'EG\',\'EGYPT\',\'EGYPT\',\'EGIPTO\',\'ÄGYPTEN\',\'ÉGYPTE\',\'EGY\',818,0,0,0),

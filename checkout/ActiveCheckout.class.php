@@ -134,7 +134,13 @@ class ActiveCheckout {//shortcode
 	}
 
 	/**
+	 * Sends Order emails, after orders creation
+	 *
 	 * @since 1.2.3
+	 * @param $order_id, order identifier
+	 * @param $additional_msg, message to add
+	 * @param $for_customer, if true the email will be sent to order customer
+	 * @param $for_merchant, if true the email will be sent to the merchant
 	 */
 	static function sendOrderMails( $order_id, $additional_msg = '', $for_customer = true, $for_merchant = true ) {
 		require_once( TCP_CLASSES_FOLDER .'OrderPage.class.php' );
@@ -155,7 +161,15 @@ class ActiveCheckout {//shortcode
 			$thecartpress->getShoppingCart()->setOrderId( $order_id );
 			$message  = TCPPrintOrder::printOrder( $order_id );
 			$thecartpress->getShoppingCart()->setOrderId( $old_value );
-			$message .= tcp_do_template( 'tcp_checkout_email', false );
+
+			// if exist a template for the status, uses it, if not uses the default notice 
+			$template_message = tcp_do_template( 'tcp_checkout_email-' . $order->status, false );
+			if ( strlen( $template_message ) ) {
+				$message .= $template_message;
+			} else {
+				$message .= tcp_do_template( 'tcp_checkout_email', false );
+			}
+			
 			$message .= $additional_msg . "\n";
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";

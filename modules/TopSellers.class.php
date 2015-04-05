@@ -25,6 +25,9 @@
  * along with This program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 class TCPTopSellers {
 
 	function __construct() {
@@ -59,18 +62,33 @@ class TCPTopSellers {
 
 new TCPTopSellers();
 
+/**
+ * Returns the total units sold of a given product
+ *
+ * @param $post_id, given product identifier. If 0 the current post id will be used.
+ * @uses get_the_ID, tcp_get_default_id, OrdersDetails::get_product_total_sales, apply_filters, called 'tcp_get_the_total_sales'.
+ */
 function tcp_get_the_total_sales( $post_id = 0 ) {
-	if ( $post_id == 0 ) $post_id = get_the_ID();
+	if ( $post_id == 0 ) {
+		$post_id = get_the_ID();
+	}
 	$post_id = tcp_get_default_id( $post_id );
 	require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
 	$total_sales = OrdersDetails::get_product_total_sales( $post_id );
 	return apply_filters( 'tcp_get_the_total_sales', $total_sales, $post_id );
-	//return (int)get_post_meta( $post_id, 'tcp_total_sales', true );
 }
 
+/**
+ * Outputs the total units sold of a given product
+ *
+ * @param $post_id, given product identifier. If 0 the current post id will be used.
+ * @uses tcp_get_total_sales
+ */
 function tcp_the_total_sales( $post_id = 0, $echo = true ) {
 	$sales = tcp_get_total_sales( $post_id );
-	if ( $echo ) echo $sales;
-	else return $sales;
+	if ( $echo ) {
+		echo $sales;
+	} else {
+		return $sales;
+	}
 }
-?>

@@ -22,25 +22,8 @@ if ( ! class_exists( 'TCPUpdateVersion' ) ) :
 
 class TCPUpdateVersion {
 
-	/*function tcp_update_admin_notices() { ?>
-<div id="message" class="updated">
-	<div class="squeezer">
-		<h4><?php _e( 'Congratulations, you have installed the new version of TheCartPress.', 'tcp' ); ?></h4>
-		<p><?php _e( 'This new version requires you have to update the Checkout Editor. It now implements new capabilities, but some of them need to be activated.','tcp' ); ?></p>
-		<p><?php printf( __( 'Please, visit <a href="%s">Checkout editor</a> to "Restore Default Values". Then you could edit all the steps and theirs settings.','tcp' ), admin_url( 'admin.php?page=checkout_editor_settings' ) ); ?></p>
-		<p class="submit"><a class="skip button-primary" href="<?php echo add_query_arg( 'tcp_hide_installed_notice_1', 'true' ); ?>"><?php _e( 'Hide this notice', 'tcp' ); ?></a></p>
-	</div>
-</div><?php
-	}*/
-
 	function update( $thecartpress ) {
 		global $wpdb;
-		/*if ( isset( $_GET['tcp_hide_installed_notice_1'] ) ) {
-			update_option( '_tcp_hide_installed_notice_1', true );
-		} else {
-			$tcp_hide_installed_notice = get_option( '_tcp_hide_installed_notice_1', false );
-			if ( ! $tcp_hide_installed_notice ) add_action( 'admin_notices', array( $this, 'tcp_update_admin_notices' ) );
-		}*/
 
 		$version = (float)get_option( 'tcp_version' );
 		if ( $version < 118 ) {
@@ -194,7 +177,15 @@ class TCPUpdateVersion {
 			}
 			update_option( 'tcp_version', 135 );
 		}
-		update_option( 'tcp_version', 136 );
+		if ( $version < 139 ) {
+			$sql = 'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'tcp_countries where iso = \'DZ\'';
+			$count = $wpdb->get_col( $sql );
+			if ( is_array( $count ) && $count[0] == 0 ) {
+				$sql = 'INSERT INTO `' . $wpdb->prefix . 'tcp_countries` VALUES  (\'DZ\',\'Algeria\',\'Algeria\',\'Argelia\',\'Algeria\',\'Algérie\',\'DZA\',012,0,0,0);';
+				$wpdb->query( $sql );
+			}
+		}
+		update_option( 'tcp_version', 139 );
 	}
 }
 endif; // class_exists check
