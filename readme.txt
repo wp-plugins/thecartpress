@@ -300,8 +300,8 @@ This plugin is released under a GPL license.
 == Changelog ==
 = 1.3.9 =
 * New Notices (templates) to adding to emails for orders status (tcp_checkout_email-PENDING, tcp_checkout_email-PROCESSING, etc.)
-* French translation, thanks to 
-* Chezk translation, thanks to 
+* French translation, thanks to Sophie (https://www.sophie-g.net/)
+* Chezk translation
 
 = 1.3.8.2 =
 * Calculate tax by row
