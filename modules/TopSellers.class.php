@@ -36,7 +36,7 @@ class TCPTopSellers {
 		add_shortcode( 'tcp_total_sales'						, array( $this, 'tcp_total_sales' ) );
 
 		// Custom values widget
-		add_filter( 'tcp_custom_list_widget_args'				, array( $this, 'tcp_custom_list_widget_args' ) );
+		//add_filter( 'tcp_custom_list_widget_args'				, array( $this, 'tcp_custom_list_widget_args' ) );
 		add_filter( 'tcp_custom_values_get_other_values'		, array( $this, 'tcp_custom_values_get_other_values' ) );
 	}
 

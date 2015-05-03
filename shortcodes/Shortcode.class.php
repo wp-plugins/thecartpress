@@ -32,14 +32,12 @@ if ( ! class_exists( 'TCPShortcode' ) ) :
 
 class TCPShortcode {
 
-	function __construct() {
-		add_shortcode( 'tcp_list', array( $this, 'show' ) );
-	}
+	private function __construct() {}
 
-	function show( $atts ) {
+	static function show( $atts ) {
 		extract( shortcode_atts( array( 'id' => '' ), $atts ) );
 		$shortcodes_data = get_option( 'tcp_shortcodes_data' );
-		foreach( $shortcodes_data as $shortcode_data )
+		foreach( $shortcodes_data as $shortcode_data ) {
 			if ( $shortcode_data['id'] == $id ) {
 				$customPostTypeListWidget = new CustomPostTypeListWidget();
 				$args = array(
@@ -57,10 +55,11 @@ class TCPShortcode {
 				$customPostTypeListWidget->widget( $args, $shortcode_data );
 				return ob_get_clean();
 			}
+		}
 		return sprintf( __( 'Mal formed shortcode: %s', 'tcp' ), $id );
 	}
 }
 
-new TCPShortcode();
+add_shortcode( 'tcp_list', array( 'TCPShortcode', 'show' ) );
 
 endif; // class_exists check
