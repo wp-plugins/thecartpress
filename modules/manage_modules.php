@@ -54,6 +54,7 @@ require_once( 'FilterNavigation.class.php' );
 require_once( 'GroupedProducts.class.php' );
 require_once( 'LastLogin.class.php' );
 require_once( 'LoginRegister.class.php' );
+require_once( 'Lostpasswordpage.class.php' );
 
 //require_once( 'Reports.class.php' );
 

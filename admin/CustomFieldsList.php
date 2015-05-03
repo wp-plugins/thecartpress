@@ -30,55 +30,63 @@ function tcp_create_id( $post_type, $label ) {
 }
 
 if ( isset( $_REQUEST['post_type'] ) ) {
-	$post_type =  $_REQUEST['post_type'];
+	$post_type =  sanitize_text_field( $_REQUEST['post_type'] );
 } else {
 	$post_type = post_type_exists( 'tcp_product' ) ? 'tcp_product' : 'post';
 }
 
 if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
-	$label = isset( $_REQUEST['label'] ) ? trim( $_REQUEST['label'] ) : '';
+	$label = isset( $_REQUEST['label'] ) ? trim( sanitize_text_field( $_REQUEST['label'] ) ) : '';
 	if ( strlen( $label ) > 0 ) {
 		$id = tcp_create_id( $post_type, $label );
-		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : TCP_CUSTOM_FIELD_TYPE_TEXT;
-		$values = isset( $_REQUEST['values'] ) ? $_REQUEST['values'] : 0;
+		$type = isset( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : TCP_CUSTOM_FIELD_TYPE_TEXT;
+		$values = isset( $_REQUEST['values'] ) ? sanitize_text_field( $_REQUEST['values'] ) : 0;
 		$public = isset( $_REQUEST['public'] );
-		$desc = isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '';
+		$desc = isset( $_REQUEST['desc'] ) ? sanitize_text_field( $_REQUEST['desc'] ) : '';
 		tcp_add_custom_field_def( $post_type, $id, $label, $type, $values, $desc, $public ); ?>
-		<div id="message" class="updated"><p>
+		<div id="message" class="updated">
+			<p>
 			<?php _e( 'Custom field saved', 'tcp' );?>
-		</p></div><?php
-	} else {?>
-		<div id="message" class="error"><p>
+			</p>
+		</div><?php
+	} else { ?>
+		<div id="message" class="error">
+			<p>
 			<?php _e( 'Label field must be completed', 'tcp' );?>
-		</p></div><?php
+			</p>
+		</div><?php
 	}
 } elseif ( isset( $_REQUEST['tcp_modify_custom_field'] ) ) {
-	$custom_field_id = isset( $_REQUEST['custom_field_id'] ) ? trim( $_REQUEST['custom_field_id'] ) : -1;//array index
-	$label = isset( $_REQUEST['label'] ) ? trim( $_REQUEST['label'] ) : '';
+	$custom_field_id = isset( $_REQUEST['custom_field_id'] ) ? trim( sanitize_text_field( $_REQUEST['custom_field_id'] ) ) : -1;//array index
+	$label = isset( $_REQUEST['label'] ) ? trim( sanitize_text_field( $_REQUEST['label'] ) ) : '';
 	if ( strlen( $label ) > 0 ) {
 		//tcp_delete_custom_field_def( $post_type, $custom_field_id );
-		$internal_id = isset( $_REQUEST['internal_id'] ) ? $_REQUEST['internal_id'] : 'internal_id';
-		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : TCP_CUSTOM_FIELD_TYPE_TEXT;
-		$values = isset( $_REQUEST['values'] ) ? $_REQUEST['values'] : 0;
+		$internal_id = isset( $_REQUEST['internal_id'] ) ? sanitize_text_field( $_REQUEST['internal_id'] ) : 'internal_id';
+		$type = isset( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : TCP_CUSTOM_FIELD_TYPE_TEXT;
+		$values = isset( $_REQUEST['values'] ) ? sanitize_text_field( $_REQUEST['values'] ) : 0;
 		$public = isset( $_REQUEST['public'] );
-		$desc = isset( $_REQUEST['desc'] ) ? $_REQUEST['desc'] : '';
+		$desc = isset( $_REQUEST['desc'] ) ? sanitize_text_field( $_REQUEST['desc'] ) : '';
 		tcp_update_custom_field_def( $post_type, $internal_id, $label, $type, $values, $desc, $public ); ?>
-		<div id="message" class="updated"><p>
-			<?php _e( 'Custom field saved', 'tcp' );?>
-		</p></div><?php
+		<div id="message" class="updated">
+			<p>
+			<?php _e( 'Custom field saved', 'tcp' ); ?>
+			</p>
+		</div><?php
 	}
 } elseif ( isset( $_REQUEST['tcp_delete_custom_field'] ) ) {
-	$id = isset( $_REQUEST['custom_field_id'] ) ? trim( $_REQUEST['custom_field_id'] ) : -1;
+	$id = isset( $_REQUEST['custom_field_id'] ) ? trim( sanitize_text_field( $_REQUEST['custom_field_id'] ) ) : -1;
 	if ( $id > -1 ) {
 		$custom_fields = tcp_get_custom_fields_def( $post_type );
 		if ( isset( $custom_fields[$id] ) && isset( $custom_fields[$id]['id'] ) ) {
 			$custom_field_id = $custom_fields[$id]['id'];
 			tcp_delete_custom_field_def( $post_type, $id );
 			global $wpdb;
-			$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'postmeta where meta_key = %s', $custom_field_id ) );?>
-			<div id="message" class="updated"><p>
+			$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->prefix . 'postmeta where meta_key = %s', $custom_field_id ) ); ?>
+			<div id="message" class="updated">
+				<p>
 				<?php _e( 'Custom field deleted', 'tcp' );?>
-			</p></div><?php
+				</p>
+			</div><?php
 		}
 	}
 } ?>
@@ -89,7 +97,7 @@ if ( isset( $_REQUEST['tcp_save_custom_field'] ) ) {
 
 <form method="post">
 <p>
-	<label><?php _e( 'Post type', 'tcp');?>: <select name="post_type" id="post_type">
+	<label><?php _e( 'Post type', 'tcp'); ?>: <select name="post_type" id="post_type">
 	<?php foreach( get_post_types( array( 'show_in_nav_menus' => true ), object ) as $type ) : ?>
 		<option value="<?php echo $type->name;?>"<?php selected( $post_type, $type->name ); ?>><?php echo $type->labels->name; ?></option>
 	<?php endforeach;?>

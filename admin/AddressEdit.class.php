@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_DAOS_FOLDER . 'Addresses.class.php' );
 
 class TCPAddressEdit {
@@ -23,24 +26,32 @@ class TCPAddressEdit {
 	private $address = false;
 
 	function show( $echo = true ) {
-		if ( is_admin() ) add_action( 'admin_footer', 'tcp_states_footer_scripts' );
-		else tcp_states_footer_scripts();
-		if ( ! is_user_logged_in() ) : ob_start(); ?>
-			<p><?php _e( 'You need to login to see your address.', 'tcp' ); ?></p>
-			<?php tcp_login_form( array( 'echo' => true ) ); ?>
-		<?php return ob_get_clean(); 
-		endif;
-		$address_id = isset( $_REQUEST['address_id'] ) ? $_REQUEST['address_id'] : '0';
+		if ( is_admin() ) {
+			add_action( 'admin_footer', 'tcp_states_footer_scripts' );
+		} else {
+			tcp_states_footer_scripts();
+		}
+		if ( ! is_user_logged_in() ) {
+			ob_start(); ?>
+			<p>
+			<?php _e( 'You need to login to see your address.', 'tcp' ); ?>
+			</p>
+			<?php tcp_login_form( array( 'echo' => true ) );
+			return ob_get_clean(); 
+		}
+		$address_id = isset( $_REQUEST['address_id'] ) ? tcp_input_number( $_REQUEST['address_id'] ) : '0';
+
 		global $current_user;
 		get_currentuserinfo();
-		if ( $current_user->ID == 0 ) return false;
+		if ( $current_user->ID == 0 ) {
+			return false;
+		}
 		if ( ! current_user_can( 'tcp_edit_orders' ) ) {
 			if ( $address_id > 0 && $current_user->ID > 0 && ! Addresses::isOwner( $address_id, $current_user->ID ) ) {
 				wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 			}
 		}
 		require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
-		//array( 'id' => array( 'name', ), 'id' => array( 'name', ), ... )
 		$regions = array();
 		$error_address = array();
 		ob_start();
@@ -72,20 +83,58 @@ class TCPAddressEdit {
 			$has_validation_error = count( $error_address ) > 0;
 			if ( ! $has_validation_error ) {
 				$_REQUEST['customer_id'] = $current_user->ID;
-				if ( ! isset( $_REQUEST['city'] ) ) $_REQUEST['city'] = '';
-				if ( ! isset( $_REQUEST['city_id'] ) ) $_REQUEST['city_id'] = '';
+				if ( ! isset( $_REQUEST['city'] ) ) {
+					$_REQUEST['city'] = '';
+				}
+				if ( ! isset( $_REQUEST['city_id'] ) ) {
+					$_REQUEST['city_id'] = '';
+				}
 				//if ( ! isset( $_REQUEST['region'] ) ) $_REQUEST['region'] = '';
 				//if ( ! isset( $_REQUEST['region_id'] ) ) $_REQUEST['region_id'] = '';
-				if ( ! isset( $_REQUEST['default_billing'] ) ) $_REQUEST['default_billing'] = '';
-				if ( ! isset( $_REQUEST['default_shipping'] ) ) $_REQUEST['default_shipping'] = '';
-				Addresses::save( $_REQUEST ); ?>
-				<div id="message" class="updated"><p>
+				if ( ! isset( $_REQUEST['default_billing'] ) ) {
+					$_REQUEST['default_billing'] = '';
+				}
+				if ( ! isset( $_REQUEST['default_shipping'] ) ) {
+					$_REQUEST['default_shipping'] = '';
+				}
+
+				$atts = array(
+					'address_id'		=> $address_id,
+					'customer_id'		=> sanitize_text_field( $_REQUEST['customer_id'] ),
+					'custom_id'			=> sanitize_text_field( $_REQUEST['custom_id'] ),
+					'default_shipping'	=> sanitize_text_field( $_REQUEST['default_shipping'] ),
+					'default_billing'	=> sanitize_text_field( $_REQUEST['default_billing'] ),
+					'address_name'		=> sanitize_text_field( $_REQUEST['address_name'] ),
+					'firstname'			=> sanitize_text_field( $_REQUEST['firstname'] ),
+					'lastname'			=> sanitize_text_field( $_REQUEST['lastname'] ),
+					'company'			=> sanitize_text_field( $_REQUEST['company'] ),
+					'tax_id_number'		=> sanitize_text_field( $_REQUEST['tax_id_number'] ),
+					'company_id'		=> sanitize_text_field( $_REQUEST['company_id'] ),
+					'street'			=> sanitize_text_field( $_REQUEST['street'] ),
+					'street_2'			=> sanitize_text_field( $_REQUEST['street_2'] ),
+					'city'				=> sanitize_text_field( $_REQUEST['city'] ),
+					'city_id'			=> sanitize_text_field( $_REQUEST['city_id'] ),
+					'region'			=> sanitize_text_field( $_REQUEST['region'] ),
+					'region_id'			=> sanitize_text_field( $_REQUEST['region_id'] ),
+					'postcode'			=> sanitize_text_field( $_REQUEST['postcode'] ),
+					'country_id'		=> sanitize_text_field( $_REQUEST['country_id'] ),
+					'telephone_1'		=> sanitize_text_field( $_REQUEST['telephone_1'] ),
+					'telephone_2'		=> sanitize_text_field( $_REQUEST['telephone_2'] ),
+					'fax'				=> sanitize_text_field( $_REQUEST['fax'] ),
+					'email'				=> sanitize_text_field( $_REQUEST['email'] ),
+				);
+				Addresses::save( $atts ); ?>
+				<div id="message" class="updated">
+					<p>
 					<?php _e( 'Address saved', 'tcp' ); ?>
-				</p></div><?php
+					</p>
+				</div><?php
 			} else { ?>
-				<div id="message" class="error"><p>
+				<div id="message" class="error">
+					<p>
 					<?php _e( 'Validation errors. Address has not been saved', 'tcp' ); ?>
-				</p></div><?php
+					</p>
+				</div><?php
 			}
 		} elseif ( $address_id > 0 ) {
 			$this->address = Addresses::get( $address_id );
@@ -141,10 +190,11 @@ class TCPAddressEdit {
 		</td>
 	</tr>
 	<tr valign="top">
-	<th scope="row"><label for="tax_id_number"><?php _e( 'Tax id number', 'tcp' ); ?>:</label></th>
-	<td>
-		<input type="text" id="tax_id_number" name="tax_id_number" value="<?php $this->tcp_get_value( 'tax_id_number' ); ?>" size="20" maxlength="30" />
-		<?php $this->tcp_show_error_msg( $error_address, 'tax_id_number' ); ?></td>
+		<th scope="row"><label for="tax_id_number"><?php _e( 'Tax id number', 'tcp' ); ?>:</label></th>
+		<td>
+			<input type="text" id="tax_id_number" name="tax_id_number" value="<?php $this->tcp_get_value( 'tax_id_number' ); ?>" size="20" maxlength="30" />
+			<?php $this->tcp_show_error_msg( $error_address, 'tax_id_number' ); ?>
+		</td>
 	</tr>
 	<tr valign="top">
 		<th scope="row"><label for="company_id"><?php _e( 'Company id', 'tcp' ); ?>:</label></th>
@@ -159,6 +209,14 @@ class TCPAddressEdit {
 		<td>
 			<input type="text" id="street" name="street" value="<?php $this->tcp_get_value( 'street' ); ?>" size="20" maxlength="50" />
 			<?php $this->tcp_show_error_msg( $error_address, 'street' ); ?>
+		</td>
+	</tr>
+
+	<tr valign="top">
+		<th scope="row"><label for="street_2"><?php _e( 'Street 2', 'tcp' ); ?>:</label></th>
+		<td>
+			<input type="text" id="street_2" name="street_2" value="<?php $this->tcp_get_value( 'street_2' ); ?>" size="20" maxlength="50" />
+			<?php $this->tcp_show_error_msg( $error_address, 'street_2' ); ?>
 		</td>
 	</tr>
 
@@ -188,34 +246,34 @@ class TCPAddressEdit {
 	<tr valign="top">
 		<th scope="row"><label for="region"><?php _e( 'Region', 'tcp' ); ?>:</label></th>
 		<td>
-		<select id="region_id" name="region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
-			<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
-		<?php foreach( $regions as $id => $region ) : ?>
-			<option value="<?php echo $id; ?>" <?php selected( $id, $this->tcp_get_value( 'region_id', false ) ); ?>><?php echo $region['name']; ?></option>
-		<?php endforeach; ?>
-		</select>
-		<input type="hidden" id="region_selected_id" value="<?php $this->tcp_get_value( 'region_id' ); ?>"/>
-		<?php //$this->tcp_show_error_msg( $error_address, 'region_id' ); ?>
-		<input type="text" id="region" name="region" value="<?php $this->tcp_get_value( 'region' ); ?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
-		<?php $this->tcp_show_error_msg( $error_address, 'region' ); ?>
+			<select id="region_id" name="region_id" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) {} else { echo 'style="display:none;"'; }?>>
+				<option value=""><?php _e( 'No state selected', 'tcp' ); ?></option>
+				<?php foreach( $regions as $id => $region ) : ?>
+				<option value="<?php echo $id; ?>" <?php selected( $id, $this->tcp_get_value( 'region_id', false ) ); ?>><?php echo $region['name']; ?></option>
+				<?php endforeach; ?>
+			</select>
+			<input type="hidden" id="region_selected_id" value="<?php $this->tcp_get_value( 'region_id' ); ?>"/>
+			<?php //$this->tcp_show_error_msg( $error_address, 'region_id' ); ?>
+			<input type="text" id="region" name="region" value="<?php $this->tcp_get_value( 'region' ); ?>" size="20" maxlength="50" <?php if ( is_array( $regions ) && count( $regions ) > 0 ) echo 'style="display:none;"'; ?>/>
+			<?php $this->tcp_show_error_msg( $error_address, 'region' ); ?>
 		</td>
 	</tr>
 	<tr valign="top">
 		<th scope="row"><label for="city"><?php _e( 'City', 'tcp' ); ?>:<span class="compulsory">(*)</span></label></th>
 		<td>
-		<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
-		$cities = apply_filters( 'tcp_address_editor_load_cities', $cities );
-		if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
-			<select id="city_id" name="city_id">
-			<?php foreach( $cities as $id => $city ) : ?>
-				<option value="<?php echo $id; ?>" <?php selected( $id, $this->tcp_get_value( 'city_id', false ) ); ?>><?php echo $city['name']; ?></option>
-			<?php endforeach; ?>
-			</select>
-			<?php $this->tcp_show_error_msg( $error_address, 'city_id' ); ?>
-		<?php else : ?>
-			<input type="text" id="city" name="city" value="<?php $this->tcp_get_value( 'city' ); ?>" size="20" maxlength="50" />
-			<?php $this->tcp_show_error_msg( $error_address, 'city' ); ?>
-		<?php endif; ?>
+			<?php $cities = array(); //array( 'id' => array( 'name'), 'id' => array( 'name'), ... )
+			$cities = apply_filters( 'tcp_address_editor_load_cities', $cities );
+			if ( is_array( $cities ) && count( $cities ) > 0 ) : ?>
+				<select id="city_id" name="city_id">
+					<?php foreach( $cities as $id => $city ) : ?>
+					<option value="<?php echo $id; ?>" <?php selected( $id, $this->tcp_get_value( 'city_id', false ) ); ?>><?php echo $city['name']; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<?php $this->tcp_show_error_msg( $error_address, 'city_id' ); ?>
+			<?php else : ?>
+				<input type="text" id="city" name="city" value="<?php $this->tcp_get_value( 'city' ); ?>" size="20" maxlength="50" />
+				<?php $this->tcp_show_error_msg( $error_address, 'city' ); ?>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<tr valign="top">

@@ -16,21 +16,25 @@
  * along with TheCartPress.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_DAOS_FOLDER . 'Countries.class.php' );
 require_once( TCP_DAOS_FOLDER . 'Taxes.class.php' );
 require_once( TCP_DAOS_FOLDER . 'TaxRates.class.php' );
 
 add_action( 'admin_footer', 'tcp_states_footer_scripts' );
-
-?><h2><?php _e( 'Taxes Rates', 'tcp' );?></h2><?php
+?>
+<h2><?php _e( 'Taxes Rates', 'tcp' );?></h2>
+<?php
 if ( isset( $_REQUEST['tcp_add_tax_rate'] ) ) {
-	$_REQUEST['country_iso']	= isset( $_REQUEST['country_iso'] ) ? $_REQUEST['country_iso'] : 'all';
-	$_REQUEST['region_id']		= isset( $_REQUEST['region_id'] ) ? $_REQUEST['region_id'] : 'all';
-	$_REQUEST['region']			= isset( $_REQUEST['region'] ) ? $_REQUEST['region'] : '';
-	$_REQUEST['post_code']		= isset( $_REQUEST['post_code'] ) ? $_REQUEST['post_code'] : 'all';
-	$_REQUEST['tax_id']			= isset( $_REQUEST['tax_id'] ) ? $_REQUEST['tax_id'] : '-1';
-	$_REQUEST['rate']			= isset( $_REQUEST['rate'] ) ? tcp_input_number($_REQUEST['rate']) : 0;
-	$_REQUEST['label']			= isset( $_REQUEST['label'] ) ? $_REQUEST['label'] : '';
+	$_REQUEST['country_iso']	= isset( $_REQUEST['country_iso'] ) ? sanitize_text_field( $_REQUEST['country_iso'] ) : 'all';
+	$_REQUEST['region_id']		= isset( $_REQUEST['region_id'] )	? sanitize_text_field( $_REQUEST['region_id'] ) : 'all';
+	$_REQUEST['region']			= isset( $_REQUEST['region'] )		? sanitize_text_field( $_REQUEST['region'] ) : '';
+	$_REQUEST['post_code']		= isset( $_REQUEST['post_code'] )	? sanitize_text_field( $_REQUEST['post_code'] ) : 'all';
+	$_REQUEST['tax_id']			= isset( $_REQUEST['tax_id'] )		? sanitize_text_field( $_REQUEST['tax_id'] ) : '-1';
+	$_REQUEST['rate']			= isset( $_REQUEST['rate'] )		? tcp_input_number( $_REQUEST['rate'] ) : 0;
+	$_REQUEST['label']			= isset( $_REQUEST['label'] )		? sanitize_text_field( $_REQUEST['label'] ) : '';
 	if ( $_REQUEST['post_code'] == '' ) $_REQUEST['post_code'] = 'all';
 	TaxRates::insert( $_REQUEST );?>
 		<div id="message" class="updated"><p>

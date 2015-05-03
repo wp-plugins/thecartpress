@@ -31,9 +31,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 class TCPTopSellers {
 
 	function __construct() {
-		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		add_action( 'tcp_checkout_create_order_insert_detail', array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
-		add_shortcode( 'tcp_total_sales', array( &$this, 'tcp_total_sales' ) );
+		add_action( 'widgets_init'								, array( $this, 'widgets_init' ) );
+		add_action( 'tcp_checkout_create_order_insert_detail'	, array( $this, 'tcp_checkout_create_order_insert_detail' ), 10, 4 );
+		add_shortcode( 'tcp_total_sales'						, array( $this, 'tcp_total_sales' ) );
+
+		// Custom values widget
+		add_filter( 'tcp_custom_list_widget_args'				, array( $this, 'tcp_custom_list_widget_args' ) );
+		add_filter( 'tcp_custom_values_get_other_values'		, array( $this, 'tcp_custom_values_get_other_values' ) );
 	}
 
 	function widgets_init() {
@@ -56,6 +60,30 @@ class TCPTopSellers {
 	function tcp_total_sales( $atts ) {
 		extract( shortcode_atts( array( 'post_id' => 0 ), $atts ) );
 		return tcp_get_the_total_sales( $post_id );
+	}
+
+	// Displays on Custom values widget
+	function tcp_custom_list_widget_args( $loop_args ) {
+		$is_saleable = isset( $loop_args['post_type'] ) ? tcp_is_saleable_post_type( $loop_args['post_type'] ) : false;
+		if ( $is_saleable ) {
+			$args['meta_query'][] = array(
+				'key'		=> 'tcp_units_sold',
+				'value'		=> 0,
+				'type'		=> 'NUMERIC',
+				'compare'	=> '!='
+			);
+			$args = apply_filters( 'tcp_units_sold_custom_list_widget_args', $args );
+			$loop_args = array_merge( $loop_args, $args );
+		}
+		return $loop_args;
+	}
+
+	function tcp_custom_values_get_other_values( $other_values ) {
+		$other_values['tcp_units_sold'] = array(
+			'label'		=> __( 'Units sold', 'tcp' ),
+			'callback'	=> 'tcp_get_the_total_sales',
+		);
+		return $other_values;
 	}
 
 }
@@ -82,6 +110,7 @@ function tcp_get_the_total_sales( $post_id = 0 ) {
  * Outputs the total units sold of a given product
  *
  * @param $post_id, given product identifier. If 0 the current post id will be used.
+ * @param $echo, if true (default value) the number of units sold is displayed, if false it's returned
  * @uses tcp_get_total_sales
  */
 function tcp_the_total_sales( $post_id = 0, $echo = true ) {

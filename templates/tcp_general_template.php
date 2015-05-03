@@ -115,13 +115,28 @@ function tcp_get_the_continue_url() {
 	return tcp_the_continue_url( false );
 }
 
+/**
+ * Outputs 'My account' page url.
+ *
+ * @param bool $echo, if true the url is displayed, if false it's returned
+ * @see get_option, called 'tcp_my_account_page_id'
+ * @see apply_filters, calling 'tcp_the_my_account_url' filter
+ */
 function tcp_the_my_account_url( $echo = true ) {
 	$url = get_permalink( tcp_get_current_id( get_option( 'tcp_my_account_page_id' ), 'page' ) );
 	$url = apply_filters( 'tcp_the_my_account_url', $url );
-	if ( $echo ) echo $url;
-	else return $url;
+	if ( $echo ) {
+		echo $url;
+	} else {
+		return $url;
+	}
 }
 
+/**
+ * Returns 'My account' page url
+ *
+ * @see tcp_the_my_account_url
+ */
 function tcp_get_the_my_account_url() {
 	return tcp_the_my_account_url( false );
 }
@@ -665,7 +680,7 @@ function tcp_attribute_list( $taxonomies = false ) {
  * Outputs a login form
  *
  * @param $args, array with all parameters:
- *<dl>
+ * <dl>
  * <dt>echo</dt><dd>true</dd>
  * <dt>redirect</dt><dd>get_permalink()</dd>
  * <dt>form_id</dt><dd>loginform"</dd>
@@ -681,8 +696,10 @@ function tcp_attribute_list( $taxonomies = false ) {
  * <dt>value_username</dt><dd>""</dd>
  * <dt>value_remember</dt><dd>false</dd>
  * <dt>see_register</dt><dd>if true (by default) the register link will be displayed</dd>
+ * </dl>
  */
 function tcp_login_form( $args = array() ) {
+
 	$defaults = array(
 		'echo'				=> true,
 //		'redirect'			=> site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
@@ -705,12 +722,83 @@ function tcp_login_form( $args = array() ) {
 	);
 	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
 	ob_start();
-	if ( ! is_user_logged_in() ) :
+	if ( ! is_user_logged_in() ) {
 	$url = plugins_url( 'checkout/login.php' , dirname( __FILE__ ) );
-	//$url = tcp_admin_url( 'admin-ajax.php' ); ?>
+	//$url = tcp_admin_url( 'admin-ajax.php' );
+
+	$error = false;
+	$success = false;
+	$display_login_form = true;
+
+	// Resets password, sending an email
+	if ( isset( $_POST['action'] ) && 'reset' == $_POST['action'] ) {
+		$email = sanitize_email( trim( $_POST['email'] ) );
+
+		if ( empty( $email ) ) {
+			$error = __( 'Enter a username or e-mail address.', 'tcp' );
+		} else if ( !is_email( $email ) ) {
+			$error = __( 'Invalid username or e-mail address.', 'tcp' );
+		} else if ( !email_exists( $email ) ) {
+			$error = __( 'There is no user registered with that email address.', 'tcp' );
+		} else {
+
+			$random_password = wp_generate_password( 12, false );
+			$user = get_user_by( 'email', $email );
+
+			$update_user = wp_update_user( array (
+				'ID'		=> $user->ID, 
+				'user_pass'	=> $random_password
+			) );
+
+			// if update user return true then lets send user an email containing the new password
+			if ( is_wp_error( $update_user ) ) {
+				$error = $update_user->get_error_message();
+			} else {
+				$to = $email;
+				$subject = __( 'Your new password', 'tcp' );
+				$sender = get_option( 'name' );
+
+				$message = sprintf( __( 'Your new password is: %s', 'tcp' ), $random_password );
+
+				$headers[] = 'MIME-Version: 1.0' . "\r\n";
+				$headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers[] = "X-Mailer: PHP \r\n";
+				$headers[] = 'From: '.$sender.' <'.$email.'>' . "\r\n";
+
+				$mail = wp_mail( $to, $subject, $message, $headers );
+				if ( $mail ) {
+					$success = __( 'Check your email address for you new password.', 'tcp' );
+				} else {
+					$error = __( 'There was an issue sending the email', 'tcp' );
+				}
+			}
+		}
+	}
+
+	// Displays lostpassword form
+	if ( $error !== false || ( isset( $_REQUEST['action'] ) && 'lostpassword' == $_REQUEST['action'] ) ) {
+?>
+<form method="post">
+	<p class="menssage"><?php _e( 'Please enter your email address. You will receive a temporary password via email.', 'tcp' ); ?></p>
+	<p><label for="user_login"><?php _e( 'E-mail', 'tco' ); ?>:</label>
+		<input type="text" name="email" id="user_login"  value="" />
+		<input type="hidden" name="action" value="reset" />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" value="<?php _e( 'Get New Password', 'tcp' ); ?>" class="button" id="submit" />
+	</p>
+	<?php if ( $error ) : ?><p class="error"><?php echo $error; ?></p><?php endif; ?>
+	</form>
+<?php $display_login_form = false;
+	}
+
+	if ( $display_login_form ) {
+
+?>
 <div id="tcp_login">
 	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo $url; ?>" name="<?php echo $args['form_id']; ?>">
 		<?php echo apply_filters( 'login_form_top', '', $args ); ?>
+
+		<?php if ( $success ) : ?><p class="success"><?php echo $success; ?></p><?php endif; ?>
 		<input type="hidden" name="action" value="tcp_register_and_login<?php if ( $args['ajax'] ) : ?>_ajax<?php endif; ?>" />
 		<div class="tcp_login_username_label">
 			<label for="<?php echo esc_attr( $args['id_username'] ); ?>"><?php echo esc_html( $args['label_username'] ); ?></label>
@@ -738,8 +826,8 @@ function tcp_login_form( $args = array() ) {
 			<label for="<?php echo esc_attr( $args['id_remember'] ); ?>"><?php echo esc_html( $args['label_remember'] ); ?></label>
 		</div>
 		<div class="tcp_lost_password">
-			<a id="tcp_lost_password" href="<?php echo site_url( 'wp-login.php?action=lostpassword', 'login' ); ?>" title="<?php _e( 'Password Lost and Found' ) ?>"><?php _e( 'Lost your password?' ); ?></a>
-				<?php if ( $args['see_register'] && get_option('users_can_register') ) : ?>
+			<a id="tcp_lost_password" href="<?php echo wp_lostpassword_url( $args['redirect'] ); ?>" title="<?php _e( 'Password Lost and Found' ) ?>"><?php _e( 'Lost your password?' ); ?></a>
+				<?php if ( $args['see_register'] && get_option('users_can_register') ) { ?>
 				<br />
 				<?php if ( function_exists( 'bp_get_signup_page' ) ) { //Buddypress
 					$register_link = bp_get_signup_page();
@@ -749,22 +837,24 @@ function tcp_login_form( $args = array() ) {
 					$register_link = site_url( 'wp-login.php?action=register', 'login' );
 				} ?>
 				<a href="<?php echo $register_link ?>" id="tcp_link_register"><?php _e( 'Register' ); ?></a>
-				<?php endif; ?>
-		<?php echo apply_filters( 'login_form_bottom', '', $args ); ?>
-		<?php do_action( 'login_form' ); ?>
+				<?php }
+			echo apply_filters( 'login_form_bottom', '', $args );
+			do_action( 'login_form' ); ?>
 		</div>
-		<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) : ?>
+		<?php if ( isset( $_REQUEST['tcp_register_error'] ) ) { ?>
 		<p class="error">
 		<strong><?php _e( 'Error', 'tcp' ); ?></strong>: <?php echo $_REQUEST['tcp_register_error']; ?>
 		</p>
-		<?php endif; ?>
+		<?php } ?>
 	</form>
 </div><!-- .tcp_login -->
-<?php else : ?>
+	<?php } //if display_login_form
+	} else { ?>
 <div class="tcp_profile">
 	<?php tcp_author_profile(); ?>
 </div><!-- .tcp_my_profile -->
-<?php endif;
+<?php }
+	
 	$out = ob_get_clean();
 	if ( $args['echo'] ) echo $out;
 	else return $out;

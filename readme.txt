@@ -5,7 +5,7 @@ Tags: ecommerce, e-commerce, shopping cart, cart, store, shop, shopping, ecomerc
 License: GPLv2 or later
 Requires at least: 3.3
 Tested up to: 4.3
-Stable Tag: 1.3.9
+Stable Tag: 1.3.9.1
 
 Native eCommerce integration & interaction with WordPress. Flexibility & Scalability.
 Ideal for merchants, themes constructors and developers.
@@ -298,6 +298,12 @@ This plugin is released under a GPL license.
 2. Take a look to Catalogue and product detail in your store. Those pages are now displayed using new Theme Compatibility featured.
 
 == Changelog ==
+= 1.3.9.1 =
+* TopSellers is compatible with TCP Custom Values widget
+* Multisite language compability improvement
+* Security improvements
+* Lost Password page
+
 = 1.3.9 =
 * New Notices (templates) to adding to emails for orders status (tcp_checkout_email-PENDING, tcp_checkout_email-PROCESSING, etc.)
 * French translation, thanks to Sophie (https://www.sophie-g.net/)

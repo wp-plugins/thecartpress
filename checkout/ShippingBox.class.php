@@ -111,22 +111,22 @@ class TCPShippingBox extends TCPCheckoutBox {
 			} else {
 				$shipping = array(
 					'selected_shipping_address'	=> 'new',
-					'shipping_firstname'		=> isset( $_REQUEST['shipping_firstname'] ) ? $_REQUEST['shipping_firstname'] : '',
-					'shipping_lastname'			=> isset( $_REQUEST['shipping_lastname'] ) ? $_REQUEST['shipping_lastname'] : '',
-					'shipping_company'			=> isset( $_REQUEST['shipping_company'] ) ? $_REQUEST['shipping_company'] : '',
-					'shipping_country'			=> isset( $_REQUEST['shipping_country'] ) ? $_REQUEST['shipping_country'] : '',
-					'shipping_country_id'		=> isset( $_REQUEST['shipping_country_id'] ) ? $_REQUEST['shipping_country_id'] : 0,
-					'shipping_region'			=> isset( $_REQUEST['shipping_region'] ) ? $_REQUEST['shipping_region'] : '',
-					'shipping_region_id'		=> isset( $_REQUEST['shipping_region_id'] ) ? $_REQUEST['shipping_region_id'] : 0,
-					'shipping_city'				=> isset( $_REQUEST['shipping_city'] ) ? $_REQUEST['shipping_city'] : '',
-					'shipping_city_id'			=> isset( $_REQUEST['shipping_city_id'] ) ? $_REQUEST['shipping_city_id'] : 0,
-					'shipping_street'			=> isset( $_REQUEST['shipping_street'] ) ? $_REQUEST['shipping_street'] : '',
-					'shipping_street_2'			=> isset( $_REQUEST['shipping_street_2'] ) ? $_REQUEST['shipping_street_2'] : '',
-					'shipping_postcode'			=> isset( $_REQUEST['shipping_postcode'] ) ? str_replace( ' ' , '', $_REQUEST['shipping_postcode'] ) : '',
-					'shipping_telephone_1'		=> isset( $_REQUEST['shipping_telephone_1'] ) ? $_REQUEST['shipping_telephone_1'] : '',
-					'shipping_telephone_2'		=> isset( $_REQUEST['shipping_telephone_2'] ) ? $_REQUEST['shipping_telephone_2'] : '',
-					'shipping_fax'				=> isset( $_REQUEST['shipping_fax'] ) ? $_REQUEST['shipping_fax'] : '',
-					'shipping_email'				=> isset( $_REQUEST['shipping_email'] ) ? $_REQUEST['shipping_email'] : '',
+					'shipping_firstname'		=> isset( $_REQUEST['shipping_firstname'] )		? sanitize_text_field( $_REQUEST['shipping_firstname'] ) : '',
+					'shipping_lastname'			=> isset( $_REQUEST['shipping_lastname'] )		? sanitize_text_field( $_REQUEST['shipping_lastname'] ) : '',
+					'shipping_company'			=> isset( $_REQUEST['shipping_company'] )		? sanitize_text_field( $_REQUEST['shipping_company'] ) : '',
+					'shipping_country'			=> isset( $_REQUEST['shipping_country'] )		? sanitize_text_field( $_REQUEST['shipping_country'] ) : '',
+					'shipping_country_id'		=> isset( $_REQUEST['shipping_country_id'] )	? sanitize_text_field( $_REQUEST['shipping_country_id'] ) : 0,
+					'shipping_region'			=> isset( $_REQUEST['shipping_region'] )		? sanitize_text_field( $_REQUEST['shipping_region'] ) : '',
+					'shipping_region_id'		=> isset( $_REQUEST['shipping_region_id'] )		? sanitize_text_field( $_REQUEST['shipping_region_id'] ) : 0,
+					'shipping_city'				=> isset( $_REQUEST['shipping_city'] )			? sanitize_text_field( $_REQUEST['shipping_city'] ) : '',
+					'shipping_city_id'			=> isset( $_REQUEST['shipping_city_id'] )		? sanitize_text_field( $_REQUEST['shipping_city_id'] ) : 0,
+					'shipping_street'			=> isset( $_REQUEST['shipping_street'] )		? sanitize_text_field( $_REQUEST['shipping_street'] ) : '',
+					'shipping_street_2'			=> isset( $_REQUEST['shipping_street_2'] )		? sanitize_text_field( $_REQUEST['shipping_street_2'] ) : '',
+					'shipping_postcode'			=> isset( $_REQUEST['shipping_postcode'] )		? str_replace( ' ' , '', sanitize_text_field( $_REQUEST['shipping_postcode'] ) ) : '',
+					'shipping_telephone_1'		=> isset( $_REQUEST['shipping_telephone_1'] )	? sanitize_text_field( $_REQUEST['shipping_telephone_1'] ) : '',
+					'shipping_telephone_2'		=> isset( $_REQUEST['shipping_telephone_2'] )	? sanitize_text_field( $_REQUEST['shipping_telephone_2'] ) : '',
+					'shipping_fax'				=> isset( $_REQUEST['shipping_fax'] )			? sanitize_text_field( $_REQUEST['shipping_fax'] ) : '',
+					'shipping_email'			=> isset( $_REQUEST['shipping_email'] )			? sanitize_text_field( $_REQUEST['shipping_email'] ) : '',
 				);
 			}
 			$_SESSION['tcp_checkout']['shipping'] = $shipping;
@@ -136,7 +136,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 
 	function show() {
 		if ( isset( $_REQUEST['selected_shipping_address'] ) ) {
-			$selected_shipping_address = $_REQUEST['selected_shipping_address'];
+			$selected_shipping_address = sanitize_text_field( $_REQUEST['selected_shipping_address'] );
 		} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'] ) ) {
 			$selected_shipping_address = $_SESSION['tcp_checkout']['shipping']['selected_shipping_address'];
 		} else {
@@ -155,7 +155,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 		if ( is_array( $addresses ) && count( $addresses ) > 0 ) {
 			if ( $selected_shipping_address === false ) $selected_shipping_address = 'Y';
 			if ( isset( $_REQUEST['selected_shipping_id'] ) ) {
-				$default_address_id = $_REQUEST['selected_shipping_id'];
+				$default_address_id = sanitize_text_field( $_REQUEST['selected_shipping_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'] ) ) {
 				$default_address_id = $_SESSION['tcp_checkout']['shipping']['selected_shipping_id'];
 			} else {
@@ -199,7 +199,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			//Getting defalt fields
 			$fields = $this->getDefaultFields();
 			if ( isset( $_REQUEST['shipping_firstname'] ) ) {
-				$firstname = $_REQUEST['shipping_firstname'];
+				$firstname = sanitize_text_field( $_REQUEST['shipping_firstname'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_firstname'] ) ) {
 				$firstname = $_SESSION['tcp_checkout']['shipping']['shipping_firstname'];
 			} elseif ( $this->default_address ) {
@@ -212,7 +212,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_firstname']['value'] = $firstname;
 
 			if ( isset( $_REQUEST['shipping_lastname'] ) ) {
-				$lastname = $_REQUEST['shipping_lastname'];
+				$lastname = sanitize_text_field( $_REQUEST['shipping_lastname'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_lastname'] ) ) {
 				$lastname = $_SESSION['tcp_checkout']['shipping']['shipping_lastname'];
 			} elseif ( $this->default_address ) {
@@ -225,7 +225,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_lastname']['value'] = $lastname;
 
 			if ( isset( $_REQUEST['shipping_company'] ) ) {
-				$company = $_REQUEST['shipping_company'];
+				$company = sanitize_text_field( $_REQUEST['shipping_company'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_company'] ) ) {
 				$company = $_SESSION['tcp_checkout']['shipping']['shipping_company'];
 			} else {
@@ -234,7 +234,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_company']['value'] = $company;
 			
 			if ( isset( $_REQUEST['shipping_street'] ) ) {
-				$street = $_REQUEST['shipping_street'];
+				$street = sanitize_text_field( $_REQUEST['shipping_street'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_street'] ) ) {
 				$street = $_SESSION['tcp_checkout']['shipping']['shipping_street'];
 			} else {
@@ -243,7 +243,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_street']['value'] = $street;
 
 			if ( isset( $_REQUEST['shipping_street_2'] ) ) {
-				$street_2 = $_REQUEST['shipping_street_2'];
+				$street_2 = sanitize_text_field( $_REQUEST['shipping_street_2'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_street_2'] ) ) {
 				$street_2 = $_SESSION['tcp_checkout']['shipping']['shipping_street_2'];
 			} else {
@@ -252,14 +252,14 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_street_2']['value'] = $street_2;
 
 			if ( isset( $_REQUEST['shipping_city_id'] ) ) {
-				$city_id = $_REQUEST['shipping_city_id'];
+				$city_id = sanitize_text_field( $_REQUEST['shipping_city_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_city_id'] ) ) {
 				$city_id = $_SESSION['tcp_checkout']['shipping']['shipping_city_id'];
 			} else {
 				$city_id = $this->default_address ? $this->default_address->city_id : '';
 			} //not ready TODO
 			if ( isset( $_REQUEST['shipping_city'] ) ) {
-				$city = $_REQUEST['shipping_city'];
+				$city = sanitize_text_field( $_REQUEST['shipping_city'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_city'] ) ) {
 				$city = $_SESSION['tcp_checkout']['shipping']['shipping_city'];
 			} else {
@@ -268,14 +268,14 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_city']['value'] = $city;
 
 			if ( isset( $_REQUEST['shipping_region_id'] ) ) {
-				$region_id = $_REQUEST['shipping_region_id'];
+				$region_id = sanitize_text_field( $_REQUEST['shipping_region_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_region_id'] ) ) {
 				$region_id = $_SESSION['tcp_checkout']['shipping']['shipping_region_id'];
 			} else {
 				$region_id = $this->default_address ? $this->default_address->region_id : '';
 			}
 			if ( isset( $_REQUEST['shipping_region'] ) ) {
-				$region = $_REQUEST['shipping_region'];
+				$region = sanitize_text_field( $_REQUEST['shipping_region'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_region'] ) ) {
 				$region = $_SESSION['tcp_checkout']['shipping']['shipping_region'];
 			} else {
@@ -284,7 +284,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_region_id']['value'] = $region_id;
 
 			if ( isset( $_REQUEST['shipping_postcode'] ) ) {
-				$postcode = $_REQUEST['shipping_postcode'];
+				$postcode = sanitize_text_field( $_REQUEST['shipping_postcode'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_postcode'] ) ) {
 				$postcode = $_SESSION['tcp_checkout']['shipping']['shipping_postcode'];
 			} else {
@@ -293,7 +293,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_postcode']['value'] = $postcode;
 
 			if ( isset( $_REQUEST['shipping_country_id'] ) ) {
-				$country_id = $_REQUEST['shipping_country_id'];
+				$country_id = sanitize_text_field( $_REQUEST['shipping_country_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_country_id'] ) ) {
 				$country_id = $_SESSION['tcp_checkout']['shipping']['shipping_country_id'];
 			} else {
@@ -302,7 +302,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_country_id']['value'] = $country_id;
 
 			if ( isset( $_REQUEST['shipping_telephone_1'] ) ) {
-				$telephone_1 = $_REQUEST['shipping_telephone_1'];
+				$telephone_1 = sanitize_text_field( $_REQUEST['shipping_telephone_1'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_telephone_1'] ) ) {
 				$telephone_1 = $_SESSION['tcp_checkout']['shipping']['shipping_telephone_1'];
 			} else {
@@ -311,7 +311,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_telephone_1']['value'] = $telephone_1;
 			
 			if ( isset( $_REQUEST['shipping_telephone_2'] ) ) {
-				$telephone_2 = $_REQUEST['shipping_telephone_2'];
+				$telephone_2 = sanitize_text_field( $_REQUEST['shipping_telephone_2'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_telephone_2'] ) ) {
 				$telephone_2 = $_SESSION['tcp_checkout']['shipping']['shipping_telephone_2'];
 			} else {
@@ -320,7 +320,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_telephone_2']['value'] = $telephone_2;
 			
 			if ( isset( $_REQUEST['shipping_fax'] ) ) {
-				$fax = $_REQUEST['shipping_fax'];
+				$fax = sanitize_text_field( $_REQUEST['shipping_fax'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_fax'] ) ) {
 				$fax = $_SESSION['tcp_checkout']['shipping']['shipping_fax'];
 			} else {
@@ -329,7 +329,7 @@ class TCPShippingBox extends TCPCheckoutBox {
 			$fields['shipping_fax']['value'] = $fax;
 			
 			if ( isset( $_REQUEST['shipping_email'] ) ) {
-				$email = $_REQUEST['shipping_email'];
+				$email = sanitize_text_field( $_REQUEST['shipping_email'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['shipping']['shipping_email'] ) ) {
 				$email = $_SESSION['tcp_checkout']['shipping']['shipping_email'];
 			} elseif ( $this->default_address ) {

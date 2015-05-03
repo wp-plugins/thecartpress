@@ -25,18 +25,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//Multilingual support: WPML or Qtranslate (or by any other plugin)
+//
+// Multilingual support: WPML or Qtranslate (or by any other plugin)
+//
+
+/**
+ * Returns admin language
+ *
+ * @since 2.0
+ * @return language iso code (en - English, es - Spanish, ...)
+ */
 function tcp_get_admin_language_iso() {
-	if ( strlen( WPLANG ) > 0 ) {
-		$lang_country = explode ( '_', WPLANG );
+	// no multisite compatible: if ( defined( "WPLANG" ) && strlen( WPLANG ) > 0 ) {
+	$language = get_bloginfo( 'language' );
+	if ( strlen( $language ) > 0 ) {
+		$lang_country = explode ( '_', $language );
 		if ( is_array( $lang_country ) && count( $lang_country ) > 0 ) {
 			return $lang_country[0];
-		} else {
-			return 'en';//by default
 		}
-	} else {
-		return 'en'; //by default
 	}
+	//'en' by default
+	return 'en';
 }
 
 $multilingual_template_path = apply_filters( 'tcp_get_multilingual_template_path', '' );
@@ -51,9 +60,15 @@ if ( strlen( $multilingual_template_path ) > 0 ) {
 		include_once( dirname( __FILE__ ) . '/tcp_qt_template.php' );
 	}
 }
+//
 //End Multilingual support
+//
 
-//Returns the title of a product (with/without options)
+/**
+ * Returns the title of a product (with/without options)
+ *
+ * @return product title
+ */
 function tcp_get_the_title( $post_id = 0, $option_1_id = 0, $option_2_id = 0, $html = true, $show_parent = true ) {
 	if ( $post_id == 0 ) $post_id = get_the_ID();
 	$post_id = tcp_get_current_id( $post_id );
@@ -1245,17 +1260,22 @@ function tcp_number_format( $number, $decimals = 2 ) {
 function tcp_format_number( $number, $decimals = 2 ) {
 	global $thecartpress;
 	if ( ! $thecartpress ) return;
+
 	return number_format( (float)$number, $decimals, stripslashes( $thecartpress->get_setting( 'decimal_point', '.' ) ), stripslashes( $thecartpress->get_setting( 'thousands_separator', ',' ) ) );
 }
 
 /**
  * Converts a typed number into a float number
+ *
+ * @param $input, typed string to convert to number
  * @since 1.0.7
  */
 function tcp_input_number( $input ) {
 	global $thecartpress;
 	if ( ! $thecartpress ) return;
-	$aux = str_replace( stripslashes( $thecartpress->get_setting( 'thousands_separator', ',' ) ), '', $input );
+
+	$aux = sanitize_text_field( $input );
+	$aux = str_replace( stripslashes( $thecartpress->get_setting( 'thousands_separator', ',' ) ), '', $aux );
 	$aux = str_replace( stripslashes( $thecartpress->get_setting( 'decimal_point', '.' ) ), '.', $aux );
 	return (float)$aux;
 }

@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.3.9
+Version: 1.3.9.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -196,16 +196,16 @@ class TheCartPress {
 	}
 
 	public function init() {
-		//Starts the Session
+		// Starts the Session
 		tcp_session_start();
 
-		//Load text domain
+		// Loads text domain
 		$this->load_textdomain();
 
-		//Load Custom Post types and Taxonomies, one of the most powerful features of TheCartPress
+		// Loads Custom Post types and Taxonomies, one of the most powerful features of TheCartPress
 		$this->load_custom_post_types_and_custom_taxonomies();
 
-		//Load javascript libraries
+		// Loads javascript libraries
 		if ( $this->get_setting( 'load_bootstrap_js', true ) ) {
 			// if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			// 	wp_register_script( 'bootstrap'	, plugins_url( 'js/bootstrap.js', __FILE__ ) );
@@ -214,33 +214,33 @@ class TheCartPress {
 			//}
 		}
 
-		//Load jquery ui modules
+		// Loads jquery ui modules
 		wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
-		//Load TheCartPress javascript
+		// Loads TheCartPress javascript
 		wp_enqueue_script( 'bootstrap' );
 
-		//Load TheCartPress css styles
+		// Loads TheCartPress css styles
 		wp_enqueue_style( 'tcp_default_style'	, plugins_url( 'css/tcp_default.css', __FILE__ ) );
 		wp_enqueue_style( 'tcp-bootstrap'		, plugins_url( 'css/bootstrap.min.css', __FILE__ ) );
 		wp_enqueue_style( 'tcp_buttons'			, plugins_url( 'css/tcp_buttons.css', __FILE__ ) );
 
-		//TheCartPress can be used as a catalogue, disabling all ecommerces features
+		// TheCartPress can be used as a catalogue, disabling all ecommerces features
 		if ( ! $this->get_setting( 'disable_ecommerce', false ) ) {
 
-			//TheCartPress css styles for the ShoppingCart and the Checkout. Can be disabled/enabled in Look&Feel/Theme Compatibilty
+			// TheCartPress css styles for the ShoppingCart and the Checkout. Can be disabled/enabled in Look&Feel/Theme Compatibilty
 			if ( $this->get_setting( 'load_default_shopping_cart_checkout_style', true ) ) {
 				wp_enqueue_style( 'tcp_shopping_cart_style'	, plugins_url( 'css/tcp_shopping_cart.css', __FILE__ ) );
 				wp_enqueue_style( 'tcp_checkout_style'		, plugins_url( 'css/tcp_checkout.css', __FILE__ ) );
 			}
 
-			//TheCartPress css styles for the BuyButton. Can be disabled/enabled in Look&Feel/Theme Compatibilty
+			// TheCartPress css styles for the BuyButton. Can be disabled/enabled in Look&Feel/Theme Compatibilty
 			if ( $this->get_setting( 'load_default_buy_button_style', true ) ) {
 				wp_enqueue_style( 'tcp_buy_button_style', plugins_url( 'css/tcp_buy_button.css', __FILE__ ) );
 			}
 
-			//Initializing checkout
+			// Initializing checkout
 			$this->loading_default_checkout_boxes();
 
 			//add_action( 'user_register', array( $this, 'user_register' ) );
@@ -248,25 +248,25 @@ class TheCartPress {
 			require_once( TCP_ADMIN_FOLDER		. 'PrintOrder.class.php' );
 		}
 
-		//feed: http://<site>/?feed=tcp-products
+		// feed: http://<site>/?feed=tcp-products
 
-		//Adding saleable post types
+		// Adding saleable post types
 		add_filter( 'tcp_get_saleable_post_types', array( $this, 'tcp_get_saleable_post_types' ) );
 
-		//Those hooks are disabled by ThemeCompatibility, developed since 1.3.2
+		// Those hooks are disabled by ThemeCompatibility, developed since 1.3.2
 		//add_filter( 'the_content'		, array( $this, 'the_content' ) );
 		//add_filter( 'the_content'		, array( $this, 'the_excerpt' ) );
 
-		//TheCartPress adds its own conditions to the main query
+		// TheCartPress adds its own conditions to the main query
 		add_action( 'pre_get_posts'		, array( $this, 'pre_get_posts' ) );
 		add_filter( 'get_pagenum_link'	, array( $this, 'get_pagenum_link' ) );
 
-		//TheCartPress css styles for the Catalogue. Can be disabled/enabkled in Look&Feel/Theme Compatibilty
+		// TheCartPress css styles for the Catalogue. Can be disabled/enabkled in Look&Feel/Theme Compatibilty
 		if ( $this->get_setting( 'load_default_loop_style', true ) ) {
 			wp_enqueue_style( 'tcp_loop_style', plugins_url( 'thecartpress/css/tcp_loop.css' ) );
 		}
 
-		//To allow to add 'init' actions to TheCartPress plugins or modules (since 1.3.2)
+		// To allow to add 'init' actions to TheCartPress plugins or modules (since 1.3.2)
 		do_action( 'tcp_init', $this );
 	}
 
@@ -1001,7 +1001,7 @@ class TheCartPress {
 			'post_content'		=> 'My Account',
 			'post_content'		=> '[tcp_my_account]',
 			'post_status'		=> 'publish',
-			'post_title'		=> __( 'My Account','tcp-fe' ),
+			'post_title'		=> __( 'My Account','tcp' ),
 			'post_type'			=> 'page',
 		);
 		$my_account_page_id = wp_insert_post( $page );

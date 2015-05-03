@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_ADMIN_FOLDER . 'AddressEdit.class.php' );
 $addressEdit = new TCPAddressEdit();
 $addressEdit->show();
-?>

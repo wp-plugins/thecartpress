@@ -58,17 +58,17 @@ class TCPBillingBox extends TCPCheckoutBox {
 	function after_action() {
 		global $thecartpress;
 
-		//Getting Saved Settings
+		// Getting Saved Settings
 		$settings		 = get_option( 'tcp_' . get_class( $this ), array() );
 		$use_as_shipping = isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
 
-		//Only if a new address is typed...
+		// Only if a new address is typed...
 		$selected_billing_address	= isset( $_REQUEST['selected_billing_address'] ) ? $_REQUEST['selected_billing_address'] : 'N';
 		if ( $selected_billing_address == 'new' || $selected_billing_address == 'N' ) {
-			//Getting defalt fields
+			// Getting default fields
 			$fields = $this->getDefaultFields();
 			
-			//Applying active and required properties
+			// Applying active and required properties
 			foreach( $fields as $id => $field ) {
 				$active = isset( $settings['active-' . $id] ) ? $settings['active-' . $id] : true;
 				if ( $active ) {
@@ -120,23 +120,23 @@ class TCPBillingBox extends TCPCheckoutBox {
 			} else {
 				$billing = array(
 					'selected_billing_address'	=> 'new',
-					'billing_firstname'			=> isset( $_REQUEST['billing_firstname'] ) ? $_REQUEST['billing_firstname'] : '',
-					'billing_lastname'			=> isset( $_REQUEST['billing_lastname'] ) ? $_REQUEST['billing_lastname'] : '',
-					'billing_company'			=> isset( $_REQUEST['billing_company'] ) ? $_REQUEST['billing_company'] : '',
-					'billing_tax_id_number'		=> isset( $_REQUEST['billing_tax_id_number'] ) ? $_REQUEST['billing_tax_id_number'] : '',
-					'billing_country'			=> isset( $_REQUEST['billing_country'] ) ? $_REQUEST['billing_country'] : '',
-					'billing_country_id'		=> isset( $_REQUEST['billing_country_id'] ) ? $_REQUEST['billing_country_id'] : 0,
-					'billing_region'			=> isset( $_REQUEST['billing_region'] ) ? $_REQUEST['billing_region'] : '',
-					'billing_region_id'			=> isset( $_REQUEST['billing_region_id'] ) ? $_REQUEST['billing_region_id'] : 0,
-					'billing_city'				=> isset( $_REQUEST['billing_city'] ) ? $_REQUEST['billing_city'] : '',
-					'billing_city_id'			=> isset( $_REQUEST['billing_city_id'] ) ? $_REQUEST['billing_city_id'] : 0,
-					'billing_street'			=> isset( $_REQUEST['billing_street'] ) ? $_REQUEST['billing_street'] : '',
-					'billing_street_2'			=> isset( $_REQUEST['billing_street_2'] ) ? $_REQUEST['billing_street_2'] : '',
-					'billing_postcode'			=> isset( $_REQUEST['billing_postcode'] ) ? str_replace( ' ' , '', $_REQUEST['billing_postcode'] ) : '',
-					'billing_telephone_1'		=> isset( $_REQUEST['billing_telephone_1'] ) ? $_REQUEST['billing_telephone_1'] : '',
-					'billing_telephone_2'		=> isset( $_REQUEST['billing_telephone_2'] ) ? $_REQUEST['billing_telephone_2'] : '',
-					'billing_fax'				=> isset( $_REQUEST['billing_fax'] ) ? $_REQUEST['billing_fax'] : '',
-					'billing_email'				=> isset( $_REQUEST['billing_email'] ) ? $_REQUEST['billing_email'] : '',
+					'billing_firstname'			=> isset( $_REQUEST['billing_firstname'] )		? sanitize_text_field( $_REQUEST['billing_firstname'] ) : '',
+					'billing_lastname'			=> isset( $_REQUEST['billing_lastname'] )		? sanitize_text_field( $_REQUEST['billing_lastname'] ) : '',
+					'billing_company'			=> isset( $_REQUEST['billing_company'] )		? sanitize_text_field( $_REQUEST['billing_company'] ) : '',
+					'billing_tax_id_number'		=> isset( $_REQUEST['billing_tax_id_number'] )	? sanitize_text_field( $_REQUEST['billing_tax_id_number'] ) : '',
+					'billing_country'			=> isset( $_REQUEST['billing_country'] )		? sanitize_text_field( $_REQUEST['billing_country'] ) : '',
+					'billing_country_id'		=> isset( $_REQUEST['billing_country_id'] )		? sanitize_text_field( $_REQUEST['billing_country_id'] ) : 0,
+					'billing_region'			=> isset( $_REQUEST['billing_region'] )			? sanitize_text_field( $_REQUEST['billing_region'] ) : '',
+					'billing_region_id'			=> isset( $_REQUEST['billing_region_id'] )		? sanitize_text_field( $_REQUEST['billing_region_id'] ) : 0,
+					'billing_city'				=> isset( $_REQUEST['billing_city'] )			? sanitize_text_field( $_REQUEST['billing_city'] ) : '',
+					'billing_city_id'			=> isset( $_REQUEST['billing_city_id'] )		? sanitize_text_field( $_REQUEST['billing_city_id'] ) : 0,
+					'billing_street'			=> isset( $_REQUEST['billing_street'] )			? sanitize_text_field( $_REQUEST['billing_street'] ) : '',
+					'billing_street_2'			=> isset( $_REQUEST['billing_street_2'] )		? sanitize_text_field( $_REQUEST['billing_street_2'] ) : '',
+					'billing_postcode'			=> isset( $_REQUEST['billing_postcode'] )		? str_replace( ' ' , '', sanitize_text_field( $_REQUEST['billing_postcode'] ) ) : '',
+					'billing_telephone_1'		=> isset( $_REQUEST['billing_telephone_1'] )	? sanitize_text_field( $_REQUEST['billing_telephone_1'] ) : '',
+					'billing_telephone_2'		=> isset( $_REQUEST['billing_telephone_2'] )	? sanitize_text_field( $_REQUEST['billing_telephone_2'] ) : '',
+					'billing_fax'				=> isset( $_REQUEST['billing_fax'] )			? sanitize_text_field( $_REQUEST['billing_fax'] ) : '',
+					'billing_email'				=> isset( $_REQUEST['billing_email'] )			? sanitize_text_field( $_REQUEST['billing_email'] ) : '',
 				);
 			}
 			$_SESSION['tcp_checkout']['billing'] = $billing;
@@ -147,7 +147,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 	function show() {
 		$use_as_shipping = isset( $settings['use_as_shipping'] ) ? $settings['use_as_shipping'] : false;
 		if ( isset( $_REQUEST['selected_billing_address'] ) ) {
-			$selected_billing_address = $_REQUEST['selected_billing_address'];
+			$selected_billing_address = sanitize_text_field( $_REQUEST['selected_billing_address'] );
 		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_address'] ) ) {
 			$selected_billing_address = $_SESSION['tcp_checkout']['billing']['selected_billing_address'];
 		} else {
@@ -167,7 +167,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 		if ( is_array( $addresses ) && count( $addresses ) > 0 ) {
 			if ( $selected_billing_address === false ) $selected_billing_address = 'Y';
 			if ( isset( $_REQUEST['selected_billing_id'] ) ) {
-				$default_address_id = $_REQUEST['selected_billing_id'];
+				$default_address_id = sanitize_text_field( $_REQUEST['selected_billing_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['selected_billing_id'] ) ) {
 				$default_address_id = $_SESSION['tcp_checkout']['billing']['selected_billing_id'];
 			} else {
@@ -199,10 +199,10 @@ class TCPBillingBox extends TCPCheckoutBox {
 				?><?php elseif ( is_array( $addresses ) && count( $addresses ) > 0 ) :
 					?>style="display:none"<?php
 				endif;?>><?php
-			//Getting defalt fields
+			// Getting default fields
 			$fields = $this->getDefaultFields();
 			if ( isset( $_REQUEST['billing_firstname'] ) ) {
-				$firstname = $_REQUEST['billing_firstname'];
+				$firstname = sanitize_text_field( $_REQUEST['billing_firstname'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_firstname'] ) ) {
 				$firstname = $_SESSION['tcp_checkout']['billing']['billing_firstname'];
 			} elseif ( $this->default_address ) {
@@ -215,7 +215,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_firstname']['value'] = $firstname;
 
 			if ( isset( $_REQUEST['billing_lastname'] ) ) {
-				$lastname = $_REQUEST['billing_lastname'];
+				$lastname = sanitize_text_field( $_REQUEST['billing_lastname'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_lastname'] ) ) {
 				$lastname = $_SESSION['tcp_checkout']['billing']['billing_lastname'];
 			} elseif ( $this->default_address ) {
@@ -228,7 +228,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_lastname']['value'] = $lastname;
 
 			if ( isset( $_REQUEST['billing_company'] ) ) {
-				$company = $_REQUEST['billing_company'];
+				$company = sanitize_text_field( $_REQUEST['billing_company'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_company'] ) ) {
 				$company = $_SESSION['tcp_checkout']['billing']['billing_company'];
 			} else {
@@ -237,7 +237,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_company']['value'] = $company;
 			
 			if ( isset( $_REQUEST['billing_tax_id_number'] ) ) {
-				$tax_id_number = $_REQUEST['billing_tax_id_number'];
+				$tax_id_number = sanitize_text_field( $_REQUEST['billing_tax_id_number'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'] ) ) {
 				$tax_id_number = $_SESSION['tcp_checkout']['billing']['billing_tax_id_number'];
 			} else {
@@ -246,7 +246,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_tax_id_number']['value'] = $tax_id_number;
 			
 			if ( isset( $_REQUEST['billing_street'] ) ) {
-				$street = $_REQUEST['billing_street'];
+				$street = sanitize_text_field( $_REQUEST['billing_street'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_street'] ) ) {
 				$street = $_SESSION['tcp_checkout']['billing']['billing_street'];
 			} else {
@@ -255,7 +255,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_street']['value'] = $street;
 
 			if ( isset( $_REQUEST['billing_street_2'] ) ) {
-				$street_2 = $_REQUEST['billing_street_2'];
+				$street_2 = sanitize_text_field( $_REQUEST['billing_street_2'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_street_2'] ) ) {
 				$street_2 = $_SESSION['tcp_checkout']['billing']['billing_street_2'];
 			} else {
@@ -264,14 +264,14 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_street_2']['value'] = $street_2;
 
 			if ( isset( $_REQUEST['billing_city_id'] ) ) {
-				$city_id = $_REQUEST['billing_city_id'];
+				$city_id = sanitize_text_field( $_REQUEST['billing_city_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_city_id'] ) ) {
 				$city_id = $_SESSION['tcp_checkout']['billing']['billing_city_id'];
 			} else {
 				$city_id = $this->default_address ? $this->default_address->city_id : '';
 			} //not ready TODO
 			if ( isset( $_REQUEST['billing_city'] ) ) {
-				$city = $_REQUEST['billing_city'];
+				$city = sanitize_text_field( $_REQUEST['billing_city'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_city'] ) ) {
 				$city = $_SESSION['tcp_checkout']['billing']['billing_city'];
 			} else {
@@ -280,14 +280,14 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_city']['value'] = $city;
 
 			if ( isset( $_REQUEST['billing_region_id'] ) ) {
-				$region_id = $_REQUEST['billing_region_id'];
+				$region_id = sanitize_text_field( $_REQUEST['billing_region_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_region_id'] ) ) {
 				$region_id = $_SESSION['tcp_checkout']['billing']['billing_region_id'];
 			} else {
 				$region_id = $this->default_address ? $this->default_address->region_id : '';
 			}
 			if ( isset( $_REQUEST['billing_region'] ) ) {
-				$region = $_REQUEST['billing_region'];
+				$region = sanitize_text_field( $_REQUEST['billing_region'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_region'] ) ) {
 				$region = $_SESSION['tcp_checkout']['billing']['billing_region'];
 			} else {
@@ -296,7 +296,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_region_id']['value'] = $region_id;
 
 			if ( isset( $_REQUEST['billing_postcode'] ) ) {
-				$postcode = $_REQUEST['billing_postcode'];
+				$postcode = sanitize_text_field( $_REQUEST['billing_postcode'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_postcode'] ) ) {
 				$postcode = $_SESSION['tcp_checkout']['billing']['billing_postcode'];
 			} else {
@@ -305,7 +305,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_postcode']['value'] = $postcode;
 
 			if ( isset( $_REQUEST['billing_country_id'] ) ) {
-				$country_id = $_REQUEST['billing_country_id'];
+				$country_id = sanitize_text_field( $_REQUEST['billing_country_id'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_country_id'] ) ) {
 				$country_id = $_SESSION['tcp_checkout']['billing']['billing_country_id'];
 			} else {
@@ -314,7 +314,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_country_id']['value'] = $country_id;
 
 			if ( isset( $_REQUEST['billing_telephone_1'] ) ) {
-				$telephone_1 = $_REQUEST['billing_telephone_1'];
+				$telephone_1 = sanitize_text_field( $_REQUEST['billing_telephone_1'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_telephone_1'] ) ) {
 				$telephone_1 = $_SESSION['tcp_checkout']['billing']['billing_telephone_1'];
 			} else {
@@ -323,7 +323,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_telephone_1']['value'] = $telephone_1;
 			
 			if ( isset( $_REQUEST['billing_telephone_2'] ) ) {
-				$telephone_2 = $_REQUEST['billing_telephone_2'];
+				$telephone_2 = sanitize_text_field( $_REQUEST['billing_telephone_2'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_telephone_2'] ) ) {
 				$telephone_2 = $_SESSION['tcp_checkout']['billing']['billing_telephone_2'];
 			} else {
@@ -332,7 +332,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_telephone_2']['value'] = $telephone_2;
 			
 			if ( isset( $_REQUEST['billing_fax'] ) ) {
-				$fax = $_REQUEST['billing_fax'];
+				$fax = sanitize_text_field( $_REQUEST['billing_fax'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_fax'] ) ) {
 				$fax = $_SESSION['tcp_checkout']['billing']['billing_fax'];
 			} else {
@@ -341,7 +341,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$fields['billing_fax']['value'] = $fax;
 			
 			if ( isset( $_REQUEST['billing_email'] ) ) {
-				$email = $_REQUEST['billing_email'];
+				$email = sanitize_text_field( $_REQUEST['billing_email'] );
 			} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_email'] ) ) {
 				$email = $_SESSION['tcp_checkout']['billing']['billing_email'];
 			} elseif ( $this->default_address ) {
@@ -358,7 +358,7 @@ class TCPBillingBox extends TCPCheckoutBox {
 			$sorting = isset( $settings['sorting'] ) ? $settings['sorting'] : array();
 			//Applying active and required properties
 			foreach( $fields as $id => $field ) {
-				$active		= isset( $settings['active-' . $id] ) ? $settings['active-' . $id] : true;
+				$active = isset( $settings['active-' . $id] ) ? $settings['active-' . $id] : true;
 				if ( $active ) {
 					if ( isset( $settings['required-' . $id] ) ) {
 						$required = $settings['required-' . $id];
@@ -519,24 +519,31 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 	function showCountry( $id, $field ) {
 		$active			= isset( $field['active'] ) ? $field['active'] : true;
-		if ( ! $active ) return;
+		if ( ! $active ) {
+			return;
+		}
 		$required		= isset( $field['required'] ) ? $field['required'] : false;
 		$country_id		= $field['value']; ?>
 		<label for="billing_country_id"><?php _e( 'Country', 'tcp' ); ?>:<?php if ( $required ) echo '<em>*</em>'; ?></label>
 		<?php global $thecartpress;
-		//Default country
-		$country		= $thecartpress->get_setting( 'country', '' );
-		//Allowed countries
-		$billing_isos	= $thecartpress->get_setting( 'billing_isos', false );
-		//Getting allowed countries info
+
+		// Default country
+		$country = $thecartpress->get_setting( 'country', '' );
+
+		// Allowed countries
+		$billing_isos = $thecartpress->get_setting( 'billing_isos', false );
+
+		// Getting allowed countries info
 		if ( $billing_isos ) {
-			$countries	= TCPCountries::getSome( $billing_isos, tcp_get_current_language_iso() );
+			$countries = TCPCountries::getSome( $billing_isos, tcp_get_current_language_iso() );
 		} else {
-			$countries	= TCPCountries::getAll( tcp_get_current_language_iso() );
+			$countries = TCPCountries::getAll( tcp_get_current_language_iso() );
 		}
-		//Get current selected country (if available)
-		$country_bill	= $country_id;
-		//If no country selected, set the default country
+
+		// Get current selected country (if available)
+		$country_bill = $country_id;
+
+		// If no country selected, set the default country
 		if ( $country_bill == '' ) $country_bill = $country; ?>
 		<select id="billing_country_id" name="billing_country_id" class="form-control">
 		<?php foreach( $countries as $item ) { ?>
@@ -547,11 +554,13 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 	function showRegion( $id, $field ) {
 		$active		= isset( $field['active'] ) ? $field['active'] : true;
-		if ( ! $active ) return;
+		if ( ! $active ) {
+			return;
+		}
 		$required	= isset( $field['required'] ) ? $field['required'] : false;
 		$region_id	= $field['value'];
 		if ( isset( $_REQUEST['billing_region'] ) ) {
-			$region = $_REQUEST['billing_region'];
+			$region = sanitize_text_field( $_REQUEST['billing_region'] );
 		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_region'] ) ) {
 			$region = $_SESSION['tcp_checkout']['billing']['billing_region'];
 		} else {
@@ -573,11 +582,13 @@ class TCPBillingBox extends TCPCheckoutBox {
 
 	function showCity( $id, $field ) {
 		$active		= isset( $field['active'] ) ? $field['active'] : true;
-		if ( ! $active ) return;
+		if ( ! $active ) {
+			return;
+		}
 		$required	= isset( $field['required'] ) ? $field['required'] : false;
 		$city_id	= $field['value'];
 		if ( isset( $_REQUEST['billing_city'] ) ) {
-			$city	= $_REQUEST['billing_city'];
+			$city	= sanitize_text_field( $_REQUEST['billing_city'] );
 		} elseif ( isset( $_SESSION['tcp_checkout']['billing']['billing_city'] ) ) {
 			$city	= $_SESSION['tcp_checkout']['billing']['billing_city'];
 		} else {

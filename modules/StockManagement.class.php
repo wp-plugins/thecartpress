@@ -68,6 +68,7 @@ class TCPStockManagement {
 			add_action( 'tcp_admin_menu'								, array( $this, 'tcp_admin_menu' ) );
 
 			add_filter( 'tcp_get_dynamic_options'						, array( $this, 'tcp_get_dynamic_options' ), 10, 2 );
+
 			add_filter( 'tcp_custom_list_widget_args'					, array( $this, 'tcp_custom_list_widget_args' ) );
 			add_filter( 'tcp_custom_values_get_other_values'			, array( $this, 'tcp_custom_values_get_other_values' ) );
 		}
@@ -672,12 +673,13 @@ function show_hide_stock_management() {
 
 	function tcp_custom_values_get_other_values( $other_values ) {
 		$other_values['tcp_stock'] = array(
-			'label' => __( 'Units in stock', 'tcp' ),
-			'callback' => 'tcp_get_the_stock_label',
+			'label'		=> __( 'Units in stock', 'tcp' ),
+			'callback'	=> 'tcp_get_the_stock_label',
 		);
+
 		$other_values['tcp_init_stock'] = array(
-			'label' => __( 'Initial stock', 'tcp' ),
-			'callback' => 'tcp_get_the_initial_stock',
+			'label'		=> __( 'Initial stock', 'tcp' ),
+			'callback'	=> 'tcp_get_the_initial_stock',
 		);
 		return $other_values;
 	}

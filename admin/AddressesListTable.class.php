@@ -19,7 +19,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'AddressesListTable' ) ) {
+if ( ! class_exists( 'AddressesListTable' ) ) :
 
 /*require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 require_once( TCP_DAOS_FOLDER . 'OrdersDetails.class.php' );
@@ -35,8 +35,11 @@ class AddressesListTable extends WP_List_Table {
 		parent::__construct( array(
 			'plural' => 'Addresses',
 		) );
-		if ( is_admin() ) $this->admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
-		else $this->admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
+		if ( is_admin() ) {
+			$this->admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
+		} else {
+			$this->admin_path = get_permalink( get_option( 'tcp_address_edit_page_id' ) );
+		}
 	}
 
 	function ajax_user_can() {
@@ -48,23 +51,33 @@ class AddressesListTable extends WP_List_Table {
 	}
 
 	function prepare_items() {
-		if ( ! is_user_logged_in() ) return;
-		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : '';
-		$search_by = isset( $_REQUEST['search_by'] ) ? $_REQUEST['search_by'] : '';
-		$per_page = apply_filters( 'tcp_addresses_per_page', 15 );
-		$paged = $this->get_pagenum();
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+		$type		= isset( $_REQUEST['type'] )		? sanitize_text_field( $_REQUEST['type'] ) : '';
+		$search_by	= isset( $_REQUEST['search_by'] )	? sanitize_text_field( $_REQUEST['search_by'] ) : '';
+		$per_page	= apply_filters( 'tcp_addresses_per_page', 15 );
+		$paged		= $this->get_pagenum();
 		if ( current_user_can( 'tcp_edit_addresses' ) ) {
 			//$search_by //TODO
-			if ( $type == 'billing') $this->items = Addresses::getCustomerDefaultBillingAddresses();
-			elseif ( $type == 'shipping') $this->items = Addresses::getCustomerDefaultShippingAddresses();
-			else $this->items = Addresses::getCustomerAddresses();
+			if ( $type == 'billing' ) {
+				$this->items = Addresses::getCustomerDefaultBillingAddresses();
+			} elseif ( $type == 'shipping' ) {
+				$this->items = Addresses::getCustomerDefaultShippingAddresses();
+			} else {
+				$this->items = Addresses::getCustomerAddresses();
+			}
 		} else {
 			global $current_user;
 			get_currentuserinfo();
 			//$search_by //TODO
-			if ( $type == 'billing') $this->items = Addresses::getCustomerDefaultBillingAddresses( $current_user->ID );
-			elseif ( $type == 'shipping') $this->items = Addresses::getCustomerDefaultShippingAddresses( $current_user->ID );
-			else $this->items = Addresses::getCustomerAddresses( $current_user->ID );
+			if ( $type == 'billing' ) {
+				$this->items = Addresses::getCustomerDefaultBillingAddresses( $current_user->ID );
+			} elseif ( $type == 'shipping' ) {
+				$this->items = Addresses::getCustomerDefaultShippingAddresses( $current_user->ID );
+			} else {
+				$this->items = Addresses::getCustomerAddresses( $current_user->ID );
+			}
 		}
 		$total_items = count( $this->items );
 		$total_pages = $total_items / $per_page;
@@ -86,31 +99,33 @@ class AddressesListTable extends WP_List_Table {
 	function get_column_info() {
 		$columns = array();
 		//$orders_columns['cb'] = '<input type="checkbox" />';
-		$columns['adress_name'] = _x( 'Address', 'column name', 'tcp' );
-		$columns['name'] = _x( 'Name', 'column name', 'tcp' );
-		$columns['street'] = _x( 'Street', 'column name', 'tcp' );
+		$columns['adress_name']		= _x( 'Address', 'column name', 'tcp' );
+		$columns['name']			= _x( 'Name', 'column name', 'tcp' );
+		$columns['street']			= _x( 'Street', 'column name', 'tcp' );
 		$columns['default_billing'] = _x( 'Default', 'column name', 'tcp' );
 		$columns = apply_filters( 'tcp_manage_addresses_columns', $columns );
 		return array( $columns, array(), array() );
 	}
 
 	function column_cb( $item ) {
-		?><input type="checkbox" name="address[]" value="<?php echo $item->address_id; ?>" /><?php
+?>
+<input type="checkbox" name="address[]" value="<?php echo $item->address_id; ?>" />
+<?php
 	}
 
 	function column_adress_name( $item ) {
 		echo $item->address_id, ' ', $item->name; ?>
-		<div>
-			<a href="<?php echo add_query_arg( 'address_id', $item->address_id, $this->admin_path ); ?>"><?php _e( 'edit', 'tcp' ); ?></a> | <a href="#" onclick="jQuery('div.delete_address').hide();jQuery('#delete_<?php echo $item->address_id; ?>').show();return false;" class="delete"><?php _e( 'delete', 'tcp' ); ?></a>
-		</div>
-		<div id="delete_<?php echo $item->address_id; ?>" class="delete_address" style="display:none; border: 1px dotted orange; padding: 2px">
-			<form method="post" name="frm_delete_address_<?php echo $item->address_id; ?>" action="">
-				
-				<p><?php _e( 'Do you really want to delete this address?', 'tcp' ); ?></p>
-				<a href="#" class="delete_address" id="<?php echo $item->address_id; ?>"><?php _e( 'Yes' , 'tcp' ); ?></a> |
-				<a href="#" class="hide_delete_panel" id="<?php echo $item->address_id; ?>"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
-			</form>
-		</div><?php
+<div>
+	<a href="<?php echo add_query_arg( 'address_id', $item->address_id, $this->admin_path ); ?>"><?php _e( 'edit', 'tcp' ); ?></a> | <a href="#" onclick="jQuery('div.delete_address').hide();jQuery('#delete_<?php echo $item->address_id; ?>').show();return false;" class="delete"><?php _e( 'delete', 'tcp' ); ?></a>
+</div>
+<div id="delete_<?php echo $item->address_id; ?>" class="delete_address" style="display:none; border: 1px dotted orange; padding: 2px">
+	<form method="post" name="frm_delete_address_<?php echo $item->address_id; ?>" action="">
+		<p><?php _e( 'Do you really want to delete this address?', 'tcp' ); ?></p>
+		<a href="#" class="delete_address" id="<?php echo $item->address_id; ?>"><?php _e( 'Yes' , 'tcp' ); ?></a> |
+		<a href="#" class="hide_delete_panel" id="<?php echo $item->address_id; ?>"><?php _e( 'No, I don\'t' , 'tcp' ); ?></a>
+	</form>
+</div>
+<?php
 	}
 
 	function column_name( $item ) {
@@ -138,7 +153,8 @@ class AddressesListTable extends WP_List_Table {
 	
 	function extra_tablenav( $which ) {
 		if ( 'top' != $which ) return;
-		$type = isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : ''; ?>
+
+		$type = isset( $_REQUEST['type'] ) ? sanitize_text_field( $_REQUEST['type'] ) : ''; ?>
 		<label for="type"><?php _e( 'Type', 'tcp' );?>:</label>
 		<select class="postform" id="type" name="type">
 			<option value="" <?php selected( '', $type );?>><?php _e( 'all', 'tcp' );?></option>
@@ -155,7 +171,7 @@ class AddressesListTable extends WP_List_Table {
 class TCPAddressesList {
 	function show( $echo = true ) {
 		if ( isset( $_POST['tcp_delete_address'] ) && isset( $_POST['address_id'] ) ) {
-			$address_id = $_POST['address_id'];
+			$address_id = tcp_input_number( $_POST['address_id'] );
 			Addresses::delete( $address_id );
 		}
 		$admin_path = TCP_ADMIN_PATH . 'AddressEdit.php';
@@ -167,8 +183,7 @@ class TCPAddressesList {
 	<input type="hidden" name="tcp_delete_address" value="yes" />
 </form>
 <form id="posts-filter" method="get" action="">
-<input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
-
+<input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? tcp_input_number( $_REQUEST['page'] ) : 0; ?>" />
 				
 <div class="wrap">
 	<?php screen_icon( 'tcp-addresses-list' ); ?><h2><?php _e( 'Addresses', 'tcp' );?></h2>
@@ -198,4 +213,4 @@ class TCPAddressesList {
 		return $out;
 	}
 }
-} // class_exists check
+endif; // class_exists check

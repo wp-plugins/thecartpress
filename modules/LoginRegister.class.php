@@ -293,15 +293,15 @@ class TCPLoginRegister {
 	 * Displays a login/register form.
 	 * Used by tcp_my_account shortcode.
 	 *
-	 * @param array $atts
+	 * @param array $atts, login => allow login form, register => allow registration form
 	 */
 	function tcp_my_account( $atts ) {
 		extract( shortcode_atts( array(
 			'login'		=> 'true',
 			'register'	=> 'true',
 		), $atts ) );
-		$login		= $login === 'true' ? $login = true : $login = false;
-		$register	= $register === 'true' ? $register = true : $register = false;
+		$login		= $login === 'true';// ? $login = true : $login = false;
+		$register	= $register === 'true';// ? $register = true : $register = false;
 		ob_start(); ?>
 <div class="row-fluid">
 	<div class="span<?php echo get_option( 'users_can_register' ) ? '6' : '12'; ?>">
