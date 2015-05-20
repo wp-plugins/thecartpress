@@ -184,6 +184,11 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 		else return false;
 	}
 
+	public function get_shipping_street_2() {
+		if ( $this->order ) return stripslashes( $this->order->shipping_street_2 );
+		else return false;
+	}
+
 	public function get_shipping_postcode() {
 		if ( $this->order ) return stripslashes( $this->order->shipping_postcode );
 		else return false;
@@ -256,6 +261,11 @@ class TCP_CartSourceDB implements TCP_ICartSource {
 
 	public function get_billing_street() {
 		if ( $this->order ) return stripslashes( $this->order->billing_street );
+		else return false;
+	}
+
+	public function get_billing_street_2() {
+		if ( $this->order ) return stripslashes( $this->order->billing_street_2 );
 		else return false;
 	}
 

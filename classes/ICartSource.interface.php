@@ -48,6 +48,7 @@ interface TCP_ICartSource {
 	public function get_shipping_lastname(); 
 	public function get_shipping_company();
 	public function get_shipping_street();
+	public function get_shipping_street_2();
 	public function get_shipping_postcode();
 	public function get_shipping_city();
 	public function get_shipping_region();
@@ -64,6 +65,7 @@ interface TCP_ICartSource {
 	public function get_billing_company();
 	public function get_billing_tax_id_number();
 	public function get_billing_street();
+	public function get_billing_street_2();
 	public function get_billing_postcode();
 	public function get_billing_city();
 	public function get_billing_region();

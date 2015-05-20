@@ -70,7 +70,8 @@ if ( $source->see_address() ) : ?>
 				</li>
 				<?php endif; ?>
 				<li class="shipping_info">
-					<?php echo $source->get_shipping_street(); ?>
+					<?php echo $source->get_shipping_street();
+					if ( strlen( $source->get_shipping_street_2() ) > 0 ) echo '<br/>', $source->get_shipping_street_2(); ?>
 				</li>
 				<li class="shipping_info">
 					<?php $out = array();
@@ -119,7 +120,8 @@ if ( $source->see_address() ) : ?>
 				<?php endif; ?>
 
 				<li class="billing_info">
-					<?php echo $source->get_billing_street(); ?>
+					<?php echo $source->get_billing_street();
+					if ( strlen( $source->get_billing_street_2() ) > 0 ) echo '<br/>', $source->get_billing_street_2(); ?>
 				</li>
 				<li class="billing_info">
 					<?php $out = array();
@@ -166,7 +168,8 @@ if ( $source->see_address() ) : ?>
 				</li>
 		<?php endif; ?>
 				<li class="billing_info">
-					<?php echo $source->get_billing_street(); ?>
+					<?php echo $source->get_billing_street();
+					if ( strlen( $source->get_billing_street_2() ) > 0 ) echo '<br/>', $source->get_billing_street_2(); ?>
 				</li>
 				<li class="billing_info">
 					<?php $out = array();

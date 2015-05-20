@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once( TCP_CLASSES_FOLDER	. 'OrderPage.class.php' );
 
 $order_id	= isset( $_REQUEST['order_id'] )	? $_REQUEST['order_id'] : '';
@@ -128,7 +131,7 @@ function tcp_order_shipping_metabox() {
 <?php endif; ?>
 	<tr valign="top">
 		<td class="shipping_info">
-			<?php echo $order->shipping_street; ?><br/>
+			<?php echo $order->shipping_street; echo strlen( $order->shipping_street_2 ) > 0 ? '<br/>' . $order->shipping_street_2 : ''; ?><br/>
 		</td>
 	</tr>
 	<tr valign="top">
@@ -196,7 +199,7 @@ function tcp_order_billing_metabox() {
 <?php endif; ?>
 	<tr valign="top">
 		<td class="billing_info">
-			<?php echo $order->billing_street; ?>
+			<?php echo $order->billing_street; echo strlen( $order->billing_street_2 ) > 0 ? '<br/>' . $order->billing_street_2 : ''; ?>
 		</td>
 	</tr>
 	<tr valign="top">

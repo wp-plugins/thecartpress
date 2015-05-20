@@ -71,9 +71,11 @@ if ( ! isset( $source ) ) return; ?>
 			<tr valign="top">
 				<td class="shipping_info">
 					<?php echo $source->get_shipping_street(); ?><br/>
+					<?php echo $source->get_shipping_street_2(); ?><br/>
 				</td>
 				<td class="billing_info">
-					<?php echo $source->get_billing_street(); ?>
+					<?php echo $source->get_billing_street(); ?><br/>
+					<?php echo $source->get_billing_street_2(); ?>
 				</td>
 			</tr>
 			<tr valign="top">
@@ -162,7 +164,8 @@ if ( ! isset( $source ) ) return; ?>
 		<?php endif; ?>
 			<tr valign="top">
 				<td class="billing_info">
-					<?php echo $source->get_billing_street(); ?>
+					<?php echo $source->get_billing_street(); ?><br/>
+					<?php echo $source->get_billing_street_2(); ?>
 				</td>
 			</tr>
 			<tr valign="top">

@@ -306,7 +306,7 @@ class TCPPayPal extends TCP_Plugin {
 		$p->add_field( 'address_override'	, 1 );
 		$p->add_field( 'first_name'			, $order->billing_firstname ); //utf8_decode
 		$p->add_field( 'last_name'			, $order->billing_lastname );
-		$p->add_field( 'address1'			, $order->billing_street );
+		$p->add_field( 'address1'			, $order->billing_street . ' ' . $order->billing_street_2);
 		$p->add_field( 'city'				, $order->billing_city );
 		$p->add_field( 'state'				, $order->billing_region_id );
 		$p->add_field( 'zip'				, $order->billing_postcode );

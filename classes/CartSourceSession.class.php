@@ -182,6 +182,11 @@ class TCPCartSourceSession implements TCP_ICartSource {
 		else return false;
 	}
 
+	public function get_shipping_street_2() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['shipping']['shipping_street_2'];
+		else return false;
+	}
+
 	public function get_shipping_postcode() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['shipping']['shipping_postcode'];
 		else return false;
@@ -254,6 +259,11 @@ class TCPCartSourceSession implements TCP_ICartSource {
 
 	public function get_billing_street() {
 		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_street'];
+		else return false;
+	}
+
+	public function get_billing_street_2() {
+		if ( isset( $_SESSION['tcp_checkout'] ) ) return $_SESSION['tcp_checkout']['billing']['billing_street_2'];
 		else return false;
 	}
 

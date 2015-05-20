@@ -153,23 +153,23 @@ class TCPOrdersListTable extends WP_List_Table {
 
 	function column_shipping_method( $item ) {
 		echo $item->shipping_method;
-		echo '<br/>', $item->shipping_street, '<br/>';
+		echo '<br/>', $item->shipping_street, ' ' , $item->shipping_street_2, '<br/>';
 		if ( strlen( $item->shipping_city ) > 0 ) echo $item->shipping_city;
 		if ( strlen( $item->shipping_postcode ) > 0 ) echo ', ', $item->shipping_postcode;
 		echo ' (', $item->shipping_country_id, ')';
 		printf ('<a href="%s" target="_blank"><span class="glyphicon glyphicon-map-marker"></span></a>',
-			"http://maps.google.com/maps?&q={$item->shipping_street},+{$item->shipping_city},+{$item->shipping_postcode},+{$item->shipping_country_id}&z=16"
+			"http://maps.google.com/maps?&q={$item->shipping_street} {$item->shipping_street_2},+{$item->shipping_city},+{$item->shipping_postcode},+{$item->shipping_country_id}&z=16"
 		);
 	}
 
 	function column_payment_name( $item ) {
 		echo $item->payment_name;
-		echo '<br/>', $item->billing_street, '<br/>';
+		echo '<br/>', $item->billing_street, ' ', $item->billing_street_2, '<br/>';
 		if ( strlen( $item->billing_city ) > 0 ) echo $item->billing_city;
 		if ( strlen( $item->billing_postcode ) > 0 ) echo ', ', $item->billing_postcode;
 		echo ' (', $item->billing_country_id, ')';
 		printf ('<a href="%s" target="_blank"><span class="glyphicon glyphicon-map-marker"></span></a>',
-			"http://maps.google.com/maps?&q={$item->billing_street},+{$item->billing_city},+{$item->billing_postcode},+{$item->billing_country_id}&z=16"
+			"http://maps.google.com/maps?&q={$item->billing_street} {$item->billing_street_2},+{$item->billing_city},+{$item->billing_postcode},+{$item->billing_country_id}&z=16"
 		);
 	}
 
@@ -236,12 +236,12 @@ class TCPOrdersList {
 		$ordersListTable->prepare_items(); ?>
 <form id="posts-filter" method="get" action="">
 <input type="hidden" name="page" value="<?php echo isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 0; ?>" />
-<div class="wrap tcpf">
+
 	<?php screen_icon( 'tcp-orders-list' ); ?><h2><?php _e( 'Orders', 'tcp' );?></h2>
 	<div class="clear"></div>
 	<?php $ordersListTable->search_box( __( 'Search Orders', 'tcp' ), 'order' ); ?>
 	<?php $ordersListTable->display(); ?>
-</div>
+
 </form>
 		<?php $out = ob_get_clean();
 		if ( $echo ) echo $out;

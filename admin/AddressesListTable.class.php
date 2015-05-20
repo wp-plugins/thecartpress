@@ -133,7 +133,7 @@ class AddressesListTable extends WP_List_Table {
 	}
 
 	function column_street( $item ) {
-		echo $item->street . ' ' . $item->city . '<br/>' . $item->region . ' '. $item->postcode ;
+		echo $item->street . ' ' . $item->street_2 . ' ' . $item->city . '<br/>' . $item->region . ' '. $item->postcode ;
 	}
 	
 	function column_default_billing( $item ) {

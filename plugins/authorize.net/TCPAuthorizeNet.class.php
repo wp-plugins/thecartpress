@@ -148,7 +148,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 		$amount			= apply_filters( 'tcp_authorized_net_amount', $amount, $order, $data );
 		$fingerprint	= AuthorizeNetSIM_Form::getFingerprint( $api_login_id, $transaction_key, $amount, $fp_sequence, $fp_timestamp );
 		$fields = array(
-			'x_address'			=> $order->billing_street,
+			'x_address'			=> $order->billing_street . ' ' . $order->billing_street_2,
 			'x_amount'			=> $amount,
 //			'x_background_url'	=> '',
 //			'x_card_num'		=> '',
@@ -193,7 +193,7 @@ class TCPAuthorizeNet extends TCP_Plugin {
 			'x_relay_response'	=> 'true',
 			'x_relay_url'		=> $notify_url,
 //			'x_rename'			=> '',
-			'x_ship_to_address'	=> $order->shipping_street,
+			'x_ship_to_address'	=> $order->shipping_street . ' ' . $order->shipping_street_2,
 			'x_ship_to_company'	=> $order->shipping_company,
 			'x_ship_to_country'	=> $order->shipping_country_id,
 			'x_ship_to_city'	=> $order->shipping_city,
