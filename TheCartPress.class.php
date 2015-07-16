@@ -3,7 +3,7 @@
 Plugin Name: TheCartPress
 Plugin URI: http://thecartpress.com
 Description: Professional WordPress eCommerce Plugin. Use it as Shopping Cart, Catalog or Framework.
-Version: 1.4.0
+Version: 1.4.1
 Author: TheCartPress team
 Author URI: http://thecartpress.com
 Text Domain: tcp
@@ -78,8 +78,6 @@ class TheCartPress {
 	 * @see thecartpress()->register_saleable_post_type
 	 */
 	private $saleable_post_types = array();
-
-	//private $globals = array();
 
 	/**
 	 * @var TheCartPress The one true TheCartPress
@@ -325,16 +323,16 @@ class TheCartPress {
 		wp_register_script( 'tcp_scripts', plugins_url( 'js/tcp_admin_scripts.js', __FILE__ ) );
 		wp_enqueue_script( 'tcp_scripts' );
 
-		//TheCartPress css style for the backend
+		// TheCartPress css style for the backend
 		wp_enqueue_style( 'tcp_dashboard_style', plugins_url( 'css/tcp_dashboard.css', __FILE__ ) );
 
-		//TheCartPress can be used as a catalogue, disabling all ecommerces features
+		// TheCartPress can be used as a catalogue, disabling all ecommerces features
 		if ( ! $this->get_setting( 'disable_ecommerce', false ) ) {
 
-			//To check the plugin, if core pages have been removed...
+			// To check the plugin, if core pages have been removed...
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
-			//default notices
+			// Default notices
 			tcp_add_template_class( 'tcp_shopping_cart_empty'		, __( 'This notice will be showed at the Shopping Cart or Checkout page, if the Shopping Cart is empty', 'tcp' ) );
 			tcp_add_template_class( 'tcp_shopping_cart_bottom'		, __( 'This notice will be showed at Shopping cart bottom', 'tcp' ) );
 
@@ -353,13 +351,13 @@ class TheCartPress {
 			tcp_add_template_class( 'tcp_checkout_order_cart'		, __( 'This notice will be showed at the Checkout Resume Cart', 'tcp' ) );
 			tcp_add_template_class( 'tcp_checkout_billing_notice'	, __( 'This notice will be showed at Billing address in Checkout', 'tcp' ) );
 
-			//Adding ThecartPress roles (merchant and customer)
+			// Adding ThecartPress roles (merchant and customer)
 			add_filter( 'tcp_get_default_roles', array( $this, 'tcp_get_default_roles' ) );
 		}
-		//Checks for updates between TheCartPress versions.
+		// Checks for updates between TheCartPress versions.
 		$this->update_version();
 
-		//To allow to add 'admin_init' actions to TheCartPress plugins or modules (since 1.3.2)
+		// To allow to add 'admin_init' actions to TheCartPress plugins or modules (since 1.3.2)
 		do_action( 'tcp_admin_init', $this );
 	}
 

@@ -178,7 +178,7 @@ class TCPCopyOrder {
 TCPCopyOrder::initModule();
 
 /**
- * Template function to ouyput a Copy order button
+ * Template function to output a Copy order button
  *
  * @param $order_id
  */

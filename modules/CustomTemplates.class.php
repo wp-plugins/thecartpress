@@ -174,13 +174,27 @@ function tcp_get_custom_templates() {
 	return $custom_templates;
 }
 
+/**
+ * Returns the custom template of te given post
+ *
+ * @param $post_id, post identifier
+ * @return template
+ */
 function tcp_get_custom_template( $post_id ) {
 	return get_post_meta( $post_id, 'tcp_custom_template', true );
 }
 
+/**
+ * Sets a custom template for a post or custom post
+ *
+ * @param $post_id, post identifier
+ * @param $template, template to set
+ */
 function tcp_set_custom_template( $post_id, $template = '' ) {
 	delete_post_meta( $post_id, 'tcp_custom_template' );
-	if ( ! $template || $template == '' ) return;
+	if ( ! $template || $template == '' ) {
+		return;
+	}
 	update_post_meta( $post_id, 'tcp_custom_template', $template );
 }
 

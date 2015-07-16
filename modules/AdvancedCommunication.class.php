@@ -337,11 +337,11 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 		$order_id	= isset( $_REQUEST['order_id'] ) ? $_REQUEST['order_id'] : false;
 		$subject	= isset( $_REQUEST['subject'] ) ? stripslashes( $_REQUEST['subject'] ) : sprintf( __( 'Order ID: %s', 'tcp' ), $order_id );
 		$copy_to_me = isset( $_REQUEST['copy_to_me'] ) ? $_REQUEST['copy_to_me'] : false;
-		
-		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
-		if ( !Orders::is_owner( $order_id, get_current_user_id() ) ) {
+
+		if ( !current_user_can( 'manage_options' ) && !apply_filters( 'tcp_send_email_allowed', true, $order_id) ) {
 			die( 'Error, sending not allowed' );
 		}
+		require_once( TCP_DAOS_FOLDER . 'Orders.class.php' );
 		$order		= Orders::get( $order_id );
 		$to			= isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : $order->billing_email;
 		//global $thecartpress;
@@ -430,7 +430,8 @@ jQuery( 'input[name="tcp_order_edit_email_return"]' ).click( function ( event ) 
 		if ( $post_id === false ) {
 			die( 'Error, no post id param' );
 		}
-		if ( !current_user_can( 'delete_post', $post_id ) ) {
+		//if ( !current_user_can( 'delete_post', $post_id ) ) {
+		if ( !current_user_can( 'manage_options' ) && !apply_filters( 'tcp_remove_notice_allowed', true, $order_id) ) {
 			die( 'Error, permission denied' );
 		}
 		if ( wp_delete_post( $post_id, true ) )	{

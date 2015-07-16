@@ -58,7 +58,7 @@ class TCPThemeCompat {
 
 			$wp_query = new WP_Query( apply_filters( 'tcp_theme_compat_catalogue_wp_query_args', $args ) );
 
-			//Resets the global query again
+			// Resets the global query again
 			$this->theme_compatibility_reset_post( array(
 				'post_type'		=> 'tcp_product',
 				'post_title'	=> $post->post_title,
@@ -66,29 +66,29 @@ class TCPThemeCompat {
 				'ID'			=> tcp_get_the_catalogue_page_id(),
 			) );
 
-			//Adds a new 'the_content' hook
+			// Adds a new 'the_content' hook
 			add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			return $template;
 		}
 
-		//Only apply this hierarchy for saleable post types or taxonomies
+		// Only apply this hierarchy for saleable post types or taxonomies
 		if ( ! is_author() && ! tcp_is_saleable_post_type( $post->post_type ) ) return $template;
 
-		//Displaying a saleable post (a product)
+		// Displaying a saleable post (a product)
 		if ( is_single() ) {
-			//Template hierarchy
-			//TODO Custom templates...
-			//If the theme has any of this templates, Theme compatibility is deactivate
+			// Template hierarchy
+			// If the theme has any of this templates, Theme compatibility is deactivate
 			$template_names = apply_filters( 'tcp_theme_compat_single_saleable_template_names', array(
+				wp_basename( tcp_get_custom_template( $post->ID ) ), // Custom template
 				'single-' . $post->post_type . '.php',
 				'single-tcp_saleable.php',
 			), $post );
 
-			//Searching for a template
+			// Searching for a template
 			$template = locate_template( $template_names );
 
-			//If the theme hasn't the previous templates then TheCartPress loads one of this
-			//and Theme compatibility will inject the content
+			// If the theme hasn't the previous templates then TheCartPress loads one of them
+			// and Theme compatibility will inject the content
 			if ( strlen( $template ) == 0 ) {
 				$template_names = apply_filters( 'tcp_archive_saleable_default_template_names', array(
 					'thecartpress.php',
@@ -125,16 +125,16 @@ class TCPThemeCompat {
 				) );
 				$template = locate_template( $template_names );
 
-				//Adds a new 'the_content' hook
+				// Adds a new 'the_content' hook
 				add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			}
 		} elseif ( is_tax() ) {
 			$taxonomy	= get_query_var( 'taxonomy' );
 			$term		= get_query_var( 'term' );
 
-			//Template hierarchy
+			// Template hierarchy
 			//TODO Custom templates...
-			//If the theme has any of this templates, Theme compatibility is deactivate
+			// If the theme has any of this templates, Theme compatibility is deactivate
 			$template_names = apply_filters( 'tcp_theme_compat_archive_saleable_template_names', array(
 				'taxonomy-' . $taxonomy . '-'. $term . '.php',
 				'taxonomy-' . $taxonomy . '.php',
@@ -143,11 +143,11 @@ class TCPThemeCompat {
 				'taxonomy.php',
 			), $post );
 
-			//Searching for a template
+			// Searching for a template
 			$template = locate_template( $template_names );
 
-			//If the theme hasn't the previous templates then TheCartPress loads one of this
-			//and Theme compatibility will inject the content
+			// If the theme hasn't the previous templates then TheCartPress loads one of them
+			// and Theme compatibility will inject the content
 			if ( substr( $template, -strlen( 'thecartpress.php' ) ) === 'thecartpress.php' || strlen( $template ) == 0 ) {
 				$template_names = apply_filters( 'tcp_theme_compat_taxonomy_saleable_default_template_names', array(
 					'thecartpress.php',
@@ -171,23 +171,23 @@ class TCPThemeCompat {
 				);
 				$template = locate_template( $template_names );
 
-				//Adds a new 'the_content' hook
+				// Adds a new 'the_content' hook
 				add_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 			}
 		} elseif ( is_archive() && !is_author() ) {
-			//Template hierarchy
+			// Template hierarchy
 			//TODO Custom templates...
-			//If the theme has any of this templates, Theme compatibility is deactivate
+			// If the theme has any of this templates, Theme compatibility is deactivate
 			$template_names = apply_filters( 'tcp_theme_compat_archive_saleable_template_names', array(
 				'archive-' . $post->post_type . '.php',
 				'archive-tcp_saleable.php',
 			), $post );
 
-			//Searching for a template
+			// Searching for a template
 			$template = locate_template( $template_names );
 
-			//If the theme hasn't the previous templates then TheCartPress loads one of this
-			//and Theme compatibility will inject the content
+			// If the theme hasn't the previous templates then TheCartPress loads one of them
+			// and Theme compatibility will inject the content
 			if ( strlen( $template ) == 0 ) {
 				$template_names = apply_filters( 'tcp_theme_compat_archive_saleable_default_template_names', array(
 					'thecartpress.php',
@@ -224,7 +224,7 @@ class TCPThemeCompat {
 	function the_content( $content ) {
 		global $post;
 
-		//Removes this "the_content" hook, very important to avoid recursion
+		// Removes this "the_content" hook, very important to avoid recursion
 		$rem = remove_filter( 'the_content', array( $this, 'the_content' ), 9999 );
 		if ( is_single() ) {
 
@@ -279,9 +279,8 @@ class TCPThemeCompat {
 	public function theme_compatibility_reset_post( $args = array() ) {
 		global $wp_query, $post;
 
-		//Saves the current post (current product or saleable post)
-		//It will be recovered in "the_content" hook
-		//$this->post = $post;
+		// Saves the current post (current product or saleable post)
+		// It will be recovered in "the_content" hook
 		$this->post = isset( $wp_query->post ) ? $wp_query->post : false;
 		$this->posts = $wp_query->posts;
 

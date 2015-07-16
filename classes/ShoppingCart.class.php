@@ -51,7 +51,13 @@ class ShoppingCart {
 	/**
 	 * Adds a product in the shopping cart
 	 *
-	 * @uses apply_filters, calls 'tcp_add_to_shopping_cart
+	 * @param int $post_id, product id
+	 * @param int $option_1_id, will be deprecated soon
+	 * @param int $option_2_id, will be deprecated soon
+	 * @param int $count, number of units, 1 by default
+	 * @param double $unit_price, unit price, 0 by default
+	 * @param double $unit_weight, unit weight, 0 by default
+	 * @uses apply_filters, calls 'tcp_add_to_shopping_cart' and 'tcp_shopping_cart_key'
 	 */
 	function add( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 1, $unit_price = 0, $unit_weight = 0 ) {
 		if ( !is_numeric( $post_id ) || !is_numeric( $option_1_id ) || !is_numeric( $option_2_id ) ) {
@@ -80,6 +86,16 @@ class ShoppingCart {
 		return $sci;
 	}
 
+	/**
+	 * Modifies a product in the shopping cart (number of units)
+	 *
+	 * @param int $post_id, product to modify
+	 * @param int $option_1_id, will be deprecated soon
+	 * @param int $option_2_id, will be deprecated soon
+	 * @param int $count, number of units. If 0 (value by default) the product will be removed from the cart
+	 * @uses apply_filters, calls 'tcp_modify_to_shopping_cart' and 'tcp_shopping_cart_key'
+	 * @uses do_action, calling 'tcp_shopping_cart_item_modified'
+	 */
 	function modify( $post_id, $option_1_id = 0, $option_2_id = 0, $count = 0 ) {
 		$count = (int)$count;
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -109,10 +125,10 @@ class ShoppingCart {
 	 * Removes a given product from the cart
 	 *
 	 * @param int $post_id product identifier
-	 * @param int $option_1_id (deprecated)
-	 * @param int $option_2_id (deprecated)
-	 *
+	 * @param int $option_1_id (will be deprecated soon)
+	 * @param int $option_2_id (will be deprecated soon)
 	 * @uses sanitize_key, apply_filters ('tcp_shopping_cart_key'), ShoppingCart::removeOrderId
+	 * @uses do_action, calling 'tcp_shopping_cart_item_deleted'
 	 */
 	function delete( $post_id, $option_1_id = 0, $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -125,6 +141,11 @@ class ShoppingCart {
 		do_action( 'tcp_shopping_cart_item_deleted', $post_id, $this );
 	}
 
+	/**
+	 * Removes all froducts from shooping cart
+	 *
+	 * @uses do_action, calling 'tcp_shopping_cart_all_deleted'
+	 */
 	function deleteAll() {
 		unset( $this->shopping_cart_items );
 		$this->shopping_cart_items = array();
@@ -137,6 +158,9 @@ class ShoppingCart {
 		do_action( 'tcp_shopping_cart_all_deleted', $this );
 	}
 
+	/**
+	 * Refresh the cart
+	 */
 	function refresh() {
 		$items = $this->getItems();
 		$this->deleteAll();
@@ -150,6 +174,11 @@ class ShoppingCart {
 		$this->removeOrderId();
 	}
 
+	/**
+	 * Returns a list of product ids added in the shopping cart
+	 *
+	 * @return array( product_id, product_id, ... )
+	 */
 	function getItemsId() {
 		$ids = array();
 		foreach( $this->shopping_cart_items as $id => $item ) {
@@ -158,6 +187,11 @@ class ShoppingCart {
 		return $ids;
 	}
 
+	/**
+	 * Returns a list of items added to the shopping cart
+	 *
+	 * @uses apply_filters, calling 'tcp_shopping_cart_get_items'
+	 */
 	function getItems() {
 		$items = $this->shopping_cart_items;
 		return apply_filters( 'tcp_shopping_cart_get_items', $items );
@@ -165,6 +199,10 @@ class ShoppingCart {
 
 	/**
 	 * Returns and item if it's in the cart
+	 *
+	 * @param int $post_id product identifier
+	 * @param int $option_1_id (will be deprecated soon)
+	 * @param int $option_2_id (will be deprecated soon)
 	 */
 	function getItem( $post_id, $option_1_id = 0 , $option_2_id = 0 ) {
 		$shopping_cart_id = $post_id . '_' . $option_1_id . '_' . $option_2_id;
@@ -184,7 +222,9 @@ class ShoppingCart {
 	}
 
 	/**
-	 * Returns and item if it's in the cart
+	 * Returns and item if it's in the cart, using the SKU
+	 *
+	 * @param string $sku
 	 * @since 1.2.5
 	 */
 	function getItemBySku( $sku ) {
@@ -233,6 +273,7 @@ class ShoppingCart {
 
 	/**
 	 * Add items
+	 *
 	 * @since 1.2.9
 	 */
 	function setItems( $items ) {
@@ -244,6 +285,10 @@ class ShoppingCart {
 
 	/**
 	 * Returns the total amount in the cart
+	 *
+	 * @param $otherCosts, if true adds other costs to the totol, false by default
+	 * @return float total amount in the shopping cart
+	 * @uses apply_filters, calling 'tcp_shopping_cart_get_total'
 	 * @see getTotalForShipping()
 	 */
 	function getTotal( $otherCosts = false ) {
@@ -260,6 +305,9 @@ class ShoppingCart {
 
 	/**
 	 * Returns the total amount to calculate shipping cost
+	 *
+	 * @return float total amount to calculate shipping costs
+	 * @uses apply_filters, calling 'tcp_shopping_cart_get_total_for_shipping'
 	 */
 	function getTotalForShipping() {
 		$total = 0;
@@ -268,9 +316,16 @@ class ShoppingCart {
 				$total += $item->getTotal();
 			}
 		}
+		$total = (float)apply_filters( 'tcp_shopping_cart_get_total_for_shipping', $total );
 		return $total;
 	}
 
+	/**
+	 * Returns the total amount to display shipping cost
+	 *
+	 * @return total amount to display the shipping cart 
+	 * @uses apply_filters, 'tcp_shopping_cart_get_total_to_show'
+	 */
 	function getTotalToShow( $otherCosts = false ) {
 		$total = 0;
 		foreach( $this->shopping_cart_items as $shopping_cart_item ) {
@@ -429,20 +484,26 @@ class ShoppingCart {
 		return $this->getVisitedPosts();
 	}
 
+	/**
+	 * Returns the visited list of products
+	 */
 	function getVisitedPosts() {
 		return $this->visited_post_ids;
 	}
 
+	/**
+	 * Removes the visited list of products
+	 */
 	function deleteVisitedPost() {
 		unset( $this->visited_post_ids );
 		$this->visited_post_ids = array();
 	}
-	/**
-	 * End Visited functions
-	 */
+
 
 	/**
-	 * WishList functions
+	 * Adds a product to the wish list
+	 *
+	 * @param $post_id, product id to add
 	 */
 	function addWishList( $post_id ) {
 		$user_id = get_current_user_id();
@@ -455,6 +516,12 @@ class ShoppingCart {
 		}
 	}
 
+	/**
+	 * Returns true if the given product is in the wish list
+	 *
+	 * @param $post_id, product id to ask for it
+	 * @return bool, true if the given product is in the whish list
+	 */
 	function isInWishList( $post_id ) {
 		$user_id = get_current_user_id();
 		if ( $user_id > 0 ) {	
@@ -465,6 +532,11 @@ class ShoppingCart {
 		}
 	}
 
+	/**
+	 * Returns the whish list
+	 *
+	 * @return array, the whish list
+	 */
 	function getWishList() {
 		$user_id = get_current_user_id();
 		if ( $user_id > 0 ) {	

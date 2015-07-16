@@ -47,7 +47,7 @@ class TCPLostPasswordPage {
 
 	/**
 	 * Uses TheCartPress lost password url (My account page).
-	 * This property is activated if the setting 'use_thecartpress_reset_password_page' is activated
+	 * <stroke>This property is activated if the setting 'use_thecartpress_reset_password_page' is activated</stroke>
 	 *
 	 * @since 1.3.9.1
 	 * @param $lostpassword_url, current url
@@ -55,7 +55,8 @@ class TCPLostPasswordPage {
 	 */
 	static function lostpassword_url( $lostpassword_url, $redirect ) {
 		$url = tcp_get_the_my_account_url();
-		$url = add_query_arg( 'action', 'lostpassword', $url );
+		//$url = add_query_arg( 'action', 'lostpassword', $url );
+		$url = add_query_arg( 'action', 'newpassword', $url );
 		$url = add_query_arg( 'redirect_to', $redirect, $url );
 		return $url;
 	}
