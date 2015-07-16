@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 ?>
 <div class="tcpf">
 
@@ -54,7 +56,6 @@
 				</li>
 				<?php endif; ?>
 
-
 				<?php global $wpmu_version;
 				if ( !empty( $wpmu_version ) || $user_level > 8 ) : ?>
 				<li class="tcp-blog-admin">
@@ -63,6 +64,11 @@
 				<?php endif; ?>
 
 				<?php do_action( 'tcp_author_profile_bottom', $current_user ); ?>
+
+				<li class="tcp-new-password">
+					<?php $redirect = get_permalink(); ?>
+					<a id="wp-new-password" href="<?php echo wp_lostpassword_url( $redirect ) ?>"><span class="glyphicon glyphicon-edit"></span> <?php _e( 'Change Password' ); ?></a>
+				</li>
 
 				<li class="tcp-log-out">
 					<?php $redirect = get_permalink(); ?>

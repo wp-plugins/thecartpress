@@ -74,16 +74,16 @@ class TCPUnitsInBuyButton {
 	static function tcp_product_metabox_custom_fields( $post_id ) { ?>
 <tr valign="top" id="tcp_product_current_unit-row">
 	<th scope="row">
-		<label for="tcp_product_current_unit"><?php _e( 'Product unit', 'tcp' ); ?>:</label></th>
+		<label for="tcp_product_current_unit"><?php _e( 'Product unit', 'tcp' ); ?>:</label>
+	</th>
 	<td>
-	<?php $current_unit = tcp_get_product_unit_by_product( $post_id );
-	$units = tcp_get_product_units_list( true ); ?>
-	<select id="tcp_product_current_unit" name="tcp_product_current_unit">
-		<?php foreach( $units as $id => $unit ) { ?>
-		<option value="<?php echo $id; ?>" <?php selected( $current_unit, $id ); ?>><?php echo $unit == '' ? __( 'Empty', 'tcp' ) : $unit; ?></option>
-		<?php  } ?>
-	</select>
-	<?php //$current_unit = $thecartpress->get_setting( 'tcp_product_current_unit', '' ); ?>
+		<?php $current_unit = tcp_get_product_unit_by_product( $post_id );
+		$units = tcp_get_product_units_list( true ); ?>
+		<select id="tcp_product_current_unit" name="tcp_product_current_unit">
+		<?php foreach( $units as $id => $unit ) : ?>
+			<option value="<?php echo $id; ?>" <?php selected( $current_unit, $id ); ?>><?php echo $unit == '' ? __( 'Empty', 'tcp' ) : $unit; ?></option>
+		<?php endforeach; ?>
+		</select>
 	</td>
 </tr>
 	<?php }
@@ -99,40 +99,53 @@ class TCPUnitsInBuyButton {
 
 	static function tcp_localize_settings_page() {
 		global $thecartpress;
-		if ( ! isset( $thecartpress ) ) return; ?>
-
-<h3><?php _e( 'Product Units', 'tcp'); ?></h3>
+		if ( ! isset( $thecartpress ) ) {
+			return;
+		}
+		$current_unit = $thecartpress->get_setting( 'tcp_product_current_unit', '' );
+		$custom_units = $thecartpress->get_setting( 'tcp_custom_units', '' );
+		$units = tcp_get_product_units_list();
+?>
+<h3><?php _e( 'Product Units', 'tcp' ); ?></h3>
 
 <div class="postbox">
 <div class="inside">
-<table class="form-table">
-<tbody>
-<tr valign="top">
-	<th scope="row">
-	<label for="tcp_product_units"><?php _e( 'Units', 'tcp' ); ?></label>
-	</th>
-	<td>
-		<?php $current_unit = $thecartpress->get_setting( 'tcp_product_current_unit', '' );
-		$units = tcp_get_product_units_list(); ?>
-		<select id="tcp_product_current_unit" name="tcp_product_current_unit">
-			<?php foreach( $units as $id => $unit ) { ?>
-			<option value="<?php echo $id; ?>" <?php selected( $current_unit, $id ); ?>><?php echo $unit == '' ? __( 'Empty', 'tcp' ) : $unit; ?></option>
-			<?php  } ?>
-		</select>
-	</td>
-</tr>
-</tbody>
-</table>
-
+	<table class="form-table">
+	<tbody>
+	<tr valign="top">
+		<th scope="row">
+		<label for="tcp_product_units"><?php _e( 'Units', 'tcp' ); ?></label>
+		</th>
+		<td>
+			<select id="tcp_product_current_unit" name="tcp_product_current_unit">
+				<?php foreach( $units as $id => $unit ) { ?>
+				<option value="<?php echo $id; ?>" <?php selected( $current_unit, $id ); ?>><?php echo $unit == '' ? __( 'Empty', 'tcp' ) : $unit; ?></option>
+				<?php  } ?>
+			</select>
+			<p class="description"><?php _e( 'Default units for site. You could set different units per product.', 'tcp' ); ?></p>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">
+		<label for="tcp_product_units"><?php _e( 'Custom Units', 'tcp' ); ?></label>
+		</th>
+		<td>
+			<input type="text" name="tcp_custom_units" value="<?php echo $custom_units; ?>"/>
+			<p class="description"><?php _e( 'Format: unit 1,unit 2,unit 3,...', 'tcp' ); ?></p>
+		</td>
+	</tr>
+	</tbody>
+	</table>
 </div>
 </div><!-- .postbox -->
 	<?php }
 
 	static function tcp_localize_settings_action( $settings ) {
-		$settings['tcp_product_current_unit'] = isset( $_POST['tcp_product_current_unit'] ) ? $_POST['tcp_product_current_unit'] : '';
+		$settings['tcp_product_current_unit']	= isset( $_POST['tcp_product_current_unit'] ) ? $_POST['tcp_product_current_unit'] : '';
+		$settings['tcp_custom_units']			= isset( $_POST['tcp_custom_units'] ) ? $_POST['tcp_custom_units'] : '';
 		return $settings;
 	}
-	
+
 	static function tcp_csvl_option_columns( $options, $col ) {
 		$options[] = array( 'tcp_product_unit', strtoupper( $col ) == 'PRODUCT-UNIT', __( 'Product unit', 'tcp' ) );
 		return $options;
@@ -169,32 +182,27 @@ function tcp_get_product_units_list( $by_default = false ) {
 		'cubic_metre'		=> __( 'cubic metre', 'tcp' ),
 		'quadratic meter'	=> __( 'quadratic meter', 'tcp' ),
 	);
-	if ( $by_default ) $units['by-default'] = __( 'By default', 'tcp' );
+	if ( $by_default ) {
+		$units['by-default'] = __( 'By default', 'tcp' );
+	}
+	
+	// Adding custom units
+	$custom_units = thecartpress()->get_setting( 'tcp_custom_units', '' );
+	$custom_units_array = explode( ',', $custom_units );
+	if ( is_array( $custom_units_array ) && count( $custom_units_array ) > 0 ) {
+		foreach( $custom_units_array as $unit ) {
+			$units[ sanitize_key( $unit ) ] = $unit;
+		}
+	}
 	return apply_filters( 'tcp_product_units_list', $units );
 }
 
 function tcp_get_product_unit_by_product( $post_id ) {
 	$unit = get_post_meta( $post_id, 'tcp_product_unit', true );
-	if ( $unit == '' ) $unit = 'by-default';
+	if ( $unit == '' ) {
+		$unit = 'by-default';
+	}
 	return $unit;
 }
 
-/*function tcp_get_the_unit_by_product( $post_id ) {
-	$current_unit = tcp_get_product_unit_by_product( $post_id );
-	if ( $current_unit == 'by-default' ) {
-		global $thecartpress;
-		$current_unit = $thecartpress->get_setting( 'tcp_product_current_unit', '' );
-	}
-	$units = tcp_get_product_units_list();
-	if ( isset( $units[$current_unit] ) ) {
-		$current_unit = $units[$current_unit];
-	} else {
-		$current_unit = '';
-	}
-	return $current_unit;
-}
-
-	function tcp_the_unit_by_product( $post_id ) {
-		echo tcp_get_the_unit_by_product( $post_id );
-	}*/
 endif; // class_exists check

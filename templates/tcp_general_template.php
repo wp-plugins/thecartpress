@@ -723,60 +723,60 @@ function tcp_login_form( $args = array() ) {
 	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
 	ob_start();
 	if ( ! is_user_logged_in() ) {
-	$url = plugins_url( 'checkout/login.php' , dirname( __FILE__ ) );
-	//$url = tcp_admin_url( 'admin-ajax.php' );
+		$url = plugins_url( 'checkout/login.php' , dirname( __FILE__ ) );
+		//$url = tcp_admin_url( 'admin-ajax.php' );
 
-	$error = false;
-	$success = false;
-	$display_login_form = true;
+		$error = false;
+		$success = false;
+		$display_login_form = true;
 
-	// Resets password, sending an email
-	if ( isset( $_POST['action'] ) && 'reset' == $_POST['action'] ) {
-		$email = sanitize_email( trim( $_POST['email'] ) );
+		// Resets password, sending an email
+		if ( isset( $_POST['action'] ) && 'reset' == $_POST['action'] ) {
+			$email = sanitize_email( trim( $_POST['email'] ) );
 
-		if ( empty( $email ) ) {
-			$error = __( 'Enter a username or e-mail address.', 'tcp' );
-		} else if ( !is_email( $email ) ) {
-			$error = __( 'Invalid username or e-mail address.', 'tcp' );
-		} else if ( !email_exists( $email ) ) {
-			$error = __( 'There is no user registered with that email address.', 'tcp' );
-		} else {
-
-			$random_password = wp_generate_password( 12, false );
-			$user = get_user_by( 'email', $email );
-
-			$update_user = wp_update_user( array (
-				'ID'		=> $user->ID, 
-				'user_pass'	=> $random_password
-			) );
-
-			// if update user return true then lets send user an email containing the new password
-			if ( is_wp_error( $update_user ) ) {
-				$error = $update_user->get_error_message();
+			if ( empty( $email ) ) {
+				$error = __( 'Enter a username or e-mail address.', 'tcp' );
+			} else if ( !is_email( $email ) ) {
+				$error = __( 'Invalid username or e-mail address.', 'tcp' );
+			} else if ( !email_exists( $email ) ) {
+				$error = __( 'There is no user registered with that email address.', 'tcp' );
 			} else {
-				$to = $email;
-				$subject = __( 'Your new password', 'tcp' );
-				$sender = get_option( 'name' );
 
-				$message = sprintf( __( 'Your new password is: %s', 'tcp' ), $random_password );
+				$random_password = wp_generate_password( 12, false );
+				$user = get_user_by( 'email', $email );
 
-				$headers[] = 'MIME-Version: 1.0' . "\r\n";
-				$headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-				$headers[] = "X-Mailer: PHP \r\n";
-				$headers[] = 'From: '.$sender.' <'.$email.'>' . "\r\n";
+				$update_user = wp_update_user( array (
+					'ID'		=> $user->ID, 
+					'user_pass'	=> $random_password
+				) );
 
-				$mail = wp_mail( $to, $subject, $message, $headers );
-				if ( $mail ) {
-					$success = __( 'Check your email address for you new password.', 'tcp' );
+				// if update user return true then lets send user an email containing the new password
+				if ( is_wp_error( $update_user ) ) {
+					$error = $update_user->get_error_message();
 				} else {
-					$error = __( 'There was an issue sending the email', 'tcp' );
+					$to = $email;
+					$subject = __( 'Your new password', 'tcp' );
+					$sender = get_option( 'name' );
+
+					$message = sprintf( __( 'Your new password is: %s', 'tcp' ), $random_password );
+
+					$headers[] = 'MIME-Version: 1.0' . "\r\n";
+					$headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+					$headers[] = "X-Mailer: PHP \r\n";
+					$headers[] = 'From: '.$sender.' <'.$email.'>' . "\r\n";
+
+					$mail = wp_mail( $to, $subject, $message, $headers );
+					if ( $mail ) {
+						$success = __( 'Check your email address for you new password.', 'tcp' );
+					} else {
+						$error = __( 'There was an issue sending the email', 'tcp' );
+					}
 				}
 			}
 		}
-	}
 
-	// Displays lostpassword form
-	if ( $error !== false || ( isset( $_REQUEST['action'] ) && 'lostpassword' == $_REQUEST['action'] ) ) {
+		// Displays lostpassword form
+		if ( $error !== false || ( isset( $_REQUEST['action'] ) && 'lostpassword' == $_REQUEST['action'] ) ) {
 ?>
 <form method="post">
 	<p class="menssage"><?php _e( 'Please enter your email address. You will receive a temporary password via email.', 'tcp' ); ?></p>
@@ -789,11 +789,9 @@ function tcp_login_form( $args = array() ) {
 	<?php if ( $error ) : ?><p class="error"><?php echo $error; ?></p><?php endif; ?>
 	</form>
 <?php $display_login_form = false;
-	}
+		}
 
-	if ( $display_login_form ) {
-
-?>
+		if ( $display_login_form ) { ?>
 <div id="tcp_login">
 	<form id="<?php echo $args['form_id']; ?>" method="post" action="<?php echo $url; ?>" name="<?php echo $args['form_id']; ?>">
 		<?php echo apply_filters( 'login_form_top', '', $args ); ?>
@@ -847,8 +845,9 @@ function tcp_login_form( $args = array() ) {
 		</p>
 		<?php } ?>
 	</form>
-</div><!-- .tcp_login -->
-	<?php } //if display_login_form
+</div><!-- .tcp_login --> <?php 
+		} //if display_login_form
+	// User is logn in
 	} else { ?>
 <div class="tcp_profile">
 	<?php tcp_author_profile(); ?>
